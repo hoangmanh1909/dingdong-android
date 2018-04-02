@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DingDongAndroid</string>
+    <string name="error_system_upgrading">Hệ thống đang nâng cấp. Vui lòng quay lại sau!</string>
+    <string name="error_fail_default">Hệ thống đang bận. Vui lòng thử lại sau!</string>
+    <string name="internal_storage">Internal storage</string>
+    <string name="dong">Đóng</string>
 </resources>

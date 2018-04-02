@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/white">
+        <com.vinatti.dingdong.views.CustomTextView
+            android:id="@+id/close_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dong"
+            android:textColor="@color/color_29a19c"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:padding="@dimen/dimen_10dp"/>
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn loại vé"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/dimen_18sp"/>
+
+        <com.vinatti.dingdong.views.CustomTextView
+            android:id="@+id/choose_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn"
+            android:textColor="@color/color_29a19c"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="16sp"
+            android:padding="@dimen/dimen_10dp"/>
+
+    </RelativeLayout>
+    <View
+        style="@style/line_center_default"
+        android:layout_width="match_parent" />
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/hidden_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_hidden_panel_pickerui"
+        android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/white"
+        android:visibility="visible">
+
+        <com.vinatti.dingdong.views.picker.PickerUIListView
+            android:id="@+id/picker_ui_listview"
+            style="@style/PickerUI.ListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/pickerui_item" />
+
+        <View
+            android:id="@+id/picker_line_top"
+            style="@style/line_center_default"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_top_line_top_pickerui" />
+
+        <View
+            android:id="@+id/picker_line_bottom"
+            style="@style/line_center_default"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_top_line_bottom_pickerui" />
+
+    </RelativeLayout>
+</LinearLayout>

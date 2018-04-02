@@ -6,6 +6,74 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
+    <declare-styleable name="FormItem">
+        <attr name="formValue" format="string" />
+        <attr name="formHint" format="string" />
+        <attr name="formIcon" format="reference" />
+        <attr name="formAction" format="reference" />
+        <attr name="android:maxLines" />
+        <attr name="android:minLines" />
+        <attr name="android:inputType" />
+        <attr name="formShowClear" format="boolean" />
+    </declare-styleable>
+
+    <style name="FormItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingRight">@dimen/size_10dp</item>
+        <item name="android:paddingTop">@dimen/size_12dp</item>
+        <item name="android:paddingBottom">@dimen/size_12dp</item>
+        <item name="android:layout_marginLeft">@dimen/size_15dp</item>
+        <item name="android:layout_marginRight">@dimen/size_15dp</item>
+
+    </style>
+
+    <style name="FormItemIcon">
+        <item name="android:layout_width">@dimen/size_30dp</item>
+        <item name="android:layout_height">@dimen/size_30dp</item>
+        <item name="android:padding">@dimen/dimen_5dp</item>
+        <item name="android:layout_marginRight">@dimen/size_10dp</item>
+        <item name="android:layout_marginLeft">@dimen/size_10dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="FormItemValueEditText" parent="FormItemValueTextView">
+        <item name="android:textColorHint">@color/n_gray_hsd</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="FormItemValueTextView" parent="FormItemValue">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="FormItemValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical|left</item>
+        <item name="android:layout_marginLeft">@dimen/size_10dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="FormItemValueAction">
+        <item name="android:layout_width">@dimen/size_20dp</item>
+        <item name="android:layout_height">@dimen/size_20dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="Devider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/gray</item>
+    </style>
 </resources>

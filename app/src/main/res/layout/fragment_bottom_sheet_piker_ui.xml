@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="257dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:behavior_skipCollapsed="true">
+
+    <com.vinatti.dingdong.views.picker.PickerUI
+        android:id="@+id/picker_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ProgressBar
+        android:id="@+id/process_bar"
+        android:visibility="gone"
+        android:layout_width="@dimen/size_30dp"
+        android:layout_height="@dimen/size_30dp"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/dimen_20dp"/>
+</RelativeLayout>

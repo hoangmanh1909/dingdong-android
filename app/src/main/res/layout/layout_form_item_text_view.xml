@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/form_item_layout"
+        style="@style/FormItemLayout">
+
+        <ImageView
+            android:id="@+id/form_item_icon"
+            style="@style/FormItemIcon"
+             />
+
+        <TextView
+            android:id="@+id/form_item_value_text"
+            style="@style/FormItemValue"
+            android:text="" />
+
+        <ImageView
+            android:id="@+id/form_item_action"
+            style="@style/FormItemValueAction"
+
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/item_edittext_devider"
+        style="@style/Devider"
+        android:layout_marginLeft="@dimen/size_15dp"
+        android:layout_marginRight="@dimen/size_15dp"
+        android:background="@color/gray" />
+</LinearLayout>
