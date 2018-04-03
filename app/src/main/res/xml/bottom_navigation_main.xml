@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/action_home"
+        icon="@drawable/ic_home"
+        title="Trang chủ" />
+    <tab
+        id="@+id/action_cart"
+        icon="@drawable/ic_cart"
+        title="Gom hàng" />
+    <tab
+        id="@+id/action_airplane"
+        icon="@drawable/ic_airplane"
+        title="Phát hàng" />
+    <tab
+        id="@+id/action_phone"
+        icon="@drawable/ic_tel"
+        title="Gọi" />
+</tabs>

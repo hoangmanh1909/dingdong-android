@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="Trang chủ"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_cart"
+        android:enabled="true"
+        android:icon="@drawable/ic_cart"
+        android:title="Gom hàng"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_airplane"
+        android:enabled="true"
+        android:icon="@drawable/ic_airplane"
+        android:title="Phát hàng"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_phone"
+        android:enabled="true"
+        android:icon="@drawable/ic_tel"
+        android:title="Gọi"
+        app:showAsAction="ifRoom" />
+</menu>

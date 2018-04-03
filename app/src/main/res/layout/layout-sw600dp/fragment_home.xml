@@ -23,8 +23,9 @@
         app:bb_inActiveTabAlpha="0.3"
         app:bb_inActiveTabColor="@color/white"
         app:bb_tabXmlResource="@xml/bottom_navigation_main"
+        app:bb_tabletMode="true"
         app:bb_titleTextAppearance="@style/CustomTitleTextAppearance"
         app:bb_titleTypeFace="fonts/Roboto-Regular.ttf" />
 
-    <!--Helvetica.otf shifting-->
+    <!--Helvetica.otf  shifting-->
 </RelativeLayout>

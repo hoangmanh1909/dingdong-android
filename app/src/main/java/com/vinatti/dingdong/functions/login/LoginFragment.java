@@ -1,8 +1,11 @@
 package com.vinatti.dingdong.functions.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.BuildConfig;
@@ -15,7 +18,9 @@ import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -27,6 +32,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     CustomTextView tvVersion;
     @BindView(R.id.tv_phone)
     CustomMediumTextView tvPhone;
+    @BindView(R.id.tv_status)
+    CustomTextView tvStatus;
     private SharedPref mSharedPref;
 
     public static LoginFragment getInstance() {
@@ -44,7 +51,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
         //  mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "01685537906;344FBD2283E5C8624BF0BF3F3D8C84FE329A9D44F44164F83790258AC61A3D7C");
-      // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
     }
 
     @Override
@@ -63,8 +70,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             if (!TextUtils.isEmpty(mobileNumber)) {
                 tvPhone.setText(mobileNumber);
                 tvPhone.setVisibility(View.VISIBLE);
+                tvStatus.setText("Truy cập để tiếp tục sử dụng");
             } else {
                 tvPhone.setVisibility(View.GONE);
+                tvStatus.setText("Xác thực ứng dụng lần đầu sử dụng");
             }
         }
 

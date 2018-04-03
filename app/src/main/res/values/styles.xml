@@ -88,4 +88,9 @@
     <style name="st_gray.h3">
         <item name="android:textSize">@dimen/text_medium</item>
     </style>
+
+    <style name="CustomTitleTextAppearance">
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
