@@ -1,0 +1,156 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_gradient_color"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="64dp"
+                        android:src="@drawable/ic_logo" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:text="Kích hoạt ứng dụng"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content" />
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        fresco:placeholderImage="@drawable/ic_active"
+                        fresco:roundAsCircle="true" />
+
+                    <com.vinatti.dingdong.views.CustomBoldTextView
+                        android:layout_width="wrap_content"
+                        android:text="Kích hoạt ứng dụng"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="@dimen/dimen_20dp"
+                        android:layout_height="wrap_content" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:text="Một tin nhắn văn bản kèm theo mã kích hoạt của bạn vừa được gửi đến"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_20dp"
+                        android:layout_marginRight="@dimen/dimen_20dp"
+
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/size_20dp"
+                        android:paddingTop="@dimen/size_16dp"
+                        android:paddingRight="@dimen/size_20dp">
+
+                        <com.vinatti.dingdong.views.CustomEditText
+                            android:id="@+id/edtCode"
+                            style="@style/st_gray.h3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_10dp"
+                            android:background="@color/transparent"
+                            android:gravity="left"
+                            android:hint="Nhập mã xác minh có 6 chữ số"
+                            android:inputType="phone"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/size_10dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="@dimen/size_10dp"
+                            android:paddingTop="@dimen/size_10dp"
+                            android:textColorHint="@color/text_des_color_theme11"
+                            android:textCursorDrawable="@null" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_1dp"
+                            android:background="@color/white_opacity43" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:id="@+id/done_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_login"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingTop="@dimen/size_12dp"
+                                android:paddingBottom="@dimen/size_12dp">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_25dp"
+                                    android:layout_height="@dimen/size_15dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/ic_done" />
+
+                                <com.vinatti.dingdong.views.CustomTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dimen_8dp"
+                                    android:text="Hoàn tất"
+                                    android:textAllCaps="true"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/text_size_14sp" />
+
+
+                            </LinearLayout>
+
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

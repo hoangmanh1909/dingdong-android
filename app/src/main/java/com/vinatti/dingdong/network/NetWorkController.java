@@ -5,7 +5,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.LoginResult;
+import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.utiles.Utils;
 
@@ -53,8 +55,25 @@ public class NetWorkController {
     }
 
     public static void loginAuthorized(String mobileNumber, String signCode, CommonCallback<LoginResult> callback) {
-        String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY);
+        String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode, signature);
+        call.enqueue(callback);
+    }
+
+    public static void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
+        String signature = Utils.SHA256(mobileNumber + activeCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<ActiveResult> call = getAPIBuilder().activeAuthorized(mobileNumber,activeCode, codeDeviceActive, signature);
+        call.enqueue(callback);
+    }
+
+    public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(mobileNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().validationAuthorized(mobileNumber, signature);
+        call.enqueue(callback);
+    }
+
+    public static void getPostOfficeByCode(String code, CommonCallback<PostOfficeResult> callback) {
+        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code);
         call.enqueue(callback);
     }
 

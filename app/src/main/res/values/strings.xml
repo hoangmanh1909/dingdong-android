@@ -4,4 +4,5 @@
     <string name="error_fail_default">Hệ thống đang bận. Vui lòng thử lại sau!</string>
     <string name="internal_storage">Internal storage</string>
     <string name="dong">Đóng</string>
+    <string name="title_login">truy cập ứng dụng</string>
 </resources>

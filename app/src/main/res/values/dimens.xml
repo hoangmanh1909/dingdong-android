@@ -48,4 +48,13 @@
     <dimen name="text_size_10sp">10sp</dimen>
     <dimen name="dimen_2dp">2dp</dimen>
     <dimen name="dimen_1dp">1dp</dimen>
+    <dimen name="size_14dp">14dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_56dp">56dp</dimen>
+
+    <dimen name="text_xxlarge">24dp</dimen>
+    <dimen name="text_xlarge">20dp</dimen>
+    <dimen name="text_large">18dp</dimen>
+    <dimen name="text_medium">14dp</dimen>
+    <dimen name="text_small">12dp</dimen>
 </resources>

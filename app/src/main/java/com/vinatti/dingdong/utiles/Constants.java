@@ -28,4 +28,7 @@ public class Constants {
     public static final String KEY_USER_ID = "UserID";
     public static final String KEY_POS_ID = "POSID";
     public static final String KEY_SHIFT_ID = "ShiftID";
+    public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
+    public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
+    public static final String KEY_POST_OFFICE = "OBJECT_POST_OFFICE";
 }

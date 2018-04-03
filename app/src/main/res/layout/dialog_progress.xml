@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:background="#80000000"
     >
-    <com.appgodiva.views.NCustomProgressBar
+    <com.vinatti.dingdong.views.CustomProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        ></com.appgodiva.views.NCustomProgressBar>
+        ></com.vinatti.dingdong.views.CustomProgressBar>
 </RelativeLayout>

@@ -76,4 +76,16 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/gray</item>
     </style>
+    <style name="st_white">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    <style name="st_gray">
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+    <style name="st_white.h2">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+    <style name="st_gray.h3">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
 </resources>
