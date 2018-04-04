@@ -1,8 +1,13 @@
-<resources>
+<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">DingDongAndroid</string>
     <string name="error_system_upgrading">Hệ thống đang nâng cấp. Vui lòng quay lại sau!</string>
     <string name="error_fail_default">Hệ thống đang bận. Vui lòng thử lại sau!</string>
     <string name="internal_storage">Internal storage</string>
     <string name="dong">Đóng</string>
     <string name="title_login">truy cập ứng dụng</string>
+
+    <string name="info_gomhang"><![CDATA[- Xác nhận tin<br />- Cập nhật tin thu gom]]></string>
+    <string name="info_phathang"><![CDATA[- Cập nhật thông tin thu hộ COD<br />- Cập nhật thông tin báo phát]]></string>
+    <string name="info_dinhvi"><![CDATA[- Tìm kiếm thông tin bưu gửi<br />- Định vị trạng thái bưu gửi]]></string>
+    <string name="info_nguoidung"><![CDATA[- Thông tin người dùng<br />- Định vị vị trí]]></string>
 </resources>

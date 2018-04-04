@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.home;
+package com.vinatti.dingdong.functions.mainhome.home;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;

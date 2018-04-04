@@ -1,23 +1,14 @@
 package com.vinatti.dingdong.functions.login.validation;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.functions.home.HomeActivity;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomEditText;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**

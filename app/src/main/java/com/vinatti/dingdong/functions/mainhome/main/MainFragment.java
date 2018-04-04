@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.home;
+package com.vinatti.dingdong.functions.mainhome.main;
 
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -9,6 +9,8 @@ import com.core.base.viper.ViewFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.functions.mainhome.home.HomeFragment;
+import com.vinatti.dingdong.functions.mainhome.home.HomePresenter;
 import com.vinatti.dingdong.views.MyViewPager;
 
 import butterknife.BindView;
@@ -16,7 +18,7 @@ import butterknife.BindView;
 /**
  * The Home Fragment
  */
-public class HomeFragment extends ViewFragment<HomeContract.Presenter> implements HomeContract.View {
+public class MainFragment extends ViewFragment<MainContract.Presenter> implements MainContract.View {
 
 
     @BindView(R.id.bottomBar)
@@ -24,14 +26,15 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
     private FragmentPagerAdapter adapter;
+    private Fragment homeFragment;
 
-    public static HomeFragment getInstance() {
-        return new HomeFragment();
+    public static MainFragment getInstance() {
+        return new MainFragment();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_main;
     }
 
     @Override
@@ -79,8 +82,11 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
     private Fragment getFragmentItem(int position) {
         switch (position) {
-            case 1:
-
+            case 0:
+                if(homeFragment==null) {
+                    homeFragment = mPresenter.getHomePresenter().getFragment();
+                }
+                return homeFragment;
             case 2:
 
             case 3:

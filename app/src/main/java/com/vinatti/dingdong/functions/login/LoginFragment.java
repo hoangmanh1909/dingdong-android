@@ -1,16 +1,13 @@
 package com.vinatti.dingdong.functions.login;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.functions.home.HomeActivity;
+import com.vinatti.dingdong.functions.mainhome.main.MainActivity;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
@@ -18,9 +15,7 @@ import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -117,7 +112,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @Override
     public void gotoHome() {
-        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         getActivity().finish();
         getActivity().startActivity(intent);
     }
