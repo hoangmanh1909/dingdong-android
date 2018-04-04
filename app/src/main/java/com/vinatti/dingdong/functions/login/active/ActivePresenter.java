@@ -61,9 +61,10 @@ public class ActivePresenter extends Presenter<ActiveContract.View, ActiveContra
             }
 
             @Override
-            protected void onError(Call<ActiveResult> call) {
+            protected void onError(Call<ActiveResult> call, String message) {
                 mView.hideProgress();
-                super.onError(call);
+                super.onError(call, message);
+                mView.showError(message);
             }
         });
     }

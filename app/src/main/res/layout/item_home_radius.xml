@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutHome"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:addStatesFromChildren="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/xml_border_main"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_5dp">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="14dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="48dp"
+            android:maxHeight="48dp"
+            android:scaleType="fitCenter" />
+
+        <com.vinatti.dingdong.views.CustomMediumTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="@dimen/dimen_5dp"
+            android:layout_marginLeft="@dimen/dimen_5dp"
+            android:gravity="center"
+            android:lines="2"
+            android:paddingBottom="8dp"
+            android:textColor="#14648c"
+            android:textSize="@dimen/text_size_12sp" />
+    </LinearLayout>
+</LinearLayout>

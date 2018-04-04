@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.home;
+package com.vinatti.dingdong.functions.mainhome;
 
 import android.content.Context;
 import android.text.Html;

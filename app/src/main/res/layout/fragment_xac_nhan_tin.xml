@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.vinatti.dingdong.views.CustomBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Xác nhận tin"
+                android:textAllCaps="true"
+                android:textColor="@color/color_5f2f75"
+                android:textSize="@dimen/text_size_18sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Không có dữ liệu"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dimen_40dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10dp">
+
+            <ImageView
+                android:id="@+id/img_view"
+                android:layout_width="@dimen/size_50dp"
+                android:layout_height="@dimen/size_50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_choose_calendar" />
+        </RelativeLayout>
+
+    </FrameLayout>
+</LinearLayout>

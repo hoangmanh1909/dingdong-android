@@ -9,6 +9,7 @@ import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.SimpleResult;
+import com.vinatti.dingdong.model.XacNhanTinResult;
 import com.vinatti.dingdong.utiles.Utils;
 
 import retrofit2.Call;
@@ -62,7 +63,17 @@ public class NetWorkController {
 
     public static void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
         String signature = Utils.SHA256(mobileNumber + activeCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<ActiveResult> call = getAPIBuilder().activeAuthorized(mobileNumber,activeCode, codeDeviceActive, signature);
+        Call<ActiveResult> call = getAPIBuilder().activeAuthorized(mobileNumber, activeCode, codeDeviceActive, signature);
+        call.enqueue(callback);
+    }
+
+    public static void searchOrderPostmanCollect(String orderPostmanID,
+                                                 String orderID,
+                                                 String postmanID,
+                                                 String status,
+                                                 String fromAssignDate,
+                                                 String toAssignDate, CommonCallback<XacNhanTinResult> callback) {
+        Call<XacNhanTinResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
         call.enqueue(callback);
     }
 

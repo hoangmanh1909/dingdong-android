@@ -1,5 +1,7 @@
 package com.vinatti.dingdong.callback;
 
+import android.accounts.AuthenticatorException;
+import android.accounts.NetworkErrorException;
 import android.app.Activity;
 
 
@@ -8,6 +10,11 @@ import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.utiles.DialogUtils;
 import com.vinatti.dingdong.utiles.Log;
 import com.vinatti.dingdong.utiles.Toast;
+
+import java.net.SocketTimeoutException;
+import java.nio.channels.NoConnectionPendingException;
+import java.text.ParseException;
+import java.util.concurrent.TimeoutException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +45,7 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
         }
     }
 
-    protected void onError(Call<T> call) {
+    protected void onError(Call<T> call, String message) {
         if (isDismissProgress) {
             DialogUtils.dismissProgressDialog();
         }
@@ -58,23 +65,33 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
             onSuccess(call, response);
         } else if (response != null && (response.code() < 200 || response.code() >= 300)) {
             if (mActivity != null && isInternalErrorDisplayed) {
-                android.widget.Toast.makeText(mActivity, R.string.error_system_upgrading, android.widget.Toast.LENGTH_LONG).show();
+                this.onError(call, mActivity.getString(R.string.error_system_upgrading));
             }
-            this.onError(call);
         } else {
             if (mActivity != null && this.isInternalErrorDisplayed) {
-                Toast.showToast(mActivity, R.string.error_fail_default);
+                this.onError(call, mActivity.getString(R.string.error_fail_default));
             }
-            this.onError(call);
         }
     }
 
     @Override
-    public void onFailure(Call<T> call, Throwable t) {
+    public void onFailure(Call<T> call, Throwable error) {
         if (mActivity != null && this.isInternalErrorDisplayed) {
             Toast.showToast(mActivity, R.string.error_fail_default);
         }
-        Log.e("LOG: ", t.toString());
-        this.onError(call);
+        Log.e("LOG: ", error.toString());
+        if (error instanceof TimeoutException || error instanceof NoConnectionPendingException) {
+            this.onError(call, "Thời gian kết nối đến máy chủ quá lâu");
+        } else if (error instanceof AuthenticatorException) {
+            this.onError(call, "Lỗi xác thực tới máy chủ");
+        } else if (error instanceof SocketTimeoutException || error instanceof TimeoutException) {
+            this.onError(call, "Không thể kết nối đến máy chủ");
+        } else if (error instanceof NetworkErrorException) {
+            this.onError(call, "Vui lòng kiểm tra lại kết nối mạng");
+        } else if (error instanceof ParseException) {
+            this.onError(call, "Parse error");
+        } else {
+            this.onError(call, "Lỗi hệ thống");
+        }
     }
 }

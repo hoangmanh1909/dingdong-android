@@ -6,7 +6,6 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.login.active.ActivePresenter;
-import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.SimpleResult;
 
 import retrofit2.Call;
@@ -53,9 +52,10 @@ public class ValidationPresenter extends Presenter<ValidationContract.View, Vali
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
-                super.onError(call);
+                super.onError(call, message);
+                mView.showError(message);
             }
         });
     }

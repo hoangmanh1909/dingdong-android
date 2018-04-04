@@ -50,7 +50,9 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 super.onSuccess(call, response);
 
                 if (response.body().getErrorCode().equals("00")) {
-                    getPostOfficeByCode(response.body().getLoginResponse().getUnitCode());
+                    getPostOfficeByCode(response.body().getUserInfo().getUnitCode());
+                    SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
                 } else if (response.body().getErrorCode().equals("05")) {
                     mView.hideProgress();
                     mView.showMessage("Số điện thoại đã được kích hoạt ở thiết bị khác, xin vui lòng thực hiện kích hoạt lại trên thiết bị này.");
@@ -61,9 +63,10 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<LoginResult> call) {
+            protected void onError(Call<LoginResult> call, String message) {
                 mView.hideProgress();
-                super.onError(call);
+                super.onError(call, message);
+                mView.showError(message);
             }
         });
     }
@@ -91,9 +94,10 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<PostOfficeResult> call) {
+            protected void onError(Call<PostOfficeResult> call, String message) {
                 mView.hideProgress();
-                super.onError(call);
+                super.onError(call, message);
+                mView.showError(message);
             }
         });
     }

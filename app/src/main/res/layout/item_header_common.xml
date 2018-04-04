@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/dimen_10dp"
+    android:orientation="vertical">
+
+<!--
+    <com.vinatti.dingdong.views.CustomMediumTextView
+        android:id="@+id/tv_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_common"
+        android:padding="@dimen/dimen_10dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_18sp" />-->
+    <View
+        android:id="@+id/v_devider"
+        style="@style/LightGrayDevider"
+        android:layout_height="@dimen/size_10dp"/>
+   <!-- <View
+        android:id="@+id/v_devider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_5dp"
+        android:background="@drawable/header_shadow" />-->
+</LinearLayout>

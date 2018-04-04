@@ -5,6 +5,7 @@ import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.SimpleResult;
+import com.vinatti.dingdong.model.XacNhanTinResult;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -25,6 +26,7 @@ public interface VinattiAPI {
                                       @Field("SignCode") String signCode,
                                       @Field("Signature") String signature
     );
+
     @FormUrlEncoded
     @POST("api/Authorized/Active")
     Call<ActiveResult> activeAuthorized(@Field("MobileNumber") String mobileNumber,
@@ -32,10 +34,22 @@ public interface VinattiAPI {
                                         @Field("CodeDeviceActive") String codeDeviceActive,
                                         @Field("Signature") String signature
     );
+
+    @FormUrlEncoded
+    @POST("api/Collect/SearchOrderPostman")
+    Call<XacNhanTinResult> searchOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
+                                                     @Field("OrderID") String orderID,
+                                                     @Field("PostmanID") String postmanID,
+                                                     @Field("Status") String status,
+                                                     @Field("FromAssignDate") String fromAssignDate,
+                                                     @Field("ToAssignDate") String toAssignDate
+
+    );
+
     @FormUrlEncoded
     @POST("api/Authorized/Validation")
     Call<SimpleResult> validationAuthorized(@Field("MobileNumber") String mobileNumber,
-                                      @Field("Signature") String signature
+                                            @Field("Signature") String signature
     );
 
     @GET("api/Dictionary/GetPostOfficeByCode")

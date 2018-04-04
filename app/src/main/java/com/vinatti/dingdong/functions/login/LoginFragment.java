@@ -112,9 +112,11 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @Override
     public void gotoHome() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        getActivity().finish();
-        getActivity().startActivity(intent);
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            getActivity().finish();
+            getActivity().startActivity(intent);
+        }
     }
 
     @Override

@@ -10,4 +10,10 @@
     <string name="info_phathang"><![CDATA[- Cập nhật thông tin thu hộ COD<br />- Cập nhật thông tin báo phát]]></string>
     <string name="info_dinhvi"><![CDATA[- Tìm kiếm thông tin bưu gửi<br />- Định vị trạng thái bưu gửi]]></string>
     <string name="info_nguoidung"><![CDATA[- Thông tin người dùng<br />- Định vị vị trí]]></string>
+    <string name="info_collect_service_confirm" ><![CDATA[- Xác nhận tin thu gom<br />- Từ chối tin thu gom]]></string>
+    <string name="info_collect_service_success" ><![CDATA[- Cập nhật tin thu gom<br />- Cập nhật trạng thái thu gom]]></string>
+    <string name="info_delivery_manage" ><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
+    <string name="info_delivery_service_success" ><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
+    <string name="info_delivery_service_return" ><![CDATA[- Cập nhật lý do<br />- Cập nhật phương án xử lý]]></string>
+    <string name="info_delivery_statistic" ><![CDATA[- Thông tin báo phát<br />- Lịch sử báo phát]]></string>
 </resources>

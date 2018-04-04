@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class LoginResult extends SimpleResult {
     @SerializedName("Value")
-    private LoginResponse loginResponse;
+    private UserInfo userInfo;
 
-    public LoginResponse getLoginResponse() {
-        return loginResponse;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 }

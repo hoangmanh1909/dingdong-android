@@ -27,6 +27,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     MyViewPager viewPager;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
+    private Fragment gomHangFragment;
+    private Fragment phatHangFragment;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -44,7 +46,15 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
-
+                if (tabId == R.id.action_home) {
+                    viewPager.setCurrentItem(0);
+                } else if (tabId == R.id.action_cart) {
+                    viewPager.setCurrentItem(1);
+                } else if (tabId == R.id.action_airplane) {
+                    viewPager.setCurrentItem(2);
+                } else if (tabId == R.id.action_phone) {
+                    viewPager.setCurrentItem(3);
+                }
             }
         });
         viewPager.setAdapter(adapter);
@@ -83,15 +93,21 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private Fragment getFragmentItem(int position) {
         switch (position) {
             case 0:
-                if(homeFragment==null) {
+                if (homeFragment == null) {
                     homeFragment = mPresenter.getHomePresenter().getFragment();
                 }
                 return homeFragment;
+            case 1:
+                if (gomHangFragment == null) {
+                    gomHangFragment = mPresenter.getGomHangPresenter().getFragment();
+                }
+                return gomHangFragment;
             case 2:
-
+                if (phatHangFragment == null) {
+                    phatHangFragment = mPresenter.getPhatHangPresenter().getFragment();
+                }
+                return phatHangFragment;
             case 3:
-
-            case 4:
 
                 break;
         }

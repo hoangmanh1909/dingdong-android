@@ -21,8 +21,8 @@ public class CustomProgressBar extends LinearLayout{
     Animation rotation,animationOut;
     public CustomProgressBar(Context context) {
         super(context);
-        rotation = AnimationUtils.loadAnimation(context, R.anim.n_rotation_repeat);
-        animationOut = AnimationUtils.loadAnimation(context,R.anim.n_animation_progress_out);
+        rotation = AnimationUtils.loadAnimation(context, R.anim.rotation_repeat);
+        animationOut = AnimationUtils.loadAnimation(context,R.anim.animation_progress_out);
         animationOut.setAnimationListener(listener);
         inflate(context, R.layout.custom_progress_bar,this);
         loaderCircle = findViewById(R.id.loader_circle);
@@ -31,8 +31,8 @@ public class CustomProgressBar extends LinearLayout{
 
     public CustomProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        rotation = AnimationUtils.loadAnimation(context,R.anim.n_rotation_repeat);
-        animationOut = AnimationUtils.loadAnimation(context,R.anim.n_animation_progress_out);
+        rotation = AnimationUtils.loadAnimation(context,R.anim.rotation_repeat);
+        animationOut = AnimationUtils.loadAnimation(context,R.anim.animation_progress_out);
         animationOut.setAnimationListener(listener);
         inflate(context, R.layout.custom_progress_bar,this);
         loaderCircle = findViewById(R.id.loader_circle);
@@ -41,8 +41,8 @@ public class CustomProgressBar extends LinearLayout{
 
     public CustomProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        rotation = AnimationUtils.loadAnimation(context,R.anim.n_rotation_repeat);
-        animationOut = AnimationUtils.loadAnimation(context,R.anim.n_animation_progress_out);
+        rotation = AnimationUtils.loadAnimation(context,R.anim.rotation_repeat);
+        animationOut = AnimationUtils.loadAnimation(context,R.anim.animation_progress_out);
         animationOut.setAnimationListener(listener);
         inflate(context, R.layout.custom_progress_bar,this);
         loaderCircle = findViewById(R.id.loader_circle);
