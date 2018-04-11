@@ -47,6 +47,14 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/Collect/ConfirmOrderPostman")
+    Call<SimpleResult> confirmOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
+                                                  @Field("EmployeeID") String employeeID,
+                                                  @Field("StatusCode") String statusCode,
+                                                  @Field("ConfirmReason") String confirmReason
+    );
+
+    @FormUrlEncoded
     @POST("api/Authorized/Validation")
     Call<SimpleResult> validationAuthorized(@Field("MobileNumber") String mobileNumber,
                                             @Field("Signature") String signature

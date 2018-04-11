@@ -36,6 +36,8 @@ interface XacNhanTinContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);
+
+        void showDetailView(XacNhanTin xacNhanTin);
     }
 }
 

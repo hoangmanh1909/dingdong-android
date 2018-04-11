@@ -7,9 +7,7 @@ import android.view.View;
 import com.vinatti.dingdong.R;
 
 
-/**
- * Created by HungNX on 8/12/16.
- */
+
 public class ProgressDialog extends Dialog {
     View progressBar;
     boolean check = false;

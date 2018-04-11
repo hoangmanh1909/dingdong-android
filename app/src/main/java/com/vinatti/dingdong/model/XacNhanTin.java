@@ -3,6 +3,8 @@ package com.vinatti.dingdong.model;
 import com.google.gson.annotations.SerializedName;
 
 public class XacNhanTin {
+    @SerializedName("OrderPostmanID")
+    String orderPostmanID;
     @SerializedName("Count")
     String count;
     @SerializedName("Code")
@@ -15,6 +17,16 @@ public class XacNhanTin {
     String contactPhone;
     @SerializedName("ContactAddress")
     String contactAddress;
+    @SerializedName("AssignDateTime")
+    String assignDateTime;
+    @SerializedName("AssignFullName")
+    String assignFullName;
+    @SerializedName("Quantity")
+    String quantity;
+    @SerializedName("Weigh")
+    String weigh;
+    @SerializedName("StatusCode")
+    String statusCode;
 
     public String getCount() {
         return count;
@@ -38,5 +50,29 @@ public class XacNhanTin {
 
     public String getContactAddress() {
         return contactAddress;
+    }
+
+    public String getOrderPostmanID() {
+        return orderPostmanID;
+    }
+
+    public String getAssignDateTime() {
+        return assignDateTime;
+    }
+
+    public String getAssignFullName() {
+        return assignFullName;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public String getWeigh() {
+        return weigh;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
     }
 }

@@ -5,6 +5,8 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detail.XacNhanTinDetailPresenter;
+import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
 import retrofit2.Call;
@@ -54,5 +56,10 @@ public class XacNhanTinPresenter extends Presenter<XacNhanTinContract.View, XacN
                 mView.showError(message);
             }
         });
+    }
+
+    @Override
+    public void showDetailView(XacNhanTin xacNhanTin) {
+        new XacNhanTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
     }
 }

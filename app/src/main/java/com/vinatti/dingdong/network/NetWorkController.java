@@ -88,5 +88,11 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
+                                                  String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason);
+        call.enqueue(callback);
+    }
+
 
 }

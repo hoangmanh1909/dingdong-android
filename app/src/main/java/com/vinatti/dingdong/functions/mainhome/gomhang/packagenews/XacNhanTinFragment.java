@@ -2,11 +2,13 @@ package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.OnChooseDay;
 import com.vinatti.dingdong.dialog.EditDayDialog;
@@ -53,7 +55,18 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
         super.initLayout();
         showDialog();
         mList = new ArrayList<>();
-        mAdapter = new XacNhanTinAdapter(getActivity(), mList);
+        mAdapter = new XacNhanTinAdapter(getActivity(), mList){
+            @Override
+            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.showDetailView(mList.get(position));
+                    }
+                });
+            }
+        };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());

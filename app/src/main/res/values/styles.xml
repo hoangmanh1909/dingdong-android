@@ -76,15 +76,19 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/gray</item>
     </style>
+
     <style name="st_white">
         <item name="android:textColor">#ffffff</item>
     </style>
+
     <style name="st_gray">
         <item name="android:textColor">@color/text_gray</item>
     </style>
+
     <style name="st_white.h2">
         <item name="android:textSize">@dimen/text_large</item>
     </style>
+
     <style name="st_gray.h3">
         <item name="android:textSize">@dimen/text_medium</item>
     </style>
@@ -137,5 +141,13 @@
         <item name="android:textSize">22dp</item>
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
         <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/colorAccent</item>
+    </style>
+
+    <style name="HeaderNews">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/text_size_18sp</item>
+        <item name="android:textColor">@color/color_5f2f75</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>
