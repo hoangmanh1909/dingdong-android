@@ -6,6 +6,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detail.XacNhanTinDetailPresenter;
+import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
@@ -21,6 +22,9 @@ public class XacNhanTinPresenter extends Presenter<XacNhanTinContract.View, XacN
     public XacNhanTinPresenter(ContainerView containerView) {
         super(containerView);
     }
+
+    int mType;
+
 
     @Override
     public XacNhanTinContract.View onCreateView() {
@@ -56,10 +60,26 @@ public class XacNhanTinPresenter extends Presenter<XacNhanTinContract.View, XacN
                 mView.showError(message);
             }
         });
+
     }
 
     @Override
     public void showDetailView(XacNhanTin xacNhanTin) {
-        new XacNhanTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
+        if (mType == 1) {
+            new XacNhanTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
+        } else if (mType == 2) {
+            new HoanThanhTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
+        }
+    }
+
+    @Override
+    public XacNhanTinPresenter setType(int type) {
+        mType = type;
+        return this;
+    }
+
+    @Override
+    public int getType() {
+        return mType;
     }
 }

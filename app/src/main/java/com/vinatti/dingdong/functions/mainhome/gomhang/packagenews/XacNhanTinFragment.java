@@ -35,6 +35,8 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.img_view)
     ImageView imgView;
     ArrayList<XacNhanTin> mList;
@@ -55,7 +57,7 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
         super.initLayout();
         showDialog();
         mList = new ArrayList<>();
-        mAdapter = new XacNhanTinAdapter(getActivity(), mList){
+        mAdapter = new XacNhanTinAdapter(getActivity(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
@@ -74,6 +76,13 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
+        if(mPresenter.getType()==1)
+        {
+            tvTitle.setText("Xác nhận tin");
+        }
+        else{
+            tvTitle.setText("Hoàn thành tin");
+        }
     }
 
     private void showDialog() {
@@ -82,14 +91,26 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
             public void onChooseDay(Calendar calFrom, Calendar calTo) {
                 String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                if (mPresenter.getType() == 1) {
+                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                } else if (mPresenter.getType() == 2) {
+                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                }
             }
         }).show();
     }
 
-    @OnClick(R.id.img_view)
-    public void onViewClicked() {
-        showDialog();
+
+    @OnClick({R.id.img_back, R.id.img_view})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+            case R.id.img_view:
+                showDialog();
+                break;
+        }
     }
 
     @Override

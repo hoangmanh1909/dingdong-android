@@ -36,6 +36,15 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/CallCenter/CallForward")
+    Call<SimpleResult> callForwardCallCenter(@Field("CallerNumber") String callerNumber,
+                                             @Field("CalleeNumber") String calleeNumber,
+                                             @Field("CallForwardType") String callForwardType,
+                                             @Field("HotlineNumber") String hotlineNumber,
+                                             @Field("Signature") String signature
+    );
+
+    @FormUrlEncoded
     @POST("api/Collect/SearchOrderPostman")
     Call<XacNhanTinResult> searchOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
                                                      @Field("OrderID") String orderID,

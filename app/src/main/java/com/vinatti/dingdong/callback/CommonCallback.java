@@ -11,6 +11,7 @@ import com.vinatti.dingdong.utiles.DialogUtils;
 import com.vinatti.dingdong.utiles.Log;
 import com.vinatti.dingdong.utiles.Toast;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.nio.channels.NoConnectionPendingException;
 import java.text.ParseException;
@@ -84,14 +85,14 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
             this.onError(call, "Thời gian kết nối đến máy chủ quá lâu");
         } else if (error instanceof AuthenticatorException) {
             this.onError(call, "Lỗi xác thực tới máy chủ");
-        } else if (error instanceof SocketTimeoutException || error instanceof TimeoutException) {
+        } else if (error instanceof SocketTimeoutException || error instanceof TimeoutException || error instanceof ConnectException) {
             this.onError(call, "Không thể kết nối đến máy chủ");
         } else if (error instanceof NetworkErrorException) {
             this.onError(call, "Vui lòng kiểm tra lại kết nối mạng");
         } else if (error instanceof ParseException) {
             this.onError(call, "Parse error");
         } else {
-            this.onError(call, "Lỗi hệ thống");
+            this.onError(call, "Lỗi kết nối hệ thống");
         }
     }
 }

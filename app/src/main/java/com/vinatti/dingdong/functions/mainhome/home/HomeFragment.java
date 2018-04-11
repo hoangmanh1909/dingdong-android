@@ -12,6 +12,7 @@ import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.XacNhanTinActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
+import com.vinatti.dingdong.utiles.Constants;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,11 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                         if (homeInfo != null) {
                             if (homeInfo.getId() == 1) {
                                 Intent intent = new Intent(getActivity(), XacNhanTinActivity.class);
+                                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                                startActivity(intent);
+                            } else if (homeInfo.getId() == 2) {
+                                Intent intent = new Intent(getActivity(), XacNhanTinActivity.class);
+                                intent.putExtra(Constants.TYPE_GOM_HANG, 2);
                                 startActivity(intent);
                             }
                         }

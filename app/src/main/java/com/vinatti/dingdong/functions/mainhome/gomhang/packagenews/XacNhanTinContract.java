@@ -38,6 +38,9 @@ interface XacNhanTinContract {
                                        String toAssignDate);
 
         void showDetailView(XacNhanTin xacNhanTin);
+        XacNhanTinPresenter setType(int type);
+
+        int getType();
     }
 }
 

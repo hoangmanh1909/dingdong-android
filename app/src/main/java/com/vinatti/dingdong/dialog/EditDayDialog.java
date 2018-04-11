@@ -54,6 +54,8 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     @Override
     public void onClick(View v) {
         Calendar maxStart = Calendar.getInstance();
+        maxStart.set(Calendar.DATE,-1);
+        Calendar maxToStart = Calendar.getInstance();
         switch (v.getId()) {
 
             case R.id.layout_date_start:
@@ -80,7 +82,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                         .showTitle(true)
                         .showDaySpinner(true)
                         .defaultDate(calTo.get(Calendar.YEAR), calTo.get(Calendar.MONTH), calTo.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(maxStart.get(Calendar.YEAR), maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(maxToStart.get(Calendar.YEAR), maxToStart.get(Calendar.MONTH), maxToStart.get(Calendar.DAY_OF_MONTH))
                         .minDate(1979, 0, 1)
                         .build()
                         .show();
