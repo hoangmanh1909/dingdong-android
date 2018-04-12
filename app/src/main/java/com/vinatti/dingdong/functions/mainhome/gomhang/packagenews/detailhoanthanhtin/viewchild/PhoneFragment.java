@@ -50,7 +50,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
             public void onCallResponse(String phone) {
                 mPresenter.callForward(phone);
             }
-        });
+        }).show();
     }
 
     @Override
@@ -73,4 +73,5 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
                     }
                 }).show();
     }
+
 }

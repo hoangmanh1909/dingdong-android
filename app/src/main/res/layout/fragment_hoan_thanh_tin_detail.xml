@@ -277,7 +277,7 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                         <LinearLayout
-                            android:id="@+id/llContact"
+                            android:id="@+id/ll_contact"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"

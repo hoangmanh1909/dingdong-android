@@ -64,10 +64,12 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
             callerNumber = userInfo.getMobileNumber();
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        mView.showProgress();
         mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
+                mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showCallSuccess();
                 } else {
@@ -78,6 +80,7 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
+                mView.hideProgress();
                 mView.showError(message);
             }
         });

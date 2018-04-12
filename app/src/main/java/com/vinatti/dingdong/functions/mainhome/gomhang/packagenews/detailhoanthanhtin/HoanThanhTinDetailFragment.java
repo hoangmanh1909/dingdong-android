@@ -54,7 +54,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_xac_nhan_tin_detail;
+        return R.layout.fragment_hoan_thanh_tin_detail;
     }
 
     @Override
@@ -127,9 +127,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
                 getChildFragmentManager().beginTransaction()
-                        .add(R.id.llContact,
+                        .add(R.id.ll_contact,
                                 new PhonePresenter((ContainerView) getActivity())
-                                        .setPhone(phones[i])
+                                        .setPhone(phones[i].trim())
                                         .getFragment(), TAG + i)
                         .commit();
             }
