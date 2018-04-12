@@ -10,6 +10,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@drawable/my_compound_button_color_selector</item>
+        <item name="buttonTint">@drawable/my_compound_button_color_selector</item>
+    </style>
+    <style name="CustomRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_btn_radio</item>
+    </style>
     <declare-styleable name="FormItem">
         <attr name="formValue" format="string" />
         <attr name="formHint" format="string" />

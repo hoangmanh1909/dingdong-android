@@ -340,27 +340,12 @@
                     android:paddingTop="@dimen/dimen_5dp"
                     android:paddingRight="@dimen/dimen_20dp"
                     android:paddingBottom="@dimen/dimen_5dp"
-                    android:text="Xác nhận"
+                    android:text="hoàn tất tin"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18sp" />
 
-                <com.vinatti.dingdong.views.CustomTextView
-                    android:id="@+id/btn_reject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_reject"
-                    android:drawableLeft="@drawable/ic_cancel"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_20dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingRight="@dimen/dimen_20dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Từ chối"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_18sp" />
+
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

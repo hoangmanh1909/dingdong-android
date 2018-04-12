@@ -4,6 +4,11 @@ public class Item {
     String  value;
     String text;
 
+    public Item(String value, String text) {
+        this.value = value;
+        this.text = text;
+    }
+
     public String getValue() {
         return value;
     }

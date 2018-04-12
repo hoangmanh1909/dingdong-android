@@ -104,4 +104,5 @@ dependencies {
     //compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     compile 'com.codewaves.stickyheadergrid:stickyheadergrid:0.9.6'
     compile 'com.github.drawers:SpinnerDatePicker:1.0.6'
+    compile 'com.github.rey5137:material:1.2.4'
 }

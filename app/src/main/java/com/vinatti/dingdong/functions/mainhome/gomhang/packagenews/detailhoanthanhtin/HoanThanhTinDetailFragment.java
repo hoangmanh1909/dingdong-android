@@ -6,11 +6,9 @@ import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.ReasonCallback;
-import com.vinatti.dingdong.dialog.ReasonDialog;
+import com.vinatti.dingdong.dialog.HoanTatTinDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
-import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.model.XacNhanTin;
-import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.views.CustomBoldTextView;
@@ -44,9 +42,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     CustomTextView tvContactAddress;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
-    @BindView(R.id.btn_reject)
-    CustomTextView btnReject;
+
     private String mUser;
+    private XacNhanTin mHoanThanhTin;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -64,7 +62,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
     }
 
-    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.btn_reject})
+    @OnClick({R.id.img_back, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -72,21 +70,18 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 break;
             case R.id.btn_confirm:
 
-                if (!mUser.isEmpty()) {
+              /*  if (!mUser.isEmpty()) {
                     UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
                     mPresenter.confirmOrderPostmanCollect(mPresenter.getXacNhanTin().getOrderPostmanID(), userInfo.getiD(), "P1", "");
-                }
-                break;
-            case R.id.btn_reject:
-                new ReasonDialog(getActivity(), mPresenter.getXacNhanTin().getCode(), new ReasonCallback() {
-                    @Override
-                    public void onReasonResponse(String reason) {
-                        if (!mUser.isEmpty()) {
-                            UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
-                            mPresenter.confirmOrderPostmanCollect(mPresenter.getXacNhanTin().getOrderPostmanID(), userInfo.getiD(), "P2", reason);
+                }*/
+                if (mHoanThanhTin != null) {
+                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new ReasonCallback() {
+                        @Override
+                        public void onReasonResponse(String reason) {
+
                         }
-                    }
-                }).show();
+                    }).show();
+                }
                 break;
         }
     }
@@ -113,6 +108,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         } else {
             btnConfirm.setEnabled(true);
         }
+        mHoanThanhTin = xacNhanTin;
         tvAssignDateTime.setText(xacNhanTin.getAssignDateTime());
         tvAssignFullName.setText(xacNhanTin.getAssignFullName());
         tvContactAddress.setText(xacNhanTin.getContactAddress());

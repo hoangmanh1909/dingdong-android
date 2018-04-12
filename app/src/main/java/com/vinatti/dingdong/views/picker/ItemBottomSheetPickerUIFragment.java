@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  */
 
 @SuppressLint("ValidFragment")
-public class ProductBottomSheetPickerUIFragment extends BottomSheetDialogFragment {
+public class ItemBottomSheetPickerUIFragment extends BottomSheetDialogFragment {
 
     private  int mPosition = -1;
     @BindView(R.id.picker_ui)
@@ -42,8 +42,8 @@ public class ProductBottomSheetPickerUIFragment extends BottomSheetDialogFragmen
 
     CoordinatorLayout.Behavior behavior;
     @SuppressLint("ValidFragment")
-    public ProductBottomSheetPickerUIFragment(ArrayList<Item> products, String title,
-                                              PickerUiListener pickerUiListener, int position) {
+    public ItemBottomSheetPickerUIFragment(ArrayList<Item> products, String title,
+                                           PickerUiListener pickerUiListener, int position) {
         this.provinceModels = products;
         this.title = title;
         this.pickerUiListener = pickerUiListener;
