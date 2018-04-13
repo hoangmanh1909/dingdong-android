@@ -3,19 +3,25 @@ package com.vinatti.dingdong.model;
 import com.google.gson.annotations.SerializedName;
 
 public class XacNhanTin {
+    @SerializedName("ID")
+    String iD;
     @SerializedName("OrderPostmanID")
     String orderPostmanID;
     @SerializedName("Count")
     String count;
-    @SerializedName("Code")
+    @SerializedName(value = "Code",alternate = {"MaE"})
     String code;
     @SerializedName("Description")
     String description;
-    @SerializedName("ContactName")
+    @SerializedName("Route")
+    String route;
+    @SerializedName("Order")
+    String order;
+    @SerializedName(value = "ContactName",alternate = {"ReciverName"})
     String contactName;
-    @SerializedName("ContactPhone")
+    @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile"})
     String contactPhone;
-    @SerializedName("ContactAddress")
+    @SerializedName(value = "ContactAddress",alternate = {"ReciverAddress"})
     String contactAddress;
     @SerializedName("AssignDateTime")
     String assignDateTime;
@@ -74,5 +80,17 @@ public class XacNhanTin {
 
     public String getStatusCode() {
         return statusCode;
+    }
+
+    public String getiD() {
+        return iD;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public String getOrder() {
+        return order;
     }
 }

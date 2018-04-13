@@ -2,6 +2,7 @@ package com.vinatti.dingdong.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -11,11 +12,12 @@ import android.widget.TimePicker;
 import com.core.base.BaseActivity;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.ReasonCallback;
-import com.vinatti.dingdong.callback.TimeCallback;
+import com.vinatti.dingdong.callback.HoanThanhTinCallback;
 import com.vinatti.dingdong.model.CollectReason;
 import com.vinatti.dingdong.model.Item;
+import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.TimeUtils;
+import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomEditText;
 import com.vinatti.dingdong.views.CustomTextView;
@@ -32,7 +34,7 @@ import butterknife.OnClick;
 
 public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
     private final String mCode;
-    private final ReasonCallback mDelegate;
+    private final HoanThanhTinCallback mDelegate;
     private final BaseActivity mActivity;
     @BindView(R.id.tv_code)
     CustomBoldTextView tvCode;
@@ -67,9 +69,9 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     private Calendar calDate;
     private int mHour;
     private int mMinute;
-    private int mType;
+    private int mType = -1;
 
-    public HoanTatTinDialog(Context context, String code, ReasonCallback reasonCallback) {
+    public HoanTatTinDialog(Context context, String code, HoanThanhTinCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         mActivity = (BaseActivity) context;
@@ -90,6 +92,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     llDateTime.setVisibility(View.GONE);
                     edtMon.setVisibility(View.VISIBLE);
                     resetView();
+                    mType = 0;
                 }
             }
         });
@@ -227,8 +230,10 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                                 //show Date
                                 llDateTime.setVisibility(View.GONE);
                                 edtMon.setVisibility(View.VISIBLE);
+                                tvStatus.setText("Số món");
                             } else {
                                 edtMon.setVisibility(View.GONE);
+                                tvStatus.setText("Lý do");
                             }
                         }
                     }, 0);
@@ -253,6 +258,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_reason:
+
                 if (mType == 1) {
                     showUIReasonFail();
                 } else if (mType == 2) {
@@ -261,7 +267,59 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
                 break;
             case R.id.tv_update:
-
+                String statusCode = "", quantity = "", collectReason = "", pickUpDate = "", pickUpTime = "";
+                if (mType == -1) {
+                    Toast.showToast(mActivity, "Chọn kết quả");
+                    return;
+                }
+                if (mType == 0) {
+                    statusCode = "P4";
+                }
+                if (mType == 1) {
+                    statusCode = "P5";
+                    if (mReasonFail != null) {
+                        collectReason = mReasonFail.getReasonCode();
+                    } else {
+                        Toast.showToast(mActivity, "Vui lòng chọn lý do");
+                        return;
+                    }
+                }
+                if (mType == 2) {
+                    statusCode = "P6";
+                    if (mReasonMiss != null) {
+                        collectReason = mReasonMiss.getReasonCode();
+                    } else {
+                        Toast.showToast(mActivity, "Vui lòng chọn lý do");
+                        return;
+                    }
+                }
+                if (edtMon.getVisibility() == View.VISIBLE) {
+                    quantity = edtMon.getText().toString().trim();
+                }
+                if (llDateTime.getVisibility() == View.VISIBLE) {
+                    if (TextUtils.isEmpty(tvDate.getText())) {
+                        Toast.showToast(mActivity, "Vui lòng nhập ngày hẹn");
+                        return;
+                    }
+                    pickUpDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                }
+                if (llDateTime.getVisibility() == View.VISIBLE) {
+                    if (TextUtils.isEmpty(tvTime.getText())) {
+                        Toast.showToast(mActivity, "Vui lòng nhập giờ hẹn");
+                        return;
+                    }
+                }
+                String hour;
+                String minute;
+                if (mHour < 10) hour = "0" + mHour;
+                else hour = mHour + "";
+                if (mMinute < 10) minute = "0" + mMinute;
+                else minute = mMinute + "";
+                pickUpTime = hour + minute + "00";
+                if (pickUpDate.isEmpty()) {
+                    pickUpDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                }
+                mDelegate.onResponse(statusCode, quantity, collectReason, pickUpDate, pickUpTime);
                 dismiss();
                 break;
             case R.id.tv_close:

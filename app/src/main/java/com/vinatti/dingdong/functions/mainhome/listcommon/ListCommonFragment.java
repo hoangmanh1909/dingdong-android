@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews;
+package com.vinatti.dingdong.functions.mainhome.listcommon;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,7 +10,9 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.callback.BaoPhatbangKeCallback;
 import com.vinatti.dingdong.callback.OnChooseDay;
+import com.vinatti.dingdong.dialog.BaoPhatBangKeDialog;
 import com.vinatti.dingdong.dialog.EditDayDialog;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.model.XacNhanTin;
@@ -29,7 +31,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * The XacNhanTin Fragment
  */
-public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presenter> implements XacNhanTinContract.View {
+public class ListCommonFragment extends ViewFragment<ListCommonContract.Presenter> implements ListCommonContract.View {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -40,11 +42,11 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
     @BindView(R.id.img_view)
     ImageView imgView;
     ArrayList<XacNhanTin> mList;
-    private XacNhanTinAdapter mAdapter;
+    private ListCommonAdapter mAdapter;
     private UserInfo mUserInfo;
 
-    public static XacNhanTinFragment getInstance() {
-        return new XacNhanTinFragment();
+    public static ListCommonFragment getInstance() {
+        return new ListCommonFragment();
     }
 
     @Override
@@ -57,7 +59,7 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
         super.initLayout();
         showDialog();
         mList = new ArrayList<>();
-        mAdapter = new XacNhanTinAdapter(getActivity(), mList) {
+        mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
@@ -76,28 +78,37 @@ public class XacNhanTinFragment extends ViewFragment<XacNhanTinContract.Presente
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-        if(mPresenter.getType()==1)
-        {
+        if (mPresenter.getType() == 1) {
             tvTitle.setText("Xác nhận tin");
-        }
-        else{
+        } else if (mPresenter.getType() == 2) {
             tvTitle.setText("Hoàn thành tin");
+        } else if (mPresenter.getType() == 3) {
+            tvTitle.setText("Danh sách vận đơn");
         }
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), new OnChooseDay() {
-            @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                if (mPresenter.getType() == 1) {
-                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
-                } else if (mPresenter.getType() == 2) {
-                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+        if (mPresenter.getType() == 1 || mPresenter.getType() == 2) {
+            new EditDayDialog(getActivity(), new OnChooseDay() {
+                @Override
+                public void onChooseDay(Calendar calFrom, Calendar calTo) {
+                    String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                    String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                    if (mPresenter.getType() == 1) {
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                    } else if (mPresenter.getType() == 2) {
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                    }
                 }
-            }
-        }).show();
+            }).show();
+        } else if (mPresenter.getType() == 3) {
+            new BaoPhatBangKeDialog(getActivity(), new BaoPhatbangKeCallback() {
+                @Override
+                public void onResponse(String fromDate, String order, String route) {
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, order, route);
+                }
+            }).show();
+        }
     }
 
 

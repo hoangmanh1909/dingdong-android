@@ -41,6 +41,32 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     }
 
     @Override
+    public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
+                                            String statusCode, String quantity, String collectReason,
+                                           String pickUpDate, String pickUpTime) {
+        mView.showProgress();
+        mInteractor.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,  statusCode, quantity, collectReason, pickUpDate, pickUpTime, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.controlViews();
+                }
+                mView.showMessage(response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
+            }
+        });
+
+    }
+
+    @Override
     public void searchOrderPostman() {
         String orderPostmanID = xacNhanTin.getOrderPostmanID();
         String orderID = "0";
@@ -89,31 +115,5 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
         return this;
     }
 
-    @Override
-    public void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, final String statusCode, String reason) {
-        mView.showProgress();
-        mInteractor.confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, reason, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    if (statusCode.equals("P1")) {
-                        mView.showMessage("Xác nhận tin thành công.");
-                    } else {
-                        mView.showMessage("Từ chối tin thành công.");
-                    }
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
-    }
 }

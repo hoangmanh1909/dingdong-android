@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews;
+package com.vinatti.dingdong.functions.mainhome.listcommon;
 
 import android.content.Context;
 import android.text.Html;
@@ -18,10 +18,13 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class XacNhanTinAdapter extends RecyclerBaseAdapter {
+public class ListCommonAdapter extends RecyclerBaseAdapter {
 
-    public XacNhanTinAdapter(Context context, List<XacNhanTin> items) {
+    private final int mType;
+
+    public ListCommonAdapter(Context context, int type, List<XacNhanTin> items) {
         super(context, items);
+        mType = type;
     }
 
     @Override
@@ -53,7 +56,11 @@ public class XacNhanTinAdapter extends RecyclerBaseAdapter {
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getContactName(), item.getContactPhone()));
             tvContactAddress.setText(item.getContactAddress());
-            tvContactDescription.setText(item.getDescription());
+            if (mType == 3) {
+                tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
+            } else {
+                tvContactDescription.setText(item.getDescription());
+            }
         }
     }
 }

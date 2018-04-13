@@ -85,6 +85,14 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void searchDeliveryPostman(String postmanID,
+                                             String fromDate,
+                                             String route,
+                                             String order, CommonCallback<XacNhanTinResult> callback) {
+        Call<XacNhanTinResult> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, route, order);
+        call.enqueue(callback);
+    }
+
     public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(mobileNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().validationAuthorized(mobileNumber, signature);
@@ -99,6 +107,14 @@ public class NetWorkController {
     public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                                   String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason);
+        call.enqueue(callback);
+    }
+
+    public static void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
+                                                  String statusCode, String quantity, String collectReason, String pickUpDate,
+                                                  String pickUpTime, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
+                statusCode, quantity, collectReason, pickUpDate, pickUpTime);
         call.enqueue(callback);
     }
 

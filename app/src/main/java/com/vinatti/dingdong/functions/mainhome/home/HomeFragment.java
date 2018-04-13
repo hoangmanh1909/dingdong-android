@@ -5,11 +5,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter;
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.XacNhanTinActivity;
+import com.vinatti.dingdong.functions.mainhome.listcommon.ListCommonActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
 import com.vinatti.dingdong.utiles.Constants;
@@ -86,12 +85,16 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                         HomeInfo homeInfo = mList.get(section).getList().get(position);
                         if (homeInfo != null) {
                             if (homeInfo.getId() == 1) {
-                                Intent intent = new Intent(getActivity(), XacNhanTinActivity.class);
+                                Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                                 intent.putExtra(Constants.TYPE_GOM_HANG, 1);
                                 startActivity(intent);
                             } else if (homeInfo.getId() == 2) {
-                                Intent intent = new Intent(getActivity(), XacNhanTinActivity.class);
+                                Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                                 intent.putExtra(Constants.TYPE_GOM_HANG, 2);
+                                startActivity(intent);
+                            } else if (homeInfo.getId() == 3) {
+                                Intent intent = new Intent(getActivity(), ListCommonActivity.class);
+                                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
                                 startActivity(intent);
                             }
                         }

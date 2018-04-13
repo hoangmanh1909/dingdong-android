@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews;
+package com.vinatti.dingdong.functions.mainhome.listcommon;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * The XacNhanTin Contract
  */
-interface XacNhanTinContract {
+interface ListCommonContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void searchOrderPostmanCollect(String orderPostmanID,
@@ -21,6 +21,10 @@ interface XacNhanTinContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate, CommonCallback<XacNhanTinResult> callback);
+        void searchDeliveryPostman(String postmanID,
+                                   String fromDate,
+                                   String route,
+                                   String order, CommonCallback<XacNhanTinResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -36,9 +40,12 @@ interface XacNhanTinContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);
-
+        void searchDeliveryPostman(String postmanID,
+                                   String fromDate,
+                                   String route,
+                                   String order);
         void showDetailView(XacNhanTin xacNhanTin);
-        XacNhanTinPresenter setType(int type);
+        ListCommonPresenter setType(int type);
 
         int getType();
     }

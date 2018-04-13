@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detail;
+package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin;
 
 import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;

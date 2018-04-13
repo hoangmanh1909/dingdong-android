@@ -16,8 +16,9 @@ interface HoanThanhTinDetailContract {
     interface Interactor extends IInteractor<Presenter> {
         void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<XacNhanTinResult> commonCallback);
 
-        void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
-                                        String statusCode, String confirmReason, CommonCallback<SimpleResult> callback);
+        void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
+                                        String statusCode, String quantity, String collectReason, String pickUpDate,
+                                        String pickUpTime, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -28,12 +29,17 @@ interface HoanThanhTinDetailContract {
         void showMessage(String message);
 
         void showError(String message);
+
+        void controlViews();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, String statusCode, String reason);
+        void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
+                                        String statusCode, String quantity, String collectReason, String pickUpDate,
+                                        String pickUpTime);
 
         void searchOrderPostman();
+
         XacNhanTin getXacNhanTin();
     }
 }

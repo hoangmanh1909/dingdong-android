@@ -51,9 +51,27 @@ public interface VinattiAPI {
                                                      @Field("PostmanID") String postmanID,
                                                      @Field("Status") String status,
                                                      @Field("FromAssignDate") String fromAssignDate,
-                                                     @Field("ToAssignDate") String toAssignDate
+                                                     @Field("ToAssignDate") String toAssignDate);
+
+    @FormUrlEncoded
+    @POST("api/Delivery/DeliveryPostman")
+    Call<XacNhanTinResult> searchDeliveryPostman(@Field("PostmanId") String postmanID,
+                                                 @Field("FromDate") String fromDate,
+                                                 @Field("Route") String route,
+                                                 @Field("Order") String order
 
     );
+
+    @FormUrlEncoded
+    @POST("api/Collect/CollectOrderPostman")
+    Call<SimpleResult> collectOrderPostmanCollect(@Field("EmployeeID") String employeeID,
+                                                  @Field("OrderID") String orderID,
+                                                  @Field("OrderPostmanID") String orderPostmanID,
+                                                  @Field("StatusCode") String statusCode,
+                                                  @Field("Quantity") String quantity,
+                                                  @Field("CollectReason") String collectReason,
+                                                  @Field("PickUpDate") String pickUpDate,
+                                                  @Field("PickUpTime") String pickUpTime);
 
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")

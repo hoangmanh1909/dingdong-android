@@ -1,14 +1,17 @@
 package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
+import android.content.Context;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.ReasonCallback;
+import com.vinatti.dingdong.callback.HoanThanhTinCallback;
 import com.vinatti.dingdong.dialog.HoanTatTinDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
+import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.views.CustomBoldTextView;
@@ -75,9 +78,15 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     mPresenter.confirmOrderPostmanCollect(mPresenter.getXacNhanTin().getOrderPostmanID(), userInfo.getiD(), "P1", "");
                 }*/
                 if (mHoanThanhTin != null) {
-                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new ReasonCallback() {
+                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new HoanThanhTinCallback() {
                         @Override
-                        public void onReasonResponse(String reason) {
+                        public void onResponse(String statusCode, String quantity, String collectReason, String pickUpDate, String pickUpTime) {
+                            SharedPref sharedPref = new SharedPref(getActivity());
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            if (!userJson.isEmpty()) {
+                                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                                mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(), mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, collectReason, pickUpDate, pickUpTime);
+                            }
 
                         }
                     }).show();
@@ -160,5 +169,11 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         sweetAlertDialog.dismiss();
                     }
                 }).show();
+    }
+
+    @Override
+    public void controlViews() {
+        btnConfirm.setEnabled(false);
+
     }
 }
