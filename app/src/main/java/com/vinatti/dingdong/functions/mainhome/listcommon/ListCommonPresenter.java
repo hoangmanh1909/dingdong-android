@@ -7,6 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.detail.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
@@ -96,6 +97,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
             new XacNhanTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
         } else if (mType == 2) {
             new HoanThanhTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
+        } else if (mType == 3) {
+            new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(xacNhanTin).pushView();
         }
     }
 

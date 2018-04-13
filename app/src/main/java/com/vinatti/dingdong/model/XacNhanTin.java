@@ -3,7 +3,7 @@ package com.vinatti.dingdong.model;
 import com.google.gson.annotations.SerializedName;
 
 public class XacNhanTin {
-    @SerializedName("ID")
+    @SerializedName(value = "ID",alternate = {"Id"})
     String iD;
     @SerializedName("OrderPostmanID")
     String orderPostmanID;
@@ -29,16 +29,33 @@ public class XacNhanTin {
     String assignFullName;
     @SerializedName("Quantity")
     String quantity;
-    @SerializedName("Weigh")
+    @SerializedName(value = "Weigh",alternate = {"Weight"})
     String weigh;
     @SerializedName("StatusCode")
     String statusCode;
+    //bao phat bang ke
+    @SerializedName("SenderName")
+    String senderName;
+    @SerializedName("SenderAddress")
+    String senderAddress;
+    @SerializedName("PoCode")
+    String poCode;
+    @SerializedName("CreateDate")
+    String createDate;
+    private String realReceiverName;
+    private String realReceiverIDNumber;
+    private String DeliveryType;
+    private String userDelivery;
+    private String currentPaymentType;
 
     public String getCount() {
         return count;
     }
 
     public String getCode() {
+        return code;
+    }
+    public String getParcelCode() {
         return code;
     }
 
@@ -49,12 +66,18 @@ public class XacNhanTin {
     public String getContactName() {
         return contactName;
     }
+    public String getReciverName() {
+        return contactName;
+    }
 
     public String getContactPhone() {
         return contactPhone;
     }
 
     public String getContactAddress() {
+        return contactAddress;
+    }
+    public String getReciverAddress() {
         return contactAddress;
     }
 
@@ -92,5 +115,65 @@ public class XacNhanTin {
 
     public String getOrder() {
         return order;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public String getSenderAddress() {
+        return senderAddress;
+    }
+
+    public String getPoCode() {
+        return poCode;
+    }
+    public String getIssuePOCode() {
+        return poCode;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+
+    public void setRealReceiverName(String realReceiverName) {
+        this.realReceiverName = realReceiverName;
+    }
+
+    public void setRealReceiverIDNumber(String realReceiverIDNumber) {
+        this.realReceiverIDNumber = realReceiverIDNumber;
+    }
+
+    public String getDeliveryType() {
+        return DeliveryType;
+    }
+
+    public void setDeliveryType(String deliveryType) {
+        DeliveryType = deliveryType;
+    }
+
+    public void setUserDelivery(String userDelivery) {
+        this.userDelivery = userDelivery;
+    }
+
+    public void setCurrentPaymentType(String currentPaymentType) {
+        this.currentPaymentType = currentPaymentType;
+    }
+
+    public String getRealReceiverName() {
+        return realReceiverName;
+    }
+
+    public String getRealReceiverIDNumber() {
+        return realReceiverIDNumber;
+    }
+
+    public String getUserDelivery() {
+        return userDelivery;
+    }
+
+    public String getCurrentPaymentType() {
+        return currentPaymentType;
     }
 }

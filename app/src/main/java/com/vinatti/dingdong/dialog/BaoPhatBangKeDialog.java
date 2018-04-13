@@ -14,6 +14,7 @@ import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
+import com.vinatti.dingdong.views.form.FormItemTextView;
 
 import java.util.Calendar;
 
@@ -26,7 +27,7 @@ public class BaoPhatBangKeDialog extends Dialog implements com.tsongkha.spinnerd
     private final BaoPhatbangKeCallback mDelegate;
     private final BaseActivity mActivity;
     @BindView(R.id.tv_date_create)
-    CustomTextView tvDateCreate;
+    FormItemTextView tvDateCreate;
     @BindView(R.id.edt_chuyen_thu)
     FormItemEditText edtChuyenThu;
     @BindView(R.id.edt_tui_so)

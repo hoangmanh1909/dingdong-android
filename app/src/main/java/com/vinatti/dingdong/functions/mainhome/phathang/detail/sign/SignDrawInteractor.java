@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.sign;
+package com.vinatti.dingdong.functions.mainhome.phathang.detail.sign;
 
 
 import com.core.base.viper.Interactor;
