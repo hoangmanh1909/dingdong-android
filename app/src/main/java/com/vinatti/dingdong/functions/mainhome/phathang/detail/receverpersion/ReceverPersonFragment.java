@@ -141,6 +141,9 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
         mPresenter.getBaoPhatBangke().setCurrentPaymentType("1");
         mPresenter.getBaoPhatBangke().setUserDelivery(tvUserDelivery.getText());
         mPresenter.getBaoPhatBangke().setRealReceiverIDNumber(edtReceiverIDNumber.getText());
+        mPresenter.getBaoPhatBangke().setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+        String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+        mPresenter.getBaoPhatBangke().setDeliveryTime(time);
         mPresenter.nextViewSign();
     }
 

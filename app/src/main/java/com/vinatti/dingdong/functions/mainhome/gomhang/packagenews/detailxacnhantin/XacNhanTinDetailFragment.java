@@ -6,8 +6,8 @@ import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.ReasonCallback;
 import com.vinatti.dingdong.dialog.ReasonDialog;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.UserInfo;
-import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.SharedPref;
@@ -73,16 +73,16 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
 
                 if (!mUser.isEmpty()) {
                     UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
-                    mPresenter.confirmOrderPostmanCollect(mPresenter.getXacNhanTin().getOrderPostmanID(), userInfo.getiD(), "P1", "");
+                    mPresenter.confirmOrderPostmanCollect(mPresenter.getCommonObject().getOrderPostmanID(), userInfo.getiD(), "P1", "");
                 }
                 break;
             case R.id.btn_reject:
-                new ReasonDialog(getActivity(), mPresenter.getXacNhanTin().getCode(), new ReasonCallback() {
+                new ReasonDialog(getActivity(), mPresenter.getCommonObject().getCode(), new ReasonCallback() {
                     @Override
                     public void onReasonResponse(String reason) {
                         if (!mUser.isEmpty()) {
                             UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
-                            mPresenter.confirmOrderPostmanCollect(mPresenter.getXacNhanTin().getOrderPostmanID(), userInfo.getiD(), "P2", reason);
+                            mPresenter.confirmOrderPostmanCollect(mPresenter.getCommonObject().getOrderPostmanID(), userInfo.getiD(), "P2", reason);
                         }
                     }
                 }).show();
@@ -106,21 +106,21 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     }
 
     @Override
-    public void showView(XacNhanTin xacNhanTin) {
-        if (xacNhanTin.getStatusCode().equals("P0")) {
+    public void showView(CommonObject commonObject) {
+        if (commonObject.getStatusCode().equals("P0")) {
             btnConfirm.setEnabled(false);
         } else {
             btnConfirm.setEnabled(true);
         }
-        tvAssignDateTime.setText(xacNhanTin.getAssignDateTime());
-        tvAssignFullName.setText(xacNhanTin.getAssignFullName());
-        tvContactAddress.setText(xacNhanTin.getContactAddress());
-        tvContactName.setText(xacNhanTin.getContactName());
-        tvContactPhone.setText(xacNhanTin.getContactPhone());
-        tvDescription.setText(xacNhanTin.getDescription());
-        tvQuantity.setText(xacNhanTin.getQuantity());
-        tvWeigh.setText(xacNhanTin.getWeigh());
-        tvTitle.setText(String.format("Mã tin %s", xacNhanTin.getCode()));
+        tvAssignDateTime.setText(commonObject.getAssignDateTime());
+        tvAssignFullName.setText(commonObject.getAssignFullName());
+        tvContactAddress.setText(commonObject.getContactAddress());
+        tvContactName.setText(commonObject.getContactName());
+        tvContactPhone.setText(commonObject.getContactPhone());
+        tvDescription.setText(commonObject.getDescription());
+        tvQuantity.setText(commonObject.getQuantity());
+        tvWeigh.setText(commonObject.getWeigh());
+        tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
     }
 
     @Override

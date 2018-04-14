@@ -4,13 +4,13 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
 import java.util.ArrayList;
 
 /**
- * The XacNhanTin Contract
+ * The CommonObject Contract
  */
 interface ListCommonContract {
 
@@ -28,7 +28,7 @@ interface ListCommonContract {
     }
 
     interface View extends PresentView<Presenter> {
-        void showResponseSuccess(ArrayList<XacNhanTin> list);
+        void showResponseSuccess(ArrayList<CommonObject> list);
 
         void showError(String message);
     }
@@ -44,7 +44,7 @@ interface ListCommonContract {
                                    String fromDate,
                                    String route,
                                    String order);
-        void showDetailView(XacNhanTin xacNhanTin);
+        void showDetailView(CommonObject commonObject);
         ListCommonPresenter setType(int type);
 
         int getType();

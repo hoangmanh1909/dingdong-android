@@ -14,8 +14,8 @@ import com.vinatti.dingdong.callback.BaoPhatbangKeCallback;
 import com.vinatti.dingdong.callback.OnChooseDay;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeDialog;
 import com.vinatti.dingdong.dialog.EditDayDialog;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.UserInfo;
-import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
@@ -29,7 +29,7 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
- * The XacNhanTin Fragment
+ * The CommonObject Fragment
  */
 public class ListCommonFragment extends ViewFragment<ListCommonContract.Presenter> implements ListCommonContract.View {
 
@@ -41,7 +41,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     TextView tvTitle;
     @BindView(R.id.img_view)
     ImageView imgView;
-    ArrayList<XacNhanTin> mList;
+    ArrayList<CommonObject> mList;
     private ListCommonAdapter mAdapter;
     private UserInfo mUserInfo;
 
@@ -125,7 +125,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     }
 
     @Override
-    public void showResponseSuccess(ArrayList<XacNhanTin> list) {
+    public void showResponseSuccess(ArrayList<CommonObject> list) {
         mList = list;
         mAdapter.refresh(list);
     }

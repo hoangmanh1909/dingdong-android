@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class XacNhanTinResult extends SimpleResult {
     @SerializedName("ListValue")
-    private ArrayList<XacNhanTin> list;
+    private ArrayList<CommonObject> list;
 
-    public ArrayList<XacNhanTin> getList() {
+    public ArrayList<CommonObject> getList() {
         return list;
     }
 }

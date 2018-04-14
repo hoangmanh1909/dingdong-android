@@ -1,16 +1,13 @@
 package com.vinatti.dingdong.functions.mainhome.listcommon;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.model.HomeInfo;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
@@ -22,7 +19,7 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
 
     private final int mType;
 
-    public ListCommonAdapter(Context context, int type, List<XacNhanTin> items) {
+    public ListCommonAdapter(Context context, int type, List<CommonObject> items) {
         super(context, items);
         mType = type;
     }
@@ -51,7 +48,7 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
 
         @Override
         public void bindView(Object model, int position) {
-            XacNhanTin item = (XacNhanTin) model;
+            CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getContactName(), item.getContactPhone()));

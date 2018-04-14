@@ -5,8 +5,8 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.SimpleResult;
-import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
 import retrofit2.Call;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContract.View, XacNhanTinDetailContract.Interactor>
         implements XacNhanTinDetailContract.Presenter {
 
-    private XacNhanTin xacNhanTin;
+    private CommonObject commonObject;
 
     public XacNhanTinDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -42,7 +42,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
 
     @Override
     public void searchOrderPostman() {
-        String orderPostmanID = xacNhanTin.getOrderPostmanID();
+        String orderPostmanID = commonObject.getOrderPostmanID();
         String orderID = "0";
         String postmanID = "0";
         String status = "";
@@ -80,12 +80,12 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
     }
 
     @Override
-    public XacNhanTin getXacNhanTin() {
-        return xacNhanTin;
+    public CommonObject getCommonObject() {
+        return commonObject;
     }
 
-    public XacNhanTinDetailPresenter setXacNhanTin(XacNhanTin xacNhanTin) {
-        this.xacNhanTin = xacNhanTin;
+    public XacNhanTinDetailPresenter setCommonObject(CommonObject commonObject) {
+        this.commonObject = commonObject;
         return this;
     }
 

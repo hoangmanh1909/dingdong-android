@@ -5,7 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.SimpleResult;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
 /**
@@ -23,7 +23,7 @@ interface XacNhanTinDetailContract {
     interface View extends PresentView<Presenter> {
         void showErrorAndBack(String message);
 
-        void showView(XacNhanTin xacNhanTin);
+        void showView(CommonObject commonObject);
 
         void showMessage(String message);
 
@@ -34,7 +34,7 @@ interface XacNhanTinDetailContract {
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, String statusCode, String reason);
 
         void searchOrderPostman();
-        XacNhanTin getXacNhanTin();
+        CommonObject getCommonObject();
     }
 }
 

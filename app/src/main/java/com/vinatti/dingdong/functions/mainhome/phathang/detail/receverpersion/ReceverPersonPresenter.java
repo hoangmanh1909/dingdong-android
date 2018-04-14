@@ -2,9 +2,8 @@ package com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.vinatti.dingdong.functions.mainhome.phathang.detail.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.detail.sign.SignDrawPresenter;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 
 /**
  * The ReceverPerson Presenter
@@ -12,7 +11,7 @@ import com.vinatti.dingdong.model.XacNhanTin;
 public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View, ReceverPersonContract.Interactor>
         implements ReceverPersonContract.Presenter {
 
-    private XacNhanTin mBaoPhatBangke;
+    private CommonObject mBaoPhatBangke;
 
     public ReceverPersonPresenter(ContainerView containerView) {
         super(containerView);
@@ -33,13 +32,13 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
         return new ReceverPersonInteractor(this);
     }
 
-    public ReceverPersonPresenter setBaoPhatBangKe(XacNhanTin baoPhatBangKe) {
+    public ReceverPersonPresenter setBaoPhatBangKe(CommonObject baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
         return this;
     }
 
     @Override
-    public XacNhanTin getBaoPhatBangke() {
+    public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
     }
 

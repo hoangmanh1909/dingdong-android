@@ -99,6 +99,23 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void pushToPNSDelivery(String postmanID,
+                                         String ladingCode,
+                                         String deliveryPOCode,
+                                         String deliveryDate,
+                                         String deliveryTime,
+                                         String receiverName,
+                                         String reasonCode,
+                                         String solutionCode,
+                                         String status,
+                                         String paymentChannel,
+                                         String deliveryType,
+                                         String signatureCapture, CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, signature);
+        call.enqueue(callback);
+    }
+
     public static void getPostOfficeByCode(String code, CommonCallback<PostOfficeResult> callback) {
         Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code);
         call.enqueue(callback);

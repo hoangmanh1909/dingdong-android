@@ -1,6 +1,5 @@
 package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
-import android.content.Context;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
@@ -9,8 +8,8 @@ import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.HoanThanhTinCallback;
 import com.vinatti.dingdong.dialog.HoanTatTinDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.UserInfo;
-import com.vinatti.dingdong.model.XacNhanTin;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.SharedPref;
@@ -47,7 +46,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     CustomTextView btnConfirm;
 
     private String mUser;
-    private XacNhanTin mHoanThanhTin;
+    private CommonObject mHoanThanhTin;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -75,7 +74,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
               /*  if (!mUser.isEmpty()) {
                     UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
-                    mPresenter.confirmOrderPostmanCollect(mPresenter.getXacNhanTin().getOrderPostmanID(), userInfo.getiD(), "P1", "");
+                    mPresenter.confirmOrderPostmanCollect(mPresenter.getCommonObject().getOrderPostmanID(), userInfo.getiD(), "P1", "");
                 }*/
                 if (mHoanThanhTin != null) {
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new HoanThanhTinCallback() {
@@ -111,24 +110,24 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     }
 
     @Override
-    public void showView(XacNhanTin xacNhanTin) {
-        if (xacNhanTin.getStatusCode().equals("P0")) {
+    public void showView(CommonObject commonObject) {
+        if (commonObject.getStatusCode().equals("P0")) {
             btnConfirm.setEnabled(false);
         } else {
             btnConfirm.setEnabled(true);
         }
-        mHoanThanhTin = xacNhanTin;
-        tvAssignDateTime.setText(xacNhanTin.getAssignDateTime());
-        tvAssignFullName.setText(xacNhanTin.getAssignFullName());
-        tvContactAddress.setText(xacNhanTin.getContactAddress());
-        tvContactName.setText(xacNhanTin.getContactName());
-        // tvContactPhone.setText(xacNhanTin.getContactPhone());
-        tvDescription.setText(xacNhanTin.getDescription());
-        tvQuantity.setText(xacNhanTin.getQuantity());
-        tvWeigh.setText(xacNhanTin.getWeigh());
-        tvTitle.setText(String.format("Mã tin %s", xacNhanTin.getCode()));
+        mHoanThanhTin = commonObject;
+        tvAssignDateTime.setText(commonObject.getAssignDateTime());
+        tvAssignFullName.setText(commonObject.getAssignFullName());
+        tvContactAddress.setText(commonObject.getContactAddress());
+        tvContactName.setText(commonObject.getContactName());
+        // tvContactPhone.setText(commonObject.getContactPhone());
+        tvDescription.setText(commonObject.getDescription());
+        tvQuantity.setText(commonObject.getQuantity());
+        tvWeigh.setText(commonObject.getWeigh());
+        tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
 
-        String[] phones = xacNhanTin.getContactPhone().split(",");
+        String[] phones = commonObject.getContactPhone().split(",");
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
                 getChildFragmentManager().beginTransaction()

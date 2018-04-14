@@ -6,7 +6,7 @@ import com.vinatti.dingdong.model.XacNhanTinResult;
 import com.vinatti.dingdong.network.NetWorkController;
 
 /**
- * The XacNhanTin interactor
+ * The CommonObject interactor
  */
 class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
         implements ListCommonContract.Interactor {

@@ -3,7 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.detail;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion.ReceverPersonPresenter;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 
 /**
  * The BaoPhatBangKeDetail Presenter
@@ -11,7 +11,7 @@ import com.vinatti.dingdong.model.XacNhanTin;
 public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailContract.View, BaoPhatBangKeDetailContract.Interactor>
         implements BaoPhatBangKeDetailContract.Presenter {
 
-    private XacNhanTin mBaoPhatBangke;
+    private CommonObject mBaoPhatBangke;
 
     public BaoPhatBangKeDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -32,13 +32,13 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         return new BaoPhatBangKeDetailInteractor(this);
     }
 
-    public BaoPhatBangKeDetailPresenter setBaoPhatBangKe(XacNhanTin baoPhatBangKe) {
+    public BaoPhatBangKeDetailPresenter setBaoPhatBangKe(CommonObject baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
         return this;
     }
 
     @Override
-    public XacNhanTin getBaoPhatBangke() {
+    public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
     }
 

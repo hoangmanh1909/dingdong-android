@@ -8,14 +8,14 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.detail.BaoPhatBangKeDetailPresenter;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * The XacNhanTin Presenter
+ * The CommonObject Presenter
  */
 public class ListCommonPresenter extends Presenter<ListCommonContract.View, ListCommonContract.Interactor>
         implements ListCommonContract.Presenter {
@@ -92,13 +92,13 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     }
 
     @Override
-    public void showDetailView(XacNhanTin xacNhanTin) {
+    public void showDetailView(CommonObject commonObject) {
         if (mType == 1) {
-            new XacNhanTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
+            new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 2) {
-            new HoanThanhTinDetailPresenter(mContainerView).setXacNhanTin(xacNhanTin).pushView();
+            new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 3) {
-            new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(xacNhanTin).pushView();
+            new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).pushView();
         }
     }
 

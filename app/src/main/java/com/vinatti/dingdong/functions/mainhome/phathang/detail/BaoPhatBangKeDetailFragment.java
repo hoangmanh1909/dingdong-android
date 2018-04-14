@@ -11,7 +11,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
-import com.vinatti.dingdong.model.XacNhanTin;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
@@ -67,7 +67,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @Override
     public void initLayout() {
         super.initLayout();
-        XacNhanTin baoPhatBangke = mPresenter.getBaoPhatBangke();
+        CommonObject baoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(baoPhatBangke.getCode());
         tvWeigh.setText(baoPhatBangke.getWeigh());
         tvSenderName.setText(baoPhatBangke.getSenderName());
