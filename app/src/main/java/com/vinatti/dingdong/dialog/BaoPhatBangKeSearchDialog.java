@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class BaoPhatBangKeDialog extends Dialog implements com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
+public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
     private final BaoPhatbangKeCallback mDelegate;
     private final BaseActivity mActivity;
     @BindView(R.id.tv_date_create)
@@ -34,7 +34,7 @@ public class BaoPhatBangKeDialog extends Dialog implements com.tsongkha.spinnerd
     FormItemEditText edtTuiSo;
     Calendar calCreate;
 
-    public BaoPhatBangKeDialog(Context context, BaoPhatbangKeCallback reasonCallback) {
+    public BaoPhatBangKeSearchDialog(Context context, BaoPhatbangKeCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;

@@ -369,6 +369,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="left|center"
                                 android:paddingLeft="@dimen/dimen_5dp"
+                                android:checked="true"
                                 android:text="Thành công"
                                 android:textColor="@color/blue" />
 

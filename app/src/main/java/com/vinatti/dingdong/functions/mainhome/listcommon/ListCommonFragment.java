@@ -12,7 +12,7 @@ import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.BaoPhatbangKeCallback;
 import com.vinatti.dingdong.callback.OnChooseDay;
-import com.vinatti.dingdong.dialog.BaoPhatBangKeDialog;
+import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.vinatti.dingdong.dialog.EditDayDialog;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.UserInfo;
@@ -44,6 +44,9 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     ArrayList<CommonObject> mList;
     private ListCommonAdapter mAdapter;
     private UserInfo mUserInfo;
+    private String mDate;
+    private String mOrder;
+    private String mRoute;
 
     public static ListCommonFragment getInstance() {
         return new ListCommonFragment();
@@ -102,15 +105,27 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 }
             }).show();
         } else if (mPresenter.getType() == 3) {
-            new BaoPhatBangKeDialog(getActivity(), new BaoPhatbangKeCallback() {
+
+            new BaoPhatBangKeSearchDialog(getActivity(), new BaoPhatbangKeCallback() {
                 @Override
                 public void onResponse(String fromDate, String order, String route) {
+                    mDate = fromDate;
+                    mOrder = order;
+                    mRoute = route;
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, order, route);
+
                 }
             }).show();
         }
     }
 
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
+        }
+    }
 
     @OnClick({R.id.img_back, R.id.img_view})
     public void onViewClicked(View view) {

@@ -10,11 +10,16 @@ import android.widget.RadioGroup;
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.callback.BaoPhatBangKeFailCallback;
+import com.vinatti.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.model.ReasonInfo;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,7 +58,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     RadioGroup radioGroup;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
-    private int mType =0;
+    private int mType = 0;
+    private ArrayList<ReasonInfo> mListReason;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -95,6 +101,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 }
             }
         });
+        mPresenter.getReasons();
     }
 
     @OnClick({R.id.img_back, R.id.btn_confirm})
@@ -104,9 +111,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 mPresenter.back();
                 break;
             case R.id.btn_confirm:
-                if(mType==0)
-                {
-                    Toast.showToast(getActivity(),"Chọn kết quả");
+                if (mType == 0) {
+                    Toast.showToast(getActivity(), "Chọn kết quả");
                     return;
                 }
                 if (mType == 1) {
@@ -115,8 +121,35 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     mPresenter.nextReceverPerson();
                 } else {
                     //show dialog
+                    if (mListReason != null) {
+                        new BaoPhatBangKeFailDialog(getActivity(), mListReason, new BaoPhatBangKeFailCallback() {
+                            @Override
+                            public void onResponse(String reason, String solution, String note, String sign) {
+                                mPresenter.submitToPNS(reason, solution, note, sign);
+                            }
+                        }).show();
+                    } else {
+                        Toast.showToast(getActivity(), "Đang lấy dữ liệu");
+                    }
+
                 }
                 break;
         }
+    }
+
+    @Override
+    public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
+        mListReason = reasonInfos;
+    }
+
+
+    @Override
+    public void showSuccessMessage(String message) {
+        Toast.showToast(getActivity(), message);
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.showToast(getActivity(), message);
     }
 }

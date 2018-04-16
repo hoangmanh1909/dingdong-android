@@ -57,7 +57,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         }
 
         String ladingCode = mBaoPhatBangke.getParcelCode();
-        String deliveryPOCode = mBaoPhatBangke.getCode();
+        String deliveryPOCode = mBaoPhatBangke.getPoCode();
         String deliveryDate = mBaoPhatBangke.getDeliveryDate();
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
@@ -80,6 +80,8 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                     }
                     else {
                         mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                        back();
+                        back();
                     }
                 } else {
                     mView.showError(response.body().getMessage());

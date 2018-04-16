@@ -21,6 +21,7 @@ import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomEditText;
 import com.vinatti.dingdong.views.CustomTextView;
+import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
@@ -41,7 +42,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     @BindView(R.id.edt_mon)
-    CustomEditText edtMon;
+    FormItemEditText edtMon;
     @BindView(R.id.tv_reason)
     FormItemTextView tvReason;
     @BindView(R.id.ll_date_time)

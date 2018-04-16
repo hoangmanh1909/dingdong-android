@@ -89,7 +89,7 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
                         final byte[] dataF = baos.toByteArray();
                         if (dataF.length <= 500000) {
-                            base64 = "data:image/jpeg;base64," + Base64.encodeToString(dataF, Base64.DEFAULT);
+                            base64 = Base64.encodeToString(dataF, Base64.DEFAULT);//"data:image/jpeg;base64," +
                         }
                     }
                     if (!TextUtils.isEmpty(base64)) {

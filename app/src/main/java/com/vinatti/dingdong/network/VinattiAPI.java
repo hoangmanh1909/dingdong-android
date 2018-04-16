@@ -4,7 +4,9 @@ package com.vinatti.dingdong.network;
 import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
+import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
+import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 
 import retrofit2.Call;
@@ -86,25 +88,32 @@ public interface VinattiAPI {
     Call<SimpleResult> validationAuthorized(@Field("MobileNumber") String mobileNumber,
                                             @Field("Signature") String signature
     );
+
     @FormUrlEncoded
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Field("PostmanID") String postmanID,
-                                            @Field("LadingCode") String ladingCode,
-                                            @Field("DeliveryPOCode") String deliveryPOCode,
-                                            @Field("DeliveryDate") String deliveryDate,
-                                            @Field("DeliveryTime") String deliveryTime,
-                                            @Field("ReceiverName") String receiverName,
-                                            @Field("ReasonCode") String reasonCode,
-                                            @Field("SolutionCode") String solutionCode,
-                                            @Field("Status") String status,
-                                            @Field("PaymentChannel") String paymentChannel,
-                                            @Field("DeliveryType") String deliveryType,
-                                            @Field("SignatureCapture") String signatureCapture,
-                                            @Field("Signature") String signature
-    );
+                                         @Field("LadingCode") String ladingCode,
+                                         @Field("DeliveryPOCode") String deliveryPOCode,
+                                         @Field("DeliveryDate") String deliveryDate,
+                                         @Field("DeliveryTime") String deliveryTime,
+                                         @Field("ReceiverName") String receiverName,
+                                         @Field("ReasonCode") String reasonCode,
+                                         @Field("SolutionCode") String solutionCode,
+                                         @Field("Status") String status,
+                                         @Field("PaymentChannel") String paymentChannel,
+                                         @Field("DeliveryType") String deliveryType,
+                                         @Field("SignatureCapture") String signatureCapture,
+                                         @Field("Note") String note,
+                                         @Field("Signature") String signature);
 
     @GET("api/Dictionary/GetPostOfficeByCode")
     Call<PostOfficeResult> getPostOfficeByCode(@Query("code") String unitCode);
+
+    @GET("api/Dictionary/GetSolutionByReasonCode")
+    Call<SolutionResult> getSolutionByReasonCode(@Query("reasonCode") String reasonCode);
+
+    @GET("api/Dictionary/GetReasons")
+    Call<ReasonResult> getReasons();
 
 
     @POST("API/TaskOfWork/Create")

@@ -98,9 +98,10 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.CustomEditText
+                <com.vinatti.dingdong.views.form.FormItemEditText
                     android:id="@+id/edt_mon"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />

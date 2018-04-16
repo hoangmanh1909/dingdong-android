@@ -8,7 +8,9 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
+import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
+import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 import com.vinatti.dingdong.utiles.Utils;
 
@@ -110,14 +112,24 @@ public class NetWorkController {
                                          String status,
                                          String paymentChannel,
                                          String deliveryType,
-                                         String signatureCapture, CommonCallback<SimpleResult> callback) {
+                                         String signatureCapture, String note, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, signature);
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note,signature);
         call.enqueue(callback);
     }
 
     public static void getPostOfficeByCode(String code, CommonCallback<PostOfficeResult> callback) {
         Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code);
+        call.enqueue(callback);
+    }
+
+    public static void getSolutionByReasonCode(String reasonCode, CommonCallback<SolutionResult> callback) {
+        Call<SolutionResult> call = getAPIBuilder().getSolutionByReasonCode(reasonCode);
+        call.enqueue(callback);
+    }
+
+    public static void getReasons(CommonCallback<ReasonResult> callback) {
+        Call<ReasonResult> call = getAPIBuilder().getReasons();
         call.enqueue(callback);
     }
 
