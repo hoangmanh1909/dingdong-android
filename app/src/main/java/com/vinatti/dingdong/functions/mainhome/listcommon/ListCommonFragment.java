@@ -47,6 +47,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     private String mDate;
     private String mOrder;
     private String mRoute;
+    private Calendar mCalendar;
 
     public static ListCommonFragment getInstance() {
         return new ListCommonFragment();
@@ -62,6 +63,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         super.initLayout();
         showDialog();
         mList = new ArrayList<>();
+        mCalendar = Calendar.getInstance();
         mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
@@ -106,10 +108,11 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }).show();
         } else if (mPresenter.getType() == 3) {
 
-            new BaoPhatBangKeSearchDialog(getActivity(), new BaoPhatbangKeCallback() {
+            new BaoPhatBangKeSearchDialog(getActivity(),mCalendar, new BaoPhatbangKeCallback() {
                 @Override
                 public void onResponse(String fromDate, String order, String route) {
                     mDate = fromDate;
+                    mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate,DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mOrder = order;
                     mRoute = route;
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, order, route);

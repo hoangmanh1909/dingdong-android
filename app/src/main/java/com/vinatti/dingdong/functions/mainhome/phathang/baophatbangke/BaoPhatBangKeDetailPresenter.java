@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion.ReceverPersonPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion.ReceverPersonPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;

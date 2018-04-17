@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion;
 
 import android.os.Bundle;
 import android.text.TextUtils;

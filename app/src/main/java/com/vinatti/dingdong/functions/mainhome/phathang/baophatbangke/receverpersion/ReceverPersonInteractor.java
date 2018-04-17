@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion;
 
 import com.core.base.viper.Interactor;
 

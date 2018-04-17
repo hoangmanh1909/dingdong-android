@@ -1,14 +1,14 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.scanner;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
-import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 
 /**
- * The ReceverPerson Contract
+ * The ScannerCode Contract
  */
-interface ReceverPersonContract {
+interface ScannerCodeContract {
 
     interface Interactor extends IInteractor<Presenter> {
     }
@@ -17,9 +17,7 @@ interface ReceverPersonContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        CommonObject getBaoPhatBangke();
-
-        void nextViewSign();
+        BarCodeCallback getDelegate();
     }
 }
 

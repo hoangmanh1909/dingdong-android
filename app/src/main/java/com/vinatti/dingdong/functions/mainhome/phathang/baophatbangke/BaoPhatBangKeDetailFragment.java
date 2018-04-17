@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
 
 import android.view.View;
 import android.widget.FrameLayout;

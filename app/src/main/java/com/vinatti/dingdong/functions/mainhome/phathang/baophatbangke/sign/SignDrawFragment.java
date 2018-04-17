@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail.sign;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign;
 
 import android.app.Activity;
 import android.content.Intent;

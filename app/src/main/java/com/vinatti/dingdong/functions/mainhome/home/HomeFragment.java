@@ -9,6 +9,7 @@ import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.listcommon.ListCommonActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
 import com.vinatti.dingdong.utiles.Constants;
@@ -96,7 +97,11 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                                 intent.putExtra(Constants.TYPE_GOM_HANG, 3);
                                 startActivity(intent);
+                            } else if (homeInfo.getId() == 4) {
+                                Intent intent = new Intent(getActivity(), BaoPhatThanhCongActivity.class);
+                                startActivity(intent);
                             }
+
                         }
                     }
                 });

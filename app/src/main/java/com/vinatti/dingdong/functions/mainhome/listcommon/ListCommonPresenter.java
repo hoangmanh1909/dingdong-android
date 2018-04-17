@@ -7,7 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
-import com.vinatti.dingdong.functions.mainhome.phathang.detail.BaoPhatBangKeDetailPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.XacNhanTinResult;
 

@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
 
 import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;

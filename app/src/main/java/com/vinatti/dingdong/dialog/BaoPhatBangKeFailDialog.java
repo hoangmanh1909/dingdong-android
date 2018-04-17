@@ -110,7 +110,7 @@ public class BaoPhatBangKeFailDialog extends Dialog {
 
 
                 if (mDelegate != null) {
-                    mDelegate.onResponse(tvReason.getText(), tvSolution.getText(), edtReason.getText(), base64);
+                    mDelegate.onResponse(mReasonInfo.getCode(), mSolutionInfo.getCode(), edtReason.getText(), base64);
                     dismiss();
                 }
 

@@ -16,4 +16,6 @@
     <string name="info_delivery_service_success" ><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
     <string name="info_delivery_service_return" ><![CDATA[- Cập nhật lý do<br />- Cập nhật phương án xử lý]]></string>
     <string name="info_delivery_statistic" ><![CDATA[- Thông tin báo phát<br />- Lịch sử báo phát]]></string>
+    <string name="search_hint">Số hiệu bưu gửi</string>
+    <string name="action_search">Search</string>
 </resources>

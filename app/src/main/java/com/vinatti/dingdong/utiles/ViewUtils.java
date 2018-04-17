@@ -7,8 +7,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.views.picker.PickerUI;
 
 
@@ -184,4 +188,19 @@ public class ViewUtils {
       view.setBackground(mContext.getResources().getDrawable(background));
     }
   }
+
+    public static void viewActionBar(ActionBar abar, LayoutInflater layoutInflater, String title) {
+        View viewActionBar = layoutInflater.inflate(R.layout.custom_actionbar, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.txtActionBar);
+        textviewTitle.setText(title);
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeButtonEnabled(true);
+    }
 }

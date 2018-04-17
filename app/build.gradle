@@ -13,12 +13,12 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+    compileSdkVersion project.compileSdkVersion as int
+    buildToolsVersion project.buildToolsVersion as String
     defaultConfig {
         applicationId "com.vinatti.dingdong"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion  project.targetSdkVersion as int
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -81,7 +81,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:27.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -107,4 +106,6 @@ dependencies {
     compile 'com.github.rey5137:material:1.2.4'
     compile 'com.intuit.sdp:sdp-android:1.0.4'
     compile 'com.github.gcacace:signature-pad:1.2.1'
+    compile 'me.dm7.barcodescanner:zxing:1.9.8'
+    compile 'me.dm7.barcodescanner:zbar:1.9.8'
 }

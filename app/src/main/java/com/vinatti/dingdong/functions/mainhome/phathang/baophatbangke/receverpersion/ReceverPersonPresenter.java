@@ -1,8 +1,8 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail.receverpersion;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.vinatti.dingdong.functions.mainhome.phathang.detail.sign.SignDrawPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign.SignDrawPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 
 /**

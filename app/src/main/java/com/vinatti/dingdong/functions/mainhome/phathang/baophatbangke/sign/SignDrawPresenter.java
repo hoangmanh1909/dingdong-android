@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.detail.sign;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign;
 
 import android.app.Activity;
 import android.content.Context;
@@ -74,12 +74,11 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showSuccess();
-                    if(paymentChannel.equals("2"))
-                    {
+                    if (paymentChannel.equals("2")) {
                         mView.callAppToMpost();
-                    }
-                    else {
+                    } else {
                         mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                        back();
                         back();
                         back();
                     }

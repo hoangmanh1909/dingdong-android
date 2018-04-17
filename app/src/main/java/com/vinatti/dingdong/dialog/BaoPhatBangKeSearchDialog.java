@@ -34,16 +34,19 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
     FormItemEditText edtTuiSo;
     Calendar calCreate;
 
-    public BaoPhatBangKeSearchDialog(Context context, BaoPhatbangKeCallback reasonCallback) {
+    public BaoPhatBangKeSearchDialog(Context context, Calendar calendar, BaoPhatbangKeCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
+        this.calCreate = calendar;
         View view = View.inflate(getContext(), R.layout.dialog_bao_phat_bang_ke, null);
         setContentView(view);
         ButterKnife.bind(this, view);
-        calCreate = Calendar.getInstance();
         mActivity = (BaseActivity) context;
+        if (calCreate == null)
+            calCreate = Calendar.getInstance();
         tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+
     }
 
     @Override
