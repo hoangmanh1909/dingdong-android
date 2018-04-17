@@ -43,10 +43,8 @@ public class BaoPhatBangKeFailDialog extends Dialog {
     FormItemEditText edtReason;
     @BindView(R.id.tv_solution)
     FormItemTextView tvSolution;
-    @BindView(R.id.ll_sign)
-    View llSign;
-    @BindView(R.id.signature_pad)
-    SignaturePad signature;
+  /*  @BindView(R.id.ll_sign)
+    View llSign;*/
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ReasonInfo mReasonInfo;
     private ArrayList<SolutionInfo> mListSolution;
@@ -91,7 +89,7 @@ public class BaoPhatBangKeFailDialog extends Dialog {
                     return;
                 }
                 String base64 = "";
-                if (mReasonInfo.getCode().equals("13")) {
+                /*if (mReasonInfo.getCode().equals("13")) {
                     if (signature.isEmpty()) {
                         Toast.showToast(tvSolution.getContext(), "Khách hàng chưa ký từ chối nhận");
                         return;
@@ -106,7 +104,7 @@ public class BaoPhatBangKeFailDialog extends Dialog {
                             }
                         }
                     }
-                }
+                }*/
 
 
                 if (mDelegate != null) {
@@ -119,7 +117,7 @@ public class BaoPhatBangKeFailDialog extends Dialog {
                 dismiss();
                 break;
             case R.id.btn_clear_sign:
-                signature.clear();
+                //signature.clear();
                 break;
         }
     }
@@ -139,16 +137,16 @@ public class BaoPhatBangKeFailDialog extends Dialog {
                             mListSolution = null;
                             tvSolution.setText("");
                             loadSolution();
-                            if (mReasonInfo.getCode().equals("99")) {
+                            if (mReasonInfo.getCode().equals("99")|| mReasonInfo.getCode().equals("13")) {
                                 edtReason.setVisibility(View.VISIBLE);
                             } else {
                                 edtReason.setVisibility(View.GONE);
                             }
-                            if (mReasonInfo.getCode().equals("13")) {
+                           /* if (mReasonInfo.getCode().equals("13")) {
                                 llSign.setVisibility(View.VISIBLE);
                             } else {
                                 llSign.setVisibility(View.GONE);
-                            }
+                            }*/
 
 
                         }
