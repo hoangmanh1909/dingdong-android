@@ -3,7 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnha
 import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.SimpleResult;
-import com.vinatti.dingdong.model.XacNhanTinResult;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.network.NetWorkController;
 
 /**
@@ -17,7 +17,7 @@ class XacNhanTinDetailInteractor extends Interactor<XacNhanTinDetailContract.Pre
     }
 
     @Override
-    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<XacNhanTinResult> commonCallback) {
+    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback) {
         NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, commonCallback);
     }
 

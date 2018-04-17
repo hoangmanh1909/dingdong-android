@@ -21,15 +21,15 @@ public class CommonObject {
     //region common
     @SerializedName("StatusCode")
     String statusCode;
-    @SerializedName(value = "Code", alternate = {"MaE"})
+    @SerializedName(value = "Code", alternate = {"MaE","ParcelCode"})
     String code;
     @SerializedName(value = "ID", alternate = {"Id"})
     String iD;
-    @SerializedName(value = "ContactName", alternate = {"ReciverName"})
+    @SerializedName(value = "ContactName", alternate = {"ReciverName","ReceiverName"})
     String contactName;
-    @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile"})
+    @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile","ReceiverPhone"})
     String contactPhone;
-    @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress"})
+    @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress","ReceiverAddress"})
     String contactAddress;
     @SerializedName(value = "Weigh", alternate = {"Weight"})
     String weigh;
@@ -37,6 +37,8 @@ public class CommonObject {
     //region baophatbangke
     @SerializedName("SenderName")
     String senderName;
+    @SerializedName("SenderPhone")
+    String senderPhone;
     @SerializedName("SenderAddress")
     String senderAddress;
     @SerializedName("PoCode")
@@ -55,12 +57,20 @@ public class CommonObject {
     private String DeliveryType;
     private String userDelivery;
     private String currentPaymentType;
+    private boolean selected;
     //endregion
     @SerializedName("IsCOD")
     String isCOD;
     private String deliveryDate;
     private String deliveryTime;
+    @SerializedName("CollectAmount")
     private String collectAmount;
+    @SerializedName("ReceiveCollectFee")
+    private String receiveCollectFee;
+    @SerializedName("ReceiverIDNumber")
+    private String receiverIDNumber;
+    @SerializedName("DeliveryPOCode")
+    private String deliveryPOCode;
 
     public String getCount() {
         return count;
@@ -217,5 +227,41 @@ public class CommonObject {
 
     public String getCollectAmount() {
         return collectAmount;
+    }
+
+    public String getSenderPhone() {
+        return senderPhone;
+    }
+
+    public String getReceiveCollectFee() {
+        return receiveCollectFee;
+    }
+
+    public String getReceiverIDNumber() {
+        return receiverIDNumber;
+    }
+
+    public String getReceiverName() {
+        return contactName;
+    }
+
+    public String getReceiverAddress() {
+        return contactAddress;
+    }
+
+    public String getReceiverPhone() {
+        return contactPhone;
+    }
+
+    public String getDeliveryPOCode() {
+        return deliveryPOCode;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

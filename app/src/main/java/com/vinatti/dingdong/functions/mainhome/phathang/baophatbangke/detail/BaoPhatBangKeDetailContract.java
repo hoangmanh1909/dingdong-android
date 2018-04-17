@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
@@ -19,7 +19,7 @@ interface BaoPhatBangKeDetailContract {
     interface Interactor extends IInteractor<Presenter> {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, CommonCallback<SimpleResult> commonCallback);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -34,11 +34,10 @@ interface BaoPhatBangKeDetailContract {
     interface Presenter extends IPresenter<View, Interactor> {
         CommonObject getBaoPhatBangke();
 
-        void nextReceverPerson();
 
         void getReasons();
 
-        void submitToPNS(String reason, String solution, String note, String sign);
+
     }
 }
 

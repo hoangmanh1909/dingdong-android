@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,10 +55,6 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         return mBaoPhatBangke;
     }
 
-    @Override
-    public void nextReceverPerson() {
-        new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(mBaoPhatBangke).pushView();
-    }
 
     @Override
     public void getReasons() {
@@ -78,45 +74,5 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         });
     }
 
-    @Override
-    public void submitToPNS(String reason, String solution, String note, String sign) {
-        String postmanID = "";
-        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            postmanID = userInfo.getiD();
-        }
 
-        String ladingCode = mBaoPhatBangke.getParcelCode();
-        String deliveryPOCode = mBaoPhatBangke.getPoCode();
-        String deliveryDate = mBaoPhatBangke.getDeliveryDate();
-        String deliveryTime = mBaoPhatBangke.getDeliveryTime();
-        String receiverName = mBaoPhatBangke.getReciverName();
-        String reasonCode = reason;
-        String solutionCode = solution;
-        String status = "C18";
-
-        mView.showProgress();
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign,note, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                    back();
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
-    }
 }

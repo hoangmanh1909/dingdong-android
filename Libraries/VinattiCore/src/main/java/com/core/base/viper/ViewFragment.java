@@ -97,6 +97,12 @@ public abstract class ViewFragment<P extends IPresenter>
       getBaseActivity().showAlertDialog(message);
     }
   }
+  @Override
+  public void showErrorToast(String message) {
+    if (ContextUtils.isValidContext(getBaseActivity())) {
+      getBaseActivity().showErrorToast(message);
+    }
+  }
 
   @Override
   public BaseActivity getBaseActivity() {

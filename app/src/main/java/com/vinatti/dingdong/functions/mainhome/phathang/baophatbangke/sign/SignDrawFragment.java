@@ -1,6 +1,5 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,6 +10,7 @@ import android.view.View;
 import com.core.base.viper.ViewFragment;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
@@ -69,8 +69,15 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                 isSigned = false;
             }
         });
-        tvMaE.setText(mPresenter.getBaoPhatBangKe().getCode());
-        tvRealReceiverName.setText(mPresenter.getBaoPhatBangKe().getRealReceiverName().toUpperCase());
+        String code = "";
+        for (CommonObject item : mPresenter.getBaoPhatCommon()) {
+            code += item.getCode() + ",";
+        }
+        if (!TextUtils.isEmpty(code)) {
+            code = code.substring(1, code.length() - 1);
+        }
+        tvMaE.setText(code);
+        tvRealReceiverName.setText(mPresenter.getBaoPhatCommon().get(0).getRealReceiverName().toUpperCase());
 
     }
 
@@ -93,7 +100,11 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                         }
                     }
                     if (!TextUtils.isEmpty(base64)) {
-                        mPresenter.signDataAndSubmitToPNS(base64);
+                        if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
+                            mPresenter.paymentDelivery(base64);
+                        } else {
+                            mPresenter.signDataAndSubmitToPNS(base64);
+                        }
                     } else {
                         Toast.showToast(getActivity(), "Có lỗi trong quá trình ký, vui lòng liên hệ ban quản trị");
                         return;
@@ -127,10 +138,15 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
 
     @Override
     public void callAppToMpost() {
-        PushDataToMpos pushDataToMpos = new PushDataToMpos(mPresenter.getBaoPhatBangKe().getCollectAmount(), "pay", "");
+        long sumAmount = 0;
+        for (CommonObject item : mPresenter.getBaoPhatCommon()) {
+            sumAmount += Long.parseLong(item.getCollectAmount());
+            sumAmount += Long.parseLong(item.getReceiveCollectFee());
+        }
+        PushDataToMpos pushDataToMpos = new PushDataToMpos(sumAmount + "", "pay", "");
         String json = NetWorkController.getGson().toJson(pushDataToMpos);
-        String base64 = "mposvn://" + Base64.encodeToString(json.getBytes(), Base64.DEFAULT);
-        Intent intent = new Intent("vn.mpos", Uri.parse(base64));
+        String base64 = "mpos-vn://" + Base64.encodeToString(json.getBytes(), Base64.DEFAULT);
+        Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(base64));
         startActivity(intent);
 
     }

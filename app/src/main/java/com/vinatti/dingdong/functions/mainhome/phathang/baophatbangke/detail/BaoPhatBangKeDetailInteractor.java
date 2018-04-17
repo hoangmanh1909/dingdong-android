@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
 import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;
@@ -21,8 +21,5 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
         NetWorkController.getReasons(commonCallback);
     }
 
-    @Override
-    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, sign,note, commonCallback);
-    }
+
 }

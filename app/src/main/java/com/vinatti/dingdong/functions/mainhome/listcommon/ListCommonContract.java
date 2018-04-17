@@ -5,7 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.CommonObject;
-import com.vinatti.dingdong.model.XacNhanTinResult;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 
 import java.util.ArrayList;
 
@@ -20,11 +20,11 @@ interface ListCommonContract {
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate, CommonCallback<XacNhanTinResult> callback);
+                                       String toAssignDate, CommonCallback<CommonObjectListResult> callback);
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String route,
-                                   String order, CommonCallback<XacNhanTinResult> callback);
+                                   String order, CommonCallback<CommonObjectListResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

@@ -1,5 +1,5 @@
 package com.vinatti.dingdong.callback;
 
-public interface BaoPhatbangKeCallback {
+public interface BaoPhatbangKeSearchCallback {
     void onResponse(String fromDate, String order, String route);
 }

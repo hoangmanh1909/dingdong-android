@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class XacNhanTinResult extends SimpleResult {
+public class CommonObjectListResult extends SimpleResult {
     @SerializedName("ListValue")
     private ArrayList<CommonObject> list;
 

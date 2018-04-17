@@ -10,7 +10,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.BaoPhatbangKeCallback;
+import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.vinatti.dingdong.callback.OnChooseDay;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.vinatti.dingdong.dialog.EditDayDialog;
@@ -108,7 +108,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }).show();
         } else if (mPresenter.getType() == 3) {
 
-            new BaoPhatBangKeSearchDialog(getActivity(),mCalendar, new BaoPhatbangKeCallback() {
+            new BaoPhatBangKeSearchDialog(getActivity(),mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
                 public void onResponse(String fromDate, String order, String route) {
                     mDate = fromDate;

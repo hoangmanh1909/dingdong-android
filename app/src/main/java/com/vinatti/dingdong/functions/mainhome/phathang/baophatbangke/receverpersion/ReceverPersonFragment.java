@@ -1,19 +1,28 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion;
 
-import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
+import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.base.DingDongActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhCongAdapter;
+import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
@@ -25,9 +34,7 @@ import com.vinatti.dingdong.views.form.FormItemTextView;
 import java.util.Calendar;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The ReceverPerson Fragment
@@ -50,9 +57,22 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     FormItemTextView tvDeliveryTime;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+    @BindView(R.id.rad_cash)
+    RadioButton radCash;
+    @BindView(R.id.rad_mpos)
+    RadioButton radMpos;
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+    @BindView(R.id.ll_pay_ment)
+    View llPayMent;
+
     private Calendar calDate;
     private int mHour;
     private int mMinute;
+    private BaoPhatAdapter mAdapter;
+    private int mPaymentType = 1;
 
     public static ReceverPersonFragment getInstance() {
         return new ReceverPersonFragment();
@@ -72,7 +92,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             tvUserDelivery.setText(userInfo.getFullName());
         }
-        tvTitle.setText(mPresenter.getBaoPhatBangke().getCode());
+        //tvTitle.setText(mPresenter.getBaoPhatCommon().getCode());
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
@@ -82,6 +102,44 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
         }
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
+
+
+        RecyclerUtils.setupHorizontalRecyclerView(getActivity(), recycler);
+        recycler.setHasFixedSize(true);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new BaoPhatAdapter(getActivity(), mPresenter.getBaoPhatCommon()) {
+            @Override
+            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                super.onBindViewHolder(holder, position);
+            }
+        };
+        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
+        recycler.setAdapter(mAdapter);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rad_cash) {
+                    mPaymentType = 1;
+                } else {
+                    mPaymentType = 2;
+                }
+            }
+        });
+        if (mPresenter.getBaoPhatCommon().get(0).getIsCOD() != null) {
+            if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
+                llPayMent.setVisibility(View.VISIBLE);
+                long sumAmount = 0;
+                for (CommonObject item : mPresenter.getBaoPhatCommon()) {
+                    sumAmount += Long.parseLong(item.getCollectAmount());
+                    sumAmount += Long.parseLong(item.getReceiveCollectFee());
+                }
+                tvCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount) + " đ");
+            } else {
+                llPayMent.setVisibility(View.GONE);
+            }
+        } else {
+            llPayMent.setVisibility(View.GONE);
+        }
     }
 
 
@@ -95,7 +153,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                 submit();
                 break;
             case R.id.tv_deliveryDate:
-                String createDate = mPresenter.getBaoPhatBangke().getCreateDate();
+                String createDate = mPresenter.getBaoPhatCommon().get(0).getCreateDate();
                 if (TextUtils.isEmpty(createDate)) {
                     createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 }
@@ -137,13 +195,15 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
             return;
         }
-        mPresenter.getBaoPhatBangke().setRealReceiverName(edtReceiverName.getText());
-        mPresenter.getBaoPhatBangke().setCurrentPaymentType("1");
-        mPresenter.getBaoPhatBangke().setUserDelivery(tvUserDelivery.getText());
-        mPresenter.getBaoPhatBangke().setRealReceiverIDNumber(edtReceiverIDNumber.getText());
-        mPresenter.getBaoPhatBangke().setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-        String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-        mPresenter.getBaoPhatBangke().setDeliveryTime(time);
+        for (CommonObject item : mPresenter.getBaoPhatCommon()) {
+            item.setRealReceiverName(edtReceiverName.getText());
+            item.setCurrentPaymentType(mPaymentType + "");
+            item.setUserDelivery(tvUserDelivery.getText());
+            item.setRealReceiverIDNumber(edtReceiverIDNumber.getText());
+            item.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+            String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+            item.setDeliveryTime(time);
+        }
         mPresenter.nextViewSign();
     }
 
@@ -153,5 +213,13 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
     }
 
-
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (getActivity() != null) {
+            if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
+                ((DingDongActivity) getActivity()).getSupportActionBar().hide();
+            }
+        }
+    }
 }

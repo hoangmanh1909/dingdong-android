@@ -1,14 +1,14 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
-import com.vinatti.dingdong.callback.BarCodeCallback;
+import com.vinatti.dingdong.model.CommonObject;
 
 /**
- * The BaoPhatThanhCong Contract
+ * The BaoPhatThanhCongDetail Contract
  */
-interface BaoPhatThanhCongContract {
+interface BaoPhatThanhCongDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
     }
@@ -17,7 +17,7 @@ interface BaoPhatThanhCongContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void showBarcode(BarCodeCallback barCodeCallback);
+        CommonObject getBaoPhatThanhCong();
     }
 }
 

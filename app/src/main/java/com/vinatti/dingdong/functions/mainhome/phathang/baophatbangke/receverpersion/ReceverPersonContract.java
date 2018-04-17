@@ -5,6 +5,8 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.model.CommonObject;
 
+import java.util.List;
+
 /**
  * The ReceverPerson Contract
  */
@@ -17,7 +19,7 @@ interface ReceverPersonContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        CommonObject getBaoPhatBangke();
+        List<CommonObject> getBaoPhatCommon();
 
         void nextViewSign();
     }

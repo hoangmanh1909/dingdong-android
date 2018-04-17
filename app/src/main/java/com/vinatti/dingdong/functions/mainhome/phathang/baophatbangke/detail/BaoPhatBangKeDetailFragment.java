@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke;
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
 import android.view.View;
 import android.widget.FrameLayout;
@@ -50,15 +50,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     LinearLayout llContact;
     @BindView(R.id.tv_ReciverAddress)
     CustomTextView tvReciverAddress;
-    @BindView(R.id.rad_success)
-    RadioButton radSuccess;
-    @BindView(R.id.rad_fail)
-    RadioButton radFail;
-    @BindView(R.id.radio_group)
-    RadioGroup radioGroup;
-    @BindView(R.id.btn_confirm)
-    CustomTextView btnConfirm;
-    private int mType = 0;
+
+  /*  @BindView(R.id.btn_confirm)
+    CustomTextView btnConfirm;*/
+    private int mType = 1;
     private ArrayList<ReasonInfo> mListReason;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
@@ -91,26 +86,17 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         .commit();
             }
         }
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rad_success) {
-                    mType = 1;
-                } else {
-                    mType = 2;
-                }
-            }
-        });
+
         mPresenter.getReasons();
     }
 
-    @OnClick({R.id.img_back, R.id.btn_confirm})
+    @OnClick({R.id.img_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
-            case R.id.btn_confirm:
+           /* case R.id.btn_confirm:
                 if (mType == 0) {
                     Toast.showToast(getActivity(), "Chọn kết quả");
                     return;
@@ -133,7 +119,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     }
 
                 }
-                break;
+                break;*/
         }
     }
 

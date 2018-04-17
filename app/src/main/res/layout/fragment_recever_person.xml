@@ -50,7 +50,13 @@
             android:layout_marginRight="@dimen/dimen_10dp"
             android:orientation="vertical">
 
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,7 +127,7 @@
                                 android:layout_weight="0.8"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Số tiền thu hộ"
+                                android:text="Tổng số tiền thu hộ"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 
@@ -165,17 +171,18 @@
                                 android:paddingLeft="@dimen/dimen_10dp">
 
                                 <RadioButton
-                                    android:id="@+id/rad_success"
+                                    android:id="@+id/rad_cash"
                                     style="@style/CustomRadioButtonStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="left|center"
                                     android:paddingLeft="@dimen/dimen_5dp"
+                                    android:checked="true"
                                     android:text="Tiền mặt"
                                     android:textColor="@color/blue" />
 
                                 <RadioButton
-                                    android:id="@+id/rad_fail"
+                                    android:id="@+id/rad_mpos"
                                     style="@style/CustomRadioButtonStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

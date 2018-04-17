@@ -6,12 +6,13 @@ import com.google.gson.GsonBuilder;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.ActiveResult;
+import com.vinatti.dingdong.model.CommonObjectResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.SolutionResult;
-import com.vinatti.dingdong.model.XacNhanTinResult;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.utiles.Utils;
 
 import retrofit2.Call;
@@ -82,16 +83,22 @@ public class NetWorkController {
                                                  String postmanID,
                                                  String status,
                                                  String fromAssignDate,
-                                                 String toAssignDate, CommonCallback<XacNhanTinResult> callback) {
-        Call<XacNhanTinResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
         call.enqueue(callback);
     }
 
     public static void searchDeliveryPostman(String postmanID,
                                              String fromDate,
                                              String route,
-                                             String order, CommonCallback<XacNhanTinResult> callback) {
-        Call<XacNhanTinResult> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, route, order);
+                                             String order, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, route, order);
+        call.enqueue(callback);
+    }
+
+    public static void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
+        String signature = Utils.SHA256(parcelCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<CommonObjectResult> call = getAPIBuilder().searchParcelCodeDelivery(parcelCode.toUpperCase(), signature);
         call.enqueue(callback);
     }
 
@@ -114,7 +121,31 @@ public class NetWorkController {
                                          String deliveryType,
                                          String signatureCapture, String note, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note,signature);
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note, signature);
+        call.enqueue(callback);
+    }
+
+    public static void paymentDelivery(String postmanID,
+                                       String parcelCode,
+                                       String mobileNumber,
+                                       String deliveryPOCode,
+                                       String deliveryDate,
+                                       String deliveryTime,
+                                       String receiverName,
+                                       String receiverIDNumber,
+                                       String reasonCode,
+                                       String solutionCode,
+                                       String status,
+                                       String paymentChannel,
+                                       String deliveryType,
+                                       String signatureCapture,
+                                       String note,
+                                       CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
+                        parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
+                        status, paymentChannel, deliveryType, signatureCapture,
+                        note, signature);
         call.enqueue(callback);
     }
 

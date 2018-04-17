@@ -2,12 +2,13 @@ package com.vinatti.dingdong.network;
 
 
 import com.vinatti.dingdong.model.ActiveResult;
+import com.vinatti.dingdong.model.CommonObjectResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.SolutionResult;
-import com.vinatti.dingdong.model.XacNhanTinResult;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,7 +16,6 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -48,19 +48,19 @@ public interface VinattiAPI {
 
     @FormUrlEncoded
     @POST("api/Collect/SearchOrderPostman")
-    Call<XacNhanTinResult> searchOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
-                                                     @Field("OrderID") String orderID,
-                                                     @Field("PostmanID") String postmanID,
-                                                     @Field("Status") String status,
-                                                     @Field("FromAssignDate") String fromAssignDate,
-                                                     @Field("ToAssignDate") String toAssignDate);
+    Call<CommonObjectListResult> searchOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
+                                                           @Field("OrderID") String orderID,
+                                                           @Field("PostmanID") String postmanID,
+                                                           @Field("Status") String status,
+                                                           @Field("FromAssignDate") String fromAssignDate,
+                                                           @Field("ToAssignDate") String toAssignDate);
 
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryPostman")
-    Call<XacNhanTinResult> searchDeliveryPostman(@Field("PostmanId") String postmanID,
-                                                 @Field("FromDate") String fromDate,
-                                                 @Field("Route") String route,
-                                                 @Field("Order") String order
+    Call<CommonObjectListResult> searchDeliveryPostman(@Field("PostmanId") String postmanID,
+                                                       @Field("FromDate") String fromDate,
+                                                       @Field("Route") String route,
+                                                       @Field("Order") String order
 
     );
 
@@ -90,6 +90,12 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/Delivery/Inquiry")
+    Call<CommonObjectResult> searchParcelCodeDelivery(@Field("ParcelCode") String parcelCode,
+                                                      @Field("Signature") String signature
+    );
+
+    @FormUrlEncoded
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Field("PostmanID") String postmanID,
                                          @Field("LadingCode") String ladingCode,
@@ -97,6 +103,24 @@ public interface VinattiAPI {
                                          @Field("DeliveryDate") String deliveryDate,
                                          @Field("DeliveryTime") String deliveryTime,
                                          @Field("ReceiverName") String receiverName,
+                                         @Field("ReasonCode") String reasonCode,
+                                         @Field("SolutionCode") String solutionCode,
+                                         @Field("Status") String status,
+                                         @Field("PaymentChannel") String paymentChannel,
+                                         @Field("DeliveryType") String deliveryType,
+                                         @Field("SignatureCapture") String signatureCapture,
+                                         @Field("Note") String note,
+                                         @Field("Signature") String signature);
+    @FormUrlEncoded
+    @POST("api/Delivery/Payment")
+    Call<SimpleResult> paymentDelivery(@Field("PostmanID") String postmanID,
+                                         @Field("ParcelCode") String parcelCode,
+                                         @Field("MobileNumber") String mobileNumber,
+                                         @Field("DeliveryPOCode") String deliveryPOCode,
+                                         @Field("DeliveryDate") String deliveryDate,
+                                         @Field("DeliveryTime") String deliveryTime,
+                                         @Field("ReceiverName") String receiverName,
+                                         @Field("ReceiverIDNumber") String receiverIDNumber,
                                          @Field("ReasonCode") String reasonCode,
                                          @Field("SolutionCode") String solutionCode,
                                          @Field("Status") String status,

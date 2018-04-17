@@ -5,14 +5,11 @@ import android.content.Context;
 import android.view.View;
 
 import com.core.base.BaseActivity;
-import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.BaoPhatbangKeCallback;
-import com.vinatti.dingdong.callback.ReasonCallback;
+import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.TimeUtils;
-import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 
@@ -24,7 +21,7 @@ import butterknife.OnClick;
 
 
 public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
-    private final BaoPhatbangKeCallback mDelegate;
+    private final BaoPhatbangKeSearchCallback mDelegate;
     private final BaseActivity mActivity;
     @BindView(R.id.tv_date_create)
     FormItemTextView tvDateCreate;
@@ -34,12 +31,12 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
     FormItemEditText edtTuiSo;
     Calendar calCreate;
 
-    public BaoPhatBangKeSearchDialog(Context context, Calendar calendar, BaoPhatbangKeCallback reasonCallback) {
+    public BaoPhatBangKeSearchDialog(Context context, Calendar calendar, BaoPhatbangKeSearchCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
         this.calCreate = calendar;
-        View view = View.inflate(getContext(), R.layout.dialog_bao_phat_bang_ke, null);
+        View view = View.inflate(getContext(), R.layout.dialog_bao_phat_bang_ke_search, null);
         setContentView(view);
         ButterKnife.bind(this, view);
         mActivity = (BaseActivity) context;

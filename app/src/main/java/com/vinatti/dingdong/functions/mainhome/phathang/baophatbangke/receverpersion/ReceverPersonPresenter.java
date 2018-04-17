@@ -5,13 +5,15 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign.SignDrawPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 
+import java.util.List;
+
 /**
  * The ReceverPerson Presenter
  */
 public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View, ReceverPersonContract.Interactor>
         implements ReceverPersonContract.Presenter {
 
-    private CommonObject mBaoPhatBangke;
+    private List<CommonObject> mBaoPhatBangke;
 
     public ReceverPersonPresenter(ContainerView containerView) {
         super(containerView);
@@ -32,13 +34,13 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
         return new ReceverPersonInteractor(this);
     }
 
-    public ReceverPersonPresenter setBaoPhatBangKe(CommonObject baoPhatBangKe) {
+    public ReceverPersonPresenter setBaoPhatBangKe( List<CommonObject> baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
         return this;
     }
 
     @Override
-    public CommonObject getBaoPhatBangke() {
+    public  List<CommonObject> getBaoPhatCommon() {
         return mBaoPhatBangke;
     }
 

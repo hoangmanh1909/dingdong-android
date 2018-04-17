@@ -6,7 +6,7 @@ import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.CommonObject;
-import com.vinatti.dingdong.model.XacNhanTinResult;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 
 /**
  * The XacNhanTinDetail Contract
@@ -14,7 +14,7 @@ import com.vinatti.dingdong.model.XacNhanTinResult;
 interface HoanThanhTinDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<XacNhanTinResult> commonCallback);
+        void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
 
         void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                         String statusCode, String quantity, String collectReason, String pickUpDate,

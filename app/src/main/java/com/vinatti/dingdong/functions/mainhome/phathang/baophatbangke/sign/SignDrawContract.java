@@ -8,6 +8,8 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.SimpleResult;
 
+import java.util.List;
+
 /**
  * The SignDraw Contract
  */
@@ -26,6 +28,8 @@ interface SignDrawContract {
                            String paymentChannel,
                            String deliveryType,
                            String signatureCapture, CommonCallback<SimpleResult> callback);
+
+    void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, CommonCallback<SimpleResult> commonCallback);
   }
 
   interface View extends PresentView<Presenter> {
@@ -39,8 +43,10 @@ interface SignDrawContract {
   }
 
   interface Presenter extends IPresenter<View, Interactor> {
-    CommonObject getBaoPhatBangKe();
+    List<CommonObject> getBaoPhatCommon();
     void signDataAndSubmitToPNS(String base64);
+
+    void paymentDelivery(String base64);
   }
 }
 

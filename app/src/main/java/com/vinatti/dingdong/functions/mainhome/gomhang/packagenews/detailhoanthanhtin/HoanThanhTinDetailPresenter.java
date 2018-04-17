@@ -7,7 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.SimpleResult;
-import com.vinatti.dingdong.model.XacNhanTinResult;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -75,9 +75,9 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
         String fromAssignDate = "0";
         String toAssignDate = "0";
         mView.showProgress();
-        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<XacNhanTinResult>((Activity) mContainerView) {
+        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<XacNhanTinResult> call, Response<XacNhanTinResult> response) {
+            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
@@ -97,7 +97,7 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
             }
 
             @Override
-            protected void onError(Call<XacNhanTinResult> call, String message) {
+            protected void onError(Call<CommonObjectListResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorAndBack(message);

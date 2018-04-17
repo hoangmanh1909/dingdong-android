@@ -58,6 +58,6 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     @Override
     public void handleResult(Result result) {
         mPresenter.getDelegate().scanQrcodeResponse(result.getContents());
-
+        mPresenter.back();
     }
 }
