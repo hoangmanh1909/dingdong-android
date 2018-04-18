@@ -1,8 +1,7 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign;
+package com.vinatti.dingdong.functions.mainhome.phathang.sign;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -27,6 +26,7 @@ import retrofit2.Response;
 public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDrawContract.Interactor> implements SignDrawContract.Presenter {
 
     private List<CommonObject> mBaoPhatCommon;
+    private int mCount = 0;
 
     public SignDrawPresenter(ContainerView containerView) {
         super(containerView);
@@ -58,7 +58,8 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
         }
-
+        final int size = mBaoPhatCommon.size();
+        mView.showProgress();
         for (CommonObject item : mBaoPhatCommon) {
             String ladingCode = item.getParcelCode();
             String deliveryPOCode = item.getPoCode();
@@ -74,6 +75,10 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
+                    mCount++;
+                    if (mCount == size) {
+                        mView.hideProgress();
+                    }
                     if (response.body().getErrorCode().equals("00")) {
                         mView.showSuccess();
                         if (paymentChannel.equals("2")) {
@@ -92,6 +97,10 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                 @Override
                 protected void onError(Call<SimpleResult> call, String message) {
                     super.onError(call, message);
+                    mCount++;
+                    if (mCount == size) {
+                        mView.hideProgress();
+                    }
                     mView.showError(message);
                 }
             });
@@ -117,7 +126,8 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
 
             deliveryPOCode = postOffice.getCode();
         }
-
+        mView.showProgress();
+        final int size = mBaoPhatCommon.size();
         for (CommonObject item : mBaoPhatCommon) {
             String parcelCode = item.getParcelCode();
             String deliveryDate = item.getDeliveryDate();
@@ -137,14 +147,16 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                         @Override
                         protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                             super.onSuccess(call, response);
+                            mCount++;
+                            if (mCount == size) {
+                                mView.hideProgress();
+                            }
                             if (response.body().getErrorCode().equals("00")) {
                                 mView.showSuccess();
                                 if (paymentChannel.equals("2")) {
                                     try {
                                         mView.callAppToMpost();
-                                    }
-                                    catch (Exception ex)
-                                    {
+                                    } catch (Exception ex) {
                                         ex.printStackTrace();
                                     }
                                 } else {
@@ -161,7 +173,12 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                         @Override
                         protected void onError(Call<SimpleResult> call, String message) {
                             super.onError(call, message);
+                            mCount++;
+                            if (mCount == size) {
+                                mView.hideProgress();
+                            }
                             mView.showError(message);
+
                         }
                     });
         }

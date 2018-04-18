@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.scanner;
+package com.vinatti.dingdong.functions.mainhome.phathang.scanner;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;

@@ -8,7 +8,7 @@ import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion.ReceverPersonPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail.BaoPhatThanhCongDetailPresenter;
-import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.scanner.ScannerCodePresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectResult;
 
@@ -49,10 +49,12 @@ public class BaoPhatThanhCongPresenter extends Presenter<BaoPhatThanhCongContrac
 
     @Override
     public void searchParcelCodeDelivery(String parcelCode) {
+        mView.showProgress();
         mInteractor.searchParcelCodeDelivery(parcelCode, new CommonCallback<CommonObjectResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<CommonObjectResult> call, Response<CommonObjectResult> response) {
                 super.onSuccess(call, response);
+                mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showData(response.body().getCommonObject());
 
@@ -64,6 +66,7 @@ public class BaoPhatThanhCongPresenter extends Presenter<BaoPhatThanhCongContrac
             @Override
             protected void onError(Call<CommonObjectResult> call, String message) {
                 super.onError(call, message);
+                mView.hideProgress();
                 mView.showErrorToast(message);
             }
         });

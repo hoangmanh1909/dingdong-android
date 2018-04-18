@@ -106,6 +106,7 @@ public abstract class BaseActivity extends BaseGlobalActivity {
 
   public abstract void showAlertDialog(String message);
   public abstract void showErrorToast(String message);
+  public abstract void showSuccessToast(String message);
 
   public abstract void showProgress();
 

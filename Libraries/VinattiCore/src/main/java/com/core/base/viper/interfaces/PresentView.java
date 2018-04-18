@@ -13,6 +13,7 @@ public interface PresentView<P extends IPresenter> extends IView<P> {
 
   void showAlertDialog(String message);
   void showErrorToast(String message);
+  void showSuccessToast(String message);
 
   void onRequestError(String errorCode, String errorMessage);
 

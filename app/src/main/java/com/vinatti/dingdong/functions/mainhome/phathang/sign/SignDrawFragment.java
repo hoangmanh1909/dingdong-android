@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.sign;
+package com.vinatti.dingdong.functions.mainhome.phathang.sign;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

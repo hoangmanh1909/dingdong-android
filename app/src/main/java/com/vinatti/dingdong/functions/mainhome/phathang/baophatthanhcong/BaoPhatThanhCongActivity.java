@@ -7,6 +7,7 @@ import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
@@ -63,11 +64,13 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
                 .getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
+                searchView.clearFocus();
                 mFragment.getQuery(query);
                 // mAdapter.getFilter().filter(query);
                 return false;

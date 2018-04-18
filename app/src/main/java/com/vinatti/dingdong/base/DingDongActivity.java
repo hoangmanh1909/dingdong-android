@@ -38,6 +38,9 @@ public abstract class DingDongActivity extends ContainerActivity {
     public void showErrorToast(String message) {
         com.vinatti.dingdong.utiles.Toast.showToast(this, message);
     }
+    public void showSuccessToast(String message) {
+        com.vinatti.dingdong.utiles.Toast.showToast(this, message);
+    }
 
     public void showProgress() {
         DialogUtils.showProgressDialog(this);
