@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
@@ -88,7 +89,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
             tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
         }
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
-
+        edtParcelCode.getEditText().setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS);
 
     }
 
@@ -182,7 +183,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         String reasonCode = mReasonInfo.getCode();
         String solutionCode = mSolutionInfo.getCode();
         String note = edtNote.getText();
-        String ladingCode = edtParcelCode.getText();
+        String ladingCode = edtParcelCode.getText().toUpperCase();
         String postmanID = "";
         String deliveryPOCode = "";
         SharedPref sharedPref = new SharedPref(getActivity());
