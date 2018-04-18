@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.StatictisSearchCallback;
 import com.vinatti.dingdong.dialog.StatictisSearchDialog;
@@ -52,9 +53,21 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         super.initLayout();
         calendarDate = Calendar.getInstance();
         mList = new ArrayList<>();
-        mAdapter = new StatictisAdapter(getActivity(), mList);
+        mAdapter = new StatictisAdapter(getActivity(), mList) {
+            @Override
+            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.pushViewDetail(mList.get(position).getParcelCode());
+                    }
+                });
+            }
+        };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
+        mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), "C14");
     }
 
     @OnClick({R.id.img_back, R.id.img_search})
@@ -80,6 +93,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
     @Override
     public void showListSuccess(ArrayList<CommonObject> list) {
         mList = list;
+        mAdapter.clear();
         mAdapter.addItems(list);
         recycler.setVisibility(View.VISIBLE);
         tvNodata.setVisibility(View.GONE);

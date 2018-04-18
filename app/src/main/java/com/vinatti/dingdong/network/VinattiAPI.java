@@ -37,6 +37,10 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/Delivery/DeliveryLadingJourney")
+    Call<CommonObjectListResult> getHistoryDelivery(@Field("ParcelCode") String parcelCode);
+
+    @FormUrlEncoded
     @POST("api/Authorized/Active")
     Call<ActiveResult> activeAuthorized(@Field("MobileNumber") String mobileNumber,
                                         @Field("ActiveCode") String activeCode,

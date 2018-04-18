@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.thongke.list;
+package com.vinatti.dingdong.functions.mainhome.phathang.thongke.history;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
@@ -10,13 +10,12 @@ import com.vinatti.dingdong.model.CommonObjectListResult;
 import java.util.ArrayList;
 
 /**
- * The Statistic Contract
+ * The History Contract
  */
-interface StatisticContract {
+interface HistoryContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchDeliveryStatistic(String fromDate, String status,
-                                     String postmanId, CommonCallback<CommonObjectListResult> callback);
+        void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -26,9 +25,9 @@ interface StatisticContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void search(String fromDate, String status);
+        String getParcelCode();
 
-        void pushViewDetail(String parcelCode);
+        void getHistory();
     }
 }
 

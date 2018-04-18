@@ -6,6 +6,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.functions.mainhome.phathang.thongke.history.HistoryPresenter;
 import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
@@ -71,5 +72,10 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
                 mView.showErrorToast(message);
             }
         });
+    }
+
+    @Override
+    public void pushViewDetail(String parcelCode) {
+        new HistoryPresenter(mContainerView).setParcelCode(parcelCode).pushView();
     }
 }

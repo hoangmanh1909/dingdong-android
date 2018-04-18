@@ -69,6 +69,10 @@ public class NetWorkController {
         Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId);
         call.enqueue(callback);
     }
+    public static void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().getHistoryDelivery(parcelCode);
+        call.enqueue(callback);
+    }
 
     public static void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
         String signature = Utils.SHA256(mobileNumber + activeCode + BuildConfig.PRIVATE_KEY).toUpperCase();

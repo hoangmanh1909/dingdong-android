@@ -60,7 +60,9 @@ public class CommonObject {
     //endregion
     @SerializedName("IsCOD")
     String isCOD;
+    @SerializedName("DeliveryDate")
     private String deliveryDate;
+    @SerializedName("DeliveryTime")
     private String deliveryTime;
     @SerializedName("CollectAmount")
     private String collectAmount;
@@ -73,6 +75,15 @@ public class CommonObject {
 
     @SerializedName("StatusName")
     private String statusName;
+    @SerializedName("ReasonName")
+    private String reasonName;
+    @SerializedName("SolutionName")
+    private String solutionName;
+    @SerializedName("CheckStatus")
+    private boolean checkStatus;
+    @SerializedName("CheckStatusNo")
+    private boolean checkStatusNo;
+
 
     public String getCount() {
         return count;
@@ -269,5 +280,22 @@ public class CommonObject {
 
     public String getStatusName() {
         return statusName;
+    }
+
+
+    public String getReasonName() {
+        return reasonName;
+    }
+
+    public String getSolutionName() {
+        return solutionName;
+    }
+
+    public boolean isCheckStatus() {
+        return checkStatus;
+    }
+
+    public boolean isCheckStatusNo() {
+        return checkStatusNo;
     }
 }
