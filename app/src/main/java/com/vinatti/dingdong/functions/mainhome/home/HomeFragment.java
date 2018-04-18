@@ -12,6 +12,7 @@ import com.vinatti.dingdong.functions.mainhome.listcommon.ListCommonActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.thongke.list.StatictisActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
 import com.vinatti.dingdong.utiles.Constants;
@@ -105,6 +106,10 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                             }
                             else if (homeInfo.getId() == 5) {
                                 Intent intent = new Intent(getActivity(), BaoPhatBangKhongThanhCongActivity.class);
+                                startActivity(intent);
+                            }
+                            else if (homeInfo.getId() == 6) {
+                                Intent intent = new Intent(getActivity(), StatictisActivity.class);
                                 startActivity(intent);
                             }
 

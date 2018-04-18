@@ -21,15 +21,15 @@ public class CommonObject {
     //region common
     @SerializedName("StatusCode")
     String statusCode;
-    @SerializedName(value = "Code", alternate = {"MaE","ParcelCode"})
+    @SerializedName(value = "Code", alternate = {"MaE", "ParcelCode"})
     String code;
     @SerializedName(value = "ID", alternate = {"Id"})
     String iD;
-    @SerializedName(value = "ContactName", alternate = {"ReciverName","ReceiverName"})
+    @SerializedName(value = "ContactName", alternate = {"ReciverName", "ReceiverName"})
     String contactName;
-    @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile","ReceiverPhone"})
+    @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile", "ReceiverPhone"})
     String contactPhone;
-    @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress","ReceiverAddress"})
+    @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress", "ReceiverAddress"})
     String contactAddress;
     @SerializedName(value = "Weigh", alternate = {"Weight"})
     String weigh;
@@ -51,7 +51,6 @@ public class CommonObject {
     String order;
 
 
-
     private String realReceiverName;
     private String realReceiverIDNumber;
     private String DeliveryType;
@@ -71,6 +70,9 @@ public class CommonObject {
     private String receiverIDNumber;
     @SerializedName("DeliveryPOCode")
     private String deliveryPOCode;
+
+    @SerializedName("StatusName")
+    private String statusName;
 
     public String getCount() {
         return count;
@@ -263,5 +265,9 @@ public class CommonObject {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public String getStatusName() {
+        return statusName;
     }
 }

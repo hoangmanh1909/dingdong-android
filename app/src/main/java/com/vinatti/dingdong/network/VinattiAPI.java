@@ -30,6 +30,13 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/Delivery/DeliveryStatistic")
+    Call<CommonObjectListResult> searchDeliveryStatistic(@Field("FromDate") String fromDate,
+                                                         @Field("Status") String status,
+                                                         @Field("PostmanId") String postmanId
+    );
+
+    @FormUrlEncoded
     @POST("api/Authorized/Active")
     Call<ActiveResult> activeAuthorized(@Field("MobileNumber") String mobileNumber,
                                         @Field("ActiveCode") String activeCode,
@@ -111,24 +118,25 @@ public interface VinattiAPI {
                                          @Field("SignatureCapture") String signatureCapture,
                                          @Field("Note") String note,
                                          @Field("Signature") String signature);
+
     @FormUrlEncoded
     @POST("api/Delivery/Payment")
     Call<SimpleResult> paymentDelivery(@Field("PostmanID") String postmanID,
-                                         @Field("ParcelCode") String parcelCode,
-                                         @Field("MobileNumber") String mobileNumber,
-                                         @Field("DeliveryPOCode") String deliveryPOCode,
-                                         @Field("DeliveryDate") String deliveryDate,
-                                         @Field("DeliveryTime") String deliveryTime,
-                                         @Field("ReceiverName") String receiverName,
-                                         @Field("ReceiverIDNumber") String receiverIDNumber,
-                                         @Field("ReasonCode") String reasonCode,
-                                         @Field("SolutionCode") String solutionCode,
-                                         @Field("Status") String status,
-                                         @Field("PaymentChannel") String paymentChannel,
-                                         @Field("DeliveryType") String deliveryType,
-                                         @Field("SignatureCapture") String signatureCapture,
-                                         @Field("Note") String note,
-                                         @Field("Signature") String signature);
+                                       @Field("ParcelCode") String parcelCode,
+                                       @Field("MobileNumber") String mobileNumber,
+                                       @Field("DeliveryPOCode") String deliveryPOCode,
+                                       @Field("DeliveryDate") String deliveryDate,
+                                       @Field("DeliveryTime") String deliveryTime,
+                                       @Field("ReceiverName") String receiverName,
+                                       @Field("ReceiverIDNumber") String receiverIDNumber,
+                                       @Field("ReasonCode") String reasonCode,
+                                       @Field("SolutionCode") String solutionCode,
+                                       @Field("Status") String status,
+                                       @Field("PaymentChannel") String paymentChannel,
+                                       @Field("DeliveryType") String deliveryType,
+                                       @Field("SignatureCapture") String signatureCapture,
+                                       @Field("Note") String note,
+                                       @Field("Signature") String signature);
 
     @GET("api/Dictionary/GetPostOfficeByCode")
     Call<PostOfficeResult> getPostOfficeByCode(@Query("code") String unitCode);

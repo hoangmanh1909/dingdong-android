@@ -64,6 +64,12 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void searchDeliveryStatistic(String fromDate, String status,
+                                               String postmanId, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId);
+        call.enqueue(callback);
+    }
+
     public static void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
         String signature = Utils.SHA256(mobileNumber + activeCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<ActiveResult> call = getAPIBuilder().activeAuthorized(mobileNumber, activeCode, codeDeviceActive, signature);
@@ -143,9 +149,9 @@ public class NetWorkController {
                                        CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
-                        parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
-                        status, paymentChannel, deliveryType, signatureCapture,
-                        note, signature);
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
+                status, paymentChannel, deliveryType, signatureCapture,
+                note, signature);
         call.enqueue(callback);
     }
 

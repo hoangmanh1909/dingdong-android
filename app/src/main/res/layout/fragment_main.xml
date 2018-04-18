@@ -39,7 +39,6 @@
         android:layout_alignParentBottom="true"
         android:background="#296780"
         app:bb_activeTabColor="@color/white"
-        app:bb_behavior="shifting"
         app:bb_inActiveTabAlpha="0.3"
         app:bb_inActiveTabColor="@color/white"
         app:bb_tabXmlResource="@xml/bottom_navigation_main"
