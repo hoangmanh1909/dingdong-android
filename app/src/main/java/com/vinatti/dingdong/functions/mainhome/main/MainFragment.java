@@ -29,6 +29,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private Fragment homeFragment;
     private Fragment gomHangFragment;
     private Fragment phatHangFragment;
+    private Fragment locationFragment;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -52,7 +53,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                     viewPager.setCurrentItem(1);
                 } else if (tabId == R.id.action_airplane) {
                     viewPager.setCurrentItem(2);
-                } else if (tabId == R.id.action_phone) {
+                } else if (tabId == R.id.action_location) {
                     viewPager.setCurrentItem(3);
                 }
             }
@@ -108,9 +109,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 }
                 return phatHangFragment;
             case 3:
-
-                break;
+                if (locationFragment == null) {
+                    locationFragment = mPresenter.getLocationPresenter().getFragment();
+                }
+                return locationFragment;
         }
         return new Fragment();
     }
+
 }

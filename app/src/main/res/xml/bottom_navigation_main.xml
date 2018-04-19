@@ -13,7 +13,7 @@
         icon="@drawable/ic_airplane"
         title="Phát hàng" />
     <tab
-        id="@+id/action_phone"
-        icon="@drawable/ic_tel"
-        title="Gọi" />
+        id="@+id/action_location"
+        icon="@drawable/ic_location"
+        title="Dịch vụ" />
 </tabs>

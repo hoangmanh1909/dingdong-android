@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.vinatti.dingdong.functions.mainhome.home.HomePresenter;
+import com.vinatti.dingdong.functions.mainhome.location.LocationPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 
 /**
@@ -23,6 +24,8 @@ interface MainContract {
 
         GomHangPresenter getGomHangPresenter();
         PhatHangPresenter getPhatHangPresenter();
+
+        LocationPresenter getLocationPresenter();
     }
 }
 

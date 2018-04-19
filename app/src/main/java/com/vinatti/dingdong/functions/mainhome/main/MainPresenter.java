@@ -4,6 +4,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.vinatti.dingdong.functions.mainhome.home.HomePresenter;
+import com.vinatti.dingdong.functions.mainhome.location.LocationPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 
 /**
@@ -44,5 +45,10 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     @Override
     public PhatHangPresenter getPhatHangPresenter() {
         return new PhatHangPresenter(mContainerView);
+    }
+
+    @Override
+    public LocationPresenter getLocationPresenter() {
+        return new LocationPresenter(mContainerView);
     }
 }

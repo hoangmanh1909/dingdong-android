@@ -8,8 +8,8 @@ import android.view.View;
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.functions.mainhome.callservice.CallActivity;
 import com.vinatti.dingdong.functions.mainhome.listcommon.ListCommonActivity;
-import com.vinatti.dingdong.functions.mainhome.location.LocationActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
@@ -75,8 +75,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
 
         homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(7, R.drawable.ic_track_trace, "Định vị"));
-        mList.add(new GroupInfo("Định vị", homeInfos));
+        homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
+        mList.add(new GroupInfo("Call", homeInfos));
         homeInfos = new ArrayList<>();
         homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
         mList.add(new GroupInfo("Người dùng", homeInfos));
@@ -115,7 +115,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 startActivity(intent);
                             }
                             else if (homeInfo.getId() == 7) {
-                                Intent intent = new Intent(getActivity(), LocationActivity.class);
+                                Intent intent = new Intent(getActivity(), CallActivity.class);
                                 startActivity(intent);
                             }
                             else if (homeInfo.getId() == 8) {

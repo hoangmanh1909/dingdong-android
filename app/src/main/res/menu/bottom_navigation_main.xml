@@ -21,9 +21,9 @@
         android:title="Phát hàng"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_phone"
+        android:id="@+id/action_location"
         android:enabled="true"
-        android:icon="@drawable/ic_tel"
-        android:title="Gọi"
+        android:icon="@drawable/ic_location"
+        android:title="Định vị"
         app:showAsAction="ifRoom" />
 </menu>

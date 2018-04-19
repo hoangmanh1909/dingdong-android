@@ -6,9 +6,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -20,7 +22,9 @@ import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.functions.mainhome.phathang.thongke.history.HistoryAdapter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.StatusInfo;
+import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomTextView;
+import com.vinatti.dingdong.views.form.FormItemEditText;
 
 import java.util.ArrayList;
 
@@ -54,6 +58,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     RecyclerView recycler;
     @BindView(R.id.ll_status)
     View llStatus;
+    @BindView(R.id.edt_ladingCode)
+    FormItemEditText edtLadingCode;
+    @BindView(R.id.img_search)
+    View imgSearch;
     private ArrayList<StatusInfo> mList;
     private StatusAdapter mAdapter;
 
@@ -74,6 +82,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         mAdapter = new StatusAdapter(getActivity(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
+        edtLadingCode.getEditText().setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS);
     }
 
     protected void checkSelfPermission() {
@@ -100,14 +109,26 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         mPresenter.findLocation(ladingCode.toUpperCase());
     }
 
-    @OnClick(R.id.ll_scan_qr)
-    public void onViewClicked() {
-        mPresenter.showBarcode(new BarCodeCallback() {
-            @Override
-            public void scanQrcodeResponse(String value) {
-                getQuery(value.replace("+", ""));
-            }
-        });
+    @OnClick({R.id.ll_scan_qr, R.id.img_search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_scan_qr:
+                mPresenter.showBarcode(new BarCodeCallback() {
+                    @Override
+                    public void scanQrcodeResponse(String value) {
+                        getQuery(value.replace("+", ""));
+                    }
+                });
+                break;
+            case R.id.img_search:
+                if (TextUtils.isEmpty(edtLadingCode.getText())) {
+                    Toast.showToast(getActivity(), "Vui lòng nhập mã");
+                    return;
+                }
+                getQuery(edtLadingCode.getText());
+                break;
+        }
+
     }
 
     @Override
