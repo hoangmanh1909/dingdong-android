@@ -1,19 +1,12 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion.ReceverPersonPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.ReasonResult;
-import com.vinatti.dingdong.model.SimpleResult;
-import com.vinatti.dingdong.model.UserInfo;
-import com.vinatti.dingdong.network.NetWorkController;
-import com.vinatti.dingdong.utiles.Constants;
-import com.vinatti.dingdong.utiles.SharedPref;
 
 import retrofit2.Call;
 import retrofit2.Response;

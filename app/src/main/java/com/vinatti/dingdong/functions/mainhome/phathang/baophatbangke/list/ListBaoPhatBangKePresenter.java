@@ -9,7 +9,7 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
-import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.receverpersion.ReceverPersonPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.ReasonResult;

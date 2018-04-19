@@ -14,6 +14,7 @@ public class DateTimeUtils {
 	
     public static final String TAG = DateTimeUtils.class.getSimpleName();
     public static final String DEFAULT_DATETIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    public static final String DEFAULT_DATETIME_FORMAT4 = "MM/dd/yyyy HH:mm:ss";
     public static final String DEFAULT_DATETIME_FORMAT2 = "dd-MM-yyyy HH:mm:ss";
     public static final String DEFAULT_DATETIME_FORMAT3 = "yyyy-MM-dd HH:mm:ss";
     public static final String SIMPLE_DATE_FORMAT = "dd/MM/yyyy";

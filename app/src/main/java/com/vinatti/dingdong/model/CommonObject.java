@@ -45,8 +45,10 @@ public class CommonObject {
     String senderAddress;
     @SerializedName("PoCode")
     String poCode;
-    @SerializedName("CreateDate")
+    @SerializedName(value = "CreateDate")
     String createDate;
+    @SerializedName("LoadDate")
+    String loadDate;
     @SerializedName("Route")
     String route;
     @SerializedName("Order")
@@ -305,5 +307,9 @@ public class CommonObject {
 
     public ArrayList<StatusInfo> getStatus() {
         return status;
+    }
+
+    public String getLoadDate() {
+        return loadDate;
     }
 }

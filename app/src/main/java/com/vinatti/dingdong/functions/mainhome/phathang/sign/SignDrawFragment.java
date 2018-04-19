@@ -74,7 +74,7 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             code += item.getCode() + ",";
         }
         if (!TextUtils.isEmpty(code)) {
-            code = code.substring(1, code.length() - 1);
+            code = code.substring(0, code.length() - 1);
         }
         tvMaE.setText(code);
         tvRealReceiverName.setText(mPresenter.getBaoPhatCommon().get(0).getRealReceiverName().toUpperCase());
