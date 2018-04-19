@@ -23,7 +23,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-    signingConfigs {
+    /*signingConfigs {
         debug {
             keyAlias 'DingDong'
             keyPassword 'Vinatti123456'
@@ -36,7 +36,7 @@ android {
             storeFile file("keystore/keystore.jks")
             storePassword 'Vinatti123456'
         }
-    }
+    }*/
     buildTypes {
         debug {
             minifyEnabled false
@@ -47,7 +47,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            signingConfig signingConfigs.release
+           // signingConfig signingConfigs.release
         }
     }
     productFlavors {

@@ -107,6 +107,12 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/TrackTrace/Lading")
+    Call<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
+                                          @Field("Signature") String signature
+    );
+
+    @FormUrlEncoded
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Field("PostmanID") String postmanID,
                                          @Field("LadingCode") String ladingCode,

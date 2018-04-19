@@ -2,6 +2,8 @@ package com.vinatti.dingdong.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class CommonObject {
 
     //region xacnhantin
@@ -83,6 +85,8 @@ public class CommonObject {
     private boolean checkStatus;
     @SerializedName("CheckStatusNo")
     private boolean checkStatusNo;
+    @SerializedName("Status")
+    private ArrayList<StatusInfo> status;
 
 
     public String getCount() {
@@ -297,5 +301,9 @@ public class CommonObject {
 
     public boolean isCheckStatusNo() {
         return checkStatusNo;
+    }
+
+    public ArrayList<StatusInfo> getStatus() {
+        return status;
     }
 }

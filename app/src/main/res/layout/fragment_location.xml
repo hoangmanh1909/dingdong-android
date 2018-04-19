@@ -6,48 +6,44 @@
     android:focusable="true"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/header"
+    <RelativeLayout
+        android:id="@+id/ll_scan_qr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp">
 
-        <include layout="@layout/item_head_bg_common" />
+        <ImageView
+            android:id="@+id/img_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tv_capture"
+            android:src="@drawable/ic_capture" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_back_shadown" />
-
-            <com.vinatti.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Thông tin vận đơn"
-                android:textAllCaps="true"
-                android:textColor="@color/color_5f2f75"
-                android:textSize="@dimen/text_size_18sp" />
-        </RelativeLayout>
-    </FrameLayout>
+        <com.vinatti.dingdong.views.CustomTextView
+            android:id="@+id/tv_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Quét mã vạch"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16sp" />
+    </RelativeLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -266,8 +262,40 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:orientation="vertical">
 
+                <com.vinatti.dingdong.views.CustomBoldTextView
+                    style="@style/HeaderNews"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_header_common"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="THÔNG TIN TRẠNG THÁI"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
+
+
     </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

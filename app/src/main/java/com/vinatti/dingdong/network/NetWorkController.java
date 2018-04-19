@@ -111,6 +111,11 @@ public class NetWorkController {
         Call<CommonObjectResult> call = getAPIBuilder().searchParcelCodeDelivery(parcelCode.toUpperCase(), signature);
         call.enqueue(callback);
     }
+    public static void findLocation(String ladingCode, CommonCallback<CommonObjectResult> callback) {
+        String signature = Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<CommonObjectResult> call = getAPIBuilder().findLocation(ladingCode.toUpperCase(), signature);
+        call.enqueue(callback);
+    }
 
     public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(mobileNumber + BuildConfig.PRIVATE_KEY).toUpperCase();

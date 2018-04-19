@@ -65,6 +65,15 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".functions.mainhome.location.LocationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:noHistory="false"
+            android:theme="@style/AppTheme_Actionbar"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity"
