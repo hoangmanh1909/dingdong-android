@@ -74,11 +74,10 @@ public class SharedPref {
         try {
 
             editor.remove("UniqueID");
-            editor.remove(Constants.KEY_USER_ID);
-            editor.remove(Constants.KEY_POS_ID);
-            editor.remove(Constants.KEY_SHIFT_ID);
-            editor.remove(Constants.KEY_LOGIN);
-            editor.remove(Constants.KEY_SHOW_TOOLTIP_STATISTICS_TASK);
+            editor.remove(Constants.KEY_HOTLINE_NUMBER);
+            editor.remove(Constants.KEY_USER_INFO);
+            editor.remove(Constants.KEY_MOBILE_NUMBER_SIGN_CODE);
+            editor.remove(Constants.KEY_POST_OFFICE);
 
             editor.commit();
         } catch (Exception ex) {

@@ -23,20 +23,20 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-    /*signingConfigs {
+    signingConfigs {
         debug {
             keyAlias 'DingDong'
             keyPassword 'Vinatti123456'
-            storeFile file("keystore/keystore.jks")
+            storeFile file("../keystore/keystore.jks")
             storePassword 'Vinatti123456'
         }
         release {
             keyAlias 'DingDong'
             keyPassword 'Vinatti123456'
-            storeFile file("keystore/keystore.jks")
+            storeFile file("../keystore/keystore.jks")
             storePassword 'Vinatti123456'
         }
-    }*/
+    }
     buildTypes {
         debug {
             minifyEnabled false
@@ -121,4 +121,7 @@ dependencies {
     compile 'com.github.gcacace:signature-pad:1.2.1'
     compile 'me.dm7.barcodescanner:zxing:1.9.8'
     compile 'me.dm7.barcodescanner:zbar:1.9.8'
+    compile 'com.google.android.gms:play-services-maps:15.0.0'
+    compile 'com.google.android.gms:play-services-location:15.0.0'
+    compile 'com.google.android.gms:play-services-places:15.0.0'
 }
