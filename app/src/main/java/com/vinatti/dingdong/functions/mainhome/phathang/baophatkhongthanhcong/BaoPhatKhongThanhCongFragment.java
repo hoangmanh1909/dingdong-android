@@ -26,6 +26,7 @@ import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
@@ -56,6 +57,8 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
     FormItemTextView tvDeliveryTime;
+    @BindView(R.id.tv_search)
+    CustomTextView tvSearch;
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ArrayList<ReasonInfo> mListReason;
     private ReasonInfo mReasonInfo;
@@ -103,7 +106,8 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         }
     }
 
-    @OnClick({R.id.img_back, R.id.ll_scan_qr, R.id.tv_reason, R.id.tv_solution, R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_update})
+    @OnClick({R.id.img_back, R.id.ll_scan_qr, R.id.tv_reason, R.id.tv_solution,
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_update, R.id.tv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -159,6 +163,13 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
                 break;
             case R.id.tv_update:
                 submit();
+                break;
+            case R.id.tv_search:
+                if (TextUtils.isEmpty(edtParcelCode.getText())) {
+                    Toast.showToast(getActivity(), "Bạn chưa nhập Số hiệu bưu gửi");
+                    return;
+                }
+                mPresenter.checkLadingCode(edtParcelCode.getText());
                 break;
         }
     }

@@ -97,7 +97,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             tvTitle.setText("Xác nhận tin");
             llGomHang.setVisibility(View.VISIBLE);
         } else if (mPresenter.getType() == 2) {
-            tvTitle.setText("Hoàn thành tin");
+            tvTitle.setText("Hoàn tất tin");
             llGomHang.setVisibility(View.VISIBLE);
         } else if (mPresenter.getType() == 3) {
             tvTitle.setText("Danh sách vận đơn");

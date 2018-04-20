@@ -55,13 +55,21 @@ public class BaoPhatBangKeConfirmDialog extends Dialog {
     }
 
 
-    @OnClick(R.id.tv_update)
-    public void onViewClicked() {
+    @OnClick({R.id.tv_update, R.id.btnBack})
+    public void onViewClicked(View view) {
 
-        if (mDelegate != null) {
-            mDelegate.onResponse(mDeliveryType);
-            dismiss();
+        switch (view.getId()) {
+            case R.id.tv_update:
+                if (mDelegate != null) {
+                    mDelegate.onResponse(mDeliveryType);
+                    dismiss();
+                }
+                dismiss();
+                break;
+            case R.id.btnBack:
+                dismiss();
+                break;
         }
-        dismiss();
+
     }
 }

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "853538468534",
+    "firebase_url": "https://dingdong-1524126013190.firebaseio.com",
+    "project_id": "dingdong-1524126013190",
+    "storage_bucket": "dingdong-1524126013190.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853538468534:android:eff0bb6706160df3",
+        "android_client_info": {
+          "package_name": "com.vinatti.dingdong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853538468534-fhh972mn2ct13hd07douqvsnjinfq6pu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinatti.dingdong",
+            "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
+          }
+        },
+        {
+          "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6DHBatj4ypbxhFNFhu0_fKssg50pX1ig"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

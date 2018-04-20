@@ -59,7 +59,7 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
         super.show();
     }
 
-    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_status})
+    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_status, R.id.btnBack})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_date_create:
@@ -84,6 +84,9 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
                 break;
             case R.id.tv_status:
                 showUiStatus();
+                break;
+            case R.id.btnBack:
+                dismiss();
                 break;
         }
     }

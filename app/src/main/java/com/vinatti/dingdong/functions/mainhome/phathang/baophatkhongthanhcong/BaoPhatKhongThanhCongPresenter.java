@@ -87,18 +87,38 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
 
     @Override
     public void getSolutionByReasonCode(String code) {
-       mInteractor.getSolutionByReasonCode(code , new CommonCallback<SolutionResult>((Activity) mContainerView) {
+        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SolutionResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                   mView.showSolutionSuccess(response.body().getSolutionInfos());
+                    mView.showSolutionSuccess(response.body().getSolutionInfos());
                 }
             }
 
             @Override
             protected void onError(Call<SolutionResult> call, String message) {
                 super.onError(call, message);
+            }
+        });
+    }
+
+    @Override
+    public void checkLadingCode(String parcelCode) {
+        mView.showProgress();
+        mInteractor.checkLadingCode(parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showSuccessToast(response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showErrorToast(message);
             }
         });
     }

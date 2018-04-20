@@ -1,5 +1,10 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.core.base.viper.ViewFragment;
@@ -13,6 +18,9 @@ import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The BaoPhatThanhCongDetail Fragment
@@ -57,9 +65,24 @@ public class BaoPhatThanhCongDetailFragment extends ViewFragment<BaoPhatThanhCon
         super.initLayout();
         CommonObject item = mPresenter.getBaoPhatThanhCong();
         tvParcelCode.setText(item.getParcelCode());
-        tvCollectAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
-        tvReceiveCollectFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getReceiveCollectFee()))));
-        tvAmountTotal.setText(String.format("%s đ", (NumberUtils.formatPriceNumber(Long.parseLong(item.getReceiveCollectFee()) + Long.parseLong(item.getCollectAmount())))));
+        if (!TextUtils.isEmpty(item.getCollectAmount()))
+            tvCollectAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+        else {
+            tvCollectAmount.setText("0 đ");
+        }
+        if (!TextUtils.isEmpty(item.getReceiveCollectFee()))
+            tvReceiveCollectFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getReceiveCollectFee()))));
+        else {
+            tvReceiveCollectFee.setText("0 đ");
+        }
+        if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee()))
+            tvAmountTotal.setText(String.format("%s đ", (NumberUtils.formatPriceNumber(Long.parseLong(item.getReceiveCollectFee()) + Long.parseLong(item.getCollectAmount())))));
+        else {
+            tvAmountTotal.setText("0 đ");
+        }
+        if (!TextUtils.isEmpty(item.getCollectAmount()) && TextUtils.isEmpty(item.getReceiveCollectFee()))
+            tvAmountTotal.setText(String.format("%s đ", (NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount())))));
+
         tvSenderName.setText(item.getSenderName());
         tvSenderAddress.setText(item.getSenderAddress());
         tvSenderPhone.setText(item.getSenderPhone());
@@ -80,6 +103,7 @@ public class BaoPhatThanhCongDetailFragment extends ViewFragment<BaoPhatThanhCon
 
 
     }
+
     @Override
     public void onDisplay() {
         super.onDisplay();
@@ -91,4 +115,8 @@ public class BaoPhatThanhCongDetailFragment extends ViewFragment<BaoPhatThanhCon
     }
 
 
+    @OnClick(R.id.img_back)
+    public void onViewClicked() {
+        mPresenter.back();
+    }
 }

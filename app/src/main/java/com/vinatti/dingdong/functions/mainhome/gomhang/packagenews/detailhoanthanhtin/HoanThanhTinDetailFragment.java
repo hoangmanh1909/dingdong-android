@@ -138,7 +138,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         .commit();
             }
         }
-
     }
 
     @Override

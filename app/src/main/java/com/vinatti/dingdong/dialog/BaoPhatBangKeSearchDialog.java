@@ -58,7 +58,7 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
         super.show();
     }
 
-    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift})
+    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift, R.id.btnBack})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_date_create:
@@ -83,6 +83,9 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
                 break;
             case R.id.tv_shift:
                 showUIShift();
+                break;
+            case R.id.btnBack:
+                dismiss();
                 break;
         }
     }

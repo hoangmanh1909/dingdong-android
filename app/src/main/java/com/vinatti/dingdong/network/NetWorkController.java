@@ -121,6 +121,11 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().validationAuthorized(mobileNumber, signature);
         call.enqueue(callback);
     }
+    public static void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(parcelCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().checkLadingCode(parcelCode, signature);
+        call.enqueue(callback);
+    }
 
     public static void pushToPNSDelivery(String postmanID,
                                          String ladingCode,

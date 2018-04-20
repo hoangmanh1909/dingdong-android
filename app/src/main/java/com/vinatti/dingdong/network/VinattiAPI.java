@@ -99,6 +99,12 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/Delivery/CheckLadingCode")
+    Call<SimpleResult> checkLadingCode(@Field("ParcelCode") String mobileNumber,
+                                       @Field("Signature") String signature
+    );
+
+    @FormUrlEncoded
     @POST("api/Delivery/Inquiry")
     Call<CommonObjectResult> searchParcelCodeDelivery(@Field("ParcelCode") String parcelCode,
                                                       @Field("Signature") String signature

@@ -124,4 +124,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:15.0.0'
     compile 'com.google.android.gms:play-services-location:15.0.0'
     compile 'com.google.android.gms:play-services-places:15.0.0'
+    compile 'com.google.firebase:firebase-messaging:15.0.0'
 }
+apply plugin: 'com.google.gms.google-services'

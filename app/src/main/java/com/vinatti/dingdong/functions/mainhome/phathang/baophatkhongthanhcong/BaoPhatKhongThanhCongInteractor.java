@@ -33,4 +33,9 @@ class BaoPhatKhongThanhCongInteractor extends Interactor<BaoPhatKhongThanhCongCo
     public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
         NetWorkController.getSolutionByReasonCode(code, commonCallback);
     }
+
+    @Override
+    public void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback) {
+        NetWorkController.checkLadingCode(parcelCode, callback);
+    }
 }

@@ -85,14 +85,33 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.form.FormItemEditText
-                    android:id="@+id/tv_parcel_code"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:formHint="Số hiệu bưu gửi"
-                    app:formShowClear="true" />
+                    android:orientation="horizontal">
+
+
+                    <com.vinatti.dingdong.views.form.FormItemEditText
+                        android:id="@+id/tv_parcel_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formHint="Số hiệu bưu gửi"
+                        app:formShowClear="true" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        android:id="@+id/tv_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@drawable/ic_search_blue"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Kiểm tra"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
 
                 <com.vinatti.dingdong.views.CustomBoldTextView
                     android:layout_width="wrap_content"

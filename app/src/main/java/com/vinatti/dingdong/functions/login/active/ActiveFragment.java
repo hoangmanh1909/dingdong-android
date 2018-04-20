@@ -4,8 +4,12 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.core.base.viper.ViewFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.Logger;
 import com.vinatti.dingdong.utiles.NumberUtils;
+import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.views.CustomEditText;
 
 import butterknife.BindView;
@@ -44,7 +48,15 @@ public class ActiveFragment extends ViewFragment<ActiveContract.Presenter> imple
         }
         String codeDeviceActive = Settings.Secure.getString(getActivity().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        mPresenter.activeAuthorized(mPresenter.getMobileNumber(), code, codeDeviceActive);
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String token = sharedPref.getString(Constants.KEY_PUSH_NOTIFICATION, "");
+        if (TextUtils.isEmpty(token)) {
+            token = FirebaseInstanceId.getInstance().getToken();
+            if (TextUtils.isEmpty(token))
+                token = codeDeviceActive;
+            Logger.i("==== token: " + token);
+        }
+        mPresenter.activeAuthorized(mPresenter.getMobileNumber(), code, token);
     }
 
     @Override

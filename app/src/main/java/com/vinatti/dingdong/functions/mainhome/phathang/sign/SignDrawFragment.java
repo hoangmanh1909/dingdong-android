@@ -140,8 +140,10 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
     public void callAppToMpost() {
         long sumAmount = 0;
         for (CommonObject item : mPresenter.getBaoPhatCommon()) {
-            sumAmount += Long.parseLong(item.getCollectAmount());
-            sumAmount += Long.parseLong(item.getReceiveCollectFee());
+            if (!TextUtils.isEmpty(item.getCollectAmount()))
+                sumAmount += Long.parseLong(item.getCollectAmount());
+            if (!TextUtils.isEmpty(item.getReceiveCollectFee()))
+                sumAmount += Long.parseLong(item.getReceiveCollectFee());
         }
         PushDataToMpos pushDataToMpos = new PushDataToMpos(sumAmount + "", "pay", "");
         String json = NetWorkController.getGson().toJson(pushDataToMpos);

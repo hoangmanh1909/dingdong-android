@@ -129,8 +129,10 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                 llPayMent.setVisibility(View.VISIBLE);
                 long sumAmount = 0;
                 for (CommonObject item : mPresenter.getBaoPhatCommon()) {
-                    sumAmount += Long.parseLong(item.getCollectAmount());
-                    sumAmount += Long.parseLong(item.getReceiveCollectFee());
+                    if (!TextUtils.isEmpty(item.getCollectAmount()))
+                        sumAmount += Long.parseLong(item.getCollectAmount());
+                    if (!TextUtils.isEmpty(item.getReceiveCollectFee()))
+                        sumAmount += Long.parseLong(item.getReceiveCollectFee());
                 }
                 tvCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount) + " đ");
             } else {
@@ -158,9 +160,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                     createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     calendarCreate.set(Calendar.DATE, -1);
-                }
-                else
-                {
+                } else {
                     calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
                 }
                 if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&

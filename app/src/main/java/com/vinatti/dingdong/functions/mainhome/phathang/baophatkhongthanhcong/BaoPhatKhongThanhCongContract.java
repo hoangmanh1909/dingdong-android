@@ -25,6 +25,7 @@ interface BaoPhatKhongThanhCongContract {
         void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note, CommonCallback<SimpleResult> commonCallback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
+        void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -41,6 +42,7 @@ interface BaoPhatKhongThanhCongContract {
         void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note);
 
         void getSolutionByReasonCode(String code);
+        void checkLadingCode(String parcelCode);
     }
 }
 
