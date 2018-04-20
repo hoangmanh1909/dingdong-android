@@ -10,6 +10,7 @@ import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.StatusInfo;
 import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
 import java.util.List;
@@ -37,6 +38,8 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         CustomTextView tvStatusMessage;
         @BindView(R.id.tv_StatusDate_StatusTime)
         CustomTextView tvStatusDateStatusTime;
+        @BindView(R.id.tv_StatusCode)
+        CustomMediumTextView tvStatusCode;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -48,6 +51,11 @@ public class StatusAdapter extends RecyclerBaseAdapter {
             tvPOCodePOName.setText(String.format("%s - %s", item.getPOCode(), item.getPOName()));
             tvStatusMessage.setText(item.getStatusMessage());
             tvStatusDateStatusTime.setText(String.format("%s %s", item.getStatusDate(), item.getStatusTime()));
+            if (item.getStatusCode().equals("C14")) {
+                tvStatusCode.setText("Thành công");
+            } else {
+                tvStatusCode.setText("Không thành công");
+            }
         }
     }
 }

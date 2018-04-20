@@ -13,6 +13,8 @@ public class StatusInfo {
     String StatusDate;
     @SerializedName("StatusTime")
     String StatusTime;
+    @SerializedName("StatusCode")
+    String StatusCode;
 
     public String getPOCode() {
         return POCode;
@@ -32,5 +34,9 @@ public class StatusInfo {
 
     public String getStatusTime() {
         return StatusTime;
+    }
+
+    public String getStatusCode() {
+        return StatusCode;
     }
 }

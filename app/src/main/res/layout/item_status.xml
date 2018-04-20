@@ -42,17 +42,35 @@
 
         </LinearLayout>
 
-        <com.vinatti.dingdong.views.CustomTextView
-            android:id="@+id/tv_StatusDate_StatusTime"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dimen_5dp"
             android:layout_weight="5"
-            android:gravity="right"
-            android:text="time: "
-            android:textColor="@color/grey"
-            android:textSize="@dimen/text_size_12sp" />
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingBottom="@dimen/dimen_5dp">
+
+            <com.vinatti.dingdong.views.CustomTextView
+                android:id="@+id/tv_StatusDate_StatusTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:gravity="right"
+                android:text="time: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+
+            <com.vinatti.dingdong.views.CustomMediumTextView
+                android:id="@+id/tv_StatusCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:gravity="right"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/text_size_12sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
