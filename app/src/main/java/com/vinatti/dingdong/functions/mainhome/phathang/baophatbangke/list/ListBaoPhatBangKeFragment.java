@@ -51,10 +51,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private ListBaoPhatBangKeAdapter mAdapter;
     private UserInfo mUserInfo;
     private String mDate;
-    private String mOrder;
-    private String mRoute;
     private Calendar mCalendar;
     private ArrayList<ReasonInfo> mListReason;
+    private String mShiftID;
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -101,12 +100,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
-                public void onResponse(String fromDate, String order, String route) {
+                public void onResponse(String fromDate, String shiftID) {
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                    mOrder = order;
-                    mRoute = route;
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, order, route);
+                    mShiftID = shiftID;
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID);
 
                 }
             }).show();
@@ -117,7 +115,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void onDisplay() {
         super.onDisplay();
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate,mShiftID);
         }
     }
 

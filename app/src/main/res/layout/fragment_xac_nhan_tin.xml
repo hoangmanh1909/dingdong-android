@@ -14,14 +14,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/img_back"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
-                android:padding="@dimen/dimen_10dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_back_shadown"
-             />
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
 
             <com.vinatti.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_title"
@@ -34,6 +34,28 @@
                 android:textSize="@dimen/text_size_18sp" />
         </RelativeLayout>
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_gom_hang"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_accept_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_accept_reject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/n_gray_text"
+            android:textSize="@dimen/text_size_16sp" />
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

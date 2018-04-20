@@ -70,9 +70,7 @@ public interface VinattiAPI {
     @POST("api/Delivery/DeliveryPostman")
     Call<CommonObjectListResult> searchDeliveryPostman(@Field("PostmanId") String postmanID,
                                                        @Field("FromDate") String fromDate,
-                                                       @Field("Route") String route,
-                                                       @Field("Order") String order
-
+                                                       @Field("ShiftID ") String shiftID
     );
 
     @FormUrlEncoded

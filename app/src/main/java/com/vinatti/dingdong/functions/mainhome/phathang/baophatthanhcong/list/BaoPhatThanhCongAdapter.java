@@ -58,9 +58,11 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
             tvReceiverName.setText(item.getReciverName());
             tvReceiverAddress.setText(item.getReciverAddress());
             if (!TextUtils.isEmpty(item.getCollectAmount()) && TextUtils.isEmpty(item.getReceiveCollectFee())) {
-                tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
-            } else {
                 tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()) + Long.parseLong(item.getReceiveCollectFee()))));
+
+            } else {
+                if (!TextUtils.isEmpty(item.getCollectAmount()))
+                    tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
             }
         }
     }

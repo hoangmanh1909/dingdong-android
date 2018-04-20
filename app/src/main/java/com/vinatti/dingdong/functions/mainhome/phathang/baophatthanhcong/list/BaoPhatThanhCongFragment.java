@@ -16,14 +16,19 @@ import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
+import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.utiles.Constants;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The BaoPhatThanhCong Fragment
@@ -37,7 +42,6 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     RecyclerView recycler;
     @BindView(R.id.ll_scan_qr)
     RelativeLayout llScanQr;
-    Unbinder unbinder;
     private BaoPhatThanhCongAdapter mAdapter;
     private List<CommonObject> mList;
 
@@ -81,6 +85,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
+        EventBus.getDefault().register(this);
 
     }
 
@@ -149,6 +154,21 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 if (mList != null && !mList.isEmpty())
                     mPresenter.pushViewConfirmAll(mList);
                 break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BaoPhatCallback event) {
+        /* Do something */
+        if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
+            mList.clear();
+            mAdapter.clear();
         }
     }
 }

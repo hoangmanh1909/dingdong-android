@@ -111,10 +111,10 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @Override
     public void showView(CommonObject commonObject) {
-        if (commonObject.getStatusCode().equals("P0")) {
-            btnConfirm.setEnabled(false);
-        } else {
+        if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
             btnConfirm.setEnabled(true);
+        } else {
+            btnConfirm.setEnabled(false);
         }
         mHoanThanhTin = commonObject;
         tvAssignDateTime.setText(commonObject.getAssignDateTime());

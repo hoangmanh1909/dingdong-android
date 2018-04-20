@@ -3,13 +3,10 @@ package com.vinatti.dingdong.functions.mainhome.location;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,7 +16,6 @@ import com.core.utils.RecyclerUtils;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
-import com.vinatti.dingdong.functions.mainhome.phathang.thongke.history.HistoryAdapter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.StatusInfo;
 import com.vinatti.dingdong.utiles.Toast;
@@ -29,9 +25,7 @@ import com.vinatti.dingdong.views.form.FormItemEditText;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The Location Fragment
@@ -139,11 +133,11 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         tvSenderAddress.setText(commonObject.getSenderAddress());
         tvReceiverName.setText(commonObject.getReciverName());
         tvReceiverAddress.setText(commonObject.getReceiverAddress());
-        if (commonObject.getStatus() == null || commonObject.getStatus().isEmpty()) {
+        if (commonObject.getStatusInfoArrayList() == null || commonObject.getStatusInfoArrayList().isEmpty()) {
             llStatus.setVisibility(View.GONE);
         } else {
-            mList = commonObject.getStatus();
-            mAdapter.addItems(commonObject.getStatus());
+            mList = commonObject.getStatusInfoArrayList();
+            mAdapter.addItems(commonObject.getStatusInfoArrayList());
             llStatus.setVisibility(View.VISIBLE);
         }
     }

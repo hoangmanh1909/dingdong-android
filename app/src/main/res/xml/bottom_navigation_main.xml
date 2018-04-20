@@ -15,5 +15,5 @@
     <tab
         id="@+id/action_location"
         icon="@drawable/ic_location"
-        title="Dịch vụ" />
+        title="Định vị" />
 </tabs>

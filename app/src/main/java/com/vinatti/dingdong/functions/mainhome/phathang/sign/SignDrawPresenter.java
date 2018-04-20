@@ -6,6 +6,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.PostOffice;
 import com.vinatti.dingdong.model.SimpleResult;
@@ -13,6 +14,8 @@ import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.SharedPref;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
 
     private List<CommonObject> mBaoPhatCommon;
     private int mCount = 0;
+    private int mType;
 
     public SignDrawPresenter(ContainerView containerView) {
         super(containerView);
@@ -62,7 +66,19 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         mView.showProgress();
         for (CommonObject item : mBaoPhatCommon) {
             String ladingCode = item.getParcelCode();
-            String deliveryPOCode = item.getPoCode();
+            String deliveryPOCode;
+            if (mType == Constants.TYPE_BAO_PHAT_THANH_CONG) {
+                String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                if (!posOfficeJson.isEmpty()) {
+                    PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+                    deliveryPOCode = postOffice.getCode();
+                } else {
+                    deliveryPOCode = item.getDeliveryPOCode();
+                }
+
+            } else {
+                deliveryPOCode = item.getPoCode();
+            }
             String deliveryDate = item.getDeliveryDate();
             String deliveryTime = item.getDeliveryTime();
             String receiverName = item.getRealReceiverName();
@@ -88,6 +104,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             back();
                             back();
                             back();
+                            EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG));
                         }
                     } else {
                         mView.showError(response.body().getMessage());
@@ -164,6 +181,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                                     back();
                                     back();
                                     back();
+                                    EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG));
                                 }
                             } else {
                                 mView.showError(response.body().getMessage());
@@ -196,4 +214,8 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     }
 
 
+    public SignDrawPresenter setType(int type) {
+        mType = type;
+        return this;
+    }
 }

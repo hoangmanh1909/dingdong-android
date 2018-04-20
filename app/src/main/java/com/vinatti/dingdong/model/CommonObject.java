@@ -88,7 +88,10 @@ public class CommonObject {
     @SerializedName("CheckStatusNo")
     private boolean checkStatusNo;
     @SerializedName("Status")
-    private ArrayList<StatusInfo> status;
+    private String status;
+
+    @SerializedName("ListStatus")
+    private ArrayList<StatusInfo> statusInfoArrayList;
 
 
     public String getCount() {
@@ -305,8 +308,8 @@ public class CommonObject {
         return checkStatusNo;
     }
 
-    public ArrayList<StatusInfo> getStatus() {
-        return status;
+    public ArrayList<StatusInfo> getStatusInfoArrayList() {
+        return statusInfoArrayList;
     }
 
     public String getLoadDate() {

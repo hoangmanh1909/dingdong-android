@@ -11,6 +11,7 @@ import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail.
 import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectResult;
+import com.vinatti.dingdong.utiles.Constants;
 
 import java.util.List;
 
@@ -79,6 +80,6 @@ public class BaoPhatThanhCongPresenter extends Presenter<BaoPhatThanhCongContrac
 
     @Override
     public void pushViewConfirmAll(List<CommonObject> list) {
-        new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(list).pushView();
+        new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(list).setType(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
     }
 }

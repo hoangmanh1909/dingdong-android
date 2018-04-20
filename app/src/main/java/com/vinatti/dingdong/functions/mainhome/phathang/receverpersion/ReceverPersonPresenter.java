@@ -14,6 +14,7 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
         implements ReceverPersonContract.Presenter {
 
     private List<CommonObject> mBaoPhatBangke;
+    private int mType;
 
     public ReceverPersonPresenter(ContainerView containerView) {
         super(containerView);
@@ -46,6 +47,11 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
 
     @Override
     public void nextViewSign() {
-        new SignDrawPresenter(mContainerView).setBaoPhatBangKe(mBaoPhatBangke).pushView();
+        new SignDrawPresenter(mContainerView).setBaoPhatBangKe(mBaoPhatBangke).setType(mType).pushView();
+    }
+
+    public ReceverPersonPresenter setType(int type) {
+        this.mType = type;
+        return this;
     }
 }

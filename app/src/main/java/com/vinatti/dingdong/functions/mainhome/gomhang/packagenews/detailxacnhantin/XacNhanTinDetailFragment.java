@@ -108,9 +108,9 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     @Override
     public void showView(CommonObject commonObject) {
         if (commonObject.getStatusCode().equals("P0")) {
-            btnConfirm.setEnabled(false);
-        } else {
             btnConfirm.setEnabled(true);
+        } else {
+            btnConfirm.setEnabled(false);
         }
         tvAssignDateTime.setText(commonObject.getAssignDateTime());
         tvAssignFullName.setText(commonObject.getAssignFullName());

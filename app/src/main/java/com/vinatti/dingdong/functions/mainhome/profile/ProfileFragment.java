@@ -105,6 +105,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 getDeviceLocation();
             }
 
+        } else {
+            mLocationPermissionGranted = true;
+            getDeviceLocation();
         }
     }
 
@@ -135,7 +138,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().finishAffinity();
                 startActivity(intent);
                 break;

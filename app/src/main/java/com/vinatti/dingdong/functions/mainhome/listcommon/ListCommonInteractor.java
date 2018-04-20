@@ -22,6 +22,6 @@ class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
 
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String route, String order, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchDeliveryPostman(postmanID, fromDate, route, order,callback);
+       // NetWorkController.searchDeliveryPostman(postmanID, fromDate, route, order,callback);
     }
 }

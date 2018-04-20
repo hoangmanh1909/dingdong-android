@@ -27,8 +27,7 @@ interface ListBaoPhatBangKeContract {
                                        String toAssignDate, CommonCallback<CommonObjectListResult> callback);
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
-                                   String route,
-                                   String order, CommonCallback<CommonObjectListResult> callback);
+                                   String shiftID, CommonCallback<CommonObjectListResult> callback);
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
         void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, CommonCallback<SimpleResult> commonCallback);
@@ -52,8 +51,7 @@ interface ListBaoPhatBangKeContract {
                                        String toAssignDate);
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
-                                   String route,
-                                   String order);
+                                   String shiftID);
         void showDetailView(CommonObject commonObject);
         ListBaoPhatBangKePresenter setType(int type);
         void getReasons();
