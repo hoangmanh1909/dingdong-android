@@ -137,7 +137,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             llStatus.setVisibility(View.GONE);
         } else {
             mList = commonObject.getStatusInfoArrayList();
-            mAdapter.addItems(commonObject.getStatusInfoArrayList());
+            mAdapter.refresh(commonObject.getStatusInfoArrayList());
             llStatus.setVisibility(View.VISIBLE);
         }
     }
