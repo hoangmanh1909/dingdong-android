@@ -2,8 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:focusable="true"
     android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <FrameLayout
@@ -324,10 +324,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_10dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:gravity="right"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10dp">
 
                 <com.vinatti.dingdong.views.CustomTextView
                     android:id="@+id/btn_confirm"
@@ -335,12 +335,12 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_confirm_continue"
                     android:drawableLeft="@drawable/ic_done"
+                    android:gravity="center"
                     android:paddingLeft="@dimen/dimen_20dp"
                     android:paddingTop="@dimen/dimen_5dp"
                     android:paddingRight="@dimen/dimen_20dp"
                     android:paddingBottom="@dimen/dimen_5dp"
                     android:text="Xác nhận"
-                    android:gravity="center"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18sp" />
@@ -349,15 +349,15 @@
                     android:id="@+id/btn_reject"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_cancel"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_reject"
+                    android:background="@drawable/bg_reject_continue"
+                    android:drawableLeft="@drawable/ic_cancel"
+                    android:gravity="center"
                     android:paddingLeft="@dimen/dimen_20dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingRight="@dimen/dimen_20dp"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:text="Từ chối"
-                    android:gravity="center"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18sp" />

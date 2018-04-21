@@ -46,6 +46,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     @BindView(R.id.btn_reject)
     CustomTextView btnReject;
     private String mUser;
+    private int mType;
 
     public static XacNhanTinDetailFragment getInstance() {
         return new XacNhanTinDetailFragment();
@@ -73,6 +74,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
 
                 if (!mUser.isEmpty()) {
                     UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
+                    mType = 1;
                     mPresenter.confirmOrderPostmanCollect(mPresenter.getCommonObject().getOrderPostmanID(), userInfo.getiD(), "P1", "");
                 }
                 break;
@@ -82,6 +84,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
                     public void onReasonResponse(String reason) {
                         if (!mUser.isEmpty()) {
                             UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
+                            mType = 2;
                             mPresenter.confirmOrderPostmanCollect(mPresenter.getCommonObject().getOrderPostmanID(), userInfo.getiD(), "P2", reason);
                         }
                     }
@@ -109,8 +112,10 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     public void showView(CommonObject commonObject) {
         if (commonObject.getStatusCode().equals("P0")) {
             btnConfirm.setEnabled(true);
+            btnReject.setEnabled(true);
         } else {
             btnConfirm.setEnabled(false);
+            btnReject.setEnabled(false);
         }
         tvAssignDateTime.setText(commonObject.getAssignDateTime());
         tvAssignFullName.setText(commonObject.getAssignFullName());
@@ -134,6 +139,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();
                         btnConfirm.setEnabled(false);
+                        btnReject.setEnabled(false);
                     }
                 }).show();
     }
