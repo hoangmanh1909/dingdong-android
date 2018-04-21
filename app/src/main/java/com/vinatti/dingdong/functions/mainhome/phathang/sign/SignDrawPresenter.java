@@ -101,10 +101,8 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             mView.callAppToMpost();
                         } else {
                             mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                            back();
-                            back();
-                            back();
-                            EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG));
+                            mView.finishView();
+
                         }
                     } else {
                         mView.showError(response.body().getMessage());
@@ -178,10 +176,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                                     }
                                 } else {
                                     mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                    back();
-                                    back();
-                                    back();
-                                    EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG));
+                                    mView.finishView();
                                 }
                             } else {
                                 mView.showError(response.body().getMessage());

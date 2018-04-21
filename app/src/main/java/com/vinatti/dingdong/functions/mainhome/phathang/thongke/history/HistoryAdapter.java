@@ -42,6 +42,8 @@ public class HistoryAdapter extends RecyclerBaseAdapter {
         CustomTextView tvSolutionName;
         @BindView(R.id.tv_delivery_date)
         CustomTextView tvDeliveryDate;
+        @BindView(R.id.tv_note)
+        CustomTextView tvNote;
         @BindView(R.id.tv_status_name)
         CustomBoldTextView tvStatusName;
 
@@ -68,8 +70,14 @@ public class HistoryAdapter extends RecyclerBaseAdapter {
                 tvReasonName.setVisibility(View.GONE);
                 tvSolutionName.setVisibility(View.GONE);
             }
-            tvDeliveryDate.setText("Thời gian phát: " + item.getDeliveryDate());
-            tvStatusName.setText("Trạng thái: " + item.getStatusName());
+            tvDeliveryDate.setText(String.format("Thời gian phát: %s", item.getDeliveryDate()));
+            tvStatusName.setText(String.format("Trạng thái: %s", item.getStatusName()));
+            tvNote.setText(item.getNote());
+            if (item.getStatus().equals("C14")) {
+                tvStatusName.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+            } else {
+                tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_605e60));
+            }
         }
     }
 }

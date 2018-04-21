@@ -153,6 +153,12 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
 
     }
 
+    @Override
+    public void finishView() {
+        if (getActivity() != null)
+            getActivity().finish();
+    }
+
     class PushDataToMpos {
         String amount;
         String description;

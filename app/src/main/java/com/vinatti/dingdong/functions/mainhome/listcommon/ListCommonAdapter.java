@@ -58,6 +58,22 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
             } else {
                 tvContactDescription.setText(item.getDescription());
             }
+
+
+            if (mType == 1) {
+                if (item.getStatusCode().equals("P0")) {
+                    tvCode.setTextColor(mContext.getResources().getColor(R.color.color_605e60));
+                } else {
+                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                }
+
+            } else if (mType == 2) {
+                if (item.getStatusCode().equals("P1") || item.getStatusCode().equals("P5")) {
+                    tvCode.setTextColor(mContext.getResources().getColor(R.color.color_605e60));
+                } else {
+                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                }
+            }
         }
     }
 }

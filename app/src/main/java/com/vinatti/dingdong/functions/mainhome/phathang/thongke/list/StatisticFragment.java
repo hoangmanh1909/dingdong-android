@@ -1,7 +1,10 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.thongke.list;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,12 +16,15 @@ import com.vinatti.dingdong.callback.StatictisSearchCallback;
 import com.vinatti.dingdong.dialog.StatictisSearchDialog;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.views.CustomBoldTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The Statistic Fragment
@@ -34,6 +40,10 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
     Calendar calendarDate;
+    @BindView(R.id.tv_success_count)
+    CustomBoldTextView tvSuccessCount;
+    @BindView(R.id.tv_fail_count)
+    CustomBoldTextView tvFailCount;
     private String mDateSearch;
     private String mStatus;
     private ArrayList<CommonObject> mList;
@@ -67,7 +77,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
-        mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), "C14");
+        mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), "");
     }
 
     @OnClick({R.id.img_back, R.id.img_search})
@@ -97,6 +107,17 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         mAdapter.addItems(list);
         recycler.setVisibility(View.VISIBLE);
         tvNodata.setVisibility(View.GONE);
+        int successCount = 0;
+        int failCount = 0;
+        for (CommonObject item : list) {
+            if (item.getStatus().equals("C14")) {
+                successCount++;
+            } else {
+                failCount++;
+            }
+        }
+        tvSuccessCount.setText("Báo phát thành công: " + successCount);
+        tvFailCount.setText("Báo phát không thành công: " + failCount);
     }
 
     @Override

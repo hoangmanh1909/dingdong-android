@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textColor="@color/orange"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.vinatti.dingdong.views.CustomBoldTextView
@@ -51,8 +51,9 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+
             <com.vinatti.dingdong.views.CustomTextView
-                android:id="@+id/tv_contact_address"
+                android:id="@+id/tv_contact_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
@@ -62,7 +63,7 @@
                 android:textSize="@dimen/text_size_12sp" />
 
             <com.vinatti.dingdong.views.CustomTextView
-                android:id="@+id/tv_contact_description"
+                android:id="@+id/tv_contact_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"

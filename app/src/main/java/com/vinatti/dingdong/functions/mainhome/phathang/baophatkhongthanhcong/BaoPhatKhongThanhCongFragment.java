@@ -259,6 +259,13 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         showUISolution();
     }
 
+    @Override
+    public void viewFinish() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+    }
+
     private void showUISolution() {
         ArrayList<Item> items = new ArrayList<>();
         for (SolutionInfo item : mListSolution) {

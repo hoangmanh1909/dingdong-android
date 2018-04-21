@@ -93,6 +93,9 @@ public class CommonObject {
     @SerializedName("ListStatus")
     private ArrayList<StatusInfo> statusInfoArrayList;
 
+    @SerializedName("Note")
+    private String note;
+
 
     public String getCount() {
         return count;
@@ -314,5 +317,13 @@ public class CommonObject {
 
     public String getLoadDate() {
         return loadDate;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

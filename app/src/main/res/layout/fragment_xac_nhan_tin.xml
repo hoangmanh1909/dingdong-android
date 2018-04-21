@@ -48,14 +48,14 @@
             android:id="@+id/tv_accept_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/blue"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_16sp" />
 
         <com.vinatti.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_accept_reject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/orange"
+            android:textColor="@color/color_605e60"
             android:textSize="@dimen/text_size_16sp" />
     </LinearLayout>
 

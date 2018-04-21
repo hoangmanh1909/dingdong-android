@@ -40,6 +40,8 @@ interface SignDrawContract {
     void showSuccessMessage(String message);
 
     void callAppToMpost();
+
+      void finishView();
   }
 
   interface Presenter extends IPresenter<View, Interactor> {

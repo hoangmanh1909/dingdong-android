@@ -74,6 +74,9 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
                         super.onSuccess(call, response);
                         mView.hideProgress();
                         mView.showSuccessToast(response.body().getMessage());
+                        if (response.body().getErrorCode().equals("00")) {
+                            mView.viewFinish();
+                        }
                     }
 
                     @Override

@@ -32,6 +32,8 @@ interface BaoPhatKhongThanhCongContract {
         void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
 
         void showSolutionSuccess(ArrayList<SolutionInfo> solutionInfos);
+
+        void viewFinish();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

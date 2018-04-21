@@ -24,7 +24,7 @@
                 android:id="@+id/tv_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orange"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.vinatti.dingdong.views.CustomBoldTextView
@@ -60,14 +60,31 @@
                 android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_status_name"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_weight="3"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/text_size_14sp" />
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingBottom="@dimen/dimen_5dp">
+
+            <com.vinatti.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_status_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.vinatti.dingdong.views.CustomTextView
+                android:id="@+id/tv_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:gravity="right"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
