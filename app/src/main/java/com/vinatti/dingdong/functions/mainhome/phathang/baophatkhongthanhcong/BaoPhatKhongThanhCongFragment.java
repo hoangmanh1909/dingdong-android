@@ -179,10 +179,10 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
                 });
                 break;
             case R.id.tv_reason:
-                // tvReason.showDropDown();
+                 tvReason.showDropDown();
                 break;
             case R.id.tv_solution:
-                // tvSolution.showDropDown();
+                 tvSolution.showDropDown();
                 break;
             case R.id.tv_deliveryDate:
                 String createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);

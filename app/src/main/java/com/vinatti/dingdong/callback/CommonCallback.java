@@ -3,6 +3,7 @@ package com.vinatti.dingdong.callback;
 import android.accounts.AuthenticatorException;
 import android.accounts.NetworkErrorException;
 import android.app.Activity;
+import android.content.Context;
 
 
 import com.vinatti.dingdong.R;
@@ -23,13 +24,13 @@ import retrofit2.Response;
 
 
 public class CommonCallback<T extends SimpleResult> implements Callback<T> {
-    private Activity mActivity;
+    private Context mActivity;
     private static final String TAG = CommonCallback.class.getSimpleName();
     private boolean isDismissProgress = true;
 
     private boolean isInternalErrorDisplayed = true;
 
-    public CommonCallback(Activity activity) {
+    public CommonCallback(Context activity) {
         this.isInternalErrorDisplayed = false;
         mActivity = activity;
     }
@@ -56,9 +57,6 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
         isDismissProgress = dismissProgress;
     }
 
-    public Activity getActivity() {
-        return mActivity;
-    }
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {

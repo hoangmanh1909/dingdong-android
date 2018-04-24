@@ -132,6 +132,15 @@ public interface VinattiAPI {
                                          @Field("SignatureCapture") String signatureCapture,
                                          @Field("Note") String note,
                                          @Field("Signature") String signature);
+    @FormUrlEncoded
+    @POST("api/CallCenter/AddNew")
+    Call<SimpleResult> addNewCallCenter(@Field("AmndEmp") String amndEmp ,
+                                         @Field("PostmanID") String postmanID,
+                                         @Field("SenderPhone") String senderPhone,
+                                         @Field("ReceiverPhone") String receiverPhone,
+                                         @Field("CallTime") String callTime,
+                                         @Field("CreatedDate") String createdDate,
+                                         @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/Payment")

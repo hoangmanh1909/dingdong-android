@@ -1,6 +1,10 @@
 package com.vinatti.dingdong.functions.login;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -30,7 +34,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     private SharedPref mSharedPref;
-
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.PROCESS_OUTGOING_CALLS};
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     public static LoginFragment getInstance() {
         return new LoginFragment();
     }
@@ -48,8 +53,17 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;C23486DFEA05C7620062B8576BB75F1092C599680C5EC150D0011097538088D9");
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "01685537906;0899720CE3D814139183738C292E0FB68E3BBA701FC36BA1CED855EE935D27C7");
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+        checkPermissionCall();
     }
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
 
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();

@@ -69,6 +69,7 @@ public class NetWorkController {
         Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId);
         call.enqueue(callback);
     }
+
     public static void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback) {
         Call<CommonObjectListResult> call = getAPIBuilder().getHistoryDelivery(parcelCode);
         call.enqueue(callback);
@@ -110,6 +111,7 @@ public class NetWorkController {
         Call<CommonObjectResult> call = getAPIBuilder().searchParcelCodeDelivery(parcelCode.toUpperCase(), signature);
         call.enqueue(callback);
     }
+
     public static void findLocation(String ladingCode, CommonCallback<CommonObjectResult> callback) {
         String signature = Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<CommonObjectResult> call = getAPIBuilder().findLocation(ladingCode.toUpperCase(), signature);
@@ -121,6 +123,7 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().validationAuthorized(mobileNumber, signature);
         call.enqueue(callback);
     }
+
     public static void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().checkLadingCode(parcelCode, signature);
@@ -141,6 +144,17 @@ public class NetWorkController {
                                          String signatureCapture, String note, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note, signature);
+        call.enqueue(callback);
+    }
+
+    public static void addNewCallCenter(String amndEmp,
+                                        String postmanID,
+                                        String senderPhone,
+                                        String receiverPhone,
+                                        String callTime,
+                                        String createdDate, CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(amndEmp + postmanID + senderPhone + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().addNewCallCenter(amndEmp, postmanID, senderPhone, receiverPhone, callTime, createdDate, signature);
         call.enqueue(callback);
     }
 
