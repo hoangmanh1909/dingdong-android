@@ -31,8 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:drawableLeft="@drawable/ic_code"
+                android:drawableLeft="@drawable/ic_barcode"
+                android:drawablePadding="@dimen/dimen_8dp"
                 android:gravity="center|left"
+                android:paddingLeft="@dimen/dimen_8dp"
                 android:text="abc"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />

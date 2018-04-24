@@ -24,6 +24,8 @@ interface CallServiceContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         void callForward(String phone);
+
+        void pushHistory();
     }
 }
 

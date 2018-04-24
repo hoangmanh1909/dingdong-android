@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.callservice;
+package com.vinatti.dingdong.functions.mainhome.callservice.history;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.functions.mainhome.callservice.history.HistoryCallPresenter;
+import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
@@ -17,18 +17,20 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * The CallService Presenter
+ * The History Presenter
  */
-public class CallServicePresenter extends Presenter<CallServiceContract.View, CallServiceContract.Interactor>
-        implements CallServiceContract.Presenter {
+public class HistoryCallPresenter extends Presenter<HistoryCallContract.View, HistoryCallContract.Interactor>
+        implements HistoryCallContract.Presenter {
 
-    public CallServicePresenter(ContainerView containerView) {
+    private String mParcelCode;
+
+    public HistoryCallPresenter(ContainerView containerView) {
         super(containerView);
     }
 
     @Override
-    public CallServiceContract.View onCreateView() {
-        return CallServiceFragment.getInstance();
+    public HistoryCallContract.View onCreateView() {
+        return HistoryCallFragment.getInstance();
     }
 
     @Override
@@ -37,31 +39,46 @@ public class CallServicePresenter extends Presenter<CallServiceContract.View, Ca
     }
 
     @Override
-    public CallServiceContract.Interactor onCreateInteractor() {
-        return new CallServiceInteractor(this);
+    public HistoryCallContract.Interactor onCreateInteractor() {
+        return new HistoryCallInteractor(this);
+    }
+
+    public HistoryCallPresenter setParcelCode(String parcelCode) {
+        this.mParcelCode = parcelCode;
+        return this;
     }
 
     @Override
-    public void callForward(String phone) {
+    public String getParcelCode() {
+        return mParcelCode;
+    }
+
+    @Override
+    public void getHistory(String fromDate, String toDate) {
+        mView.showProgress();
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
+        String useiid = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             callerNumber = userInfo.getMobileNumber();
+            useiid = userInfo.getiD();
         }
-        String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
-        mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showCallSuccess();
-                } else {
-                    mView.showErrorToast(response.body().getMessage());
+                /*if(response.body().getErrorCode().equals("00"))
+                {
+                    mView.showListSuccess(response.body().getList());
                 }
+                else
+                {
+                    mView.showErrorToast(response.body().getMessage());
+                    mView.showListEmpty();
+                }*/
             }
 
             @Override
@@ -71,11 +88,5 @@ public class CallServicePresenter extends Presenter<CallServiceContract.View, Ca
                 mView.showErrorToast(message);
             }
         });
-
-    }
-
-    @Override
-    public void pushHistory() {
-        new HistoryCallPresenter(mContainerView).presentView();
     }
 }

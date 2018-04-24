@@ -158,6 +158,14 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void searchCallCenter(String postmanID,
+                                        String fromDate,
+                                        String toDate, CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(postmanID + fromDate + toDate + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().searchCallCenter(postmanID, fromDate, toDate, signature);
+        call.enqueue(callback);
+    }
+
     public static void paymentDelivery(String postmanID,
                                        String parcelCode,
                                        String mobileNumber,

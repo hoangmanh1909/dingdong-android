@@ -3,6 +3,7 @@ package com.core.base;
 import com.core.base.log.Logger;
 import com.core.common.R;
 import com.core.utils.ActivityUtils;
+import com.core.utils.ViewUtils;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public abstract class BaseFragment extends Fragment {
     ButterKnife.bind(this, mRootView);
 
     mRootView.setClickable(true);
+    ViewUtils.setupUI(mRootView,getActivity());
     return mRootView;
   }
 

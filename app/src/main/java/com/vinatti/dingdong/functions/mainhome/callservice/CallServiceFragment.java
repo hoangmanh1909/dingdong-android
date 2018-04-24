@@ -56,7 +56,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_call})
+    @OnClick({R.id.img_back, R.id.img_call, R.id.img_history})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -68,10 +68,13 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
                     return;
                 }
                 if (!NumberUtils.checkMobileNumber(edtPhone.getText())) {
-                    Toast.showToast(getActivity(),"Số điện thoại không hợp lệ.");
+                    Toast.showToast(getActivity(), "Số điện thoại không hợp lệ.");
                     return;
                 }
                 mPresenter.callForward(edtPhone.getText().trim());
+                break;
+            case R.id.img_history:
+                mPresenter.pushHistory();
                 break;
         }
     }
@@ -79,7 +82,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:"+Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse("tel:" + Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 
