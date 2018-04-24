@@ -1,7 +1,11 @@
 package com.vinatti.dingdong.functions.mainhome.callservice;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +25,8 @@ import butterknife.OnClick;
  */
 public class CallServiceFragment extends ViewFragment<CallServiceContract.Presenter> implements CallServiceContract.View {
 
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 99;
     @BindView(R.id.edt_phone)
     FormItemEditText edtPhone;
 
@@ -37,6 +43,17 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     public void initLayout() {
         super.initLayout();
         edtPhone.getEditText().setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        checkPermissionCall();
+    }
+
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+
+        }
     }
 
     @OnClick({R.id.img_back, R.id.img_call})
@@ -61,8 +78,8 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
 
     @Override
     public void showCallSuccess() {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:"+Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 

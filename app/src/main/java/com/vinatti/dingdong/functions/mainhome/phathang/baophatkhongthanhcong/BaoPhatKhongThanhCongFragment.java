@@ -1,23 +1,24 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.BarCodeCallback;
-import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.PostOffice;
 import com.vinatti.dingdong.model.ReasonInfo;
+import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.SolutionInfo;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
@@ -26,6 +27,8 @@ import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.views.CustomAutoCompleteTextView;
+import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
@@ -48,17 +51,21 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @BindView(R.id.tv_parcel_code)
     FormItemEditText edtParcelCode;
     @BindView(R.id.tv_reason)
-    FormItemTextView tvReason;
+    CustomAutoCompleteTextView tvReason;
     @BindView(R.id.edt_note)
     FormItemEditText edtNote;
     @BindView(R.id.tv_solution)
-    FormItemTextView tvSolution;
+    CustomAutoCompleteTextView tvSolution;
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
     FormItemTextView tvDeliveryTime;
     @BindView(R.id.tv_search)
     CustomTextView tvSearch;
+    @BindView(R.id.tv_status)
+    CustomTextView tvStatus;
+    @BindView(R.id.tv_update)
+    CustomMediumTextView tvUpdate;
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ArrayList<ReasonInfo> mListReason;
     private ReasonInfo mReasonInfo;
@@ -68,6 +75,10 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     private Calendar calDate;
     private int mHour;
     private int mMinute;
+    private String[] mListReasonString;
+    private String[] mListSolutionString;
+    private ArrayAdapter<String> mAdapterReason;
+    private ArrayAdapter<String> mAdapterSolution;
 
     public static BaoPhatKhongThanhCongFragment getInstance() {
         return new BaoPhatKhongThanhCongFragment();
@@ -93,6 +104,51 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         }
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
         edtParcelCode.getEditText().setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        tvReason.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (ReasonInfo info : mListReason) {
+                    if (info.getName().equals(tvReason.getText().toString())) {
+                        mReasonInfo = info;
+                    }
+                }
+                if (mReasonInfo != null) {
+                    mListSolution = null;
+                    tvSolution.setText("");
+                    loadSolution();
+                    if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
+                        edtNote.setVisibility(View.VISIBLE);
+                    } else {
+                        edtNote.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+        tvSolution.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mSolutionInfo = mListSolution.get(position);
+                for (SolutionInfo info : mListSolution) {
+                    if (info.getName().equals(tvSolution.getText().toString())) {
+                        mSolutionInfo = info;
+                    }
+                }
+            }
+        });
+        tvReason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    tvReason.showDropDown();
+            }
+        });
+        tvSolution.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    tvSolution.showDropDown();
+            }
+        });
 
     }
 
@@ -123,12 +179,10 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
                 });
                 break;
             case R.id.tv_reason:
-                showUIReason();
+                // tvReason.showDropDown();
                 break;
             case R.id.tv_solution:
-                if (mListSolution != null) {
-                    showUISolution();
-                }
+                // tvSolution.showDropDown();
                 break;
             case R.id.tv_deliveryDate:
                 String createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -256,13 +310,38 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @Override
     public void showSolutionSuccess(ArrayList<SolutionInfo> solutionInfos) {
         mListSolution = solutionInfos;
-        showUISolution();
+        // showUISolution();
+        mListSolutionString = new String[solutionInfos.size()];
+        for (int i = 0; i < solutionInfos.size(); i++) {
+            mListSolutionString[i] = solutionInfos.get(i).getName();
+        }
+        mAdapterSolution = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, mListSolutionString);
+        tvSolution.setThreshold(0);
+        tvSolution.setAdapter(mAdapterSolution);
     }
 
     @Override
     public void viewFinish() {
         if (getActivity() != null) {
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void showMessageStatus(SimpleResult result) {
+        tvStatus.setText(result.getMessage());
+        if (result.getErrorCode().equals("02")) {
+            tvUpdate.setEnabled(false);
+            tvStatus.setTextColor(getActivity().getResources().getColor(R.color.red_light));
+        } else {
+            tvUpdate.setEnabled(true);
+        }
+        if (result.getErrorCode().equals("00")) {
+            tvStatus.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        }
+        if (result.getErrorCode().equals("01")) {
+            tvStatus.setTextColor(getActivity().getResources().getColor(R.color.orange));
         }
     }
 
@@ -295,6 +374,14 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @Override
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
         mListReason = reasonInfos;
+        mListReasonString = new String[reasonInfos.size()];
+        for (int i = 0; i < reasonInfos.size(); i++) {
+            mListReasonString[i] = reasonInfos.get(i).getName();
+        }
+        mAdapterReason = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, mListReasonString);
+        tvReason.setThreshold(0);
+        tvReason.setAdapter(mAdapterReason);
     }
 
 

@@ -17,6 +17,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +32,7 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.Log;
 import com.vinatti.dingdong.utiles.Logger;
 import com.vinatti.dingdong.utiles.SharedPref;
+import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomMediumTextView;
 
 import butterknife.BindView;
@@ -172,13 +175,19 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = (Location) task.getResult();
-                            LatLng markerLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
-                            mMap.addMarker(new MarkerOptions()
-                                    .title(tvUsername.getText().toString())
-                                    .position(markerLatLng).snippet(tvFullname.getText().toString()));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            if (mLastKnownLocation != null) {
+                                LatLng markerLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+
+                                mMap.addMarker(new MarkerOptions()
+                                        .title(tvUsername.getText().toString())
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_shop_yellow_1))
+                                        .position(markerLatLng).snippet(tvFullname.getText().toString()));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(mLastKnownLocation.getLatitude(),
+                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            } else {
+                                Toast.showToast(getActivity(), "Không lấy được vị trí hiện tại vui lòng kiểm tra định vị thiết bị");
+                            }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());

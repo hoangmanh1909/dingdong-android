@@ -31,8 +31,7 @@ import butterknife.Unbinder;
  */
 public class StatisticFragment extends ViewFragment<StatisticContract.Presenter> implements StatisticContract.View {
 
-    @BindView(R.id.img_back)
-    ImageView imgBack;
+
     @BindView(R.id.img_search)
     ImageView imgSearch;
     @BindView(R.id.recycler)
@@ -45,7 +44,6 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
     @BindView(R.id.tv_fail_count)
     CustomBoldTextView tvFailCount;
     private String mDateSearch;
-    private String mStatus;
     private ArrayList<CommonObject> mList;
     private StatictisAdapter mAdapter;
 
@@ -77,23 +75,20 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
-        mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), "");
+        mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mPresenter.getStatus());
     }
 
-    @OnClick({R.id.img_back, R.id.img_search})
+    @OnClick({ R.id.img_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
-                mPresenter.back();
-                break;
+
             case R.id.img_search:
                 new StatictisSearchDialog(getActivity(), calendarDate, new StatictisSearchCallback() {
                     @Override
-                    public void onResponse(String fromDate, String status) {
+                    public void onResponse(String fromDate) {
                         mDateSearch = fromDate;
-                        mStatus = status;
                         calendarDate.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                        mPresenter.search(fromDate, status);
+                        mPresenter.search(fromDate, mPresenter.getStatus());
                     }
                 }).show();
                 break;
@@ -116,8 +111,16 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
                 failCount++;
             }
         }
-        tvSuccessCount.setText("Báo phát thành công: " + successCount);
-        tvFailCount.setText("Báo phát không thành công: " + failCount);
+        if (mPresenter.getStatus().equals("C14")) {
+            tvSuccessCount.setText("Báo phát thành công: " + successCount);
+            tvSuccessCount.setVisibility(View.VISIBLE);
+            tvFailCount.setVisibility(View.GONE);
+        } else {
+            tvFailCount.setText("Báo phát không thành công: " + failCount);
+            tvSuccessCount.setVisibility(View.GONE);
+            tvFailCount.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

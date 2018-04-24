@@ -9,7 +9,7 @@ import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.home.HomeGroupAdapter;
-import com.vinatti.dingdong.functions.mainhome.listcommon.ListCommonActivity;
+import com.vinatti.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
 import com.vinatti.dingdong.utiles.Constants;

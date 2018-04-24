@@ -1,6 +1,10 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +30,9 @@ import butterknife.Unbinder;
  * The BaoPhatThanhCongDetail Fragment
  */
 public class BaoPhatThanhCongDetailFragment extends ViewFragment<BaoPhatThanhCongDetailContract.Presenter> implements BaoPhatThanhCongDetailContract.View {
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     private static final String TAG = BaoPhatThanhCongDetailFragment.class.getSimpleName();
     @BindView(R.id.tv_ParcelCode)
     CustomTextView tvParcelCode;
@@ -100,8 +106,18 @@ public class BaoPhatThanhCongDetailFragment extends ViewFragment<BaoPhatThanhCon
                         .commit();
             }
         }
+        checkPermissionCall();
 
+    }
 
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+
+        }
     }
 
     @Override

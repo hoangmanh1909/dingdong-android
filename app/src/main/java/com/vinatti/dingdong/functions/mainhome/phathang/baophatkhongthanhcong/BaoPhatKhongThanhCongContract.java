@@ -5,7 +5,6 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.ReasonInfo;
 import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
@@ -34,6 +33,8 @@ interface BaoPhatKhongThanhCongContract {
         void showSolutionSuccess(ArrayList<SolutionInfo> solutionInfos);
 
         void viewFinish();
+
+        void showMessageStatus(SimpleResult result);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

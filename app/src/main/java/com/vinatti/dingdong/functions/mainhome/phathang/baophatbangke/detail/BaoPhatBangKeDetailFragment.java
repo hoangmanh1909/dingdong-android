@@ -1,5 +1,9 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,7 +32,9 @@ import butterknife.OnClick;
  * The BaoPhatBangKeDetail Fragment
  */
 public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetailContract.Presenter> implements BaoPhatBangKeDetailContract.View {
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     private static final String TAG = BaoPhatBangKeDetailFragment.class.getSimpleName();
     @BindView(R.id.img_back)
     ImageView imgBack;
@@ -51,8 +57,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @BindView(R.id.tv_ReciverAddress)
     CustomTextView tvReciverAddress;
 
-  /*  @BindView(R.id.btn_confirm)
-    CustomTextView btnConfirm;*/
+    /*  @BindView(R.id.btn_confirm)
+      CustomTextView btnConfirm;*/
     private int mType = 1;
     private ArrayList<ReasonInfo> mListReason;
 
@@ -88,6 +94,17 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         }
 
         mPresenter.getReasons();
+        checkPermissionCall();
+    }
+
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+
+        }
     }
 
     @OnClick({R.id.img_back})

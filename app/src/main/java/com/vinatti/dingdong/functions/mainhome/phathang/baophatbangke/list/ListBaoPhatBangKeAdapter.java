@@ -74,6 +74,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter {
             } else {
                 tvContactDescription.setText(item.getDescription());
             }
+            cbSelected.setChecked(item.isSelected());
             cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

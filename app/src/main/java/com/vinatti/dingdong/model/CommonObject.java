@@ -53,9 +53,13 @@ public class CommonObject {
     String route;
     @SerializedName("Order")
     String order;
+    @SerializedName("SignatureCapture")
+    String signatureCapture;
 
 
+    @SerializedName("RealReceiverName")
     private String realReceiverName;
+
     private String realReceiverIDNumber;
     private String DeliveryType;
     private String userDelivery;
@@ -96,6 +100,9 @@ public class CommonObject {
     @SerializedName("Note")
     private String note;
 
+    public String getSignatureCapture() {
+        return signatureCapture;
+    }
 
     public String getCount() {
         return count;

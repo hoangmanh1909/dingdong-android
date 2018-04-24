@@ -100,9 +100,15 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                         }
                     }
                     if (!TextUtils.isEmpty(base64)) {
-                        if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
-                            mPresenter.paymentDelivery(base64);
-                        } else {
+                        if(!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
+                            if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
+                                mPresenter.paymentDelivery(base64);
+                            } else {
+                                mPresenter.signDataAndSubmitToPNS(base64);
+                            }
+                        }
+                        else
+                        {
                             mPresenter.signDataAndSubmitToPNS(base64);
                         }
                     } else {

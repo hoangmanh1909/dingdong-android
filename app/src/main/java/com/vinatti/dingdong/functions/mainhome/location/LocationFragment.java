@@ -2,17 +2,23 @@ package com.vinatti.dingdong.functions.mainhome.location;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
@@ -25,7 +31,9 @@ import com.vinatti.dingdong.views.form.FormItemEditText;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The Location Fragment
@@ -46,6 +54,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     CustomTextView tvReceiverName;
     @BindView(R.id.tv_receiverAddress)
     CustomTextView tvReceiverAddress;
+    @BindView(R.id.tv_realReceiverName)
+    CustomTextView tvRealReceiverName;
     @BindView(R.id.ll_detail)
     LinearLayout llDetail;
     @BindView(R.id.recycler)
@@ -56,6 +66,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     FormItemEditText edtLadingCode;
     @BindView(R.id.img_search)
     View imgSearch;
+    @BindView(R.id.img_sign)
+    SimpleDraweeView imgSign;
+    @BindView(R.id.ll_sign)
+    LinearLayout llSign;
     private ArrayList<StatusInfo> mList;
     private StatusAdapter mAdapter;
 
@@ -140,10 +154,20 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             mAdapter.refresh(commonObject.getStatusInfoArrayList());
             llStatus.setVisibility(View.VISIBLE);
         }
+        if (!TextUtils.isEmpty(commonObject.getSignatureCapture())) {
+            Uri imageUri = Uri.parse(commonObject.getSignatureCapture());
+            imgSign.setImageURI(imageUri);
+        }
+        else
+        {
+            imgSign.setVisibility(View.GONE);
+        }
+        tvRealReceiverName.setText(commonObject.getRealReceiverName());
     }
 
     @Override
     public void showEmpty() {
         llDetail.setVisibility(View.GONE);
     }
+
 }

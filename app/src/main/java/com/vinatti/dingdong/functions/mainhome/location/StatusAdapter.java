@@ -38,6 +38,8 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         CustomTextView tvStatusMessage;
         @BindView(R.id.tv_StatusDate_StatusTime)
         CustomTextView tvStatusDateStatusTime;
+        @BindView(R.id.tv_reason)
+        CustomTextView tvReason;
         @BindView(R.id.tv_StatusCode)
         CustomMediumTextView tvStatusCode;
 
@@ -56,6 +58,7 @@ public class StatusAdapter extends RecyclerBaseAdapter {
             } else {
                 tvStatusCode.setText("Không thành công");
             }
+            tvReason.setText(item.getReasonCode());
         }
     }
 }

@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.vinatti.dingdong.views.CustomTextView
                 android:id="@+id/tv_stt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,11 +26,13 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.vinatti.dingdong.views.CustomTextView
                 android:id="@+id/tv_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
+                android:drawableLeft="@drawable/ic_code"
+                android:gravity="center|left"
                 android:text="abc"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
@@ -40,6 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
+                android:drawableLeft="@drawable/ic_person"
+                android:gravity="center|left"
                 android:text="cdf"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
@@ -57,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:gravity="right"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:gravity="right|center"
                 android:text="cdf"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
@@ -67,9 +72,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:gravity="right"
-                android:text="cdf"
+                android:drawableRight="@drawable/ic_location_blue"
+                android:gravity="right|center"
+                android:text="cdf "
                 android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+
+            <com.vinatti.dingdong.views.CustomTextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@drawable/bg_status_not"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="dgadgadfg"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
     </LinearLayout>

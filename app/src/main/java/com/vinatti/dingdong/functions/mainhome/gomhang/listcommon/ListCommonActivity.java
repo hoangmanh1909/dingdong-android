@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.listcommon;
+package com.vinatti.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.content.Intent;
 

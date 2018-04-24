@@ -22,6 +22,8 @@ import retrofit2.Response;
 public class StatisticPresenter extends Presenter<StatisticContract.View, StatisticContract.Interactor>
         implements StatisticContract.Presenter {
 
+    private String mStatus;
+
     public StatisticPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -75,7 +77,17 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
     }
 
     @Override
+    public String getStatus() {
+        return mStatus;
+    }
+
+    @Override
     public void pushViewDetail(String parcelCode) {
         new HistoryPresenter(mContainerView).setParcelCode(parcelCode).pushView();
+    }
+
+    public StatisticPresenter setType(String status) {
+        mStatus = status;
+        return this;
     }
 }

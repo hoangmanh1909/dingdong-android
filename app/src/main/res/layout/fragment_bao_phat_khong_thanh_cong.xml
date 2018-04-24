@@ -99,7 +99,10 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
                         app:formHint="Số hiệu bưu gửi"
-                        app:formShowClear="true" />
+                        app:formShowClear="true">
+
+                        <requestFocus />
+                    </com.vinatti.dingdong.views.form.FormItemEditText>
 
                     <com.vinatti.dingdong.views.CustomTextView
                         android:id="@+id/tv_search"
@@ -112,6 +115,14 @@
                         android:text="Kiểm tra"
                         android:textColor="@color/colorAccent" />
                 </LinearLayout>
+                <com.vinatti.dingdong.views.CustomTextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16sp" />
 
                 <com.vinatti.dingdong.views.CustomBoldTextView
                     android:layout_width="wrap_content"
@@ -121,14 +132,21 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.form.FormItemTextView
+                <!-- <com.vinatti.dingdong.views.form.FormItemTextView
+                     android:id="@+id/tv_reason"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/text_size_14sp"
+                     app:formAction="@drawable/ic_arrow_down"
+                     app:formHint="Chọn lý do" />-->
+                <com.vinatti.dingdong.views.CustomAutoCompleteTextView
                     android:id="@+id/tv_reason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Chọn lý do"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:formAction="@drawable/ic_arrow_down"
-                    app:formHint="Chọn lý do" />
+                    android:textSize="@dimen/text_size_14sp"></com.vinatti.dingdong.views.CustomAutoCompleteTextView>
 
                 <com.vinatti.dingdong.views.form.FormItemEditText
                     android:id="@+id/edt_note"
@@ -149,14 +167,22 @@
                     android:textSize="@dimen/text_size_14sp" />
 
 
-                <com.vinatti.dingdong.views.form.FormItemTextView
+                <!-- <com.vinatti.dingdong.views.form.FormItemTextView
+                     android:id="@+id/tv_solution"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/text_size_14sp"
+                     app:formAction="@drawable/ic_arrow_down"
+                app:formHint="Chọn phương án" />-->
+
+                <com.vinatti.dingdong.views.CustomAutoCompleteTextView
                     android:id="@+id/tv_solution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Chọn phương án"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:formAction="@drawable/ic_arrow_down"
-                    app:formHint="Chọn phương án" />
+                    android:textSize="@dimen/text_size_14sp"></com.vinatti.dingdong.views.CustomAutoCompleteTextView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -235,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_marginRight="@dimen/dimen_16dp"
-                    android:background="@drawable/bg_confirm"
+                    android:background="@drawable/bg_confirm_continue"
                     android:drawableLeft="@drawable/ic_done"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"

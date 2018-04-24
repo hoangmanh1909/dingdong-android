@@ -1,5 +1,9 @@
 package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
@@ -24,7 +28,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * The XacNhanTinDetail Fragment
  */
 public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailContract.Presenter> implements HoanThanhTinDetailContract.View {
-
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 99;
     private static final String TAG = HoanThanhTinDetailFragment.class.getSimpleName();
     @BindView(R.id.tv_title)
     CustomBoldTextView tvTitle;
@@ -62,8 +67,17 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        checkPermissionCall();
     }
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
 
+        }
+    }
     @OnClick({R.id.img_back, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -151,6 +165,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();
                         btnConfirm.setEnabled(false);
+                        mPresenter.back();
                     }
                 }).show();
     }

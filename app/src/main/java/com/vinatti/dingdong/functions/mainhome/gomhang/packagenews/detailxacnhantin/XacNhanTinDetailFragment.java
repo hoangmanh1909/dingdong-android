@@ -140,6 +140,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
                         sweetAlertDialog.dismiss();
                         btnConfirm.setEnabled(false);
                         btnReject.setEnabled(false);
+                        mPresenter.back();
                     }
                 }).show();
     }

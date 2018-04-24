@@ -29,12 +29,12 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
     private final BaseActivity mActivity;
     @BindView(R.id.tv_date_create)
     FormItemTextView tvDateCreate;
-    @BindView(R.id.tv_status)
-    FormItemTextView tvStatus;
+    /*    @BindView(R.id.tv_status)
+        FormItemTextView tvStatus;*/
     Calendar calCreate;
-    Item mItem;
-    ArrayList<Item> items = new ArrayList<>();
-    private ItemBottomSheetPickerUIFragment pickerUIStatus;
+    //Item mItem;
+    // ArrayList<Item> items = new ArrayList<>();
+    // private ItemBottomSheetPickerUIFragment pickerUIStatus;
 
     public StatictisSearchDialog(Context context, Calendar calendar, StatictisSearchCallback reasonCallback) {
 
@@ -48,10 +48,10 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
         if (calCreate == null)
             calCreate = Calendar.getInstance();
         tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
-        items.add(new Item("C14", "Thành công"));
+       /* items.add(new Item("C14", "Thành công"));
         items.add(new Item("C18", "Không thành công"));
         tvStatus.setText(items.get(0).getText());
-        mItem = items.get(0);
+        mItem = items.get(0);*/
     }
 
     @Override
@@ -59,7 +59,7 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
         super.show();
     }
 
-    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_status, R.id.btnBack})
+    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.btnBack})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_date_create:
@@ -75,23 +75,23 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
                         .show();
                 break;
             case R.id.tv_search:
-                if (TextUtils.isEmpty(tvStatus.getText())) {
+              /*  if (TextUtils.isEmpty(tvStatus.getText())) {
                     Toast.showToast(mActivity, "Vui lòng chọn trạng thái");
                     return;
-                }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue());
+                }*/
+                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
                 dismiss();
                 break;
-            case R.id.tv_status:
+          /*  case R.id.tv_status:
                 showUiStatus();
-                break;
+                break;*/
             case R.id.btnBack:
                 dismiss();
                 break;
         }
     }
 
-    private void showUiStatus() {
+   /* private void showUiStatus() {
 
         if (pickerUIStatus == null) {
             pickerUIStatus = new ItemBottomSheetPickerUIFragment(items, "Chọn trạng thái",
@@ -112,7 +112,7 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
 
 
         }
-    }
+    }*/
 
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {

@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.listcommon;
+package com.vinatti.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,9 +11,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.vinatti.dingdong.callback.OnChooseDay;
-import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.vinatti.dingdong.dialog.EditDayDialog;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.UserInfo;
@@ -71,7 +69,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-        showDialog();
+
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
         mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
@@ -103,6 +101,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             tvTitle.setText("Danh sách vận đơn");
             llGomHang.setVisibility(View.GONE);
         }
+        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
     }
 
     private void showDialog() {
@@ -110,8 +110,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
                 public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                    fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                    toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
                         mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
                     } else if (mPresenter.getType() == 2) {
@@ -141,7 +141,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
         }
-        if(mUserInfo != null && !TextUtils.isEmpty(fromDate)  && !TextUtils.isEmpty(toDate)) {
+        if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
             if (mPresenter.getType() == 1) {
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
             }
@@ -165,35 +165,33 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
+        if (list == null || list.isEmpty()) {
+            showDialog();
+        }
         mList = list;
         mAdapter.refresh(list);
-        if(mPresenter.getType()==1)
-        {
+        if (mPresenter.getType() == 1) {
             int countP0 = 0;
             int countP1 = 0;
             if (list.size() > 0) {
-                for (CommonObject commonObject:list) {
+                for (CommonObject commonObject : list) {
                     if (commonObject.getStatusCode().equals("P0")) {
                         countP0 += 1;
-                    }
-                    else if (commonObject.getStatusCode().equals("P1")) {
+                    } else if (commonObject.getStatusCode().equals("P1")) {
                         countP1 += 1;
                     }
                 }
             }
             tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
             tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
-        }
-        else if(mPresenter.getType()==2)
-        {
+        } else if (mPresenter.getType() == 2) {
             int countP1 = 0;
             int countP4P5 = 0;
             if (list.size() > 0) {
-                for (CommonObject commonObject:list) {
+                for (CommonObject commonObject : list) {
                     if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
                         countP1 += 1;
-                    }
-                    else if (commonObject.getStatusCode().equals("P4") || commonObject.getStatusCode().equals("P6")) {
+                    } else if (commonObject.getStatusCode().equals("P4") || commonObject.getStatusCode().equals("P6")) {
                         countP4P5 += 1;
                     }
                 }
@@ -205,7 +203,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
     @Override
     public void showError(String message) {
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")

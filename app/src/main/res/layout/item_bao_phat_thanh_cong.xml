@@ -73,18 +73,41 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <ImageView
-                android:id="@+id/img_clear"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:src="@drawable/ic_clear_black" />
+                android:orientation="horizontal">
+
+                <com.vinatti.dingdong.views.CustomTextView
+                    android:id="@+id/tv_ContactPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent"
+                    android:drawableLeft="@drawable/ic_tel"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="0987654321"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <ImageView
+                    android:id="@+id/img_clear"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_clear_black" />
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
 
-   <!-- <View
-        style="@style/Devider"
-        android:layout_marginTop="@dimen/dimen_5dp" />-->
+    <!-- <View
+         style="@style/Devider"
+         android:layout_marginTop="@dimen/dimen_5dp" />-->
 </LinearLayout>

@@ -35,6 +35,25 @@
         </RelativeLayout>
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_gom_hang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/line_gray"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp">
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_16sp" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -65,9 +84,9 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler"
-                android:layout_above="@+id/btn_confirm_all"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_above="@+id/btn_confirm_all"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:visibility="visible" />

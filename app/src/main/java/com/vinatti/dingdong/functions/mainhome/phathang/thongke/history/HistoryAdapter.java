@@ -76,7 +76,7 @@ public class HistoryAdapter extends RecyclerBaseAdapter {
             if (item.getStatus().equals("C14")) {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
             } else {
-                tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_605e60));
+                tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_000080));
             }
         }
     }

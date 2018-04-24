@@ -55,8 +55,8 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @Override
     public void showCallSuccess() {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:"+Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 

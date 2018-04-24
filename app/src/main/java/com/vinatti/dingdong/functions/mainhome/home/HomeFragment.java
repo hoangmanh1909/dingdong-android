@@ -9,11 +9,11 @@ import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.callservice.CallActivity;
-import com.vinatti.dingdong.functions.mainhome.listcommon.ListCommonActivity;
+import com.vinatti.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
-import com.vinatti.dingdong.functions.mainhome.phathang.thongke.list.StatictisActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.vinatti.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
@@ -67,7 +67,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
         //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
         homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bảng kê"));
+        homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bảng kê (BD13)"));
         homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
         homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
         homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));

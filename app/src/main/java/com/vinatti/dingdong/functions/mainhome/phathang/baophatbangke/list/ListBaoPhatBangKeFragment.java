@@ -44,6 +44,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     TextView tvNodata;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.tv_count)
+    TextView tvCount;
     @BindView(R.id.img_view)
     ImageView imgView;
 
@@ -90,7 +92,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
         if (mPresenter.getType() == 3) {
-            tvTitle.setText("Danh sách vận đơn");
+            tvTitle.setText("Báo phát bảng kê (BD13)");
         }
         mPresenter.getReasons();
     }
@@ -115,7 +117,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void onDisplay() {
         super.onDisplay();
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate,mShiftID);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID);
         }
     }
 
@@ -168,6 +170,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void showResponseSuccess(ArrayList<CommonObject> list) {
         mList = list;
         mAdapter.refresh(list);
+        tvCount.setText("Tổng số: " + list.size());
     }
 
     @Override

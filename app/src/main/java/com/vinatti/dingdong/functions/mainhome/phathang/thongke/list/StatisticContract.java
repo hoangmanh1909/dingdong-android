@@ -28,6 +28,8 @@ interface StatisticContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void search(String fromDate, String status);
 
+        String getStatus();
+
         void pushViewDetail(String parcelCode);
     }
 }

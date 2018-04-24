@@ -1,7 +1,9 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -37,7 +39,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.ll_scan_qr)
@@ -81,6 +83,12 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                         mPresenter.showDetail(mList.get(position));
                     }
                 });
+                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.callForward(mList.get(position).getReceiverPhone().split(",")[0].replace(" ",""));
+                    }
+                });
             }
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
@@ -91,7 +99,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
 
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
@@ -121,6 +129,13 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
             mAdapter.addItem(commonObject);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void showCallSuccess() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:"+Constants.HOTLINE_CALL_SHOW));
+        startActivity(intent);
     }
 
 
