@@ -186,7 +186,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                             } else {
-                                Toast.showToast(getActivity(), "Không lấy được vị trí hiện tại vui lòng kiểm tra định vị thiết bị");
+                                Toast.showToast(getActivity(), "Không lấy được vị trí hiện tại vui lòng bật google app để lấy lại định vị");
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");

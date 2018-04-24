@@ -158,6 +158,9 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0cce76e3c35418e2833d7caeb11a76a15fc38dd0" />
     </application>
 
 </manifest>
