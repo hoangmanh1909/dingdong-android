@@ -59,7 +59,7 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
             tvNote.setText("Ghi chú phát: ");
             tvReceiverName.setText(item.getReciverName());
             tvReceiverAddress.setText(item.getReciverAddress());
-            if (!TextUtils.isEmpty(item.getCollectAmount()) && TextUtils.isEmpty(item.getReceiveCollectFee())) {
+            if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
                 tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()) + Long.parseLong(item.getReceiveCollectFee()))));
 
             } else {
