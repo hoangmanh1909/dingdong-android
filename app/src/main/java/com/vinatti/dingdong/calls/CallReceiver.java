@@ -1,7 +1,12 @@
 package com.vinatti.dingdong.calls;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.CallLog;
+import android.support.v4.app.ActivityCompat;
 
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.SimpleResult;
@@ -52,20 +57,49 @@ public class CallReceiver extends PhoneStateBroadcastReceiver {
             long diffInMs = end.getTime() - start.getTime();
 
             long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
-            NetWorkController.addNewCallCenter(useiid, useiid, callerNumber, number, diffInSec + "",
+
+            String duration = lastCall(ctx);
+            NetWorkController.addNewCallCenter(useiid, useiid, callerNumber, number, duration + "",
                     DateTimeUtils.convertDateToString(end, DateTimeUtils.DEFAULT_DATETIME_FORMAT),
                     new CommonCallback<SimpleResult>(ctx) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                }
+                        @Override
+                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            super.onSuccess(call, response);
+                        }
 
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                }
-            });
+                        @Override
+                        protected void onError(Call<SimpleResult> call, String message) {
+                            super.onError(call, message);
+                        }
+                    });
         }
+    }
+
+    public String lastCall(Context context) {
+        StringBuffer sb = new StringBuffer();
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return "";
+        }
+        Cursor cur = context.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, android.provider.CallLog.Calls.DATE + " DESC");
+
+        //int number = cur.getColumnIndex( CallLog.Calls.NUMBER );
+        int duration = cur.getColumnIndex(CallLog.Calls.DURATION);
+        while (cur.moveToNext()) {
+            //String phNumber = cur.getString( number );
+            String callDuration = cur.getString(duration);
+            sb.append(callDuration);
+            break;
+        }
+        cur.close();
+        String str = sb.toString();
+        return str;
     }
 
     @Override

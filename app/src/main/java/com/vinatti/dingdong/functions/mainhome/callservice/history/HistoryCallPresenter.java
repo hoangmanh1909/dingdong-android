@@ -6,8 +6,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.model.CommonObjectListResult;
-import com.vinatti.dingdong.model.SimpleResult;
+import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
@@ -65,24 +64,21 @@ public class HistoryCallPresenter extends Presenter<HistoryCallContract.View, Hi
             callerNumber = userInfo.getMobileNumber();
             useiid = userInfo.getiD();
         }
-        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<HistoryCallResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<HistoryCallResult> call, Response<HistoryCallResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                /*if(response.body().getErrorCode().equals("00"))
-                {
-                    mView.showListSuccess(response.body().getList());
-                }
-                else
-                {
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showListSuccess(response.body().getHistoryCallInfos());
+                } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showListEmpty();
-                }*/
+                }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<HistoryCallResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

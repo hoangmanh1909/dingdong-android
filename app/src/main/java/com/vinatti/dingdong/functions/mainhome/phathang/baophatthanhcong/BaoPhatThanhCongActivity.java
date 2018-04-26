@@ -96,4 +96,8 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
         }
         super.onBackPressed();
     }
+
+    public void removeTextSearch() {
+        searchView.setQuery("",false);
+    }
 }

@@ -34,8 +34,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     private SharedPref mSharedPref;
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.PROCESS_OUTGOING_CALLS};
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG,
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.PROCESS_OUTGOING_CALLS};
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
+
     public static LoginFragment getInstance() {
         return new LoginFragment();
     }
@@ -55,15 +57,21 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
         checkPermissionCall();
     }
+
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
-            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+            int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
+            int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
+            int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.PROCESS_OUTGOING_CALLS);
+            if (hasPermission1 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission2 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission3 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
 
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();

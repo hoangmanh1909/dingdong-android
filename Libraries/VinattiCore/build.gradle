@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         compileSdkVersion 27
-        buildToolsVersion '27.0.2'
+        buildToolsVersion '27.0.3'
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
         versionCode 1

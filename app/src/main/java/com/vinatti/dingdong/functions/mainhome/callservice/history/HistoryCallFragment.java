@@ -9,11 +9,12 @@ import com.core.utils.RecyclerUtils;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.OnChooseDay;
 import com.vinatti.dingdong.dialog.EditDayDialog;
-import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.model.HistoryCallInfo;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,7 +28,7 @@ public class HistoryCallFragment extends ViewFragment<HistoryCallContract.Presen
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
-    private ArrayList<CommonObject> mList;
+    private List<HistoryCallInfo> mList;
     private HistoryCallAdapter mAdapter;
     private String fromDate;
     private String toDate;
@@ -78,8 +79,9 @@ public class HistoryCallFragment extends ViewFragment<HistoryCallContract.Presen
 
     }
 
+
     @Override
-    public void showListSuccess(ArrayList<CommonObject> list) {
+    public void showListSuccess(List<HistoryCallInfo> list) {
         mList = list;
         mAdapter.clear();
         mAdapter.addItems(list);

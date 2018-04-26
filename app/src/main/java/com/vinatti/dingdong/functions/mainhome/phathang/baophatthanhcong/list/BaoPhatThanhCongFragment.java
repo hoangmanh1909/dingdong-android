@@ -19,6 +19,7 @@ import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.eventbus.BaoPhatCallback;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.Constants;
 
@@ -86,7 +87,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.callForward(mList.get(position).getReceiverPhone().split(",")[0].replace(" ",""));
+                        mPresenter.callForward(mList.get(position).getReceiverPhone().split(",")[0].replace(" ","").replace(".",""));
                     }
                 });
             }
@@ -109,6 +110,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
 
     public void getQuery(String parcelCode) {
         mPresenter.searchParcelCodeDelivery(parcelCode.trim());
+        ((BaoPhatThanhCongActivity)getActivity()).removeTextSearch();
     }
 
 

@@ -7,6 +7,7 @@ import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.CommonObjectResult;
+import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.ReasonResult;
@@ -160,9 +161,9 @@ public class NetWorkController {
 
     public static void searchCallCenter(String postmanID,
                                         String fromDate,
-                                        String toDate, CommonCallback<SimpleResult> callback) {
+                                        String toDate, CommonCallback<HistoryCallResult> callback) {
         String signature = Utils.SHA256(postmanID + fromDate + toDate + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().searchCallCenter(postmanID, fromDate, toDate, signature);
+        Call<HistoryCallResult> call = getAPIBuilder().searchCallCenter(postmanID, fromDate, toDate, signature);
         call.enqueue(callback);
     }
 

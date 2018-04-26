@@ -3,6 +3,7 @@ package com.vinatti.dingdong.network;
 
 import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.CommonObjectResult;
+import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.ReasonResult;
@@ -145,10 +146,10 @@ public interface VinattiAPI {
 
     @FormUrlEncoded
     @POST("api/CallCenter/Search")
-    Call<SimpleResult> searchCallCenter(@Field("PostmanID") String postmanID,
-                                        @Field("FromDate") String fromDate,
-                                        @Field("ToDate") String toDate,
-                                        @Field("Signature") String signature);
+    Call<HistoryCallResult> searchCallCenter(@Field("PostmanID") String postmanID,
+                                             @Field("FromDate") String fromDate,
+                                             @Field("ToDate") String toDate,
+                                             @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/Payment")
