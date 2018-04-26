@@ -16,6 +16,7 @@ import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeConfirmDialog;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
+import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.ReasonInfo;
 import com.vinatti.dingdong.model.UserInfo;
@@ -24,6 +25,10 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,6 +100,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             tvTitle.setText("Báo phát bảng kê (BD13)");
         }
         mPresenter.getReasons();
+        EventBus.getDefault().register(this);
     }
 
     private void showDialog() {
@@ -197,5 +203,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         Toast.showToast(getActivity(), message);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BaoPhatCallback event) {
+        /* Do something */
+        if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
+            mList.clear();
+            mAdapter.clear();
+        }
+    }
 }

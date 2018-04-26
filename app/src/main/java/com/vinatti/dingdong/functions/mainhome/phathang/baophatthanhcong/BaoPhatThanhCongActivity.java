@@ -70,7 +70,6 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
-                searchView.clearFocus();
                 mFragment.getQuery(query);
                 // mAdapter.getFilter().filter(query);
                 return false;

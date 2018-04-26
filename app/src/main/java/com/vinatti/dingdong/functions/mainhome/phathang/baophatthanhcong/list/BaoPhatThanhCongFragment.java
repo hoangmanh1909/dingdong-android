@@ -122,6 +122,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 ((DingDongActivity) getActivity()).getSupportActionBar().show();
             }
         }
+
     }
 
     @Override

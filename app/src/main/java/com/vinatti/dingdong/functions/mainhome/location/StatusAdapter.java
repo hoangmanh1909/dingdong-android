@@ -1,6 +1,7 @@
 package com.vinatti.dingdong.functions.mainhome.location;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -51,7 +52,12 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         public void bindView(final Object model, int position) {
             StatusInfo item = (StatusInfo) model;
             tvPOCodePOName.setText(String.format("%s - %s", item.getPOCode(), item.getPOName()));
-            tvStatusMessage.setText(item.getStatusMessage());
+            if (!TextUtils.isEmpty(item.getStatusMessage())) {
+                tvStatusMessage.setText(item.getStatusMessage());
+                tvStatusMessage.setVisibility(View.VISIBLE);
+            } else {
+                tvStatusMessage.setVisibility(View.GONE);
+            }
             tvStatusDateStatusTime.setText(String.format("%s %s", item.getStatusDate(), item.getStatusTime()));
             if (item.getStatusCode().equals("C14")) {
                 tvStatusCode.setText("Thành công");

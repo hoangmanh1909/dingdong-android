@@ -1,5 +1,5 @@
 <resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">DingDong2</string>
+    <string name="app_name">DingDong</string>
     <string name="error_system_upgrading">Hệ thống đang nâng cấp. Vui lòng quay lại sau!</string>
     <string name="error_fail_default">Hệ thống đang bận. Vui lòng thử lại sau!</string>
     <string name="internal_storage">Internal storage</string>

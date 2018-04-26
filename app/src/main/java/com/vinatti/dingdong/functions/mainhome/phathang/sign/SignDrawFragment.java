@@ -10,11 +10,15 @@ import android.view.View;
 import com.core.base.viper.ViewFragment;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.network.NetWorkController;
+import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 
@@ -165,6 +169,7 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             getActivity().finish();*/
        mPresenter.back();
        mPresenter.back();
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG));
     }
 
     class PushDataToMpos {
