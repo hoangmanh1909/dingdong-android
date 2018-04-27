@@ -17,8 +17,10 @@ import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -154,8 +156,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         for (CommonObject item : commonObjects) {
             String ladingCode = item.getParcelCode();
             String deliveryPOCode = item.getPoCode();
-            String deliveryDate = item.getDeliveryDate();
-            String deliveryTime = item.getDeliveryTime();
+            String deliveryDate = DateTimeUtils.convertDateToString(new Date(),DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            String deliveryTime =  DateTimeUtils.convertDateToString(new Date(),DateTimeUtils.SIMPLE_DATE_FORMAT6);
             String receiverName = item.getReciverName();
             String reasonCode = reason;
             String solutionCode = solution;

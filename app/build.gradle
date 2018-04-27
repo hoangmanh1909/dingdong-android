@@ -26,8 +26,8 @@ android {
         applicationId "com.vinatti.dingdong"
         minSdkVersion 16
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -78,7 +78,7 @@ android {
         production {
             def API_URL = '"http://222.255.250.233:92/"'
             def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
-            def BUILD_DEV = 'false'
+            def BUILD_DEV = 'false'//'false'
             buildConfigField("boolean", "BUILD_DEV", BUILD_DEV)
             buildConfigField("String", "API_URL", API_URL)
             buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
