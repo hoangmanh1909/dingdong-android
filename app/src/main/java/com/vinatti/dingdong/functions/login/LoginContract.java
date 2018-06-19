@@ -15,7 +15,7 @@ interface LoginContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void login(String mobileNumber, String signCode, CommonCallback<LoginResult> commonCallback);
-        void getPostOfficeByCode(String code,  CommonCallback<PostOfficeResult> callback);
+        void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

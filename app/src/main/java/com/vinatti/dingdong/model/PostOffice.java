@@ -14,6 +14,10 @@ public class PostOffice {
     String ParentCode;
     @SerializedName("HolineNumber")
     String HolineNumber;
+    @SerializedName("RouteCode")
+    String RouteCode;
+    @SerializedName("RouteName")
+    String RouteName;
 
     public String getCode() {
         return Code;
@@ -53,5 +57,13 @@ public class PostOffice {
 
     public void setHolineNumber(String holineNumber) {
         HolineNumber = holineNumber;
+    }
+
+    public String getRouteCode() {
+        return RouteCode;
+    }
+
+    public String getRouteName() {
+        return RouteName;
     }
 }

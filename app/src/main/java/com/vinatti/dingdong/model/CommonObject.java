@@ -39,7 +39,7 @@ public class CommonObject {
     //region baophatbangke
     @SerializedName("SenderName")
     String senderName;
-    @SerializedName("SenderPhone")
+    @SerializedName(value = "SenderPhone", alternate = {"SenderMobile"})
     String senderPhone;
     @SerializedName("SenderAddress")
     String senderAddress;
@@ -55,6 +55,12 @@ public class CommonObject {
     String order;
     @SerializedName("SignatureCapture")
     String signatureCapture;
+    @SerializedName("Amount")
+    String Amount;
+    @SerializedName("Service")
+    String Service;
+    @SerializedName("Info")
+    String Info;
 
 
     @SerializedName("RealReceiverName")
@@ -332,5 +338,17 @@ public class CommonObject {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getAmount() {
+        return Amount;
+    }
+
+    public String getService() {
+        return Service;
+    }
+
+    public String getInfo() {
+        return Info;
     }
 }

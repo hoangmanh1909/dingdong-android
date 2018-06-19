@@ -2,6 +2,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.thongke.list;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.vinatti.dingdong.callback.StatictisSearchCallback;
 import com.vinatti.dingdong.dialog.StatictisSearchDialog;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 
 import java.util.ArrayList;
@@ -43,6 +45,8 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
     CustomBoldTextView tvSuccessCount;
     @BindView(R.id.tv_fail_count)
     CustomBoldTextView tvFailCount;
+    @BindView(R.id.tv_amount)
+    CustomBoldTextView tvAmount;
     private String mDateSearch;
     private ArrayList<CommonObject> mList;
     private StatictisAdapter mAdapter;
@@ -104,21 +108,31 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         tvNodata.setVisibility(View.GONE);
         int successCount = 0;
         int failCount = 0;
+        long successAmount = 0;
+        long failAmount = 0;
         for (CommonObject item : list) {
             if (item.getStatus().equals("C14")) {
                 successCount++;
+                if (!TextUtils.isEmpty(item.getCollectAmount())) {
+                    successAmount += Long.parseLong(item.getCollectAmount());
+                }
             } else {
                 failCount++;
+                if (!TextUtils.isEmpty(item.getCollectAmount())) {
+                    failAmount += Long.parseLong(item.getCollectAmount());
+                }
             }
         }
         if (mPresenter.getStatus().equals("C14")) {
-            tvSuccessCount.setText("Báo phát thành công: " + successCount);
+            tvSuccessCount.setText("Tổng số: " + successCount);
             tvSuccessCount.setVisibility(View.VISIBLE);
             tvFailCount.setVisibility(View.GONE);
+            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(successAmount)));
         } else {
-            tvFailCount.setText("Báo phát không thành công: " + failCount);
+            tvFailCount.setText("Tổng số: " + failCount);
             tvSuccessCount.setVisibility(View.GONE);
             tvFailCount.setVisibility(View.VISIBLE);
+            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(failAmount)));
         }
 
     }

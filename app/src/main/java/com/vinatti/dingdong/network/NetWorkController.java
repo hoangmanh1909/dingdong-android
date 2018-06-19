@@ -191,8 +191,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getPostOfficeByCode(String code, CommonCallback<PostOfficeResult> callback) {
-        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code);
+    public static void getPostOfficeByCode(String code,String postmanID, CommonCallback<PostOfficeResult> callback) {
+        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code,postmanID);
         call.enqueue(callback);
     }
 

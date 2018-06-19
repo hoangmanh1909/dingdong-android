@@ -51,6 +51,8 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
         items.add(new Item("1", "Ca 1"));
         items.add(new Item("2", "Ca 2"));
         items.add(new Item("3", "Ca 3"));
+        tvShift.setText(items.get(0).getText());
+        mItem = items.get(0);
     }
 
     @Override

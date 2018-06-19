@@ -25,15 +25,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/text_size_14sp" />
+                android:textSize="@dimen/text_size_14sp"
+                android:visibility="gone" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_code"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/text_size_14sp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.vinatti.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.vinatti.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+            </LinearLayout>
 
             <com.vinatti.dingdong.views.CustomTextView
                 android:id="@+id/tv_contactName"
@@ -57,7 +71,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+                android:textSize="@dimen/text_size_12sp"
+                android:visibility="gone" />
+
+            <com.vinatti.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_amount_services"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp" />
         </LinearLayout>
 
         <CheckBox

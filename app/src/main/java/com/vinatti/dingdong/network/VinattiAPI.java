@@ -171,7 +171,7 @@ public interface VinattiAPI {
                                        @Field("Signature") String signature);
 
     @GET("api/Dictionary/GetPostOfficeByCode")
-    Call<PostOfficeResult> getPostOfficeByCode(@Query("code") String unitCode);
+    Call<PostOfficeResult> getPostOfficeByCode(@Query("code") String unitCode,@Query("postmanID") String postmanID );
 
     @GET("api/Dictionary/GetSolutionByReasonCode")
     Call<SolutionResult> getSolutionByReasonCode(@Query("reasonCode") String reasonCode);

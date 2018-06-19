@@ -1,6 +1,7 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.thongke.list;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -9,6 +10,7 @@ import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
@@ -45,6 +47,8 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
         CustomTextView tvReason;
         @BindView(R.id.tv_status_name)
         CustomBoldTextView tvStatusName;
+        @BindView(R.id.tv_amount)
+        CustomBoldTextView tvAmount;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -64,6 +68,12 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
             } else {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_000080));
+            }
+
+            if (!TextUtils.isEmpty(item.getCollectAmount())) {
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+            } else {
+                tvAmount.setText(String.format("%s VNĐ", "0"));
             }
         }
     }

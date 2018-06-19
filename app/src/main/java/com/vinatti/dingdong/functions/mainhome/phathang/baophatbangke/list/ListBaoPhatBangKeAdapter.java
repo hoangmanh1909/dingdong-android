@@ -1,6 +1,7 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -10,6 +11,7 @@ import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
@@ -55,6 +57,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter {
         CustomTextView tvContactAddress;
         @BindView(R.id.tv_contact_description)
         CustomTextView tvContactDescription;
+        @BindView(R.id.tv_amount_services)
+        CustomBoldTextView tvAmountServices;
+        @BindView(R.id.tv_info)
+        CustomBoldTextView tvInfo;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
 
@@ -85,6 +91,12 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter {
                     }
                 }
             });
+            if (!TextUtils.isEmpty(item.getAmount())) {
+                tvAmountServices.setText(String.format("%s VNĐ ( %s )", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount())), item.getService()));
+            } else {
+                tvAmountServices.setText(String.format("( %s )", item.getService()));
+            }
+            tvInfo.setText(String.format("Đã phát: %s", item.getInfo()));
         }
     }
 }

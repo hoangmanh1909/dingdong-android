@@ -23,7 +23,7 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public void getPostOfficeByCode(String code, CommonCallback<PostOfficeResult> callback) {
-        NetWorkController.getPostOfficeByCode(code, callback);
+    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
+        NetWorkController.getPostOfficeByCode(code,postmanID, callback);
     }
 }

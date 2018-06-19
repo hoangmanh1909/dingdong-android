@@ -29,8 +29,8 @@ public class TabsThongKeAdapter extends FragmentStatePagerAdapter {
         tabs = new ArrayList<>();
         tabs.add((StatisticFragment) new StatisticPresenter(containerView).setType("C14").getFragment());
         tabs.add((StatisticFragment) new StatisticPresenter(containerView).setType("C18").getFragment());
-        mTitleString[0]="Báo phát thành công";
-        mTitleString[1]="Báo phát không thành công";
+        mTitleString[0]="Thành công";
+        mTitleString[1]="Không thành công";
     }
 
     @Override

@@ -50,7 +50,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 super.onSuccess(call, response);
 
                 if (response.body().getErrorCode().equals("00")) {
-                    getPostOfficeByCode(response.body().getUserInfo().getUnitCode());
+                    getPostOfficeByCode(response.body().getUserInfo().getUnitCode(),response.body().getUserInfo().getiD());
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
                 } else if (response.body().getErrorCode().equals("05")) {
@@ -76,8 +76,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
         new ValidationPresenter(mContainerView).pushView();
     }
 
-    private void getPostOfficeByCode(String unitCode) {
-        mInteractor.getPostOfficeByCode(unitCode, new CommonCallback<PostOfficeResult>((Activity) mContainerView) {
+    private void getPostOfficeByCode(String unitCode,String postmanID) {
+        mInteractor.getPostOfficeByCode(unitCode, postmanID,new CommonCallback<PostOfficeResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<PostOfficeResult> call, Response<PostOfficeResult> response) {
                 super.onSuccess(call, response);

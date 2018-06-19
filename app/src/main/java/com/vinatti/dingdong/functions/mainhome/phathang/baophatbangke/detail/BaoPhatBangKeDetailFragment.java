@@ -3,22 +3,23 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.BaoPhatBangKeFailCallback;
-import com.vinatti.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.ReasonInfo;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
@@ -26,7 +27,9 @@ import com.vinatti.dingdong.views.CustomTextView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The BaoPhatBangKeDetail Fragment
@@ -56,6 +59,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     LinearLayout llContact;
     @BindView(R.id.tv_ReciverAddress)
     CustomTextView tvReciverAddress;
+    @BindView(R.id.tv_amount)
+    CustomTextView tvAmount;
+    @BindView(R.id.tv_note)
+    CustomTextView tvNote;
+    @BindView(R.id.tv_SenderPhone)
+    CustomTextView tvSenderPhone;
 
     /*  @BindView(R.id.btn_confirm)
       CustomTextView btnConfirm;*/
@@ -81,6 +90,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         tvSenderAddress.setText(baoPhatBangke.getSenderAddress());
         tvReciverName.setText(baoPhatBangke.getReciverName());
         tvReciverAddress.setText(baoPhatBangke.getReciverAddress());
+        tvNote.setText(baoPhatBangke.getNote());
+        if (!TextUtils.isEmpty(baoPhatBangke.getAmount())) {
+            tvAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(baoPhatBangke.getAmount()))));
+        }
+        tvSenderPhone.setText(baoPhatBangke.getSenderPhone());
         String[] phones = baoPhatBangke.getContactPhone().split(",");
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
@@ -155,4 +169,5 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     public void showError(String message) {
         Toast.showToast(getActivity(), message);
     }
+
 }
