@@ -61,7 +61,8 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             tvParcelCode.setText(item.getParcelCode());
             tvReceiverName.setText(String.format("%s - %s", item.getReciverName(), item.getReceiverPhone()));
             tvReceiverAddress.setText(item.getReceiverAddress());
-            tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
+           // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
+            tvDeliveryDate.setText(item.getDeliveryDate());
             tvStatusName.setText(item.getStatusName());
             tvReason.setText(item.getReasonName());
             if (item.getStatus().equals("C14")) {

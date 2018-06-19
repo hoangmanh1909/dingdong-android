@@ -143,6 +143,17 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         mAdapter.clear();
         recycler.setVisibility(View.GONE);
         tvNodata.setVisibility(View.VISIBLE);
+        if (mPresenter.getStatus().equals("C14")) {
+            tvSuccessCount.setText("Tổng số: 0");
+            tvSuccessCount.setVisibility(View.VISIBLE);
+            tvFailCount.setVisibility(View.GONE);
+        }
+        else {
+            tvFailCount.setText("Tổng số: 0");
+            tvSuccessCount.setVisibility(View.GONE);
+            tvFailCount.setVisibility(View.VISIBLE);
+        }
+        tvAmount.setText(String.format("%s VNĐ", 0));
     }
 
 }
