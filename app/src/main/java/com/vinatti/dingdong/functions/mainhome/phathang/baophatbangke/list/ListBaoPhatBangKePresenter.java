@@ -2,14 +2,17 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.ReasonResult;
@@ -31,6 +34,8 @@ import retrofit2.Response;
  */
 public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContract.View, ListBaoPhatBangKeContract.Interactor>
         implements ListBaoPhatBangKeContract.Presenter {
+
+    private int mPos;
 
     public ListBaoPhatBangKePresenter(ContainerView containerView) {
         super(containerView);
@@ -156,8 +161,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         for (CommonObject item : commonObjects) {
             String ladingCode = item.getParcelCode();
             String deliveryPOCode = item.getPoCode();
-            String deliveryDate = DateTimeUtils.convertDateToString(new Date(),DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            String deliveryTime =  DateTimeUtils.convertDateToString(new Date(),DateTimeUtils.SIMPLE_DATE_FORMAT6);
+            String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
             String receiverName = item.getReciverName();
             String reasonCode = reason;
             String solutionCode = solution;
@@ -186,5 +191,20 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void nextReceverPerson(List<CommonObject> commonObjects) {
         new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(commonObjects).pushView();
+    }
+
+    @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    @Override
+    public int getPositionTab() {
+        return mPos;
+    }
+
+    public ListBaoPhatBangKePresenter setTypeTab(int position) {
+        mPos = position;
+        return this;
     }
 }

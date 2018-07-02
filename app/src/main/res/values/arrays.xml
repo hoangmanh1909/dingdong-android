@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="bang_ke_bao_phat">
+        <item>Đi phát</item>
+        <item>Không thành công</item>
+    </array>
+
+</resources>

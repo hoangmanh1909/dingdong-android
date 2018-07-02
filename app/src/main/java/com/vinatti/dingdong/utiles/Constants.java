@@ -14,4 +14,6 @@ public class Constants {
     public static final String  HOTLINE_CALL_SHOW = "02836229988";
     public static final int TYPE_BAO_PHAT_THANH_CONG = 1;
     public static final String KEY_PUSH_NOTIFICATION = "KEY_PUSH_NOTIFICATION";
+    public static final int DI_PHAT = 0;
+    public static final int DI_PHAT_KHONG_THANH_CONG = 1;
 }

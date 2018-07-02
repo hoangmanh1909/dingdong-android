@@ -163,4 +163,11 @@
         <item name="android:textColor">@color/color_5f2f75</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+    <style name="TabLayoutTextAppearance" parent="@style/TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/dimen_13dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <dimen name="dimen_13dp">13dp</dimen>
 </resources>

@@ -1,11 +1,15 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -20,13 +24,29 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter {
+public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Filterable {
 
     private final int mType;
+    private final FilterDone mFilterDone;
+    private List<CommonObject> mListFilter;
 
-    public ListBaoPhatBangKeAdapter(Context context, int type, List<CommonObject> items) {
+    public ListBaoPhatBangKeAdapter(Context context, int type, List<CommonObject> items, FilterDone filterDone) {
+
         super(context, items);
         mType = type;
+        mListFilter = items;
+        mFilterDone = filterDone;
+    }
+
+    @Override
+    public int getItemCount() {
+        return mListFilter.size();
+    }
+
+    @Override
+    public void refresh(List items) {
+        super.refresh(items);
+        mListFilter = items;
     }
 
     @Override
@@ -43,6 +63,44 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter {
             }
         }
         return commonObjectsSelected;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    mListFilter = getItems();
+                } else {
+                    List<CommonObject> filteredList = new ArrayList<>();
+                    for (CommonObject row : (List<CommonObject>) getItems()) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getCode().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    mListFilter = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mListFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mListFilter = (ArrayList<CommonObject>) filterResults.values;
+                if (mFilterDone != null) {
+                    mFilterDone.getCount(mListFilter.size());
+                }
+                notifyDataSetChanged();
+            }
+        };
     }
 
     class HolderView extends BaseViewHolder {
@@ -98,5 +156,9 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter {
             }
             tvInfo.setText(String.format("Đã phát: %s", item.getInfo()));
         }
+    }
+
+    interface FilterDone {
+        void getCount(int count);
     }
 }

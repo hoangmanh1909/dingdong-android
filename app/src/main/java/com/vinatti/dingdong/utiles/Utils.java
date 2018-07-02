@@ -478,7 +478,7 @@ public class Utils {
                     //.hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
                     .hostnameVerifier(hostnameVerifier);
 
-            if (BuildConfig.BUILD_DEV) {
+            if (BuildConfig.DEBUG) {
                 logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builder.addInterceptor(logInterceptor);
             }
@@ -544,7 +544,7 @@ public class Utils {
 
                     })
                     .hostnameVerifier(hostnameVerifier);//org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
-            if (BuildConfig.BUILD_DEV) {
+            if (BuildConfig.DEBUG) {
                 loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builder.addInterceptor(loggingInterceptor);
             }
@@ -599,7 +599,7 @@ public class Utils {
                     .sslSocketFactory(sslSocketFactory)
                     .hostnameVerifier(hostnameVerifier);//org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
 
-            if (BuildConfig.BUILD_DEV) {
+            if (BuildConfig.DEBUG) {
                 loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builder.addInterceptor(loggingInterceptor);
             }

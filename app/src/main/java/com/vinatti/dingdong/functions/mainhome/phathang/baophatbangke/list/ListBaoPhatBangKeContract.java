@@ -3,6 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectListResult;
@@ -59,6 +60,10 @@ interface ListBaoPhatBangKeContract {
         void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign);
 
         void nextReceverPerson(List<CommonObject> commonObjects);
+
+        void showBarcode(BarCodeCallback barCodeCallback);
+
+        int getPositionTab();
     }
 }
 

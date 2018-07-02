@@ -1,7 +1,13 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,10 +15,12 @@ import android.widget.TextView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.BaoPhatBangKeFailCallback;
 import com.vinatti.dingdong.callback.BaoPhatbangKeConfirmCallback;
 import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeConfirmDialog;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
@@ -47,12 +55,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+
     @BindView(R.id.tv_count)
     TextView tvCount;
     @BindView(R.id.img_view)
     ImageView imgView;
+    @BindView(R.id.edt_search)
+    MaterialEditText edtSearch;
 
     ArrayList<CommonObject> mList;
     private ListBaoPhatBangKeAdapter mAdapter;
@@ -61,7 +70,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private Calendar mCalendar;
     private ArrayList<ReasonInfo> mListReason;
     private String mShiftID;
-
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
     }
@@ -74,10 +84,19 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void initLayout() {
         super.initLayout();
-        showDialog();
+        if(mPresenter.getPositionTab()==Constants.DI_PHAT) {
+            checkSelfPermission();
+            showDialog();
+        }
         mList = new ArrayList<>();
+
         mCalendar = Calendar.getInstance();
-        mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList) {
+        mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList, new ListBaoPhatBangKeAdapter.FilterDone() {
+            @Override
+            public void getCount(int count) {
+                tvCount.setText(String.format("Tổng số: %s", count+""));
+            }
+        }) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
@@ -96,13 +115,36 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-        if (mPresenter.getType() == 3) {
-            tvTitle.setText("Báo phát bảng kê (BD13)");
-        }
+
         mPresenter.getReasons();
         EventBus.getDefault().register(this);
-    }
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mAdapter.getFilter().filter(s);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+    protected void checkSelfPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+
+        }
+    }
     private void showDialog() {
         if (mPresenter.getType() == 3) {
 
@@ -127,12 +169,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_view, R.id.btn_confirm_all})
+    @OnClick({R.id.img_view, R.id.btn_confirm_all,R.id.ll_scan_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
-                mPresenter.back();
+            case R.id.ll_scan_qr:
+                mPresenter.showBarcode(new BarCodeCallback() {
+                    @Override
+                    public void scanQrcodeResponse(String value) {
+                       edtSearch.setText(value);
+                    }
+                });
                 break;
+
             case R.id.img_view:
                 showDialog();
                 break;
