@@ -33,6 +33,15 @@
                 android:textAllCaps="true"
                 android:textColor="@color/color_5f2f75"
                 android:textSize="@dimen/text_size_18sp" />
+            <ImageView
+                android:id="@+id/img_send"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_5dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_send_telegram" />
+
         </RelativeLayout>
     </FrameLayout>
     <android.support.v7.widget.CardView

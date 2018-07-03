@@ -31,6 +31,7 @@ import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.Toast;
 
@@ -58,6 +59,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @BindView(R.id.tv_count)
     TextView tvCount;
+    @BindView(R.id.tv_amount)
+    TextView tvAmount;
+    @BindView(R.id.btn_confirm_all)
+    TextView btnConfirmAll;
     @BindView(R.id.img_view)
     ImageView imgView;
     @BindView(R.id.edt_search)
@@ -72,6 +77,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mShiftID;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
+
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
     }
@@ -84,7 +90,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void initLayout() {
         super.initLayout();
-        if(mPresenter.getPositionTab()==Constants.DI_PHAT) {
+        if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
             checkSelfPermission();
             showDialog();
         }
@@ -93,8 +99,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mCalendar = Calendar.getInstance();
         mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList, new ListBaoPhatBangKeAdapter.FilterDone() {
             @Override
-            public void getCount(int count) {
-                tvCount.setText(String.format("Tổng số: %s", count+""));
+            public void getCount(int count, long amount) {
+                tvCount.setText(String.format("Tổng số: %s", count + ""));
+                tvAmount.setText(String.format("Tổng tiền: %s VNĐ", NumberUtils.formatPriceNumber(amount)));
             }
         }) {
             @Override
@@ -136,6 +143,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
         });
     }
+
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
@@ -145,6 +153,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
         }
     }
+
     private void showDialog() {
         if (mPresenter.getType() == 3) {
 
@@ -164,19 +173,23 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void onDisplay() {
         super.onDisplay();
+        initSearch();
+    }
+
+    private void initSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID);
         }
     }
 
-    @OnClick({R.id.img_view, R.id.btn_confirm_all,R.id.ll_scan_qr})
+    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
                 mPresenter.showBarcode(new BarCodeCallback() {
                     @Override
                     public void scanQrcodeResponse(String value) {
-                       edtSearch.setText(value);
+                        edtSearch.setText(value);
                     }
                 });
                 break;
@@ -185,46 +198,69 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 showDialog();
                 break;
             case R.id.btn_confirm_all:
-                final List<CommonObject> commonObjects = mAdapter.getItemsSelected();
-                if (commonObjects.isEmpty()) {
-                    Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
-                    return;
-                }
-                new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
-                    @Override
-                    public void onResponse(int deliveryType) {
-                        if (deliveryType == 2) {
-                            //next view
-                            for (CommonObject item : commonObjects) {
-                                item.setDeliveryType("2");
-
-                            }
-                            mPresenter.nextReceverPerson(commonObjects);
-                        } else {
-                            //show dialog
-                            if (mListReason != null) {
-                                new BaoPhatBangKeFailDialog(getActivity(), mListReason, new BaoPhatBangKeFailCallback() {
-                                    @Override
-                                    public void onResponse(String reason, String solution, String note, String sign) {
-                                        mPresenter.submitToPNS(commonObjects, reason, solution, note, sign);
-                                    }
-                                }).show();
-                            } else {
-                                Toast.showToast(getActivity(), "Đang lấy dữ liệu");
-                            }
-
-                        }
-                    }
-                }).show();
+                submit();
                 break;
         }
     }
 
+    private void submit() {
+        final List<CommonObject> commonObjects = mAdapter.getItemsSelected();
+        if (commonObjects.isEmpty()) {
+            Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
+            return;
+        }
+        new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
+            @Override
+            public void onResponse(int deliveryType) {
+                if (deliveryType == 2) {
+                    //next view
+                    for (CommonObject item : commonObjects) {
+                        item.setDeliveryType("2");
+
+                    }
+                    mPresenter.nextReceverPerson(commonObjects);
+                } else {
+                    //show dialog
+                    if (mListReason != null) {
+                        new BaoPhatBangKeFailDialog(getActivity(), mListReason, new BaoPhatBangKeFailCallback() {
+                            @Override
+                            public void onResponse(String reason, String solution, String note, String sign) {
+                                mPresenter.submitToPNS(commonObjects, reason, solution, note, sign);
+                            }
+                        }).show();
+                    } else {
+                        Toast.showToast(getActivity(), "Đang lấy dữ liệu");
+                    }
+
+                }
+            }
+        }).show();
+    }
+
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
-        mList = list;
-        mAdapter.refresh(list);
-        tvCount.setText("Tổng số: " + list.size());
+        mList.clear();
+        long amount = 0;
+        for (CommonObject item : list) {
+            if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
+                if (item.getStatus().equals("N")) {
+                    mList.add(item);
+                    if (!TextUtils.isEmpty(item.getAmount()))
+                        amount += Long.parseLong(item.getAmount());
+                }
+            } else {
+                if (item.getStatus().equals("Y")) {
+                    mList.add(item);
+                    if (!TextUtils.isEmpty(item.getAmount()))
+                        amount += Long.parseLong(item.getAmount());
+                }
+            }
+
+            mAdapter.refresh(mList);
+
+        }
+        tvCount.setText(String.format("Tổng số: %s", mList.size()));
+        tvAmount.setText(String.format("Tổng tiền: %s VNĐ", NumberUtils.formatPriceNumber(amount)));
     }
 
     @Override
@@ -249,6 +285,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showSuccessMessage(String message) {
         Toast.showToast(getActivity(), message);
+        initSearch();
     }
 
     @Override
@@ -263,6 +300,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
             mList.clear();
             mAdapter.clear();
+            tvCount.setText(String.format("Tổng số: %s", 0));
+            tvAmount.setText(String.format("Tổng tiền: %s VNĐ", 0));
         }
+    }
+
+    public void setSubmitAll() {
+        btnConfirmAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
+        btnConfirmAll.performClick();
     }
 }

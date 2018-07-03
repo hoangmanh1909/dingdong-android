@@ -31,6 +31,9 @@ public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatCo
     TextView tvTitle;
 
     private ScreenSlidePagerAdapter mScreenSlidePagerAdapter;
+    private int mPosition = 0;
+    private ListBaoPhatBangKeFragment diPhatFragment;
+    private ListBaoPhatBangKeFragment khongThanhCongFragment;
 
     public static BangKeBaoPhatContainerFragment getInstance() {
         return new BangKeBaoPhatContainerFragment();
@@ -50,12 +53,26 @@ public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatCo
         this.mScreenSlidePagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         this.viewPager.setAdapter(this.mScreenSlidePagerAdapter);
         this.tabs.setupWithViewPager(this.viewPager);
+        this.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private ListBaoPhatBangKeFragment diPhatFragment;
-        private ListBaoPhatBangKeFragment khongThanhCongFragment;
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -65,22 +82,22 @@ public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatCo
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    if (this.diPhatFragment == null) {
-                        this.diPhatFragment = (ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter((ContainerView) getActivity())
+                    if (diPhatFragment == null) {
+                        diPhatFragment = (ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter((ContainerView) getActivity())
                                 .setTypeTab(Constants.DI_PHAT)
                                 .setType(getActivity().getIntent().getIntExtra(Constants.TYPE_GOM_HANG, 0))
                                 .getFragment();
                     }
-                    return this.diPhatFragment;
+                    return diPhatFragment;
 
                 case 1:
-                    if (this.khongThanhCongFragment == null) {
-                        this.khongThanhCongFragment = (ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter((ContainerView) getActivity())
+                    if (khongThanhCongFragment == null) {
+                        khongThanhCongFragment = (ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter((ContainerView) getActivity())
                                 .setTypeTab(Constants.DI_PHAT_KHONG_THANH_CONG)
                                 .setType(getActivity().getIntent().getIntExtra(Constants.TYPE_GOM_HANG, 0))
                                 .getFragment();
                     }
-                    return this.khongThanhCongFragment;
+                    return khongThanhCongFragment;
                 default:
                     return new Fragment();
             }
@@ -98,11 +115,18 @@ public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatCo
         }
     }
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.img_back, R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
+                break;
+            case R.id.img_send:
+                if (mPosition == 0) {
+                    this.diPhatFragment.setSubmitAll();
+                } else {
+                    this.khongThanhCongFragment.setSubmitAll();
+                }
                 break;
         }
     }

@@ -96,7 +96,12 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 mListFilter = (ArrayList<CommonObject>) filterResults.values;
                 if (mFilterDone != null) {
-                    mFilterDone.getCount(mListFilter.size());
+                    long amount = 0;
+                    for (CommonObject item : mListFilter) {
+                        if (!TextUtils.isEmpty(item.getAmount()))
+                            amount += Long.parseLong(item.getAmount());
+                    }
+                    mFilterDone.getCount(mListFilter.size(), amount);
                 }
                 notifyDataSetChanged();
             }
@@ -118,7 +123,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
         @BindView(R.id.tv_amount_services)
         CustomBoldTextView tvAmountServices;
         @BindView(R.id.tv_info)
-        CustomBoldTextView tvInfo;
+        CustomTextView tvInfo;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
 
@@ -159,6 +164,6 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
     }
 
     interface FilterDone {
-        void getCount(int count);
+        void getCount(int count, long amount);
     }
 }
