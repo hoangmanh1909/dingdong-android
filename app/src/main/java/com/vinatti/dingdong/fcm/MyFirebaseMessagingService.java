@@ -1,6 +1,7 @@
 package com.vinatti.dingdong.fcm;
 
-import android.app.NotificationChannel;
+import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -15,12 +18,14 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.login.LoginActivity;
-import com.vinatti.dingdong.notification.NotificationActivity;
+import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NotificationUtils;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
+    private Vibrator mVibrator;
     private static final String TAG = "MyFirebaseMsgService";
+    private PowerManager.WakeLock wakeLock;
+
 
     /**
      * Called when message is received.
@@ -82,32 +87,52 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = NotificationUtils.ANDROID_CHANNEL_ID;//getString(R.string.default_notification_channel_id);
+
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+                new NotificationCompat.Builder(this)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setWhen(System.currentTimeMillis())
                         .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle("Thông báo")
                         .setContentText(messageBody)
                         .setAutoCancel(true)
+                        .setVibrate(vibratePattern)
                         .setSound(defaultSoundUri)
-                        .setVibrate(new long[] { 500,1000 })
                         .setContentIntent(pendingIntent);
-
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-           /* NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);*/
-            NotificationUtils notificationUtils = new NotificationUtils(this);
-            notificationUtils.createChannels();
-            if (notificationManager != null)
-                notificationManager.createNotificationChannel(notificationUtils.getAndroidChannel());
-        }
+
+
+
         if (notificationManager != null)
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+    }
+    @SuppressLint("InvalidWakeLockTag")
+    @SuppressWarnings("deprecation")
+    public void acquireWakeLock(Context context) {
+        //neu khoa man hinh thi bat len
+        if (wakeLock != null)
+            wakeLock.release();
+
+        PowerManager pm = (PowerManager) context
+                .getSystemService(Context.POWER_SERVICE);
+
+        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                | PowerManager.ON_AFTER_RELEASE, Constants.TAG_WAKE_LOCK);
+
+        wakeLock.acquire();
+    }
+
+    public void releaseWakeLock() {
+        if (wakeLock != null)
+            wakeLock.release();
+        wakeLock = null;
     }
 }

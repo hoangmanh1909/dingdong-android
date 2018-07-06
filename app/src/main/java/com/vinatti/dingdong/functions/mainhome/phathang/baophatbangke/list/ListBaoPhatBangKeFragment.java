@@ -302,6 +302,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mAdapter.clear();
             tvCount.setText(String.format("Tổng số: %s", 0));
             tvAmount.setText(String.format("Tổng tiền: %s VNĐ", 0));
+        } else if (event.getType() == Constants.RELOAD_LIST) {
+            initSearch();
         }
     }
 

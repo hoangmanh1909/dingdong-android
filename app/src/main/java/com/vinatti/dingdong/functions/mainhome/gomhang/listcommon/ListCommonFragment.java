@@ -1,5 +1,6 @@
 package com.vinatti.dingdong.functions.mainhome.gomhang.listcommon;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -70,6 +71,13 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     public void initLayout() {
         super.initLayout();
 
+        if (mPresenter == null) {
+            if (getActivity() != null) {
+                Intent intent = getActivity().getIntent();
+                startActivity(intent);
+                getActivity().finish();
+            }
+        }
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
         mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {

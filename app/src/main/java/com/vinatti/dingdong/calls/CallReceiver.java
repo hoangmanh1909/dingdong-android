@@ -44,34 +44,36 @@ public class CallReceiver extends PhoneStateBroadcastReceiver {
     @Override
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
         super.onOutgoingCallEnded(ctx, number, start, end);
-        if (number.equals(Constants.HOTLINE_CALL_SHOW)) {
-            SharedPref sharedPref = new SharedPref(ctx);
-            String callerNumber = "";
-            String useiid = "";
-            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-            if (!userJson.isEmpty()) {
-                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                callerNumber = userInfo.getMobileNumber();
-                useiid = userInfo.getiD();
+        if(number!=null) {
+            if (number.equals(Constants.HOTLINE_CALL_SHOW)) {
+                SharedPref sharedPref = new SharedPref(ctx);
+                String callerNumber = "";
+                String useiid = "";
+                String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                if (!userJson.isEmpty()) {
+                    UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                    callerNumber = userInfo.getMobileNumber();
+                    useiid = userInfo.getiD();
+                }
+                long diffInMs = end.getTime() - start.getTime();
+
+                long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
+
+                String duration = lastCall(ctx);
+                NetWorkController.addNewCallCenter(useiid, useiid, callerNumber, number, duration + "",
+                        DateTimeUtils.convertDateToString(end, DateTimeUtils.DEFAULT_DATETIME_FORMAT),
+                        new CommonCallback<SimpleResult>(ctx) {
+                            @Override
+                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                super.onSuccess(call, response);
+                            }
+
+                            @Override
+                            protected void onError(Call<SimpleResult> call, String message) {
+                                super.onError(call, message);
+                            }
+                        });
             }
-            long diffInMs = end.getTime() - start.getTime();
-
-            long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
-
-            String duration = lastCall(ctx);
-            NetWorkController.addNewCallCenter(useiid, useiid, callerNumber, number, duration + "",
-                    DateTimeUtils.convertDateToString(end, DateTimeUtils.DEFAULT_DATETIME_FORMAT),
-                    new CommonCallback<SimpleResult>(ctx) {
-                        @Override
-                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            super.onSuccess(call, response);
-                        }
-
-                        @Override
-                        protected void onError(Call<SimpleResult> call, String message) {
-                            super.onError(call, message);
-                        }
-                    });
         }
     }
 

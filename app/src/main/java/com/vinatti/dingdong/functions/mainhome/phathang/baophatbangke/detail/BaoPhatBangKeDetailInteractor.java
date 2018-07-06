@@ -4,6 +4,7 @@ import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
+import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.network.NetWorkController;
 
 /**
@@ -20,6 +21,30 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     public void getReasons(CommonCallback<ReasonResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
     }
+    @Override
+    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, sign,note, commonCallback);
+    }
+    @Override
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, CommonCallback<SimpleResult> callback) {
+        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                callback);
+    }
 
+    @Override
+    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
+        NetWorkController.getSolutionByReasonCode(code,commonCallback);
+    }
+    @Override
+    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, CommonCallback<SimpleResult> callback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", callback);
+    }
 
+    @Override
+    public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.paymentDelivery(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
+                status, paymentChannel, deliveryType, signatureCapture,
+                note, commonCallback);
+    }
 }
