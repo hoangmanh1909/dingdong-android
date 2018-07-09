@@ -61,6 +61,8 @@ public class CommonObject {
     String Service;
     @SerializedName("Info")
     String Info;
+    @SerializedName("Instruction")
+    String instruction;
 
 
     @SerializedName("RealReceiverName")
@@ -202,6 +204,9 @@ public class CommonObject {
         return createDate;
     }
 
+    public String getInstruction() {
+        return instruction;
+    }
 
     public void setRealReceiverName(String realReceiverName) {
         this.realReceiverName = realReceiverName;

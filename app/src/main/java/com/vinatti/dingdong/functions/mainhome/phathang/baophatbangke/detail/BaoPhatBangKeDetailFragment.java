@@ -22,17 +22,12 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.BaoPhatBangKeFailCallback;
-import com.vinatti.dingdong.callback.BaoPhatbangKeConfirmCallback;
 import com.vinatti.dingdong.callback.PhoneCallback;
 import com.vinatti.dingdong.callback.SignCallback;
-import com.vinatti.dingdong.dialog.BaoPhatBangKeConfirmDialog;
-import com.vinatti.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.vinatti.dingdong.dialog.PhoneConectDialog;
 import com.vinatti.dingdong.dialog.SignDialog;
 import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
-import com.vinatti.dingdong.functions.mainhome.phathang.sign.SignDrawFragment;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.ReasonInfo;
@@ -88,10 +83,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     LinearLayout llContact;
     @BindView(R.id.tv_ReciverAddress)
     CustomTextView tvReciverAddress;
-    @BindView(R.id.tv_amount)
-    CustomTextView tvAmount;
-    @BindView(R.id.tv_note)
-    CustomTextView tvNote;
+    @BindView(R.id.tv_service)
+    CustomTextView tvService;
+    @BindView(R.id.tv_instruction)
+    CustomTextView tvInstruction;
     @BindView(R.id.tv_SenderPhone)
     CustomTextView tvSenderPhone;
     @BindView(R.id.img_send)
@@ -118,8 +113,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     FormItemTextView tvCollectAmount;
     @BindView(R.id.rad_cash)
     RadioButton radCash;
-    @BindView(R.id.rad_mpos)
-    RadioButton radMpos;
+    /*  @BindView(R.id.rad_mpos)
+      RadioButton radMpos;*/
     @BindView(R.id.radio_group_money)
     RadioGroup radioGroupMoney;
     @BindView(R.id.ll_pay_ment)
@@ -136,6 +131,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     CustomTextView btnSign;
     @BindView(R.id.ll_confirm_success)
     LinearLayout llConfirmSuccess;
+    @BindView(R.id.ll_signed)
+    LinearLayout llSigned;
     @BindView(R.id.img_sign)
     ImageView imgSign;
 
@@ -167,14 +164,20 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         super.initLayout();
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
-        tvWeigh.setText(mBaoPhatBangke.getWeigh());
+        tvWeigh.setText(String.format("%s - %s", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
         tvSenderName.setText(mBaoPhatBangke.getSenderName());
         tvSenderAddress.setText(mBaoPhatBangke.getSenderAddress());
         tvReciverName.setText(mBaoPhatBangke.getReciverName());
         tvReciverAddress.setText(mBaoPhatBangke.getReciverAddress());
-        tvNote.setText(mBaoPhatBangke.getNote());
+
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
-            tvAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
+            tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
+        }
+        if (!TextUtils.isEmpty(mBaoPhatBangke.getService())) {
+            tvService.setText(mBaoPhatBangke.getService());
+        }
+        if (!TextUtils.isEmpty(mBaoPhatBangke.getInstruction())) {
+            tvInstruction.setText(mBaoPhatBangke.getInstruction());
         }
         tvSenderPhone.setText(mBaoPhatBangke.getSenderPhone());
         String[] phones = mBaoPhatBangke.getContactPhone().split(",");
@@ -212,7 +215,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     private void setupReciverPerson() {
-        radioGroupMoney.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+       /* radioGroupMoney.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rad_cash) {
@@ -221,12 +224,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     mPaymentType = 2;
                 }
             }
-        });
+        });*/
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            tvUserDelivery.setText(userInfo.getFullName());
+            tvUserDelivery.setText(userInfo.getiD() + " - " + userInfo.getFullName());
         }
         //tvTitle.setText(mPresenter.getBaoPhatCommon().getCode());
         calDate = Calendar.getInstance();
@@ -238,7 +241,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
         }
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
-        if (mBaoPhatBangke.getIsCOD() != null) {
+       /* if (mBaoPhatBangke.getIsCOD() != null) {
             if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
                 llPayMent.setVisibility(View.VISIBLE);
                 long sumAmount = 0;
@@ -252,7 +255,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             }
         } else {
             llPayMent.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void checkPermissionCall() {
@@ -292,6 +295,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     public void onResponse(String sign, Bitmap bitmap) {
                         mSign = sign;
                         imgSign.setImageBitmap(bitmap);
+                        if (bitmap != null) {
+                            llSigned.setVisibility(View.VISIBLE);
+                        }
                     }
                 }).show();
                 break;

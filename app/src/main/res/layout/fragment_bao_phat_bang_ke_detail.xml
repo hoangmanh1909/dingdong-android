@@ -436,12 +436,12 @@
                             android:layout_weight="0.8"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Số tiền thu hộ"
+                            android:text="Dịch vụ"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
                         <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_amount"
+                            android:id="@+id/tv_service"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
@@ -464,12 +464,12 @@
                             android:layout_weight="0.8"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Ghi chú"
+                            android:text="Lưu ý"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
                         <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_note"
+                            android:id="@+id/tv_instruction"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
@@ -614,7 +614,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -650,6 +650,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
+                            android:gravity="center"
                             android:orientation="horizontal"
                             android:weightSum="2">
 
@@ -683,7 +684,7 @@
                                     android:text="Tiền mặt"
                                     android:textColor="@color/blue" />
 
-                                <RadioButton
+                               <!-- <RadioButton
                                     android:id="@+id/rad_mpos"
                                     style="@style/CustomRadioButtonStyle"
                                     android:layout_width="wrap_content"
@@ -692,7 +693,7 @@
                                     android:gravity="left|center"
                                     android:paddingLeft="@dimen/dimen_5dp"
                                     android:text="Qua mPos"
-                                    android:textColor="@color/blue" />
+                                    android:textColor="@color/blue" />-->
 
                             </RadioGroup>
 
@@ -862,8 +863,10 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_signed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -874,7 +877,7 @@
                             android:layout_weight="0.8"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Chữ đã ký"
+                            android:text="Chữ ký đã ký"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
