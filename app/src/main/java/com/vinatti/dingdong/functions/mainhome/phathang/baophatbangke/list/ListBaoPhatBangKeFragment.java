@@ -105,7 +105,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
         }) {
             @Override
-            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+            public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -133,13 +133,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mAdapter.getFilter().filter(s);
+
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                mAdapter.getFilter().filter(s.toString());
             }
         });
     }
@@ -256,9 +256,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 }
             }
 
-            mAdapter.refresh(mList);
 
         }
+        mAdapter.notifyDataSetChanged();
         tvCount.setText(String.format("Tổng số: %s", mList.size()));
         tvAmount.setText(String.format("Tổng tiền: %s VNĐ", NumberUtils.formatPriceNumber(amount)));
     }
@@ -272,9 +272,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        mAdapter.notifyDataSetChanged();
                         sweetAlertDialog.dismiss();
+
                     }
                 }).show();
+
     }
 
     @Override
@@ -299,7 +302,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         /* Do something */
         if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
             mList.clear();
-            mAdapter.clear();
+            mAdapter.notifyDataSetChanged();
             tvCount.setText(String.format("Tổng số: %s", 0));
             tvAmount.setText(String.format("Tổng tiền: %s VNĐ", 0));
         } else if (event.getType() == Constants.RELOAD_LIST) {

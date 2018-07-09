@@ -48,7 +48,7 @@
                                 android:layout_gravity="center"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Khách hàng ký xác nhận từ chối"
+                                android:text="Khách hàng ký xác nhận"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 

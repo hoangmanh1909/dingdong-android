@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -23,19 +24,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Filterable {
+public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBangKeAdapter.HolderView> implements Filterable {
 
     private final int mType;
     private final FilterDone mFilterDone;
     private List<CommonObject> mListFilter;
+    private List<CommonObject> mList;
 
     public ListBaoPhatBangKeAdapter(Context context, int type, List<CommonObject> items, FilterDone filterDone) {
 
-        super(context, items);
         mType = type;
         mListFilter = items;
+        mList = items;
         mFilterDone = filterDone;
+
     }
 
     @Override
@@ -43,20 +47,20 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
         return mListFilter.size();
     }
 
-    @Override
-    public void refresh(List items) {
-        super.refresh(items);
-        mListFilter = items;
-    }
 
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new HolderView(inflateView(parent, R.layout.item_bao_phat_bang_ke));
+        return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bao_phat_bang_ke, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+        holder.bindView(mListFilter.get(position));
     }
 
     public List<CommonObject> getItemsSelected() {
         List<CommonObject> commonObjectsSelected = new ArrayList<>();
-        List<CommonObject> items = getItems();
+        List<CommonObject> items = mListFilter;
         for (CommonObject item : items) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);
@@ -72,10 +76,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    mListFilter = getItems();
+                    mListFilter = mList;
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
-                    for (CommonObject row : (List<CommonObject>) getItems()) {
+                    for (CommonObject row : mList) {
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
@@ -108,7 +112,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
         };
     }
 
-    class HolderView extends BaseViewHolder {
+    class HolderView extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_stt)
         CustomBoldTextView tvStt;
@@ -129,10 +133,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
 
         public HolderView(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        @Override
-        public void bindView(final Object model, int position) {
+        public void bindView(final Object model) {
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
@@ -155,9 +159,9 @@ public class ListBaoPhatBangKeAdapter extends RecyclerBaseAdapter implements Fil
                 }
             });
             if (!TextUtils.isEmpty(item.getAmount())) {
-                tvAmountServices.setText(String.format("%s VNĐ ( %s )", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount())), item.getService()));
+                tvAmountServices.setText(String.format("%s VNĐ ( %s )", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount())), item.getService() != null ? item.getService().trim() : ""));
             } else {
-                tvAmountServices.setText(String.format("( %s )", item.getService()));
+                tvAmountServices.setText(String.format("( %s )", item.getService() != null ? item.getService().trim() : ""));
             }
             tvInfo.setText(String.format("Đã phát: %s", item.getInfo()));
         }
