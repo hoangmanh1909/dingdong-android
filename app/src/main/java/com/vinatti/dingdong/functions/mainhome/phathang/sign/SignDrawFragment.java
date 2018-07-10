@@ -104,15 +104,13 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                         }
                     }
                     if (!TextUtils.isEmpty(base64)) {
-                        if(!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
+                        if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
                             if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
                                 mPresenter.paymentDelivery(base64);
                             } else {
                                 mPresenter.signDataAndSubmitToPNS(base64);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             mPresenter.signDataAndSubmitToPNS(base64);
                         }
                     } else {
@@ -167,9 +165,10 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
     public void finishView() {
        /* if (getActivity() != null)
             getActivity().finish();*/
-       mPresenter.back();
-       mPresenter.back();
+        mPresenter.back();
+        mPresenter.back();
         EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, 0));
     }
 
     class PushDataToMpos {

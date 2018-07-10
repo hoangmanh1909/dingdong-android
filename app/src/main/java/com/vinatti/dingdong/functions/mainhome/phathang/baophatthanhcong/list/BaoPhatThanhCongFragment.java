@@ -87,7 +87,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.callForward(mList.get(position).getReceiverPhone().split(",")[0].replace(" ","").replace(".",""));
+                        mPresenter.callForward(mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""));
                     }
                 });
             }
@@ -110,7 +110,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
 
     public void getQuery(String parcelCode) {
         mPresenter.searchParcelCodeDelivery(parcelCode.trim());
-        ((BaoPhatThanhCongActivity)getActivity()).removeTextSearch();
+        ((BaoPhatThanhCongActivity) getActivity()).removeTextSearch();
     }
 
 
@@ -137,7 +137,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:"+Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse("tel:" + Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 
@@ -170,7 +170,11 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 break;
             case R.id.btn_confirm_all:
                 if (mList != null && !mList.isEmpty())
-                    mPresenter.pushViewConfirmAll(mList);
+                    if (mList.size() > 1) {
+                        mPresenter.pushViewConfirmAll(mList);
+                    } else {
+                        mPresenter.showDetail(mList.get(0));
+                    }
                 break;
         }
     }
