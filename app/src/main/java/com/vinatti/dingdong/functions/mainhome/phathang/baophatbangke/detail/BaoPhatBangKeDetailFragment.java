@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -53,6 +54,7 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The BaoPhatBangKeDetail Fragment
@@ -133,6 +135,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     LinearLayout llConfirmSuccess;
     @BindView(R.id.ll_signed)
     LinearLayout llSigned;
+    @BindView(R.id.ll_status)
+    LinearLayout llStatus;
+    @BindView(R.id.ll_info_order)
+    LinearLayout llInfoOrder;
     @BindView(R.id.img_sign)
     ImageView imgSign;
 
@@ -162,6 +168,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @Override
     public void initLayout() {
         super.initLayout();
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        }
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
         tvWeigh.setText(String.format("%s - %s", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
@@ -172,6 +181,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
+        }
+        if (!TextUtils.isEmpty(mBaoPhatBangke.getCollectAmount())) {
+            tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getService())) {
             tvService.setText(mBaoPhatBangke.getService());
@@ -212,6 +224,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         });
 
         setupReciverPerson();
+        if (mPresenter.getDeliveryType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
+            llStatus.setVisibility(View.GONE);
+            llInfoOrder.setVisibility(View.GONE);
+        }
     }
 
     private void setupReciverPerson() {
@@ -404,7 +420,21 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void showSuccessMessage(String message) {
-        Toast.showToast(getActivity(), message);
+        if (getActivity() != null) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            finishView();
+
+                        }
+                    }).show();
+            //finishView();
+        }
     }
 
     @Override
@@ -458,8 +488,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void finishView() {
-        mPresenter.back();
-        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST));
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, mPresenter.getPosition()));
     }
 
     private void showUIReason() {

@@ -3,6 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.view.Menu;
@@ -79,7 +80,7 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
                 // mAdapter.getFilter().filter(query);
-               // mFragment.getAdapter().getFilter().filter(query);
+                // mFragment.getAdapter().getFilter().filter(query);
                 return false;
             }
         });
@@ -97,6 +98,13 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
     }
 
     public void removeTextSearch() {
-        searchView.setQuery("",false);
+        searchView.setQuery("", false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getSupportActionBar() != null)
+            getSupportActionBar().show();
     }
 }

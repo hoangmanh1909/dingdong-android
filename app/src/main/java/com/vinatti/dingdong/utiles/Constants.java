@@ -18,4 +18,6 @@ public class Constants {
     public static final int DI_PHAT_KHONG_THANH_CONG = 1;
     public static final String TAG_WAKE_LOCK = "WakeLockDingDong";
     public static final int RELOAD_LIST = 2;
+    public static final int TYPE_BAO_PHAT_BD13_THANH_CONG = 3;
+    public static final int TYPE_BAO_PHAT_BD13_KHONG_THANH_CONG = 4;
 }

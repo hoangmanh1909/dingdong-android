@@ -47,6 +47,9 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         return mListFilter.size();
     }
 
+    public List<CommonObject> getListFilter() {
+        return mListFilter;
+    }
 
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {

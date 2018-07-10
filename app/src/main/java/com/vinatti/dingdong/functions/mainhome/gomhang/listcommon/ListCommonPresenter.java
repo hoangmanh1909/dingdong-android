@@ -10,6 +10,7 @@ import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoantha
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectListResult;
+import com.vinatti.dingdong.utiles.Constants;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -98,7 +99,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
         } else if (mType == 2) {
             new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 3) {
-            new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).pushView();
+            new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).setTypeBaoPhat(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
         }
     }
 

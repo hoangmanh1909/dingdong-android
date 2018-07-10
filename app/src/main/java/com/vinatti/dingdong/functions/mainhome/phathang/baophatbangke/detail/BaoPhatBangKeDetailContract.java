@@ -80,6 +80,10 @@ interface BaoPhatBangKeDetailContract {
         void signDataAndSubmitToPNS(String base64);
 
         void paymentDelivery(String base64);
+
+        int getPosition();
+
+        int getDeliveryType();
     }
 }
 

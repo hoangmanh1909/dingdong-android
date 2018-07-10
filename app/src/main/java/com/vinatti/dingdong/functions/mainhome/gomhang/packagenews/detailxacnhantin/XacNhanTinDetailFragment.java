@@ -130,32 +130,35 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
 
     @Override
     public void showMessage(String message) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                .setConfirmText("OK")
-                .setTitleText("Thông báo")
-                .setContentText(message)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                        btnConfirm.setEnabled(false);
-                        btnReject.setEnabled(false);
-                        mPresenter.back();
-                    }
-                }).show();
+        if (getActivity() != null)
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            btnConfirm.setEnabled(false);
+                            btnReject.setEnabled(false);
+                            if (mPresenter != null)
+                                mPresenter.back();
+                        }
+                    }).show();
     }
 
     @Override
     public void showError(String message) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                .setConfirmText("OK")
-                .setTitleText("Thông báo")
-                .setContentText(message)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                    }
-                }).show();
+        if (getActivity() != null)
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    }).show();
     }
 }

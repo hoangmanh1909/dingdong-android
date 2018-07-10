@@ -69,6 +69,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
         checkPermissionCall();
     }
+
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
@@ -78,6 +79,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
         }
     }
+
     @OnClick({R.id.img_back, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -94,11 +96,13 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new HoanThanhTinCallback() {
                         @Override
                         public void onResponse(String statusCode, String quantity, String collectReason, String pickUpDate, String pickUpTime) {
-                            SharedPref sharedPref = new SharedPref(getActivity());
-                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-                            if (!userJson.isEmpty()) {
-                                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                                mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(), mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, collectReason, pickUpDate, pickUpTime);
+                            if (getActivity() != null) {
+                                SharedPref sharedPref = new SharedPref(getActivity());
+                                String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                                if (!userJson.isEmpty()) {
+                                    UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                                    mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(), mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, collectReason, pickUpDate, pickUpTime);
+                                }
                             }
 
                         }
@@ -125,6 +129,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @Override
     public void showView(CommonObject commonObject) {
+        if (getActivity() == null) {
+            return;
+        }
         if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
             btnConfirm.setEnabled(true);
         } else {
@@ -156,32 +163,35 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @Override
     public void showMessage(String message) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                .setConfirmText("OK")
-                .setTitleText("Thông báo")
-                .setContentText(message)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                        btnConfirm.setEnabled(false);
-                        mPresenter.back();
-                    }
-                }).show();
+        if (getActivity() != null)
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            btnConfirm.setEnabled(false);
+                            if (mPresenter != null)
+                                mPresenter.back();
+                        }
+                    }).show();
     }
 
     @Override
     public void showError(String message) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                .setConfirmText("OK")
-                .setTitleText("Thông báo")
-                .setContentText(message)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                    }
-                }).show();
+        if (getActivity() != null)
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    }).show();
     }
 
     @Override

@@ -115,10 +115,16 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         } else if (mType == 2) {
             new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 3) {
-            new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).pushView();
+            new BaoPhatBangKeDetailPresenter(mContainerView)
+                    .setBaoPhatBangKe(commonObject)
+                    .setPositionTab(mPos)
+                    .pushView();
         }
     }
-
+    public ListBaoPhatBangKePresenter setTypeTab(int position) {
+        mPos = position;
+        return this;
+    }
     @Override
     public ListBaoPhatBangKePresenter setType(int type) {
         mType = type;
@@ -203,8 +209,5 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return mPos;
     }
 
-    public ListBaoPhatBangKePresenter setTypeTab(int position) {
-        mPos = position;
-        return this;
-    }
+
 }

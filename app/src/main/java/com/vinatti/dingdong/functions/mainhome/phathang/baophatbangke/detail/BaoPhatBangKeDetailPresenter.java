@@ -31,6 +31,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
 
     private CommonObject mBaoPhatBangke;
     private int mType = 0;
+    private int mPosition;
 
     public BaoPhatBangKeDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -54,6 +55,23 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     public BaoPhatBangKeDetailPresenter setBaoPhatBangKe(CommonObject baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
         return this;
+    }
+    public BaoPhatBangKeDetailPresenter setTypeBaoPhat(int type) {
+        mType = type;
+        return this;
+    }
+    public BaoPhatBangKeDetailPresenter setPositionTab(int pos) {
+        mPosition = pos;
+        return this;
+    }
+    @Override
+    public int getPosition() {
+        return mPosition;
+    }
+
+    @Override
+    public int getDeliveryType() {
+        return mType;
     }
 
     @Override
@@ -105,7 +123,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                    mView.finishView();
+
                 } else {
                     mView.showError(response.body().getMessage());
                 }
@@ -214,7 +232,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                         mView.callAppToMpost();
                     } else {
                         mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                        mView.finishView();
+
 
                     }
                 } else {
@@ -281,7 +299,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                                 }
                             } else {
                                 mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                mView.finishView();
+
                             }
                         } else {
                             mView.showError(response.body().getMessage());
@@ -298,4 +316,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 });
 
     }
+
+
+
 }

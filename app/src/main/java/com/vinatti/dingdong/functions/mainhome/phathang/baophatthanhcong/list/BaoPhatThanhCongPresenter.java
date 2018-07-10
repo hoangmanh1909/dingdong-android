@@ -7,6 +7,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail.BaoPhatThanhCongDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
@@ -80,13 +81,15 @@ public class BaoPhatThanhCongPresenter extends Presenter<BaoPhatThanhCongContrac
 
     @Override
     public void showDetail(CommonObject commonObject) {
-        new BaoPhatThanhCongDetailPresenter(mContainerView).setBaoPhatThanhCong(commonObject).pushView();
+        //new BaoPhatThanhCongDetailPresenter(mContainerView).setBaoPhatThanhCong(commonObject).pushView();
+        new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).setTypeBaoPhat(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
     }
 
     @Override
     public void pushViewConfirmAll(List<CommonObject> list) {
         new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(list).setType(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
     }
+
     @Override
     public void callForward(String phone) {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);

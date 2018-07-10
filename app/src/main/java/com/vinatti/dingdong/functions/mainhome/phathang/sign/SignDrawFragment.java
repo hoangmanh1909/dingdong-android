@@ -169,7 +169,7 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             getActivity().finish();*/
        mPresenter.back();
        mPresenter.back();
-        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG));
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
     }
 
     class PushDataToMpos {
