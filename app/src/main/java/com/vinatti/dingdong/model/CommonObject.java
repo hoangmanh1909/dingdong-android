@@ -232,6 +232,10 @@ public class CommonObject {
         this.currentPaymentType = currentPaymentType;
     }
 
+    public void setCollectAmount(String collectAmount) {
+        this.collectAmount = collectAmount;
+    }
+
     public String getRealReceiverName() {
         return realReceiverName;
     }

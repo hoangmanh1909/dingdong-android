@@ -3,6 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -15,6 +16,7 @@ import com.vinatti.dingdong.functions.mainhome.phathang.receverpersion.ReceverPe
 import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectListResult;
+import com.vinatti.dingdong.model.PostOffice;
 import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.UserInfo;
@@ -121,10 +123,12 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     .pushView();
         }
     }
+
     public ListBaoPhatBangKePresenter setTypeTab(int position) {
         mPos = position;
         return this;
     }
+
     @Override
     public ListBaoPhatBangKePresenter setType(int type) {
         mType = type;
@@ -164,9 +168,15 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
         }
+        String deliveryPOSCode = "";
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!posOfficeJson.isEmpty()) {
+            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+            deliveryPOSCode = postOffice.getCode();
+        }
         for (CommonObject item : commonObjects) {
             String ladingCode = item.getParcelCode();
-            String deliveryPOCode = item.getPoCode();
+            String deliveryPOCode = !TextUtils.isEmpty(deliveryPOSCode) ? deliveryPOSCode : item.getPoCode();
             String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
             String receiverName = item.getReciverName();
@@ -174,7 +184,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String solutionCode = solution;
             String status = "C18";
 
-            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign, note, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign, note,item.getAmount(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);

@@ -31,7 +31,7 @@ interface ListBaoPhatBangKeContract {
                                    String shiftID, CommonCallback<CommonObjectListResult> callback);
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, CommonCallback<SimpleResult> commonCallback);
+        void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, String amount, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

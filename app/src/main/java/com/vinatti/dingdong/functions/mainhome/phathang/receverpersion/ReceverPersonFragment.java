@@ -21,6 +21,7 @@ import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.EditTextUtils;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
@@ -46,6 +47,8 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     FormItemTextView tvUserDelivery;
     @BindView(R.id.tv_CollectAmount)
     FormItemTextView tvCollectAmount;
+ /*   @BindView(R.id.edt_CollectAmount)
+    FormItemEditText edtCollectAmount;*/
     @BindView(R.id.edt_ReceiverName)
     FormItemEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
@@ -135,12 +138,14 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                         sumAmount += Long.parseLong(item.getReceiveCollectFee());
                 }
                 tvCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount) + " đ");
+               // edtCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount));
             } else {
                 llPayMent.setVisibility(View.GONE);
             }
         } else {
             llPayMent.setVisibility(View.GONE);
         }
+       // EditTextUtils.editTextListener(edtCollectAmount.getEditText());
     }
 
 

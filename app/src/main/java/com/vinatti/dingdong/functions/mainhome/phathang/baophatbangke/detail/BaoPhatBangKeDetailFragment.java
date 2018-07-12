@@ -37,6 +37,7 @@ import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.EditTextUtils;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
@@ -113,6 +114,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     FormItemTextView tvUserDelivery;
     @BindView(R.id.tv_CollectAmount)
     FormItemTextView tvCollectAmount;
+    @BindView(R.id.edt_CollectAmount)
+    FormItemEditText edtCollectAmount;
     @BindView(R.id.rad_cash)
     RadioButton radCash;
     /*  @BindView(R.id.rad_mpos)
@@ -181,9 +184,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
+            edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getCollectAmount())) {
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
+            edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getService())) {
             tvService.setText(mBaoPhatBangke.getService());
@@ -228,6 +233,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             llStatus.setVisibility(View.GONE);
             llInfoOrder.setVisibility(View.GONE);
         }
+        EditTextUtils.editTextListener(edtCollectAmount.getEditText());
     }
 
     private void setupReciverPerson() {
@@ -373,6 +379,15 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     private void submit() {
         if (mDeliveryType == 2) {
+            if (TextUtils.isEmpty(edtCollectAmount.getText())) {
+                Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");
+                return;
+            }
+            if (TextUtils.isEmpty(edtReceiverName.getText())) {
+                Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
+                return;
+            }
+
             if (TextUtils.isEmpty(edtReceiverName.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
@@ -384,6 +399,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             }
             mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText());
             mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
+            mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll(".", ""));
             mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
             mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText());
             mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
@@ -488,6 +504,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void finishView() {
+        mPresenter.back();
         EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, mPresenter.getPosition()));
     }
 

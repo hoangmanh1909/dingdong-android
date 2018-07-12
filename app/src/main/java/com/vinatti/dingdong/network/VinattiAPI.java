@@ -132,6 +132,7 @@ public interface VinattiAPI {
                                          @Field("DeliveryType") String deliveryType,
                                          @Field("SignatureCapture") String signatureCapture,
                                          @Field("Note") String note,
+                                         @Field("CollectAmount") String collectAmount,
                                          @Field("Signature") String signature);
 
     @FormUrlEncoded
@@ -168,6 +169,7 @@ public interface VinattiAPI {
                                        @Field("DeliveryType") String deliveryType,
                                        @Field("SignatureCapture") String signatureCapture,
                                        @Field("Note") String note,
+                                       @Field("CollectAmount") String collectAmount,
                                        @Field("Signature") String signature);
 
     @GET("api/Dictionary/GetPostOfficeByCode")

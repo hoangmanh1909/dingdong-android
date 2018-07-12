@@ -64,21 +64,14 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         }
         final int size = mBaoPhatCommon.size();
         mView.showProgress();
+        String deliveryPOCode="";
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!posOfficeJson.isEmpty()) {
+            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+            deliveryPOCode = postOffice.getCode();
+        }
         for (CommonObject item : mBaoPhatCommon) {
             String ladingCode = item.getParcelCode();
-            String deliveryPOCode;
-            if (mType == Constants.TYPE_BAO_PHAT_THANH_CONG) {
-                String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-                if (!posOfficeJson.isEmpty()) {
-                    PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-                    deliveryPOCode = postOffice.getCode();
-                } else {
-                    deliveryPOCode = item.getDeliveryPOCode();
-                }
-
-            } else {
-                deliveryPOCode = item.getPoCode();
-            }
             String deliveryDate = item.getDeliveryDate();
             String deliveryTime = item.getDeliveryTime();
             String receiverName = item.getRealReceiverName();
@@ -87,7 +80,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String status = "C14";
             final String paymentChannel = item.getCurrentPaymentType();
             String deliveryType = item.getDeliveryType();
-            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType,item.getCollectAmount(), signatureCapture, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
@@ -156,9 +149,10 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             final String paymentChannel = item.getCurrentPaymentType();
             String deliveryType = item.getDeliveryType();
             mInteractor.paymentDelivery(postmanID,
-                    parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
+                    parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
+                    solutionCode,
                     status, paymentChannel, deliveryType, signatureCapture,
-                    note, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    note,item.getCollectAmount(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
                         @Override
                         protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                             super.onSuccess(call, response);

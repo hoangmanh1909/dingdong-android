@@ -24,7 +24,9 @@ interface BaoPhatBangKeDetailContract {
                                String deliveryDate, String deliveryTime, String receiverName,
                                String reasonCode, String solutionCode, String status,
                                String paymentChannel, String deliveryType, String sign,
-                               String note, CommonCallback<SimpleResult> commonCallback);
+                               String note,
+                               String collectAmount,
+                               CommonCallback<SimpleResult> commonCallback);
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    CommonCallback<SimpleResult> callback);
@@ -41,9 +43,13 @@ interface BaoPhatBangKeDetailContract {
                                String status,
                                String paymentChannel,
                                String deliveryType,
+                               String collectAmount,
                                String signatureCapture, CommonCallback<SimpleResult> callback);
 
-        void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, CommonCallback<SimpleResult> commonCallback);
+        void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
+                             String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
+                             String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
+                             String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
