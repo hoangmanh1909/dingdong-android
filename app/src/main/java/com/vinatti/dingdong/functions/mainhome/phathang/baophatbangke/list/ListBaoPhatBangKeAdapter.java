@@ -12,8 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.core.base.adapter.RecyclerBaseAdapter;
-import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.NumberUtils;
@@ -120,15 +118,19 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         @BindView(R.id.tv_stt)
         CustomBoldTextView tvStt;
         @BindView(R.id.tv_code)
-        CustomBoldTextView tvCode;
+        CustomTextView tvCode;
+        @BindView(R.id.tv_date)
+        CustomTextView tvDate;
         @BindView(R.id.tv_contactName)
         CustomTextView tvContactName;
         @BindView(R.id.tv_contact_address)
         CustomTextView tvContactAddress;
         @BindView(R.id.tv_contact_description)
         CustomTextView tvContactDescription;
-        @BindView(R.id.tv_amount_services)
-        CustomBoldTextView tvAmountServices;
+        @BindView(R.id.tv_amount)
+        CustomTextView tvAmount;
+        @BindView(R.id.tv_services)
+        CustomTextView tvServices;
         @BindView(R.id.tv_info)
         CustomTextView tvInfo;
         @BindView(R.id.cb_selected)
@@ -162,11 +164,18 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 }
             });
             if (!TextUtils.isEmpty(item.getAmount())) {
-                tvAmountServices.setText(String.format("%s VNĐ ( %s )", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount())), item.getService() != null ? item.getService().trim() : ""));
-            } else {
-                tvAmountServices.setText(String.format("( %s )", item.getService() != null ? item.getService().trim() : ""));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount()))));
+            }
+            if (!TextUtils.isEmpty(item.getService())) {
+                if (!TextUtils.isEmpty(item.getService().trim())) {
+                    tvServices.setText(String.format("%s", item.getService() != null ? item.getService().trim() : ""));
+                    tvServices.setVisibility(View.VISIBLE);
+                } else {
+                    tvServices.setVisibility(View.GONE);
+                }
             }
             tvInfo.setText(String.format("Đã phát: %s", item.getInfo()));
+            tvDate.setText(item.getDateSearch());
         }
     }
 

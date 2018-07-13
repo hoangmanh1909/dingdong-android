@@ -77,6 +77,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 startActivity(intent);
                 getActivity().finish();
             }
+            return;
         }
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();

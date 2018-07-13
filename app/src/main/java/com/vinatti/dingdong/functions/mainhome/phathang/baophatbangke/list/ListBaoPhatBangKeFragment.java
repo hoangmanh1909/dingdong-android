@@ -101,8 +101,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList, new ListBaoPhatBangKeAdapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
-                tvCount.setText(String.format("Tổng số: %s", count + ""));
-                tvAmount.setText(String.format("Tổng tiền: %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+                tvCount.setText(String.format(" %s", count + ""));
+                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
             }
         }) {
             @Override
@@ -258,6 +258,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mList.clear();
         long amount = 0;
         for (CommonObject item : list) {
+            item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT) + " - Ca " + mShiftID);
             if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 if (item.getStatus().equals("N")) {
                     mList.add(item);
@@ -275,8 +276,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
         }
         mAdapter.notifyDataSetChanged();
-        tvCount.setText(String.format("Tổng số: %s", mList.size()));
-        tvAmount.setText(String.format("Tổng tiền: %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+        tvCount.setText(String.format(" %s", mList.size()));
+        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
     }
 
     @Override

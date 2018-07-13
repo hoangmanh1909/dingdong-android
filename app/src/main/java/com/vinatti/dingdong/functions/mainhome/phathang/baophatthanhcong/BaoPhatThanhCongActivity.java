@@ -3,11 +3,14 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.core.base.viper.ViewFragment;
@@ -46,6 +49,9 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
+        } else if (id == R.id.action_camera) {
+            mFragment.scanQr();
+            return true;
         } else {
             finish();
         }
@@ -55,12 +61,10 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-
+        getMenuInflater().inflate(R.menu.menu_search_bao_phat, menu);
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
@@ -86,7 +90,6 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
         });
         return true;
     }
-
     @Override
     public void onBackPressed() {
         // close search view on back button pressed

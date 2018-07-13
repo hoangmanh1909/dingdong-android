@@ -83,13 +83,12 @@
                     android:id="@+id/tv_ContactPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
+                    android:background="@drawable/bg_border_phone"
                     android:drawableLeft="@drawable/ic_tel"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_5dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="0987654321"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_14sp" />
 

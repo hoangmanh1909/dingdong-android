@@ -66,19 +66,32 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical">
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Hình thức báo phát"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Hình thức báo phát"
+                        android:textAllCaps="true"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
@@ -129,18 +142,30 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical">
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN GỬI"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN GỬI"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -244,18 +269,30 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical">
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN NHẬN"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN NHẬN"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -355,18 +392,31 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN HÀNG HÓA"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN HÀNG HÓA"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -494,20 +544,32 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Báo phát"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Báo phát"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:id="@+id/layout_date_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical"
                     android:padding="@dimen/size_16dp">
 
@@ -567,18 +629,31 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Xác nhận phát"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Xác nhận phát"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -647,6 +722,7 @@
                                 app:formShowClear="true" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -676,6 +752,7 @@
                                 app:formShowClear="true" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -714,16 +791,16 @@
                                     android:text="Tiền mặt"
                                     android:textColor="@color/blue" />
 
-                               <!-- <RadioButton
-                                    android:id="@+id/rad_mpos"
-                                    style="@style/CustomRadioButtonStyle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/dimen_5dp"
-                                    android:gravity="left|center"
-                                    android:paddingLeft="@dimen/dimen_5dp"
-                                    android:text="Qua mPos"
-                                    android:textColor="@color/blue" />-->
+                                <!-- <RadioButton
+                                     android:id="@+id/rad_mpos"
+                                     style="@style/CustomRadioButtonStyle"
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="@dimen/dimen_5dp"
+                                     android:gravity="left|center"
+                                     android:paddingLeft="@dimen/dimen_5dp"
+                                     android:text="Qua mPos"
+                                     android:textColor="@color/blue" />-->
 
                             </RadioGroup>
 
@@ -896,8 +973,8 @@
                         android:id="@+id/ll_signed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.vinatti.dingdong.views.CustomTextView
@@ -920,7 +997,7 @@
                             android:paddingLeft="@dimen/dimen_20dp"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingRight="@dimen/dimen_20dp"
-                            android:paddingBottom="@dimen/dimen_5dp"/>
+                            android:paddingBottom="@dimen/dimen_5dp" />
 
 
                     </LinearLayout>

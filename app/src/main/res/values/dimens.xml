@@ -59,4 +59,5 @@
     <dimen name="text_small">12dp</dimen>
     <dimen name="dimen_18dp">18dp</dimen>
     <dimen name="dimen_12dp">12dp</dimen>
+    <dimen name="action_item_width">48dp</dimen>
 </resources>

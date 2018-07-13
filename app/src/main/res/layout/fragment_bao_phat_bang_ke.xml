@@ -38,14 +38,6 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_capture" />
 
-                <com.vinatti.dingdong.views.CustomTextView
-                    android:id="@+id/tv_capture"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quét mã vạch"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:textAllCaps="true" />
             </LinearLayout>
 
 
@@ -54,16 +46,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/ll_scan_qr"
+                android:ellipsize="end"
                 android:gravity="center"
                 android:hint="Nhập để tìm kiếm nhanh bưu gửi"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
                 android:scrollHorizontally="true"
-                android:ellipsize="end"
                 android:singleLine="true"
-                android:textSize="@dimen/_14sdp"
                 android:textColorHint="@android:color/black"
+                android:textSize="@dimen/_14sdp"
                 app:met_bottomTextSize="@dimen/_12sdp"
                 app:met_clearButton="false"
                 app:met_floatingLabel="highlight"
@@ -72,8 +64,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_10sdp">
 
             <com.vinatti.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_count"
@@ -85,8 +77,8 @@
             <com.vinatti.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_16sp" />
         </RelativeLayout>
@@ -141,22 +133,17 @@
             android:textColor="@color/black"
             android:visibility="gone" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dimen_40dp"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10dp">
 
-            <ImageView
-                android:id="@+id/img_view"
-                android:layout_width="@dimen/size_50dp"
-                android:layout_height="@dimen/size_50dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_choose_calendar" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/img_view"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/ic_choose_calendar" />
 
     </FrameLayout>
 </LinearLayout>

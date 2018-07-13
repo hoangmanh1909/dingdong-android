@@ -8,6 +8,7 @@
     <RelativeLayout
         android:id="@+id/ll_scan_qr"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_10dp"
         android:paddingRight="@dimen/dimen_10dp">
@@ -51,7 +52,7 @@
             android:paddingRight="@dimen/dimen_20dp"
             android:paddingBottom="@dimen/dimen_5dp"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:text="Xác nhận phát tất cả"
+            android:text="Xác nhận"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18sp" />

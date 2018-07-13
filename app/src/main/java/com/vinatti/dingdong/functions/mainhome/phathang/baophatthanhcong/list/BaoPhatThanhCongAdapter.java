@@ -69,7 +69,7 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
             String[] phones = item.getReceiverPhone().split(",");
             if (phones.length > 0) {
                 if (!phones[0].isEmpty()) {
-                    tvContactPhone.setText(phones[0].trim());
+                   // tvContactPhone.setText(phones[0].trim());
                     tvContactPhone.setVisibility(View.VISIBLE);
                 } else {
                     tvContactPhone.setVisibility(View.GONE);

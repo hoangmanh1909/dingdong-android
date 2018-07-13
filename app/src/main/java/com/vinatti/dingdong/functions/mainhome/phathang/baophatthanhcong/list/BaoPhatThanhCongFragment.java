@@ -130,7 +130,6 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         if (!checkInList(commonObject)) {
             mList.add(commonObject);
             mAdapter.addItem(commonObject);
-            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -160,13 +159,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
-                mPresenter.showBarcode(new BarCodeCallback() {
-                    @Override
-                    public void scanQrcodeResponse(String value) {
-                        //Toast.showToast(getActivity(), value);
-                        getQuery(value.replace("+", ""));
-                    }
-                });
+                scanQr();
                 break;
             case R.id.btn_confirm_all:
                 if (mList != null && !mList.isEmpty())
@@ -177,6 +170,16 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                     }
                 break;
         }
+    }
+    public void scanQr()
+    {
+        mPresenter.showBarcode(new BarCodeCallback() {
+            @Override
+            public void scanQrcodeResponse(String value) {
+                //Toast.showToast(getActivity(), value);
+                getQuery(value.replace("+", ""));
+            }
+        });
     }
 
     @Override
