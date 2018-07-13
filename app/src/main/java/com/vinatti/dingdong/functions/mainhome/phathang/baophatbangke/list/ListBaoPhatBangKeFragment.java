@@ -34,6 +34,7 @@ import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.views.form.FormItemEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,7 +67,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @BindView(R.id.img_view)
     ImageView imgView;
     @BindView(R.id.edt_search)
-    MaterialEditText edtSearch;
+    FormItemEditText edtSearch;
 
     ArrayList<CommonObject> mList;
     private ListBaoPhatBangKeAdapter mAdapter;
@@ -130,7 +131,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
         mPresenter.getReasons();
         EventBus.getDefault().register(this);
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

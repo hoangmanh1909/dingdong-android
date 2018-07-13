@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.core.base.viper.ViewFragment;
@@ -18,10 +21,14 @@ import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
+import com.vinatti.dingdong.callback.PhoneCallback;
+import com.vinatti.dingdong.dialog.PhoneConectDialog;
 import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.NumberUtils;
+import com.vinatti.dingdong.views.CustomBoldTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,7 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The BaoPhatThanhCong Fragment
@@ -45,8 +54,13 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     RecyclerView recycler;
     @BindView(R.id.ll_scan_qr)
     RelativeLayout llScanQr;
+    @BindView(R.id.tv_count)
+    CustomBoldTextView tvCount;
+    @BindView(R.id.tv_amount)
+    CustomBoldTextView tvAmount;
     private BaoPhatThanhCongAdapter mAdapter;
     private List<CommonObject> mList;
+    private long mAmount = 0;
 
     public static BaoPhatThanhCongFragment getInstance() {
         return new BaoPhatThanhCongFragment();
@@ -73,9 +87,11 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 ((HolderView) holder).imgClear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mList.remove(position);
-                        mAdapter.removeItem(position);
-                        mAdapter.notifyItemRemoved(position);
+                        if (position < mList.size()) {
+                            mList.remove(position);
+                            mAdapter.removeItem(position);
+                            mAdapter.notifyItemRemoved(position);
+                        }
                     }
                 });
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +103,12 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.callForward(mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""));
+                        new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                            @Override
+                            public void onCallResponse(String phone) {
+                                mPresenter.callForward(phone);
+                            }
+                        }).show();
                     }
                 });
             }
@@ -130,6 +151,10 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         if (!checkInList(commonObject)) {
             mList.add(commonObject);
             mAdapter.addItem(commonObject);
+            tvCount.setText(String.format(" %s", mList.size()));
+            if (org.apache.commons.lang3.math.NumberUtils.isDigits(commonObject.getCollectAmount()))
+                mAmount += Long.parseLong(commonObject.getCollectAmount());
+            tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
         }
     }
 
@@ -171,8 +196,8 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 break;
         }
     }
-    public void scanQr()
-    {
+
+    public void scanQr() {
         mPresenter.showBarcode(new BarCodeCallback() {
             @Override
             public void scanQrcodeResponse(String value) {
@@ -196,4 +221,5 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
             mAdapter.clear();
         }
     }
+
 }

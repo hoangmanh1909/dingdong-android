@@ -330,18 +330,20 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
 
     @Override
     public void showMessageStatus(SimpleResult result) {
-        tvStatus.setText(result.getMessage());
-        if (result.getErrorCode().equals("02")) {
-            tvUpdate.setEnabled(false);
-            tvStatus.setTextColor(getActivity().getResources().getColor(R.color.red_light));
-        } else {
-            tvUpdate.setEnabled(true);
-        }
-        if (result.getErrorCode().equals("00")) {
-            tvStatus.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
-        }
-        if (result.getErrorCode().equals("01")) {
-            tvStatus.setTextColor(getActivity().getResources().getColor(R.color.orange));
+        if(getActivity()!=null) {
+            tvStatus.setText(result.getMessage());
+            if (result.getErrorCode().equals("02")) {
+                tvUpdate.setEnabled(false);
+                tvStatus.setTextColor(getActivity().getResources().getColor(R.color.red_light));
+            } else {
+                tvUpdate.setEnabled(true);
+            }
+            if (result.getErrorCode().equals("00")) {
+                tvStatus.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+            }
+            if (result.getErrorCode().equals("01")) {
+                tvStatus.setTextColor(getActivity().getResources().getColor(R.color.orange));
+            }
         }
     }
 
@@ -373,15 +375,17 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
 
     @Override
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
-        mListReason = reasonInfos;
-        mListReasonString = new String[reasonInfos.size()];
-        for (int i = 0; i < reasonInfos.size(); i++) {
-            mListReasonString[i] = reasonInfos.get(i).getName();
+        if(getActivity()!=null) {
+            mListReason = reasonInfos;
+            mListReasonString = new String[reasonInfos.size()];
+            for (int i = 0; i < reasonInfos.size(); i++) {
+                mListReasonString[i] = reasonInfos.get(i).getName();
+            }
+            mAdapterReason = new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_dropdown_item_1line, mListReasonString);
+            tvReason.setThreshold(0);
+            tvReason.setAdapter(mAdapterReason);
         }
-        mAdapterReason = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, mListReasonString);
-        tvReason.setThreshold(0);
-        tvReason.setAdapter(mAdapterReason);
     }
 
 

@@ -1,25 +1,17 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.thongke.tabs;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.callback.StatictisSearchCallback;
-import com.vinatti.dingdong.dialog.StatictisSearchDialog;
 import com.vinatti.dingdong.functions.mainhome.phathang.thongke.list.StatisticFragment;
-import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.views.OnCustomPageChangeListener;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The ThongKeTabs Fragment
@@ -43,6 +35,14 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
+        if (mPresenter == null) {
+            if (getActivity() != null) {
+                Intent intent = getActivity().getIntent();
+                startActivity(intent);
+                getActivity().finish();
+            }
+            return;
+        }
         mAdapter = new TabsThongKeAdapter(getChildFragmentManager(), getContext(), mPresenter.getContainerView());
         pager.setAdapter(mAdapter);
         tabs.setViewPager(pager);

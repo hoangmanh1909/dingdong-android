@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.R;
@@ -24,7 +25,7 @@ import butterknife.OnClick;
  */
 public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatContainerContract.Presenter> implements BangKeBaoPhatContainerContract.View {
     @BindView(R.id.tabs)
-    TabLayout tabs;
+    PagerSlidingTabStrip tabs;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.tv_title)
@@ -52,7 +53,7 @@ public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatCo
         }
         this.mScreenSlidePagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         this.viewPager.setAdapter(this.mScreenSlidePagerAdapter);
-        this.tabs.setupWithViewPager(this.viewPager);
+        this.tabs.setViewPager(this.viewPager);
         this.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

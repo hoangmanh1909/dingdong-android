@@ -15,8 +15,8 @@
         android:background="@color/line_gray"
         android:orientation="vertical"
         android:paddingLeft="@dimen/_10sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp">
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -40,8 +40,16 @@
 
             </LinearLayout>
 
-
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <com.vinatti.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/ll_scan_qr"
+                android:textColor="@color/black"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:textSize="@dimen/text_size_14sp"
+                app:formHint="Nhập để tìm kiếm nhanh bưu gửi" />
+           <!-- <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +67,7 @@
                 app:met_bottomTextSize="@dimen/_12sdp"
                 app:met_clearButton="false"
                 app:met_floatingLabel="highlight"
-                app:met_primaryColor="#009688" />
+                app:met_primaryColor="#009688" />-->
         </RelativeLayout>
 
         <RelativeLayout
