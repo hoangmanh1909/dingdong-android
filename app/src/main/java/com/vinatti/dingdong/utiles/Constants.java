@@ -20,4 +20,5 @@ public class Constants {
     public static final int RELOAD_LIST = 2;
     public static final int TYPE_BAO_PHAT_BD13_THANH_CONG = 3;
     public static final int TYPE_BAO_PHAT_BD13_KHONG_THANH_CONG = 4;
+    public static final String KEY_MESSAGE = "KEY_MESSAGE";
 }

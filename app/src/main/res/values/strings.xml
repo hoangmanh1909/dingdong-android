@@ -1,4 +1,4 @@
-<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
     <string name="app_name">DingDong</string>
     <string name="error_system_upgrading">Hệ thống đang nâng cấp. Vui lòng quay lại sau!</string>
     <string name="error_fail_default">Hệ thống đang bận. Vui lòng thử lại sau!</string>
@@ -10,12 +10,12 @@
     <string name="info_phathang"><![CDATA[- Cập nhật thông tin thu hộ COD<br />- Cập nhật thông tin báo phát]]></string>
     <string name="info_dinhvi"><![CDATA[- Tìm kiếm thông tin bưu gửi<br />- Định vị trạng thái bưu gửi]]></string>
     <string name="info_nguoidung"><![CDATA[- Thông tin người dùng<br />- Định vị vị trí]]></string>
-    <string name="info_collect_service_confirm" ><![CDATA[- Xác nhận tin thu gom<br />- Từ chối tin thu gom]]></string>
-    <string name="info_collect_service_success" ><![CDATA[- Cập nhật tin thu gom<br />- Cập nhật trạng thái thu gom]]></string>
-    <string name="info_delivery_manage" ><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
-    <string name="info_delivery_service_success" ><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
-    <string name="info_delivery_service_return" ><![CDATA[- Cập nhật lý do<br />- Cập nhật phương án xử lý]]></string>
-    <string name="info_delivery_statistic" ><![CDATA[- Thông tin báo phát<br />- Lịch sử báo phát]]></string>
+    <string name="info_collect_service_confirm"><![CDATA[- Xác nhận tin thu gom<br />- Từ chối tin thu gom]]></string>
+    <string name="info_collect_service_success"><![CDATA[- Cập nhật tin thu gom<br />- Cập nhật trạng thái thu gom]]></string>
+    <string name="info_delivery_manage"><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
+    <string name="info_delivery_service_success"><![CDATA[- Cập nhật thông tin người nhận hàng<br />- Cập nhật thông tin thời gian phát]]></string>
+    <string name="info_delivery_service_return"><![CDATA[- Cập nhật lý do<br />- Cập nhật phương án xử lý]]></string>
+    <string name="info_delivery_statistic"><![CDATA[- Thông tin báo phát<br />- Lịch sử báo phát]]></string>
     <string name="search_hint">Số hiệu bưu gửi</string>
     <string name="action_search">Search</string>
     <string name="default_notification_channel_id">1</string>
@@ -24,4 +24,5 @@
     <string name="about">about</string>
     <string name="exit">exit</string>
     <string name="quet_ma_vach">Quét mã vạch</string>
+    <string name="notification_channel_id">default</string>
 </resources>

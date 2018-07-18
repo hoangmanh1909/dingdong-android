@@ -8,8 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -25,6 +25,7 @@
         <activity android:name=".functions.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,9 +37,7 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".functions.mainhome.gomhang.listcommon.ListCommonActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -46,9 +45,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -106,7 +103,6 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -129,40 +125,46 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" />
 
-        <service android:name=".fcm.MyFirebaseMessagingService">
+        <service android:name=".fcm.DingDongFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".fcm.MyFirebaseInstanceIDService">
+        <service android:name=".fcm.DingDongFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+     Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
         <receiver android:name=".calls.CallReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE"></action>
+                <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="0cce76e3c35418e2833d7caeb11a76a15fc38dd0" />
+
+        <activity android:name=".fcm.NotificationActivity"></activity>
     </application>
 
 </manifest>
