@@ -70,7 +70,7 @@ public class NotificationUtils {
                 mContext);
 
       /*  final Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                + "://" + mContext.getPackageName() + "/raw/nhan.m4a");*/
+                + "://" + mContext.getPackageName() + "/raw/notification");*/
         final Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         if (!TextUtils.isEmpty(imageUrl)) {
@@ -87,7 +87,7 @@ public class NotificationUtils {
             }
         } else {
             showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
-            playNotificationSound();
+            //playNotificationSound();
         }
     }
 
@@ -106,6 +106,7 @@ public class NotificationUtils {
                 .setSound(alarmSound)
                 .setStyle(inboxStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
+                .setVibrate(new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000})
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                 .setContentText(message)
@@ -127,6 +128,7 @@ public class NotificationUtils {
                 .setContentIntent(resultPendingIntent)
                 .setSound(alarmSound)
                 .setStyle(bigPictureStyle)
+                .setVibrate(new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000})
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
@@ -160,7 +162,7 @@ public class NotificationUtils {
     public void playNotificationSound() {
         try {
             Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                    + "://" + mContext.getPackageName() + "/raw/nhan.m4a");
+                    + "://" + mContext.getPackageName() + "/raw/notification");
             Ringtone r = RingtoneManager.getRingtone(mContext, alarmSound);
             r.play();
         } catch (Exception e) {

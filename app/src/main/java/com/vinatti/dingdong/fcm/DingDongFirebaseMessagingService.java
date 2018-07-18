@@ -39,29 +39,30 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        // Log.d("FROM", notification.getBody());
-        Map<String, String> data = remoteMessage.getData();
-        // Log.d("FROM", remoteMessage.getFrom());
-        if (notification != null) {
-            sendNotification(notification, data);
-        }
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
             sendNotification(remoteMessage.getData().get("message"));
+        } else if (notification != null) {
+            Map<String, String> data = remoteMessage.getData();
+            sendNotification(notification, data);
         }
 
-        //Log.d("Message ===>", remoteMessage.getNotification().getBody());
-       /* if (remoteMessage.getNotification() != null) {
-            Intent intent = new Intent(this, NotificationActivity.class);
-            intent.putExtra(Constants.KEY_MESSAGE, remoteMessage.getNotification().getBody());
-            startActivity(intent);
+       /*
+       lưu ý data push từ server thế này sẽ có rung và chuông
+       {
+            "data": {
+            "message": "Đã có tin mới"
+            },
+            "registration_ids": [
+            "f0uneo9Jgy8:APA91bHQVTHPaPOnu5pLV5F__GHXe6CA5eTzY_ROzl_pnwPTeQrulYKsMas3etOUSyELSzZFdR3F5SkRnKBJHi-de-ARIcU-GaWrxCWtvuGUsruIL8pcrmkp1bx4UFuABWgFHRYNJMnkovLn4h7iDWcIXh-dho_2uw"
+            ]
         }*/
     }
 
     private void sendNotification(String messageBody) {
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
 
