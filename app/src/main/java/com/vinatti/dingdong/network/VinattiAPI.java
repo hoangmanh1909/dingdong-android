@@ -2,6 +2,7 @@ package com.vinatti.dingdong.network;
 
 
 import com.vinatti.dingdong.model.ActiveResult;
+import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.CommonObjectResult;
 import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.LoginResult;
@@ -184,5 +185,8 @@ public interface VinattiAPI {
 
     @POST("API/TaskOfWork/Create")
     Call<SimpleResult> taskOfWork(@Body SimpleResult taskRequest);
+
+    @POST("api/BD13/AddNew")
+    Call<SimpleResult> addNewBD13(@Body Bd13Create taskRequest);
 
 }

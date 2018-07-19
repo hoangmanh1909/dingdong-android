@@ -527,7 +527,7 @@
                             android:layout_weight="1.2"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
+                            android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>

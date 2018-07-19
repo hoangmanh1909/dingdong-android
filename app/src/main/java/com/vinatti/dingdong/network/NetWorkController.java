@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.ActiveResult;
+import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.CommonObjectResult;
 import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.LoginResult;
@@ -56,6 +57,11 @@ public class NetWorkController {
     public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
 
         Call<SimpleResult> call = getAPIBuilder().taskOfWork(taskRequest);
+        call.enqueue(callback);
+    }
+    public static void addNewBD13(Bd13Create bd13Create, CommonCallback<SimpleResult> callback) {
+
+        Call<SimpleResult> call = getAPIBuilder().addNewBD13(bd13Create);
         call.enqueue(callback);
     }
 

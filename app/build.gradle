@@ -49,13 +49,13 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled true
-            // signingConfig signingConfigs.debug
+             signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-           // signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
     productFlavors {
