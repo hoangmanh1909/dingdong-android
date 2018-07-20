@@ -21,6 +21,12 @@ public class Bd13Create {
     @SerializedName("Signature")
     @Expose
     private String signature;
+    @SerializedName("ChuyenThu")
+    @Expose
+    private String chuyenThu;
+    @SerializedName("Shift")
+    @Expose
+    private String shift;
 
     public void setListCode(List<Bd13Code> listCode) {
         this.listCode = listCode;
@@ -40,5 +46,13 @@ public class Bd13Create {
 
     public void setSignature(String signature) {
         this.signature = signature;
+    }
+
+    public void setChuyenThu(String chuyenThu) {
+        this.chuyenThu = chuyenThu;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
     }
 }

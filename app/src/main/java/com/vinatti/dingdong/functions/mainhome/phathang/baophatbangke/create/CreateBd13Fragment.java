@@ -1,16 +1,12 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
@@ -29,17 +25,15 @@ import com.vinatti.dingdong.utiles.Log;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.utiles.Utils;
-import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -47,16 +41,23 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presenter> implements CreateBd13Contract.View {
 
-    @BindView(R.id.edt_search)
-    FormItemEditText edtSearch;
+    @BindView(R.id.search)
+    SearchView edtSearch;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     List<Bd13Code> mList = new ArrayList<>();
     CreateBd13Adapter mAdapter;
     @BindView(R.id.tv_bag)
     FormItemTextView tvBag;
+    @BindView(R.id.tv_shift)
+    FormItemTextView tvShift;
+    @BindView(R.id.tv_chuyenthu)
+    TextView tvChuyenthu;
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "0";
+    private ItemBottomSheetPickerUIFragment pickerShift;
+    private String mShift;
+    private String mChuyenThu;
 
     public static CreateBd13Fragment getInstance() {
         return new CreateBd13Fragment();
@@ -70,16 +71,34 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-        edtSearch.getEditText().setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        edtSearch.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
-        edtSearch.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        edtSearch.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        edtSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        /*edtSearch.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     addNewRow();
                     edtSearch.setText("");
                 }
                 return true;
+            }
+        });*/
+        edtSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // filter recycler view when query submitted
+                addNewRow();
+                edtSearch.setQuery("", false);
+                // mAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // filter recycler view when text is changed
+                // mAdapter.getFilter().filter(query);
+                // mFragment.getAdapter().getFilter().filter(query);
+                return false;
             }
         });
         mAdapter = new CreateBd13Adapter(getActivity(), mList) {
@@ -100,12 +119,16 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
+        Calendar calendar = Calendar.getInstance();
+        mChuyenThu = String.format("%s", 700 + calendar.get(Calendar.DATE));
+        tvChuyenthu.setText(mChuyenThu);
+
     }
 
     private void addNewRow() {
-        if (!TextUtils.isEmpty(edtSearch.getText())) {
-            if (!checkInList(edtSearch.getText())) {
-                Bd13Code bd13Code = new Bd13Code(edtSearch.getText());
+        if (!TextUtils.isEmpty(edtSearch.getQuery())) {
+            if (!checkInList(edtSearch.getQuery().toString())) {
+                Bd13Code bd13Code = new Bd13Code(edtSearch.getQuery().toString());
                 mList.add(bd13Code);
                 mAdapter.addItem(bd13Code);
             }
@@ -128,13 +151,13 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         mPresenter.showBarcode(new BarCodeCallback() {
             @Override
             public void scanQrcodeResponse(String value) {
-                edtSearch.setText(value);
+                edtSearch.setQuery(value, true);
                 addNewRow();
             }
         });
     }
 
-    @OnClick({R.id.img_capture, R.id.btn_confirm_all, R.id.tv_bag, R.id.img_back})
+    @OnClick({R.id.img_capture, R.id.btn_confirm_all, R.id.tv_bag, R.id.img_back, R.id.tv_shift})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_capture:
@@ -149,12 +172,19 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             case R.id.img_back:
                 mPresenter.back();
                 break;
+            case R.id.tv_shift:
+                showUIShift();
+                break;
         }
     }
 
     private void submit() {
         if (mBag.equals("0")) {
             Toast.showToast(getActivity(), "Bạn chưa chọn số túi");
+            return;
+        }
+        if (TextUtils.isEmpty(mShift)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             return;
         }
         if (mList.isEmpty()) {
@@ -164,6 +194,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         Bd13Create bd13Create = new Bd13Create();
         bd13Create.setListCode(mList);
         bd13Create.setBagNumber(mBag);
+        bd13Create.setChuyenThu(mChuyenThu);
+        bd13Create.setShift(mShift);
         SharedPref sharedPref = new SharedPref(getActivity());
         String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!posOfficeJson.isEmpty()) {
@@ -197,6 +229,32 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             pickerBag.setData(items, 0);
             if (!pickerBag.isShow) {
                 pickerBag.show(getActivity().getSupportFragmentManager(), pickerBag.getTag());
+            }
+
+
+        }
+    }
+
+    private void showUIShift() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            items.add(new Item(i + "", "Ca " + i));
+        }
+        if (pickerShift == null) {
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            tvShift.setText(item.getText());
+                            mShift = item.getValue();
+
+                        }
+                    }, 0);
+            pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+        } else {
+            pickerShift.setData(items, 0);
+            if (!pickerShift.isShow) {
+                pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
             }
 
 
