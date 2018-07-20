@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.core.base.viper.ViewFragment;
@@ -38,9 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The BaoPhatThanhCong Fragment
@@ -61,6 +56,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     private BaoPhatThanhCongAdapter mAdapter;
     private List<CommonObject> mList;
     private long mAmount = 0;
+    private int mPosition = -1;
 
     public static BaoPhatThanhCongFragment getInstance() {
         return new BaoPhatThanhCongFragment();
@@ -91,13 +87,15 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                             mList.remove(position);
                             mAdapter.removeItem(position);
                             mAdapter.notifyItemRemoved(position);
+                            loadViewCount();
                         }
                     }
                 });
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.showDetail(mList.get(position));
+                        mPosition = position;
+                        mPresenter.showDetail(mList.get(position), position);
                     }
                 });
                 ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +189,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                     if (mList.size() > 1) {
                         mPresenter.pushViewConfirmAll(mList);
                     } else {
-                        mPresenter.showDetail(mList.get(0));
+                        mPresenter.showDetail(mList.get(0), 0);
                     }
                 break;
         }
@@ -220,6 +218,25 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
             mList.clear();
             mAdapter.clear();
         }
+        if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG_DETAIL) {
+            int position = event.getPosition();
+            if (position < mList.size() && position >= 0) {
+                mList.remove(position);
+                mAdapter.removeItem(position);
+                mAdapter.notifyItemRemoved(position);
+               loadViewCount();
+            }
+        }
+    }
+
+    private void loadViewCount() {
+        tvCount.setText(String.format(" %s", mList.size()));
+        mAmount = 0;
+        for (CommonObject commonObject : mList) {
+            if (org.apache.commons.lang3.math.NumberUtils.isDigits(commonObject.getCollectAmount()))
+                mAmount += Long.parseLong(commonObject.getCollectAmount());
+        }
+        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
     }
 
 }

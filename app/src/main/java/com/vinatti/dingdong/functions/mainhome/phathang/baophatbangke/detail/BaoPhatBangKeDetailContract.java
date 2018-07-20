@@ -90,6 +90,8 @@ interface BaoPhatBangKeDetailContract {
         int getPosition();
 
         int getDeliveryType();
+
+        int getPositionRow();
     }
 }
 

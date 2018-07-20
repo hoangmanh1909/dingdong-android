@@ -9,7 +9,6 @@ import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
-import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.detail.BaoPhatThanhCongDetailPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectResult;
@@ -80,9 +79,9 @@ public class BaoPhatThanhCongPresenter extends Presenter<BaoPhatThanhCongContrac
     }
 
     @Override
-    public void showDetail(CommonObject commonObject) {
+    public void showDetail(CommonObject commonObject, int position) {
         //new BaoPhatThanhCongDetailPresenter(mContainerView).setBaoPhatThanhCong(commonObject).pushView();
-        new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).setTypeBaoPhat(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
+        new BaoPhatBangKeDetailPresenter(mContainerView).setBaoPhatBangKe(commonObject).setTypeBaoPhat(Constants.TYPE_BAO_PHAT_THANH_CONG).setPositionRow(position).pushView();
     }
 
     @Override

@@ -34,7 +34,7 @@ interface BaoPhatThanhCongContract {
 
         void searchParcelCodeDelivery(String parcelCode);
 
-        void showDetail(CommonObject commonObject);
+        void showDetail(CommonObject commonObject, int position);
 
         void pushViewConfirmAll(List<CommonObject> list);
         void callForward(String phone);

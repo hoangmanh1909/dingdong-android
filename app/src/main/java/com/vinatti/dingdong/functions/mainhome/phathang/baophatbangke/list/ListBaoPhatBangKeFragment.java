@@ -327,4 +327,5 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         });
         btnConfirmAll.performClick();
     }
+
 }

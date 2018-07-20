@@ -33,6 +33,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     private CommonObject mBaoPhatBangke;
     private int mType = 0;
     private int mPosition;
+    private int mPositionRow =-1;
 
     public BaoPhatBangKeDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -76,6 +77,11 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     @Override
     public int getDeliveryType() {
         return mType;
+    }
+
+    @Override
+    public int getPositionRow() {
+        return mPositionRow;
     }
 
     @Override
@@ -341,4 +347,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     }
 
 
+    public BaoPhatBangKeDetailPresenter setPositionRow(int position) {
+        mPositionRow = position;
+        return this;
+    }
 }
