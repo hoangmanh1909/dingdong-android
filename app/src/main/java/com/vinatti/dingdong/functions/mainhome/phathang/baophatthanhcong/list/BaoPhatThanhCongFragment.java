@@ -217,6 +217,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
             mList.clear();
             mAdapter.clear();
+            loadViewCount();
         }
         if (event.getType() == Constants.TYPE_BAO_PHAT_THANH_CONG_DETAIL) {
             int position = event.getPosition();

@@ -10,6 +10,7 @@ import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.callservice.CallActivity;
 import com.vinatti.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
@@ -104,7 +105,9 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 intent.putExtra(Constants.TYPE_GOM_HANG, 3);
                                 startActivity(intent);
                             } else if (homeInfo.getId() == 9) {
-                                mPresenter.showViewCreateBd13();
+                                //mPresenter.showViewCreateBd13();
+                                Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
+                                startActivity(intent);
                             } else if (homeInfo.getId() == 4) {
                                 Intent intent = new Intent(getActivity(), BaoPhatThanhCongActivity.class);
                                 startActivity(intent);

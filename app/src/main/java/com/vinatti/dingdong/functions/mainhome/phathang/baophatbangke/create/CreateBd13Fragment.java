@@ -14,6 +14,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.model.Bd13Code;
 import com.vinatti.dingdong.model.Bd13Create;
@@ -41,8 +42,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presenter> implements CreateBd13Contract.View {
 
-    @BindView(R.id.search)
-    SearchView edtSearch;
+    /* @BindView(R.id.search)
+     SearchView edtSearch;*/
     @BindView(R.id.recycler)
     RecyclerView recycler;
     List<Bd13Code> mList = new ArrayList<>();
@@ -53,6 +54,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     FormItemTextView tvShift;
     @BindView(R.id.tv_chuyenthu)
     TextView tvChuyenthu;
+    @BindView(R.id.tv_count)
+    TextView tvCount;
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "0";
     private ItemBottomSheetPickerUIFragment pickerShift;
@@ -71,9 +74,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-        edtSearch.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+       /* edtSearch.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         edtSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        /*edtSearch.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        *//*edtSearch.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -82,7 +85,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 }
                 return true;
             }
-        });*/
+        });*//*
         edtSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -100,7 +103,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 // mFragment.getAdapter().getFilter().filter(query);
                 return false;
             }
-        });
+        });*/
         mAdapter = new CreateBd13Adapter(getActivity(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
@@ -112,6 +115,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                             mList.remove(position);
                             mAdapter.removeItem(position);
                             mAdapter.notifyItemRemoved(position);
+                            tvCount.setText(String.format(" %s", mList.size()));
                         }
                     }
                 });
@@ -125,7 +129,18 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     }
 
-    private void addNewRow() {
+    public void getQuery(String parcelCode) {
+        if (!checkInList(parcelCode)) {
+            Bd13Code bd13Code = new Bd13Code(parcelCode);
+            mList.add(bd13Code);
+            mAdapter.addItem(bd13Code);
+            tvCount.setText(String.format(" %s", mList.size()));
+        } else {
+            Toast.showToast(getActivity(), "Đã tồn tại trong danh sách");
+        }
+        ((CreateBd13Activity) getActivity()).removeTextSearch();
+    }
+    /*private void addNewRow() {
         if (!TextUtils.isEmpty(edtSearch.getQuery())) {
             if (!checkInList(edtSearch.getQuery().toString())) {
                 Bd13Code bd13Code = new Bd13Code(edtSearch.getQuery().toString());
@@ -134,7 +149,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             }
         }
 
-    }
+    }*/
 
     private boolean checkInList(String value) {
         boolean check = false;
@@ -151,27 +166,28 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         mPresenter.showBarcode(new BarCodeCallback() {
             @Override
             public void scanQrcodeResponse(String value) {
-                edtSearch.setQuery(value, true);
-                addNewRow();
+               /* edtSearch.setQuery(value, true);
+                addNewRow();*/
+                getQuery(value);
             }
         });
     }
 
-    @OnClick({R.id.img_capture, R.id.btn_confirm_all, R.id.tv_bag, R.id.img_back, R.id.tv_shift})
+    @OnClick({R.id.btn_confirm_all, R.id.tv_bag, R.id.tv_shift})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_capture:
+           /* case R.id.img_capture:
                 scanQr();
-                break;
+                break;*/
             case R.id.btn_confirm_all:
                 submit();
                 break;
             case R.id.tv_bag:
                 showUIBag();
                 break;
-            case R.id.img_back:
+           /* case R.id.img_back:
                 mPresenter.back();
-                break;
+                break;*/
             case R.id.tv_shift:
                 showUIShift();
                 break;
@@ -277,5 +293,15 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         }
                     }).show();
         }
+    }
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (getActivity() != null) {
+            if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
+                ((DingDongActivity) getActivity()).getSupportActionBar().show();
+            }
+        }
+
     }
 }

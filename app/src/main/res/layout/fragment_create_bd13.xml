@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <FrameLayout
+    <!--<FrameLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
 
 
         </RelativeLayout>
-    </FrameLayout>
+    </FrameLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,39 +46,10 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dimen_5dp"
         android:weightSum="10">
-
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_weight="3"
-            android:gravity="left|center"
-            android:text="Chọn số túi"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14sp" />
-
-        <com.vinatti.dingdong.views.form.FormItemTextView
-            android:id="@+id/tv_bag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14sp"
-            app:formAction="@drawable/ic_arrow_drop_down" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_50dp"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_5dp"
-        android:weightSum="10">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_weight="3"
             android:gravity="left|center"
             android:text="Chuyến thư"
             android:textColor="@color/black"
@@ -86,44 +57,50 @@
 
         <TextView
             android:id="@+id/tv_chuyenthu"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_weight="7"
-            android:paddingLeft="15dp"
+            android:layout_marginLeft="15dp"
             android:gravity="left|center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_5dp"
-        android:weightSum="10">
-
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_weight="3"
             android:gravity="left|center"
-            android:text="Chọn ca"
+            android:layout_marginLeft="15dp"
+            android:text="Túi"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp" />
+
+        <com.vinatti.dingdong.views.form.FormItemTextView
+            android:id="@+id/tv_bag"
+            android:layout_width="@dimen/dimen_120dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            app:formAction="@drawable/ic_arrow_drop_down" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="left|center"
+            android:text="Ca"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp" />
 
         <com.vinatti.dingdong.views.form.FormItemTextView
             android:id="@+id/tv_shift"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimen_120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
             app:formAction="@drawable/ic_arrow_drop_down" />
     </LinearLayout>
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -170,8 +147,27 @@
                 android:src="@drawable/ic_capture" />
 
         </RelativeLayout>
-    </LinearLayout>
+    </LinearLayout>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/_5sdp"
+        android:layout_height="wrap_content">
 
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#38044B"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_16sp" />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
