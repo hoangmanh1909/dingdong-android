@@ -3,6 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.home;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Presenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.listbd13.ListBd13Presenter;
 
 /**
  * The Home Presenter
@@ -32,5 +33,10 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     @Override
     public void showViewCreateBd13() {
         new CreateBd13Presenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showViewListCreateBd13() {
+        new ListBd13Presenter(mContainerView).pushView();
     }
 }

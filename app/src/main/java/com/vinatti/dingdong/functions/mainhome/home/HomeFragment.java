@@ -70,6 +70,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         homeInfos = new ArrayList<>();
         homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bảng kê (BD13)"));
         homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bảng kê (BD13)"));
+        homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Lập bảng kê (BD13)"));
         homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
         homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
         homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
@@ -108,6 +109,9 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 //mPresenter.showViewCreateBd13();
                                 Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
                                 startActivity(intent);
+                            } else if (homeInfo.getId() == 10) {
+                                mPresenter.showViewListCreateBd13();
+
                             } else if (homeInfo.getId() == 4) {
                                 Intent intent = new Intent(getActivity(), BaoPhatThanhCongActivity.class);
                                 startActivity(intent);

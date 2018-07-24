@@ -228,4 +228,8 @@ public class NetWorkController {
     }
 
 
+    public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<CommonObjectListResult> commonCallback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
+        call.enqueue(commonCallback);
+    }
 }

@@ -189,4 +189,12 @@ public interface VinattiAPI {
     @POST("api/BD13/AddNew")
     Call<SimpleResult> addNewBD13(@Body Bd13Create taskRequest);
 
+    @FormUrlEncoded
+    @POST("api/BD13/Search")
+    Call<CommonObjectListResult> searchCreateBd13(@Field("DeliveryPOCode") String deliveryPOCode,
+                                                  @Field("RoutePOCode") String routePOCode,
+                                                  @Field("BagNumber") String bagNumber,
+                                                  @Field("ChuyenThu") String chuyenThu,
+                                                  @Field("CreateDate") String createDate,
+                                                  @Field("Shift")  String shift);
 }

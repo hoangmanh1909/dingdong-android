@@ -38,11 +38,11 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingRight">@dimen/size_10dp</item>
+        <item name="android:paddingRight">@dimen/_5sdp</item>
         <item name="android:paddingTop">@dimen/size_12dp</item>
         <item name="android:paddingBottom">@dimen/size_12dp</item>
         <item name="android:layout_marginLeft">@dimen/size_15dp</item>
-        <item name="android:layout_marginRight">@dimen/size_15dp</item>
+        <item name="android:layout_marginRight">@dimen/_5sdp</item>
 
     </style>
 

@@ -1,0 +1,191 @@
+package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.listbd13;
+
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
+
+import com.core.base.viper.ViewFragment;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
+import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.model.Item;
+import com.vinatti.dingdong.model.PostOffice;
+import com.vinatti.dingdong.network.NetWorkController;
+import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.DateTimeUtils;
+import com.vinatti.dingdong.utiles.SharedPref;
+import com.vinatti.dingdong.utiles.TimeUtils;
+import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.form.FormItemEditText;
+import com.vinatti.dingdong.views.form.FormItemTextView;
+import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
+/**
+ * The ListBd13 Fragment
+ */
+public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> implements ListBd13Contract.View
+        , com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
+
+    @BindView(R.id.tv_title)
+    CustomBoldTextView tvTitle;
+    @BindView(R.id.edt_chuyenthu)
+    FormItemEditText edtChuyenthu;
+    @BindView(R.id.tv_created_date)
+    FormItemTextView tvCreatedDate;
+    @BindView(R.id.tv_bag)
+    FormItemTextView tvBag;
+    @BindView(R.id.tv_shift)
+    FormItemTextView tvShift;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+    private ItemBottomSheetPickerUIFragment pickerBag;
+    private String mBagNumber;
+    private ItemBottomSheetPickerUIFragment pickerShift;
+    private String mShift;
+    private Calendar calCreate;
+    private String mChuyenThu;
+
+    public static ListBd13Fragment getInstance() {
+        return new ListBd13Fragment();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_list_bd13;
+    }
+
+    @Override
+    public void initLayout() {
+        super.initLayout();
+        calCreate = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        mChuyenThu = String.format("%s", 700 + calendar.get(Calendar.DATE));
+        edtChuyenthu.setText(mChuyenThu);
+        tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+    }
+
+    @OnClick({R.id.img_back, R.id.tv_created_date, R.id.tv_bag, R.id.tv_shift, R.id.iv_search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+            case R.id.tv_created_date:
+                showDate();
+                break;
+            case R.id.tv_bag:
+                showUIBag();
+                break;
+            case R.id.tv_shift:
+                showUIShift();
+                break;
+            case R.id.iv_search:
+                search();
+                break;
+        }
+    }
+
+    private void search() {
+        if (TextUtils.isEmpty(mBagNumber)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn số túi");
+            return;
+        }
+        String chuyenThu = edtChuyenthu.getText();
+        if (TextUtils.isEmpty(chuyenThu)) {
+            Toast.showToast(getActivity(), "Bạn chưa nhập chuyến thư");
+            return;
+        }
+        if (TextUtils.isEmpty(mShift)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            return;
+        }
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String deliveryPOCode = "";
+        String routePOCode = "";
+        if (!posOfficeJson.isEmpty()) {
+            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+            deliveryPOCode = postOffice.getCode();
+            routePOCode = postOffice.getRouteCode();
+        }
+        String createDate = DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        mPresenter.searchCreateBd13(deliveryPOCode, routePOCode, mBagNumber, chuyenThu, createDate,mShift);
+    }
+
+    private void showDate() {
+        new SpinnerDatePickerDialogBuilder()
+                .context(getActivity())
+                .callback(this)
+                .spinnerTheme(R.style.DatePickerSpinner)
+                .showTitle(true)
+                .showDaySpinner(true)
+                .defaultDate(calCreate.get(Calendar.YEAR), calCreate.get(Calendar.MONTH), calCreate.get(Calendar.DAY_OF_MONTH))
+                .minDate(1979, 0, 1)
+                .build()
+                .show();
+    }
+
+    private void showUIBag() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            items.add(new Item(i + "", i + ""));
+        }
+        if (pickerBag == null) {
+            pickerBag = new ItemBottomSheetPickerUIFragment(items, "Chọn túi",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            tvBag.setText(item.getText());
+                            mBagNumber = item.getValue();
+
+                        }
+                    }, 0);
+            pickerBag.show(getActivity().getSupportFragmentManager(), pickerBag.getTag());
+        } else {
+            pickerBag.setData(items, 0);
+            if (!pickerBag.isShow) {
+                pickerBag.show(getActivity().getSupportFragmentManager(), pickerBag.getTag());
+            }
+
+
+        }
+    }
+
+    private void showUIShift() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            items.add(new Item(i + "", "Ca " + i));
+        }
+        if (pickerShift == null) {
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            tvShift.setText(item.getText());
+                            mShift = item.getValue();
+
+                        }
+                    }, 0);
+            pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+        } else {
+            pickerShift.setData(items, 0);
+            if (!pickerShift.isShow) {
+                pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+            }
+
+
+        }
+    }
+
+    @Override
+    public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+        calCreate.set(year, monthOfYear, dayOfMonth);
+        tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+    }
+}
