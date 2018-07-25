@@ -55,7 +55,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp" />
 
-        <TextView
+        <com.vinatti.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_chuyenthu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -76,7 +76,7 @@
 
         <com.vinatti.dingdong.views.form.FormItemTextView
             android:id="@+id/tv_bag"
-            android:layout_width="@dimen/dimen_120dp"
+            android:layout_width="@dimen/dimen_70dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
@@ -93,7 +93,7 @@
 
         <com.vinatti.dingdong.views.form.FormItemTextView
             android:id="@+id/tv_shift"
-            android:layout_width="@dimen/dimen_120dp"
+            android:layout_width="@dimen/dimen_100dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"

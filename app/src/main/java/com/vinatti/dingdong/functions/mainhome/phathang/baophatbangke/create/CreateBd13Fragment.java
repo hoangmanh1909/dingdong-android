@@ -1,5 +1,6 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,7 +127,10 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         Calendar calendar = Calendar.getInstance();
         mChuyenThu = String.format("%s", 700 + calendar.get(Calendar.DATE));
         tvChuyenthu.setText(mChuyenThu);
-
+        tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
+        tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);
+        tvBag.getImageViewLeft().setVisibility(View.GONE);
+        tvShift.getImageViewLeft().setVisibility(View.GONE);
     }
 
     public void getQuery(String parcelCode) {

@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.vinatti.dingdong.R;
@@ -69,5 +71,12 @@ public class FormItemTextView extends FormItemText {
 
     public void setValidate() {
         ViewUtils.setBackgroundColor(mDevider, R.color.grey, getContext());
+    }
+
+    public TextView getTextView() {
+        return mTextView;
+    }
+    public ImageView getImageViewLeft() {
+        return mIcon;
     }
 }
