@@ -1,12 +1,15 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.listbd13;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
+import com.core.utils.RecyclerUtils;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.model.Bd13Code;
 import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.PostOffice;
 import com.vinatti.dingdong.network.NetWorkController;
@@ -22,6 +25,7 @@ import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,6 +54,8 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
     private String mShift;
     private Calendar calCreate;
     private String mChuyenThu;
+    private List<Bd13Code> mList;
+    private ListCreateBd13Adapter adapter;
 
     public static ListBd13Fragment getInstance() {
         return new ListBd13Fragment();
@@ -68,6 +74,10 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
         mChuyenThu = String.format("%s", 700 + calendar.get(Calendar.DATE));
         edtChuyenthu.setText(mChuyenThu);
         tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+        mList = new ArrayList<>();
+        adapter = new ListCreateBd13Adapter(getActivity(), mList);
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+        recycler.setAdapter(adapter);
     }
 
     @OnClick({R.id.img_back, R.id.tv_created_date, R.id.tv_bag, R.id.tv_shift, R.id.iv_search})
@@ -115,7 +125,7 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
             routePOCode = postOffice.getRouteCode();
         }
         String createDate = DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        mPresenter.searchCreateBd13(deliveryPOCode, routePOCode, mBagNumber, chuyenThu, createDate,mShift);
+        mPresenter.searchCreateBd13(deliveryPOCode, routePOCode, mBagNumber, chuyenThu, createDate, mShift);
     }
 
     private void showDate() {
@@ -187,5 +197,18 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calCreate.set(year, monthOfYear, dayOfMonth);
         tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+    }
+
+    @Override
+    public void showResponseSuccess(List<Bd13Code> list) {
+        mList.clear();
+        mList.addAll(list);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showResponseEmpty() {
+        mList.clear();
+        adapter.notifyDataSetChanged();
     }
 }

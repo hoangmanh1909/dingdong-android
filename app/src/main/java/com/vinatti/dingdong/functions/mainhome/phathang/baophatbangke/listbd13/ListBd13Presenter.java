@@ -6,6 +6,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.CommonObjectListResult;
+import com.vinatti.dingdong.model.HistoryCreateBd13Result;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -38,20 +39,21 @@ public class ListBd13Presenter extends Presenter<ListBd13Contract.View, ListBd13
     @Override
     public void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift) {
         mView.showProgress();
-        mInteractor.searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift, new CommonCallback<HistoryCreateBd13Result>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
+            protected void onSuccess(Call<HistoryCreateBd13Result> call, Response<HistoryCreateBd13Result> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-               /* if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getList());
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showResponseSuccess(response.body().getBd13Codes());
                 } else {
-                    mView.showError(response.body().getMessage());
-                }*/
+                    mView.showErrorToast(response.body().getMessage());
+                    mView.showResponseEmpty();
+                }
             }
 
             @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
+            protected void onError(Call<HistoryCreateBd13Result> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

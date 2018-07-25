@@ -5,6 +5,7 @@ import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.CommonObjectResult;
 import com.vinatti.dingdong.model.HistoryCallResult;
+import com.vinatti.dingdong.model.HistoryCreateBd13Result;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.ReasonResult;
@@ -191,10 +192,10 @@ public interface VinattiAPI {
 
     @FormUrlEncoded
     @POST("api/BD13/Search")
-    Call<CommonObjectListResult> searchCreateBd13(@Field("DeliveryPOCode") String deliveryPOCode,
-                                                  @Field("RoutePOCode") String routePOCode,
-                                                  @Field("BagNumber") String bagNumber,
-                                                  @Field("ChuyenThu") String chuyenThu,
-                                                  @Field("CreateDate") String createDate,
-                                                  @Field("Shift")  String shift);
+    Call<HistoryCreateBd13Result> searchCreateBd13(@Field("DeliveryPOCode") String deliveryPOCode,
+                                                   @Field("RoutePOCode") String routePOCode,
+                                                   @Field("BagNumber") String bagNumber,
+                                                   @Field("ChuyenThu") String chuyenThu,
+                                                   @Field("CreateDate") String createDate,
+                                                   @Field("Shift")  String shift);
 }

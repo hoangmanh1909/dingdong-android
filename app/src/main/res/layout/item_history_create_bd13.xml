@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/dimen_5dp"
+    android:paddingBottom="@dimen/dimen_5dp">
+
+    <com.vinatti.dingdong.views.CustomBoldTextView
+        android:id="@+id/tv_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bg_radius_blue"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="COD20180416"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_14sp" />
+
+</RelativeLayout>

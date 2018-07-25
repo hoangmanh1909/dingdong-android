@@ -9,6 +9,7 @@ import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.CommonObjectResult;
 import com.vinatti.dingdong.model.HistoryCallResult;
+import com.vinatti.dingdong.model.HistoryCreateBd13Result;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
 import com.vinatti.dingdong.model.ReasonResult;
@@ -228,8 +229,8 @@ public class NetWorkController {
     }
 
 
-    public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<CommonObjectListResult> commonCallback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
+    public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<HistoryCreateBd13Result> commonCallback) {
+        Call<HistoryCreateBd13Result> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
         call.enqueue(commonCallback);
     }
 }
