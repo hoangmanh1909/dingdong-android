@@ -181,6 +181,13 @@
         </LinearLayout>
     </LinearLayout>
 
+    <com.vinatti.dingdong.views.CustomBoldTextView
+        android:id="@+id/tv_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:textColor="#38044B"
+        android:textSize="@dimen/text_size_16sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"

@@ -1,12 +1,19 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.listbd13;
 
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.tsongkha.spinnerdatepicker.DatePicker;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.Bd13Code;
@@ -28,13 +35,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The ListBd13 Fragment
  */
 public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> implements ListBd13Contract.View
-        , com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
+        , DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.tv_title)
     CustomBoldTextView tvTitle;
@@ -48,6 +57,8 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
     FormItemTextView tvShift;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.tv_count)
+    CustomBoldTextView tvCount;
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBagNumber;
     private ItemBottomSheetPickerUIFragment pickerShift;
@@ -76,6 +87,7 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
         tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
         mList = new ArrayList<>();
         adapter = new ListCreateBd13Adapter(getActivity(), mList);
+        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(adapter);
     }
@@ -194,7 +206,7 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
     }
 
     @Override
-    public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calCreate.set(year, monthOfYear, dayOfMonth);
         tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
     }
@@ -204,11 +216,13 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
         mList.clear();
         mList.addAll(list);
         adapter.notifyDataSetChanged();
+        tvCount.setText(String.format("%s", list.size()));
     }
 
     @Override
     public void showResponseEmpty() {
         mList.clear();
         adapter.notifyDataSetChanged();
+        tvCount.setText("");
     }
 }
