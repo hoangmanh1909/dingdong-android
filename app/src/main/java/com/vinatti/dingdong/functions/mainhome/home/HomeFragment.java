@@ -68,8 +68,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
         //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
         homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bảng kê (BD13)"));
-        homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bảng kê (BD13)"));
+        homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bản kê (BD13)"));
+        homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
         homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
         homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
         homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));

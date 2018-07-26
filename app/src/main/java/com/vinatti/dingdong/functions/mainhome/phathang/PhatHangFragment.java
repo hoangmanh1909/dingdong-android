@@ -47,7 +47,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
         mList = new ArrayList<>();
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(1, R.drawable.ic_delivery_manage, "Báo phát bảng kê"));
+        homeInfos.add(new HomeInfo(1, R.drawable.ic_delivery_manage, "Báo phát bản kê"));
         homeInfos.add(new HomeInfo(2, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
         homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
         homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));

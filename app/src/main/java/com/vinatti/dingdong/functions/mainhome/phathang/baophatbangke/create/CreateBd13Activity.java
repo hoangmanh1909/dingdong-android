@@ -34,7 +34,7 @@ public class CreateBd13Activity extends DingDongActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), "Lập bảng kê (BD13)");
+        ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), "Lập bản kê (BD13)");
     }
 
     @Override

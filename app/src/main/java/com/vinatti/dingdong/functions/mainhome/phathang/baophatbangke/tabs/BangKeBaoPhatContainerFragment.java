@@ -49,7 +49,7 @@ public class BangKeBaoPhatContainerFragment extends ViewFragment<BangKeBaoPhatCo
     public void initLayout() {
         super.initLayout();
         if (getActivity().getIntent().getIntExtra(Constants.TYPE_GOM_HANG, 0) == 3) {
-            tvTitle.setText("Báo phát bảng kê (BD13)");
+            tvTitle.setText("Báo phát bản kê (BD13)");
         }
         this.mScreenSlidePagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         this.viewPager.setAdapter(this.mScreenSlidePagerAdapter);
