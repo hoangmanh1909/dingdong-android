@@ -27,6 +27,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @BindView(R.id.tv_ContactPhone)
     CustomTextView tvContactPhone;
+    private String mPhone;
 
     public static PhoneFragment getInstance() {
         return new PhoneFragment();
@@ -48,6 +49,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
         new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
             @Override
             public void onCallResponse(String phone) {
+                mPhone = phone;
                 mPresenter.callForward(phone);
             }
         }).show();
@@ -56,7 +58,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
         startActivity(intent);
     }
 

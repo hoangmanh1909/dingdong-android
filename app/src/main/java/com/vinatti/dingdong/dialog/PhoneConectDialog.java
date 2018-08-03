@@ -8,6 +8,7 @@ import android.view.View;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.PhoneCallback;
 import com.vinatti.dingdong.callback.ReasonCallback;
+import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomEditText;
@@ -44,11 +45,15 @@ public class PhoneConectDialog extends Dialog {
             case R.id.tv_update:
                 if (TextUtils.isEmpty(edtPhone.getText().toString())) {
                     Toast.showToast(edtPhone.getContext(), "Xin vui lòng nhập SĐT.");
-                } else {
-                    if (mDelegate != null) {
-                        mDelegate.onCallResponse(edtPhone.getText().toString());
-                        dismiss();
-                    }
+                    return;
+                }
+                if (!NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
+                    Toast.showToast(edtPhone.getContext(), "Số điện thoại không hợp lệ.");
+                    return;
+                }
+                if (mDelegate != null) {
+                    mDelegate.onCallResponse(edtPhone.getText().toString());
+                    dismiss();
                 }
 
                 break;

@@ -158,6 +158,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private int mMinute;
     private int mPaymentType = 1;
     private String mSign;
+    private String mPhone;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -306,6 +307,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
                         public void onCallResponse(String phone) {
+                            mPhone = phone;
                             mPresenter.callForward(phone);
                         }
                     }).show();
@@ -461,7 +463,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
         startActivity(intent);
     }
 

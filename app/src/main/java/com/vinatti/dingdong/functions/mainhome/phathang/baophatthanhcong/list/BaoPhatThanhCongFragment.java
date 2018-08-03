@@ -57,6 +57,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     private List<CommonObject> mList;
     private long mAmount = 0;
     private int mPosition = -1;
+    private String mPhone;
 
     public static BaoPhatThanhCongFragment getInstance() {
         return new BaoPhatThanhCongFragment();
@@ -104,6 +105,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
                             public void onCallResponse(String phone) {
+                                mPhone = phone;
                                 mPresenter.callForward(phone);
                             }
                         }).show();
@@ -159,7 +161,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
         startActivity(intent);
     }
 
