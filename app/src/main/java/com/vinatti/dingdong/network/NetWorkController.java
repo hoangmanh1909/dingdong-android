@@ -47,7 +47,7 @@ public class NetWorkController {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.API_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(getUnsafeOkHttpClient(60, 60))
+                    .client(getUnsafeOkHttpClient(120, 120))
                     .build();
             apiBuilder = retrofit.create(VinattiAPI.class);
         }

@@ -75,7 +75,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mDate;
     private Calendar mCalendar;
     private ArrayList<ReasonInfo> mListReason;
-    private String mShiftID;
+    private String mShiftID = "1";
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private int mCountSearch = 0;

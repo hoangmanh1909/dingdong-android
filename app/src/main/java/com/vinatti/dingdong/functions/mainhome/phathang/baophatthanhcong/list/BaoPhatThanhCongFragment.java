@@ -159,7 +159,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 
@@ -225,7 +225,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 mList.remove(position);
                 mAdapter.removeItem(position);
                 mAdapter.notifyItemRemoved(position);
-               loadViewCount();
+                loadViewCount();
             }
         }
     }
