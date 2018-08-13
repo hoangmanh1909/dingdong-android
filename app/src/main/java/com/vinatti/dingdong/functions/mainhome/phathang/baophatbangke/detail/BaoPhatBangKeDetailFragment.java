@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
@@ -125,9 +126,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
-    FormItemEditText edtReceiverName;
+    MaterialEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
-    FormItemEditText edtReceiverIDNumber;
+    MaterialEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -181,6 +182,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         tvSenderName.setText(mBaoPhatBangke.getSenderName());
         tvSenderAddress.setText(mBaoPhatBangke.getSenderAddress());
         tvReciverName.setText(mBaoPhatBangke.getReciverName());
+        edtReceiverName.setText(mBaoPhatBangke.getReciverName());
         tvReciverAddress.setText(mBaoPhatBangke.getReciverAddress());
 
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
@@ -399,11 +401,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                 return;
             }
-            mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText());
+            mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
             mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
             mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll(".", ""));
             mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
-            mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText());
+            mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
             mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
             String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
             mBaoPhatBangke.setDeliveryTime(time);

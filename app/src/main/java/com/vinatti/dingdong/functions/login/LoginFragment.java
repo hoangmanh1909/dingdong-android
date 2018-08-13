@@ -53,7 +53,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;1B7F8B322B70959F31740BA2F0B0E13701C533C5ADDDCE32C0CBF6A2A3CC6A83");//dev guest
-        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;F3D53542A7EAA1200F18F06CC869FBD0180901F3487F0CBCDB2BB2D4563B128E");//dev vinatti
+        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev vinatti
          //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;4B1331850B62FFD228E0C3DD9C6663B7C0F96150897BFB3229244ACF611F17F7");// production
         checkPermissionCall();
     }

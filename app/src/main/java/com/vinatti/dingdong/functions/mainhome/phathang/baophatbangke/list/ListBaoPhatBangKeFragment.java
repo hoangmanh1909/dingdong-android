@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -68,6 +69,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     ImageView imgView;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout mRefresh;
 
     ArrayList<CommonObject> mList;
     private ListBaoPhatBangKeAdapter mAdapter;
@@ -151,6 +154,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         initSearch();
+        mRefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        mRefresh.setRefreshing(true);
+                        initSearch();
+                    }
+                }
+        );
     }
 
     private void showViewDetail(CommonObject baoPhatBd) {
@@ -256,6 +268,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
+        mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
         for (CommonObject item : list) {
@@ -284,6 +297,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
+            mRefresh.setRefreshing(false);
             if (mCountSearch != 0) {
                 Toast.showToast(getActivity(), message);
             }

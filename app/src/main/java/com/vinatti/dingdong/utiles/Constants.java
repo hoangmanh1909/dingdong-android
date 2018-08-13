@@ -23,4 +23,5 @@ public class Constants {
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
     public static final int TYPE_BAO_PHAT_THANH_CONG_DETAIL = 5;
     public static final String HEADER_NUMBER = "tel:159";
+    public static final String HEADER_NUMBER_LOG = "159";
 }

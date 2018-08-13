@@ -137,496 +137,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
-
-                    <com.vinatti.dingdong.views.CustomTextView
-                        style="@style/HeaderNews"
-                        android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="THÔNG TIN GỬI"
-                        android:textColor="@color/n_gray_text"
-                        android:textSize="@dimen/text_size_16sp" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Họ tên"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_SenderName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Địa chỉ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_SenderAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Điện thoại gửi"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_SenderPhone"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:background="@color/colorAccent"
-                            android:drawableLeft="@drawable/ic_tel"
-                            android:gravity="center"
-                            android:paddingLeft="@dimen/dimen_10dp"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
-
-                    <com.vinatti.dingdong.views.CustomTextView
-                        style="@style/HeaderNews"
-                        android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="THÔNG TIN NHẬN"
-                        android:textColor="@color/n_gray_text"
-                        android:textSize="@dimen/text_size_16sp" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Họ tên"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_ReciverName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Số điện thoại"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <LinearLayout
-                            android:id="@+id/ll_contact"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:orientation="vertical">
-
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Địa chỉ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_ReciverAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_info_order"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
-
-                    <com.vinatti.dingdong.views.CustomTextView
-                        style="@style/HeaderNews"
-                        android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="THÔNG TIN HÀNG HÓA"
-                        android:textColor="@color/n_gray_text"
-                        android:textSize="@dimen/text_size_16sp" />
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Mã bưu gửi"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_MaE"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Nội dung"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_Weigh"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Dịch vụ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_service"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Lưu ý"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.vinatti.dingdong.views.CustomTextView
-                            android:id="@+id/tv_instruction"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/red_light"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_confirm_fail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
-
-                    <com.vinatti.dingdong.views.CustomTextView
-                        style="@style/HeaderNews"
-                        android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="Báo phát"
-                        android:textColor="@color/n_gray_text"
-                        android:textSize="@dimen/text_size_16sp" />
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/layout_date_start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size_16dp">
-
-
-                    <com.vinatti.dingdong.views.CustomBoldTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lý do"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
-
-                    <com.vinatti.dingdong.views.form.FormItemTextView
-                        android:id="@+id/tv_reason"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp"
-                        app:formAction="@drawable/ic_arrow_down"
-                        app:formHint="Chọn lý do" />
-
-                    <com.vinatti.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_reason"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp"
-                        android:visibility="gone"
-                        app:formHint="Nhập ghi chú" />
-
-
-                    <com.vinatti.dingdong.views.CustomBoldTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:text="Phương án xử lý"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
-
-
-                    <com.vinatti.dingdong.views.form.FormItemTextView
-                        android:id="@+id/tv_solution"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp"
-                        app:formAction="@drawable/ic_arrow_down"
-                        app:formHint="Chọn phương án" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/ll_confirm_success"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:layout_marginBottom="@dimen/_10sdp"
+
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -825,16 +340,32 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
-                        <com.vinatti.dingdong.views.form.FormItemEditText
+                        <!-- <com.vinatti.dingdong.views.form.FormItemEditText
+                             android:id="@+id/edt_ReceiverName"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1.2"
+                             android:paddingTop="@dimen/dimen_5dp"
+                             android:paddingBottom="@dimen/dimen_5dp"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/text_size_14sp"
+                             app:formHint="Người nhận hàng" />-->
+                        <com.rengwuxian.materialedittext.MaterialEditText
                             android:id="@+id/edt_ReceiverName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/dimen_15dp"
                             android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_5dp"
-                            android:paddingBottom="@dimen/dimen_5dp"
-                            android:textColor="@color/black"
+                            android:inputType="text|textAutoCorrect"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formHint="Người nhận hàng" />
+                            app:met_bottomTextSize="@dimen/text_size_sub"
+                            app:met_clearButton="true"
+                            app:met_floatingLabel="highlight"
+                            app:met_primaryColor="@color/black"
+                            app:met_textColor="@color/black"
+                            app:met_textColorHint="@color/black"
+                            app:met_underlineColor="@color/colorBlackTrans50" />
 
 
                     </LinearLayout>
@@ -856,18 +387,34 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
-                        <com.vinatti.dingdong.views.form.FormItemEditText
+                        <!-- <com.vinatti.dingdong.views.form.FormItemEditText
+                             android:id="@+id/edt_ReceiverIDNumber"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1.2"
+                             android:paddingTop="@dimen/dimen_5dp"
+                             android:paddingBottom="@dimen/dimen_5dp"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/text_size_14sp"
+                             app:formHint="Số giấy tờ"
+                             app:formShowClear="true" />-->
+                        <com.rengwuxian.materialedittext.MaterialEditText
                             android:id="@+id/edt_ReceiverIDNumber"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/dimen_15dp"
                             android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_5dp"
-                            android:paddingBottom="@dimen/dimen_5dp"
-                            android:textColor="@color/black"
+                            android:hint="Số giấy tờ"
+                            android:inputType="text|textAutoCorrect"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formHint="Số giấy tờ"
-                            app:formShowClear="true" />
-
+                            app:met_bottomTextSize="@dimen/text_size_sub"
+                            app:met_clearButton="true"
+                            app:met_floatingLabel="highlight"
+                            app:met_primaryColor="@color/black"
+                            app:met_textColor="@color/black"
+                            app:met_textColorHint="@color/black"
+                            app:met_underlineColor="@color/colorBlackTrans50" />
 
                     </LinearLayout>
 
@@ -1005,6 +552,494 @@
 
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_info_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN HÀNG HÓA"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Mã bưu gửi"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_MaE"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Nội dung"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_Weigh"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Dịch vụ"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_service"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Lưu ý"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_instruction"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN NHẬN"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Họ tên"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_ReciverName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Số điện thoại"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_contact"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:orientation="vertical">
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Địa chỉ"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_ReciverAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN GỬI"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Họ tên"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_SenderName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Địa chỉ"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_SenderAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Điện thoại gửi"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.vinatti.dingdong.views.CustomTextView
+                            android:id="@+id/tv_SenderPhone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:background="@color/colorAccent"
+                            android:drawableLeft="@drawable/ic_tel"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_confirm_fail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray" />
+
+                    <com.vinatti.dingdong.views.CustomTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Báo phát"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_date_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size_16dp">
+
+
+                    <com.vinatti.dingdong.views.CustomBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lý do"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <com.vinatti.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formHint="Chọn lý do" />
+
+                    <com.vinatti.dingdong.views.form.FormItemEditText
+                        android:id="@+id/edt_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        android:visibility="gone"
+                        app:formHint="Nhập ghi chú" />
+
+
+                    <com.vinatti.dingdong.views.CustomBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:text="Phương án xử lý"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+
+                    <com.vinatti.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_solution"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formHint="Chọn phương án" />
+
+                </LinearLayout>
+            </LinearLayout>
+
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

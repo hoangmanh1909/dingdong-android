@@ -45,7 +45,7 @@ public class CallReceiver extends PhoneStateBroadcastReceiver {
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
         super.onOutgoingCallEnded(ctx, number, start, end);
         if(number!=null) {
-            if (number.equals(Constants.HOTLINE_CALL_SHOW)) {
+            if (number.startsWith(Constants.HEADER_NUMBER_LOG)) {
                 SharedPref sharedPref = new SharedPref(ctx);
                 String callerNumber = "";
                 String useiid = "";
@@ -55,12 +55,12 @@ public class CallReceiver extends PhoneStateBroadcastReceiver {
                     callerNumber = userInfo.getMobileNumber();
                     useiid = userInfo.getiD();
                 }
-                long diffInMs = end.getTime() - start.getTime();
+                //long diffInMs = end.getTime() - start.getTime();
 
-                long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
+               // long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
 
                 String duration = lastCall(ctx);
-                NetWorkController.addNewCallCenter(useiid, useiid, callerNumber, number, duration + "",
+                NetWorkController.addNewCallCenter(useiid, useiid, callerNumber, number.replaceFirst("159",""), duration + "",
                         DateTimeUtils.convertDateToString(end, DateTimeUtils.DEFAULT_DATETIME_FORMAT),
                         new CommonCallback<SimpleResult>(ctx) {
                             @Override

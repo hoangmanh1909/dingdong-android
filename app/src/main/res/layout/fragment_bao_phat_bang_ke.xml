@@ -44,30 +44,30 @@
                 android:id="@+id/edt_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
                 android:layout_toLeftOf="@+id/ll_scan_qr"
                 android:textColor="@color/black"
-                android:layout_marginRight="@dimen/_5sdp"
                 android:textSize="@dimen/text_size_14sp"
                 app:formHint="Nhập để tìm kiếm nhanh bưu gửi" />
-           <!-- <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edt_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/ll_scan_qr"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:hint="Nhập để tìm kiếm nhanh bưu gửi"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="1"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:textColorHint="@android:color/black"
-                android:textSize="@dimen/_14sdp"
-                app:met_bottomTextSize="@dimen/_12sdp"
-                app:met_clearButton="false"
-                app:met_floatingLabel="highlight"
-                app:met_primaryColor="#009688" />-->
+            <!-- <com.rengwuxian.materialedittext.MaterialEditText
+                 android:id="@+id/edt_search"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_toLeftOf="@+id/ll_scan_qr"
+                 android:ellipsize="end"
+                 android:gravity="center"
+                 android:hint="Nhập để tìm kiếm nhanh bưu gửi"
+                 android:imeOptions="actionDone"
+                 android:inputType="text"
+                 android:lines="1"
+                 android:scrollHorizontally="true"
+                 android:singleLine="true"
+                 android:textColorHint="@android:color/black"
+                 android:textSize="@dimen/_14sdp"
+                 app:met_bottomTextSize="@dimen/_12sdp"
+                 app:met_clearButton="false"
+                 app:met_floatingLabel="highlight"
+                 app:met_primaryColor="#009688" />-->
         </RelativeLayout>
 
         <RelativeLayout
@@ -122,14 +122,20 @@
                 android:textSize="@dimen/text_size_18sp"
                 android:visibility="invisible" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/btn_confirm_all"
                 android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:visibility="visible" />
+                android:layout_marginRight="@dimen/dimen_10dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/btn_confirm_all"
+                    android:visibility="visible" />
+            </android.support.v4.widget.SwipeRefreshLayout>
         </RelativeLayout>
 
         <TextView
