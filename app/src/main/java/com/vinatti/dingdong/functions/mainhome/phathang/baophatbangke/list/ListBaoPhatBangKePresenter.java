@@ -184,7 +184,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String solutionCode = solution;
             String status = "C18";
 
-            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign, note,item.getAmount(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign, note,item.getAmount(),item.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);

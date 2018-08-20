@@ -135,7 +135,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
+                receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount,mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -249,7 +250,9 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
+                reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture,mBaoPhatBangke.getiD(),
+                new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

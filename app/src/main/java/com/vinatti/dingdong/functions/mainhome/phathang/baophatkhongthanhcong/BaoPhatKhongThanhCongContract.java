@@ -21,7 +21,9 @@ interface BaoPhatKhongThanhCongContract {
     interface Interactor extends IInteractor<Presenter> {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note, CommonCallback<SimpleResult> commonCallback);
+        void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode,
+                       String deliveryDate, String deliveryTime, String receiverName,
+                       String status, String reasonCode, String solutionCode, String note,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
         void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback);
@@ -42,7 +44,8 @@ interface BaoPhatKhongThanhCongContract {
 
         void getReasons();
 
-        void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note);
+        void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
+                       String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note,String ladingPostmanID);
 
         void getSolutionByReasonCode(String code);
         void checkLadingCode(String parcelCode);

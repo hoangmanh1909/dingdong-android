@@ -135,6 +135,7 @@ public interface VinattiAPI {
                                          @Field("SignatureCapture") String signatureCapture,
                                          @Field("Note") String note,
                                          @Field("CollectAmount") String collectAmount,
+                                         @Field("LadingPostmanID") String ladingPostmanID ,
                                          @Field("Signature") String signature);
 
     @FormUrlEncoded

@@ -125,7 +125,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
         Calendar calendar = Calendar.getInstance();
-        mChuyenThu = String.format("%s", 700 + calendar.get(Calendar.DATE));
+        mChuyenThu = String.format("%s", 5000  + calendar.get(Calendar.DATE));
         tvChuyenthu.setText(mChuyenThu);
         tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
         tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);

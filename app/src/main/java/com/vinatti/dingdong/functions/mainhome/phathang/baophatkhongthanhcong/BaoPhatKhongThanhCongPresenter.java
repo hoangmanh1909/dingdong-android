@@ -65,10 +65,10 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
 
     @Override
     public void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
-                          String deliveryTime, String receiverName, String status, final String reasonCode, String solutionCode, String note) {
+                          String deliveryTime, String receiverName, String status, final String reasonCode, String solutionCode, String note,String ladingPostmanID ) {
         mView.showProgress();
         mInteractor.pushToPNS(postmanID, ladingCode, deliveryPOCode, deliveryDate,
-                deliveryTime, receiverName, status, reasonCode, solutionCode, note, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                deliveryTime, receiverName, status, reasonCode, solutionCode, note,  ladingPostmanID ,new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

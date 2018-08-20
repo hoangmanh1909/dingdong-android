@@ -207,7 +207,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr})
+    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back,R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -223,6 +223,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 showDialog();
                 break;
             case R.id.btn_confirm_all:
+                submit();
+                break;
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+            case R.id.img_send:
                 submit();
                 break;
         }
@@ -273,7 +279,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         long amount = 0;
         for (CommonObject item : list) {
             item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT) + " - Ca " + mShiftID);
-            if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
+            /*if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 if (item.getStatus().equals("N")) {
                     mList.add(item);
                     if (!TextUtils.isEmpty(item.getAmount()))
@@ -285,7 +291,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     if (!TextUtils.isEmpty(item.getAmount()))
                         amount += Long.parseLong(item.getAmount());
                 }
-            }
+            }*/
+            mList.add(item);
+            if (!TextUtils.isEmpty(item.getAmount()))
+                amount += Long.parseLong(item.getAmount());
 
 
         }

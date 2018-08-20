@@ -25,8 +25,10 @@ class BaoPhatKhongThanhCongInteractor extends Interactor<BaoPhatKhongThanhCongCo
     @Override
     public void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
                           String deliveryTime, String receiverName, String status, String reasonCode,
-                          String solutionCode, String note, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", "", note, "0", commonCallback);
+                          String solutionCode, String note,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode,
+                deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status,
+                "", "", "", note, "0",ladingPostmanID, commonCallback);
     }
 
     @Override

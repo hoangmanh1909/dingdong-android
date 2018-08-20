@@ -149,9 +149,9 @@ public class NetWorkController {
                                          String status,
                                          String paymentChannel,
                                          String deliveryType,
-                                         String signatureCapture, String note, String amount, CommonCallback<SimpleResult> callback) {
+                                         String signatureCapture, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note,amount, signature);
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note,amount,ladingPostmanID, signature);
         call.enqueue(callback);
     }
 

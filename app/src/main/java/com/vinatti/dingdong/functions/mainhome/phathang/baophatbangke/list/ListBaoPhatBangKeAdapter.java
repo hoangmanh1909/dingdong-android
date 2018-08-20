@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.CommonObject;
@@ -135,6 +136,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         CustomTextView tvInfo;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
+        @BindView(R.id.iv_status)
+        ImageView ivStatus;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -176,6 +179,12 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             }
             tvInfo.setText(String.format("Đã phát: %s", item.getInfo()));
             tvDate.setText(item.getDateSearch());
+            if (item.getStatus().equals("N")) {
+                ivStatus.setVisibility(View.GONE);
+            } else {
+                ivStatus.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

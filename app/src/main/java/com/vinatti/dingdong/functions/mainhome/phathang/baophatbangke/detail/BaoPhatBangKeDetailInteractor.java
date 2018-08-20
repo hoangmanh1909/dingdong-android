@@ -22,8 +22,10 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
         NetWorkController.getReasons(commonCallback);
     }
     @Override
-    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String sign, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, sign,note, collectAmount, commonCallback);
+    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status,
+                                  String paymentChannel, String deliveryType, String sign, String note, String collectAmount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, paymentChannel, deliveryType, sign,note, collectAmount,ladingPostmanID, commonCallback);
     }
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, CommonCallback<SimpleResult> callback) {
@@ -36,8 +38,10 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
         NetWorkController.getSolutionByReasonCode(code,commonCallback);
     }
     @Override
-    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String collectAmount, String signatureCapture, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount, callback);
+    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
+                                  String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
+                                  String deliveryType, String collectAmount, String signatureCapture,String ladingPostmanID , CommonCallback<SimpleResult> callback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount,ladingPostmanID, callback);
     }
 
     @Override

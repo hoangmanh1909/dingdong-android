@@ -265,7 +265,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         String receiverName = "";
         String status = "C18";
         mPresenter.pushToPNS(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                status, reasonCode, solutionCode, note);
+                status, reasonCode, solutionCode, note,"");
     }
 
     private void showUIReason() {

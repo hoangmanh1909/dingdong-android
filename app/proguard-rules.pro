@@ -332,3 +332,11 @@
   **[] $VALUES;
   public *;
 }
+
+#sweet alert
+ -keep class com.ontbee.legacyforks.cn.pedant.SweetAlert.Rotate3dAnimation {
+    public <init>(...);
+ }
+ -keep class cn.pedant.SweetAlert.Rotate3dAnimation {
+    public <init>(...);
+ }
