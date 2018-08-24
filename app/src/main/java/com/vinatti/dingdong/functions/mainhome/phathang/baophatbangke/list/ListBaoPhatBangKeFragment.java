@@ -302,6 +302,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
     }
+    @Override
+    public void showResponseSuccessEmpty()
+    {
+        mRefresh.setRefreshing(false);
+        mList.clear();
+        long amount = 0;
+        mAdapter.notifyDataSetChanged();
+        tvCount.setText(String.format(" %s", mList.size()));
+        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+    }
 
     @Override
     public void showError(String message) {

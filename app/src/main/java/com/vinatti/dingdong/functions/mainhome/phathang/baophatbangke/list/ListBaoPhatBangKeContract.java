@@ -46,6 +46,8 @@ interface ListBaoPhatBangKeContract {
         void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
 
         void showSuccessMessage(String message);
+
+        void showResponseSuccessEmpty();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

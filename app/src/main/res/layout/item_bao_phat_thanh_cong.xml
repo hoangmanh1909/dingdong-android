@@ -75,8 +75,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal">
 
                 <com.vinatti.dingdong.views.CustomTextView
@@ -85,24 +85,34 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_border_phone"
                     android:drawableLeft="@drawable/ic_tel"
-                    android:padding="@dimen/_2sdp"
                     android:gravity="center"
+                    android:padding="@dimen/_2sdp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <ImageView
-                    android:id="@+id/img_clear"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_clear_black" />
             </RelativeLayout>
-
         </LinearLayout>
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_star" />
+
+        <ImageView
+            android:id="@+id/img_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_clear_black" />
+    </RelativeLayout>
 
     <!-- <View
          style="@style/Devider"

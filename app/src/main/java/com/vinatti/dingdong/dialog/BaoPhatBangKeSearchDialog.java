@@ -101,7 +101,7 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
     private void showUIShift() {
 
         if (pickerUIShift == null) {
-            pickerUIShift = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
+            pickerUIShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {

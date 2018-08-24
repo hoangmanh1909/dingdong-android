@@ -98,6 +98,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.showResponseSuccess(response.body().getList());
                 } else {
                     mView.showError(response.body().getMessage());
+                    mView.showResponseSuccessEmpty();
                 }
             }
 
