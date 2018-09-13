@@ -163,11 +163,13 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign) {
         String postmanID = "";
+        String mobileNumber = "";
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
+            mobileNumber = userInfo.getMobileNumber();
         }
         String deliveryPOSCode = "";
         String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -185,23 +187,48 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String solutionCode = solution;
             String status = "C18";
 
-            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, "", "", sign, note,item.getAmount(),item.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                    if (response.body().getErrorCode().equals("00")) {
-                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                    } else {
-                        mView.showError(response.body().getMessage());
-                    }
-                }
+            if (item.getService().equals("12")) {
+                status = "C14";
+                mInteractor.paymentDelivery(postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
+                        item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(), new CommonCallback<SimpleResult>((Context) mContainerView) {
+                            @Override
+                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                super.onSuccess(call, response);
+                                if (response.body().getErrorCode().equals("00")) {
+                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                                } else {
+                                    mView.showError(response.body().getMessage());
+                                }
+                            }
 
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                    mView.showError(message);
-                }
-            });
+                            @Override
+                            protected void onError(Call<SimpleResult> call, String message) {
+                                super.onError(call, message);
+                                mView.showError(message);
+                            }
+                        }
+                );
+            } else {
+                mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                        solutionCode, status, "", "", sign, note, item.getAmount(), item.getiD(),
+                        new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                            @Override
+                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                super.onSuccess(call, response);
+                                if (response.body().getErrorCode().equals("00")) {
+                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                                } else {
+                                    mView.showError(response.body().getMessage());
+                                }
+                            }
+
+                            @Override
+                            protected void onError(Call<SimpleResult> call, String message) {
+                                super.onError(call, message);
+                                mView.showError(message);
+                            }
+                        });
+            }
         }
     }
 

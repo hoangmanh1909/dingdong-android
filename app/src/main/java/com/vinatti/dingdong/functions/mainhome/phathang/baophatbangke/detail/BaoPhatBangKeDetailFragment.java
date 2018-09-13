@@ -194,7 +194,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getService())) {
-            tvService.setText(mBaoPhatBangke.getService());
+            if (mBaoPhatBangke.getService().equals("12")) {
+                tvService.setText(mBaoPhatBangke.getServiceName());
+            } else {
+                tvService.setText(mBaoPhatBangke.getService());
+            }
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getInstruction())) {
             tvInstruction.setText(mBaoPhatBangke.getInstruction());

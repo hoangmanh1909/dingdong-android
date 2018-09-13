@@ -221,18 +221,6 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         mView.showProgress();
         String ladingCode = mBaoPhatBangke.getParcelCode();
         String deliveryPOCode = "";
-        /*if (mType == Constants.TYPE_BAO_PHAT_THANH_CONG) {
-            String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-            if (!posOfficeJson.isEmpty()) {
-                PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-                deliveryPOCode = postOffice.getCode();
-            } else {
-                deliveryPOCode = mBaoPhatBangke.getDeliveryPOCode();
-            }
-
-        } else {
-            deliveryPOCode = mBaoPhatBangke.getPoCode();
-        }*/
         String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!posOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
@@ -250,35 +238,39 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture,mBaoPhatBangke.getiD(),
-                new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                if (response.body().getErrorCode().equals("00")) {
+        if (mBaoPhatBangke.getService().equals("12")) {
+            paymentDelivery(signatureCapture);
+        } else {
+            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
+                    reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, mBaoPhatBangke.getiD(),
+                    new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                        @Override
+                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            super.onSuccess(call, response);
+                            if (response.body().getErrorCode().equals("00")) {
 
-                    if (paymentChannel.equals("2")) {
-                        mView.showSuccess();
-                        mView.callAppToMpost();
-                    } else {
-                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                                if (paymentChannel.equals("2")) {
+                                    mView.showSuccess();
+                                    mView.callAppToMpost();
+                                } else {
+                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
 
 
-                    }
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-                mView.hideProgress();
-            }
+                                }
+                            } else {
+                                mView.showError(response.body().getMessage());
+                            }
+                            mView.hideProgress();
+                        }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.showError(message);
-                mView.hideProgress();
-            }
-        });
+                        @Override
+                        protected void onError(Call<SimpleResult> call, String message) {
+                            super.onError(call, message);
+                            mView.showError(message);
+                            mView.hideProgress();
+                        }
+                    });
+        }
 
     }
 

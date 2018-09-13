@@ -107,6 +107,10 @@ public class CommonObject {
 
     @SerializedName("Note")
     private String note;
+
+    @SerializedName("ServiceName")
+    private String serviceName;
+
     private String dateSearch;
 
     public String getSignatureCapture() {
@@ -368,5 +372,9 @@ public class CommonObject {
 
     public void setDateSearch(String dateSearch) {
         this.dateSearch = dateSearch;
+    }
+
+    public String getServiceName() {
+        return serviceName;
     }
 }
