@@ -235,6 +235,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void submit() {
+        if (TextUtils.isEmpty(Constants.SHIFT)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            return;
+        }
         final List<CommonObject> commonObjects = mAdapter.getItemsSelected();
         if (commonObjects.isEmpty()) {
             Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");

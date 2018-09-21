@@ -28,6 +28,7 @@ import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomAutoCompleteTextView;
+import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
@@ -66,6 +67,8 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     CustomTextView tvStatus;
     @BindView(R.id.tv_update)
     CustomMediumTextView tvUpdate;
+    @BindView(R.id.tv_shift)
+    CustomBoldTextView tvShift;
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ArrayList<ReasonInfo> mListReason;
     private ReasonInfo mReasonInfo;
@@ -92,6 +95,11 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @Override
     public void initLayout() {
         super.initLayout();
+        if (TextUtils.isEmpty(Constants.SHIFT)) {
+            tvShift.setText("Bạn chưa chọn ca làm việc");
+        } else {
+            tvShift.setText("Ca làm việc: Ca " + Constants.SHIFT);
+        }
         checkSelfPermission();
         mPresenter.getReasons();
         calDate = Calendar.getInstance();
@@ -229,6 +237,10 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     }
 
     private void submit() {
+        if (TextUtils.isEmpty(Constants.SHIFT)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            return;
+        }
         if (TextUtils.isEmpty(edtParcelCode.getText())) {
             Toast.showToast(getActivity(), "Bạn chưa nhập Số hiệu bưu gửi");
             return;

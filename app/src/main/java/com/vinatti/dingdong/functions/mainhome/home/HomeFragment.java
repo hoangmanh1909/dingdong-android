@@ -1,9 +1,12 @@
 package com.vinatti.dingdong.functions.mainhome.home;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
@@ -18,11 +21,16 @@ import com.vinatti.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisAc
 import com.vinatti.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.vinatti.dingdong.model.GroupInfo;
 import com.vinatti.dingdong.model.HomeInfo;
+import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The Home Fragment
@@ -36,6 +44,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
     private static final int SPAN_SIZE = 3;
     private StickyHeaderGridLayoutManager mLayoutManager;
+    private ItemBottomSheetPickerUIFragment pickerShift;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -168,4 +177,31 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
     }
 
+
+    @OnClick(R.id.iv_add_shift)
+    public void onViewClicked() {
+        showUIShift();
+    }
+
+    private void showUIShift() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            items.add(new Item(i + "", "Ca " + i));
+        }
+        if (pickerShift == null) {
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            Constants.SHIFT = item.getValue();
+                        }
+                    }, 0);
+            pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+        } else {
+            pickerShift.setData(items, 0);
+            if (!pickerShift.isShow) {
+                pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+            }
+        }
+    }
 }

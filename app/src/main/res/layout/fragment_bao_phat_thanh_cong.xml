@@ -32,6 +32,13 @@
 
             app:textAllCaps="true" />
     </RelativeLayout>
+    <com.vinatti.dingdong.views.CustomBoldTextView
+        android:id="@+id/tv_shift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_16sp" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_5sdp"

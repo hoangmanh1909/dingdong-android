@@ -387,6 +387,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     private void submit() {
+        if (TextUtils.isEmpty(Constants.SHIFT)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            return;
+        }
         if (mDeliveryType == 2) {
             if (TextUtils.isEmpty(edtCollectAmount.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");

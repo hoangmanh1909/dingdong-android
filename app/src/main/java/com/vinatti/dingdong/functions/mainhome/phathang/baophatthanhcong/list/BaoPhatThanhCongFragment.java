@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -25,6 +26,7 @@ import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhat
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
+import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,6 +55,8 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.tv_shift)
+    CustomBoldTextView tvShift;
     private BaoPhatThanhCongAdapter mAdapter;
     private List<CommonObject> mList;
     private long mAmount = 0;
@@ -71,6 +75,11 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @Override
     public void initLayout() {
         super.initLayout();
+        if (TextUtils.isEmpty(Constants.SHIFT)) {
+            tvShift.setText("Bạn chưa chọn ca làm việc");
+        } else {
+            tvShift.setText("Ca làm việc: Ca " + Constants.SHIFT);
+        }
         checkSelfPermission();
         mList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -189,6 +198,10 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
             case R.id.btn_confirm_all:
                 if (mList != null && !mList.isEmpty())
                     if (mList.size() > 1) {
+                        if (TextUtils.isEmpty(Constants.SHIFT)) {
+                            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+                            return;
+                        }
                         mPresenter.pushViewConfirmAll(mList);
                     } else {
                         mPresenter.showDetail(mList.get(0), 0);
