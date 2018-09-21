@@ -16,8 +16,15 @@ import com.vinatti.dingdong.model.ReasonResult;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
+import com.vinatti.dingdong.model.UploadResult;
+import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.Utils;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -60,6 +67,7 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().taskOfWork(taskRequest);
         call.enqueue(callback);
     }
+
     public static void addNewBD13(Bd13Create bd13Create, CommonCallback<SimpleResult> callback) {
 
         Call<SimpleResult> call = getAPIBuilder().addNewBD13(bd13Create);
@@ -149,9 +157,11 @@ public class NetWorkController {
                                          String status,
                                          String paymentChannel,
                                          String deliveryType,
-                                         String signatureCapture, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> callback) {
+                                         String signatureCapture, String note, String amount, String ladingPostmanID, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, note,amount,ladingPostmanID, signature);
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
+                deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType,
+                signatureCapture, note, amount, ladingPostmanID, Constants.SHIFT, signature);
         call.enqueue(callback);
     }
 
@@ -195,12 +205,12 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount,signature);
+                note, collectAmount, Constants.SHIFT, signature);
         call.enqueue(callback);
     }
 
-    public static void getPostOfficeByCode(String code,String postmanID, CommonCallback<PostOfficeResult> callback) {
-        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code,postmanID);
+    public static void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
+        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code, postmanID);
         call.enqueue(callback);
     }
 
@@ -232,5 +242,14 @@ public class NetWorkController {
     public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<HistoryCreateBd13Result> commonCallback) {
         Call<HistoryCreateBd13Result> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
         call.enqueue(commonCallback);
+    }
+
+    public static void postImage(String filePath, CommonCallback<UploadResult> callback) {
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
+        //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
+        Call<UploadResult> call = getAPIBuilder().postImage(body);
+        call.enqueue(callback);
     }
 }

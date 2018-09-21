@@ -4,6 +4,7 @@ import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
+import com.vinatti.dingdong.model.UploadResult;
 import com.vinatti.dingdong.network.NetWorkController;
 
 /**
@@ -25,5 +26,10 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
     public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,  String statusCode, String quantity, String collectReason, String pickUpDate, String pickUpTime, CommonCallback<SimpleResult> callback) {
         NetWorkController.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
                 statusCode, quantity, collectReason, pickUpDate, pickUpTime, callback);
+    }
+
+    @Override
+    public void postImage(String pathMedia, CommonCallback<UploadResult> callback) {
+        NetWorkController.postImage(pathMedia, callback);
     }
 }

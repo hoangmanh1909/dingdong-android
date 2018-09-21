@@ -26,8 +26,8 @@ android {
         applicationId "com.vinatti.dingdong"
         minSdkVersion 16
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 14
-        versionName "1.2.4"
+        versionCode 17
+        versionName "1.2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -108,14 +108,14 @@ dependencies {
     })
     compile project(':Libraries:VinattiCore')
     testCompile 'junit:junit:4.12'
-
     compile 'com.redmadrobot:inputmask:2.3.0'
     compile 'com.github.davidpizarro:pickerui:1.0.1'
-    compile 'com.facebook.fresco:fresco:1.8.1'/* {
-        exclude group: 'com.parse.bolts', module: 'bolts-applinks';
-        exclude module: 'bolts-android';
-        exclude group: 'com.parse.bolts', module: 'bolts-tasks';
-    }*/
+    compile 'com.facebook.fresco:fresco:1.8.1'
+    /* {
+            exclude group: 'com.parse.bolts', module: 'bolts-applinks';
+            exclude module: 'bolts-android';
+            exclude group: 'com.parse.bolts', module: 'bolts-tasks';
+        }*/
     compile 'com.android.support:multidex:1.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile 'com.jakewharton:butterknife:8.0.1'
@@ -140,5 +140,6 @@ dependencies {
     }
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.roughike:bottom-bar:2.3.1'
+    compile project(':Libraries:libCamera')
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,24 +1,34 @@
 package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
+import com.facebook.cache.common.SimpleCacheKey;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.HoanThanhTinCallback;
 import com.vinatti.dingdong.dialog.HoanTatTinDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.model.FileInfo;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.MediaUltis;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
+
+import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,9 +59,12 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     CustomTextView tvContactAddress;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
+    @BindView(R.id.iv_package)
+    SimpleDraweeView ivPackage;
 
     private String mUser;
     private CommonObject mHoanThanhTin;
+    private String mFile;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -80,7 +93,35 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         }
     }
 
-    @OnClick({R.id.img_back, R.id.btn_confirm})
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                attemptSendMedia(data.getData().getPath());
+            }
+        }
+    }
+
+    private void attemptSendMedia(String path_media) {
+        Uri picUri = Uri.fromFile(new File(path_media));
+        ivPackage.setImageURI(picUri);
+        mPresenter.postImage(path_media);
+    }
+
+    @Override
+    public void showImage(List<FileInfo> fileInfos) {
+        if (fileInfos.size() > 0)
+            mFile = fileInfos.get(0).getNameFile();
+    }
+
+    @Override
+    public void deleteFile() {
+        mFile = "";
+        ivPackage.setActualImageResource(R.drawable.ic_camera_capture);
+    }
+
+    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -108,6 +149,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         }
                     }).show();
                 }
+                break;
+            case R.id.iv_package:
+                MediaUltis.captureImage(this);
                 break;
         }
     }

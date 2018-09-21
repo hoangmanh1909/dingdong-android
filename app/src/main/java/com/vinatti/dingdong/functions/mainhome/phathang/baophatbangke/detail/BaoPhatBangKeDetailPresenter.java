@@ -302,12 +302,16 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String solutionCode = "";
         String status = "C14";
         String note = "";
+        String amount = mBaoPhatBangke.getAmount();
+        if (TextUtils.isEmpty(amount) || amount.equals("0")) {
+            amount = mBaoPhatBangke.getCollectAmount();
+        }
         final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, mBaoPhatBangke.getCollectAmount(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

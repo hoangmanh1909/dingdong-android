@@ -183,6 +183,14 @@
             android:value="0cce76e3c35418e2833d7caeb11a76a15fc38dd0" />
 
         <activity android:name=".fcm.NotificationActivity"></activity>
+
+        <!-- Register library Activities -->
+        <activity
+            android:name="com.afollestad.materialcamera.CaptureActivity"
+            android:theme="@style/MaterialCamera.CaptureActivity" />
+        <activity
+            android:name="com.afollestad.materialcamera.CaptureActivity2"
+            android:theme="@style/MaterialCamera.CaptureActivity" />
     </application>
 
 </manifest>

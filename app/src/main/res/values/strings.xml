@@ -25,4 +25,6 @@
     <string name="exit">exit</string>
     <string name="quet_ma_vach">Quét mã vạch</string>
     <string name="notification_channel_id">default</string>
+    <string name="cam_use_capture">Sử dụng</string>
+    <string name="retry">Thử lại</string>
 </resources>

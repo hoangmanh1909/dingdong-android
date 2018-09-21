@@ -85,18 +85,22 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String note = "";
             final String paymentChannel = item.getCurrentPaymentType();
             String deliveryType = item.getDeliveryType();
+            String amount = item.getAmount();
+            if (TextUtils.isEmpty(amount) || amount.equals("0")) {
+                amount = item.getCollectAmount();
+            }
             if (!TextUtils.isEmpty(item.getIsCOD())) {
                 if (item.getIsCOD().toUpperCase().equals("Y")) {
                     payment(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, item.getCollectAmount());
+                            note, amount);
                 } else {
-                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture,item.getiD());
+                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture,item.getiD());
                 }
             } else {
-                pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture,item.getiD());
+                pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture,item.getiD());
             }
         }
 

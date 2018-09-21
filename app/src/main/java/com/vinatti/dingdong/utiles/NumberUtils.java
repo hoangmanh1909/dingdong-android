@@ -10,7 +10,6 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 
-
 /**
  * Created by Macbook on 3/6/17.
  */
@@ -205,6 +204,35 @@ public class NumberUtils {
             "97", // – Viettel Mobile
             "98"  // – Viettel Mobile
     };
+    static String[] operatorCode10 = new String[]{
+            "70",//MobiFone
+            "79",//MobiFone
+            "77",//MobiFone
+            "76",//MobiFone
+            "78",//MobiFone
+            "89",//MobiFone
+            "32",//Viettel
+            "33",//Viettel
+            "34",//Viettel
+            "35",//Viettel
+            "36",//Viettel
+            "37",//Viettel
+            "38",//Viettel
+            "39",//Viettel
+            "86",//Viettel
+            "83",//Vinaphone
+            "84",//Vinaphone
+            "85",//Vinaphone
+            "81",//Vinaphone
+            "82",//Vinaphone
+            "88",//Vinaphone
+            "56",//Vietnamobile
+            "58",//Vietnamobile
+            "59",//Gtel
+            "99",//Gtel
+
+
+    };
     static String[] operatorCode9yy = new String[]{
             "992", // – VSAT
             "996", // – Gmobile (traded as Beeline)
@@ -316,15 +344,11 @@ public class NumberUtils {
         return false;
     }
 
-    private static boolean isNumber(String mobileNumber)
-    {
-        try
-        {
+    private static boolean isNumber(String mobileNumber) {
+        try {
             Long.parseLong(mobileNumber);
             return true;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return false;
         }
     }
@@ -344,13 +368,20 @@ public class NumberUtils {
                 }
 
                 if (mobileNumber.length() == 10) {
-                    if (isInArray(_operator2, operatorCode9y) || isInArray(_operator3, operatorCode9yy)) {
+                    if (isInArray(_operator2, operatorCode9y)
+                            || isInArray(_operator3, operatorCode9yy)
+                            || isInArray(_operator2, operatorCode10)
+                            || isInArray(_operator3, operatorCode10)
+
+                            ) {
                         return true;
                     } else {
                         return false;
                     }
                 } else if (mobileNumber.length() == 11) {
-                    if (isInArray(_operator3, operatorCode1yy)) {
+                    if (isInArray(_operator3, operatorCode1yy)
+                            || isInArray(_operator3, operatorCode10)
+                            ) {
                         return true;
                     } else {
                         return false;

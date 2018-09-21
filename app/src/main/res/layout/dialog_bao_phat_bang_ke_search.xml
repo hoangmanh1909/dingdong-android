@@ -60,7 +60,7 @@
                         app:formAction="@drawable/ic_arrow_down" />
                 </LinearLayout>
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_16dp"
@@ -86,7 +86,7 @@
                         android:textSize="16sp"
                         app:formAction="@drawable/ic_arrow_down"
                         app:formHint="Chọn ca" />
-                </LinearLayout>
+                </LinearLayout>-->
 
 
             </LinearLayout>

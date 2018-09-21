@@ -24,4 +24,12 @@ public class Constants {
     public static final int TYPE_BAO_PHAT_THANH_CONG_DETAIL = 5;
     public static final String HEADER_NUMBER = "tel:159";
     public static final String HEADER_NUMBER_LOG = "159";
+    public static final String MANUFACTURE_XIAOMI = "Xiaomi";
+
+    public static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    public static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 101;
+    public static final int CHOOSE_IMAGE_OR_VIDEO_REQUEST_CODE = 102;
+    public static final int CHOOSE_FILE_REQUEST_CODE = 103;
+    public static final int CHOOSE_IMAGE_REQUEST_CODE = 104;
+    public static String SHIFT = "";
 }

@@ -1,1 +1,1 @@
-include ':app', ':Libraries:VinattiCore'
+include ':app', ':Libraries:VinattiCore', ':Libraries:libCamera'

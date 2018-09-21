@@ -193,12 +193,13 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
             edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
         }
-        if (!TextUtils.isEmpty(mBaoPhatBangke.getService())) {
-            if (mBaoPhatBangke.getService().equals("12")) {
+        if (!TextUtils.isEmpty(mBaoPhatBangke.getServiceName())) {
+            /*if (mBaoPhatBangke.getService().equals("12")) {
                 tvService.setText(mBaoPhatBangke.getServiceName());
             } else {
                 tvService.setText(mBaoPhatBangke.getService());
-            }
+            }*/
+            tvService.setText(mBaoPhatBangke.getServiceName());
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getInstruction())) {
             tvInstruction.setText(mBaoPhatBangke.getInstruction());

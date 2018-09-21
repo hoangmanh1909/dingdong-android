@@ -1,6 +1,7 @@
 package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -8,6 +9,7 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
+import com.vinatti.dingdong.model.UploadResult;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -108,6 +110,25 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     @Override
     public CommonObject getCommonObject() {
         return commonObject;
+    }
+
+    @Override
+    public void postImage(String pathMedia) {
+        mView.showProgress();
+        mInteractor.postImage(pathMedia, new CommonCallback<UploadResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UploadResult> call, Response<UploadResult> response) {
+                super.onSuccess(call, response);
+                mView.showImage(response.body().getFileInfos());
+            }
+
+            @Override
+            protected void onError(Call<UploadResult> call, String message) {
+                super.onError(call, message);
+                mView.showAlertDialog(message);
+                mView.deleteFile();
+            }
+        });
     }
 
     public HoanThanhTinDetailPresenter setCommonObject(CommonObject commonObject) {

@@ -12,11 +12,15 @@ import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.main.MainActivity;
+import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
+import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,6 +41,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_PHONE_STATE, Manifest.permission.PROCESS_OUTGOING_CALLS};
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
+    private ItemBottomSheetPickerUIFragment pickerShift;
 
     public static LoginFragment getInstance() {
         return new LoginFragment();
@@ -52,9 +57,9 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;1B7F8B322B70959F31740BA2F0B0E13701C533C5ADDDCE32C0CBF6A2A3CC6A83");//dev guest
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;F4521A23D3B56BEDED23CF0390E9211C17EF17EA9571A9F646142F848440C410");//dev guest
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev vinatti
-         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;4B1331850B62FFD228E0C3DD9C6663B7C0F96150897BFB3229244ACF611F17F7");// production
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0911818968;681F7E331A44034C78073BD15F0B31692EFDD45064A96B11B52FF110CF19DC73");// production
         checkPermissionCall();
     }
 
@@ -138,9 +143,36 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @Override
     public void gotoHome() {
         if (getActivity() != null) {
+           // showUIShift();
             Intent intent = new Intent(getActivity(), MainActivity.class);
             getActivity().finish();
             getActivity().startActivity(intent);
+
+        }
+    }
+
+    private void showUIShift() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            items.add(new Item(i + "", "Ca " + i));
+        }
+        if (pickerShift == null) {
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            Constants.SHIFT = item.getValue();
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            getActivity().finish();
+                            getActivity().startActivity(intent);
+                        }
+                    }, 0);
+            pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+        } else {
+            pickerShift.setData(items, 0);
+            if (!pickerShift.isShow) {
+                pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+            }
         }
     }
 
