@@ -3,6 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.callservice;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.core.base.viper.ViewFragment;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
@@ -28,7 +30,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 99;
     @BindView(R.id.edt_phone)
-    FormItemEditText edtPhone;
+    MaterialEditText edtPhone;
 
     public static CallServiceFragment getInstance() {
         return new CallServiceFragment();
@@ -42,7 +44,6 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
-        edtPhone.getEditText().setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkPermissionCall();
     }
 
@@ -67,11 +68,11 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
                     Toast.showToast(getActivity(), "Chưa nhập số để gọi");
                     return;
                 }
-                if (!NumberUtils.checkMobileNumber(edtPhone.getText())) {
+                if (!NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
                     Toast.showToast(getActivity(), "Số điện thoại không hợp lệ.");
                     return;
                 }
-                mPresenter.callForward(edtPhone.getText().trim());
+                mPresenter.callForward(edtPhone.getText().toString().trim());
                 break;
             case R.id.img_history:
                 mPresenter.pushHistory();
@@ -82,7 +83,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + edtPhone.getText().trim()));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + edtPhone.getText().toString().trim()));
         startActivity(intent);
     }
 

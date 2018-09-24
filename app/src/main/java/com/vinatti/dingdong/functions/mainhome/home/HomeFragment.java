@@ -91,6 +91,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         mList.add(new GroupInfo("Call", homeInfos));
         homeInfos = new ArrayList<>();
         homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
+        homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
         mList.add(new GroupInfo("Người dùng", homeInfos));
 
         adapter = new HomeGroupAdapter(mList) {
@@ -136,6 +137,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                             } else if (homeInfo.getId() == 8) {
                                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                                 startActivity(intent);
+                            }else if (homeInfo.getId() ==11) {
+                               mPresenter.showSetting();
                             }
 
 

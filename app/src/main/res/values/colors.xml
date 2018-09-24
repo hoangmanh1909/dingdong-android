@@ -350,4 +350,5 @@
     <color name="color_5f2f75">#5f2f75</color>
     <color name="md_grey_200">#EEEEEE</color>
     <color name="colorBlackTrans50">#80000000</color>
+    <color name="colorBlackTrans20">#33000000</color>
 </resources>

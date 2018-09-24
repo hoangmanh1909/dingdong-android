@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:clickable="true"
-    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <FrameLayout
@@ -41,9 +40,9 @@
                 android:id="@+id/img_history"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/dimen_10dp"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_rotate_right" />
         </RelativeLayout>
     </FrameLayout>
@@ -58,15 +57,32 @@
             android:layout_centerInParent="true"
             android:orientation="horizontal">
 
-            <com.vinatti.dingdong.views.form.FormItemEditText
-                android:id="@+id/edt_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:formHint="Nhập số để gọi"
-                app:formShowClear="true">
+            <!--  <com.vinatti.dingdong.views.form.FormItemEditText
+                  android:id="@+id/edt_phone"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  app:formHint="Nhập số để gọi"
+                  app:formShowClear="true">
 
-            </com.vinatti.dingdong.views.form.FormItemEditText>
+              </com.vinatti.dingdong.views.form.FormItemEditText>-->
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_15dp"
+                android:layout_weight="1.2"
+                android:hint="Nhập số để gọi"
+                android:inputType="phone"
+                android:textSize="@dimen/text_size_14sp"
+                app:met_bottomTextSize="@dimen/text_size_sub"
+                app:met_clearButton="true"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/black"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/colorBlackTrans20"
+                app:met_underlineColor="@color/colorBlackTrans20" />
 
             <ImageView
                 android:id="@+id/img_call"

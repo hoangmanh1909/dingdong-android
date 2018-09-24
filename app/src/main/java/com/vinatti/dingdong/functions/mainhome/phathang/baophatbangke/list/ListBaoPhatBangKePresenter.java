@@ -209,25 +209,48 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         }
                 );
             } else {
-                mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                        solutionCode, status, "", "", sign, note, item.getAmount(), item.getiD(),
-                        new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                            @Override
-                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                super.onSuccess(call, response);
-                                if (response.body().getErrorCode().equals("00")) {
-                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                } else {
-                                    mView.showError(response.body().getMessage());
+                if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
+                    status = "C14";
+                    mInteractor.paymentDelivery(postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
+                            item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(), new CommonCallback<SimpleResult>((Context) mContainerView) {
+                                @Override
+                                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                    super.onSuccess(call, response);
+                                    if (response.body().getErrorCode().equals("00")) {
+                                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                                    } else {
+                                        mView.showError(response.body().getMessage());
+                                    }
+                                }
+
+                                @Override
+                                protected void onError(Call<SimpleResult> call, String message) {
+                                    super.onError(call, message);
+                                    mView.showError(message);
                                 }
                             }
+                    );
+                } else {
+                    mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                            solutionCode, status, "", "", sign, note, item.getAmount(), item.getiD(),
+                            new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                                @Override
+                                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                    super.onSuccess(call, response);
+                                    if (response.body().getErrorCode().equals("00")) {
+                                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                                    } else {
+                                        mView.showError(response.body().getMessage());
+                                    }
+                                }
 
-                            @Override
-                            protected void onError(Call<SimpleResult> call, String message) {
-                                super.onError(call, message);
-                                mView.showError(message);
-                            }
-                        });
+                                @Override
+                                protected void onError(Call<SimpleResult> call, String message) {
+                                    super.onError(call, message);
+                                    mView.showError(message);
+                                }
+                            });
+                }
             }
         }
     }

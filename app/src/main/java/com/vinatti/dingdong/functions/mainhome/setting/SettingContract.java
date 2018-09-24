@@ -1,13 +1,13 @@
-package com.vinatti.dingdong.functions.mainhome.home;
+package com.vinatti.dingdong.functions.mainhome.setting;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 
 /**
- * The Home Contract
+ * The Setting Contract
  */
-interface HomeContract {
+interface SettingContract {
 
     interface Interactor extends IInteractor<Presenter> {
     }
@@ -16,11 +16,6 @@ interface HomeContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void showViewCreateBd13();
-
-        void showViewListCreateBd13();
-
-        void showSetting();
     }
 }
 

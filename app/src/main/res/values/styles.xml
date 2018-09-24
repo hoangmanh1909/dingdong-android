@@ -170,5 +170,13 @@
 
     </style>
 
-    <dimen name="dimen_13dp">13dp</dimen>
+    <style name="Toolbar.TitleText" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 </resources>

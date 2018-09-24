@@ -135,25 +135,30 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount,mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+        if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
+            paymentDelivery(sign);
+        }
+        else {
+            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
+                    receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount, mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                        @Override
+                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            super.onSuccess(call, response);
+                            if (response.body().getErrorCode().equals("00")) {
+                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
 
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
+                            } else {
+                                mView.showError(response.body().getMessage());
+                            }
+                        }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.showError(message);
-            }
-        });
+                        @Override
+                        protected void onError(Call<SimpleResult> call, String message) {
+                            super.onError(call, message);
+                            mView.showError(message);
+                        }
+                    });
+        }
 
     }
 
@@ -241,35 +246,40 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (mBaoPhatBangke.getService().equals("12")) {
             paymentDelivery(signatureCapture);
         } else {
-            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                    reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, mBaoPhatBangke.getiD(),
-                    new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                        @Override
-                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            super.onSuccess(call, response);
-                            if (response.body().getErrorCode().equals("00")) {
+            if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
+                paymentDelivery(signatureCapture);
+            }
+            else {
+                mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
+                        reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, mBaoPhatBangke.getiD(),
+                        new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                            @Override
+                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                super.onSuccess(call, response);
+                                if (response.body().getErrorCode().equals("00")) {
 
-                                if (paymentChannel.equals("2")) {
-                                    mView.showSuccess();
-                                    mView.callAppToMpost();
+                                    if (paymentChannel.equals("2")) {
+                                        mView.showSuccess();
+                                        mView.callAppToMpost();
+                                    } else {
+                                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+
+
+                                    }
                                 } else {
-                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-
-
+                                    mView.showError(response.body().getMessage());
                                 }
-                            } else {
-                                mView.showError(response.body().getMessage());
+                                mView.hideProgress();
                             }
-                            mView.hideProgress();
-                        }
 
-                        @Override
-                        protected void onError(Call<SimpleResult> call, String message) {
-                            super.onError(call, message);
-                            mView.showError(message);
-                            mView.hideProgress();
-                        }
-                    });
+                            @Override
+                            protected void onError(Call<SimpleResult> call, String message) {
+                                super.onError(call, message);
+                                mView.showError(message);
+                                mView.hideProgress();
+                            }
+                        });
+            }
         }
 
     }
