@@ -4,6 +4,7 @@ package com.vinatti.dingdong.network;
 import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.CommonObjectResult;
+import com.vinatti.dingdong.model.GachNoResult;
 import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.HistoryCreateBd13Result;
 import com.vinatti.dingdong.model.LoginResult;
@@ -181,6 +182,32 @@ public interface VinattiAPI {
                                        @Field("ShiftID") String shiftID,
                                        @Field("Signature") String signature
     );
+    @FormUrlEncoded
+    @POST("api/Delivery/PaymentPaypost")
+    Call<SimpleResult> paymentPaypost(@Field("PostmanID") String postmanID,
+                                       @Field("ParcelCode") String parcelCode,
+                                       @Field("MobileNumber") String mobileNumber,
+                                       @Field("DeliveryPOCode") String deliveryPOCode,
+                                       @Field("DeliveryDate") String deliveryDate,
+                                       @Field("DeliveryTime") String deliveryTime,
+                                       @Field("ReceiverName") String receiverName,
+                                       @Field("ReceiverIDNumber") String receiverIDNumber,
+                                       @Field("ReasonCode") String reasonCode,
+                                       @Field("SolutionCode") String solutionCode,
+                                       @Field("Status") String status,
+                                       @Field("PaymentChannel") String paymentChannel,
+                                       @Field("DeliveryType") String deliveryType,
+                                       @Field("SignatureCapture") String signatureCapture,
+                                       @Field("Note") String note,
+                                       @Field("CollectAmount") String collectAmount,
+                                       @Field("ShiftID") String shiftID,
+                                       @Field("Signature") String signature
+    );
+
+
+    @GET("api/Delivery/GetPaypostError")
+    Call<GachNoResult> deliveryGetPaypostError();
+
 
     @GET("api/Dictionary/GetPostOfficeByCode")
     Call<PostOfficeResult> getPostOfficeByCode(@Query("code") String unitCode,@Query("postmanID") String postmanID );

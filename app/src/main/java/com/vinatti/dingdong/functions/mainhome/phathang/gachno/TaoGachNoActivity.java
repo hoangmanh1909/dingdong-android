@@ -1,11 +1,8 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong;
+package com.vinatti.dingdong.functions.mainhome.phathang.gachno;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -13,7 +10,6 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.core.base.viper.ViewFragment;
@@ -31,13 +27,13 @@ import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
  * Created by DieuPC on 3/5/2018.
  */
 
-public class BaoPhatThanhCongActivity extends DingDongActivity {
+public class TaoGachNoActivity extends DingDongActivity {
     private SearchView searchView;
-    private BaoPhatThanhCongFragment mFragment;
+    private TaoGachNoFragment mFragment;
 
     @Override
     public ViewFragment onCreateFirstFragment() {
-        mFragment = (BaoPhatThanhCongFragment) new BaoPhatThanhCongPresenter(this).getFragment();
+        mFragment = (TaoGachNoFragment) new TaoGachNoPresenter(this).getFragment();
         return mFragment;
     }
 
@@ -46,9 +42,8 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
         super.onCreate(savedInstanceState);
         int textSize18 = getResources().getDimensionPixelSize(R.dimen.text_size_18sp);
         int textSize14 = getResources().getDimensionPixelSize(R.dimen.text_size_14sp);
-        String text1 = "Báo phát thành công";
+        String text1 = "Gạch nợ";
         String text2 = "";
-
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             text2 = ("Bạn chưa chọn ca làm việc");
         } else {

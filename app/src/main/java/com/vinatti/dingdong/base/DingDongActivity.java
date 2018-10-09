@@ -33,7 +33,7 @@ public abstract class DingDongActivity extends ContainerActivity {
     }
 
     public void showAlertDialog(String message) {
-        DialogUtils.showErrorAlert(this, message);
+        DialogUtils.showAlert(this, message);
     }
     public void showErrorToast(String message) {
         com.vinatti.dingdong.utiles.Toast.showToast(this, message);

@@ -32,13 +32,13 @@
 
             app:textAllCaps="true" />
     </RelativeLayout>
-   <!-- <com.vinatti.dingdong.views.CustomBoldTextView
-        android:id="@+id/tv_shift"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_size_16sp" />-->
+    <!-- <com.vinatti.dingdong.views.CustomBoldTextView
+         android:id="@+id/tv_shift"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:textColor="@color/colorPrimary"
+         android:textSize="@dimen/text_size_16sp" />-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_5sdp"
@@ -93,6 +93,16 @@
             android:layout_marginRight="@dimen/dimen_10dp">
 
         </android.support.v7.widget.RecyclerView>
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/dimen_5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:src="@drawable/ic_search_blue" />
     </RelativeLayout>
 
 

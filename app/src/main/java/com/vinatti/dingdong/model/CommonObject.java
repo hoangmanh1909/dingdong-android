@@ -377,4 +377,8 @@ public class CommonObject {
     public String getServiceName() {
         return serviceName;
     }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

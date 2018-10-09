@@ -1,4 +1,4 @@
-package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list;
+package com.vinatti.dingdong.functions.mainhome.phathang.gachno;
 
 import android.Manifest;
 import android.content.Intent;
@@ -22,7 +22,6 @@ import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.PhoneCallback;
 import com.vinatti.dingdong.dialog.PhoneConectDialog;
 import com.vinatti.dingdong.eventbus.BaoPhatCallback;
-import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
@@ -40,10 +39,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * The BaoPhatThanhCong Fragment
+ * The TaoGachNo Fragment
  */
-public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContract.Presenter> implements BaoPhatThanhCongContract.View {
-
+public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter> implements TaoGachNoContract.View {
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
@@ -55,23 +53,21 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
- /*   @BindView(R.id.tv_shift)
-    CustomBoldTextView tvShift;*/
-    private BaoPhatThanhCongAdapter mAdapter;
+    /*   @BindView(R.id.tv_shift)
+       CustomBoldTextView tvShift;*/
+    private TaoGachNoAdapter mAdapter;
     private List<CommonObject> mList;
     private long mAmount = 0;
     private int mPosition = -1;
     private String mPhone;
-
-    public static BaoPhatThanhCongFragment getInstance() {
-        return new BaoPhatThanhCongFragment();
+    public static TaoGachNoFragment getInstance() {
+        return new TaoGachNoFragment();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_bao_phat_thanh_cong;
+        return R.layout.fragment_tao_gach_no;
     }
-
     @Override
     public void initLayout() {
         super.initLayout();
@@ -86,7 +82,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         recycler.setLayoutManager(layoutManager);
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new BaoPhatThanhCongAdapter(getActivity(), mList) {
+        mAdapter = new TaoGachNoAdapter(getActivity(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
@@ -101,13 +97,13 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                         }
                     }
                 });
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+              /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mPosition = position;
                         mPresenter.showDetail(mList.get(position), position);
                     }
-                });
+                });*/
                 ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -140,7 +136,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
 
     public void getQuery(String parcelCode) {
         mPresenter.searchParcelCodeDelivery(parcelCode.trim());
-        ((BaoPhatThanhCongActivity) getActivity()).removeTextSearch();
+        ((TaoGachNoActivity) getActivity()).removeTextSearch();
     }
 
 
@@ -168,10 +164,27 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     }
 
     @Override
+    public void showSuccessMessage(String message) {
+        Toast.showToast(getActivity(), message);
+    }
+
+    @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
         startActivity(intent);
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.showToast(getActivity(), message);
+    }
+
+    @Override
+    public void finishView() {
+        mPresenter.back();
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, 0));
     }
 
 
@@ -189,11 +202,14 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     }
 
 
-    @OnClick({R.id.ll_scan_qr, R.id.btn_confirm_all})
+    @OnClick({R.id.ll_scan_qr, R.id.btn_confirm_all, R.id.iv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
                 scanQr();
+                break;
+            case  R.id.iv_search:
+              mPresenter.showViewList();
                 break;
             case R.id.btn_confirm_all:
                 if (mList != null && !mList.isEmpty())
@@ -254,5 +270,4 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         }
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
     }
-
 }

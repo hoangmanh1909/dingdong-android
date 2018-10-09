@@ -203,4 +203,18 @@ public class ViewUtils {
         abar.setDisplayHomeAsUpEnabled(true);
         abar.setHomeButtonEnabled(true);
     }
+    public static void viewActionBar(ActionBar abar, LayoutInflater layoutInflater, CharSequence title) {
+        View viewActionBar = layoutInflater.inflate(R.layout.custom_actionbar, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.txtActionBar);
+        textviewTitle.setText(title);
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeButtonEnabled(true);
+    }
 }

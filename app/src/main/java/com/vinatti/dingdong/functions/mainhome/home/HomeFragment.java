@@ -17,6 +17,7 @@ import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create.Cre
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.vinatti.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.vinatti.dingdong.model.GroupInfo;
@@ -81,6 +82,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
         homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
         homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
+        homeInfos.add(new HomeInfo(12, R.drawable.ic_delivery_service_success, "Gạch nợ"));
         homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
         homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
         mList.add(new GroupInfo("Phát hàng", homeInfos));
@@ -137,8 +139,11 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                             } else if (homeInfo.getId() == 8) {
                                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                                 startActivity(intent);
-                            }else if (homeInfo.getId() ==11) {
-                               mPresenter.showSetting();
+                            } else if (homeInfo.getId() == 11) {
+                                mPresenter.showSetting();
+                            } else if (homeInfo.getId() == 12) {
+                                Intent intent = new Intent(getActivity(), TaoGachNoActivity.class);
+                                startActivity(intent);
                             }
 
 

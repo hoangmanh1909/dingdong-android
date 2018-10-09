@@ -8,6 +8,7 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.ActiveResult;
 import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.CommonObjectResult;
+import com.vinatti.dingdong.model.GachNoResult;
 import com.vinatti.dingdong.model.HistoryCallResult;
 import com.vinatti.dingdong.model.HistoryCreateBd13Result;
 import com.vinatti.dingdong.model.LoginResult;
@@ -208,9 +209,37 @@ public class NetWorkController {
                 note, collectAmount, Constants.SHIFT, signature);
         call.enqueue(callback);
     }
+    public static void paymentPaypost(String postmanID,
+                                       String parcelCode,
+                                       String mobileNumber,
+                                       String deliveryPOCode,
+                                       String deliveryDate,
+                                       String deliveryTime,
+                                       String receiverName,
+                                       String receiverIDNumber,
+                                       String reasonCode,
+                                       String solutionCode,
+                                       String status,
+                                       String paymentChannel,
+                                       String deliveryType,
+                                       String signatureCapture,
+                                       String note,
+                                       String collectAmount,
+                                       CommonCallback<SimpleResult> callback) {
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().paymentPaypost(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
+                status, paymentChannel, deliveryType, signatureCapture,
+                note, collectAmount, Constants.SHIFT, signature);
+        call.enqueue(callback);
+    }
 
     public static void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
         Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code, postmanID);
+        call.enqueue(callback);
+    }
+    public static void deliveryGetPaypostError(CommonCallback<GachNoResult> callback) {
+        Call<GachNoResult> call = getAPIBuilder().deliveryGetPaypostError();
         call.enqueue(callback);
     }
 

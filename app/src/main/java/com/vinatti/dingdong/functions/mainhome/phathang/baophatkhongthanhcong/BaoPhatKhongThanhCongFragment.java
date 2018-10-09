@@ -67,8 +67,8 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     CustomTextView tvStatus;
     @BindView(R.id.tv_update)
     CustomMediumTextView tvUpdate;
-    @BindView(R.id.tv_shift)
-    CustomBoldTextView tvShift;
+/*    @BindView(R.id.tv_shift)
+    CustomBoldTextView tvShift;*/
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ArrayList<ReasonInfo> mListReason;
     private ReasonInfo mReasonInfo;
@@ -95,11 +95,11 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @Override
     public void initLayout() {
         super.initLayout();
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
+       /* if (TextUtils.isEmpty(Constants.SHIFT)) {
             tvShift.setText("Bạn chưa chọn ca làm việc");
         } else {
             tvShift.setText("Ca làm việc: Ca " + Constants.SHIFT);
-        }
+        }*/
         checkSelfPermission();
         mPresenter.getReasons();
         calDate = Calendar.getInstance();
@@ -170,13 +170,13 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         }
     }
 
-    @OnClick({R.id.img_back, R.id.ll_scan_qr, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_update, R.id.tv_search})
+    @OnClick({ R.id.ll_scan_qr, R.id.tv_reason, R.id.tv_solution,
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_update, R.id.tv_search})//R.id.img_back,
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+           /* case R.id.img_back:
                 mPresenter.back();
-                break;
+                break;*/
             case R.id.ll_scan_qr:
                 mPresenter.showBarcode(new BarCodeCallback() {
                     @Override

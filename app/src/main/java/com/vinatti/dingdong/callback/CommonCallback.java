@@ -65,10 +65,14 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
         } else if (response != null && (response.code() < 200 || response.code() >= 300)) {
             if (mActivity != null && isInternalErrorDisplayed) {
                 this.onError(call, mActivity.getString(R.string.error_system_upgrading));
+            } else {
+                this.onError(call, "");
             }
         } else {
             if (mActivity != null && this.isInternalErrorDisplayed) {
                 this.onError(call, mActivity.getString(R.string.error_fail_default));
+            } else {
+                this.onError(call, "");
             }
         }
     }
