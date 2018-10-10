@@ -81,6 +81,7 @@ public class CommonObject extends RealmObject {
     private String userDelivery;
     private String currentPaymentType;
     private boolean selected;
+    private boolean local;
     //endregion
     @SerializedName("IsCOD")
     String isCOD;
@@ -118,6 +119,8 @@ public class CommonObject extends RealmObject {
 
     @SerializedName("ServiceName")
     private String serviceName;
+    @SerializedName("IsPaypost")
+    private String isPaypost;
 
     private String dateSearch;
 
@@ -413,5 +416,17 @@ public class CommonObject extends RealmObject {
 
     public void setAmount(String amount) {
         Amount = amount;
+    }
+
+    public void setSignatureCapture(String signatureCapture) {
+        this.signatureCapture = signatureCapture;
+    }
+
+    public void setSaveLocal(boolean islocal) {
+        local = islocal;
+    }
+
+    public String getIsPaypost() {
+        return isPaypost;
     }
 }

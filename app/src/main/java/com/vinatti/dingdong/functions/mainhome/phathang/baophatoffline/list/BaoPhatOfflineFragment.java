@@ -177,10 +177,15 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             }
         }
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<CommonObject> results = realm.where(CommonObject.class).findAll();
+        RealmResults<CommonObject> results;
+        if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
+        } else {
+            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
+        }
         mList.clear();
         mAdapter.clear();
-        if (results != null) {
+        if (results.size() > 0) {
             for (CommonObject item : results) {
                 CommonObject itemReal = realm.copyFromRealm(item);
                 mList.add(itemReal);
@@ -190,8 +195,10 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     mAmount += Long.parseLong(itemReal.getCollectAmount());
                 tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
             }
+        } else {
+            tvCount.setText(String.format(" %s", mList.size()));
+            tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
         }
-
     }
 
     @Override

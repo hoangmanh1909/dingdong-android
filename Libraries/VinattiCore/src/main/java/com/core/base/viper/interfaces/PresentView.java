@@ -1,5 +1,6 @@
 package com.core.base.viper.interfaces;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 
 /**
@@ -12,6 +13,7 @@ public interface PresentView<P extends IPresenter> extends IView<P> {
   void hideProgress();
 
   void showAlertDialog(String message);
+  void showAlertDialog(String message,DialogInterface.OnClickListener onClickListener);
   void showErrorToast(String message);
   void showSuccessToast(String message);
 

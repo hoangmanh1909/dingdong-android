@@ -145,7 +145,7 @@
                                 android:layout_weight="0.8"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Tổng số tiền thu hộ"
+                                android:text="Tiền thu hộ"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 
@@ -175,7 +175,7 @@
                                 android:layout_weight="0.8"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Số tiền thực thu"
+                                android:text="Tiền thực thu"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 

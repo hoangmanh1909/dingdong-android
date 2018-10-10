@@ -60,7 +60,7 @@
             android:layout_marginRight="@dimen/dimen_10dp"
             android:orientation="vertical">
 
-            <LinearLayout
+          <!--  <LinearLayout
                 android:id="@+id/ll_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
 
                     </RadioGroup>
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/ll_confirm_success"
@@ -222,7 +222,7 @@
                                 android:layout_weight="0.8"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
-                                android:text="Tổng số tiền thu hộ"
+                                android:text="Tiền thu hộ"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 
@@ -268,7 +268,7 @@
                                 android:layout_weight="0.8"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
-                                android:text="Số tiền thực thu"
+                                android:text="Tiền thực thu"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 
@@ -584,7 +584,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+          <!--  <LinearLayout
                 android:id="@+id/ll_info_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -800,7 +800,7 @@
                             app:met_textColor="@color/black"
                             app:met_textColorHint="@color/colorBlackTrans20"
                             app:met_underlineColor="@color/colorBlackTrans20" />
-                        <!-- <com.vinatti.dingdong.views.CustomTextView
+                        &lt;!&ndash; <com.vinatti.dingdong.views.CustomTextView
                              android:id="@+id/tv_ReciverName"
                              android:layout_width="0dp"
                              android:layout_height="wrap_content"
@@ -808,7 +808,7 @@
                              android:paddingTop="@dimen/dimen_10dp"
                              android:paddingBottom="@dimen/dimen_10dp"
                              android:textColor="@color/black"
-                             android:textSize="@dimen/text_size_14sp" />-->
+                             android:textSize="@dimen/text_size_14sp" />&ndash;&gt;
 
                     </LinearLayout>
 
@@ -1147,7 +1147,7 @@
 
                 </LinearLayout>
             </LinearLayout>
-
+-->
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -39,8 +39,8 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
         CustomBoldTextView tvParcelCode;
         @BindView(R.id.tv_receiver_name)
         CustomTextView tvReceiverName;
-        @BindView(R.id.tv_receiver_address)
-        CustomTextView tvReceiverAddress;
+        @BindView(R.id.tv_status_paypost)
+        CustomTextView tvStatusPaypost;
         @BindView(R.id.tv_delivery_date)
         CustomTextView tvDeliveryDate;
         @BindView(R.id.tv_reason)
@@ -60,8 +60,19 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             tvCount.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvParcelCode.setText(item.getParcelCode());
             tvReceiverName.setText(String.format("%s - %s", item.getReciverName(), item.getReceiverPhone()));
-            tvReceiverAddress.setText(item.getReceiverAddress());
-           // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
+            if ("Y".equals(item.getIsPaypost())) {
+                tvStatusPaypost.setText("Gạch nợ thành công");
+                tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+            } else if ("E".equals(item.getIsPaypost())) {
+                tvStatusPaypost.setText("Gạch nợ thất bại");
+                tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
+            } else if ("N".equals(item.getIsPaypost())) {
+                tvStatusPaypost.setText("Bưu gửi ko gạch nợ");
+            } else {
+                tvStatusPaypost.setText("");
+            }
+
+            // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
             tvDeliveryDate.setText(item.getDeliveryDate());
             tvStatusName.setText(item.getStatusName());
             tvReason.setText(item.getReasonName());

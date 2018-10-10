@@ -74,7 +74,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
-            homeInfos.add(new HomeInfo(13, R.drawable.ic_delivery_service_success, "Nhập báo phát"));
+            homeInfos.add(new HomeInfo(13, R.drawable.ic_offline, "Nhập báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
             homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
@@ -91,7 +91,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
             homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
             homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
-            homeInfos.add(new HomeInfo(12, R.drawable.ic_delivery_service_success, "Gạch nợ"));
+            homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
+            homeInfos.add(new HomeInfo(14, R.drawable.ic_offline, "Báo phát offline"));
             homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
             homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
@@ -156,6 +157,11 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 startActivity(intent);
                             } else if (homeInfo.getId() == 13) {
                                 Intent intent = new Intent(getActivity(), BaoPhatOfflineActivity.class);
+                                intent.putExtra(Constants.IS_ONLINE,false);
+                                startActivity(intent);
+                            }else if (homeInfo.getId() == 14) {
+                                Intent intent = new Intent(getActivity(), BaoPhatOfflineActivity.class);
+                                intent.putExtra(Constants.IS_ONLINE,true);
                                 startActivity(intent);
                             }
 

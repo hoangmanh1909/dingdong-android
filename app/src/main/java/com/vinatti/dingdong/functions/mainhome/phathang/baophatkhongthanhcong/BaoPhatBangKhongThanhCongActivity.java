@@ -25,7 +25,7 @@ public class BaoPhatBangKhongThanhCongActivity extends DingDongActivity {
         super.onCreate(savedInstanceState);
         int textSize18 = getResources().getDimensionPixelSize(R.dimen.text_size_18sp);
         int textSize14 = getResources().getDimensionPixelSize(R.dimen.text_size_14sp);
-        String text1 = "Báo phát thành công";
+        String text1 = "Báo phát không thành công";
         String text2 = "";
 
         if (TextUtils.isEmpty(Constants.SHIFT)) {

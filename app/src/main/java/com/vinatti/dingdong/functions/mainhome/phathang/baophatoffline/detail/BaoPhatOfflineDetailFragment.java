@@ -4,11 +4,14 @@ import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,19 +34,18 @@ import com.vinatti.dingdong.callback.SignCallback;
 import com.vinatti.dingdong.dialog.SignDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.SolutionInfo;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.EditTextUtils;
-import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
-import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
@@ -51,7 +53,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -64,6 +68,44 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     private static final String TAG = BaoPhatOfflineDetailFragment.class.getSimpleName();
     @BindView(R.id.img_back)
+    ImageView imgBack;
+    @BindView(R.id.tv_title)
+    CustomBoldTextView tvTitle;
+    @BindView(R.id.img_send)
+    ImageView imgSend;
+    @BindView(R.id.header)
+    FrameLayout header;
+    @BindView(R.id.tv_userDelivery)
+    FormItemTextView tvUserDelivery;
+    @BindView(R.id.edt_amount)
+    MaterialEditText edtAmount;
+    @BindView(R.id.edt_collectAmount)
+    MaterialEditText edtCollectAmount;
+    @BindView(R.id.rad_cash)
+    RadioButton radCash;
+    @BindView(R.id.radio_group_money)
+    RadioGroup radioGroupMoney;
+    @BindView(R.id.ll_pay_ment)
+    LinearLayout llPayMent;
+    @BindView(R.id.edt_real_ReceiverName)
+    MaterialEditText edtRealReceiverName;
+    @BindView(R.id.edt_ReceiverIDNumber)
+    MaterialEditText edtReceiverIDNumber;
+    @BindView(R.id.tv_deliveryDate)
+    FormItemTextView tvDeliveryDate;
+    @BindView(R.id.tv_deliveryTime)
+    FormItemTextView tvDeliveryTime;
+    @BindView(R.id.btn_sign)
+    CustomTextView btnSign;
+    @BindView(R.id.img_sign)
+    ImageView imgSign;
+    @BindView(R.id.ll_signed)
+    LinearLayout llSigned;
+    @BindView(R.id.ll_confirm_success)
+    LinearLayout llConfirmSuccess;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
+   /* @BindView(R.id.img_back)
     ImageView imgBack;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
@@ -146,85 +188,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     @BindView(R.id.ll_confirm_fail)
     LinearLayout llConfirmFail;
     @BindView(R.id.ll_contact_view)
-    LinearLayout llContactView;
-    /*@BindView(R.id.img_back)
-    ImageView imgBack;
-    @BindView(R.id.tv_title)
-    CustomBoldTextView tvTitle;
-    @BindView(R.id.header)
-    FrameLayout header;
-    @BindView(R.id.tv_MaE)
-    CustomTextView tvMaE;
-    @BindView(R.id.tv_Weigh)
-    CustomTextView tvWeigh;
-    @BindView(R.id.tv_SenderName)
-    CustomTextView tvSenderName;
-    @BindView(R.id.tv_SenderAddress)
-    CustomTextView tvSenderAddress;
-    @BindView(R.id.tv_ReciverName)
-    CustomTextView tvReciverName;
-    @BindView(R.id.ll_contact)
-    LinearLayout llContact;
-    @BindView(R.id.tv_ReciverAddress)
-    CustomTextView tvReciverAddress;
-    @BindView(R.id.tv_service)
-    CustomTextView tvService;
-    @BindView(R.id.tv_instruction)
-    CustomTextView tvInstruction;
-    @BindView(R.id.tv_SenderPhone)
-    CustomTextView tvSenderPhone;
-    @BindView(R.id.img_send)
-    ImageView imgSend;
-    @BindView(R.id.rad_success)
-    RadioButton radSuccess;
-    @BindView(R.id.rad_fail)
-    RadioButton radFail;
-    @BindView(R.id.radio_group)
-    RadioGroup radioGroup;
-    @BindView(R.id.tv_reason)
-    FormItemTextView tvReason;
-    @BindView(R.id.edt_reason)
-    FormItemEditText edtReason;
-    @BindView(R.id.tv_solution)
-    FormItemTextView tvSolution;
-    @BindView(R.id.layout_date_start)
-    LinearLayout layoutDateStart;
-    @BindView(R.id.ll_confirm_fail)
-    LinearLayout llConfirmFail;
-    @BindView(R.id.tv_userDelivery)
-    FormItemTextView tvUserDelivery;
-    @BindView(R.id.tv_CollectAmount)
-    FormItemTextView tvCollectAmount;
-    @BindView(R.id.edt_CollectAmount)
-    FormItemEditText edtCollectAmount;
-    @BindView(R.id.rad_cash)
-    RadioButton radCash;
-    *//*  @BindView(R.id.rad_mpos)
-      RadioButton radMpos;*//*
-    @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;
-    @BindView(R.id.ll_pay_ment)
-    LinearLayout llPayMent;
-    @BindView(R.id.edt_ReceiverName)
-    MaterialEditText edtReceiverName;
-    @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
-    @BindView(R.id.tv_deliveryDate)
-    FormItemTextView tvDeliveryDate;
-    @BindView(R.id.tv_deliveryTime)
-    FormItemTextView tvDeliveryTime;
-    @BindView(R.id.btn_sign)
-    CustomTextView btnSign;
-    @BindView(R.id.ll_confirm_success)
-    LinearLayout llConfirmSuccess;
-    @BindView(R.id.ll_signed)
-    LinearLayout llSigned;
-    @BindView(R.id.ll_status)
-    LinearLayout llStatus;
-    @BindView(R.id.ll_info_order)
-    LinearLayout llInfoOrder;
-    @BindView(R.id.img_sign)
-    ImageView imgSign;*/
+    LinearLayout llContactView;*/
+
 
     private CommonObject mBaoPhat;
     private int mDeliveryType = 2;
@@ -236,6 +201,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     private int mPaymentType = 1;
     private String mSign;
     private String mPhone;
+    private ItemBottomSheetPickerUIFragment pickerShift;
 
     public static BaoPhatOfflineDetailFragment getInstance() {
         return new BaoPhatOfflineDetailFragment();
@@ -252,15 +218,17 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         EditTextUtils.editTextListener(edtCollectAmount);
         EditTextUtils.editTextListener(edtAmount);
         mBaoPhat = mPresenter.getBaoPhatBangke();
-        tvMaE.setText(mBaoPhat.getCode());
+        if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+            imgSend.setImageResource(R.drawable.ic_send_telegram);
+        } else {
+            imgSend.setImageResource(R.drawable.ic_save);
+        }
+      /*  tvMaE.setText(mBaoPhat.getCode());
         tvWeigh.setText(String.format("%s - %s", mBaoPhat.getNote(), mBaoPhat.getWeigh()));
         edtSenderName.setText(mBaoPhat.getSenderName());
         tvSenderAddress.setText(mBaoPhat.getSenderAddress());
         edtReciverName.setText(mBaoPhat.getReciverName());
-        edtRealReceiverName.setText(mBaoPhat.getReciverName());
         edtReciverAddress.setText(mBaoPhat.getReciverAddress());
-        edtCollectAmount.setText(mBaoPhat.getCollectAmount());
-        edtAmount.setText(mBaoPhat.getAmount());
         if (!TextUtils.isEmpty(mBaoPhat.getServiceName())) {
             tvService.setText(mBaoPhat.getServiceName());
         }
@@ -268,10 +236,21 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             tvInstruction.setText(mBaoPhat.getInstruction());
         }
         edtSenderPhone.setText(mBaoPhat.getSenderPhone());
+        edtReceiverPhone.setText(mBaoPhat.getReceiverPhone());*/
+        edtRealReceiverName.setText(mBaoPhat.getRealReceiverName());
         edtReceiverIDNumber.setText(mBaoPhat.getRealReceiverIDNumber());
-        edtReceiverPhone.setText(mBaoPhat.getReceiverPhone());
+        edtCollectAmount.setText(mBaoPhat.getCollectAmount());
+        edtAmount.setText(mBaoPhat.getAmount());
+        if (!TextUtils.isEmpty(mBaoPhat.getSignatureCapture())) {
+            llSigned.setVisibility(View.VISIBLE);
+            byte[] decodedString = Base64.decode(mBaoPhat.getSignatureCapture(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            imgSign.setImageBitmap(decodedByte);
+        } else {
+            llSigned.setVisibility(View.GONE);
+        }
 
-        if (!TextUtils.isEmpty(mBaoPhat.getReceiverPhone())) {
+      /*  if (!TextUtils.isEmpty(mBaoPhat.getReceiverPhone())) {
             String[] phones = mBaoPhat.getReceiverPhone().split(",");
             for (int i = 0; i < phones.length; i++) {
                 if (!phones[i].isEmpty()) {
@@ -288,9 +267,9 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         } else {
             llContactView.setVisibility(View.GONE);
             llInputContact.setVisibility(View.VISIBLE);
-        }
+        }*/
         checkPermissionCall();
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+       /* radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rad_success) {
@@ -305,13 +284,13 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                     llConfirmFail.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        });*/
 
         setupReciverPerson();
-        if (mPresenter.getDeliveryType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
+       /* if (mPresenter.getDeliveryType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
             llStatus.setVisibility(View.GONE);
             llInfoOrder.setVisibility(View.GONE);
-        }
+        }*/
 
 
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -339,8 +318,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             calDate = Calendar.getInstance();
             calDate.setTime(DateTimeUtils.convertStringToDate(mBaoPhat.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
             if (mBaoPhat.getDeliveryTime().length() > 4) {
-                calDate.set(Calendar.HOUR_OF_DAY, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(0,2)));
-                calDate.set(Calendar.MINUTE, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(2,4)));
+                calDate.set(Calendar.HOUR_OF_DAY, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(0, 2)));
+                calDate.set(Calendar.MINUTE, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(2, 4)));
             }
         }
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
@@ -363,8 +342,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign,
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime})//R.id.tv_reason, R.id.tv_solution,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -385,12 +364,12 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                     }
                 }).show();
                 break;
-            case R.id.tv_reason:
+          /*  case R.id.tv_reason:
                 break;
             case R.id.tv_solution:
                 if (mListSolution != null) {
                 }
-                break;
+                break;*/
             case R.id.tv_deliveryDate:
                 String createDate = mBaoPhat.getLoadDate();
                 Calendar calendarCreate = Calendar.getInstance();
@@ -440,6 +419,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            showUIShift();
             return;
         }
         if (mDeliveryType == 2) {
@@ -455,7 +435,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền");
                 return;
             }
-            if (TextUtils.isEmpty(edtReciverName.getText())) {
+            /*if (TextUtils.isEmpty(edtReciverName.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
             }
@@ -474,7 +454,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             if (TextUtils.isEmpty(edtSenderPhone.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số đt người phát hàng");
                 return;
-            }
+            }*/
 
             mBaoPhat.setRealReceiverName(edtRealReceiverName.getText().toString());
             mBaoPhat.setCurrentPaymentType(mPaymentType + "");
@@ -485,27 +465,36 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
             mBaoPhat.setDeliveryTime(time);
             mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
-            mBaoPhat.setReceiverName(edtReciverName.getText().toString());
+            if (!TextUtils.isEmpty(mSign))
+                mBaoPhat.setSignatureCapture(mSign);
+            mBaoPhat.setSaveLocal(true);
+          /*  mBaoPhat.setReceiverName(edtReciverName.getText().toString());
             if (!TextUtils.isEmpty(edtReceiverPhone.getText().toString()))
                 mBaoPhat.setReceiverPhone(edtReceiverPhone.getText().toString());
             mBaoPhat.setReceiverAddress(edtReciverAddress.getText().toString());
             mBaoPhat.setSenderName(edtSenderName.getText().toString());
-            mBaoPhat.setSenderPhone(edtSenderPhone.getText().toString());
-            mPresenter.saveLocal(mBaoPhat);
-            if (getActivity() != null) {
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                        .setConfirmText("OK")
-                        .setTitleText("Thông báo")
-                        .setContentText("Lưu thành công")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                                mPresenter.back();
+            mBaoPhat.setSenderPhone(edtSenderPhone.getText().toString());*/
 
-                            }
-                        }).show();
+            if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+                mPresenter.payment(mBaoPhat);
+            } else {
+                mPresenter.saveLocal(mBaoPhat);
+                if (getActivity() != null) {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setConfirmText("OK")
+                            .setTitleText("Thông báo")
+                            .setContentText("Lưu thành công")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    mPresenter.back();
+
+                                }
+                            }).show();
+                }
             }
+
         }
 
     }
@@ -525,5 +514,25 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             }
         }
     }
-
+    private void showUIShift() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            items.add(new Item(i + "", "Ca " + i));
+        }
+        if (pickerShift == null) {
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            Constants.SHIFT = item.getValue();
+                        }
+                    }, 0);
+            pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+        } else {
+            pickerShift.setData(items, 0);
+            if (!pickerShift.isShow) {
+                pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
+            }
+        }
+    }
 }

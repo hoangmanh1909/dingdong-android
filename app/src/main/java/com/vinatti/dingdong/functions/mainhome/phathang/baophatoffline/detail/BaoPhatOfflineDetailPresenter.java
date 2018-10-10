@@ -2,6 +2,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.detail;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
@@ -21,6 +22,7 @@ import com.vinatti.dingdong.utiles.SharedPref;
 import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -98,6 +100,83 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
             realm.copyToRealm(baoPhat);
             realm.commitTransaction();
         }
+    }
+
+    @Override
+    public void payment(final CommonObject baoPhat) {
+        String postmanID = "";
+        String mobileNumber = "";
+        String deliveryPOCode = "";
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            postmanID = userInfo.getiD();
+            mobileNumber = userInfo.getMobileNumber();
+        }
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!postOfficeJson.isEmpty()) {
+            PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+
+            deliveryPOCode = postOffice.getCode();
+        }
+        mView.showProgress();
+        String parcelCode = baoPhat.getParcelCode();
+        String deliveryDate = baoPhat.getDeliveryDate();
+        String deliveryTime = baoPhat.getDeliveryTime();
+        String receiverName = baoPhat.getRealReceiverName();
+        String receiverIDNumber = baoPhat.getReceiverIDNumber();
+        String reasonCode = "";
+        String solutionCode = "";
+        String status = "C14";
+        String note = "";
+        String amount = baoPhat.getAmount();
+        String signature = baoPhat.getSignatureCapture();
+        if (TextUtils.isEmpty(amount) || amount.equals("0")) {
+            amount = baoPhat.getCollectAmount();
+        }
+        final String paymentChannel = baoPhat.getCurrentPaymentType();
+        String deliveryType = baoPhat.getDeliveryType();
+        mInteractor.paymentDelivery(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
+                status, paymentChannel, deliveryType, signature,
+                note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        mView.hideProgress();
+                        if (response.body().getErrorCode().equals("00")) {
+
+                            // xóa local
+                            final String parcelCode = baoPhat.getParcelCode();
+                            Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                                    result.deleteAllFromRealm();
+                                }
+                            });
+                            mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    back();
+                                }
+                            });
+
+                        } else {
+                            mView.showAlertDialog(response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.hideProgress();
+                        mView.showAlertDialog(message);
+
+                    }
+                });
     }
 
     @Override

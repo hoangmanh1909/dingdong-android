@@ -4,6 +4,7 @@ import com.core.utils.ActivityUtils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,6 +106,7 @@ public abstract class BaseActivity extends BaseGlobalActivity {
   }
 
   public abstract void showAlertDialog(String message);
+  public abstract void showAlertDialog(String message, DialogInterface.OnClickListener onClickListener);
   public abstract void showErrorToast(String message);
   public abstract void showSuccessToast(String message);
 

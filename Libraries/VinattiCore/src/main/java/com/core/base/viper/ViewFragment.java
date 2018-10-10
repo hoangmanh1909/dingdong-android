@@ -8,6 +8,7 @@ import com.core.utils.ContextUtils;
 import com.core.utils.NetworkUtils;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -95,6 +96,12 @@ public abstract class ViewFragment<P extends IPresenter>
   public void showAlertDialog(String message) {
     if (ContextUtils.isValidContext(getBaseActivity())) {
       getBaseActivity().showAlertDialog(message);
+    }
+  }
+  @Override
+  public void showAlertDialog(String message,DialogInterface.OnClickListener onClickListener) {
+    if (ContextUtils.isValidContext(getBaseActivity())) {
+      getBaseActivity().showAlertDialog(message,onClickListener);
     }
   }
   @Override

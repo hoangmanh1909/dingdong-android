@@ -2,6 +2,7 @@ package com.vinatti.dingdong.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -34,6 +35,11 @@ public abstract class DingDongActivity extends ContainerActivity {
 
     public void showAlertDialog(String message) {
         DialogUtils.showAlert(this, message);
+    }
+    @Override
+    public void showAlertDialog(String message, DialogInterface.OnClickListener onClickListener) {
+
+        DialogUtils.showAlertAction(this, message,onClickListener);
     }
     public void showErrorToast(String message) {
         com.vinatti.dingdong.utiles.Toast.showToast(this, message);

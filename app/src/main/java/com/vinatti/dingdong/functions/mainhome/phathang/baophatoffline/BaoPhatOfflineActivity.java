@@ -82,34 +82,39 @@ public class BaoPhatOfflineActivity extends DingDongActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search_bao_phat, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        // listening to search query text change
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // filter recycler view when query submitted
-                mFragment.getQuery(query);
-                // mAdapter.getFilter().filter(query);
-                return false;
-            }
+        if (getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+            return false;
+        } else {
+            getMenuInflater().inflate(R.menu.menu_search_bao_phat, menu);
+            // Associate searchable configuration with the SearchView
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setSearchableInfo(searchManager
+                    .getSearchableInfo(getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+            searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+            // listening to search query text change
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    // filter recycler view when query submitted
+                    mFragment.getQuery(query);
+                    // mAdapter.getFilter().filter(query);
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String query) {
-                // filter recycler view when text is changed
-                // mAdapter.getFilter().filter(query);
-                // mFragment.getAdapter().getFilter().filter(query);
-                return false;
-            }
-        });
-        return true;
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    // filter recycler view when text is changed
+                    // mAdapter.getFilter().filter(query);
+                    // mFragment.getAdapter().getFilter().filter(query);
+                    return false;
+                }
+            });
+            return true;
+        }
+
     }
 
     @Override

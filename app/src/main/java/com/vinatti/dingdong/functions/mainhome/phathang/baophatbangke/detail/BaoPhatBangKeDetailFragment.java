@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,7 @@ import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,7 +87,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @BindView(R.id.tv_SenderAddress)
     CustomTextView tvSenderAddress;
     @BindView(R.id.tv_ReciverName)
-    CustomTextView tvReciverName;
+    CustomBoldTextView tvReciverName;
     @BindView(R.id.ll_contact)
     LinearLayout llContact;
     @BindView(R.id.tv_ReciverAddress)
@@ -208,28 +210,33 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
             edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
         }
+        tvCollectAmount.getTextView().setTypeface(tvCollectAmount.getTextView().getTypeface(), Typeface.BOLD);
         if (!TextUtils.isEmpty(mBaoPhatBangke.getServiceName())) {
-            /*if (mBaoPhatBangke.getService().equals("12")) {
-                tvService.setText(mBaoPhatBangke.getServiceName());
-            } else {
-                tvService.setText(mBaoPhatBangke.getService());
-            }*/
             tvService.setText(mBaoPhatBangke.getServiceName());
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getInstruction())) {
             tvInstruction.setText(mBaoPhatBangke.getInstruction());
         }
         tvSenderPhone.setText(mBaoPhatBangke.getSenderPhone());
-        String[] phones = mBaoPhatBangke.getReceiverPhone().split(",");
-        for (int i = 0; i < phones.length; i++) {
-            if (!phones[i].isEmpty()) {
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_contact,
-                                new PhonePresenter((ContainerView) getActivity())
-                                        .setPhone(phones[i].trim())
-                                        .getFragment(), TAG + i)
-                        .commit();
+        if (!TextUtils.isEmpty(mBaoPhatBangke.getReceiverPhone())) {
+            String[] phones = mBaoPhatBangke.getReceiverPhone().split(",");
+            for (int i = 0; i < phones.length; i++) {
+                if (!phones[i].isEmpty()) {
+                    getChildFragmentManager().beginTransaction()
+                            .add(R.id.ll_contact,
+                                    new PhonePresenter((ContainerView) getActivity())
+                                            .setPhone(phones[i].trim())
+                                            .getFragment(), TAG + i)
+                            .commit();
+                }
             }
+        } else {
+            getChildFragmentManager().beginTransaction()
+                    .add(R.id.ll_contact,
+                            new PhonePresenter((ContainerView) getActivity())
+                                    .setPhone("")
+                                    .getFragment(), TAG + 0)
+                    .commit();
         }
 
         mPresenter.getReasons();

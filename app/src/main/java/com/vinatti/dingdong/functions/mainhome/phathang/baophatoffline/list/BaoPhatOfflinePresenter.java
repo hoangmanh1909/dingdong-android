@@ -8,7 +8,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.detail.BaoPhatOfflineDetailPresenter;
-import com.vinatti.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
 import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectResult;
@@ -85,7 +85,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
 
     @Override
     public void pushViewConfirmAll(List<CommonObject> list) {
-        new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(list).setType(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
+        new ReceverPersonPresenter(mContainerView).setBaoPhat(list).setType(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
     }
 
     @Override

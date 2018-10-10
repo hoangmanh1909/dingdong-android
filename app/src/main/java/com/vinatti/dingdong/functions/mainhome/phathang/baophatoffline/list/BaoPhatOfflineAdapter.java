@@ -63,14 +63,14 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
             } else {
                 tvNote.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(item.getReciverName())) {
-                tvReceiverName.setText(item.getReciverName());
+            if (!TextUtils.isEmpty(item.getRealReceiverName())) {
+                tvReceiverName.setText(item.getRealReceiverName());
                 tvReceiverName.setVisibility(View.VISIBLE);
             } else {
                 tvReceiverName.setText("");
                 tvReceiverName.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(item.getReciverName())) {
+            if (!TextUtils.isEmpty(item.getReciverAddress())) {
                 tvReceiverAddress.setText(item.getReciverAddress());
                 tvReceiverAddress.setVisibility(View.VISIBLE);
             } else {

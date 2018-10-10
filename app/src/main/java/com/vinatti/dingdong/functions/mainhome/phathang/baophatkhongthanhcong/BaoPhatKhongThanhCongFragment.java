@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -40,6 +42,8 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 /**
  * The BaoPhatKhongThanhCong Fragment
@@ -95,11 +99,6 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @Override
     public void initLayout() {
         super.initLayout();
-       /* if (TextUtils.isEmpty(Constants.SHIFT)) {
-            tvShift.setText("Bạn chưa chọn ca làm việc");
-        } else {
-            tvShift.setText("Ca làm việc: Ca " + Constants.SHIFT);
-        }*/
         checkSelfPermission();
         mPresenter.getReasons();
         calDate = Calendar.getInstance();
