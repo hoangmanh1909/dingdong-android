@@ -148,8 +148,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
-            tvContactName.setText(String.format("%s - %s", item.getContactName(), item.getContactPhone()));
-            tvContactAddress.setText(item.getContactAddress());
+            tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
+            tvContactAddress.setText(item.getReceiverAddress());
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             } else {

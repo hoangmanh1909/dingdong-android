@@ -187,7 +187,7 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
             tvInstruction.setText(mBaoPhatBangke.getInstruction());
         }
         tvSenderPhone.setText(mBaoPhatBangke.getSenderPhone());
-        String[] phones = mBaoPhatBangke.getContactPhone().split(",");
+        String[] phones = mBaoPhatBangke.getReceiverPhone().split(",");
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
                 getChildFragmentManager().beginTransaction()

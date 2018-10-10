@@ -93,6 +93,7 @@
 -dontwarn fi.foyt.foursquare.**
 -dontwarn sun.misc.Unsafe
 -dontwarn javax.annotation.**
+-dontwarn io.realm
 #Realm
 -keepnames public class * extends io.realm.RealmObject
 -keep class io.realm.annotations.RealmModule
@@ -101,6 +102,7 @@
 -keep @io.realm.internal.Keep class *
 -dontwarn javax.**
 -dontwarn io.realm.**
+-keep public class io.realm.**
 
 
 -keep class retrofit.** { *; }

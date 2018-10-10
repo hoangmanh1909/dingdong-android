@@ -32,5 +32,6 @@ public class Constants {
     public static final int CHOOSE_FILE_REQUEST_CODE = 103;
     public static final int CHOOSE_IMAGE_REQUEST_CODE = 104;
     public static final String KEY_GACH_NO_PAYPOS = "key_gach_no_paypos";
+    public static final String COMMON_OBJECT_PRIMARY_KEY = "code";
     public static String SHIFT = "";
 }

@@ -7,10 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,6 +148,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     LinearLayout llInfoOrder;
     @BindView(R.id.img_sign)
     ImageView imgSign;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
     private ArrayList<ReasonInfo> mListReason;
     private CommonObject mBaoPhatBangke;
@@ -176,6 +181,16 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         }
+        scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        scrollView.setFocusable(true);
+        scrollView.setFocusableInTouchMode(true);
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.requestFocusFromTouch();
+                return false;
+            }
+        });
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
         tvWeigh.setText(String.format("%s - %s", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
@@ -205,7 +220,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             tvInstruction.setText(mBaoPhatBangke.getInstruction());
         }
         tvSenderPhone.setText(mBaoPhatBangke.getSenderPhone());
-        String[] phones = mBaoPhatBangke.getContactPhone().split(",");
+        String[] phones = mBaoPhatBangke.getReceiverPhone().split(",");
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
                 getChildFragmentManager().beginTransaction()

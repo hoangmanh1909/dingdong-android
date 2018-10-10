@@ -2,7 +2,11 @@ package com.vinatti.dingdong.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class StatusInfo {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class StatusInfo extends RealmObject{
+    @PrimaryKey
     @SerializedName("POCode")
     String POCode;
     @SerializedName("POName")

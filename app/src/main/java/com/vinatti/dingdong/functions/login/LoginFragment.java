@@ -1,6 +1,7 @@
 package com.vinatti.dingdong.functions.login;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -9,10 +10,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
+import com.core.utils.NetworkUtils;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.main.MainActivity;
 import com.vinatti.dingdong.model.Item;
+import com.vinatti.dingdong.model.UserInfo;
+import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
@@ -104,23 +108,34 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @OnClick(R.id.login_layout)
     public void onViewClicked() {
+        if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
+            SharedPref sharedPref = new SharedPref(getActivity());
+            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+            if (!userJson.isEmpty()) {
+                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                if (userInfo != null) {
+                    gotoHome();
+                }
+            }
 
-        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
-        if (TextUtils.isEmpty(values)) {
-            mPresenter.gotoValidation();
         } else {
-            String mobileNumber = values.split(";")[0];
-            String signCode = values.split(";")[1];
-            if (TextUtils.isEmpty(mobileNumber)) {
-                showError("Không tìm thấy thông tin số điện thoại.");
-                return;
+            String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+            if (TextUtils.isEmpty(values)) {
+                mPresenter.gotoValidation();
+            } else {
+                String mobileNumber = values.split(";")[0];
+                String signCode = values.split(";")[1];
+                if (TextUtils.isEmpty(mobileNumber)) {
+                    showError("Không tìm thấy thông tin số điện thoại.");
+                    return;
+                }
+                if (!NumberUtils.checkMobileNumber(mobileNumber)) {
+                    showError("Số điện thoại không hợp lệ.");
+                    return;
+                }
+                showProgress();
+                mPresenter.login(mobileNumber, signCode);
             }
-            if (!NumberUtils.checkMobileNumber(mobileNumber)) {
-                showError("Số điện thoại không hợp lệ.");
-                return;
-            }
-            showProgress();
-            mPresenter.login(mobileNumber, signCode);
         }
     }
 
@@ -143,7 +158,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @Override
     public void gotoHome() {
         if (getActivity() != null) {
-           // showUIShift();
+            // showUIShift();
             Intent intent = new Intent(getActivity(), MainActivity.class);
             getActivity().finish();
             getActivity().startActivity(intent);

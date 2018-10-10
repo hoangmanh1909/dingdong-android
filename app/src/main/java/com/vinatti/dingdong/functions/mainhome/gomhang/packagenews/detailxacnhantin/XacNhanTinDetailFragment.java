@@ -119,9 +119,9 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         }
         tvAssignDateTime.setText(commonObject.getAssignDateTime());
         tvAssignFullName.setText(commonObject.getAssignFullName());
-        tvContactAddress.setText(commonObject.getContactAddress());
-        tvContactName.setText(commonObject.getContactName());
-        tvContactPhone.setText(commonObject.getContactPhone());
+        tvContactAddress.setText(commonObject.getReceiverAddress());
+        tvContactName.setText(commonObject.getReceiverName());
+        tvContactPhone.setText(commonObject.getReceiverPhone());
         tvDescription.setText(commonObject.getDescription());
         tvQuantity.setText(commonObject.getQuantity());
         tvWeigh.setText(commonObject.getWeigh());

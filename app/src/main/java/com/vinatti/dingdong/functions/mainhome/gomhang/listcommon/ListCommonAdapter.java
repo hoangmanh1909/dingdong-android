@@ -54,8 +54,8 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
-            tvContactName.setText(String.format("%s - %s", item.getContactName(), item.getContactPhone()));
-            tvContactAddress.setText(item.getContactAddress().trim());
+            tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
+            tvContactAddress.setText(item.getReceiverAddress().trim());
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             } else {

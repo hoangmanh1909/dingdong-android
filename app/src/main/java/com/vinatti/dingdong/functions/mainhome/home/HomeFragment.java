@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
+import com.core.utils.NetworkUtils;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.callservice.CallActivity;
 import com.vinatti.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
+import com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
@@ -71,30 +73,38 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         mList = new ArrayList<>();
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
-        //homeInfos.add(new HomeInfo(R.drawable.ic_collect_service, getString(R.string.info_gomhang), "Gom hàng"));
-        homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
-        homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
-        mList.add(new GroupInfo("Gom hàng", homeInfos));
+        if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
+            homeInfos.add(new HomeInfo(13, R.drawable.ic_delivery_service_success, "Nhập báo phát"));
+            mList.add(new GroupInfo("Phát hàng", homeInfos));
+            homeInfos = new ArrayList<>();
+            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
+            mList.add(new GroupInfo("Người dùng", homeInfos));
+        } else {
+            //homeInfos.add(new HomeInfo(R.drawable.ic_collect_service, getString(R.string.info_gomhang), "Gom hàng"));
+            homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
+            homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
+            mList.add(new GroupInfo("Gom hàng", homeInfos));
 
-        //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
-        homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bản kê (BD13)"));
-        homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
-        homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
-        homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
-        homeInfos.add(new HomeInfo(12, R.drawable.ic_delivery_service_success, "Gạch nợ"));
-        homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
-        homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
-        mList.add(new GroupInfo("Phát hàng", homeInfos));
+            //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
+            homeInfos = new ArrayList<>();
+            homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bản kê (BD13)"));
+            homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
+            homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
+            homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
+            homeInfos.add(new HomeInfo(12, R.drawable.ic_delivery_service_success, "Gạch nợ"));
+            homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
+            homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
+            mList.add(new GroupInfo("Phát hàng", homeInfos));
 
 
-        homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
-        mList.add(new GroupInfo("Call", homeInfos));
-        homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
-        homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
-        mList.add(new GroupInfo("Người dùng", homeInfos));
+            homeInfos = new ArrayList<>();
+            homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
+            mList.add(new GroupInfo("Call", homeInfos));
+            homeInfos = new ArrayList<>();
+            homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
+            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
+            mList.add(new GroupInfo("Người dùng", homeInfos));
+        }
 
         adapter = new HomeGroupAdapter(mList) {
             @Override
@@ -143,6 +153,9 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 mPresenter.showSetting();
                             } else if (homeInfo.getId() == 12) {
                                 Intent intent = new Intent(getActivity(), TaoGachNoActivity.class);
+                                startActivity(intent);
+                            } else if (homeInfo.getId() == 13) {
+                                Intent intent = new Intent(getActivity(), BaoPhatOfflineActivity.class);
                                 startActivity(intent);
                             }
 

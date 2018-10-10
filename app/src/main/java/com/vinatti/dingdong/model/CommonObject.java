@@ -4,7 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class CommonObject {
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class CommonObject extends RealmObject {
 
     //region xacnhantin
     @SerializedName("OrderPostmanID")
@@ -23,16 +28,19 @@ public class CommonObject {
     //region common
     @SerializedName("StatusCode")
     String statusCode;
+
+    @PrimaryKey
     @SerializedName(value = "Code", alternate = {"MaE", "ParcelCode"})
     String code;
+
     @SerializedName(value = "ID", alternate = {"Id"})
     String iD;
     @SerializedName(value = "ContactName", alternate = {"ReciverName", "ReceiverName"})
-    String contactName;
+    String receiverName;
     @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile", "ReceiverPhone"})
-    String contactPhone;
+    String receiverPhone;
     @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress", "ReceiverAddress"})
-    String contactAddress;
+    String receiverAddress;
     @SerializedName(value = "Weigh", alternate = {"Weight"})
     String weigh;
     //endregion
@@ -103,7 +111,7 @@ public class CommonObject {
     private String status;
 
     @SerializedName("ListStatus")
-    private ArrayList<StatusInfo> statusInfoArrayList;
+    private RealmList<StatusInfo> statusInfoArrayList;
 
     @SerializedName("Note")
     private String note;
@@ -133,24 +141,21 @@ public class CommonObject {
         return description;
     }
 
-    public String getContactName() {
-        return contactName;
+    public String getReceiverName() {
+        return receiverName;
     }
 
     public String getReciverName() {
-        return contactName;
+        return receiverName;
     }
 
-    public String getContactPhone() {
-        return contactPhone;
+    public String getReceiverPhone() {
+        return receiverPhone;
     }
 
-    public String getContactAddress() {
-        return contactAddress;
-    }
 
     public String getReciverAddress() {
-        return contactAddress;
+        return receiverAddress;
     }
 
     public String getOrderPostmanID() {
@@ -293,16 +298,9 @@ public class CommonObject {
         return receiverIDNumber;
     }
 
-    public String getReceiverName() {
-        return contactName;
-    }
 
     public String getReceiverAddress() {
-        return contactAddress;
-    }
-
-    public String getReceiverPhone() {
-        return contactPhone;
+        return receiverAddress;
     }
 
     public String getDeliveryPOCode() {
@@ -339,7 +337,14 @@ public class CommonObject {
     }
 
     public ArrayList<StatusInfo> getStatusInfoArrayList() {
-        return statusInfoArrayList;
+        ArrayList<StatusInfo> statusInfos = new ArrayList<>();
+        if (statusInfoArrayList != null) {
+            Realm realm = Realm.getDefaultInstance();
+            for (StatusInfo statusInfo : statusInfoArrayList) {
+                statusInfos.add(realm.copyFromRealm(statusInfo));
+            }
+        }
+        return statusInfos;
     }
 
     public String getLoadDate() {
@@ -380,5 +385,33 @@ public class CommonObject {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public void setReceiverPhone(String receiverPhone) {
+        this.receiverPhone = receiverPhone;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public void setSenderPhone(String senderPhone) {
+        this.senderPhone = senderPhone;
+    }
+
+    public void setSenderAddress(String senderAddress) {
+        this.senderAddress = senderAddress;
+    }
+
+    public void setAmount(String amount) {
+        Amount = amount;
     }
 }

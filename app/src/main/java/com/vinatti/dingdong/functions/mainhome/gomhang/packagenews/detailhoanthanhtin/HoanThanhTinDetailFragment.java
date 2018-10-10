@@ -10,8 +10,6 @@ import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
-import com.facebook.cache.common.SimpleCacheKey;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.HoanThanhTinCallback;
@@ -184,15 +182,15 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         mHoanThanhTin = commonObject;
         tvAssignDateTime.setText(commonObject.getAssignDateTime());
         tvAssignFullName.setText(commonObject.getAssignFullName());
-        tvContactAddress.setText(commonObject.getContactAddress());
-        tvContactName.setText(commonObject.getContactName());
-        // tvContactPhone.setText(commonObject.getContactPhone());
+        tvContactAddress.setText(commonObject.getReceiverAddress());
+        tvContactName.setText(commonObject.getReceiverName());
+        // tvContactPhone.setText(commonObject.getReceiverPhone());
         tvDescription.setText(commonObject.getDescription());
         tvQuantity.setText(commonObject.getQuantity());
         tvWeigh.setText(commonObject.getWeigh());
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
 
-        String[] phones = commonObject.getContactPhone().split(",");
+        String[] phones = commonObject.getReceiverPhone().split(",");
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
                 getChildFragmentManager().beginTransaction()
