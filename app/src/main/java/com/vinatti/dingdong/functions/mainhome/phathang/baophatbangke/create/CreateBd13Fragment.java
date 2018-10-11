@@ -16,13 +16,18 @@ import com.core.widget.BaseViewHolder;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
+import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.vinatti.dingdong.callback.BarCodeCallback;
+import com.vinatti.dingdong.callback.CreatebangKeSearchCallback;
+import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
+import com.vinatti.dingdong.dialog.CreateBangKeSearchDialog;
 import com.vinatti.dingdong.model.Bd13Code;
 import com.vinatti.dingdong.model.Bd13Create;
 import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.PostOffice;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.Log;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.Toast;
@@ -62,6 +67,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     private ItemBottomSheetPickerUIFragment pickerShift;
     private String mShift;
     private String mChuyenThu;
+    private Calendar calendar;
 
     public static CreateBd13Fragment getInstance() {
         return new CreateBd13Fragment();
@@ -124,13 +130,23 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
-        Calendar calendar = Calendar.getInstance();
-        mChuyenThu = String.format("%s", 5000  + calendar.get(Calendar.DATE));
+        calendar = Calendar.getInstance();
+        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DATE));
         tvChuyenthu.setText(mChuyenThu);
         tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
         tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);
         tvBag.getImageViewLeft().setVisibility(View.GONE);
         tvShift.getImageViewLeft().setVisibility(View.GONE);
+        new CreateBangKeSearchDialog(getActivity(), calendar, new CreatebangKeSearchCallback() {
+            @Override
+            public void onResponse(String fromDate, String shiftID, String bag) {
+                calendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                tvBag.setText(bag);
+                tvShift.setText(shiftID);
+            }
+
+
+        }).show();
     }
 
     public void getQuery(String parcelCode) {
@@ -298,6 +314,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                     }).show();
         }
     }
+
     @Override
     public void onDisplay() {
         super.onDisplay();
