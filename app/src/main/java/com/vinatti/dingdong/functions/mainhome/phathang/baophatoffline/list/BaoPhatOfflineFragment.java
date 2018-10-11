@@ -72,7 +72,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_bao_phat_thanh_cong;
+        return R.layout.fragment_bao_phat_list_offline;
     }
 
     @Override

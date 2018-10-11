@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ll_scan_qr"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp">
+
+        <ImageView
+            android:id="@+id/img_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tv_capture"
+            android:src="@drawable/ic_capture" />
+
+        <com.vinatti.dingdong.views.CustomTextView
+            android:id="@+id/tv_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Quét mã vạch"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16sp"
+
+            app:textAllCaps="true" />
+    </RelativeLayout>
+    <!-- <com.vinatti.dingdong.views.CustomBoldTextView
+         android:id="@+id/tv_shift"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:textColor="@color/colorPrimary"
+         android:textSize="@dimen/text_size_16sp" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <com.vinatti.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_16sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.vinatti.dingdong.views.CustomTextView
+            android:id="@+id/btn_confirm_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:background="@drawable/bg_confirm_continue"
+            android:drawableLeft="@drawable/ic_done"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_20dp"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingRight="@dimen/dimen_20dp"
+            android:paddingBottom="@dimen/dimen_5dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="Xác nhận"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_above="@+id/btn_confirm_all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+
+</LinearLayout>

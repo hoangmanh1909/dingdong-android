@@ -204,7 +204,7 @@ public class ViewUtils {
         abar.setHomeButtonEnabled(true);
     }
     public static void viewActionBar(ActionBar abar, LayoutInflater layoutInflater, CharSequence title) {
-        View viewActionBar = layoutInflater.inflate(R.layout.custom_actionbar, null);
+        View viewActionBar = layoutInflater.inflate(R.layout.custom_actionbar_subtitle, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.MATCH_PARENT,

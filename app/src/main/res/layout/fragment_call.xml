@@ -33,7 +33,7 @@
                 android:layout_centerInParent="true"
                 android:text="Gọi dịch vụ"
                 android:textAllCaps="true"
-                android:textColor="@color/color_5f2f75"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
 
             <ImageView

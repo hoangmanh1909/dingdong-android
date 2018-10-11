@@ -104,13 +104,30 @@
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                   <!-- <com.vinatti.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_chuyenthu"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
                         android:textColor="@color/black"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"/>-->
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_chuyenthu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dimen_15dp"
+                        android:inputType="text"
+                        android:textColorHint="@color/colorBlackTrans20"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:met_bottomTextSize="@dimen/text_size_sub"
+                        app:met_clearButton="true"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="@color/black"
+                        app:met_textColor="@color/black"
+                        app:met_textColorHint="@color/colorBlackTrans20"
+                        app:met_underlineColor="@color/colorBlackTrans20" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -164,7 +181,7 @@
                     android:paddingTop="@dimen/dimen_5dp"
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_5dp"
-                    android:text="Mở túi"
+                    android:text="Tìm kiếm"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:textAllCaps="true" />

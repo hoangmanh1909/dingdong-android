@@ -27,159 +27,158 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.vinatti.dingdong.views.CustomTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:gravity="center"
                 android:text="Tra cứu bản kê BD13"
-                android:textAllCaps="true"
-                android:textColor="@color/color_5f2f75"
-                android:textSize="@dimen/text_size_18sp" />
+                 />
 
 
         </RelativeLayout>
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <!--  <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/dimen_5dp"
-            android:weightSum="10">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/dimen_5dp"
+              android:weightSum="10">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:orientation="horizontal"
-                android:weightSum="10">
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="5"
+                  android:orientation="horizontal"
+                  android:weightSum="10">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="4"
-                    android:gravity="left|center"
-                    android:text="Chuyến thư"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_centerVertical="true"
+                      android:layout_weight="4"
+                      android:gravity="left|center"
+                      android:text="Chuyến thư"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.form.FormItemEditText
-                    android:id="@+id/edt_chuyenthu"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="6"
-                    android:gravity="left|center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
-            </LinearLayout>
+                  <com.vinatti.dingdong.views.form.FormItemEditText
+                      android:id="@+id/edt_chuyenthu"
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_centerVertical="true"
+                      android:layout_weight="6"
+                      android:gravity="left|center"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp" />
+              </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:orientation="horizontal"
-                android:weightSum="10">
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="5"
+                  android:orientation="horizontal"
+                  android:weightSum="10">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="3"
-                    android:gravity="left|center"
-                    android:text="Ngày tạo"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_centerVertical="true"
+                      android:layout_weight="3"
+                      android:gravity="left|center"
+                      android:text="Ngày tạo"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.form.FormItemTextView
-                    android:id="@+id/tv_created_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:formAction="@drawable/ic_arrow_drop_down" />
+                  <com.vinatti.dingdong.views.form.FormItemTextView
+                      android:id="@+id/tv_created_date"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="7"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp"
+                      app:formAction="@drawable/ic_arrow_drop_down" />
 
-            </LinearLayout>
-        </LinearLayout>
+              </LinearLayout>
+          </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/dimen_5dp"
-            android:weightSum="10">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/dimen_5dp"
+              android:weightSum="10">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:orientation="horizontal"
-                android:weightSum="10">
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="4"
+                  android:orientation="horizontal"
+                  android:weightSum="10">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="2"
-                    android:gravity="left|center"
-                    android:text="Túi"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_centerVertical="true"
+                      android:layout_weight="2"
+                      android:gravity="left|center"
+                      android:text="Túi"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.form.FormItemTextView
-                    android:id="@+id/tv_bag"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:formAction="@drawable/ic_arrow_drop_down" />
-            </LinearLayout>
+                  <com.vinatti.dingdong.views.form.FormItemTextView
+                      android:id="@+id/tv_bag"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="8"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp"
+                      app:formAction="@drawable/ic_arrow_drop_down" />
+              </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:orientation="horizontal"
-                android:weightSum="10">
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="4"
+                  android:orientation="horizontal"
+                  android:weightSum="10">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="2"
-                    android:gravity="left|center"
-                    android:text="Ca"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_centerVertical="true"
+                      android:layout_weight="2"
+                      android:gravity="left|center"
+                      android:text="Ca"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.form.FormItemTextView
-                    android:id="@+id/tv_shift"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:formAction="@drawable/ic_arrow_drop_down" />
-            </LinearLayout>
+                  <com.vinatti.dingdong.views.form.FormItemTextView
+                      android:id="@+id/tv_shift"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="8"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/text_size_14sp"
+                      app:formAction="@drawable/ic_arrow_drop_down" />
+              </LinearLayout>
 
-            <ImageView
-                android:id="@+id/iv_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="@dimen/_7sdp"
-                android:src="@android:drawable/ic_menu_search" />
-        </LinearLayout>
-    </LinearLayout>
+              <ImageView
+                  android:id="@+id/iv_search"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="2"
+                  android:padding="@dimen/_7sdp"
+                  android:src="@android:drawable/ic_menu_search" />
+          </LinearLayout>
+      </LinearLayout>-->
 
     <com.vinatti.dingdong.views.CustomBoldTextView
         android:id="@+id/tv_count"
@@ -189,12 +188,29 @@
         android:textColor="#38044B"
         android:textSize="@dimen/text_size_16sp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dimen_10dp"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/iv_search"
+            android:layout_margin="@dimen/dimen_10dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:src="@drawable/ic_choose_calendar" />
+    </RelativeLayout>
+
 </LinearLayout>

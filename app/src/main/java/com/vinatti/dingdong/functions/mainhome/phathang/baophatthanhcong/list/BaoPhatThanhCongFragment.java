@@ -5,17 +5,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
@@ -26,8 +33,10 @@ import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhat
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,7 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The BaoPhatThanhCong Fragment
@@ -47,14 +58,24 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
-    @BindView(R.id.recycler)
-    RecyclerView recycler;
-    @BindView(R.id.ll_scan_qr)
-    RelativeLayout llScanQr;
+    @BindView(R.id.tv_title)
+    CustomTextView tvTitle;
+    @BindView(R.id.edt_parcelcode)
+    MaterialEditText edtParcelcode;
     @BindView(R.id.tv_count)
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+    /* @BindView(R.id.recycler)
+     RecyclerView recycler;
+     @BindView(R.id.ll_scan_qr)
+     RelativeLayout llScanQr;
+     @BindView(R.id.tv_count)
+     CustomBoldTextView tvCount;
+     @BindView(R.id.tv_amount)
+     CustomBoldTextView tvAmount;*/
  /*   @BindView(R.id.tv_shift)
     CustomBoldTextView tvShift;*/
     private BaoPhatThanhCongAdapter mAdapter;
@@ -62,7 +83,8 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     private long mAmount = 0;
     private int mPosition = -1;
     private String mPhone;
-
+    String text1;
+    String text2;
     public static BaoPhatThanhCongFragment getInstance() {
         return new BaoPhatThanhCongFragment();
     }
@@ -75,11 +97,21 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @Override
     public void initLayout() {
         super.initLayout();
-       /* if (TextUtils.isEmpty(Constants.SHIFT)) {
-            tvShift.setText("Bạn chưa chọn ca làm việc");
-        } else {
-            tvShift.setText("Ca làm việc: Ca " + Constants.SHIFT);
-        }*/
+        text1 = "BÁO PHÁT THÀNH CÔNG";
+        text2 = "";
+        tvTitle.setText(StringUtils.getCharSequence(text1, getActivity()));
+        edtParcelcode.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        edtParcelcode.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        edtParcelcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String parcelCode = edtParcelcode.getText().toString();
+                    getQuery(parcelCode);
+                }
+                return true;
+            }
+        });
         checkSelfPermission();
         mList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -140,18 +172,18 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
 
     public void getQuery(String parcelCode) {
         mPresenter.searchParcelCodeDelivery(parcelCode.trim());
-        ((BaoPhatThanhCongActivity) getActivity()).removeTextSearch();
+        //((BaoPhatThanhCongActivity) getActivity()).removeTextSearch();
     }
 
 
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if (getActivity() != null) {
+       /* if (getActivity() != null) {
             if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
                 ((DingDongActivity) getActivity()).getSupportActionBar().show();
             }
-        }
+        }*/
 
     }
 
@@ -188,8 +220,38 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         return check;
     }
 
-
-    @OnClick({R.id.ll_scan_qr, R.id.btn_confirm_all})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.img_search, R.id.img_capture})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+            case R.id.img_send:
+                if (mList != null && !mList.isEmpty())
+                    if (mList.size() > 1) {
+                        if (TextUtils.isEmpty(Constants.SHIFT)) {
+                            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+                            return;
+                        }
+                        mPresenter.pushViewConfirmAll(mList);
+                    } else {
+                        mPresenter.showDetail(mList.get(0), 0);
+                    }
+                break;
+            case R.id.img_search:
+                String parcelCode = edtParcelcode.getText().toString();
+                if (TextUtils.isEmpty(parcelCode)) {
+                    Toast.showToast(getActivity(), "Chưa nhập bưu gửi");
+                    return;
+                }
+                getQuery(parcelCode);
+                break;
+            case R.id.img_capture:
+                scanQr();
+                break;
+        }
+    }
+    /*@OnClick({R.id.ll_scan_qr, R.id.btn_confirm_all})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -208,7 +270,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                     }
                 break;
         }
-    }
+    }*/
 
     public void scanQr() {
         mPresenter.showBarcode(new BarCodeCallback() {
@@ -254,5 +316,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         }
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
     }
+
+
 
 }

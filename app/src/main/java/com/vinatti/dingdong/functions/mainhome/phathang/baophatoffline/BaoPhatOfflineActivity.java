@@ -2,12 +2,14 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
@@ -18,6 +20,7 @@ import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflineFragment;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.ViewUtils;
 
 import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
@@ -40,25 +43,8 @@ public class BaoPhatOfflineActivity extends DingDongActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int textSize18 = getResources().getDimensionPixelSize(R.dimen.text_size_18sp);
-        int textSize14 = getResources().getDimensionPixelSize(R.dimen.text_size_14sp);
-        String text1 = "Báo phát offline";
-        String text2 = "";
-
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
-            text2 = ("Bạn chưa chọn ca làm việc");
-        } else {
-            text2 = ("Ca làm việc: Ca " + Constants.SHIFT);
-        }
-
-        SpannableString span1 = new SpannableString(text1);
-        span1.setSpan(new AbsoluteSizeSpan(textSize18), 0, text1.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-        SpannableString span2 = new SpannableString(text2);
-        span2.setSpan(new AbsoluteSizeSpan(textSize14), 0, text2.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-// let's put both spans together with a separator and all
-        CharSequence finalText = TextUtils.concat(span1, "\n", span2);
+        String text1 = "BÁO PHÁT OFFLINE";
+        CharSequence finalText = StringUtils.getCharSequence(text1, this);
         ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), finalText);
     }
 
@@ -120,9 +106,11 @@ public class BaoPhatOfflineActivity extends DingDongActivity {
     @Override
     public void onBackPressed() {
         // close search view on back button pressed
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-            return;
+        if (searchView != null) {
+            if (!searchView.isIconified()) {
+                searchView.setIconified(true);
+                return;
+            }
         }
         super.onBackPressed();
     }

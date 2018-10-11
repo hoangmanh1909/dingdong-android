@@ -22,7 +22,7 @@ import com.vinatti.dingdong.utiles.ViewUtils;
  */
 
 public class CreateBd13Activity extends DingDongActivity {
-    private SearchView searchView;
+    //private SearchView searchView;
     private CreateBd13Fragment mFragment;
 
     @Override
@@ -31,13 +31,13 @@ public class CreateBd13Activity extends DingDongActivity {
         return mFragment;
     }
 
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), "Lập bản kê (BD13)");
-    }
+    }*/
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -53,9 +53,9 @@ public class CreateBd13Activity extends DingDongActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_bao_phat, menu);
         // Associate searchable configuration with the SearchView
@@ -99,11 +99,11 @@ public class CreateBd13Activity extends DingDongActivity {
     public void removeTextSearch() {
         searchView.setQuery("", false);
     }
-
-    @Override
+*/
+    /*@Override
     protected void onResume() {
         super.onResume();
         if (getSupportActionBar() != null)
             getSupportActionBar().show();
-    }
+    }*/
 }

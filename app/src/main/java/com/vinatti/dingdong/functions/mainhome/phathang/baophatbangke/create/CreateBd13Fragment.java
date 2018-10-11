@@ -1,25 +1,27 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
-import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
-import com.vinatti.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CreatebangKeSearchCallback;
-import com.vinatti.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.vinatti.dingdong.dialog.CreateBangKeSearchDialog;
 import com.vinatti.dingdong.model.Bd13Code;
 import com.vinatti.dingdong.model.Bd13Create;
@@ -30,9 +32,11 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.Log;
 import com.vinatti.dingdong.utiles.SharedPref;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.utiles.Utils;
-import com.vinatti.dingdong.views.form.FormItemTextView;
+import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
@@ -40,6 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -54,20 +59,29 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     RecyclerView recycler;
     List<Bd13Code> mList = new ArrayList<>();
     CreateBd13Adapter mAdapter;
-    @BindView(R.id.tv_bag)
-    FormItemTextView tvBag;
-    @BindView(R.id.tv_shift)
-    FormItemTextView tvShift;
-    @BindView(R.id.tv_chuyenthu)
-    TextView tvChuyenthu;
+    /*    @BindView(R.id.tv_bag)
+        FormItemTextView tvBag;
+        @BindView(R.id.tv_shift)
+        FormItemTextView tvShift;
+        @BindView(R.id.tv_chuyenthu)
+        TextView tvChuyenthu;*/
+
+    @BindView(R.id.tv_title)
+    CustomTextView tvTitle;
+    @BindView(R.id.edt_parcelcode)
+    MaterialEditText edtParcelCode;
     @BindView(R.id.tv_count)
-    TextView tvCount;
+    CustomBoldTextView tvCount;
+    @BindView(R.id.tv_amount)
+    CustomBoldTextView tvAmount;
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "0";
     private ItemBottomSheetPickerUIFragment pickerShift;
     private String mShift;
     private String mChuyenThu;
     private Calendar calendar;
+    String text1;
+    String text2;
 
     public static CreateBd13Fragment getInstance() {
         return new CreateBd13Fragment();
@@ -81,36 +95,21 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-       /* edtSearch.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        edtSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        *//*edtSearch.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        text1 = "LẬP BẢNG KÊ (BD13)";
+        text2 = "Chưa chọn túi và ca";
+        tvTitle.setText(StringUtils.getCharSequence(text1, text2, getActivity()));
+        edtParcelCode.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        edtParcelCode.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        edtParcelCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    addNewRow();
-                    edtSearch.setText("");
+                    String parcelCode = edtParcelCode.getText().toString();
+                    getQuery(parcelCode);
                 }
                 return true;
             }
-        });*//*
-        edtSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // filter recycler view when query submitted
-                addNewRow();
-                edtSearch.setQuery("", false);
-                // mAdapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                // filter recycler view when text is changed
-                // mAdapter.getFilter().filter(query);
-                // mFragment.getAdapter().getFilter().filter(query);
-                return false;
-            }
-        });*/
+        });
         mAdapter = new CreateBd13Adapter(getActivity(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
@@ -132,20 +131,21 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         recycler.setAdapter(mAdapter);
         calendar = Calendar.getInstance();
         mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DATE));
-        tvChuyenthu.setText(mChuyenThu);
+        /*tvChuyenthu.setText(mChuyenThu);
         tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
         tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);
         tvBag.getImageViewLeft().setVisibility(View.GONE);
-        tvShift.getImageViewLeft().setVisibility(View.GONE);
+        tvShift.getImageViewLeft().setVisibility(View.GONE);*/
         new CreateBangKeSearchDialog(getActivity(), calendar, new CreatebangKeSearchCallback() {
             @Override
             public void onResponse(String fromDate, String shiftID, String bag) {
                 calendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                tvBag.setText(bag);
-                tvShift.setText(shiftID);
+                mBag = bag;
+                mShift = shiftID;
+               /* tvBag.setText(bag);
+                tvShift.setText(shiftID);*/
+                tvTitle.setText(StringUtils.getCharSequence(text1, mChuyenThu + " - " + bag + " - " + "Ca " + shiftID, getActivity()));
             }
-
-
         }).show();
     }
 
@@ -158,7 +158,6 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         } else {
             Toast.showToast(getActivity(), "Đã tồn tại trong danh sách");
         }
-        ((CreateBd13Activity) getActivity()).removeTextSearch();
     }
     /*private void addNewRow() {
         if (!TextUtils.isEmpty(edtSearch.getQuery())) {
@@ -193,23 +192,38 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         });
     }
 
-    @OnClick({R.id.btn_confirm_all, R.id.tv_bag, R.id.tv_shift})
+    @OnClick({R.id.img_send, R.id.img_search, R.id.img_capture, R.id.img_back})
+//R.id.btn_confirm_all,R.id.tv_bag, R.id.tv_shift,
     public void onViewClicked(View view) {
         switch (view.getId()) {
            /* case R.id.img_capture:
                 scanQr();
                 break;*/
-            case R.id.btn_confirm_all:
+          /*  case R.id.btn_confirm_all:
+                submit();
+                break;*/
+          /*  case R.id.tv_bag:
+                showUIBag();
+                break;*/
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+          /*  case R.id.tv_shift:
+                showUIShift();
+                break;*/
+            case R.id.img_send:
                 submit();
                 break;
-            case R.id.tv_bag:
-                showUIBag();
+            case R.id.img_search:
+                String parcelCode = edtParcelCode.getText().toString();
+                if (TextUtils.isEmpty(parcelCode)) {
+                    Toast.showToast(getActivity(), "Chưa nhập bưu gửi");
+                    return;
+                }
+                getQuery(parcelCode);
                 break;
-           /* case R.id.img_back:
-                mPresenter.back();
-                break;*/
-            case R.id.tv_shift:
-                showUIShift();
+            case R.id.img_capture:
+                scanQr();
                 break;
         }
     }
@@ -255,7 +269,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {
-                            tvBag.setText(item.getText());
+                            /*tvBag.setText(item.getText());*/
                             mBag = item.getValue();
 
                         }
@@ -281,7 +295,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {
-                            tvShift.setText(item.getText());
+                            /*  tvShift.setText(item.getText());*/
                             mShift = item.getValue();
 
                         }
@@ -318,11 +332,12 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if (getActivity() != null) {
+       /* if (getActivity() != null) {
             if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
                 ((DingDongActivity) getActivity()).getSupportActionBar().show();
             }
-        }
+        }*/
 
     }
+
 }

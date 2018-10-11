@@ -16,6 +16,10 @@ import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.callback.BangKeSearchCallback;
+import com.vinatti.dingdong.callback.CreatebangKeSearchCallback;
+import com.vinatti.dingdong.dialog.BangKe13SearchDialog;
+import com.vinatti.dingdong.dialog.CreateBangKeSearchDialog;
 import com.vinatti.dingdong.model.Bd13Code;
 import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.PostOffice;
@@ -23,9 +27,11 @@ import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
@@ -42,10 +48,9 @@ import butterknife.Unbinder;
 /**
  * The ListBd13 Fragment
  */
-public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> implements ListBd13Contract.View
-        , DatePickerDialog.OnDateSetListener {
+public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> implements ListBd13Contract.View {
 
-    @BindView(R.id.tv_title)
+    /*@BindView(R.id.tv_title)
     CustomBoldTextView tvTitle;
     @BindView(R.id.edt_chuyenthu)
     FormItemEditText edtChuyenthu;
@@ -54,19 +59,21 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
     @BindView(R.id.tv_bag)
     FormItemTextView tvBag;
     @BindView(R.id.tv_shift)
-    FormItemTextView tvShift;
+    FormItemTextView tvShift;*/
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.tv_count)
     CustomBoldTextView tvCount;
-    private ItemBottomSheetPickerUIFragment pickerBag;
-    private String mBagNumber;
-    private ItemBottomSheetPickerUIFragment pickerShift;
+    @BindView(R.id.tv_title)
+    CustomTextView tvTitle;
     private String mShift;
     private Calendar calCreate;
     private String mChuyenThu;
     private List<Bd13Code> mList;
     private ListCreateBd13Adapter adapter;
+    private String mBag;
+    private String text1;
+    private String text2;
 
     public static ListBd13Fragment getInstance() {
         return new ListBd13Fragment();
@@ -82,39 +89,50 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
         super.initLayout();
         calCreate = Calendar.getInstance();
         Calendar calendar = Calendar.getInstance();
-        mChuyenThu = String.format("%s", 700 + calendar.get(Calendar.DATE));
-        edtChuyenthu.setText(mChuyenThu);
-        tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
         mList = new ArrayList<>();
         adapter = new ListCreateBd13Adapter(getActivity(), mList);
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(adapter);
+        openDialog();
+        text1 = "TRA CỨU BẢN KÊ BD13";
+        text2 = "";
+        tvTitle.setText(StringUtils.getCharSequence(text1, text2, getActivity()));
+
     }
 
-    @OnClick({R.id.img_back, R.id.tv_created_date, R.id.tv_bag, R.id.tv_shift, R.id.iv_search})
+    @OnClick({R.id.img_back, R.id.iv_search})//R.id.tv_created_date, R.id.tv_bag, R.id.tv_shift,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
-            case R.id.tv_created_date:
+          /*  case R.id.tv_created_date:
                 showDate();
-                break;
-            case R.id.tv_bag:
-                showUIBag();
-                break;
-            case R.id.tv_shift:
-                showUIShift();
-                break;
+                break;*/
             case R.id.iv_search:
-                search();
+                openDialog();
                 break;
         }
     }
 
+    private void openDialog() {
+        new BangKe13SearchDialog(getActivity(), calCreate, new BangKeSearchCallback() {
+            @Override
+            public void onResponse(String fromDate, String chuyenThu, String shiftID, String bag) {
+                calCreate.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                mBag = bag;
+                mShift = shiftID;
+                mChuyenThu = chuyenThu;
+                text2 = "";
+                tvTitle.setText(StringUtils.getCharSequence(text1, mChuyenThu + " - " + bag + " - " + "Ca " + shiftID, getActivity()));
+                search();
+            }
+        }).show();
+    }
+
     private void search() {
-        if (TextUtils.isEmpty(mBagNumber)) {
+      /*  if (TextUtils.isEmpty(mBagNumber)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn số túi");
             return;
         }
@@ -126,7 +144,7 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
         if (TextUtils.isEmpty(mShift)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             return;
-        }
+        }*/
         SharedPref sharedPref = new SharedPref(getActivity());
         String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String deliveryPOCode = "";
@@ -137,10 +155,10 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
             routePOCode = postOffice.getRouteCode();
         }
         String createDate = DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        mPresenter.searchCreateBd13(deliveryPOCode, routePOCode, mBagNumber, chuyenThu, createDate, mShift);
+        mPresenter.searchCreateBd13(deliveryPOCode, routePOCode, mBag, mChuyenThu, createDate, mShift);
     }
 
-    private void showDate() {
+   /* private void showDate() {
         new SpinnerDatePickerDialogBuilder()
                 .context(getActivity())
                 .callback(this)
@@ -151,9 +169,9 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
                 .minDate(1979, 0, 1)
                 .build()
                 .show();
-    }
+    }*/
 
-    private void showUIBag() {
+    /*private void showUIBag() {
         ArrayList<Item> items = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
             items.add(new Item(i + "", i + ""));
@@ -203,13 +221,13 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
 
 
         }
-    }
+    }*/
 
-    @Override
+  /*  @Override
     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calCreate.set(year, monthOfYear, dayOfMonth);
         tvCreatedDate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
-    }
+    }*/
 
     @Override
     public void showResponseSuccess(List<Bd13Code> list) {

@@ -18,6 +18,7 @@ import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhCongFragment;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhCongPresenter;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.ViewUtils;
 
 import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
@@ -40,24 +41,8 @@ public class TaoGachNoActivity extends DingDongActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int textSize18 = getResources().getDimensionPixelSize(R.dimen.text_size_18sp);
-        int textSize14 = getResources().getDimensionPixelSize(R.dimen.text_size_14sp);
-        String text1 = "Gạch nợ";
-        String text2 = "";
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
-            text2 = ("Bạn chưa chọn ca làm việc");
-        } else {
-            text2 = ("Ca làm việc: Ca " + Constants.SHIFT);
-        }
-
-        SpannableString span1 = new SpannableString(text1);
-        span1.setSpan(new AbsoluteSizeSpan(textSize18), 0, text1.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-        SpannableString span2 = new SpannableString(text2);
-        span2.setSpan(new AbsoluteSizeSpan(textSize14), 0, text2.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-// let's put both spans together with a separator and all
-        CharSequence finalText = TextUtils.concat(span1, "\n", span2);
+        String text1 = "GẠCH NỢ";
+        CharSequence finalText = StringUtils.getCharSequence(text1, this);
         ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), finalText);
     }
 

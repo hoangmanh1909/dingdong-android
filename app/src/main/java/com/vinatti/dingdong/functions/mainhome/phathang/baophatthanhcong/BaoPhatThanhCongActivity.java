@@ -2,6 +2,7 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhCongFragment;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhCongPresenter;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.ViewUtils;
 
 import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
@@ -32,7 +35,7 @@ import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
  */
 
 public class BaoPhatThanhCongActivity extends DingDongActivity {
-    private SearchView searchView;
+   // private SearchView searchView;
     private BaoPhatThanhCongFragment mFragment;
 
     @Override
@@ -41,28 +44,11 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
         return mFragment;
     }
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int textSize18 = getResources().getDimensionPixelSize(R.dimen.text_size_18sp);
-        int textSize14 = getResources().getDimensionPixelSize(R.dimen.text_size_14sp);
         String text1 = "Báo phát thành công";
-        String text2 = "";
-
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
-            text2 = ("Bạn chưa chọn ca làm việc");
-        } else {
-            text2 = ("Ca làm việc: Ca " + Constants.SHIFT);
-        }
-
-        SpannableString span1 = new SpannableString(text1);
-        span1.setSpan(new AbsoluteSizeSpan(textSize18), 0, text1.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-        SpannableString span2 = new SpannableString(text2);
-        span2.setSpan(new AbsoluteSizeSpan(textSize14), 0, text2.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-// let's put both spans together with a separator and all
-        CharSequence finalText = TextUtils.concat(span1, "\n", span2);
+        CharSequence finalText = StringUtils.getCharSequence(text1, this);
         ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), finalText);
     }
 
@@ -135,5 +121,5 @@ public class BaoPhatThanhCongActivity extends DingDongActivity {
         super.onResume();
         if (getSupportActionBar() != null)
             getSupportActionBar().show();
-    }
+    }*/
 }

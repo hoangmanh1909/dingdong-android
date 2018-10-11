@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+  <!--  <RelativeLayout
         android:id="@+id/ll_scan_qr"
         android:layout_width="match_parent"
         android:visibility="gone"
@@ -31,7 +31,7 @@
             android:textSize="@dimen/text_size_16sp"
 
             app:textAllCaps="true" />
-    </RelativeLayout>
+    </RelativeLayout>-->
    <!-- <com.vinatti.dingdong.views.CustomBoldTextView
         android:id="@+id/tv_shift"
         android:layout_width="wrap_content"
@@ -39,6 +39,161 @@
         android:layout_gravity="center"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_16sp" />-->
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.vinatti.dingdong.views.CustomTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:text="Lập bảng kê (BD13)" />
+
+            <ImageView
+                android:id="@+id/img_send"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_5dp"
+                android:src="@drawable/ic_confirm" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <!-- <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:paddingLeft="@dimen/dimen_5dp"
+         android:weightSum="10">
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_centerVertical="true"
+             android:gravity="left|center"
+             android:text="Chuyến thư"
+             android:textColor="@color/black"
+             android:textSize="@dimen/text_size_14sp" />
+
+         <com.vinatti.dingdong.views.CustomBoldTextView
+             android:id="@+id/tv_chuyenthu"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_centerVertical="true"
+             android:layout_marginLeft="15dp"
+             android:gravity="left|center"
+             android:textColor="@color/black"
+             android:textSize="@dimen/text_size_14sp" />
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_centerVertical="true"
+             android:gravity="left|center"
+             android:layout_marginLeft="15dp"
+             android:text="Túi"
+             android:textColor="@color/black"
+             android:textSize="@dimen/text_size_14sp" />
+
+         <com.vinatti.dingdong.views.form.FormItemTextView
+             android:id="@+id/tv_bag"
+             android:layout_width="@dimen/dimen_70dp"
+             android:layout_height="wrap_content"
+             android:textColor="@color/black"
+             android:textSize="@dimen/text_size_14sp"
+             app:formAction="@drawable/ic_arrow_drop_down" />
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_centerVertical="true"
+             android:gravity="left|center"
+             android:text="Ca"
+             android:textColor="@color/black"
+             android:textSize="@dimen/text_size_14sp" />
+
+         <com.vinatti.dingdong.views.form.FormItemTextView
+             android:id="@+id/tv_shift"
+             android:layout_width="@dimen/dimen_100dp"
+             android:layout_height="wrap_content"
+             android:textColor="@color/black"
+             android:textSize="@dimen/text_size_14sp"
+             app:formAction="@drawable/ic_arrow_drop_down" />
+     </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dimen_5dp"
+        android:weightSum="10">
+
+
+        <RelativeLayout
+            android:id="@+id/ll_scan_qr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:paddingLeft="@dimen/dimen_5dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:visibility="visible">
+
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_parcelcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toLeftOf="@+id/img_search"
+                android:hint="Nhập số hiệu bưu gửi"
+                android:inputType="text"
+                android:textColorHint="@color/colorBlackTrans20"
+                android:textSize="@dimen/text_size_14sp"
+                app:met_bottomTextSize="@dimen/text_size_sub"
+                app:met_clearButton="true"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/black"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/colorBlackTrans20"
+                app:met_underlineColor="@color/colorBlackTrans20" />
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/dimen_5dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/img_capture"
+                android:src="@drawable/ic_search_blue" />
+
+            <ImageView
+                android:id="@+id/img_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_2sdp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_capture" />
+
+        </RelativeLayout>
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_5sdp"
@@ -63,7 +218,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.vinatti.dingdong.views.CustomTextView
+      <!--  <com.vinatti.dingdong.views.CustomTextView
             android:id="@+id/btn_confirm_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +236,7 @@
             android:text="Xác nhận"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_18sp" />
+            android:textSize="@dimen/text_size_18sp" />-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
@@ -90,6 +245,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_5dp"
             android:layout_marginRight="@dimen/dimen_10dp">
 
         </android.support.v7.widget.RecyclerView>
