@@ -165,7 +165,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private int mHour;
     private int mMinute;
     private int mPaymentType = 1;
-    private String mSign;
+    private String mSign = "";
     private String mPhone;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
@@ -427,17 +427,20 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
             }
-            if (TextUtils.isEmpty(mSign)) {
+           /* if (TextUtils.isEmpty(mSign)) {
                 //
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                 return;
-            }
+            }*/
             mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
             mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
             mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll(".", ""));
             mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
             mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
             mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+            if (!TextUtils.isEmpty(mSign)) {
+                mBaoPhatBangke.setSignatureCapture(mSign);
+            }
             String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
             mBaoPhatBangke.setDeliveryTime(time);
             if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {

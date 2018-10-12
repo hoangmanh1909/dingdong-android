@@ -57,8 +57,8 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     FormItemTextView tvUserDelivery;
     @BindView(R.id.tv_CollectAmount)
     FormItemTextView tvCollectAmount;
- /*   @BindView(R.id.edt_CollectAmount)
-    FormItemEditText edtCollectAmount;*/
+    /*   @BindView(R.id.edt_CollectAmount)
+       FormItemEditText edtCollectAmount;*/
     @BindView(R.id.edt_ReceiverName)
     FormItemEditText edtRealReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
@@ -67,8 +67,8 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
     FormItemTextView tvDeliveryTime;
-  /*  @BindView(R.id.btn_confirm)
-    CustomTextView btnConfirm;*/
+    /*  @BindView(R.id.btn_confirm)
+      CustomTextView btnConfirm;*/
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.rad_cash)
@@ -170,7 +170,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                         sumAmount += Long.parseLong(item.getReceiveCollectFee());
                 }
                 tvCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount) + " đ");
-               // edtCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount));
+                // edtCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount));
             } else {
                 llPayMent.setVisibility(View.GONE);
             }
@@ -185,7 +185,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
         } else {
             llSigned.setVisibility(View.GONE);
         }
-       // EditTextUtils.editTextListener(edtCollectAmount.getEditText());
+        // EditTextUtils.editTextListener(edtCollectAmount.getEditText());
     }
 
 
@@ -271,6 +271,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             item.setDeliveryTime(time);
             if (!TextUtils.isEmpty(mSign))
                 item.setSignatureCapture(mSign);
+            else item.setSignatureCapture("");
             item.setSaveLocal(true);
         }
         if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {

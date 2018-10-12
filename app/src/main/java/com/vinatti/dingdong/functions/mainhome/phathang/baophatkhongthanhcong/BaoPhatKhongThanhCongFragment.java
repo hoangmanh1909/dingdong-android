@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.PostOffice;
@@ -65,14 +67,14 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
     FormItemTextView tvDeliveryTime;
-    @BindView(R.id.tv_search)
-    CustomTextView tvSearch;
+    /*  @BindView(R.id.img_search)
+      ImageView imgSearch;*/
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     @BindView(R.id.tv_update)
     CustomMediumTextView tvUpdate;
-/*    @BindView(R.id.tv_shift)
-    CustomBoldTextView tvShift;*/
+    /*    @BindView(R.id.tv_shift)
+        CustomBoldTextView tvShift;*/
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ArrayList<ReasonInfo> mListReason;
     private ReasonInfo mReasonInfo;
@@ -169,27 +171,27 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         }
     }
 
-    @OnClick({ R.id.ll_scan_qr, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_update, R.id.tv_search})//R.id.img_back,
+    @OnClick({R.id.img_capture, R.id.tv_reason, R.id.tv_solution,
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_update, R.id.img_search})
+//R.id.img_back,
     public void onViewClicked(View view) {
         switch (view.getId()) {
            /* case R.id.img_back:
                 mPresenter.back();
                 break;*/
-            case R.id.ll_scan_qr:
+            case R.id.img_capture:
                 mPresenter.showBarcode(new BarCodeCallback() {
                     @Override
                     public void scanQrcodeResponse(String value) {
-                        //Toast.showToast(getActivity(), value);
                         edtParcelCode.setText(value.replace("+", ""));
                     }
                 });
                 break;
             case R.id.tv_reason:
-                 tvReason.showDropDown();
+                tvReason.showDropDown();
                 break;
             case R.id.tv_solution:
-                 tvSolution.showDropDown();
+                tvSolution.showDropDown();
                 break;
             case R.id.tv_deliveryDate:
                 String createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -225,7 +227,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
             case R.id.tv_update:
                 submit();
                 break;
-            case R.id.tv_search:
+            case R.id.img_search:
                 if (TextUtils.isEmpty(edtParcelCode.getText())) {
                     Toast.showToast(getActivity(), "Bạn chưa nhập Số hiệu bưu gửi");
                     return;
@@ -276,7 +278,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
         String receiverName = "";
         String status = "C18";
         mPresenter.pushToPNS(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                status, reasonCode, solutionCode, note,"");
+                status, reasonCode, solutionCode, note, "");
     }
 
     private void showUIReason() {
@@ -341,7 +343,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
 
     @Override
     public void showMessageStatus(SimpleResult result) {
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             tvStatus.setText(result.getMessage());
             if (result.getErrorCode().equals("02")) {
                 tvUpdate.setEnabled(false);
@@ -386,7 +388,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
 
     @Override
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             mListReason = reasonInfos;
             mListReasonString = new String[reasonInfos.size()];
             for (int i = 0; i < reasonInfos.size(); i++) {
@@ -404,5 +406,15 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calDate.set(year, monthOfYear, dayOfMonth);
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (getActivity() != null) {
+            if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
+                ((DingDongActivity) getActivity()).getSupportActionBar().show();
+            }
+        }
     }
 }

@@ -221,7 +221,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
             imgSend.setImageResource(R.drawable.ic_send_telegram);
         } else {
-            imgSend.setImageResource(R.drawable.ic_save);
+            imgSend.setImageResource(R.drawable.ic_save_local);
         }
       /*  tvMaE.setText(mBaoPhat.getCode());
         tvWeigh.setText(String.format("%s - %s", mBaoPhat.getNote(), mBaoPhat.getWeigh()));
@@ -467,6 +467,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
             if (!TextUtils.isEmpty(mSign))
                 mBaoPhat.setSignatureCapture(mSign);
+            else mBaoPhat.setSignatureCapture("");
             mBaoPhat.setSaveLocal(true);
           /*  mBaoPhat.setReceiverName(edtReciverName.getText().toString());
             if (!TextUtils.isEmpty(edtReceiverPhone.getText().toString()))
@@ -514,6 +515,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             }
         }
     }
+
     private void showUIShift() {
         ArrayList<Item> items = new ArrayList<>();
         for (int i = 1; i <= 3; i++) {

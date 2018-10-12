@@ -40,7 +40,7 @@ public class BaoPhatOfflineActivity extends DingDongActivity {
         return mFragment;
     }
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String text1 = "BÁO PHÁT OFFLINE";
@@ -124,5 +124,5 @@ public class BaoPhatOfflineActivity extends DingDongActivity {
         super.onResume();
         if (getSupportActionBar() != null)
             getSupportActionBar().show();
-    }
+    }*/
 }

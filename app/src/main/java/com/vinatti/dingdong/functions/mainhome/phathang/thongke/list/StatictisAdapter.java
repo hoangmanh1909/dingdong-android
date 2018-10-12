@@ -59,7 +59,11 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             CommonObject item = (CommonObject) model;
             tvCount.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvParcelCode.setText(item.getParcelCode());
-            tvReceiverName.setText(String.format("%s - %s", item.getReciverName(), item.getReceiverPhone()));
+            if (!TextUtils.isEmpty(item.getReceiverPhone())) {
+                tvReceiverName.setText(String.format("%s - %s", item.getReciverName(), item.getReceiverPhone()));
+            } else {
+                tvReceiverName.setText(String.format("%s", item.getReciverName()));
+            }
             if ("Y".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thành công");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));

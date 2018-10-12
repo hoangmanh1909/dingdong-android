@@ -38,15 +38,15 @@ public class TaoGachNoActivity extends DingDongActivity {
         return mFragment;
     }
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String text1 = "GẠCH NỢ";
         CharSequence finalText = StringUtils.getCharSequence(text1, this);
         ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), finalText);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -115,5 +115,5 @@ public class TaoGachNoActivity extends DingDongActivity {
         super.onResume();
         if (getSupportActionBar() != null)
             getSupportActionBar().show();
-    }
+    }*/
 }

@@ -30,11 +30,4 @@ public class BaoPhatBangKhongThanhCongActivity extends DingDongActivity {
         CharSequence finalText = StringUtils.getCharSequence(text1, this);
         ViewUtils.viewActionBar(getSupportActionBar(), getLayoutInflater(), finalText);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        finish();
-
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -33,8 +33,8 @@
                 android:layout_centerInParent="true"
                 android:text="LỊCH SỬ PHÁT HÀNG"
                 android:textAllCaps="true"
-                android:textColor="@color/color_5f2f75"
-                android:textSize="@dimen/text_size_18sp" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp"  />
         </RelativeLayout>
     </FrameLayout>
 

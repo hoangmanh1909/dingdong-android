@@ -34,7 +34,10 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
+import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.ViewUtils;
+import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,7 +61,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
-
+    @BindView(R.id.tv_title)
+    CustomTextView tvTitle;
     @BindView(R.id.tv_count)
     TextView tvCount;
     @BindView(R.id.tv_amount)
@@ -82,6 +86,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private int mCountSearch = 0;
+    private String text1;
+    private String text2 = "";
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -99,8 +105,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             checkSelfPermission();
             showDialog();
         }
-        mList = new ArrayList<>();
 
+        text1 = "Bản kê đi phát (BD13)";
+        CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
+        tvTitle.setText(finalText);
+
+        mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
         mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList, new ListBaoPhatBangKeAdapter.FilterDone() {
             @Override
@@ -188,6 +198,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
+                    text2 = "Ca " + mShiftID;
+                    CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
+                    tvTitle.setText(finalText);
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID);
 
                 }
@@ -207,7 +220,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back,R.id.img_send})
+    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -306,9 +319,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
     }
+
     @Override
-    public void showResponseSuccessEmpty()
-    {
+    public void showResponseSuccessEmpty() {
         mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
