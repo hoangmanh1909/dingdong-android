@@ -63,6 +63,11 @@
                 android:text="Tổng tiền thu hộ: "
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
+            <CheckBox
+                android:id="@+id/cb_selected"
+                android:layout_width="wrap_content"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </LinearLayout>

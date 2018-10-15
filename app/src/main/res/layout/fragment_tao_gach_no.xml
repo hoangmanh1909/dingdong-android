@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
     <FrameLayout
         android:id="@+id/header"
@@ -187,7 +188,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:src="@drawable/ic_choose_calendar" />
+            android:src="@drawable/ic_gach_no" />
     </RelativeLayout>
 
 

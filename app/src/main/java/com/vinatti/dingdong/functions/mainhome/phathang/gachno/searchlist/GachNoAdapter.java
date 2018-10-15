@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
@@ -15,6 +17,7 @@ import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +33,16 @@ public class GachNoAdapter extends RecyclerBaseAdapter {
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
         return new HolderView(inflateView(parent, R.layout.gach_no_item));
     }
-
+    public List<GachNo> getItemsSelected() {
+        List<GachNo> commonObjectsSelected = new ArrayList<>();
+        List<GachNo> items = getItems();
+        for (GachNo item : items) {
+            if (item.isSelected()) {
+                commonObjectsSelected.add(item);
+            }
+        }
+        return commonObjectsSelected;
+    }
     class HolderView extends BaseViewHolder {
 
         @BindView(R.id.tv_parcelCode)
@@ -41,19 +53,32 @@ public class GachNoAdapter extends RecyclerBaseAdapter {
         CustomTextView tvReceiverAddress;
         @BindView(R.id.tv_collect_amount_all)
         CustomTextView tvCollectAmountAll;
+        @BindView(R.id.cb_selected)
+        CheckBox cbSelected;
 
         public HolderView(View itemView) {
             super(itemView);
         }
 
         @Override
-        public void bindView(Object model, int position) {
-            GachNo item = (GachNo) model;
+        public void bindView(final Object model, int position) {
+            final GachNo item = (GachNo) model;
             tvParcelCode.setText(item.getLadingCode());
             tvReceiverName.setText(item.getReceiverName());
             tvReceiverAddress.setText(item.getPostmanName());
             if (!TextUtils.isEmpty(item.getCollectAmount()))
                 tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+            cbSelected.setChecked(item.isSelected());
+            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        item.setSelected(true);
+                    } else {
+                        item.setSelected(false);
+                    }
+                }
+            });
         }
 
     }

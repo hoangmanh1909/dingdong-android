@@ -64,7 +64,7 @@
             android:paddingLeft="@dimen/dimen_20dp"
             android:paddingRight="@dimen/dimen_20dp"
             android:paddingTop="@dimen/dimen_5dp"
-            android:text="Xác nhận tất cả"
+            android:text="Xác nhận"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18sp" />

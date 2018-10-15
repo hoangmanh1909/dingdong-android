@@ -88,7 +88,11 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             return;
         }
-        ArrayList<GachNo> gachNoList = (ArrayList<GachNo>) adapter.getItems();
+        List<GachNo> gachNoList = adapter.getItemsSelected();
+        if (gachNoList.isEmpty()) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn gạch nợ nào để gạch");
+            return;
+        }
         List<CommonObject> paymentPaypostError=new ArrayList<>();
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");

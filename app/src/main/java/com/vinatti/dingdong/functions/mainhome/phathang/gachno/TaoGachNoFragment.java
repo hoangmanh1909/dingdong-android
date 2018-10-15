@@ -228,7 +228,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
         return check;
     }
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.img_search, R.id.img_capture})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.img_search, R.id.img_capture, R.id.iv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -256,6 +256,9 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                 break;
             case R.id.img_capture:
                 scanQr();
+                break;
+            case R.id.iv_search:
+               mPresenter.showViewList();
                 break;
         }
     }

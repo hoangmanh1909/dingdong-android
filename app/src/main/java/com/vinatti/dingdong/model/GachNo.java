@@ -44,6 +44,8 @@ public class GachNo {
     @Expose
     private String isPaypost;
 
+    private boolean isSelected;
+
     public String getLadingCode() {
         return ladingCode;
     }
@@ -94,5 +96,13 @@ public class GachNo {
 
     public String getReceiverPID() {
         return receiverPID;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }
