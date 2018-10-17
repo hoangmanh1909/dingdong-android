@@ -25,4 +25,13 @@ class BaoPhatOfflineInteractor extends Interactor<BaoPhatOfflineContract.Present
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 callback);
     }
+
+    @Override
+    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode,
+                                  String deliveryDate, String deliveryTime, String receiverName,
+                                  String reasonCode, String solutionCode, String status, String paymentChannel,
+                                  String deliveryType, String sign, String note, String amount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, paymentChannel, deliveryType, sign,note, amount,ladingPostmanID, commonCallback);
+    }
 }

@@ -290,8 +290,10 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             llInputContact.setVisibility(View.VISIBLE);
         }*/
         checkPermissionCall();
-        if (mBaoPhat.getDeliveryType().equals("1")) {
+        if ("1".equals(mBaoPhat.getDeliveryType())) {
             calDate = Calendar.getInstance();
+            mHour = calDate.get(Calendar.HOUR_OF_DAY);
+            mMinute = calDate.get(Calendar.MINUTE);
             mDeliveryType = 1;
             llConfirmSuccess.setVisibility(View.GONE);
             llConfirmFail.setVisibility(View.VISIBLE);

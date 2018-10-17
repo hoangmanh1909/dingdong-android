@@ -21,6 +21,12 @@ interface BaoPhatOfflineContract {
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    CommonCallback<SimpleResult> callback);
+        void pushToPNSDelivery(String postmanID, String ladingCode,
+                               String deliveryPOCode, String deliveryDate,
+                               String deliveryTime, String receiverName,
+                               String reasonCode, String solutionCode, String status,
+                               String paymentChannel, String deliveryType,
+                               String sign, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -38,6 +44,10 @@ interface BaoPhatOfflineContract {
 
         void pushViewConfirmAll(List<CommonObject> list);
         void callForward(String phone);
+
+        void saveLocal(CommonObject commonObject);
+
+        void submitToPNS(CommonObject commonObject);
     }
 }
 

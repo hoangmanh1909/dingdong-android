@@ -57,7 +57,7 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             CommonObject item = (CommonObject) model;
             tvParcelCode.setText(item.getParcelCode());
-            if (item.getDeliveryType().equals("2")) {
+            if ("2".equals(item.getDeliveryType())) {
                 if (!TextUtils.isEmpty(item.getNote())) {
                     tvNote.setText(String.format("Ghi chú phát: %s", item.getNote()));
                     tvNote.setVisibility(View.VISIBLE);

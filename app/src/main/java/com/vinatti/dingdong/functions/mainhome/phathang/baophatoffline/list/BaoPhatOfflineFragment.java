@@ -25,14 +25,24 @@ import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.callback.BaoPhatBangKeFailCallback;
+import com.vinatti.dingdong.callback.BaoPhatOfflineFailCallback;
+import com.vinatti.dingdong.callback.BaoPhatbangKeConfirmCallback;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.PhoneCallback;
+import com.vinatti.dingdong.dialog.BaoPhatBangKeConfirmDialog;
+import com.vinatti.dingdong.dialog.BaoPhatBangKeFailDialog;
+import com.vinatti.dingdong.dialog.BaoPhatOfflineFailDialog;
 import com.vinatti.dingdong.dialog.PhoneConectDialog;
 import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
 import com.vinatti.dingdong.model.CommonObject;
+import com.vinatti.dingdong.model.ReasonInfo;
+import com.vinatti.dingdong.model.SolutionInfo;
 import com.vinatti.dingdong.utiles.Constants;
+import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.NumberUtils;
+import com.vinatti.dingdong.utiles.RealmUtils;
 import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
@@ -43,12 +53,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -77,8 +89,10 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     private BaoPhatOfflineAdapter mAdapter;
     private List<CommonObject> mList;
     private long mAmount = 0;
-    private int mPosition = -1;
     private String mPhone;
+    Calendar calDate;
+    private int mHour;
+    private int mMinute;
 
     public static BaoPhatOfflineFragment getInstance() {
         return new BaoPhatOfflineFragment();
@@ -93,7 +107,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     public void initLayout() {
         super.initLayout();
         checkSelfPermission();
-
+        calDate = Calendar.getInstance();
+        mHour = calDate.get(Calendar.HOUR_OF_DAY);
+        mMinute = calDate.get(Calendar.MINUTE);
         String text1 = "BÁO PHÁT OFFLINE";
         tvTitle.setText(StringUtils.getCharSequence(text1, getActivity()));
         edtParcelcode.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
@@ -138,7 +154,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPosition = position;
                         mPresenter.showDetail(mList.get(position), position);
                     }
                 });
@@ -175,6 +190,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     public void getQuery(String parcelCode) {
         CommonObject object = new CommonObject();
         object.setCode(parcelCode.toUpperCase().trim());
+        object.setDeliveryType("2");
         if (!checkInList(object)) {
             saveLocal(object);
             mList.add(object);
@@ -324,7 +340,8 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
                             return;
                         }
-                        mPresenter.pushViewConfirmAll(mList);
+                        showOptionSuccessOrFail();
+
                     } else {
                         mPresenter.showDetail(mList.get(0), 0);
                     }
@@ -341,6 +358,71 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 scanQr();
                 break;
         }
+    }
+
+    private void showOptionSuccessOrFail() {
+
+        new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
+            @Override
+            public void onResponse(int deliveryType) {
+                if (deliveryType == 2) {
+                    //next view
+                    for (CommonObject item : mList) {
+                        item.setDeliveryType("2");
+                    }
+                    mPresenter.pushViewConfirmAll(mList);
+                } else {
+                    //show dialog
+                    List<ReasonInfo> list = RealmUtils.getReasons();
+                    if (list != null && !list.isEmpty()) {
+                        new BaoPhatOfflineFailDialog(getActivity(), list, new BaoPhatOfflineFailCallback() {
+                            @Override
+                            public void onResponse(ReasonInfo reason, SolutionInfo solution, String note, String sign) {
+                                for (CommonObject commonObject : mList) {
+                                    commonObject.setDeliveryType("1");
+                                    commonObject.setNote(note);
+                                    commonObject.setReasonCode(reason.getCode());
+                                    commonObject.setReasonName(reason.getName());
+                                    commonObject.setSolutionCode(solution.getCode());
+                                    commonObject.setSolutionName(solution.getName());
+                                    commonObject.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                                    String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+                                    commonObject.setDeliveryTime(time);
+                                    commonObject.setCurrentPaymentType(1 + "");
+                                    commonObject.setSaveLocal(true);
+
+                                    if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+                                        mPresenter.submitToPNS(commonObject);
+                                    } else {
+                                        mPresenter.saveLocal(commonObject);
+                                        if (getActivity() != null) {
+                                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                                    .setConfirmText("OK")
+                                                    .setTitleText("Thông báo")
+                                                    .setContentText("Lưu thành công")
+                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                        @Override
+                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                            sweetAlertDialog.dismiss();
+                                                            mPresenter.back();
+
+                                                        }
+                                                    }).show();
+                                        }
+                                    }
+                                }
+                                // mPresenter.submitToPNS(mList, reason, solution, note, sign);
+                            }
+                        }).show();
+                    } else {
+                        Toast.showToast(getActivity(), "Đang lấy dữ liệu");
+                    }
+
+                }
+            }
+        }).show();
+
+
     }
 
 }
