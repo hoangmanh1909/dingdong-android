@@ -3,10 +3,14 @@ package com.vinatti.dingdong.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ReasonInfo {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class ReasonInfo extends RealmObject{
     @SerializedName("ID")
     @Expose
-    private Integer iD;
+    @PrimaryKey
+    private Integer id;
     @SerializedName("Code")
     @Expose
     private String code;
@@ -18,11 +22,11 @@ public class ReasonInfo {
     private String solution;
 
     public Integer getID() {
-        return iD;
+        return id;
     }
 
     public void setID(Integer iD) {
-        this.iD = iD;
+        this.id = iD;
     }
 
     public String getCode() {

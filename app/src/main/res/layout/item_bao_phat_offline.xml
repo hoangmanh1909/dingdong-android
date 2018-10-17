@@ -24,7 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:text="COD20180416"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -33,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:text="Tên người nhận: "
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -42,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:text="TRAN THAI TONG"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
@@ -59,7 +56,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="right"
-                android:text="Tổng tiền thu hộ: "
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
@@ -69,7 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="right"
-                android:text="Ghi chú phát: "
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 

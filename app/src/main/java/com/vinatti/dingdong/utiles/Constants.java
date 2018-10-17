@@ -35,5 +35,9 @@ public class Constants {
     public static final String COMMON_OBJECT_PRIMARY_KEY = "code";
     public static final String IS_ONLINE = "is_online";
     public static final String FIELD_LOCAL = "local";
+    public static final String SOLUTIONINFO_PRIMARY_KEY = "id";
+    public static final String REASONINFO_PRIMARY_KEY = "id";
+    public static final String REASONINFO_CODE = "code";
+    public static final String SOLUTIONINFO_CODE = "code";
     public static String SHIFT = "";
 }

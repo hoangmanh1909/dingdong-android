@@ -6,12 +6,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
-import com.core.base.viper.interfaces.ContainerView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
@@ -32,30 +29,31 @@ import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.SignCallback;
 import com.vinatti.dingdong.dialog.SignDialog;
-import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.Item;
+import com.vinatti.dingdong.model.ReasonInfo;
 import com.vinatti.dingdong.model.SolutionInfo;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.EditTextUtils;
+import com.vinatti.dingdong.utiles.RealmUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
+import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -105,6 +103,26 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     LinearLayout llConfirmSuccess;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
+
+    @BindView(R.id.rad_success)
+    RadioButton radSuccess;
+    @BindView(R.id.rad_fail)
+    RadioButton radFail;
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+    @BindView(R.id.ll_status)
+    LinearLayout llStatus;
+
+    @BindView(R.id.ll_confirm_fail)
+    LinearLayout llConfirmFail;
+
+    @BindView(R.id.tv_reason)
+    FormItemTextView tvReason;
+    @BindView(R.id.edt_reason)
+    FormItemEditText edtNote;
+    @BindView(R.id.tv_solution)
+    FormItemTextView tvSolution;
+
    /* @BindView(R.id.img_back)
     ImageView imgBack;
     @BindView(R.id.scrollView)
@@ -180,7 +198,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     @BindView(R.id.tv_reason)
     FormItemTextView tvReason;
     @BindView(R.id.edt_reason)
-    FormItemEditText edtReason;
+    FormItemEditText edtNote;
     @BindView(R.id.tv_solution)
     FormItemTextView tvSolution;
     @BindView(R.id.layout_date_start)
@@ -193,15 +211,18 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
 
     private CommonObject mBaoPhat;
     private int mDeliveryType = 2;
-    private ArrayList<SolutionInfo> mListSolution;
     private ItemBottomSheetPickerUIFragment pickerUISolution;
     private Calendar calDate;
     private int mHour;
     private int mMinute;
     private int mPaymentType = 1;
     private String mSign;
-    private String mPhone;
     private ItemBottomSheetPickerUIFragment pickerShift;
+    private ItemBottomSheetPickerUIFragment pickerUIReason;
+    private String mReasonCode = "";
+    private String mSolutionCode = "";
+    private SolutionInfo mSolutionInfo;
+    private ReasonInfo mReasonInfo;
 
     public static BaoPhatOfflineDetailFragment getInstance() {
         return new BaoPhatOfflineDetailFragment();
@@ -269,7 +290,24 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             llInputContact.setVisibility(View.VISIBLE);
         }*/
         checkPermissionCall();
-       /* radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        if (mBaoPhat.getDeliveryType().equals("1")) {
+            calDate = Calendar.getInstance();
+            mDeliveryType = 1;
+            llConfirmSuccess.setVisibility(View.GONE);
+            llConfirmFail.setVisibility(View.VISIBLE);
+            radioGroup.check(R.id.rad_fail);
+            mReasonCode = mBaoPhat.getReasonCode();
+            tvReason.setText(RealmUtils.getReasonByCode(mReasonCode));
+            mSolutionCode = mBaoPhat.getSolutionCode();
+            tvSolution.setText(RealmUtils.getSolutionByCode(mSolutionCode));
+        } else {
+            mDeliveryType = 2;
+            radioGroup.check(R.id.rad_success);
+            llConfirmSuccess.setVisibility(View.VISIBLE);
+            llConfirmFail.setVisibility(View.GONE);
+            setupReciverPerson();
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rad_success) {
@@ -284,13 +322,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                     llConfirmFail.setVisibility(View.VISIBLE);
                 }
             }
-        });*/
-
-        setupReciverPerson();
-       /* if (mPresenter.getDeliveryType() == Constants.TYPE_BAO_PHAT_THANH_CONG) {
-            llStatus.setVisibility(View.GONE);
-            llInfoOrder.setVisibility(View.GONE);
-        }*/
+        });
 
 
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -343,7 +375,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime})//R.id.tv_reason, R.id.tv_solution,
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_reason, R.id.tv_solution})
+//R.id.tv_reason, R.id.tv_solution,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -364,12 +397,12 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                     }
                 }).show();
                 break;
-          /*  case R.id.tv_reason:
+            case R.id.tv_reason:
+                showUIReason();
                 break;
             case R.id.tv_solution:
-                if (mListSolution != null) {
-                }
-                break;*/
+                showUISolution();
+                break;
             case R.id.tv_deliveryDate:
                 String createDate = mBaoPhat.getLoadDate();
                 Calendar calendarCreate = Calendar.getInstance();
@@ -416,12 +449,89 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         }
     }
 
+    private void showUIReason() {
+        ArrayList<Item> items = new ArrayList<>();
+        final List<ReasonInfo> list = RealmUtils.getReasons();
+        for (ReasonInfo item : list) {
+            items.add(new Item(item.getCode(), item.getName()));
+        }
+        if (pickerUIReason == null) {
+            pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            if (!mReasonCode.equals(list.get(position).getCode())) {
+                                tvReason.setText(item.getText());
+                                mReasonCode = list.get(position).getCode();
+                                mReasonInfo = list.get(position);
+                                tvSolution.setText("");
+                                mSolutionCode = "";
+                                mSolutionInfo = null;
+                                showUISolution();
+                                if (mReasonCode.equals("99") || mReasonCode.equals("13")) {
+                                    edtNote.setVisibility(View.VISIBLE);
+                                } else {
+                                    edtNote.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+                    }, 0);
+            pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
+        } else {
+            pickerUIReason.setData(items, 0);
+            if (!pickerUIReason.isShow) {
+                pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
+            }
+
+
+        }
+    }
+
+
+    private void showUISolution() {
+        if (!TextUtils.isEmpty(mReasonCode)) {
+            ArrayList<Item> items = new ArrayList<>();
+            final List<SolutionInfo> list = RealmUtils.getSolutionByReason(mReasonCode);
+            for (SolutionInfo item : list) {
+                items.add(new Item(item.getCode(), item.getName()));
+            }
+            if (pickerUISolution == null) {
+                pickerUISolution = new ItemBottomSheetPickerUIFragment(items, "Chọn giải pháp",
+                        new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                            @Override
+                            public void onChooseClick(Item item, int position) {
+                                tvSolution.setText(item.getText());
+                                mSolutionCode = list.get(position).getCode();
+                                mSolutionInfo = list.get(position);
+
+                            }
+                        }, 0);
+                pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
+            } else {
+                pickerUISolution.setData(items, 0);
+                if (!pickerUISolution.isShow) {
+                    pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
+                }
+
+
+            }
+        } else {
+            Toast.showToast(getActivity(), "Bạn chưa chọn lý do");
+        }
+    }
+
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             showUIShift();
             return;
         }
+        mBaoPhat.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+        String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+        mBaoPhat.setDeliveryTime(time);
+        mBaoPhat.setCurrentPaymentType(mPaymentType + "");
+        mBaoPhat.setDeliveryType(mDeliveryType + "");
+        mBaoPhat.setSaveLocal(true);
         if (mDeliveryType == 2) {
             if (TextUtils.isEmpty(edtCollectAmount.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");
@@ -457,18 +567,16 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             }*/
 
             mBaoPhat.setRealReceiverName(edtRealReceiverName.getText().toString());
-            mBaoPhat.setCurrentPaymentType(mPaymentType + "");
+
             mBaoPhat.setCollectAmount(edtCollectAmount.getText().toString().replace(".", ""));
             mBaoPhat.setUserDelivery(tvUserDelivery.getText());
             mBaoPhat.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
-            mBaoPhat.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-            String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-            mBaoPhat.setDeliveryTime(time);
+
             mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
             if (!TextUtils.isEmpty(mSign))
                 mBaoPhat.setSignatureCapture(mSign);
             else mBaoPhat.setSignatureCapture("");
-            mBaoPhat.setSaveLocal(true);
+
           /*  mBaoPhat.setReceiverName(edtReciverName.getText().toString());
             if (!TextUtils.isEmpty(edtReceiverPhone.getText().toString()))
                 mBaoPhat.setReceiverPhone(edtReceiverPhone.getText().toString());
@@ -496,6 +604,41 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 }
             }
 
+        } else {
+            if (TextUtils.isEmpty(tvReason.getText())) {
+                Toast.showToast(tvReason.getContext(), "Xin vui lòng chọn lý do");
+                return;
+            }
+            if (TextUtils.isEmpty(tvSolution.getText())) {
+                Toast.showToast(tvSolution.getContext(), "Bạn chưa chọn phương án xử lý");
+                return;
+            }
+            mBaoPhat.setReasonCode(mReasonCode);
+            mBaoPhat.setSolutionCode(mSolutionCode);
+            if (mReasonInfo != null)
+                mBaoPhat.setReasonName(mReasonInfo.getName());
+            if (mSolutionInfo != null)
+                mBaoPhat.setSolutionName(mSolutionInfo.getName());
+            mBaoPhat.setNote(edtNote.getText());
+            if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+                mPresenter.submitToPNS();
+            } else {
+                mPresenter.saveLocal(mBaoPhat);
+                if (getActivity() != null) {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setConfirmText("OK")
+                            .setTitleText("Thông báo")
+                            .setContentText("Lưu thành công")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    mPresenter.back();
+
+                                }
+                            }).show();
+                }
+            }
         }
 
     }

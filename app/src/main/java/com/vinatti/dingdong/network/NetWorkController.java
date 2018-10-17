@@ -247,6 +247,10 @@ public class NetWorkController {
         Call<SolutionResult> call = getAPIBuilder().getSolutionByReasonCode(reasonCode);
         call.enqueue(callback);
     }
+    public static void getSolutions(CommonCallback<SolutionResult> callback) {
+        Call<SolutionResult> call = getAPIBuilder().getSolutions();
+        call.enqueue(callback);
+    }
 
     public static void getReasons(CommonCallback<ReasonResult> callback) {
         Call<ReasonResult> call = getAPIBuilder().getReasons();

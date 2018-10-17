@@ -7,6 +7,8 @@ import com.core.base.viper.interfaces.PresentView;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
+import com.vinatti.dingdong.model.ReasonResult;
+import com.vinatti.dingdong.model.SolutionResult;
 
 /**
  * The Login Contract
@@ -16,6 +18,10 @@ interface LoginContract {
     interface Interactor extends IInteractor<Presenter> {
         void login(String mobileNumber, String signCode, CommonCallback<LoginResult> commonCallback);
         void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback);
+
+        void getSolutions(CommonCallback<SolutionResult> commonCallback);
+
+        void getReasons(CommonCallback<ReasonResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

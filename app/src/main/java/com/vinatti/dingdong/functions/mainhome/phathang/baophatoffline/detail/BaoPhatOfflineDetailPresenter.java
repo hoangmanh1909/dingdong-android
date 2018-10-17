@@ -189,4 +189,69 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         mPositionRow = position;
         return this;
     }
+
+    @Override
+    public void submitToPNS() {
+        String postmanID = "";
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            postmanID = userInfo.getiD();
+        }
+        String deliveryPOSCode = "";
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!posOfficeJson.isEmpty()) {
+            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+            deliveryPOSCode = postOffice.getCode();
+        }
+        String ladingCode = mBaoPhatBangke.getParcelCode();
+        String deliveryPOCode = !TextUtils.isEmpty(deliveryPOSCode) ? deliveryPOSCode : mBaoPhatBangke.getPoCode();
+        String deliveryDate = mBaoPhatBangke.getDeliveryDate();
+        String deliveryTime = mBaoPhatBangke.getDeliveryTime();
+        String deliveryType = mBaoPhatBangke.getDeliveryType();
+        String receiverName = mBaoPhatBangke.getReciverName();
+        String reasonCode = mBaoPhatBangke.getReasonCode();
+        String solutionCode = mBaoPhatBangke.getSolutionCode();
+        String note = mBaoPhatBangke.getNote();
+        String sign = mBaoPhatBangke.getSignatureCapture();
+        String status = "C18";
+        String amount = mBaoPhatBangke.getAmount();
+        if (TextUtils.isEmpty(amount) || amount.equals("0")) {
+            amount = mBaoPhatBangke.getCollectAmount();
+        }
+        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
+                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        if (response.body().getErrorCode().equals("00")) {
+                            final String parcelCode = mBaoPhatBangke.getParcelCode();
+                            Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                                    result.deleteAllFromRealm();
+                                }
+                            });
+                            mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    back();
+                                }
+                            });
+                        } else {
+                            mView.showErrorToast(response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.showErrorToast(message);
+                    }
+                });
+    }
+
 }

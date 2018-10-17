@@ -423,10 +423,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 return;
             }
 
-            if (TextUtils.isEmpty(edtReceiverName.getText())) {
+         /*   if (TextUtils.isEmpty(edtReceiverName.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
-            }
+            }*/
            /* if (TextUtils.isEmpty(mSign)) {
                 //
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");

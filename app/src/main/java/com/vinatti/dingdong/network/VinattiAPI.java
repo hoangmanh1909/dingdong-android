@@ -215,6 +215,9 @@ public interface VinattiAPI {
     @GET("api/Dictionary/GetSolutionByReasonCode")
     Call<SolutionResult> getSolutionByReasonCode(@Query("reasonCode") String reasonCode);
 
+    @GET("api/Dictionary/GetSolutions")
+    Call<SolutionResult> getSolutions();
+
     @GET("api/Dictionary/GetReasons")
     Call<ReasonResult> getReasons();
 

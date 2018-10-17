@@ -72,6 +72,10 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
             } else if ("N".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Bưu gửi ko gạch nợ");
+            } else if ("A".equals(item.getIsPaypost())) {
+                tvStatusPaypost.setText("N/A");
+            } else if ("L".equals(item.getIsPaypost())) {
+                tvStatusPaypost.setText("98");
             } else {
                 tvStatusPaypost.setText("");
             }

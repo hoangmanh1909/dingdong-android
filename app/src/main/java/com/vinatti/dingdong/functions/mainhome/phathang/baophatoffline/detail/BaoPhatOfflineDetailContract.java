@@ -20,6 +20,12 @@ interface BaoPhatOfflineDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void   paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signature, String note, String amount, CommonCallback<SimpleResult> commonCallback);
+        void pushToPNSDelivery(String postmanID, String ladingCode,
+                               String deliveryPOCode, String deliveryDate,
+                               String deliveryTime, String receiverName,
+                               String reasonCode, String solutionCode, String status,
+                               String paymentChannel, String deliveryType,
+                               String sign, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -37,6 +43,8 @@ interface BaoPhatOfflineDetailContract {
         void saveLocal(CommonObject baoPhat);
 
         void payment(CommonObject baoPhat);
+
+        void submitToPNS();
     }
 }
 

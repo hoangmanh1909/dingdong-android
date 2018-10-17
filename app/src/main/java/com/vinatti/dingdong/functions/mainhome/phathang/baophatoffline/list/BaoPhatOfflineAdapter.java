@@ -57,55 +57,82 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             CommonObject item = (CommonObject) model;
             tvParcelCode.setText(item.getParcelCode());
-            if (!TextUtils.isEmpty(item.getNote())) {
-                tvNote.setText(String.format("Ghi chú phát: %s", item.getNote()));
-                tvNote.setVisibility(View.VISIBLE);
-            } else {
-                tvNote.setVisibility(View.GONE);
-            }
-            if (!TextUtils.isEmpty(item.getRealReceiverName())) {
-                tvReceiverName.setText(item.getRealReceiverName());
-                tvReceiverName.setVisibility(View.VISIBLE);
-            } else {
-                tvReceiverName.setText("");
-                tvReceiverName.setVisibility(View.GONE);
-            }
-            if (!TextUtils.isEmpty(item.getReciverAddress())) {
-                tvReceiverAddress.setText(item.getReciverAddress());
-                tvReceiverAddress.setVisibility(View.VISIBLE);
-            } else {
-                tvReceiverAddress.setText("");
-                tvReceiverAddress.setVisibility(View.GONE);
-            }
-            if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
-                tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()) + Long.parseLong(item.getReceiveCollectFee()))));
-            } else if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
-            } else tvCollectAmountAll.setText("0 đ");
+            if (item.getDeliveryType().equals("2")) {
+                if (!TextUtils.isEmpty(item.getNote())) {
+                    tvNote.setText(String.format("Ghi chú phát: %s", item.getNote()));
+                    tvNote.setVisibility(View.VISIBLE);
+                } else {
+                    tvNote.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(item.getRealReceiverName())) {
+                    tvReceiverName.setText(item.getRealReceiverName());
+                    tvReceiverName.setVisibility(View.VISIBLE);
+                } else {
+                    tvReceiverName.setText("");
+                    tvReceiverName.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(item.getReciverAddress())) {
+                    tvReceiverAddress.setText(item.getReciverAddress());
+                    tvReceiverAddress.setVisibility(View.VISIBLE);
+                } else {
+                    tvReceiverAddress.setText("");
+                    tvReceiverAddress.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
+                    tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()) + Long.parseLong(item.getReceiveCollectFee()))));
+                } else if (!TextUtils.isEmpty(item.getCollectAmount())) {
+                    tvCollectAmountAll.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+                } else tvCollectAmountAll.setText("0 đ");
 
-            if (!TextUtils.isEmpty(item.getReceiverPhone())) {
-                String[] phones = item.getReceiverPhone().split(",");
-                if (phones.length > 0) {
-                    if (!phones[0].isEmpty()) {
-                        // tvContactPhone.setText(phones[0].trim());
-                        tvContactPhone.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(item.getReceiverPhone())) {
+                    String[] phones = item.getReceiverPhone().split(",");
+                    if (phones.length > 0) {
+                        if (!phones[0].isEmpty()) {
+                            // tvContactPhone.setText(phones[0].trim());
+                            tvContactPhone.setVisibility(View.VISIBLE);
+                        } else {
+                            tvContactPhone.setVisibility(View.GONE);
+                        }
                     } else {
                         tvContactPhone.setVisibility(View.GONE);
                     }
                 } else {
                     tvContactPhone.setVisibility(View.GONE);
                 }
-            } else {
-                tvContactPhone.setVisibility(View.GONE);
-            }
-            if (!TextUtils.isEmpty(item.getIsCOD())) {
-                if (item.getIsCOD().toUpperCase().equals("Y")) {
-                    ivStatus.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(item.getIsCOD())) {
+                    if (item.getIsCOD().toUpperCase().equals("Y")) {
+                        ivStatus.setVisibility(View.VISIBLE);
+                    } else {
+                        ivStatus.setVisibility(View.GONE);
+                    }
                 } else {
                     ivStatus.setVisibility(View.GONE);
                 }
             } else {
-                ivStatus.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(item.getReasonName())) {
+                    tvReceiverName.setText(item.getReasonName());
+                    tvReceiverName.setVisibility(View.VISIBLE);
+                } else {
+                    tvReceiverName.setText("");
+                    tvReceiverName.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(item.getSolutionName())) {
+                    tvReceiverAddress.setText(item.getSolutionName());
+                    tvReceiverAddress.setVisibility(View.VISIBLE);
+                } else {
+                    tvReceiverAddress.setText("");
+                    tvReceiverAddress.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(item.getIsCOD())) {
+                    if (item.getIsCOD().toUpperCase().equals("Y")) {
+                        ivStatus.setVisibility(View.VISIBLE);
+                    } else {
+                        ivStatus.setVisibility(View.GONE);
+                    }
+                } else {
+                    ivStatus.setVisibility(View.GONE);
+                }
+                tvContactPhone.setVisibility(View.GONE);
             }
         }
 

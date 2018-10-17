@@ -104,6 +104,12 @@ public class CommonObject extends RealmObject {
     private String reasonName;
     @SerializedName("SolutionName")
     private String solutionName;
+
+    @SerializedName("ReasonCode")
+    private String reasonCode;
+    @SerializedName("SolutionCode")
+    private String solutionCode;
+
     @SerializedName("CheckStatus")
     private boolean checkStatus;
     @SerializedName("CheckStatusNo")
@@ -428,5 +434,34 @@ public class CommonObject extends RealmObject {
 
     public String getIsPaypost() {
         return isPaypost;
+    }
+
+
+    public String getReasonCode() {
+        return reasonCode;
+    }
+
+    public void setReasonCode(String reasonCode) {
+        this.reasonCode = reasonCode;
+    }
+
+    public String getSolutionCode() {
+        return solutionCode;
+    }
+
+    public void setSolutionCode(String solutionCode) {
+        this.solutionCode = solutionCode;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setReasonName(String reasonName) {
+        this.reasonName = reasonName;
+    }
+
+    public void setSolutionName(String solutionName) {
+        this.solutionName = solutionName;
     }
 }

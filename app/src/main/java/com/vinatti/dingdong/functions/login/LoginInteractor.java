@@ -5,6 +5,8 @@ import com.core.base.viper.Interactor;
 import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.LoginResult;
 import com.vinatti.dingdong.model.PostOfficeResult;
+import com.vinatti.dingdong.model.ReasonResult;
+import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.network.NetWorkController;
 
 /**
@@ -24,6 +26,16 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
 
     @Override
     public void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
-        NetWorkController.getPostOfficeByCode(code,postmanID, callback);
+        NetWorkController.getPostOfficeByCode(code, postmanID, callback);
+    }
+
+    @Override
+    public void getSolutions(CommonCallback<SolutionResult> commonCallback) {
+        NetWorkController.getSolutions(commonCallback);
+    }
+
+    @Override
+    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
+        NetWorkController.getReasons(commonCallback);
     }
 }
