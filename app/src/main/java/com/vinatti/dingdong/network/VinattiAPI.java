@@ -41,8 +41,8 @@ public interface VinattiAPI {
     @POST("api/Delivery/DeliveryStatistic")
     Call<CommonObjectListResult> searchDeliveryStatistic(@Field("FromDate") String fromDate,
                                                          @Field("Status") String status,
-                                                         @Field("PostmanId") String postmanId
-    );
+                                                         @Field("PostmanId") String postmanId,
+                                                         @Field("ShiftID") String shift);
 
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryLadingJourney")
@@ -206,7 +206,8 @@ public interface VinattiAPI {
 
 
     @GET("api/Delivery/GetPaypostError")
-    Call<GachNoResult> deliveryGetPaypostError();
+    Call<GachNoResult> deliveryGetPaypostError(@Query("fromDate") String fromDate,
+                                               @Query("toDate") String toDate);
 
 
     @GET("api/Dictionary/GetPostOfficeByCode")

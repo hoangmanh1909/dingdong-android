@@ -82,8 +82,8 @@ public class NetWorkController {
     }
 
     public static void searchDeliveryStatistic(String fromDate, String status,
-                                               String postmanId, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId);
+                                               String postmanId, String shift, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId,shift);
         call.enqueue(callback);
     }
 
@@ -238,8 +238,8 @@ public class NetWorkController {
         Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code, postmanID);
         call.enqueue(callback);
     }
-    public static void deliveryGetPaypostError(CommonCallback<GachNoResult> callback) {
-        Call<GachNoResult> call = getAPIBuilder().deliveryGetPaypostError();
+    public static void deliveryGetPaypostError(String fromDate, String toDate, CommonCallback<GachNoResult> callback) {
+        Call<GachNoResult> call = getAPIBuilder().deliveryGetPaypostError(fromDate, toDate);
         call.enqueue(callback);
     }
 

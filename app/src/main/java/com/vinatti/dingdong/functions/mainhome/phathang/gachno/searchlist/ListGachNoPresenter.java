@@ -41,12 +41,13 @@ public class ListGachNoPresenter extends Presenter<ListGachNoContract.View, List
     @Override
     public void start() {
         // Start getting data here
-        getList();
+        //getList();
     }
 
-    private void getList() {
+    @Override
+    public void getList(String fromDate, String toDate) {
         mView.showProgress();
-        mInteractor.deliveryGetPaypostError(new CommonCallback<GachNoResult>((Context) mContainerView) {
+        mInteractor.deliveryGetPaypostError(fromDate, toDate, new CommonCallback<GachNoResult>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<GachNoResult> call, Response<GachNoResult> response) {
                 super.onSuccess(call, response);

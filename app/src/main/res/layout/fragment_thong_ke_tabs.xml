@@ -24,12 +24,13 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.vinatti.dingdong.views.CustomTextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:gravity="center"
                 android:text="Danh sách bưu gửi"
-                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp" />
 

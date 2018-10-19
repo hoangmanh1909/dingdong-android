@@ -17,8 +17,8 @@ class ListGachNoInteractor extends Interactor<ListGachNoContract.Presenter>
     }
 
     @Override
-    public void deliveryGetPaypostError(CommonCallback<GachNoResult> callback) {
-        NetWorkController.deliveryGetPaypostError(callback);
+    public void deliveryGetPaypostError(String fromDate, String toDate, CommonCallback<GachNoResult> callback) {
+        NetWorkController.deliveryGetPaypostError(fromDate, toDate,callback);
     }
 
     @Override

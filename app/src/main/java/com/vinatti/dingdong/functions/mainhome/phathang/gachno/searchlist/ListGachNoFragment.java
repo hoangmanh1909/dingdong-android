@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.callback.OnChooseDay;
+import com.vinatti.dingdong.dialog.EditDayDialog;
+import com.vinatti.dingdong.dialog.SearchGachNoDialog;
 import com.vinatti.dingdong.eventbus.BaoPhatCallback;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.GachNo;
@@ -44,6 +47,8 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
     RecyclerView recycler;
     private ArrayList<GachNo> mList;
     private GachNoAdapter adapter;
+    private String fromDate;
+    private String toDate;
 
     public static ListGachNoFragment getInstance() {
         return new ListGachNoFragment();
@@ -63,6 +68,9 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
         recycler.setItemAnimator(new DefaultItemAnimator());
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(adapter);
+        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        mPresenter.getList(fromDate, toDate);
     }
 
     @Override
@@ -71,7 +79,7 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
     }
 
 
-    @OnClick({R.id.img_back, R.id.btn_confirm_all})
+    @OnClick({R.id.img_back, R.id.btn_confirm_all, R.id.iv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -79,6 +87,9 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
                 break;
             case R.id.btn_confirm_all:
                 submit();
+                break;
+            case R.id.iv_search:
+                showDialog();
                 break;
         }
     }
@@ -133,5 +144,16 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
     @Override
     public void finishView() {
         mPresenter.back();
+    }
+
+    private void showDialog() {
+        new SearchGachNoDialog(getActivity(), new OnChooseDay() {
+            @Override
+            public void onChooseDay(Calendar calFrom, Calendar calTo) {
+                fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                mPresenter.getList(fromDate, toDate);
+            }
+        }).show();
     }
 }
