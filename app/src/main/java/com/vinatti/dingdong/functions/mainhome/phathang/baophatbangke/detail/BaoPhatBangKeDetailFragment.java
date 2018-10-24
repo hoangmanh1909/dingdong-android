@@ -443,15 +443,37 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             }
             String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
             mBaoPhatBangke.setDeliveryTime(time);
-            if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
-                if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
-                    mPresenter.paymentDelivery(mSign);
-                } else {
-                    mPresenter.signDataAndSubmitToPNS(mSign);
-                }
-            } else {
-                mPresenter.signDataAndSubmitToPNS(mSign);
+            if (edtCollectAmount.getText().equals("0")) {
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                        .setConfirmText("Có")
+                        .setTitleText("Thông báo")
+                        .setContentText("Số tiền = 0 bạn có muốn tiếp tục không?")
+                        .setCancelText("Không")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
+                                    if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
+                                        mPresenter.paymentDelivery(mSign);
+                                    } else {
+                                        mPresenter.signDataAndSubmitToPNS(mSign);
+                                    }
+                                } else {
+                                    mPresenter.signDataAndSubmitToPNS(mSign);
+                                }
+                                sweetAlertDialog.dismiss();
+
+                            }
+                        })
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        }).show();
+
             }
+
         } else {
             if (TextUtils.isEmpty(tvReason.getText())) {
                 Toast.showToast(tvReason.getContext(), "Xin vui lòng chọn lý do");
