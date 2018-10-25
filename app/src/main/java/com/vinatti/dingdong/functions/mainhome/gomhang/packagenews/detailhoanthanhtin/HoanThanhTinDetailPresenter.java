@@ -5,11 +5,13 @@ import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
+import com.vinatti.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
-import com.vinatti.dingdong.model.UploadResult;
+import com.vinatti.dingdong.model.UploadSingleResult;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -44,27 +46,28 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
 
     @Override
     public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
-                                            String statusCode, String quantity, String collectReason,
-                                           String pickUpDate, String pickUpTime) {
+                                           String statusCode, String quantity, String collectReason,
+                                           String pickUpDate, String pickUpTime, String file, String scan) {
         mView.showProgress();
-        mInteractor.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,  statusCode, quantity, collectReason, pickUpDate, pickUpTime, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.controlViews();
-                }
-                mView.showMessage(response.body().getMessage());
-            }
+        mInteractor.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID, statusCode, quantity,
+                collectReason, pickUpDate, pickUpTime, file, scan, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        mView.hideProgress();
+                        if (response.body().getErrorCode().equals("00")) {
+                            mView.controlViews();
+                        }
+                        mView.showMessage(response.body().getMessage());
+                    }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.hideProgress();
+                        mView.showError(message);
+                    }
+                });
 
     }
 
@@ -115,20 +118,25 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     @Override
     public void postImage(String pathMedia) {
         mView.showProgress();
-        mInteractor.postImage(pathMedia, new CommonCallback<UploadResult>((Context) mContainerView) {
+        mInteractor.postImage(pathMedia, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<UploadResult> call, Response<UploadResult> response) {
+            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
-                mView.showImage(response.body().getFileInfos());
+                mView.showImage(response.body().getFile());
             }
 
             @Override
-            protected void onError(Call<UploadResult> call, String message) {
+            protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
                 mView.showAlertDialog(message);
                 mView.deleteFile();
             }
         });
+    }
+
+    @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 
     public HoanThanhTinDetailPresenter setCommonObject(CommonObject commonObject) {

@@ -14,6 +14,7 @@ import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.UploadResult;
+import com.vinatti.dingdong.model.UploadSingleResult;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -90,15 +91,16 @@ public interface VinattiAPI {
                                                   @Field("Quantity") String quantity,
                                                   @Field("CollectReason") String collectReason,
                                                   @Field("PickUpDate") String pickUpDate,
-                                                  @Field("PickUpTime") String pickUpTime);
+                                                  @Field("PickUpTime") String pickUpTime,
+                                                  @Field("OrderImage") String file,
+                                                  @Field("ShipmentCode") String scan);
 
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")
     Call<SimpleResult> confirmOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
                                                   @Field("EmployeeID") String employeeID,
                                                   @Field("StatusCode") String statusCode,
-                                                  @Field("ConfirmReason") String confirmReason
-    );
+                                                  @Field("ConfirmReason") String confirmReason);
 
     @FormUrlEncoded
     @POST("api/Authorized/Validation")
@@ -241,5 +243,8 @@ public interface VinattiAPI {
     @Multipart
     @POST("api/Handle/UploadImage")
     Call<UploadResult> postImage(@Part MultipartBody.Part image);
+    @Multipart
+    @POST("api/Handle/UploadImage")
+    Call<UploadSingleResult> postImageSingle(@Part MultipartBody.Part image);
 
 }

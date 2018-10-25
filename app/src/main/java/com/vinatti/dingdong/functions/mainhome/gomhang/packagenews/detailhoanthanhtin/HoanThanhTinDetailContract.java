@@ -3,14 +3,12 @@ package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanth
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CommonCallback;
-import com.vinatti.dingdong.model.FileInfo;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.model.CommonObjectListResult;
-import com.vinatti.dingdong.model.UploadResult;
-
-import java.util.List;
+import com.vinatti.dingdong.model.UploadSingleResult;
 
 /**
  * The XacNhanTinDetail Contract
@@ -22,9 +20,9 @@ interface HoanThanhTinDetailContract {
 
         void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                         String statusCode, String quantity, String collectReason, String pickUpDate,
-                                        String pickUpTime, CommonCallback<SimpleResult> callback);
+                                        String pickUpTime,  String file, String scan,CommonCallback<SimpleResult> callback);
 
-        void postImage(String pathMedia, CommonCallback<UploadResult> commonCallback);
+        void postImage(String pathMedia, CommonCallback<UploadSingleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -38,7 +36,7 @@ interface HoanThanhTinDetailContract {
 
         void controlViews();
 
-        void showImage(List<FileInfo> fileInfos);
+        void showImage(String file);
 
         void deleteFile();
     }
@@ -46,13 +44,15 @@ interface HoanThanhTinDetailContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                         String statusCode, String quantity, String collectReason, String pickUpDate,
-                                        String pickUpTime);
+                                        String pickUpTime, String file, String scan);
 
         void searchOrderPostman();
 
         CommonObject getCommonObject();
 
         void postImage(String path_media);
+
+        void showBarcode(BarCodeCallback barCodeCallback);
     }
 }
 

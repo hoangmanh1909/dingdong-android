@@ -5,6 +5,7 @@ import com.vinatti.dingdong.callback.CommonCallback;
 import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.UploadResult;
+import com.vinatti.dingdong.model.UploadSingleResult;
 import com.vinatti.dingdong.network.NetWorkController;
 
 /**
@@ -23,13 +24,15 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
     }
 
     @Override
-    public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,  String statusCode, String quantity, String collectReason, String pickUpDate, String pickUpTime, CommonCallback<SimpleResult> callback) {
+    public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,  String statusCode,
+                                           String quantity, String collectReason, String pickUpDate, String pickUpTime, String file, String scan,
+                                           CommonCallback<SimpleResult> callback) {
         NetWorkController.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                statusCode, quantity, collectReason, pickUpDate, pickUpTime, callback);
+                statusCode, quantity, collectReason, pickUpDate, pickUpTime,file, scan, callback);
     }
 
     @Override
-    public void postImage(String pathMedia, CommonCallback<UploadResult> callback) {
-        NetWorkController.postImage(pathMedia, callback);
+    public void postImage(String pathMedia, CommonCallback<UploadSingleResult> callback) {
+        NetWorkController.postImageSingle(pathMedia, callback);
     }
 }

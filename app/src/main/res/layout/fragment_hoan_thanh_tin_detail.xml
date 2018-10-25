@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
@@ -35,7 +36,7 @@
                 android:text="Mã tin "
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp"  />
+                android:textSize="@dimen/text_size_16sp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -80,8 +81,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Ngày/giờ điều tin"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -91,8 +92,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -108,8 +109,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Người điều tin"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -119,8 +120,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -136,8 +137,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Nội dung"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -147,8 +148,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -164,8 +165,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Số lượng"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -175,8 +176,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -192,8 +193,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Khối lượng"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -203,8 +204,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -243,8 +244,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Người liên hệ"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -254,8 +255,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -271,8 +272,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Số điện thoại"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -299,8 +300,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Địa chỉ"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -310,8 +311,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -326,15 +327,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <com.vinatti.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_header_common"
                     android:padding="@dimen/dimen_10dp"
-                    android:text="Chụp ảnh gói hàng"
+                    android:text="CHỤP ẢNH ĐƠN HÀNG"
                     android:textAllCaps="true"
                     android:textColor="@color/white" />
 
@@ -351,11 +352,84 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:scaleType="centerInside"
-                        fresco:viewAspectRatio="1.3"
                         fresco:placeholderImage="@drawable/ic_camera_capture"
-                        fresco:placeholderImageScaleType="centerInside" />
+                        fresco:placeholderImageScaleType="centerInside"
+                        fresco:viewAspectRatio="1.3" />
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.vinatti.dingdong.views.CustomBoldTextView
+                    style="@style/HeaderNews"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_header_common"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="scan đơn hàng"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_scan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:id="@+id/edt_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_toLeftOf="@+id/img_search"
+                            android:hint="Nhập số hiệu bưu gửi"
+                            android:inputType="text"
+                            android:imeOptions="actionDone"
+                            android:textColorHint="@color/colorBlackTrans20"
+                            android:textSize="@dimen/text_size_14sp"
+                            app:met_bottomTextSize="@dimen/text_size_sub"
+                            app:met_clearButton="true"
+                            app:met_floatingLabel="highlight"
+                            app:met_primaryColor="@color/black"
+                            app:met_textColor="@color/black"
+                            app:met_textColorHint="@color/colorBlackTrans20"
+                            app:met_underlineColor="@color/colorBlackTrans20" />
+                        <ImageView
+                            android:id="@+id/img_search"
+                            android:layout_width="wrap_content"
+                            android:padding="@dimen/dimen_5dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/img_capture"
+                            android:src="@drawable/ic_search_blue" />
+
+                        <ImageView
+                            android:id="@+id/img_capture"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_2sdp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_capture" />
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -373,10 +447,10 @@
                     android:background="@drawable/bg_confirm_continue"
                     android:drawableLeft="@drawable/ic_done"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/dimen_5dp"
                     android:paddingLeft="@dimen/dimen_20dp"
-                    android:paddingRight="@dimen/dimen_20dp"
                     android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_20dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:text="hoàn tất tin"
                     android:textAllCaps="true"
                     android:textColor="@color/white"

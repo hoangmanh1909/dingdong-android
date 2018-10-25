@@ -18,6 +18,7 @@ import com.vinatti.dingdong.model.SimpleResult;
 import com.vinatti.dingdong.model.SolutionResult;
 import com.vinatti.dingdong.model.CommonObjectListResult;
 import com.vinatti.dingdong.model.UploadResult;
+import com.vinatti.dingdong.model.UploadSingleResult;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.Utils;
 
@@ -265,9 +266,9 @@ public class NetWorkController {
 
     public static void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                                   String statusCode, String quantity, String collectReason, String pickUpDate,
-                                                  String pickUpTime, CommonCallback<SimpleResult> callback) {
+                                                  String pickUpTime, String file, String scan, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                statusCode, quantity, collectReason, pickUpDate, pickUpTime);
+                statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan);
         call.enqueue(callback);
     }
 
@@ -283,6 +284,14 @@ public class NetWorkController {
         MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
         //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
         Call<UploadResult> call = getAPIBuilder().postImage(body);
+        call.enqueue(callback);
+    }
+    public static void postImageSingle(String filePath, CommonCallback<UploadSingleResult> callback) {
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
+        //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
+        Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
         call.enqueue(callback);
     }
 }

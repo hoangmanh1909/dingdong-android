@@ -6,26 +6,35 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
+import com.core.utils.RecyclerUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
+import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.HoanThanhTinCallback;
 import com.vinatti.dingdong.dialog.HoanTatTinDialog;
 import com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.vinatti.dingdong.model.CommonObject;
-import com.vinatti.dingdong.model.FileInfo;
+import com.vinatti.dingdong.model.ScanItem;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.MediaUltis;
 import com.vinatti.dingdong.utiles.SharedPref;
+import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,10 +68,16 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     CustomTextView btnConfirm;
     @BindView(R.id.iv_package)
     SimpleDraweeView ivPackage;
+    @BindView(R.id.recycler_scan)
+    RecyclerView recyclerScan;
+    @BindView(R.id.edt_code)
+    MaterialEditText edtCode;
 
     private String mUser;
     private CommonObject mHoanThanhTin;
     private String mFile;
+    private ArrayList<ScanItem> mList;
+    private ItemScanAdapter mAdapter;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -79,6 +94,20 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         SharedPref sharedPref = new SharedPref(getActivity());
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
         checkPermissionCall();
+        mList = new ArrayList<>();
+        mAdapter = new ItemScanAdapter(getActivity(), mList);
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerScan);
+        recyclerScan.setAdapter(mAdapter);
+        edtCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addItem(edtCode.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void checkPermissionCall() {
@@ -108,9 +137,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     }
 
     @Override
-    public void showImage(List<FileInfo> fileInfos) {
-        if (fileInfos.size() > 0)
-            mFile = fileInfos.get(0).getNameFile();
+    public void showImage(String file) {
+        if (!file.isEmpty())
+            mFile = file;
     }
 
     @Override
@@ -119,18 +148,20 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         ivPackage.setActualImageResource(R.drawable.ic_camera_capture);
     }
 
-    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package})
+    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
             case R.id.btn_confirm:
+                final StringBuilder scans = new StringBuilder();
+                List<ScanItem> scanItems = mAdapter.getItems();
+                for (ScanItem item : scanItems) {
+                    scans.append(item.getCode()).append(";");
+                }
 
-              /*  if (!mUser.isEmpty()) {
-                    UserInfo userInfo = NetWorkController.getGson().fromJson(mUser, UserInfo.class);
-                    mPresenter.confirmOrderPostmanCollect(mPresenter.getCommonObject().getOrderPostmanID(), userInfo.getiD(), "P1", "");
-                }*/
+
                 if (mHoanThanhTin != null) {
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new HoanThanhTinCallback() {
                         @Override
@@ -140,7 +171,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 if (!userJson.isEmpty()) {
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                                    mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(), mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, collectReason, pickUpDate, pickUpTime);
+                                    mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(), mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, collectReason, pickUpDate, pickUpTime, mFile, scans.toString());
                                 }
                             }
 
@@ -151,6 +182,26 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
             case R.id.iv_package:
                 MediaUltis.captureImage(this);
                 break;
+            case R.id.img_search:
+                addItem(edtCode.getText().toString());
+                break;
+            case R.id.img_capture:
+                mPresenter.showBarcode(new BarCodeCallback() {
+                    @Override
+                    public void scanQrcodeResponse(String value) {
+                        addItem(value.replace("+", ""));
+                    }
+                });
+                break;
+        }
+    }
+
+    private void addItem(String item) {
+        if (!item.isEmpty()) {
+            mAdapter.addItem(new ScanItem(item));
+            edtCode.setText("");
+        } else {
+            Toast.showToast(getActivity(), "Chưa nhập mã");
         }
     }
 
@@ -241,4 +292,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         btnConfirm.setEnabled(false);
 
     }
+
+
 }
