@@ -3,6 +3,7 @@ package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailxacnha
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.ReasonCallback;
 import com.vinatti.dingdong.dialog.ReasonDialog;
@@ -16,7 +17,6 @@ import com.vinatti.dingdong.views.CustomTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The XacNhanTinDetail Fragment

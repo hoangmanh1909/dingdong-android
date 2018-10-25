@@ -3,13 +3,13 @@ package com.vinatti.dingdong.functions.login.validation;
 import android.text.TextUtils;
 
 import com.core.base.viper.ViewFragment;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The Validation Fragment

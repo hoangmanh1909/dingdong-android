@@ -20,7 +20,8 @@ public class ApplicationController extends MultiDexApplication {
         if (!BuildConfig.DEBUG)
             Fabric.with(this, new Crashlytics());
         Fresco.initialize(this);
-        RealmConfiguration config = new RealmConfiguration.Builder(this)
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
                 .schemaVersion(0)
                 .deleteRealmIfMigrationNeeded()
                 .migration(new DingDongRealm()).build();

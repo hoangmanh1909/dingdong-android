@@ -1,25 +1,21 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
-import com.vinatti.dingdong.base.DingDongActivity;
 import com.vinatti.dingdong.callback.BarCodeCallback;
 import com.vinatti.dingdong.callback.CreatebangKeSearchCallback;
 import com.vinatti.dingdong.dialog.CreateBangKeSearchDialog;
@@ -44,9 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The CreateBd13 Fragment

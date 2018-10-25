@@ -7,7 +7,6 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
@@ -18,11 +17,11 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'realm-android'
 android {
     compileSdkVersion project.compileSdkVersion as int
     buildToolsVersion project.buildToolsVersion as String
+    flavorDimensions "default"
     defaultConfig {
         applicationId "com.vinatti.dingdong"
         minSdkVersion 16
@@ -103,45 +102,43 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v13'
+    }
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(':Libraries:VinattiCore')
-    testCompile 'junit:junit:4.12'
-    compile 'com.redmadrobot:inputmask:2.3.0'
-    compile 'com.github.davidpizarro:pickerui:1.0.1'
-    compile 'com.facebook.fresco:fresco:1.8.1'
-    /* {
-            exclude group: 'com.parse.bolts', module: 'bolts-applinks';
-            exclude module: 'bolts-android';
-            exclude group: 'com.parse.bolts', module: 'bolts-tasks';
-        }*/
-    compile 'com.android.support:multidex:1.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    compile 'com.jakewharton:butterknife:8.0.1'
-    compile 'cn.pedant.sweetalert:library:1.3'
-    compile 'com.roughike:bottom-bar:2.3.1'
-    //compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
-    compile 'com.codewaves.stickyheadergrid:stickyheadergrid:0.9.6'
-    compile 'com.github.drawers:SpinnerDatePicker:1.0.6'
-    compile 'com.github.rey5137:material:1.2.4'
-    compile 'com.intuit.sdp:sdp-android:1.0.4'
-    compile 'com.github.gcacace:signature-pad:1.2.1'
-    compile 'me.dm7.barcodescanner:zxing:1.9.8'
-    compile 'me.dm7.barcodescanner:zbar:1.9.8'
-    compile 'com.google.android.gms:play-services-maps:15.0.0'
-    compile 'com.google.android.gms:play-services-location:15.0.0'
-    compile 'com.google.android.gms:play-services-places:15.0.0'
-    compile 'com.google.firebase:firebase-messaging:15.0.0'
+    implementation project(':Libraries:VinattiCore')
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.redmadrobot:inputmask:2.3.0'
+    implementation 'com.github.davidpizarro:pickerui:1.0.1'
+    implementation 'com.facebook.fresco:fresco:1.9.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+   // implementation 'cn.pedant.sweetalert:library:1.3'
+    implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
+    implementation 'com.roughike:bottom-bar:2.3.1'
+    implementation 'com.codewaves.stickyheadergrid:stickyheadergrid:0.9.6'
+    implementation 'com.github.drawers:SpinnerDatePicker:1.0.6'
+    implementation 'com.github.rey5137:material:1.2.4'
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    implementation 'com.github.gcacace:signature-pad:1.2.1'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    implementation 'me.dm7.barcodescanner:zbar:1.9.8'
+    implementation 'com.google.android.gms:play-services-maps:15.0.0'
+    implementation 'com.google.android.gms:play-services-location:15.0.0'
+    implementation 'com.google.android.gms:play-services-places:15.0.0'
+    implementation 'com.google.firebase:firebase-messaging:15.0.0'
     //PagerSlidingTab
-    compile 'com.jpardogo.materialtabstrip:library:1.1.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+    implementation 'com.jpardogo.materialtabstrip:library:1.1.1'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;
     }
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.roughike:bottom-bar:2.3.1'
-    compile project(':Libraries:libCamera')
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'com.roughike:bottom-bar:2.3.1'
+    implementation project(':Libraries:libCamera')
 }
 apply plugin: 'com.google.gms.google-services'

@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
@@ -54,7 +55,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The BaoPhatBangKeDetail Fragment

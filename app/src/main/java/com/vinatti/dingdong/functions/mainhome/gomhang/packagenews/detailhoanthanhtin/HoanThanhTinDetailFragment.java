@@ -16,6 +16,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.BarCodeCallback;
@@ -39,7 +40,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The XacNhanTinDetail Fragment

@@ -2,12 +2,9 @@ package com.vinatti.dingdong.functions.mainhome.gomhang.packagenews.detailhoanth
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.PhoneCallback;
 import com.vinatti.dingdong.dialog.PhoneConectDialog;
@@ -15,10 +12,7 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.views.CustomTextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The Phone Fragment

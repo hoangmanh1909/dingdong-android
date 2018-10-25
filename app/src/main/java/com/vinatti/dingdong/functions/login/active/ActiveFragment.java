@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.core.base.viper.ViewFragment;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.Logger;
@@ -14,7 +15,6 @@ import com.vinatti.dingdong.views.CustomEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The Active Fragment

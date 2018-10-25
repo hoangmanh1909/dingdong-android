@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.OnChooseDay;
 import com.vinatti.dingdong.dialog.EditDayDialog;
@@ -27,7 +28,6 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The CommonObject Fragment

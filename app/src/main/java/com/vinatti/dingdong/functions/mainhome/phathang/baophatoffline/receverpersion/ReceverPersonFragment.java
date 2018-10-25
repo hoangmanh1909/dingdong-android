@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.base.DingDongActivity;
@@ -34,7 +35,6 @@ import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
-import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
 
@@ -44,7 +44,6 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The ReceverPerson Fragment

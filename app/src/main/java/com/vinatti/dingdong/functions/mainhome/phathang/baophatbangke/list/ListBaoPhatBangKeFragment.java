@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
-import com.core.widget.BaseViewHolder;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.BaoPhatBangKeFailCallback;
 import com.vinatti.dingdong.callback.BaoPhatbangKeConfirmCallback;
@@ -36,7 +34,6 @@ import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
-import com.vinatti.dingdong.utiles.ViewUtils;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 
@@ -50,7 +47,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The CommonObject Fragment

@@ -1,7 +1,6 @@
 package com.vinatti.dingdong.functions.login;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,10 +10,10 @@ import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.vinatti.dingdong.BuildConfig;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.functions.mainhome.main.MainActivity;
-import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.UserInfo;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
@@ -24,11 +23,8 @@ import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * The Login Fragment
