@@ -433,7 +433,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             }*/
             mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
             mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
-            mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll(".", ""));
+            mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll("\\.", ""));
             mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
             mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
             mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
@@ -446,7 +446,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                         .setConfirmText("Có")
                         .setTitleText("Thông báo")
-                        .setContentText("Số tiền = 0 bạn có muốn tiếp tục không?")
+                        .setContentText("Số tiền > 0 bạn có muốn tiếp tục không?")
                         .setCancelText("Không")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
@@ -471,6 +471,18 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                             }
                         }).show();
 
+            }
+            else
+            {
+                if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
+                    if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
+                        mPresenter.paymentDelivery(mSign);
+                    } else {
+                        mPresenter.signDataAndSubmitToPNS(mSign);
+                    }
+                } else {
+                    mPresenter.signDataAndSubmitToPNS(mSign);
+                }
             }
 
         } else {
