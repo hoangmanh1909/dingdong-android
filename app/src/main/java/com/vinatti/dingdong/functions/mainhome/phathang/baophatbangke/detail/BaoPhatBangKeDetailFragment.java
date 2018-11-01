@@ -442,17 +442,30 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             }
             String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
             mBaoPhatBangke.setDeliveryTime(time);
-            if (edtCollectAmount.getText().equals("0")) {
+            if (edtCollectAmount.getText().equals("0")
+                    && "Y".equals(mBaoPhatBangke.getIsCOD().toUpperCase())
+                    ) {
+               /* new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                        .setConfirmText("Ok")
+                        .setTitleText("Thông báo")
+                        .setContentText("Số tiền bắt buộc phải lớn hơn 0")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+
+                            }
+                        }).show();*/
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                         .setConfirmText("Có")
                         .setTitleText("Thông báo")
-                        .setContentText("Số tiền > 0 bạn có muốn tiếp tục không?")
+                        .setContentText("Số tiền = 0 bạn có muốn tiếp tục không?")
                         .setCancelText("Không")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
-                                    if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
+                                    if ("Y".equals(mBaoPhatBangke.getIsCOD())) {
                                         mPresenter.paymentDelivery(mSign);
                                     } else {
                                         mPresenter.signDataAndSubmitToPNS(mSign);
@@ -471,11 +484,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                             }
                         }).show();
 
-            }
-            else
-            {
+            } else {
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
-                    if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
+                    if ("Y".equals(mBaoPhatBangke.getIsCOD())) {
                         mPresenter.paymentDelivery(mSign);
                     } else {
                         mPresenter.signDataAndSubmitToPNS(mSign);

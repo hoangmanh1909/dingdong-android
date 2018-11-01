@@ -243,7 +243,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        if (mBaoPhatBangke.getService().equals("12")) {
+        if ("12".equals(mBaoPhatBangke.getService())) {
             paymentDelivery(signatureCapture);
         } else {
             if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
