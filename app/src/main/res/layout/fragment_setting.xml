@@ -34,7 +34,7 @@
             <com.vinatti.dingdong.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gạch nợ PayPos"
+                android:text="Gạch nợ Paypost"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp" />
 

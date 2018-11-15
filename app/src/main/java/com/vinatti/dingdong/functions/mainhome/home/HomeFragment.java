@@ -92,18 +92,22 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
             homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
             homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
-            homeInfos.add(new HomeInfo(15, R.drawable.ic_offline, "Nhập báo phát"));
-            homeInfos.add(new HomeInfo(14, R.drawable.ic_offline, "Báo phát offline"));
+
           //  mList.add(new GroupInfo("Phát hàng", homeInfos));
             homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
             homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
 
+            homeInfos = new ArrayList<>();
+            homeInfos.add(new HomeInfo(15, R.drawable.ic_offline, "Nhập báo phát"));
+            homeInfos.add(new HomeInfo(14, R.drawable.ic_online, "Báo phát offline"));
+            mList.add(new GroupInfo("Offline", homeInfos));
 
+
+        /*    homeInfos = new ArrayList<>();
+            mList.add(new GroupInfo("Call", homeInfos));*/
             homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
-            mList.add(new GroupInfo("Call", homeInfos));
-            homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
             homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
             mList.add(new GroupInfo("Người dùng", homeInfos));

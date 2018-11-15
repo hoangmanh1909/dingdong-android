@@ -37,6 +37,7 @@ import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -124,7 +125,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
         calendar = Calendar.getInstance();
-        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DATE));
+        mChuyenThu = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);//String.format("%s", 5000 + calendar.get(Calendar.DATE));
         /*tvChuyenthu.setText(mChuyenThu);
         tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
         tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);

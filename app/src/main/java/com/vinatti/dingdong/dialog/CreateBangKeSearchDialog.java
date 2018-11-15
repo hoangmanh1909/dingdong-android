@@ -20,6 +20,7 @@ import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,7 +66,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         items.add(new Item("3", "Ca 3"));
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
-        mChuyenThu = String.format("%s", 5000  + calendar.get(Calendar.DATE));
+        mChuyenThu =DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
         tvChuyenthu.setText(mChuyenThu);
         tvBag.setText(mBag);
     }

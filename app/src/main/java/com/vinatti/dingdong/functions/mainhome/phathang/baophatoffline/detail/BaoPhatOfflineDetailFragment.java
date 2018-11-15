@@ -75,8 +75,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     FrameLayout header;
     @BindView(R.id.tv_userDelivery)
     FormItemTextView tvUserDelivery;
-    @BindView(R.id.edt_amount)
-    MaterialEditText edtAmount;
+  /*  @BindView(R.id.edt_amount)
+    MaterialEditText edtAmount;*/
     @BindView(R.id.edt_collectAmount)
     MaterialEditText edtCollectAmount;
     @BindView(R.id.rad_cash)
@@ -87,8 +87,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     LinearLayout llPayMent;
     @BindView(R.id.edt_real_ReceiverName)
     MaterialEditText edtRealReceiverName;
-    @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
+  /*  @BindView(R.id.edt_ReceiverIDNumber)
+    MaterialEditText edtReceiverIDNumber;*/
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -237,7 +237,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     public void initLayout() {
         super.initLayout();
         EditTextUtils.editTextListener(edtCollectAmount);
-        EditTextUtils.editTextListener(edtAmount);
+       // EditTextUtils.editTextListener(edtAmount);
         mBaoPhat = mPresenter.getBaoPhatBangke();
         if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
             imgSend.setImageResource(R.drawable.ic_send_telegram);
@@ -259,9 +259,9 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         edtSenderPhone.setText(mBaoPhat.getSenderPhone());
         edtReceiverPhone.setText(mBaoPhat.getReceiverPhone());*/
         edtRealReceiverName.setText(mBaoPhat.getRealReceiverName());
-        edtReceiverIDNumber.setText(mBaoPhat.getRealReceiverIDNumber());
+        //edtReceiverIDNumber.setText(mBaoPhat.getRealReceiverIDNumber());
         edtCollectAmount.setText(mBaoPhat.getCollectAmount());
-        edtAmount.setText(mBaoPhat.getAmount());
+        //edtAmount.setText(mBaoPhat.getAmount());
         if (!TextUtils.isEmpty(mBaoPhat.getSignatureCapture())) {
             llSigned.setVisibility(View.VISIBLE);
             byte[] decodedString = Base64.decode(mBaoPhat.getSignatureCapture(), Base64.DEFAULT);
@@ -543,10 +543,10 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên thực người nhận hàng");
                 return;
             }
-            if (TextUtils.isEmpty(edtAmount.getText())) {
+          /*  if (TextUtils.isEmpty(edtAmount.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền");
                 return;
-            }
+            }*/
             /*if (TextUtils.isEmpty(edtReciverName.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
@@ -572,9 +572,11 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
 
             mBaoPhat.setCollectAmount(edtCollectAmount.getText().toString().replace(".", ""));
             mBaoPhat.setUserDelivery(tvUserDelivery.getText());
-            mBaoPhat.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
+           // mBaoPhat.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
+            mBaoPhat.setRealReceiverIDNumber("");
 
-            mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
+          //  mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
+            mBaoPhat.setAmount("0");
             if (!TextUtils.isEmpty(mSign))
                 mBaoPhat.setSignatureCapture(mSign);
             else mBaoPhat.setSignatureCapture("");

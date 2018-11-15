@@ -7,25 +7,20 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.model.Bd13Code;
-import com.vinatti.dingdong.model.CommonObject;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ListCreateBd13Adapter extends RecyclerView.Adapter<ListCreateBd13Adapter.HolderView> {
+
 
 
     private List<Bd13Code> mList;
@@ -57,6 +52,14 @@ public class ListCreateBd13Adapter extends RecyclerView.Adapter<ListCreateBd13Ad
 
         @BindView(R.id.tv_code)
         CustomBoldTextView tvCode;
+        @BindView(R.id.tv_contactName)
+        CustomTextView tvContactName;
+        @BindView(R.id.tv_contact_address)
+        CustomTextView tvContactAddress;
+        @BindView(R.id.tv_amount)
+        CustomTextView tvAmount;
+        @BindView(R.id.tv_services)
+        CustomTextView tvServices;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -65,6 +68,19 @@ public class ListCreateBd13Adapter extends RecyclerView.Adapter<ListCreateBd13Ad
 
         public void bindView(final Bd13Code model) {
             tvCode.setText(model.getCode());
+            tvContactName.setText(String.format("%s", model.getReceiverName()));
+            tvContactAddress.setText(model.getAddress());
+            if (!TextUtils.isEmpty(model.getCollectAmount())) {
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(model.getCollectAmount()))));
+            }
+            if (!TextUtils.isEmpty(model.getService())) {
+                if (!TextUtils.isEmpty(model.getService().trim())) {
+                    tvServices.setText(String.format("%s", model.getService() != null ? model.getService().trim() : ""));
+                    tvServices.setVisibility(View.VISIBLE);
+                } else {
+                    tvServices.setVisibility(View.GONE);
+                }
+            }
         }
     }
 }
