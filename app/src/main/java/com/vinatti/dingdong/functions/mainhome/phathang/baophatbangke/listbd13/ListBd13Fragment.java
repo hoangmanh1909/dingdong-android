@@ -1,49 +1,31 @@
 package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.listbd13;
 
-import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
-import com.tsongkha.spinnerdatepicker.DatePicker;
-import com.tsongkha.spinnerdatepicker.DatePickerDialog;
-import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.vinatti.dingdong.R;
 import com.vinatti.dingdong.callback.BangKeSearchCallback;
-import com.vinatti.dingdong.callback.CreatebangKeSearchCallback;
 import com.vinatti.dingdong.dialog.BangKe13SearchDialog;
-import com.vinatti.dingdong.dialog.CreateBangKeSearchDialog;
 import com.vinatti.dingdong.model.Bd13Code;
-import com.vinatti.dingdong.model.Item;
 import com.vinatti.dingdong.model.PostOffice;
 import com.vinatti.dingdong.network.NetWorkController;
 import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.StringUtils;
-import com.vinatti.dingdong.utiles.TimeUtils;
-import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
-import com.vinatti.dingdong.views.form.FormItemEditText;
-import com.vinatti.dingdong.views.form.FormItemTextView;
-import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The ListBd13 Fragment
@@ -88,7 +70,6 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
     public void initLayout() {
         super.initLayout();
         calCreate = Calendar.getInstance();
-        Calendar calendar = Calendar.getInstance();
         mList = new ArrayList<>();
         adapter = new ListCreateBd13Adapter(getActivity(), mList);
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));

@@ -105,7 +105,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         edtParcelcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     String parcelCode = edtParcelcode.getText().toString();
                     getQuery(parcelCode);
                 }
@@ -171,8 +171,10 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     }
 
     public void getQuery(String parcelCode) {
-        mPresenter.searchParcelCodeDelivery(parcelCode.trim());
-        //((BaoPhatThanhCongActivity) getActivity()).removeTextSearch();
+        if(!parcelCode.isEmpty()) {
+            mPresenter.searchParcelCodeDelivery(parcelCode.trim());
+        }
+        edtParcelcode.setText("");
     }
 
 

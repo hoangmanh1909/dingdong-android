@@ -66,7 +66,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         items.add(new Item("3", "Ca 3"));
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
-        mChuyenThu =DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
+        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
         tvChuyenthu.setText(mChuyenThu);
         tvBag.setText(mBag);
     }
@@ -76,7 +76,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         super.show();
     }
 
-    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift, R.id.btnBack,R.id.tv_bag})
+    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift, R.id.btnBack, R.id.tv_bag})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_date_create:
@@ -114,6 +114,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                 break;
         }
     }
+
     private void showUIBag() {
         ArrayList<Item> items = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -139,6 +140,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 
         }
     }
+
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calCreate.set(year, monthOfYear, dayOfMonth);

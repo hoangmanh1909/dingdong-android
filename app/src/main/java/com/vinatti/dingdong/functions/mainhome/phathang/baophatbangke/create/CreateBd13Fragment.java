@@ -3,8 +3,10 @@ package com.vinatti.dingdong.functions.mainhome.phathang.baophatbangke.create;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -98,11 +100,35 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         edtParcelCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     String parcelCode = edtParcelCode.getText().toString();
                     getQuery(parcelCode);
                 }
                 return true;
+            }
+        });
+        edtParcelCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0) {
+
+                    char lastCharacter = s.charAt(s.length() - 1);
+
+                    if (lastCharacter == '\n') {
+                        String barcode = s.subSequence(0, s.length() - 1).toString();
+                        getQuery(barcode);
+                    }
+                }
             }
         });
         mAdapter = new CreateBd13Adapter(getActivity(), mList) {
@@ -145,14 +171,17 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     public void getQuery(String parcelCode) {
-        if (!checkInList(parcelCode)) {
-            Bd13Code bd13Code = new Bd13Code(parcelCode);
-            mList.add(bd13Code);
-            mAdapter.addItem(bd13Code);
-            tvCount.setText(String.format(" %s", mList.size()));
-        } else {
-            Toast.showToast(getActivity(), "Đã tồn tại trong danh sách");
+        if(!parcelCode.isEmpty()) {
+            if (!checkInList(parcelCode)) {
+                Bd13Code bd13Code = new Bd13Code(parcelCode);
+                mList.add(bd13Code);
+                mAdapter.addItem(bd13Code);
+                tvCount.setText(String.format(" %s", mList.size()));
+            } else {
+                Toast.showToast(getActivity(), "Đã tồn tại trong danh sách");
+            }
         }
+        edtParcelCode.setText("");
     }
     /*private void addNewRow() {
         if (!TextUtils.isEmpty(edtSearch.getQuery())) {

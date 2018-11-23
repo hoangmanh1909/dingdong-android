@@ -109,7 +109,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         edtParcelcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     String parcelCode = edtParcelcode.getText().toString();
                     getQuery(parcelCode);
                 }
@@ -180,17 +180,19 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     public void getQuery(String parcelCode) {
-        CommonObject object = new CommonObject();
-        object.setCode(parcelCode.toUpperCase().trim());
-        object.setDeliveryType("2");
-        if (!checkInList(object)) {
-            saveLocal(object);
-            mList.add(object);
-            mAdapter.addItem(object);
-            tvCount.setText(String.format(" %s", mList.size()));
-            if (org.apache.commons.lang3.math.NumberUtils.isDigits(object.getCollectAmount()))
-                mAmount += Long.parseLong(object.getCollectAmount());
-            tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
+        if(!parcelCode.isEmpty()) {
+            CommonObject object = new CommonObject();
+            object.setCode(parcelCode.toUpperCase().trim());
+            object.setDeliveryType("2");
+            if (!checkInList(object)) {
+                saveLocal(object);
+                mList.add(object);
+                mAdapter.addItem(object);
+                tvCount.setText(String.format(" %s", mList.size()));
+                if (org.apache.commons.lang3.math.NumberUtils.isDigits(object.getCollectAmount()))
+                    mAmount += Long.parseLong(object.getCollectAmount());
+                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
+            }
         }
         edtParcelcode.setText("");
     }

@@ -92,7 +92,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
         edtParcelcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     String parcelCode = edtParcelcode.getText().toString();
                     getQuery(parcelCode);
                 }
@@ -164,6 +164,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
             return;
         }
         mPresenter.searchParcelCodeDelivery(parcelCode.trim());
+        edtParcelcode.setText("");
     }
 
 

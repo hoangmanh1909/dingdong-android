@@ -67,7 +67,7 @@ public class BangKe13SearchDialog extends Dialog implements DatePickerDialog.OnD
         items.add(new Item("3", "Ca 3"));
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
-        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DATE));
+        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//String.format("%s", 5000 + calendar.get(Calendar.DATE));
         edtChuyenthu.setText(mChuyenThu);
         tvBag.setText(mBag);
     }

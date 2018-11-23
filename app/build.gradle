@@ -26,8 +26,8 @@ android {
         applicationId "com.vinatti.dingdong"
         minSdkVersion 16
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 34
-        versionName "1.4.4"
+        versionCode 39
+        versionName "1.4.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
