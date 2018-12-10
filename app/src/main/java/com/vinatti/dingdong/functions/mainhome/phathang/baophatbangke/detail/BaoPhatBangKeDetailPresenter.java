@@ -19,7 +19,6 @@ import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 
 import java.util.Date;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;

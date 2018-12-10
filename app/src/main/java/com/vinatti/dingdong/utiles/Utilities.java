@@ -1,7 +1,6 @@
 package com.vinatti.dingdong.utiles;
 
 
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -14,11 +13,15 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.vinatti.dingdong.model.Item;
+import com.vinatti.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +35,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -84,7 +88,7 @@ public class Utilities {
 
 
 
-   /* *//**
+    /* *//**
      * Kiem tra xem app co ton tai tren thiet bi hay ko
      *
      * @param packageName
@@ -368,7 +372,7 @@ public class Utilities {
         try {
             if (context != null) {
                 context.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
 
         } catch (Exception e) {
@@ -453,7 +457,6 @@ public class Utilities {
     }
 
 
-
     private static String overUrl(String url) {
 
         int start = url.indexOf("_");
@@ -481,7 +484,6 @@ public class Utilities {
     }
 
 
-
     public static boolean isValid(EditText editText, String regex, String errMsg, boolean required) {
 
         String text = editText.getText().toString().trim();
@@ -498,22 +500,21 @@ public class Utilities {
     }
 
 
-
     public static String fomarPhoneNumber(String number) {
         String TEMP = "0123456789+";
         int i = 0;
-        while (i<number.length()){
-            if(TEMP.contains(number.charAt(i)+"")){
+        while (i < number.length()) {
+            if (TEMP.contains(number.charAt(i) + "")) {
                 i++;
-            }else {
-                number = number.replaceAll(Pattern.quote(number.charAt(i)+""),"");
+            } else {
+                number = number.replaceAll(Pattern.quote(number.charAt(i) + ""), "");
             }
         }
         return number;
     }
 
-    public static String formatPhoneNumberRemove00(String number){
-        if(number.startsWith("00")&&number.length()>2){
+    public static String formatPhoneNumberRemove00(String number) {
+        if (number.startsWith("00") && number.length() > 2) {
             number = number.substring(2);
         }
         return number;
@@ -545,15 +546,15 @@ public class Utilities {
         return "";*/
 
         if (number != null) {
-            String str = number.replaceAll(Pattern.quote(" "),"");
-            str = str.replaceAll(Pattern.quote("-"),"");
+            String str = number.replaceAll(Pattern.quote(" "), "");
+            str = str.replaceAll(Pattern.quote("-"), "");
             if (str.startsWith("84")) {
-                return str.replaceFirst(Pattern.quote("84"),"");
-            }else if(str.startsWith("+84")){
-                return str.replaceFirst(Pattern.quote("+84"),"");
-            }else if(str.startsWith("0")){
-                return str.replaceFirst(Pattern.quote("0"),"");
-            }else {
+                return str.replaceFirst(Pattern.quote("84"), "");
+            } else if (str.startsWith("+84")) {
+                return str.replaceFirst(Pattern.quote("+84"), "");
+            } else if (str.startsWith("0")) {
+                return str.replaceFirst(Pattern.quote("0"), "");
+            } else {
                 return str;
             }
         }
@@ -569,16 +570,16 @@ public class Utilities {
         return "";*/
 
         if (!TextUtils.isEmpty(number)) {
-            String str = number.replaceAll(Pattern.quote(" "),"");
-            str = str.replaceAll(Pattern.quote("-"),"");
-            str = str.replaceAll(Pattern.quote(","),"");
+            String str = number.replaceAll(Pattern.quote(" "), "");
+            str = str.replaceAll(Pattern.quote("-"), "");
+            str = str.replaceAll(Pattern.quote(","), "");
             if (str.startsWith("84")) {
-                return "84" + str.replaceFirst(Pattern.quote("84"),"");
-            }else if(str.startsWith("+84")){
-                return "84" + str.replaceFirst(Pattern.quote("+84"),"");
-            }else if(str.startsWith("0")){
-                return "84" + str.replaceFirst(Pattern.quote("0"),"");
-            }else {
+                return "84" + str.replaceFirst(Pattern.quote("84"), "");
+            } else if (str.startsWith("+84")) {
+                return "84" + str.replaceFirst(Pattern.quote("+84"), "");
+            } else if (str.startsWith("0")) {
+                return "84" + str.replaceFirst(Pattern.quote("0"), "");
+            } else {
                 return "84" + str;
             }
         }
@@ -596,7 +597,6 @@ public class Utilities {
         return "";
 
     }
-
 
 
     public static long getContactIDFromNumber(String contactNumber, Context context) {
@@ -634,7 +634,9 @@ public class Utilities {
         return decodedByte;
     }
 
-    /** Returns the consumer friendly device name */
+    /**
+     * Returns the consumer friendly device name
+     */
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
@@ -667,10 +669,10 @@ public class Utilities {
     /**
      * get random number
      */
-    public static int getRandomNumber(int min, int max){
+    public static int getRandomNumber(int min, int max) {
         Random r = new Random();
         int result = r.nextInt(max - min) + min;
-        return  result;
+        return result;
     }
 
     private static String convertToHex(byte[] data) {
@@ -691,6 +693,30 @@ public class Utilities {
         md.update(text.getBytes("iso-8859-1"), 0, text.length());
         byte[] sha1hash = md.digest();
         return convertToHex(sha1hash);
+    }
+
+    public static void showUIShift(FragmentActivity activity) {
+        ItemBottomSheetPickerUIFragment pickerShift = null;
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            items.add(new Item(i + "", "Ca " + i));
+        }
+
+        if (pickerShift == null) {
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            Constants.SHIFT = item.getValue();
+                        }
+                    }, 0);
+            pickerShift.show(activity.getSupportFragmentManager(), pickerShift.getTag());
+        } else {
+            pickerShift.setData(items, 0);
+            if (!pickerShift.isShow) {
+                pickerShift.show(activity.getSupportFragmentManager(), pickerShift.getTag());
+            }
+        }
     }
 }
 

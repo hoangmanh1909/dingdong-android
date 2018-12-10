@@ -34,6 +34,7 @@ import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 
@@ -246,6 +247,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
             return;
         }
         final List<CommonObject> commonObjects = mAdapter.getItemsSelected();

@@ -42,6 +42,7 @@ import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
@@ -354,6 +355,7 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
             return;
         }
         if (TextUtils.isEmpty(edtCollectAmount.getText())) {

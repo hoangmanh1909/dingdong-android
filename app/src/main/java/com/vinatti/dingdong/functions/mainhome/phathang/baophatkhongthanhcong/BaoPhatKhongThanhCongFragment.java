@@ -31,6 +31,7 @@ import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomAutoCompleteTextView;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomMediumTextView;
@@ -240,6 +241,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
             return;
         }
         if (TextUtils.isEmpty(edtParcelCode.getText())) {

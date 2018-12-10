@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,9 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
@@ -33,6 +30,7 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
@@ -44,9 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The TaoGachNo Fragment
@@ -240,6 +236,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                     if (mList.size() > 1) {
                         if (TextUtils.isEmpty(Constants.SHIFT)) {
                             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+                            Utilities.showUIShift(getActivity());
                             return;
                         }
                         mPresenter.pushViewConfirmAll(mList);

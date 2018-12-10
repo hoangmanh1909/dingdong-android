@@ -48,6 +48,7 @@ import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
@@ -166,6 +167,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private int mPaymentType = 1;
     private String mSign = "";
     private String mPhone;
+    private String mCollectAmount = "";
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -202,10 +204,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         tvReciverAddress.setText(mBaoPhatBangke.getReciverAddress());
 
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
+            mCollectAmount = mBaoPhatBangke.getAmount();
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
             edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
         }
         if (!TextUtils.isEmpty(mBaoPhatBangke.getCollectAmount())) {
+            mCollectAmount = mBaoPhatBangke.getCollectAmount();
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
             edtCollectAmount.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getCollectAmount()))));
         }
@@ -410,6 +414,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
             return;
         }
         if (mDeliveryType == 2) {
@@ -431,70 +436,41 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                 return;
             }*/
-            mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
-            mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
-            mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll("\\.", ""));
-            mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
-            mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
-            mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-            if (!TextUtils.isEmpty(mSign)) {
-                mBaoPhatBangke.setSignatureCapture(mSign);
-            }
-            String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-            mBaoPhatBangke.setDeliveryTime(time);
-            if (edtCollectAmount.getText().equals("0")
-                    && "Y".equals(mBaoPhatBangke.getIsCOD().toUpperCase())
-                    ) {
-               /* new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                        .setConfirmText("Ok")
-                        .setTitleText("Thông báo")
-                        .setContentText("Số tiền bắt buộc phải lớn hơn 0")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-
-                            }
-                        }).show();*/
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                        .setConfirmText("Có")
-                        .setTitleText("Thông báo")
-                        .setContentText("Số tiền = 0 bạn có muốn tiếp tục không?")
-                        .setCancelText("Không")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
-                                    if ("Y".equals(mBaoPhatBangke.getIsCOD())) {
-                                        mPresenter.paymentDelivery(mSign);
-                                    } else {
-                                        mPresenter.signDataAndSubmitToPNS(mSign);
-                                    }
-                                } else {
-                                    mPresenter.signDataAndSubmitToPNS(mSign);
-                                }
-                                sweetAlertDialog.dismiss();
-
-                            }
-                        })
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                            }
-                        }).show();
-
+            final String collectAmount = edtCollectAmount.getText().replaceAll("\\.", "");
+            String message = "";
+            if (mCollectAmount.equals(collectAmount)) {
+                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s bạn có muốn xác nhận không ?",
+                        mBaoPhatBangke.getCode(),
+                        mBaoPhatBangke.getReciverName(),
+                        edtCollectAmount.getText());
             } else {
-                if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
-                    if ("Y".equals(mBaoPhatBangke.getIsCOD())) {
-                        mPresenter.paymentDelivery(mSign);
-                    } else {
-                        mPresenter.signDataAndSubmitToPNS(mSign);
-                    }
-                } else {
-                    mPresenter.signDataAndSubmitToPNS(mSign);
-                }
+                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s (số tiền yêu cầu nhờ thu %s) bạn có muốn xác nhận không ?",
+                        mBaoPhatBangke.getCode(),
+                        mBaoPhatBangke.getReciverName(),
+                        edtCollectAmount.getText(),
+                        NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount))
+                );
             }
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setCancelText("Hủy")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            confirmSend(collectAmount);
+                            sweetAlertDialog.dismiss();
+
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    }).show();
+
 
         } else {
             if (TextUtils.isEmpty(tvReason.getText())) {
@@ -508,6 +484,62 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), edtReason.getText(), "");
         }
 
+    }
+
+    private void confirmSend(String collectAmount) {
+        mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
+        mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
+        mBaoPhatBangke.setCollectAmount(collectAmount);
+        mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
+        mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
+        mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+        if (!TextUtils.isEmpty(mSign)) {
+            mBaoPhatBangke.setSignatureCapture(mSign);
+        }
+        String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+        mBaoPhatBangke.setDeliveryTime(time);
+        if (edtCollectAmount.getText().equals("0")
+                && "Y".equals(mBaoPhatBangke.getIsCOD().toUpperCase())
+                ) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    .setConfirmText("Có")
+                    .setTitleText("Thông báo")
+                    .setContentText("Số tiền = 0 bạn có muốn tiếp tục không?")
+                    .setCancelText("Không")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
+                                if ("Y".equals(mBaoPhatBangke.getIsCOD())) {
+                                    mPresenter.paymentDelivery(mSign);
+                                } else {
+                                    mPresenter.signDataAndSubmitToPNS(mSign);
+                                }
+                            } else {
+                                mPresenter.signDataAndSubmitToPNS(mSign);
+                            }
+                            sweetAlertDialog.dismiss();
+
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    }).show();
+
+        } else {
+            if (!TextUtils.isEmpty(mBaoPhatBangke.getIsCOD())) {
+                if ("Y".equals(mBaoPhatBangke.getIsCOD())) {
+                    mPresenter.paymentDelivery(mSign);
+                } else {
+                    mPresenter.signDataAndSubmitToPNS(mSign);
+                }
+            } else {
+                mPresenter.signDataAndSubmitToPNS(mSign);
+            }
+        }
     }
 
     @Override

@@ -20,6 +20,7 @@ public class StringUtils {
         String text2;
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             text2 = ("Bạn chưa chọn ca làm việc");
+
         } else {
             text2 = ("Ca làm việc: Ca " + Constants.SHIFT);
         }

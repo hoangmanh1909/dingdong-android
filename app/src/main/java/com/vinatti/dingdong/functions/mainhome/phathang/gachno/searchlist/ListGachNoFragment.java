@@ -20,6 +20,7 @@ import com.vinatti.dingdong.utiles.Constants;
 import com.vinatti.dingdong.utiles.DateTimeUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,6 +88,7 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
             return;
         }
         List<GachNo> gachNoList = adapter.getItemsSelected();

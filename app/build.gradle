@@ -26,8 +26,8 @@ android {
         applicationId "com.vinatti.dingdong"
         minSdkVersion 16
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 39
-        versionName "1.4.9"
+        versionCode 42
+        versionName "1.5.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -83,6 +83,12 @@ android {
             buildConfigField("String", "API_URL", API_URL)
             buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
         }
+        uat_ems {
+            def API_URL = '"http://222.255.250.245:50011/"'
+            def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
+            buildConfigField("String", "API_URL", API_URL)
+            buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
+        }
     }
 
     lintOptions {
@@ -114,7 +120,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.redmadrobot:inputmask:2.3.0'
     implementation 'com.github.davidpizarro:pickerui:1.0.1'
-    implementation 'com.facebook.fresco:fresco:1.9.0'
+    implementation 'com.facebook.fresco:fresco:1.11.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
@@ -139,6 +145,6 @@ dependencies {
     }
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.roughike:bottom-bar:2.3.1'
-    implementation project(':Libraries:libCamera')
+    compile project(':Libraries:libCamera')
 }
 apply plugin: 'com.google.gms.google-services'

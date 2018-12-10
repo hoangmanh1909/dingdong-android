@@ -40,6 +40,7 @@ import com.vinatti.dingdong.utiles.NumberUtils;
 import com.vinatti.dingdong.utiles.RealmUtils;
 import com.vinatti.dingdong.utiles.StringUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 
@@ -332,6 +333,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     if (mList.size() > 1) {
                         if (TextUtils.isEmpty(Constants.SHIFT)) {
                             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+                            Utilities.showUIShift(getActivity());
                             return;
                         }
                         showOptionSuccessOrFail();

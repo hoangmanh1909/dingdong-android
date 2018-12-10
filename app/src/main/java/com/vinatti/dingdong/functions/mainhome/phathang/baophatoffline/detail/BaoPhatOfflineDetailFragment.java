@@ -43,6 +43,7 @@ import com.vinatti.dingdong.utiles.RealmUtils;
 import com.vinatti.dingdong.utiles.SharedPref;
 import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
+import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomBoldTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
@@ -525,7 +526,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     private void submit() {
         if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
-            showUIShift();
+            Utilities.showUIShift(getActivity());
             return;
         }
         mBaoPhat.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
@@ -663,25 +664,5 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         }
     }
 
-    private void showUIShift() {
-        ArrayList<Item> items = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            items.add(new Item(i + "", "Ca " + i));
-        }
-        if (pickerShift == null) {
-            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            Constants.SHIFT = item.getValue();
-                        }
-                    }, 0);
-            pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
-        } else {
-            pickerShift.setData(items, 0);
-            if (!pickerShift.isShow) {
-                pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
-            }
-        }
-    }
+
 }

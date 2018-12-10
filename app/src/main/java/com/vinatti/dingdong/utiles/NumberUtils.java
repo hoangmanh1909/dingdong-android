@@ -226,6 +226,7 @@ public class NumberUtils {
             "81",//Vinaphone
             "82",//Vinaphone
             "88",//Vinaphone
+            "87",//Vinaphone
             "56",//Vietnamobile
             "58",//Vietnamobile
             "59",//Gtel
