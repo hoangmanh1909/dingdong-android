@@ -50,6 +50,7 @@ import com.vinatti.dingdong.utiles.TimeUtils;
 import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.CustomEditText;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
 import com.vinatti.dingdong.views.form.FormItemTextView;
@@ -109,7 +110,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @BindView(R.id.tv_reason)
     FormItemTextView tvReason;
     @BindView(R.id.edt_reason)
-    FormItemEditText edtReason;
+    CustomEditText edtReason;
     @BindView(R.id.tv_solution)
     FormItemTextView tvSolution;
     @BindView(R.id.layout_date_start)
@@ -481,7 +482,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(tvSolution.getContext(), "Bạn chưa chọn phương án xử lý");
                 return;
             }
-            mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), edtReason.getText(), "");
+            mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), edtReason.getText().toString(), "");
         }
 
     }
@@ -638,11 +639,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                             mListSolution = null;
                             tvSolution.setText("");
                             loadSolution();
-                            if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
+                          /*  if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
                                 edtReason.setVisibility(View.VISIBLE);
                             } else {
                                 edtReason.setVisibility(View.GONE);
-                            }
+                            }*/
 
                         }
                     }, 0);
