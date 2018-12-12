@@ -50,17 +50,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/size_16dp"
                 android:paddingLeft="@dimen/size_16dp"
-                android:paddingRight="@dimen/size_16dp">
+                android:paddingRight="@dimen/size_16dp"
+                android:paddingBottom="@dimen/size_16dp">
 
-              <!--  <com.vinatti.dingdong.views.CustomBoldTextView
-                    android:id="@+id/tv_shift"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_16sp" />-->
+                <!--  <com.vinatti.dingdong.views.CustomBoldTextView
+                      android:id="@+id/tv_shift"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:textColor="@color/colorPrimary"
+                      android:textSize="@dimen/text_size_16sp" />-->
 
 
                 <!--   <com.vinatti.dingdong.views.CustomBoldTextView
@@ -92,19 +92,19 @@
                     <ImageView
                         android:id="@+id/img_search"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/dimen_5dp"
-                        android:visibility="invisible"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_search_blue" />
+                        android:src="@drawable/ic_search_blue"
+                        android:visibility="invisible" />
 
                     <ImageView
                         android:id="@+id/img_capture"
                         android:layout_width="wrap_content"
-                        android:padding="@dimen/dimen_5dp"
-                        android:layout_gravity="center"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_toLeftOf="@+id/tv_capture"
+                        android:padding="@dimen/dimen_5dp"
                         android:src="@drawable/ic_capture" />
                 </LinearLayout>
 
@@ -139,35 +139,10 @@
                     android:layout_height="wrap_content"
                     android:hint="Chọn lý do"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"></com.vinatti.dingdong.views.CustomAutoCompleteTextView>
+                    android:textSize="@dimen/text_size_14sp">
 
-                <com.vinatti.dingdong.views.form.FormItemEditText
-                    android:id="@+id/edt_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
-                    android:visibility="gone"
-                    app:formHint="Nhập ghi chú" />
+                </com.vinatti.dingdong.views.CustomAutoCompleteTextView>
 
-
-                <!-- <com.vinatti.dingdong.views.CustomBoldTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:text="Phương án xử lý"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />-->
-
-
-                <!-- <com.vinatti.dingdong.views.form.FormItemTextView
-                     android:id="@+id/tv_solution"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:textColor="@color/black"
-                     android:textSize="@dimen/text_size_14sp"
-                     app:formAction="@drawable/ic_arrow_down"
-                app:formHint="Chọn phương án" />-->
 
                 <com.vinatti.dingdong.views.CustomAutoCompleteTextView
                     android:id="@+id/tv_solution"
@@ -175,7 +150,23 @@
                     android:layout_height="wrap_content"
                     android:hint="Chọn phương án"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"></com.vinatti.dingdong.views.CustomAutoCompleteTextView>
+                    android:textSize="@dimen/text_size_14sp">
+
+                </com.vinatti.dingdong.views.CustomAutoCompleteTextView>
+
+                <com.vinatti.dingdong.views.CustomEditText
+                    android:id="@+id/edt_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|left"
+                    android:hint="Nhập ghi chú"
+                    android:inputType="textMultiLine"
+                    android:lines="8"
+                    android:maxLines="10"
+                    android:minLines="1"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -188,8 +179,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.8"
-                        android:paddingBottom="@dimen/dimen_10dp"
                         android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Ngày báo phát"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
@@ -199,8 +190,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.2"
-                        android:paddingBottom="@dimen/dimen_5dp"
                         android:paddingTop="@dimen/dimen_5dp"
+                        android:paddingBottom="@dimen/dimen_5dp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
                         app:formAction="@drawable/ic_arrow_down" />
@@ -219,8 +210,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.8"
-                        android:paddingBottom="@dimen/dimen_10dp"
                         android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Giờ báo phát"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
@@ -230,8 +221,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.2"
-                        android:paddingBottom="@dimen/dimen_5dp"
                         android:paddingTop="@dimen/dimen_5dp"
+                        android:paddingBottom="@dimen/dimen_5dp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
                         app:formAction="@drawable/ic_arrow_down" />

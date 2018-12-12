@@ -439,12 +439,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             final String collectAmount = edtCollectAmount.getText().replaceAll("\\.", "");
             String message = "";
             if (mCollectAmount.equals(collectAmount)) {
-                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s bạn có muốn xác nhận không ?",
+                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s VNĐ \nBạn có muốn xác nhận không ?",
                         mBaoPhatBangke.getCode(),
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText());
             } else {
-                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s (số tiền yêu cầu nhờ thu %s) bạn có muốn xác nhận không ?",
+                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s  VNĐ (số tiền yêu cầu nhờ thu %s  VNĐ) \nBạn có muốn xác nhận không ?",
                         mBaoPhatBangke.getCode(),
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText(),

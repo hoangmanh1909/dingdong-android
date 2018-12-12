@@ -83,11 +83,16 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
             tvDeliveryDate.setText(item.getDeliveryDate());
             tvStatusName.setText(item.getStatusName());
-            tvReason.setText(item.getReasonName());
             if (item.getStatus().equals("C14")) {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                if (!TextUtils.isEmpty(item.getServiceName())) {
+                    tvReason.setText(String.format("%s", item.getServiceName()));
+                }
             } else {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_000080));
+                if (!TextUtils.isEmpty(item.getReasonName())) {
+                    tvReason.setText(String.format("%s", item.getReasonName()));
+                }
             }
 
             if (!TextUtils.isEmpty(item.getCollectAmount())) {

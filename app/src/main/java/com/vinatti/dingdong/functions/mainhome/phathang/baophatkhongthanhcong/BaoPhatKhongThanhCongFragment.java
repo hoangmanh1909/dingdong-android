@@ -34,6 +34,7 @@ import com.vinatti.dingdong.utiles.Toast;
 import com.vinatti.dingdong.utiles.Utilities;
 import com.vinatti.dingdong.views.CustomAutoCompleteTextView;
 import com.vinatti.dingdong.views.CustomBoldTextView;
+import com.vinatti.dingdong.views.CustomEditText;
 import com.vinatti.dingdong.views.CustomMediumTextView;
 import com.vinatti.dingdong.views.CustomTextView;
 import com.vinatti.dingdong.views.form.FormItemEditText;
@@ -61,7 +62,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @BindView(R.id.tv_reason)
     CustomAutoCompleteTextView tvReason;
     @BindView(R.id.edt_note)
-    FormItemEditText edtNote;
+    CustomEditText edtNote;
     @BindView(R.id.tv_solution)
     CustomAutoCompleteTextView tvSolution;
     @BindView(R.id.tv_deliveryDate)
@@ -126,11 +127,11 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
                     mListSolution = null;
                     tvSolution.setText("");
                     loadSolution();
-                    if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
+                    /*if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
                         edtNote.setVisibility(View.VISIBLE);
                     } else {
                         edtNote.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
             }
         });
@@ -262,7 +263,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
 
         String reasonCode = mReasonInfo.getCode();
         String solutionCode = mSolutionInfo.getCode();
-        String note = edtNote.getText();
+        String note = edtNote.getText().toString();
         String ladingCode = edtParcelCode.getText().toUpperCase();
         String postmanID = "";
         String deliveryPOCode = "";
@@ -298,11 +299,11 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
                             mListSolution = null;
                             tvSolution.setText("");
                             loadSolution();
-                            if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
+                           /* if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
                                 edtNote.setVisibility(View.VISIBLE);
                             } else {
                                 edtNote.setVisibility(View.GONE);
-                            }
+                            }*/
 
 
                         }
