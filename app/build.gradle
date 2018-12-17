@@ -23,7 +23,7 @@ android {
     buildToolsVersion project.buildToolsVersion as String
     flavorDimensions "default"
     defaultConfig {
-        applicationId "com.vinatti.dingdong"
+        applicationId "com.ems.dingdong"
         minSdkVersion 16
         targetSdkVersion project.targetSdkVersion as int
         versionCode 45
@@ -146,5 +146,6 @@ dependencies {
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.roughike:bottom-bar:2.3.1'
     compile project(':Libraries:libCamera')
+    implementation project(path: ':Libraries:UtilCode')
 }
 apply plugin: 'com.google.gms.google-services'

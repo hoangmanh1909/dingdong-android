@@ -26,7 +26,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_14sp" />
 
-         <com.vinatti.dingdong.views.CustomBoldTextView
+         <CustomBoldTextView
              android:id="@+id/tv_chuyenthu"
              android:layout_width="wrap_content"
              android:layout_height="match_parent"
@@ -79,7 +79,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_14sp" />
 
-         <com.vinatti.dingdong.views.form.FormItemTextView
+         <FormItemTextView
              android:id="@+id/tv_bag"
              android:layout_width="@dimen/dimen_70dp"
              android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_14sp" />
 
-         <com.vinatti.dingdong.views.form.FormItemTextView
+         <FormItemTextView
              android:id="@+id/tv_shift"
              android:layout_width="@dimen/dimen_100dp"
              android:layout_height="wrap_content"
@@ -167,14 +167,14 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp">
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
+        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#38044B"
             android:textSize="@dimen/text_size_16sp" />
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
+        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <!-- <com.vinatti.dingdong.views.CustomTextView
+       <!-- <CustomTextView
             android:id="@+id/btn_confirm_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

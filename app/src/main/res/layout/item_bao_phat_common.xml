@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_parcelCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_sender_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sender_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <!-- <com.vinatti.dingdong.views.CustomTextView
+            <!-- <CustomTextView
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_marginTop="@dimen/dimen_5dp"
@@ -58,7 +58,7 @@
                  android:textColor="@color/grey"
                  android:textSize="@dimen/text_size_12sp" />
 
-             <com.vinatti.dingdong.views.CustomBoldTextView
+             <CustomBoldTextView
                  android:id="@+id/tv_collect_amount_all"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"

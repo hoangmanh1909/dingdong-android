@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:853538468534:android:eff0bb6706160df3",
         "android_client_info": {
-          "package_name": "com.vinatti.dingdong"
+          "package_name": "com.ems.dingdong"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "853538468534-fhh972mn2ct13hd07douqvsnjinfq6pu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.vinatti.dingdong",
+            "package_name": "com.ems.dingdong",
             "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
           }
         },

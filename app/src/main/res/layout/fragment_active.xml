@@ -34,7 +34,7 @@
                         android:layout_marginTop="64dp"
                         android:src="@drawable/ic_logo" />
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:text="Kích hoạt ứng dụng"
                         android:textColor="@color/white"
@@ -50,7 +50,7 @@
                         fresco:placeholderImage="@drawable/ic_active"
                         fresco:roundAsCircle="true" />
 
-                    <com.vinatti.dingdong.views.CustomBoldTextView
+                    <com.ems.dingdong.views.CustomBoldTextView
                         android:layout_width="wrap_content"
                         android:text="Kích hoạt ứng dụng"
                         android:textColor="@color/white"
@@ -59,7 +59,7 @@
                         android:layout_marginLeft="@dimen/dimen_20dp"
                         android:layout_height="wrap_content" />
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:text="Một tin nhắn văn bản kèm theo mã kích hoạt của bạn vừa được gửi đến"
                         android:textColor="@color/white"
@@ -79,7 +79,7 @@
                         android:paddingTop="@dimen/size_16dp"
                         android:paddingRight="@dimen/size_20dp">
 
-                        <com.vinatti.dingdong.views.CustomEditText
+                        <com.ems.dingdong.views.CustomEditText
                             android:id="@+id/edtCode"
                             style="@style/st_gray.h3"
                             android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:src="@drawable/ic_done" />
 
-                                <com.vinatti.dingdong.views.CustomTextView
+                                <com.ems.dingdong.views.CustomTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"

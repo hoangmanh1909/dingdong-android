@@ -23,7 +23,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,14 +44,14 @@
         android:paddingLeft="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp">
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
+        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_accept_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_16sp" />
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
+        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_accept_reject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

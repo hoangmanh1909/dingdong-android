@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_stt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contactName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:orientation="vertical">
 
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contact_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contact_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

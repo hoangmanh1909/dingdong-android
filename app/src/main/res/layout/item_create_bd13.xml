@@ -6,7 +6,7 @@
     android:paddingTop="@dimen/dimen_5dp"
     android:paddingBottom="@dimen/dimen_5dp">
 
-    <com.vinatti.dingdong.views.CustomBoldTextView
+    <com.ems.dingdong.views.CustomBoldTextView
         android:id="@+id/tv_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

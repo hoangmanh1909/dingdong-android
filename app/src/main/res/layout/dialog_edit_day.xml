@@ -38,14 +38,14 @@
                     android:layout_marginLeft="@dimen/size_16dp"
                     android:orientation="vertical">
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bắt đầu"
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tvDateStart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -76,14 +76,14 @@
                     android:layout_marginLeft="@dimen/size_16dp"
                     android:orientation="vertical">
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kết thúc"
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tvDateEnd"
                         android:layout_width="wrap_content"
 
@@ -95,7 +95,7 @@
             </LinearLayout>
 
 
-            <com.vinatti.dingdong.views.CustomMediumTextView
+            <com.ems.dingdong.views.CustomMediumTextView
                 android:id="@+id/tvShowChargre"
                 style="@style/ConfirmButton"
                 android:drawableLeft="@drawable/ic_search"

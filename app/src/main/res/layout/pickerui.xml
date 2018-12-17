@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@android:color/white">
-        <com.vinatti.dingdong.views.CustomTextView
+        <com.ems.dingdong.views.CustomTextView
             android:id="@+id/close_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
             android:textSize="16sp"
             android:padding="@dimen/dimen_10dp"/>
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
+        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/dimen_18sp"/>
 
-        <com.vinatti.dingdong.views.CustomTextView
+        <com.ems.dingdong.views.CustomTextView
             android:id="@+id/choose_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:background="@android:color/white"
         android:visibility="visible">
 
-        <com.vinatti.dingdong.views.picker.PickerUIListView
+        <com.ems.dingdong.views.picker.PickerUIListView
             android:id="@+id/picker_ui_listview"
             style="@style/PickerUI.ListView"
             android:layout_width="match_parent"

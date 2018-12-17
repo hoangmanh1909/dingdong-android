@@ -27,7 +27,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                       android:textColor="@color/black"
                       android:textSize="@dimen/text_size_14sp" />
 
-                  <com.vinatti.dingdong.views.form.FormItemEditText
+                  <FormItemEditText
                       android:id="@+id/edt_chuyenthu"
                       android:layout_width="0dp"
                       android:layout_height="match_parent"
@@ -97,7 +97,7 @@
                       android:textColor="@color/black"
                       android:textSize="@dimen/text_size_14sp" />
 
-                  <com.vinatti.dingdong.views.form.FormItemTextView
+                  <FormItemTextView
                       android:id="@+id/tv_created_date"
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                       android:textColor="@color/black"
                       android:textSize="@dimen/text_size_14sp" />
 
-                  <com.vinatti.dingdong.views.form.FormItemTextView
+                  <FormItemTextView
                       android:id="@+id/tv_bag"
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                       android:textColor="@color/black"
                       android:textSize="@dimen/text_size_14sp" />
 
-                  <com.vinatti.dingdong.views.form.FormItemTextView
+                  <FormItemTextView
                       android:id="@+id/tv_shift"
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
           </LinearLayout>
       </LinearLayout>-->
 
-    <com.vinatti.dingdong.views.CustomBoldTextView
+    <com.ems.dingdong.views.CustomBoldTextView
         android:id="@+id/tv_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

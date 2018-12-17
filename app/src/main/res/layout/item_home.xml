@@ -25,7 +25,7 @@
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:orientation="vertical">
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_18sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

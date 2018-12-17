@@ -24,7 +24,7 @@
                 android:padding="@dimen/size_16dp">
 
 
-                <com.vinatti.dingdong.views.CustomBoldTextView
+                <com.ems.dingdong.views.CustomBoldTextView
                     android:id="@+id/tv_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -32,14 +32,14 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_18sp" />
 
-                <com.vinatti.dingdong.views.CustomTextView
+                <com.ems.dingdong.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lý do từ chối"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.CustomEditText
+                <com.ems.dingdong.views.CustomEditText
                     android:id="@+id/edt_reasion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:orientation="horizontal">
 
-                <com.vinatti.dingdong.views.CustomMediumTextView
+                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
-                <com.vinatti.dingdong.views.CustomMediumTextView
+                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

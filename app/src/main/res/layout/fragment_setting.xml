@@ -31,7 +31,7 @@
             android:layout_margin="@dimen/dimen_10dp"
             android:orientation="horizontal">
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gạch nợ Paypost"

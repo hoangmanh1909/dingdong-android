@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:behavior_skipCollapsed="true">
 
-    <com.vinatti.dingdong.views.picker.PickerUI
+    <com.ems.dingdong.views.picker.PickerUI
         android:id="@+id/picker_ui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

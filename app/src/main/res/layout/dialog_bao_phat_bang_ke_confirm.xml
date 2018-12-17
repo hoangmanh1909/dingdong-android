@@ -21,7 +21,7 @@
         android:layout_marginTop="@dimen/dimen_5dp"
         android:orientation="vertical">
 
-        <com.vinatti.dingdong.views.CustomBoldTextView
+        <com.ems.dingdong.views.CustomBoldTextView
             style="@style/HeaderNews"
             android:layout_width="match_parent"
             android:background="@drawable/bg_header_common"
@@ -42,7 +42,7 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <com.vinatti.dingdong.views.CustomTextView
+                <com.ems.dingdong.views.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
@@ -82,7 +82,7 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <com.vinatti.dingdong.views.CustomMediumTextView
+            <com.ems.dingdong.views.CustomMediumTextView
                 android:id="@+id/tv_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

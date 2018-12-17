@@ -31,14 +31,14 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_smart_connect" />
 
-                <com.vinatti.dingdong.views.CustomTextView
+                <com.ems.dingdong.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SĐT"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.vinatti.dingdong.views.CustomEditText
+                <com.ems.dingdong.views.CustomEditText
                     android:id="@+id/edt_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp">
 
-                <com.vinatti.dingdong.views.CustomMediumTextView
+                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-                <com.vinatti.dingdong.views.CustomMediumTextView
+                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

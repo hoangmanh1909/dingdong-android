@@ -24,7 +24,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.vinatti.dingdong.views.CustomTextView
+        <com.ems.dingdong.views.CustomTextView
             android:id="@+id/btn_confirm_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

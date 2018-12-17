@@ -9,23 +9,38 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="@dimen/_2sdp">
 
-        <include layout="@layout/item_head_bg_common" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/img_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_logo" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_logo_home" />
+
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_logo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp" />
+
         </RelativeLayout>
     </FrameLayout>
 
-    <com.vinatti.dingdong.views.MyViewPager
+    <com.ems.dingdong.views.MyViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

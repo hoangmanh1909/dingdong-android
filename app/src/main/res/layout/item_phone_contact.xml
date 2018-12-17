@@ -4,7 +4,7 @@
     android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_height="wrap_content">
 
-    <com.vinatti.dingdong.views.CustomTextView
+    <com.ems.dingdong.views.CustomTextView
         android:id="@+id/tv_ContactPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

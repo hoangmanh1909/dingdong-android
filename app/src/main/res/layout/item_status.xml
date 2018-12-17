@@ -21,7 +21,7 @@
             android:paddingBottom="@dimen/dimen_5dp">
 
 
-            <com.vinatti.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_POCode_POName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_StatusMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <com.vinatti.dingdong.views.CustomMediumTextView
+            <com.ems.dingdong.views.CustomMediumTextView
                 android:id="@+id/tv_StatusCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:paddingTop="@dimen/dimen_5dp"
             android:paddingBottom="@dimen/dimen_5dp">
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_StatusDate_StatusTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <com.vinatti.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

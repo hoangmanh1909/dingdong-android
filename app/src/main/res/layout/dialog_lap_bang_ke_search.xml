@@ -40,7 +40,7 @@
                     android:orientation="horizontal"
                     android:weightSum="10">
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -49,7 +49,7 @@
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_date_create"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                     android:orientation="horizontal"
                     android:weightSum="10">
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -77,7 +77,7 @@
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_shift"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                     android:orientation="horizontal"
                     android:weightSum="10">
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -104,7 +104,7 @@
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_chuyenthu"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                     android:orientation="horizontal"
                     android:weightSum="10">
 
-                    <com.vinatti.dingdong.views.CustomTextView
+                    <com.ems.dingdong.views.CustomTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -129,7 +129,7 @@
                         android:textColor="@color/n_gray_text"
                         android:textSize="14sp" />
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_bag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp">
 
-                <com.vinatti.dingdong.views.CustomMediumTextView
+                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

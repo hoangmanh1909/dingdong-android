@@ -28,14 +28,14 @@
                     android:padding="@dimen/size_16dp">
 
 
-                    <com.vinatti.dingdong.views.CustomBoldTextView
+                    <com.ems.dingdong.views.CustomBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lý do"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_reason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                         app:formAction="@drawable/ic_arrow_down"
                         app:formHint="Chọn lý do" />
 
-                    <com.vinatti.dingdong.views.form.FormItemEditText
+                    <com.ems.dingdong.views.form.FormItemEditText
                         android:id="@+id/edt_reason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <com.vinatti.dingdong.views.CustomTextView
+                            <com.ems.dingdong.views.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -95,7 +95,7 @@
                             app:penColor="@android:color/black" />
                     </LinearLayout>
 
-                    <com.vinatti.dingdong.views.CustomBoldTextView
+                    <com.ems.dingdong.views.CustomBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
@@ -104,7 +104,7 @@
                         android:textSize="@dimen/text_size_14sp" />
 
 
-                    <com.vinatti.dingdong.views.form.FormItemTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_solution"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                     android:orientation="horizontal"
                     android:padding="@dimen/dimen_10dp">
 
-                    <com.vinatti.dingdong.views.CustomMediumTextView
+                    <com.ems.dingdong.views.CustomMediumTextView
                         android:id="@+id/tv_update"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
-                    <com.vinatti.dingdong.views.CustomMediumTextView
+                    <com.ems.dingdong.views.CustomMediumTextView
                         android:id="@+id/tv_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
