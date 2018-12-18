@@ -87,6 +87,58 @@
                         app:formAction="@drawable/ic_arrow_down"
                         app:formHint="Chọn ca" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_16dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text="Chuyến thư"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/edt_chuyenthu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_16dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text="Túi số"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_bag"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formHint="Chọn túi số" />
+                </LinearLayout>
 
 
             </LinearLayout>

@@ -92,14 +92,14 @@ public abstract class FormItemText extends FormItem {
     };
     mTextView.addTextChangedListener(textWatcher);
 
-    mIcon.setOnClickListener(new OnClickListener() {
+  /*  mIcon.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         v.getParent().requestDisallowInterceptTouchEvent(true);
         mTextView.requestFocus();
         KeyboardUtil.show(mTextView);
       }
-    });
+    });*/
 
     mTextView.setOnTouchListener(new OnTouchListener() {
 

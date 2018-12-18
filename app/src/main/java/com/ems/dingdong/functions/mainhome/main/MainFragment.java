@@ -30,8 +30,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     @BindView(R.id.bottomBar)
     BottomBar bottomBar;
-    @BindView(R.id.tv_account)
-    CustomTextView tvAccount;
+    @BindView(R.id.tv_balance)
+    CustomTextView tvBalance;
+    @BindView(R.id.tv_AmountMax)
+    CustomTextView tvAmountMax;
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
     private FragmentPagerAdapter adapter;
@@ -89,13 +91,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (userInfo != null) {
-                if (!TextUtils.isEmpty(userInfo.getAmountMax()) && !TextUtils.isEmpty(userInfo.getBalance())) {
-                    tvAccount.setText(String.format("Hạn mức: %s VNĐ - Số tiền đã thu: %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax())),
-                            NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
-                } else if (!TextUtils.isEmpty(userInfo.getAmountMax()) && TextUtils.isEmpty(userInfo.getBalance())) {
-                    tvAccount.setText(String.format("Hạn mức: %s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
-                } else if (TextUtils.isEmpty(userInfo.getAmountMax()) && !TextUtils.isEmpty(userInfo.getBalance())) {
-                    tvAccount.setText(String.format("Số tiền đã thu: %s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
+                if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
+                    tvAmountMax.setText(String.format("%s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+                }
+                if (!TextUtils.isEmpty(userInfo.getBalance())) {
+                    tvBalance.setText(String.format("%s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
                 }
             }
         }

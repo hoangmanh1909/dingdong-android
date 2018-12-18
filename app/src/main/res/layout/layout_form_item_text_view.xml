@@ -9,10 +9,10 @@
         android:id="@+id/form_item_layout"
         style="@style/FormItemLayout">
 
-        <ImageView
+      <!--  <ImageView
             android:id="@+id/form_item_icon"
             style="@style/FormItemIcon"
-             />
+             />-->
 
         <TextView
             android:id="@+id/form_item_value_text"

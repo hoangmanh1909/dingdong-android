@@ -7,8 +7,11 @@ import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.BuildConfig;
+import com.ems.dingdong.utiles.StringUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -52,6 +55,8 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     CustomMediumTextView tvFullname;
     @BindView(R.id.tv_poname)
     CustomMediumTextView tvPoname;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     SupportMapFragment map;
     private boolean mLocationPermissionGranted;
@@ -95,7 +100,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 .findFragmentById(R.id.map);
         map.getMapAsync(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
+        tvTitle.setText(StringUtils.getCharSequence("THÔNG TIN TÀI KHOẢN",String.format("Phiên bản %s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),getActivity()));
     }
 
     protected void getLocationPermission() {

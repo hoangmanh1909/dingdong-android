@@ -36,8 +36,8 @@ public abstract class FormItem extends LinearLayout {
 
   @BindView(R.id.form_item_layout)
   View mLayout;
-  @BindView(R.id.form_item_icon)
-  ImageView mIcon;
+/*  @BindView(R.id.form_item_icon)
+  ImageView mIcon;*/
   @BindView(R.id.form_item_action)
   ImageView mAction;
 
@@ -55,13 +55,13 @@ public abstract class FormItem extends LinearLayout {
       final TypedArray input = getContext().obtainStyledAttributes(
           attrs, R.styleable.FormItem, 0, 0);
 
-      Drawable drawable = input.getDrawable(R.styleable.FormItem_formIcon);
+      Drawable /*drawable = input.getDrawable(R.styleable.FormItem_formIcon);
       if (drawable != null) {
         mIcon.setImageDrawable(drawable);
         mIcon.setVisibility(VISIBLE);
       } else {
         mIcon.setVisibility(GONE);
-      }
+      }*/
 
       drawable = input.getDrawable(R.styleable.FormItem_formAction);
       if (drawable != null) {

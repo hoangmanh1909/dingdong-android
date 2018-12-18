@@ -86,9 +86,9 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID) {
+    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso) {
         mView.showProgress();
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID,chuyenthu,tuiso, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);

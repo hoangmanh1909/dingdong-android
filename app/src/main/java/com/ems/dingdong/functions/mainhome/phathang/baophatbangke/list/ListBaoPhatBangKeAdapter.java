@@ -169,6 +169,9 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             if (!TextUtils.isEmpty(item.getAmount())) {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount()))));
             }
+            if (!TextUtils.isEmpty(item.getCollectAmount())) {
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+            }
             if (!TextUtils.isEmpty(item.getService())) {
                 if (!TextUtils.isEmpty(item.getServiceName().trim())) {
                     tvServices.setText(String.format("%s", item.getServiceName() != null ? item.getServiceName().trim() : ""));

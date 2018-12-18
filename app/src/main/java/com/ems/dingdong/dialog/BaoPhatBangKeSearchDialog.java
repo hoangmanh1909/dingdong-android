@@ -4,12 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 
 import com.core.base.BaseActivity;
 import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
@@ -31,10 +33,17 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
     FormItemTextView tvDateCreate;
     @BindView(R.id.tv_shift)
     FormItemTextView tvShift;
+    @BindView(R.id.edt_chuyenthu)
+    FormItemEditText edtChuyenthu;
+    @BindView(R.id.tv_bag)
+    FormItemTextView tvBag;
+
     Calendar calCreate;
     private ItemBottomSheetPickerUIFragment pickerUIShift;
     ArrayList<Item> items = new ArrayList<>();
     private Item mItem;
+    private String mBag = "0";
+    private ItemBottomSheetPickerUIFragment pickerBag;
 
     public BaoPhatBangKeSearchDialog(Context context, Calendar calendar, BaoPhatbangKeSearchCallback reasonCallback) {
 
@@ -53,6 +62,8 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
         items.add(new Item("3", "Ca 3"));
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
+        tvBag.setText("Tất cả");
+        edtChuyenthu.getEditText().setInputType(EditorInfo.TYPE_CLASS_NUMBER);
     }
 
     @Override
@@ -60,7 +71,7 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
         super.show();
     }
 
-    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift, R.id.btnBack})
+    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift, R.id.btnBack, R.id.tv_bag})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_date_create:
@@ -80,7 +91,11 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
                     Toast.showToast(mActivity, "Phải chọn ca");
                     return;
                 }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue());
+                String chuyenthu = edtChuyenthu.getText();
+                if (TextUtils.isEmpty(chuyenthu)) {
+                    chuyenthu = "0";
+                }
+                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(), chuyenthu, mBag);
                 dismiss();
                 break;
             case R.id.tv_shift:
@@ -89,6 +104,36 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
             case R.id.btnBack:
                 dismiss();
                 break;
+            case R.id.tv_bag:
+                showUIBag();
+                break;
+        }
+    }
+
+    private void showUIBag() {
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item("0", "Tất cả"));
+        for (int i = 1; i <= 10; i++) {
+            items.add(new Item(i + "", i + ""));
+        }
+        if (pickerBag == null) {
+            pickerBag = new ItemBottomSheetPickerUIFragment(items, "Chọn túi",
+                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                        @Override
+                        public void onChooseClick(Item item, int position) {
+                            tvBag.setText(item.getText());
+                            mBag = item.getValue();
+
+                        }
+                    }, 0);
+            pickerBag.show(mActivity.getSupportFragmentManager(), pickerBag.getTag());
+        } else {
+            pickerBag.setData(items, 0);
+            if (!pickerBag.isShow) {
+                pickerBag.show(mActivity.getSupportFragmentManager(), pickerBag.getTag());
+            }
+
+
         }
     }
 

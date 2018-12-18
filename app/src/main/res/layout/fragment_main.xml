@@ -2,43 +2,72 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:paddingLeft="@dimen/_2sdp"
+        android:paddingRight="@dimen/_2sdp"
+        android:orientation="vertical"
         android:background="@color/colorPrimary"
         android:paddingBottom="@dimen/_2sdp">
 
-
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/img_logo_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_logo_home" />
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:src="@drawable/ic_logo_home" />
-
-
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_height="wrap_content">
             <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_logo"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_2sdp"
+                android:gravity="left"
+                android:text="Hạn mức"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_12sdp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_AmountMax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="VNĐ"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Số tiền đã thu"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_balance"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="VNĐ"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+        </LinearLayout>
 
-        </RelativeLayout>
-    </FrameLayout>
+
+
+    </LinearLayout>
 
     <com.ems.dingdong.views.MyViewPager
         android:id="@+id/view_pager"

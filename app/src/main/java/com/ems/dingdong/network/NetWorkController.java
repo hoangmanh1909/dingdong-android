@@ -119,8 +119,8 @@ public class NetWorkController {
 
     public static void searchDeliveryPostman(String postmanID,
                                              String fromDate,
-                                             String shiftID, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, shiftID);
+                                             String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso);
         call.enqueue(callback);
     }
 

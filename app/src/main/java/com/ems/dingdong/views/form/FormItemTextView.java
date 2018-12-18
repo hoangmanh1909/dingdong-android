@@ -76,7 +76,7 @@ public class FormItemTextView extends FormItemText {
     public TextView getTextView() {
         return mTextView;
     }
-    public ImageView getImageViewLeft() {
+   /* public ImageView getImageViewLeft() {
         return mIcon;
-    }
+    }*/
 }

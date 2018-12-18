@@ -23,8 +23,8 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchDeliveryPostman(postmanID, fromDate, shiftID,callback);
+    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback) {
+        NetWorkController.searchDeliveryPostman(postmanID, fromDate, shiftID,chuyenthu, tuiso, callback);
     }
 
     @Override

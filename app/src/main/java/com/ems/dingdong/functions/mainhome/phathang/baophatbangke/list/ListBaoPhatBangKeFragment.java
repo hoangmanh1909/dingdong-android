@@ -191,14 +191,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
-                public void onResponse(String fromDate, String shiftID) {
+                public void onResponse(String fromDate, String shiftID, String chuyenthu, String tuiso) {
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
                     text2 = "Ca " + mShiftID;
                     CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
                     tvTitle.setText(finalText);
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID);
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenthu, tuiso);
 
                 }
             }).show();
@@ -213,7 +213,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void initSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0");
         }
     }
 
