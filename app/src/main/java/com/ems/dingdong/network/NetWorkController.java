@@ -2,6 +2,7 @@ package com.ems.dingdong.network;
 
 
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.InquiryAmountResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ems.dingdong.BuildConfig;
@@ -127,6 +128,11 @@ public class NetWorkController {
     public static void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
         String signature = Utils.SHA256(parcelCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<CommonObjectResult> call = getAPIBuilder().searchParcelCodeDelivery(parcelCode.toUpperCase(), signature);
+        call.enqueue(callback);
+    }
+    public static void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
+        String signature = Utils.SHA256(parcelCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<InquiryAmountResult> call = getAPIBuilder().getInquiryAmount(parcelCode.toUpperCase(), signature);
         call.enqueue(callback);
     }
 

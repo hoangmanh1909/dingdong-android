@@ -7,6 +7,7 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
@@ -119,6 +120,12 @@ public interface VinattiAPI {
     @POST("api/Delivery/Inquiry")
     Call<CommonObjectResult> searchParcelCodeDelivery(@Field("ParcelCode") String parcelCode,
                                                       @Field("Signature") String signature
+    );
+
+    @FormUrlEncoded
+    @POST("api/Delivery/InquiryAmount")
+    Call<InquiryAmountResult> getInquiryAmount(@Field("ParcelCode") String parcelCode,
+                                               @Field("Signature") String signature
     );
 
     @FormUrlEncoded

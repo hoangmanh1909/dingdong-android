@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -20,19 +21,22 @@ interface BaoPhatBangKeDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
+
         void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode,
                                String deliveryDate, String deliveryTime, String receiverName,
                                String reasonCode, String solutionCode, String status,
                                String paymentChannel, String deliveryType, String sign,
                                String note,
                                String collectAmount,
-                               String ladingPostmanID ,
+                               String ladingPostmanID,
                                CommonCallback<SimpleResult> commonCallback);
+
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    CommonCallback<SimpleResult> callback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
+
         void pushToPNSDelivery(String postmanID,
                                String ladingCode,
                                String deliveryPOCode,
@@ -46,13 +50,15 @@ interface BaoPhatBangKeDetailContract {
                                String deliveryType,
                                String collectAmount,
                                String signatureCapture,
-                               String ladingPostmanID ,
+                               String ladingPostmanID,
                                CommonCallback<SimpleResult> callback);
 
         void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
                              String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
                              String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
                              String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback);
+
+        void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -77,6 +83,7 @@ interface BaoPhatBangKeDetailContract {
     interface Presenter extends IPresenter<View, Interactor> {
         CommonObject getBaoPhatBangke();
 
+        String getAmount();
 
         void getReasons();
 
@@ -86,6 +93,7 @@ interface BaoPhatBangKeDetailContract {
         void callForward(String phone);
 
         void loadSolution(String code);
+
         void signDataAndSubmitToPNS(String base64);
 
         void paymentDelivery(String base64);

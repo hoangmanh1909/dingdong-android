@@ -449,7 +449,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         mBaoPhatBangke.getCode(),
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText(),
-                        NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount))
+                        mPresenter.getAmount()// NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount)
                 );
             }
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
@@ -501,7 +501,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         mBaoPhatBangke.setDeliveryTime(time);
         if (edtCollectAmount.getText().equals("0")
                 && "Y".equals(mBaoPhatBangke.getIsCOD().toUpperCase())
-                ) {
+        ) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                     .setConfirmText("Có")
                     .setTitleText("Thông báo")

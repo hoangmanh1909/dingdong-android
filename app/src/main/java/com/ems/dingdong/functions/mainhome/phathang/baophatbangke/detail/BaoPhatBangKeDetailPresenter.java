@@ -8,6 +8,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -32,7 +33,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     private CommonObject mBaoPhatBangke;
     private int mType = 0;
     private int mPosition;
-    private int mPositionRow =-1;
+    private int mPositionRow = -1;
+    private String mAmount = "Không có";
 
     public BaoPhatBangKeDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -46,6 +48,26 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     @Override
     public void start() {
         // Start getting data here
+        getInquiryAmount();
+    }
+
+    private void getInquiryAmount() {
+        if (mBaoPhatBangke != null) {
+            mInteractor.getInquiryAmount(mBaoPhatBangke.getParcelCode(), new CommonCallback<InquiryAmountResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<InquiryAmountResult> call, Response<InquiryAmountResult> response) {
+                    super.onSuccess(call, response);
+                    if (response.body().getErrorCode().equals("00")) {
+                        mAmount = (response.body().getAmount());
+                    }
+                }
+
+                @Override
+                protected void onError(Call<InquiryAmountResult> call, String message) {
+                    super.onError(call, message);
+                }
+            });
+        }
     }
 
     @Override
@@ -86,6 +108,11 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     @Override
     public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
+    }
+
+    @Override
+    public String getAmount() {
+        return mAmount;
     }
 
 
@@ -138,25 +165,25 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             paymentDeliveryPayPost(sign);
         }
         else {*/
-            mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                    receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount, mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                        @Override
-                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            super.onSuccess(call, response);
-                            if (response.body().getErrorCode().equals("00")) {
-                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
+                receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount, mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        if (response.body().getErrorCode().equals("00")) {
+                            mView.showSuccessMessage("Cập nhật giao dịch thành công.");
 
-                            } else {
-                                mView.showError(response.body().getMessage());
-                            }
+                        } else {
+                            mView.showError(response.body().getMessage());
                         }
+                    }
 
-                        @Override
-                        protected void onError(Call<SimpleResult> call, String message) {
-                            super.onError(call, message);
-                            mView.showError(message);
-                        }
-                    });
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.showError(message);
+                    }
+                });
         //}
 
     }
@@ -247,8 +274,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         } else {
             if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                 paymentDelivery(signatureCapture);
-            }
-            else {
+            } else {
                 mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
                         reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, mBaoPhatBangke.getiD(),
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {

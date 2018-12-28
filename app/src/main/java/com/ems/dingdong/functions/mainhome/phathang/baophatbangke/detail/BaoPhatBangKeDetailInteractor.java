@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -21,12 +22,14 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     public void getReasons(CommonCallback<ReasonResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
     }
+
     @Override
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status,
-                                  String paymentChannel, String deliveryType, String sign, String note, String collectAmount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback) {
+                                  String paymentChannel, String deliveryType, String sign, String note, String collectAmount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, sign,note, collectAmount,ladingPostmanID, commonCallback);
+                solutionCode, status, paymentChannel, deliveryType, sign, note, collectAmount, ladingPostmanID, commonCallback);
     }
+
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
@@ -35,13 +38,14 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
 
     @Override
     public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
-        NetWorkController.getSolutionByReasonCode(code,commonCallback);
+        NetWorkController.getSolutionByReasonCode(code, commonCallback);
     }
+
     @Override
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
                                   String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
-                                  String deliveryType, String collectAmount, String signatureCapture,String ladingPostmanID , CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount,ladingPostmanID, callback);
+                                  String deliveryType, String collectAmount, String signatureCapture, String ladingPostmanID, CommonCallback<SimpleResult> callback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount, ladingPostmanID, callback);
     }
 
     @Override
@@ -49,6 +53,11 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note,collectAmount, commonCallback);
+                note, collectAmount, commonCallback);
+    }
+
+    @Override
+    public void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
+        NetWorkController.getInquiryAmount(parcelCode, callback);
     }
 }
