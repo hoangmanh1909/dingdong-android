@@ -1,3 +1,4 @@
+/*
 package com.ems.dingdong.calls;
 
 import android.Manifest;
@@ -107,3 +108,4 @@ public class CallReceiver extends PhoneStateBroadcastReceiver {
         super.onMissedCall(ctx, number, start);
     }
 }
+*/
