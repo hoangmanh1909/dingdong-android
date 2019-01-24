@@ -15,18 +15,23 @@ interface PhoneContract {
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    CommonCallback<SimpleResult> callback);
+        void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
         void showCallSuccess();
 
         void showError(String message);
+
+        void showConfirmSaveMobile();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
         String getPhone();
 
         void callForward(String phone);
+
+        void updateMobile();
     }
 }
 

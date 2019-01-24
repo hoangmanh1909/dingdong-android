@@ -2,6 +2,8 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -22,6 +24,7 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
         implements PhoneContract.Presenter {
 
     private String mPhone;
+    private String mCode;
 
     public PhonePresenter(ContainerView containerView) {
         super(containerView);
@@ -69,7 +72,11 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showCallSuccess();
+                    if (!TextUtils.isEmpty(mCode))
+                        mView.showConfirmSaveMobile();
+                    else {
+                        mView.showCallSuccess();
+                    }
                 } else {
                     mView.showError(response.body().getMessage());
                 }
@@ -83,5 +90,30 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
             }
         });
 
+    }
+
+    @Override
+    public void updateMobile() {
+        mView.showProgress();
+        mInteractor.updateMobile(mCode, mPhone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showCallSuccess();
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showCallSuccess();
+            }
+        });
+    }
+
+    public PhonePresenter setCode(String code) {
+        mCode = code;
+        return this;
     }
 }

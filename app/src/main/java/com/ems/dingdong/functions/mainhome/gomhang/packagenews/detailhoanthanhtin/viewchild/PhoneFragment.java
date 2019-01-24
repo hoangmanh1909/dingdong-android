@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.core.base.viper.ViewFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -65,6 +66,30 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
+    }
+
+    @Override
+    public void showConfirmSaveMobile() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setConfirmText("Có")
+                .setTitleText("Thông báo")
+                .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
+                .setCancelText("Không")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        mPresenter.updateMobile();
+                        sweetAlertDialog.dismiss();
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        showCallSuccess();
                         sweetAlertDialog.dismiss();
                     }
                 }).show();

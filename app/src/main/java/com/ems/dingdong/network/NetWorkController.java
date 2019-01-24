@@ -130,6 +130,7 @@ public class NetWorkController {
         Call<CommonObjectResult> call = getAPIBuilder().searchParcelCodeDelivery(parcelCode.toUpperCase(), signature);
         call.enqueue(callback);
     }
+
     public static void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
         String signature = Utils.SHA256(parcelCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<InquiryAmountResult> call = getAPIBuilder().getInquiryAmount(parcelCode.toUpperCase(), signature);
@@ -291,6 +292,11 @@ public class NetWorkController {
 
     public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<HistoryCreateBd13Result> commonCallback) {
         Call<HistoryCreateBd13Result> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
+        call.enqueue(commonCallback);
+    }
+
+    public static void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        Call<SimpleResult> call = getAPIBuilder().updateMobile(code, mobileNumber);
         call.enqueue(commonCallback);
     }
 

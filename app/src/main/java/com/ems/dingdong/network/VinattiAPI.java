@@ -256,6 +256,11 @@ public interface VinattiAPI {
                                       @Field("Longitude") String longitude,
                                       @Field("Signature") String signature);
 
+    @FormUrlEncoded
+    @POST("api/Delivery/UpdateMobile")
+    Call<SimpleResult> updateMobile(@Field("Code") String code,
+                                    @Field("MobileNumber") String mobileNumber);
+
     @Multipart
     @POST("api/Handle/UploadImage")
     Call<UploadResult> postImage(@Part MultipartBody.Part image);

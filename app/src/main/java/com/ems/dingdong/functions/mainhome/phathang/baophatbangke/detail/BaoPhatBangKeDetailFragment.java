@@ -230,6 +230,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                             .add(R.id.ll_contact,
                                     new PhonePresenter((ContainerView) getActivity())
                                             .setPhone(phones[i].trim())
+                                            .setCode(mBaoPhatBangke.getCode())
                                             .getFragment(), TAG + i)
                             .commit();
                 }
@@ -499,8 +500,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         }
         String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         mBaoPhatBangke.setDeliveryTime(time);
-        if (edtCollectAmount.getText().equals("0")
-                && "Y".equals(mBaoPhatBangke.getIsCOD().toUpperCase())
+        if (("0".equals(collectAmount) || "0".equals(mCollectAmount)) && "Y".equals(mBaoPhatBangke.getIsCOD().toUpperCase())
         ) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                     .setConfirmText("Có")

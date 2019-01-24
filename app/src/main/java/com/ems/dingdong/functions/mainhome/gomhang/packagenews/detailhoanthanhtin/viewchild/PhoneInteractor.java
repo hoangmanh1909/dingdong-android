@@ -20,4 +20,9 @@ class PhoneInteractor extends Interactor<PhoneContract.Presenter>
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 callback);
     }
+
+    @Override
+    public void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.updateMobile(code, mobileNumber, commonCallback);
+    }
 }
