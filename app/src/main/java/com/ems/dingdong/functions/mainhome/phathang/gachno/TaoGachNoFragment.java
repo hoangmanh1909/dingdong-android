@@ -133,6 +133,11 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                                 mPhone = phone;
                                 mPresenter.callForward(phone);
                             }
+
+                            @Override
+                            public void onUpdateResponse(String phone) {
+
+                            }
                         }).show();
                     }
                 });

@@ -106,6 +106,25 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     }
 
     @Override
+    public void updateMobile(String phone) {
+        mView.showProgress();
+        mInteractor.updateMobile(mBaoPhatBangke.getCode(), phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showView();
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+            }
+        });
+    }
+
+    @Override
     public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
     }

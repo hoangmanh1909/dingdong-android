@@ -169,6 +169,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private String mSign = "";
     private String mPhone;
     private String mCollectAmount = "";
+    private PhoneConectDialog mPhoneConectDialog;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -338,13 +339,19 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 break;
             case R.id.tv_SenderPhone:
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getSenderPhone())) {
-                    new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
+                    mPhoneConectDialog = new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
                             mPresenter.callForward(phone);
                         }
-                    }).show();
+
+                        @Override
+                        public void onUpdateResponse(String phone) {
+                            showConfirmSaveMobile(phone);
+                        }
+                    });
+                    mPhoneConectDialog.show();
                 }
                 break;
             case R.id.btn_sign:
@@ -411,6 +418,29 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 timePickerDialog.show();
                 break;
         }
+    }
+
+    private void showConfirmSaveMobile(final String phone) {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setConfirmText("Có")
+                .setTitleText("Thông báo")
+                .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
+                .setCancelText("Không")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        mPresenter.updateMobile(phone);
+                        sweetAlertDialog.dismiss();
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        showCallSuccess();
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
     }
 
     private void submit() {
@@ -622,6 +652,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, mPresenter.getPosition()));
         EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG_DETAIL, mPresenter.getPositionRow()));
         mPresenter.back();
+    }
+
+    @Override
+    public void showView() {
+        mPhoneConectDialog.updateText();
     }
 
     private void showUIReason() {

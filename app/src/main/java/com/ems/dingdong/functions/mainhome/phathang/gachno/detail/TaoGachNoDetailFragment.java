@@ -283,6 +283,11 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                             mPhone = phone;
                             mPresenter.callForward(phone);
                         }
+
+                        @Override
+                        public void onUpdateResponse(String phone) {
+
+                        }
                     }).show();
                 }
                 break;

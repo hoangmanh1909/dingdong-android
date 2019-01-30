@@ -143,6 +143,11 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                                 mPhone = phone;
                                 mPresenter.callForward(phone);
                             }
+
+                            @Override
+                            public void onUpdateResponse(String phone) {
+
+                            }
                         }).show();
                     }
                 });

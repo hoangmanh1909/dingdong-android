@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.core.base.viper.ViewFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -23,6 +22,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     @BindView(R.id.tv_ContactPhone)
     CustomTextView tvContactPhone;
     private String mPhone;
+    private PhoneConectDialog mPhoneConectDialog;
 
     public static PhoneFragment getInstance() {
         return new PhoneFragment();
@@ -41,13 +41,19 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @OnClick(R.id.tv_ContactPhone)
     public void onViewClicked() {
-        new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
+        mPhoneConectDialog = new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
             @Override
             public void onCallResponse(String phone) {
                 mPhone = phone;
                 mPresenter.callForward(phone);
             }
-        }).show();
+
+            @Override
+            public void onUpdateResponse(String phone) {
+                showConfirmSaveMobile(phone);
+            }
+        });
+        mPhoneConectDialog.show();
     }
 
     @Override
@@ -72,7 +78,11 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     }
 
     @Override
-    public void showConfirmSaveMobile() {
+    public void showView() {
+        mPhoneConectDialog.updateText();
+    }
+
+    private void showConfirmSaveMobile(final String phone) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -81,7 +91,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        mPresenter.updateMobile();
+                        mPresenter.updateMobile(phone);
                         sweetAlertDialog.dismiss();
 
                     }

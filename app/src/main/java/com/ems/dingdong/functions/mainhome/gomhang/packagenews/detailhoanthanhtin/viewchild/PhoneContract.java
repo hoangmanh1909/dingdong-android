@@ -23,7 +23,7 @@ interface PhoneContract {
 
         void showError(String message);
 
-        void showConfirmSaveMobile();
+        void showView();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -31,7 +31,7 @@ interface PhoneContract {
 
         void callForward(String phone);
 
-        void updateMobile();
+        void updateMobile(String phone);
     }
 }
 

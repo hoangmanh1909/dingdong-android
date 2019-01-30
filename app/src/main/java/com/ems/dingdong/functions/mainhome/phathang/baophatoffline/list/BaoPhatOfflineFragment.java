@@ -159,6 +159,11 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                                 mPhone = phone;
                                 mPresenter.callForward(phone);
                             }
+
+                            @Override
+                            public void onUpdateResponse(String phone) {
+
+                            }
                         }).show();
                     }
                 });

@@ -60,4 +60,9 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     public void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
         NetWorkController.getInquiryAmount(parcelCode, callback);
     }
+
+    @Override
+    public void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.updateMobile(code, mobileNumber, commonCallback);
+    }
 }

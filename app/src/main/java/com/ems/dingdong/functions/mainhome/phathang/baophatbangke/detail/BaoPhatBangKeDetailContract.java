@@ -59,6 +59,8 @@ interface BaoPhatBangKeDetailContract {
                              String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback);
 
         void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);
+
+        void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -78,6 +80,8 @@ interface BaoPhatBangKeDetailContract {
         void callAppToMpost();
 
         void finishView();
+
+        void showView();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -103,6 +107,8 @@ interface BaoPhatBangKeDetailContract {
         int getDeliveryType();
 
         int getPositionRow();
+
+        void updateMobile(String phone);
     }
 }
 

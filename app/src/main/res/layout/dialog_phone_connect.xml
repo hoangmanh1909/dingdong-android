@@ -31,12 +31,29 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_smart_connect" />
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SĐT"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="SĐT"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_update_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Cập nhật"
+                        android:textColor="@color/color_5f2f75"
+                        android:textSize="@dimen/text_size_14sp" />
+                </RelativeLayout>
+
 
                 <com.ems.dingdong.views.CustomEditText
                     android:id="@+id/edt_phone"

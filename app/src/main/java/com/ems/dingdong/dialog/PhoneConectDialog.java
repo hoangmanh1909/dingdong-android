@@ -10,6 +10,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.R;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomEditText;
+import com.ems.dingdong.views.CustomTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +22,8 @@ public class PhoneConectDialog extends Dialog {
     boolean check = false;
     @BindView(R.id.edt_phone)
     CustomEditText edtPhone;
+    @BindView(R.id.tv_update_phone)
+    CustomTextView tvUpdatePhone;
 
     public PhoneConectDialog(Context context, String phone, PhoneCallback reasonCallback) {
 
@@ -37,7 +40,7 @@ public class PhoneConectDialog extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_update, R.id.tv_close})
+    @OnClick({R.id.tv_update, R.id.tv_close, R.id.tv_update_phone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_update:
@@ -58,6 +61,13 @@ public class PhoneConectDialog extends Dialog {
             case R.id.tv_close:
                 dismiss();
                 break;
+            case R.id.tv_update_phone:
+                mDelegate.onUpdateResponse(edtPhone.getText().toString());
+                break;
         }
+    }
+
+    public void updateText() {
+        tvUpdatePhone.setText("Đã cập nhật");
     }
 }
