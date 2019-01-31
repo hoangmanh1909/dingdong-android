@@ -98,11 +98,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void initLayout() {
         super.initLayout();
-        if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
-            checkSelfPermission();
-            showDialog();
+        if (mPresenter != null) {
+            if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
+                checkSelfPermission();
+                showDialog();
+            }
+        } else {
+            return;
         }
-
         text1 = "Bản kê đi phát (BD13)";
         CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
         tvTitle.setText(finalText);

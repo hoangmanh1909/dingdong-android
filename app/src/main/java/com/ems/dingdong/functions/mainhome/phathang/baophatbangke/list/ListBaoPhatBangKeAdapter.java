@@ -167,10 +167,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 }
             });
             if (!TextUtils.isEmpty(item.getAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount()))));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd","")))));
             }
             if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount().replace("vnd","")))));
             }
             if (!TextUtils.isEmpty(item.getService())) {
                 if (!TextUtils.isEmpty(item.getServiceName().trim())) {
