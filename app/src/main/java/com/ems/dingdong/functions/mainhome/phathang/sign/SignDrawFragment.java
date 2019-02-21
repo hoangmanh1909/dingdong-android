@@ -92,39 +92,39 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                 mPresenter.back();
                 break;
             case R.id.btn_confirm:
-                /* if (isSigned) {*/
-                String base64 = "";
-                Bitmap bitmap = signaturePad.getSignatureBitmap();
-                for (int quality = 80; quality >= 10; quality -= 10) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-                    final byte[] dataF = baos.toByteArray();
-                    if (dataF.length <= 500000) {
-                        base64 = Base64.encodeToString(dataF, Base64.DEFAULT);//"data:image/jpeg;base64," +
+                if (isSigned) {
+                    String base64 = "";
+                    Bitmap bitmap = signaturePad.getSignatureBitmap();
+                    for (int quality = 80; quality >= 10; quality -= 10) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                        final byte[] dataF = baos.toByteArray();
+                        if (dataF.length <= 500000) {
+                            base64 = Base64.encodeToString(dataF, Base64.DEFAULT);//"data:image/jpeg;base64," +
+                        }
                     }
-                }
-                // if (!TextUtils.isEmpty(base64)) {
-                if (TextUtils.isEmpty(base64)) {
-                    base64 = "";
-                }
-                if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
-                    if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
-                        mPresenter.paymentDelivery(base64);
+                    // if (!TextUtils.isEmpty(base64)) {
+                    if (TextUtils.isEmpty(base64)) {
+                        base64 = "";
+                    }
+                    if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
+                        if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
+                            mPresenter.paymentDelivery(base64);
+                        } else {
+                            mPresenter.signDataAndSubmitToPNS(base64);
+                        }
                     } else {
                         mPresenter.signDataAndSubmitToPNS(base64);
                     }
-                } else {
-                    mPresenter.signDataAndSubmitToPNS(base64);
-                }
                    /* } else {
                         Toast.showToast(getActivity(), "Có lỗi trong quá trình ký, vui lòng liên hệ ban quản trị");
                         return;
                     }*/
-              /*  } else {
+                } else {
                     //
                     Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                     return;
-                }*/
+                }
                 break;
             case R.id.btn_clear_sign:
                 signaturePad.clear();

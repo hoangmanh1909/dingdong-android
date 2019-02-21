@@ -463,11 +463,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
             }*/
-           /* if (TextUtils.isEmpty(mSign)) {
+            if (TextUtils.isEmpty(mSign)) {
                 //
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                 return;
-            }*/
+            }
             final String collectAmount = edtCollectAmount.getText().replaceAll("\\.", "");
             String message = "";
             if (mCollectAmount.equals(collectAmount)) {
