@@ -470,19 +470,19 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             }
             final String collectAmount = edtCollectAmount.getText().replaceAll("\\.", "");
             String message = "";
-            if (mCollectAmount.equals(collectAmount)) {
+          /*  if (mCollectAmount.equals(collectAmount)) {
                 message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s VNĐ \nBạn có muốn xác nhận không ?",
                         mBaoPhatBangke.getCode(),
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText());
-            } else {
+            } else {*/
                 message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s  VNĐ (số tiền yêu cầu nhờ thu %s  VNĐ) \nBạn có muốn xác nhận không ?",
                         mBaoPhatBangke.getCode(),
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText(),
                         mPresenter.getAmount()// NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount)
                 );
-            }
+           // }
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
