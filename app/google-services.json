@@ -13,12 +13,21 @@
           "package_name": "com.vinatti.dingdong"
         }
       },
+
       "oauth_client": [
         {
           "client_id": "853538468534-evfgb206l92d6g3mi5leaqasea191v09.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vinatti.dingdong",
+            "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
+          }
+        },
+        {
+          "client_id": "853538468534-evfgb206l92d6g3mi5leaqasea191v09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinatti.dingdong.test",
             "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
           }
         },

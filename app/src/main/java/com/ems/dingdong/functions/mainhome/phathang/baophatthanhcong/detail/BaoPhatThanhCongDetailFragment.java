@@ -96,6 +96,7 @@ public class BaoPhatThanhCongDetailFragment extends ViewFragment<BaoPhatThanhCon
                         .add(R.id.ll_contact,
                                 new PhonePresenter((ContainerView) getActivity())
                                         .setPhone(phones[i].trim())
+                                        .setCode(item.getCode())
                                         .getFragment(), TAG + i)
                         .commit();
             }

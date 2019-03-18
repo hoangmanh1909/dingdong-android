@@ -62,6 +62,14 @@ public class PhoneConectDialog extends Dialog {
                 dismiss();
                 break;
             case R.id.tv_update_phone:
+                if (TextUtils.isEmpty(edtPhone.getText().toString())) {
+                    Toast.showToast(edtPhone.getContext(), "Xin vui lòng nhập SĐT.");
+                    return;
+                }
+                if (!NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
+                    Toast.showToast(edtPhone.getContext(), "Số điện thoại không hợp lệ.");
+                    return;
+                }
                 mDelegate.onUpdateResponse(edtPhone.getText().toString());
                 break;
         }

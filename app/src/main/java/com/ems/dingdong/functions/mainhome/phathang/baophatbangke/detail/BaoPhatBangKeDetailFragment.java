@@ -241,6 +241,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     .add(R.id.ll_contact,
                             new PhonePresenter((ContainerView) getActivity())
                                     .setPhone("")
+                                    .setCode(mBaoPhatBangke.getCode())
                                     .getFragment(), TAG + 0)
                     .commit();
         }

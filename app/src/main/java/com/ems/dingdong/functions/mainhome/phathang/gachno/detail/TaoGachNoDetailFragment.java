@@ -195,6 +195,7 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                         .add(R.id.ll_contact,
                                 new PhonePresenter((ContainerView) getActivity())
                                         .setPhone(phones[i].trim())
+                                        .setCode(mBaoPhatBangke.getCode())
                                         .getFragment(), TAG + i)
                         .commit();
             }

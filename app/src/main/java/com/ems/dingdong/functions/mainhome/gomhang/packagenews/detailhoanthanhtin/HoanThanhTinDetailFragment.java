@@ -248,6 +248,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         .add(R.id.ll_contact,
                                 new PhonePresenter((ContainerView) getActivity())
                                         .setPhone(phones[i].trim())
+                                        .setCode(mHoanThanhTin.getCode())
                                         .getFragment(), TAG + i)
                         .commit();
             }
