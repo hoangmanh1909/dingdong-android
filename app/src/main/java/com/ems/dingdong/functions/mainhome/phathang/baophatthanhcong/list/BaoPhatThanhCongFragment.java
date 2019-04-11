@@ -141,7 +141,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                             @Override
                             public void onCallResponse(String phone) {
                                 mPhone = phone;
-                                mPresenter.callForward(phone);
+                                mPresenter.callForward(phone,mList.get(position).getParcelCode());
                             }
 
                             @Override

@@ -22,7 +22,7 @@ interface TaoGachNoDetailContract {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   CommonCallback<SimpleResult> callback);
+                                   String parcelCode, CommonCallback<SimpleResult> callback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 

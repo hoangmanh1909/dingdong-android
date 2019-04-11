@@ -14,7 +14,7 @@ interface CallServiceContract {
     interface Interactor extends IInteractor<Presenter> {
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   CommonCallback<SimpleResult> callback);
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

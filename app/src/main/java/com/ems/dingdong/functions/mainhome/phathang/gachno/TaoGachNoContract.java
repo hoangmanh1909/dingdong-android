@@ -20,7 +20,7 @@ interface TaoGachNoContract {
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   CommonCallback<SimpleResult> callback);
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
 
         void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String amount, CommonCallback<SimpleResult> commonCallback);
     }
@@ -41,7 +41,7 @@ interface TaoGachNoContract {
         void showDetail(CommonObject commonObject, int position);
 
         void pushViewConfirmAll(List<CommonObject> list);
-        void callForward(String phone);
+        void callForward(String phone, String ladingCode);
 
         void showViewList();
     }

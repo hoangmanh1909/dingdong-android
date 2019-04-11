@@ -33,7 +33,7 @@ interface BaoPhatBangKeDetailContract {
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   CommonCallback<SimpleResult> callback);
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 

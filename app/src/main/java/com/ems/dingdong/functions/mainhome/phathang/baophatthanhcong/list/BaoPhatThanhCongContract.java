@@ -20,7 +20,7 @@ interface BaoPhatThanhCongContract {
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   CommonCallback<SimpleResult> callback);
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -37,7 +37,7 @@ interface BaoPhatThanhCongContract {
         void showDetail(CommonObject commonObject, int position);
 
         void pushViewConfirmAll(List<CommonObject> list);
-        void callForward(String phone);
+        void callForward(String phone, String parcelCode);
     }
 }
 

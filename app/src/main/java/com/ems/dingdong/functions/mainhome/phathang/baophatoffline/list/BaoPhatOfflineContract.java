@@ -20,7 +20,7 @@ interface BaoPhatOfflineContract {
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   CommonCallback<SimpleResult> callback);
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
         void pushToPNSDelivery(String postmanID, String ladingCode,
                                String deliveryPOCode, String deliveryDate,
                                String deliveryTime, String receiverName,
@@ -43,7 +43,7 @@ interface BaoPhatOfflineContract {
         void showDetail(CommonObject commonObject, int position);
 
         void pushViewConfirmAll(List<CommonObject> list);
-        void callForward(String phone);
+        void callForward(String phone, String parcelCode);
 
         void saveLocal(CommonObject commonObject);
 

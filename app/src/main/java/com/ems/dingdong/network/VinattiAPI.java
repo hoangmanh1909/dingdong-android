@@ -64,6 +64,7 @@ public interface VinattiAPI {
                                              @Field("CalleeNumber") String calleeNumber,
                                              @Field("CallForwardType") String callForwardType,
                                              @Field("HotlineNumber") String hotlineNumber,
+                                             @Field("LadingCode") String ladingCode,
                                              @Field("Signature") String signature
     );
 
