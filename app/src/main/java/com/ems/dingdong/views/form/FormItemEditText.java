@@ -32,6 +32,8 @@ public class FormItemEditText extends FormItemText {
 
     @BindView(R.id.item_edittext_devider)
     View mDevider;
+    @BindView(R.id.ll_edit)
+    View llEdit;
 
     private boolean isDateTimeInput = false;
 
@@ -55,7 +57,16 @@ public class FormItemEditText extends FormItemText {
             int minLines = inputFormEditText.getInt(R.styleable.FormItem_android_minLines, 1);
             mTextView.setMinLines(minLines);
         }
-
+        if (inputFormEditText.hasValue(R.styleable.FormItem_formShowUnderline)) {
+            boolean vi = inputFormEditText.getBoolean(R.styleable.FormItem_formShowUnderline, false);
+            mDevider.setVisibility(vi ? VISIBLE : GONE);
+        }
+        if (inputFormEditText.hasValue(R.styleable.FormItem_formDrawablePadding)) {
+            int gravity = inputFormEditText.getDimensionPixelSize(R.styleable.FormItem_formDrawablePadding, 0);
+            LayoutParams params = (LayoutParams) llEdit.getLayoutParams();
+            params.setMargins(params.leftMargin, params.topMargin, gravity, params.bottomMargin);
+            llEdit.setLayoutParams(params);
+        }
 
         setOnClickListener(new View.OnClickListener() {
             @Override

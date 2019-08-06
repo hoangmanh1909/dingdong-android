@@ -7,18 +7,19 @@
 
     <LinearLayout
         android:id="@+id/form_item_layout"
-        android:gravity="center_vertical"
-        style="@style/FormItemLayout">
+        style="@style/FormItemLayout"
+        android:gravity="center_vertical">
 
-       <!-- <ImageView
-            android:id="@+id/form_item_icon"
-            android:visibility="gone"
-            style="@style/FormItemIcon" />-->
+        <!-- <ImageView
+             android:id="@+id/form_item_icon"
+             android:visibility="gone"
+             style="@style/FormItemIcon" />-->
 
         <RelativeLayout
+            android:id="@+id/ll_edit"
             android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <EditText
                 android:id="@+id/form_item_value_text"
@@ -26,8 +27,8 @@
                 android:layout_width="match_parent"
                 android:imeOptions="actionDone"
                 android:overScrollMode="always"
-                android:paddingRight="@dimen/_10sdp"
                 android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical" />
 
@@ -37,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/clear"
                 android:padding="5dp"
+                android:src="@drawable/clear"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -50,9 +51,9 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/item_edittext_devider"
         style="@style/Devider"
         android:layout_marginLeft="@dimen/size_15dp"
         android:layout_marginRight="@dimen/size_15dp"
-        android:background="@color/gray"
-      android:id="@+id/item_edittext_devider"/>
+        android:background="@color/gray" />
 </LinearLayout>

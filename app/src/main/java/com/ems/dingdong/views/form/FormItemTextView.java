@@ -39,7 +39,16 @@ public class FormItemTextView extends FormItemText {
             int minLines = input.getInt(R.styleable.FormItem_android_minLines, 1);
             mTextView.setMinLines(minLines);
         }
-
+        if (input.hasValue(R.styleable.FormItem_formShowUnderline)) {
+            boolean vi = input.getBoolean(R.styleable.FormItem_formShowUnderline, false);
+            mDevider.setVisibility(vi ? VISIBLE : GONE);
+        }
+        if (input.hasValue(R.styleable.FormItem_formDrawablePadding)) {
+            int gravity = input.getDimensionPixelSize(R.styleable.FormItem_formDrawablePadding, 0);
+            LayoutParams params = (LayoutParams) mTextView.getLayoutParams();
+            params.setMargins(params.leftMargin, params.topMargin, gravity, params.bottomMargin);
+            mTextView.setLayoutParams(params);
+        }
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
