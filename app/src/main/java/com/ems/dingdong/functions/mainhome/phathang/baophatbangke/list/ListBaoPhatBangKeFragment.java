@@ -198,6 +198,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
+                    Constants.SHIFT = mShiftID;
                     text2 = "Ca " + mShiftID;
                     CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
                     tvTitle.setText(finalText);

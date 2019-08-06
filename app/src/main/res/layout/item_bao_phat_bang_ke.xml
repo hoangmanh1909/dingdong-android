@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,6 +12,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_star" />
+
+            <CheckBox
+                android:id="@+id/cb_selected"
+                android:button="@drawable/custom_btn_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -38,8 +60,9 @@
                     android:id="@+id/tv_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_14sp" />
+                    android:textColor="#5f3075"
+                    android:textSize="@dimen/text_size_14sp"
+                    tools:text="EL096117119VN" />
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_date"
@@ -48,8 +71,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                    android:textColor="#999999"
+                    android:textSize="@dimen/text_size_12sp"
+                    tools:text="30/07/2019 - Ca 1" />
             </RelativeLayout>
 
             <com.ems.dingdong.views.CustomTextView
@@ -57,25 +81,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+                android:textColor="#999999"
+                android:textSize="@dimen/text_size_12sp"
+                tools:text="Đỗ thị thu thủy/59000 - 0912347775" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contact_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+                android:textColor="#999999"
+                android:textSize="@dimen/text_size_12sp"
+                tools:text="34 hàng ngang hoàn kiếm Hà Nội" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contact_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
+                android:textColor="#999999"
                 android:textSize="@dimen/text_size_12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:text="Lần phát : 2" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="@dimen/text_size_12sp"
+                tools:text="Lần phát : 2" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -84,16 +119,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/tv_info"
+                    android:gravity="right"
                     android:orientation="horizontal">
 
-                    <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_5dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
 
                     <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tv_services"
@@ -101,45 +129,30 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/dimen_5dp"
-                        android:background="@drawable/bg_border_phone"
-                        android:padding="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:background="@drawable/bg_gradient_search"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textSize="@dimen/text_size_14sp"
+                        tools:text="COD" />
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        tools:text="59.000 VND" />
                 </LinearLayout>
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+
             </RelativeLayout>
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_status"
-                android:layout_width="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star" />
-
-            <CheckBox
-                android:id="@+id/cb_selected"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
     </LinearLayout>
 

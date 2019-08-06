@@ -35,7 +35,8 @@
                 android:layout_toLeftOf="@+id/img_send"
                 android:layout_toRightOf="@+id/img_back"
                 android:gravity="center"
-                android:text="Báo phát bản kê (BD13)" />
+                android:text="Báo phát bản kê (BD13)"
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/img_send"
