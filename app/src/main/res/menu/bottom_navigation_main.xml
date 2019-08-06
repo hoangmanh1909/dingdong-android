@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_home_tab"
         android:title="Trang chủ"
         app:showAsAction="ifRoom" />
     <item

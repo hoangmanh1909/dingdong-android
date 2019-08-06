@@ -17,7 +17,7 @@
     <View
         android:id="@+id/v_devider"
         style="@style/LightGrayDevider"
-        android:layout_height="@dimen/size_10dp"/>
+        android:layout_height="@dimen/size_1dp"/>
    <!-- <View
         android:id="@+id/v_devider"
         android:layout_width="match_parent"

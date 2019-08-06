@@ -1,34 +1,39 @@
 package com.ems.dingdong.functions.mainhome.home;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
+import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
-import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The Home Fragment
@@ -40,7 +45,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
     private HomeGroupAdapter adapter;
     ArrayList<GroupInfo> mList;
 
-    private static final int SPAN_SIZE = 3;
+    private static final int SPAN_SIZE = 4;
     private StickyHeaderGridLayoutManager mLayoutManager;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -69,43 +74,42 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
-            homeInfos.add(new HomeInfo(13, R.drawable.ic_offline, "Nhập báo phát"));
+            homeInfos.add(new HomeInfo(13, R.drawable.ic_bao_phat_offline, "Nhập báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
-            homeInfos = new ArrayList<>();
+           /* homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
-            mList.add(new GroupInfo("Người dùng", homeInfos));
+            mList.add(new GroupInfo("Người dùng", homeInfos));*/
         } else {
-            //homeInfos.add(new HomeInfo(R.drawable.ic_collect_service, getString(R.string.info_gomhang), "Gom hàng"));
-            homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
+           /* homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
             homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
-            mList.add(new GroupInfo("Gom hàng", homeInfos));
+            mList.add(new GroupInfo("Gom hàng", homeInfos));*/
 
             //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
             homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bản kê (BD13)"));
-            homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
-            homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
-            homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
+            homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_ban_ke, "Báo phát bản kê (BD13)"));
+            homeInfos.add(new HomeInfo(9, R.drawable.ic_lap_ban_ke, "Lập bản kê (BD13)"));
+            homeInfos.add(new HomeInfo(10, R.drawable.ic_tra_cuu_ban_ke, "Tra cứu bản kê BD13"));
+            homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
             homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
 
-          //  mList.add(new GroupInfo("Phát hàng", homeInfos));
-            homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
-            homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
+            //  mList.add(new GroupInfo("Phát hàng", homeInfos));
+            homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
+            homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
 
             homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(15, R.drawable.ic_offline, "Nhập báo phát"));
-            homeInfos.add(new HomeInfo(14, R.drawable.ic_online, "Báo phát offline"));
+            homeInfos.add(new HomeInfo(15, R.drawable.ic_nhap_bao_phat, "Nhập báo phát"));
+            homeInfos.add(new HomeInfo(14, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
             mList.add(new GroupInfo("Offline", homeInfos));
 
 
         /*    homeInfos = new ArrayList<>();
             mList.add(new GroupInfo("Call", homeInfos));*/
-            homeInfos = new ArrayList<>();
+          /*  homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
             homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
             homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
-            mList.add(new GroupInfo("Người dùng", homeInfos));
+            mList.add(new GroupInfo("Người dùng", homeInfos));*/
         }
 
         adapter = new HomeGroupAdapter(mList) {
@@ -174,7 +178,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             }
         };
         mLayoutManager = new StickyHeaderGridLayoutManager(SPAN_SIZE);
-        mLayoutManager.setHeaderBottomOverlapMargin(getResources().getDimensionPixelSize(R.dimen.dimen_8dp));
+        mLayoutManager.setHeaderBottomOverlapMargin(getResources().getDimensionPixelSize(R.dimen.dimen_2dp));
        /* mLayoutManager.setSpanSizeLookup(new StickyHeaderGridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int section, int position) {
@@ -230,6 +234,25 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             if (!pickerShift.isShow) {
                 pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
             }
+        }
+    }
+
+
+    @OnClick({R.id.ll_xac_nhan_tin, R.id.ll_hoan_tat_tin})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_xac_nhan_tin: {
+                Intent intent = new Intent(getActivity(), ListCommonActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                startActivity(intent);
+            }
+            break;
+            case R.id.ll_hoan_tat_tin: {
+                Intent intent = new Intent(getActivity(), ListCommonActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 2);
+                startActivity(intent);
+            }
+            break;
         }
     }
 }

@@ -22,7 +22,7 @@ public class Constants {
     public static final int TYPE_BAO_PHAT_BD13_KHONG_THANH_CONG = 4;
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
     public static final int TYPE_BAO_PHAT_THANH_CONG_DETAIL = 5;
-    public static final String HEADER_NUMBER = "tel:159";
+    public static  String HEADER_NUMBER = "tel:159";
     public static final String HEADER_NUMBER_LOG = "159";
     public static final String MANUFACTURE_XIAOMI = "Xiaomi";
 

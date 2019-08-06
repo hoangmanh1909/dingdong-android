@@ -49,15 +49,12 @@ public class HomeGroupAdapter extends StickyHeaderGridAdapter {
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder viewHolder, int section) {
         final MyHeaderViewHolder holder = (MyHeaderViewHolder) viewHolder;
-        if(section==0)
-        {
+        if (section == 0) {
             holder.view.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             holder.view.setVisibility(View.VISIBLE);
         }
-      //  holder.tvHeader.setText(mList.get(section).getNameGroup());
+        //  holder.tvHeader.setText(mList.get(section).getNameGroup());
     }
 
     @Override
@@ -68,10 +65,10 @@ public class HomeGroupAdapter extends StickyHeaderGridAdapter {
 
     public class MyHeaderViewHolder extends HeaderViewHolder {
 
-      /*  @BindView(R.id.tv_header)
-        TextView tvHeader;*/
-      @BindView(R.id.v_devider)
-      View view;
+        /*  @BindView(R.id.tv_header)
+          TextView tvHeader;*/
+        @BindView(R.id.v_devider)
+        View view;
 
         public MyHeaderViewHolder(View itemView) {
             super(itemView);

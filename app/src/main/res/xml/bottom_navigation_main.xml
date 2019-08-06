@@ -2,18 +2,22 @@
 <tabs>
     <tab
         id="@+id/action_home"
-        icon="@drawable/ic_home"
-        title="Trang chủ" />
+        icon="@drawable/ic_home_tab"
+        title="Trang chủ"
+        />
     <tab
         id="@+id/action_cart"
-        icon="@drawable/ic_cart"
-        title="Gom hàng" />
+        icon="@drawable/ic_gom_hang_tab"
+        title="Gom hàng"
+        />
     <tab
         id="@+id/action_airplane"
-        icon="@drawable/ic_airplane"
-        title="Phát hàng" />
+        icon="@drawable/ic_phat_hang_tab"
+        title="Phát hàng"
+        />
     <tab
         id="@+id/action_location"
-        icon="@drawable/ic_location"
-        title="Định vị" />
+        icon="@drawable/ic_dinh_vi_tab"
+        title="Định vị"
+        />
 </tabs>
