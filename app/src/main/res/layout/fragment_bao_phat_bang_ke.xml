@@ -38,14 +38,15 @@
                 android:text="Báo phát bản kê (BD13)"
                 android:textColor="@color/white" />
 
-            <ImageView
-                android:id="@+id/img_send"
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_search"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_5dp"
-                android:src="@drawable/ic_send_telegram" />
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="Chọn"
+                android:padding="@dimen/dimen_5dp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -135,13 +136,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.ems.dingdong.views.CustomTextView
+           <!-- <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/btn_confirm_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,7 +162,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp"
-                android:visibility="invisible" />
+                android:visibility="invisible" />-->
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh"
@@ -173,7 +175,6 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_above="@+id/btn_confirm_all"
                     android:visibility="visible" />
             </android.support.v4.widget.SwipeRefreshLayout>
         </RelativeLayout>
@@ -188,7 +189,7 @@
             android:visibility="gone" />
 
 
-        <ImageView
+       <!-- <ImageView
             android:id="@+id/img_view"
             android:layout_width="@dimen/size_50dp"
             android:layout_height="@dimen/size_50dp"
@@ -197,7 +198,23 @@
             android:layout_gravity="bottom|right"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:src="@drawable/ic_choose_calendar" />
+            android:src="@drawable/ic_choose_calendar" />-->
 
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f5f6fa"
+        android:padding="20dp">
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:id="@+id/btn_confirm_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Báo phát"
+            android:textColor="#fcaf17"
+            android:textSize="@dimen/text_size_16sp" />
+    </LinearLayout>
 </LinearLayout>

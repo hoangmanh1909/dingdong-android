@@ -66,8 +66,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     TextView tvAmount;
     @BindView(R.id.btn_confirm_all)
     TextView btnConfirmAll;
-    @BindView(R.id.img_view)
-    ImageView imgView;
+
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
     @BindView(R.id.swipe_refresh)
@@ -221,7 +220,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.img_send})
+    @OnClick({ R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.tv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -233,7 +232,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
                 break;
 
-            case R.id.img_view:
+            case R.id.tv_search:
                 showDialog();
                 break;
             case R.id.btn_confirm_all:
@@ -242,9 +241,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.img_back:
                 mPresenter.back();
                 break;
-            case R.id.img_send:
+           /* case R.id.img_send:
                 submit();
-                break;
+                break;*/
         }
     }
 
