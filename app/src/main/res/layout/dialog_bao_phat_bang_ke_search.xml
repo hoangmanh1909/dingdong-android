@@ -37,9 +37,9 @@
                 <com.ems.dingdong.views.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_16dp"
                     android:background="#f5f6fa"
                     android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:text="TÌM KIẾM BẢN KÊ ĐI PHÁT"
                     android:textColor="#555356"
@@ -49,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_16dp"
+                    android:layout_marginRight="@dimen/size_16dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -63,7 +64,7 @@
                             android:layout_gravity="left|center"
                             android:layout_weight="4"
                             android:text="Ngày tạo vận đơn"
-                            android:textColor="@color/n_gray_text"
+                            android:textColor="#253854"
                             android:textSize="14sp" />
 
                         <com.ems.dingdong.views.form.FormItemTextView
@@ -72,7 +73,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="6"
                             android:gravity="right"
-                            android:textColor="@color/black"
+                            android:textColor="#253854"
                             android:textSize="16sp"
                             app:formAction="@drawable/ic_arrow_down"
                             app:formDrawablePadding="10dp"
@@ -97,7 +98,7 @@
                             android:layout_gravity="left|center"
                             android:layout_weight="4"
                             android:text="Ca"
-                            android:textColor="@color/n_gray_text"
+                            android:textColor="#253854"
                             android:textSize="14sp" />
 
                         <com.ems.dingdong.views.form.FormItemTextView
@@ -107,7 +108,7 @@
                             android:layout_gravity="right"
                             android:layout_weight="6"
                             android:gravity="right"
-                            android:textColor="@color/black"
+                            android:textColor="#253854"
                             android:textSize="16sp"
                             app:formAction="@drawable/ic_arrow_down"
                             app:formDrawablePadding="10dp"
@@ -133,20 +134,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|center"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:text="Chuyến thư"
-                            android:textColor="@color/n_gray_text"
+                            android:textColor="#253854"
                             android:textSize="14sp" />
 
                         <com.ems.dingdong.views.form.FormItemEditText
                             android:id="@+id/edt_chuyenthu"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="6"
-                            android:drawablePadding="@dimen/dimen_5dp"
+                            android:layout_weight="7"
                             android:gravity="right"
-                            android:textColor="@color/black"
+                            android:textColor="#253854"
                             android:textSize="16sp"
+                            app:formHint="Nhập chuyến thư"
                             app:formDrawablePadding="10dp"
                             app:formShowUnderline="false" />
                     </LinearLayout>
@@ -169,7 +170,7 @@
                             android:layout_gravity="left|center"
                             android:layout_weight="4"
                             android:text="Túi số"
-                            android:textColor="@color/n_gray_text"
+                            android:textColor="#253854"
                             android:textSize="14sp" />
 
                         <com.ems.dingdong.views.form.FormItemTextView
@@ -179,7 +180,7 @@
                             android:layout_weight="6"
                             android:drawablePadding="@dimen/dimen_20dp"
                             android:gravity="right"
-                            android:textColor="@color/black"
+                            android:textColor="#253854"
                             android:textSize="16sp"
                             app:formAction="@drawable/ic_arrow_down"
                             app:formDrawablePadding="10dp"

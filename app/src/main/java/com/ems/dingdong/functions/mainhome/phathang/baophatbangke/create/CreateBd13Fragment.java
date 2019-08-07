@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.BuildConfig;
@@ -67,7 +68,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
     @BindView(R.id.edt_parcelcode)
-    MaterialEditText edtParcelCode;
+    FormItemEditText edtParcelCode;
     @BindView(R.id.tv_count)
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)

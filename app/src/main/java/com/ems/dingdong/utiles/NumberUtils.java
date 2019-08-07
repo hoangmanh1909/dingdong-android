@@ -31,6 +31,15 @@ public class NumberUtils {
         return Math.abs(num - 0f) < EPSILON;
     }
 
+  /*  public static boolean isNumber(String num) {
+        try {
+            Float.parseFloat(num);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }*/
+
     public static String formatValue(Double value) {
         if (value == null) {
             return "0";
@@ -345,7 +354,7 @@ public class NumberUtils {
         return false;
     }
 
-    private static boolean isNumber(String mobileNumber) {
+    public static boolean isNumber(String mobileNumber) {
         try {
             Long.parseLong(mobileNumber);
             return true;
@@ -374,7 +383,7 @@ public class NumberUtils {
                             || isInArray(_operator2, operatorCode10)
                             || isInArray(_operator3, operatorCode10)
 
-                            ) {
+                    ) {
                         return true;
                     } else {
                         return false;
@@ -382,7 +391,7 @@ public class NumberUtils {
                 } else if (mobileNumber.length() == 11) {
                     if (isInArray(_operator3, operatorCode1yy)
                             || isInArray(_operator3, operatorCode10)
-                            ) {
+                    ) {
                         return true;
                     } else {
                         return false;

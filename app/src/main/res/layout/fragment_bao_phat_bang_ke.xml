@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_toLeftOf="@+id/img_send"
+                android:layout_toLeftOf="@+id/tv_search"
                 android:layout_toRightOf="@+id/img_back"
                 android:gravity="center"
                 android:text="Báo phát bản kê (BD13)"

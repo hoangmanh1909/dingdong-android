@@ -10,6 +10,7 @@ import com.ems.dingdong.callback.BangKeSearchCallback;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
@@ -41,7 +42,7 @@ public class BangKe13SearchDialog extends Dialog implements DatePickerDialog.OnD
 
     Calendar calCreate;
     @BindView(R.id.edt_chuyenthu)
-    MaterialEditText edtChuyenthu;
+    FormItemEditText edtChuyenthu;
     private ItemBottomSheetPickerUIFragment pickerUIShift;
     ArrayList<Item> items = new ArrayList<>();
     private Item mItem;

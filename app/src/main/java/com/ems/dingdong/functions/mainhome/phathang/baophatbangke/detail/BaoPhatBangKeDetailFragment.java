@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
@@ -89,8 +90,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     CustomTextView tvSenderAddress;
     @BindView(R.id.tv_ReciverName)
     CustomBoldTextView tvReciverName;
-    @BindView(R.id.ll_contact)
-    LinearLayout llContact;
+    /*    @BindView(R.id.tv_contact)
+        TextView tvContact;*/
     @BindView(R.id.tv_ReciverAddress)
     CustomTextView tvReciverAddress;
     @BindView(R.id.tv_service)
@@ -132,9 +133,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
-    MaterialEditText edtReceiverName;
+    FormItemEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
+    FormItemEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -225,17 +226,25 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         tvSenderPhone.setText(mBaoPhatBangke.getSenderPhone());
         if (!TextUtils.isEmpty(mBaoPhatBangke.getReceiverPhone())) {
             String[] phones = mBaoPhatBangke.getReceiverPhone().split(",");
+            //String phoneStrings = "";
             for (int i = 0; i < phones.length; i++) {
                 if (!phones[i].isEmpty()) {
-                    getChildFragmentManager().beginTransaction()
-                            .add(R.id.ll_contact,
-                                    new PhonePresenter((ContainerView) getActivity())
-                                            .setPhone(phones[i].trim())
-                                            .setCode(mBaoPhatBangke.getCode())
-                                            .getFragment(), TAG + i)
-                            .commit();
+                    if (NumberUtils.isNumber(phones[i])) {
+                        getChildFragmentManager().beginTransaction()
+                                .add(R.id.ll_contact,
+                                        new PhonePresenter((ContainerView) getActivity())
+                                                .setPhone(phones[i].trim())
+                                                .setCode(mBaoPhatBangke.getCode())
+                                                .getFragment(), TAG + i)
+                                .commit();
+                    }
+                    // phoneStrings += ", " + Constants.HEADER_NUMBER_LOG + "," + phones[i].trim();
                 }
             }
+           /* if (!TextUtils.isEmpty(phoneStrings)) {
+                phoneStrings = phoneStrings.substring(1);
+            }*/
+            //tvContact.setText(phoneStrings);
         } else {
             getChildFragmentManager().beginTransaction()
                     .add(R.id.ll_contact,
@@ -409,10 +418,22 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mHour = hourOfDay;
                         mMinute = minute;
+                        String minuteString = mMinute + "";
+                        if (mMinute < 10) {
+                            minuteString = "0" + minuteString;
+                        }
                         if (mHour > 12) {
-                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
+                            if (mHour - 12 < 10) {
+                                tvDeliveryTime.setText(String.format("0%s:%s PM", mHour - 12, minuteString));
+                            } else {
+                                tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, minuteString));
+                            }
                         } else {
-                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
+                            if (mHour < 10) {
+                                tvDeliveryTime.setText(String.format("0%s:%s PM", mHour, minuteString));
+                            } else {
+                                tvDeliveryTime.setText(String.format("%s:%s PM", mHour, minuteString));
+                            }
                         }
                     }
                 }, mHour, mMinute, true);
@@ -477,13 +498,13 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText());
             } else {*/
-                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s  VNĐ (số tiền yêu cầu nhờ thu %s  VNĐ) \nBạn có muốn xác nhận không ?",
-                        mBaoPhatBangke.getCode(),
-                        mBaoPhatBangke.getReciverName(),
-                        edtCollectAmount.getText(),
-                        mPresenter.getAmount()// NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount)
-                );
-           // }
+            message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s  VNĐ (số tiền yêu cầu nhờ thu %s  VNĐ) \nBạn có muốn xác nhận không ?",
+                    mBaoPhatBangke.getCode(),
+                    mBaoPhatBangke.getReciverName(),
+                    edtCollectAmount.getText(),
+                    mPresenter.getAmount()// NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount)
+            );
+            // }
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")

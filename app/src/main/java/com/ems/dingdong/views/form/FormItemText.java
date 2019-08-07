@@ -2,6 +2,8 @@ package com.ems.dingdong.views.form;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -47,6 +49,14 @@ public abstract class FormItemText extends FormItem {
         if (input.hasValue(R.styleable.FormItem_android_gravity)) {
             int gravity = input.getInt(R.styleable.FormItem_android_gravity, 5);
             mTextView.setGravity(gravity);
+        }
+        if (input.hasValue(R.styleable.FormItem_android_textColor)) {
+            int color = input.getColor(R.styleable.FormItem_android_textColor, Color.parseColor("#253854"));
+            mTextView.setTextColor(color);
+        }
+        if (input.hasValue(R.styleable.FormItem_formTextStyle)) {
+            int textStyle = input.getInt(R.styleable.FormItem_formTextStyle, 0);
+            mTextView.setTypeface(mTextView.getTypeface(),textStyle);
         }
     }
 
@@ -125,9 +135,20 @@ public abstract class FormItemText extends FormItem {
     public void addTextChangedListener() {
         mTextView.addTextChangedListener(textWatcher);
     }
+    public void addTextChangedListener(TextWatcher tWatcher) {
+        mTextView.addTextChangedListener(tWatcher);
+    }
 
     public void chageText() {
         initTouchListener(null);
 
+    }
+
+    public void setInputType(int inputType) {
+        mTextView.setInputType(inputType);
+    }
+
+    public void setOnEditorActionListener(TextView.OnEditorActionListener onEditorActionListener) {
+        mTextView.setOnEditorActionListener(onEditorActionListener);
     }
 }

@@ -9,10 +9,10 @@
         android:id="@+id/form_item_layout"
         style="@style/FormItemLayout">
 
-      <!--  <ImageView
-            android:id="@+id/form_item_icon"
-            style="@style/FormItemIcon"
-             />-->
+        <!--  <ImageView
+              android:id="@+id/form_item_icon"
+              style="@style/FormItemIcon"
+               />-->
 
         <TextView
             android:id="@+id/form_item_value_text"
@@ -22,8 +22,8 @@
         <ImageView
             android:id="@+id/form_item_action"
             style="@style/FormItemValueAction"
-
-            android:visibility="gone" />
+            android:src="@drawable/ic_arrow_down"
+            android:visibility="visible" />
     </LinearLayout>
 
     <View

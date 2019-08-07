@@ -6,13 +6,16 @@
     android:background="#80000000"
     android:clickable="true"
     android:focusable="true">
+
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="@dimen/size_50dp"
         android:layout_height="@dimen/size_50dp"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/size_10dp"
+        android:visibility="invisible"
         android:src="@drawable/ic_cancel" />
+
     <android.support.v7.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
@@ -25,6 +28,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f5f6fa"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="TÌM KIẾM BẢN KÊ ĐI PHÁT"
+                android:textColor="#555356"
+                android:textSize="@dimen/text_size_16sp" />
+
             <LinearLayout
                 android:id="@+id/layout_date_start"
                 android:layout_width="match_parent"
@@ -36,7 +50,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_16dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
 
@@ -46,7 +59,7 @@
                         android:layout_gravity="left|center"
                         android:layout_weight="4"
                         android:text="Ngày tạo vận đơn"
-                        android:textColor="@color/n_gray_text"
+                        android:textColor="#253854"
                         android:textSize="14sp" />
 
                     <com.ems.dingdong.views.form.FormItemTextView
@@ -55,15 +68,22 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
                         android:layout_weight="6"
-                        android:textColor="@color/black"
+                        android:gravity="right"
+                        android:textColor="#253854"
                         android:textSize="16sp"
-                        app:formAction="@drawable/ic_arrow_down" />
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="10dp"
+                        app:formShowUnderline="false" />
                 </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_16dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
@@ -74,7 +94,7 @@
                         android:layout_gravity="left|center"
                         android:layout_weight="4"
                         android:text="Ca"
-                        android:textColor="@color/n_gray_text"
+                        android:textColor="#253854"
                         android:textSize="14sp" />
 
                     <com.ems.dingdong.views.form.FormItemTextView
@@ -82,15 +102,23 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:textColor="@color/black"
+                        android:gravity="right"
+                        android:textColor="#253854"
                         android:textSize="16sp"
                         app:formAction="@drawable/ic_arrow_down"
-                        app:formHint="Chọn ca" />
+                        app:formDrawablePadding="10dp"
+                        app:formHint="Chọn ca"
+                        app:formShowUnderline="false" />
                 </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_16dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
@@ -99,23 +127,32 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
-                        android:layout_weight="4"
+                        android:layout_weight="3"
                         android:text="Chuyến thư"
-                        android:textColor="@color/n_gray_text"
+                        android:textColor="#253854"
                         android:textSize="14sp" />
 
                     <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_chuyenthu"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"/>
+                        android:layout_weight="7"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formHint="Nhập chuyến thư"
+                        app:formDrawablePadding="10dp"
+                        app:formShowUnderline="false" />
                 </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_16dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
@@ -126,7 +163,7 @@
                         android:layout_gravity="left|center"
                         android:layout_weight="4"
                         android:text="Túi số"
-                        android:textColor="@color/n_gray_text"
+                        android:textColor="#253854"
                         android:textSize="14sp" />
 
                     <com.ems.dingdong.views.form.FormItemTextView
@@ -134,11 +171,19 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:textColor="@color/black"
+                        android:gravity="right"
+                        android:textColor="#253854"
                         android:textSize="16sp"
                         app:formAction="@drawable/ic_arrow_down"
-                        app:formHint="Chọn túi số" />
+                        app:formDrawablePadding="10dp"
+                        app:formHint="Chọn túi số"
+                        app:formShowUnderline="false" />
                 </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
 
 
             </LinearLayout>
@@ -147,11 +192,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp">
 
                 <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_gradient_search"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/dimen_40dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_40dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="Mở túi"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:textAllCaps="true" />
+                <!--<com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -167,7 +226,7 @@
                     android:text="Mở túi"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:textAllCaps="true" />
+                    app:textAllCaps="true" />-->
 
             </LinearLayout>
         </LinearLayout>
