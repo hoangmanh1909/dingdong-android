@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f5f6fa"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
@@ -56,8 +56,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -69,19 +67,14 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
                         android:padding="@dimen/dimen_10dp"
                         android:text="Hình thức báo phát"
                         android:textAllCaps="true"
@@ -93,29 +86,27 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:text="Kết quả"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
 
                     <RadioGroup
                         android:id="@+id/radio_group"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.3"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp">
 
                         <RadioButton
                             android:id="@+id/rad_success"
                             style="@style/CustomRadioButtonStyle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:checked="true"
                             android:gravity="left|center"
                             android:paddingLeft="@dimen/dimen_5dp"
@@ -125,9 +116,9 @@
                         <RadioButton
                             android:id="@+id/rad_fail"
                             style="@style/CustomRadioButtonStyle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:layout_weight="1"
                             android:gravity="left|center"
                             android:paddingLeft="@dimen/dimen_5dp"
                             android:text="Không thành công"
@@ -149,17 +140,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
                         android:padding="@dimen/dimen_10dp"
                         android:text="Xác nhận phát"
                         android:textColor="@color/n_gray_text"
@@ -170,7 +154,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -183,8 +170,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Bưu tá"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -194,13 +181,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_5dp"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formShowClear="true" />
-
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:id="@+id/ll_pay_ment"
@@ -212,8 +205,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             android:weightSum="2">
 
                             <com.ems.dingdong.views.CustomTextView
@@ -221,8 +214,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="0.8"
-                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="Tiền thu hộ"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
@@ -267,40 +260,46 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="0.8"
-                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="Tiền thực thu"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 
-                            <com.rengwuxian.materialedittext.MaterialEditText
+                            <!-- <com.rengwuxian.materialedittext.MaterialEditText
+                                 android:id="@+id/edt_collectAmount"
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="center"
+                                 android:layout_weight="1.2"
+                                 android:inputType="number"
+                                 android:textColorHint="@color/colorBlackTrans20"
+                                 android:textSize="@dimen/text_size_14sp"
+                                 app:met_bottomTextSize="@dimen/text_size_sub"
+                                 app:met_clearButton="true"
+                                 app:met_floatingLabel="highlight"
+                                 app:met_primaryColor="@color/black"
+                                 app:met_textColor="@color/black"
+                                 app:met_textColorHint="@color/colorBlackTrans20"
+                                 app:met_underlineColor="@color/colorBlackTrans20" />-->
+                            <com.ems.dingdong.views.form.FormItemEditText
                                 android:id="@+id/edt_collectAmount"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
                                 android:layout_weight="1.2"
-                                android:inputType="number"
-                                android:textColorHint="@color/colorBlackTrans20"
+                                android:gravity="right"
+                                android:paddingTop="@dimen/dimen_5dp"
+                                android:paddingBottom="@dimen/dimen_5dp"
+                                android:textColor="#253854"
                                 android:textSize="@dimen/text_size_14sp"
-                                app:met_bottomTextSize="@dimen/text_size_sub"
-                                app:met_clearButton="true"
-                                app:met_floatingLabel="highlight"
-                                app:met_primaryColor="@color/black"
-                                app:met_textColor="@color/black"
-                                app:met_textColorHint="@color/colorBlackTrans20"
-                                app:met_underlineColor="@color/colorBlackTrans20" />
-                            <!-- <FormItemEditText
-                                 android:id="@+id/edt_CollectAmount"
-                                 android:layout_width="0dp"
-                                 android:layout_height="wrap_content"
-                                 android:layout_weight="1.2"
-                                 android:paddingTop="@dimen/dimen_5dp"
-                                 android:paddingBottom="@dimen/dimen_5dp"
-                                 android:textColor="@color/black"
-                                 android:textSize="@dimen/text_size_14sp"
-                                 app:formShowClear="true" />-->
-
+                                app:formShowClear="true"
+                                app:formShowUnderline="false" />
                         </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -315,13 +314,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="0.8"
-                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="Thanh toán"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
 
-                            <RadioGroup
+                            <!--<RadioGroup
                                 android:id="@+id/radio_group_money"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -340,7 +339,7 @@
                                     android:text="Tiền mặt"
                                     android:textColor="@color/blue" />
 
-                                <!-- <RadioButton
+                                &lt;!&ndash; <RadioButton
                                      android:id="@+id/rad_mpos"
                                      style="@style/CustomRadioButtonStyle"
                                      android:layout_width="wrap_content"
@@ -349,13 +348,31 @@
                                      android:gravity="left|center"
                                      android:paddingLeft="@dimen/dimen_5dp"
                                      android:text="Qua mPos"
-                                     android:textColor="@color/blue" />-->
+                                     android:textColor="@color/blue" />&ndash;&gt;
 
-                            </RadioGroup>
-
+                            </RadioGroup>-->
+                            <com.ems.dingdong.views.form.FormItemTextView
+                                android:id="@+id/tv_pay_money"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:gravity="right"
+                                android:paddingTop="@dimen/dimen_5dp"
+                                android:paddingBottom="@dimen/dimen_5dp"
+                                android:textColor="#253854"
+                                android:textSize="@dimen/text_size_14sp"
+                                app:formAction="@drawable/ic_arrow_down"
+                                app:formDrawablePadding="@dimen/dimen_10dp"
+                                app:formShowUnderline="false"
+                                app:formValue="Tiền mặt" />
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -368,8 +385,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Người nhận"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -384,30 +401,46 @@
                              android:textColor="@color/black"
                              android:textSize="@dimen/text_size_14sp"
                              app:formHint="Người nhận hàng" />-->
-                        <com.rengwuxian.materialedittext.MaterialEditText
+                        <!-- <com.rengwuxian.materialedittext.MaterialEditText
+                             android:id="@+id/edt_real_ReceiverName"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_weight="1.2"
+                             android:inputType="text|textAutoCorrect"
+                             android:textSize="@dimen/text_size_14sp"
+                             app:met_bottomTextSize="@dimen/text_size_sub"
+                             app:met_clearButton="true"
+                             app:met_floatingLabel="highlight"
+                             app:met_primaryColor="@color/black"
+                             app:met_textColor="@color/black"
+                             app:met_textColorHint="@color/black"
+                             app:met_underlineColor="@color/colorBlackTrans50" />-->
+                        <com.ems.dingdong.views.form.FormItemEditText
                             android:id="@+id/edt_real_ReceiverName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_weight="1.2"
-                            android:inputType="text|textAutoCorrect"
+                            android:gravity="right"
+                            android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingBottom="@dimen/dimen_5dp"
+                            android:textColor="#253854"
                             android:textSize="@dimen/text_size_14sp"
-                            app:met_bottomTextSize="@dimen/text_size_sub"
-                            app:met_clearButton="true"
-                            app:met_floatingLabel="highlight"
-                            app:met_primaryColor="@color/black"
-                            app:met_textColor="@color/black"
-                            app:met_textColorHint="@color/black"
-                            app:met_underlineColor="@color/colorBlackTrans50" />
-
-
+                            app:formShowClear="true"
+                            app:formShowUnderline="false"
+                            app:formTextStyle="3" />
                     </LinearLayout>
 
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.ems.dingdong.views.CustomTextView
@@ -415,8 +448,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Số GTTT"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -462,8 +495,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Ngày báo phát"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -473,14 +506,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_5dp"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down" />
-
-
+                            app:formAction="@drawable/ic_arrow_down"
+                            app:formDrawablePadding="@dimen/dimen_10dp"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -493,8 +532,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Giờ báo phát"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -504,16 +543,43 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingBottom="@dimen/dimen_5dp"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down" />
+                            app:formAction="@drawable/ic_arrow_down"
+                            app:formDrawablePadding="@dimen/dimen_10dp"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/btn_sign"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_gradient_radius_5"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Ký nhận"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18sp" />
 
 
                     </LinearLayout>
-
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -524,8 +590,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
                             android:text="Lấy chữ ký"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -537,17 +603,17 @@
                             android:layout_weight="1.2"
                             android:background="@drawable/bg_confirm_continue"
                             android:gravity="center"
-                            android:paddingBottom="@dimen/dimen_5dp"
                             android:paddingLeft="@dimen/dimen_20dp"
-                            android:paddingRight="@dimen/dimen_20dp"
                             android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingRight="@dimen/dimen_20dp"
+                            android:paddingBottom="@dimen/dimen_5dp"
                             android:text="Ký nhận"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18sp" />
 
 
-                    </LinearLayout>
+                    </LinearLayout>-->
 
                     <LinearLayout
                         android:id="@+id/ll_signed"
@@ -557,27 +623,16 @@
                         android:visibility="gone"
                         android:weightSum="2">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.8"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:text="Chữ ký đã ký"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
 
                         <ImageView
                             android:id="@+id/img_sign"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
                             android:gravity="center"
-                            android:paddingBottom="@dimen/dimen_5dp"
                             android:paddingLeft="@dimen/dimen_20dp"
+                            android:paddingTop="@dimen/dimen_5dp"
                             android:paddingRight="@dimen/dimen_20dp"
-                            android:paddingTop="@dimen/dimen_5dp" />
+                            android:paddingBottom="@dimen/dimen_5dp" />
 
 
                     </LinearLayout>
@@ -1154,26 +1209,20 @@
                 android:id="@+id/ll_confirm_fail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
                         android:padding="@dimen/dimen_10dp"
                         android:text="Báo phát"
                         android:textColor="@color/n_gray_text"
@@ -1185,6 +1234,7 @@
                     android:id="@+id/layout_date_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="@dimen/size_16dp">
 
@@ -1200,9 +1250,11 @@
                         android:id="@+id/tv_reason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
                         app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
                         app:formHint="Chọn lý do" />
 
                     <com.ems.dingdong.views.form.FormItemEditText
@@ -1228,9 +1280,11 @@
                         android:id="@+id/tv_solution"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
                         app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
                         app:formHint="Chọn phương án" />
 
                 </LinearLayout>

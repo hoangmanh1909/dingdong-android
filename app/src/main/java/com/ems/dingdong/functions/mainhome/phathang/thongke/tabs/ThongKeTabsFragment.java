@@ -68,7 +68,7 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
                 }
             }
         });
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(2);
     }
 
     @OnClick({R.id.img_back})

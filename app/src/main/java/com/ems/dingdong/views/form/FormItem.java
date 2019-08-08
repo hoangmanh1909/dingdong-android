@@ -71,7 +71,7 @@ public abstract class FormItem extends LinearLayout {
         mAction.setVisibility(GONE);
       }
 
-      if(input.getBoolean(R.styleable.FormItem_formShowClear, true)){
+      if(input.getBoolean(R.styleable.FormItem_formShowClear, false)){
         showClear = true;
       } else {
         showClear = false;

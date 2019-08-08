@@ -124,12 +124,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     FormItemTextView tvCollectAmount;
     @BindView(R.id.edt_CollectAmount)
     FormItemEditText edtCollectAmount;
-    @BindView(R.id.rad_cash)
-    RadioButton radCash;
+  /*  @BindView(R.id.rad_cash)
+    RadioButton radCash;*/
     /*  @BindView(R.id.rad_mpos)
       RadioButton radMpos;*/
-    @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;
+/*    @BindView(R.id.radio_group_money)
+    RadioGroup radioGroupMoney;*/
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)

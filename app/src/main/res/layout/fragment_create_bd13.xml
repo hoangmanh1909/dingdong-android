@@ -151,6 +151,7 @@
                     android:layout_toRightOf="@+id/img_search"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp"
+                    app:formShowUnderline="false"
                     app:formHint="Nhập số hiệu bưu gửi" />
                 <!--<com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/edt_parcelcode"

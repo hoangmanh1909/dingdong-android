@@ -44,6 +44,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
                             app:formHint="Số hiệu bưu gửi"
+                            app:formShowUnderline="false"
                             app:formShowClear="true">
 
                             <requestFocus />
@@ -210,9 +211,11 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:paddingTop="@dimen/dimen_5dp"
+                            android:gravity="right"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
+                            app:formDrawablePadding="@dimen/dimen_10dp"
                             app:formAction="@drawable/ic_arrow_down"
                             app:formShowUnderline="false" />
                     </LinearLayout>
@@ -246,9 +249,11 @@
                             android:layout_weight="1.2"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
+                            android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
                             app:formAction="@drawable/ic_arrow_down"
+                            app:formDrawablePadding="@dimen/dimen_10dp"
                             app:formShowUnderline="false" />
                     </LinearLayout>
 

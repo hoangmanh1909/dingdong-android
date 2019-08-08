@@ -34,6 +34,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
@@ -74,7 +75,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
     @BindView(R.id.edt_parcelcode)
-    MaterialEditText edtParcelcode;
+    FormItemEditText edtParcelcode;
     @BindView(R.id.ll_scan_qr)
     RelativeLayout llScanRr;
     /*   @BindView(R.id.tv_shift)

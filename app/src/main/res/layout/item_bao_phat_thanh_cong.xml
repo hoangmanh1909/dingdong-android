@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -25,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:text="COD20180416"
-                android:textColor="@color/blue"
+                android:textColor="#5f3075"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
@@ -33,18 +34,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:text="Tên người nhận: "
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp" />
+                android:textSize="@dimen/text_size_14sp"
+                tools:text="Tên người nhận: " />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_receiver_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:text="TRAN THAI TONG"
                 android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+                android:textSize="@dimen/text_size_12sp"
+                tools:text="TRAN THAI TONG" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,7 +84,7 @@
                     android:id="@+id/tv_ContactPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_border_phone"
+                    android:background="@drawable/bg_gradient_search"
                     android:drawableLeft="@drawable/ic_tel"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"
@@ -99,11 +100,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_status"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_star" />
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_services"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:background="@drawable/bg_gradient_search"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14sp"
+            tools:text="COD" />
+        <!-- <ImageView
+             android:id="@+id/iv_status"
+             android:layout_width="30dp"
+             android:layout_height="30dp"
+             android:src="@drawable/ic_star" />-->
 
         <ImageView
             android:id="@+id/img_clear"

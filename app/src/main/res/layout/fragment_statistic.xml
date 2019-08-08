@@ -13,7 +13,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/img_search"
             android:orientation="vertical"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
@@ -23,14 +22,14 @@
                 android:id="@+id/tv_success_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#5f3075"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_fail_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_000080"
+                android:textColor="#5f3075"
                 android:textSize="@dimen/text_size_14sp" />
         </LinearLayout>
         <com.ems.dingdong.views.CustomBoldTextView
@@ -40,7 +39,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/_10sdp"
-            android:textColor="@color/text_color_total_theme5"
+            android:textColor="#ed1c24"
             android:textSize="@dimen/text_size_16sp" />
 
     </RelativeLayout>

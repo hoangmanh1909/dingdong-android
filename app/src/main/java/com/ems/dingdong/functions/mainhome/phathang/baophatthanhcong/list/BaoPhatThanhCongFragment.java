@@ -23,6 +23,7 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.PhoneConectDialog;
@@ -55,7 +56,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
     @BindView(R.id.edt_parcelcode)
-    MaterialEditText edtParcelcode;
+    FormItemEditText edtParcelcode;
     @BindView(R.id.tv_count)
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)

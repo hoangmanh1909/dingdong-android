@@ -19,7 +19,8 @@
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_margin="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:adjustViewBounds="true"
             android:maxWidth="48dp"
             android:maxHeight="48dp"
@@ -33,7 +34,7 @@
             android:layout_marginRight="@dimen/dimen_5dp"
             android:layout_marginLeft="@dimen/dimen_5dp"
             android:gravity="center"
-            android:lines="2"
+            android:lines="3"
             android:paddingBottom="8dp"
             android:textColor="#555356"
             android:textSize="@dimen/text_size_12sp" />

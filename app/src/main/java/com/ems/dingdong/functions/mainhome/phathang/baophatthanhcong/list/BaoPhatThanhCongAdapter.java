@@ -46,8 +46,10 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
         CustomTextView tvContactPhone;
         @BindView(R.id.img_clear)
         public ImageView imgClear;
-        @BindView(R.id.iv_status)
-        public ImageView ivStatus;
+      /*  @BindView(R.id.iv_status)
+        public ImageView ivStatus;*/
+      @BindView(R.id.tv_services)
+      CustomTextView tvServices;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -79,9 +81,9 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
                 tvContactPhone.setVisibility(View.GONE);
             }
             if (item.getIsCOD().toUpperCase().equals("Y")) {
-                ivStatus.setVisibility(View.VISIBLE);
+                tvServices.setVisibility(View.VISIBLE);
             } else {
-                ivStatus.setVisibility(View.GONE);
+                tvServices.setVisibility(View.GONE);
             }
         }
 

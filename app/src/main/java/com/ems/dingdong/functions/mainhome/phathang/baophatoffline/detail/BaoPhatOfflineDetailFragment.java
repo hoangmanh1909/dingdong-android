@@ -76,20 +76,20 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     FrameLayout header;
     @BindView(R.id.tv_userDelivery)
     FormItemTextView tvUserDelivery;
-  /*  @BindView(R.id.edt_amount)
-    MaterialEditText edtAmount;*/
+    /*  @BindView(R.id.edt_amount)
+      MaterialEditText edtAmount;*/
     @BindView(R.id.edt_collectAmount)
-    MaterialEditText edtCollectAmount;
-    @BindView(R.id.rad_cash)
+    FormItemEditText edtCollectAmount;
+/*    @BindView(R.id.rad_cash)
     RadioButton radCash;
     @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;
+    RadioGroup radioGroupMoney;*/
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_real_ReceiverName)
-    MaterialEditText edtRealReceiverName;
-  /*  @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;*/
+    FormItemEditText edtRealReceiverName;
+    /*  @BindView(R.id.edt_ReceiverIDNumber)
+      MaterialEditText edtReceiverIDNumber;*/
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -237,8 +237,8 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     @Override
     public void initLayout() {
         super.initLayout();
-        EditTextUtils.editTextListener(edtCollectAmount);
-       // EditTextUtils.editTextListener(edtAmount);
+        EditTextUtils.editTextListener(edtCollectAmount.getEditText());
+        // EditTextUtils.editTextListener(edtAmount);
         mBaoPhat = mPresenter.getBaoPhatBangke();
         if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
             imgSend.setImageResource(R.drawable.ic_send_telegram);
@@ -573,10 +573,10 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
 
             mBaoPhat.setCollectAmount(edtCollectAmount.getText().toString().replace(".", ""));
             mBaoPhat.setUserDelivery(tvUserDelivery.getText());
-           // mBaoPhat.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
+            // mBaoPhat.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
             mBaoPhat.setRealReceiverIDNumber("");
 
-          //  mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
+            //  mBaoPhat.setAmount(edtAmount.getText().toString().replace(".", ""));
             mBaoPhat.setAmount("0");
             if (!TextUtils.isEmpty(mSign))
                 mBaoPhat.setSignatureCapture(mSign);

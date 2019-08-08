@@ -8,7 +8,7 @@
         android:id="@+id/tv_ContactPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@drawable/bg_gradient_search"
         android:paddingLeft="@dimen/dimen_10dp"
         android:drawableLeft="@drawable/ic_tel"
         android:gravity="center"

@@ -25,6 +25,7 @@ import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
@@ -60,7 +61,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
     @BindView(R.id.edt_parcelcode)
-    MaterialEditText edtParcelcode;
+    FormItemEditText edtParcelcode;
     /*   @BindView(R.id.tv_shift)
        CustomBoldTextView tvShift;*/
     private TaoGachNoAdapter mAdapter;

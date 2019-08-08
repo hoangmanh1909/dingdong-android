@@ -141,10 +141,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_5dp"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp"
         android:weightSum="10">
-
+        <com.ems.dingdong.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TÌM KIẾM NHANH BƯU GỬI"
+            android:textColor="#555356"
+            android:textSize="16sp" />
 
         <RelativeLayout
             android:id="@+id/ll_scan_qr"
@@ -153,10 +158,21 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:paddingLeft="@dimen/dimen_5dp"
             android:paddingRight="@dimen/dimen_10dp"
+            android:background="@drawable/bg_radius_search"
             android:visibility="visible">
 
-
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_parcelcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                android:layout_toLeftOf="@+id/img_search"
+                app:formHint="Nhập số hiệu bưu gửi"
+                app:formShowUnderline="false"
+                app:formShowClear="true"/>
+            <!--<com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_parcelcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -172,7 +188,7 @@
                 app:met_primaryColor="@color/black"
                 app:met_textColor="@color/black"
                 app:met_textColorHint="@color/colorBlackTrans20"
-                app:met_underlineColor="@color/colorBlackTrans20" />
+                app:met_underlineColor="@color/colorBlackTrans20" />-->
 
             <ImageView
                 android:id="@+id/img_search"
@@ -190,11 +206,11 @@
                 android:padding="@dimen/_2sdp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_capture" />
+                android:src="@drawable/ic_qr" />
 
         </RelativeLayout>
     </LinearLayout>
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_5sdp"
         android:layout_height="wrap_content">
@@ -213,6 +229,35 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_16sp" />
+    </RelativeLayout>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f5f6fa"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/dimen_10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/_10sdp">
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#5f3075"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="#ed1c24"
+                android:textSize="@dimen/text_size_16sp" />
+        </RelativeLayout>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
