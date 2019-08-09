@@ -34,7 +34,7 @@
                 android:text="Mã tin "
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp"  />
+                android:textSize="@dimen/text_size_16sp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -97,6 +97,11 @@
 
                     </LinearLayout>
 
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -124,6 +129,11 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -153,6 +163,11 @@
 
                     </LinearLayout>
 
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -180,6 +195,11 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -260,6 +280,11 @@
 
                     </LinearLayout>
 
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -287,6 +312,11 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
