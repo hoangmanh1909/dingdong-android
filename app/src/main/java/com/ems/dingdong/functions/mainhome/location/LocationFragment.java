@@ -36,8 +36,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
-    @BindView(R.id.ll_scan_qr)
-    RelativeLayout llScanQr;
     @BindView(R.id.tv_parcelCode)
     CustomTextView tvParcelCode;
     @BindView(R.id.tv_SenderName)
@@ -111,10 +109,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         mPresenter.findLocation(ladingCode.toUpperCase());
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.img_search})
+    @OnClick({R.id.img_capture, R.id.img_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_scan_qr:
+            case R.id.img_capture:
                 mPresenter.showBarcode(new BarCodeCallback() {
                     @Override
                     public void scanQrcodeResponse(String value) {

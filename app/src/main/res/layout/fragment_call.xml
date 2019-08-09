@@ -55,7 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="horizontal">
+            android:layout_margin="@dimen/dimen_10dp"
+            android:orientation="vertical">
 
             <!--  <FormItemEditText
                   android:id="@+id/edt_phone"
@@ -66,13 +67,25 @@
                   app:formShowClear="true">
 
               </FormItemEditText>-->
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_radius_search"
+                android:inputType="phone"
+                app:formHint="Nhập số để gọi"
+                app:formShowClear="true"
+                app:formShowUnderline="false" />
+
+            <!--<com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dimen_15dp"
                 android:layout_weight="1.2"
+                android:background="@drawable/bg_radius_search"
                 android:hint="Nhập số để gọi"
                 android:inputType="phone"
                 android:textSize="@dimen/text_size_14sp"
@@ -82,15 +95,21 @@
                 app:met_primaryColor="@color/black"
                 app:met_textColor="@color/black"
                 app:met_textColorHint="@color/colorBlackTrans20"
-                app:met_underlineColor="@color/colorBlackTrans20" />
+                app:met_underlineColor="@color/transparent" />-->
 
-            <ImageView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/img_call"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_call_green" />
+                android:background="@drawable/bg_radius_white_green"
+                android:padding="@dimen/dimen_10dp"
+                android:text="Call"
+                android:layout_weight="1"
+                android:textAllCaps="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:gravity="center"
+                android:textColor="#0e7959" />
         </LinearLayout>
 
     </RelativeLayout>

@@ -10,7 +10,8 @@
         android:layout_height="@dimen/size_50dp"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/size_10dp"
-        android:src="@drawable/ic_cancel" />
+        android:src="@drawable/ic_cancel"
+        android:visibility="invisible" />
 
     <android.support.v7.widget.CardView
         style="@style/MyCardViewStyle"
@@ -98,9 +99,9 @@
             <com.ems.dingdong.views.CustomMediumTextView
                 android:id="@+id/tvShowChargre"
                 style="@style/ConfirmButton"
-                android:drawableLeft="@drawable/ic_search"
-                android:paddingTop="@dimen/dimen_5dp"
-                android:paddingBottom="@dimen/dimen_5dp"
+                android:background="@drawable/bg_gradient_search"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
                 android:text="Tìm kiếm"
                 android:textAllCaps="true"
                 android:textColor="@color/white"

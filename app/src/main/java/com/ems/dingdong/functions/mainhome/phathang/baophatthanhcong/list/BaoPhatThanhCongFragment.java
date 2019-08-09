@@ -24,7 +24,6 @@ import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.model.CommonObject;
@@ -135,7 +134,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                         mPresenter.showDetail(mList.get(position), position);
                     }
                 });
-                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
+                ((HolderView) holder).imgContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {

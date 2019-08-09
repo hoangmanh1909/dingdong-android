@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -38,75 +39,11 @@
     </FrameLayout>
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:orientation="horizontal">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/img_profile"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                fresco:placeholderImage="@drawable/ic_validation"
-                fresco:roundAsCircle="true" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_fullname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_poname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_reject"
-                    android:drawableLeft="@drawable/ic_rotate_right"
-                    android:drawablePadding="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_10dp"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingRight="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="Đăng xuất"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -118,7 +55,69 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent" />
         </FrameLayout>
-    </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:background="@drawable/bg_radius_white"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_5dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/img_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                fresco:actualImageResource="@drawable/ic_validation"
+                fresco:roundAsCircle="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_toLeftOf="@+id/img_logout"
+                android:layout_toRightOf="@id/img_profile"
+                android:orientation="vertical">
+
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/text_size_14sp"
+                    tools:text="0911818968 ( 108101 COD Hoàn kiếm 1 )" />
+
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_fullname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#cccccc"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_poname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#cccccc"
+                    android:textSize="@dimen/text_size_14sp" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_sign_out" />
+        </RelativeLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

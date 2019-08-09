@@ -6,6 +6,7 @@ import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
+import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 
 /**
  * The Home Presenter
@@ -50,5 +51,10 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     @Override
     public LocationPresenter getLocationPresenter() {
         return new LocationPresenter(mContainerView);
+    }
+
+    @Override
+    public void showSetting() {
+        new SettingPresenter(mContainerView).pushView();
     }
 }

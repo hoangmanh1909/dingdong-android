@@ -25,7 +25,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:text="COD20180416"
-                android:textColor="@color/blue"
+                android:textColor="@color/text_color_primary"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomBoldTextView
@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_5dp"
+                android:maxWidth="@dimen/_100sdp"
                 android:text="Tên người gửi "
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />

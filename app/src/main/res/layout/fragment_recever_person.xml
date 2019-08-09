@@ -35,7 +35,7 @@
                 android:text="Thông tin vận đơn"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp"  />
+                android:textSize="@dimen/text_size_16sp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -56,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"/>
+                android:layout_marginRight="@dimen/dimen_10dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,13 +100,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formShowClear="true" />
-
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:id="@+id/ll_pay_ment"
@@ -143,35 +150,35 @@
                                 app:formShowClear="true" />
 
                         </LinearLayout>
-                       <!-- <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                        <!-- <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal"
+                             android:weightSum="2">
 
-                            <CustomTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="0.8"
-                                android:paddingTop="@dimen/dimen_10dp"
-                                android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Tiền thực thu"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp" />
+                             <CustomTextView
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="center"
+                                 android:layout_weight="0.8"
+                                 android:paddingTop="@dimen/dimen_10dp"
+                                 android:paddingBottom="@dimen/dimen_10dp"
+                                 android:text="Tiền thực thu"
+                                 android:textColor="@color/black"
+                                 android:textSize="@dimen/text_size_14sp" />
 
-                            <FormItemEditText
-                                android:id="@+id/edt_CollectAmount"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.2"
-                                android:paddingTop="@dimen/dimen_5dp"
-                                android:paddingBottom="@dimen/dimen_5dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp"
-                                app:formShowClear="true" />
+                             <FormItemEditText
+                                 android:id="@+id/edt_CollectAmount"
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1.2"
+                                 android:paddingTop="@dimen/dimen_5dp"
+                                 android:paddingBottom="@dimen/dimen_5dp"
+                                 android:textColor="@color/black"
+                                 android:textSize="@dimen/text_size_14sp"
+                                 app:formShowClear="true" />
 
-                        </LinearLayout>-->
+                         </LinearLayout>-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -204,9 +211,9 @@
                                     style="@style/CustomRadioButtonStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:checked="true"
                                     android:gravity="left|center"
                                     android:paddingLeft="@dimen/dimen_5dp"
-                                    android:checked="true"
                                     android:text="Tiền mặt"
                                     android:textColor="@color/blue" />
 
@@ -249,14 +256,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formHint="Người nhận hàng" />
-
-
+                            app:formHint="Người nhận hàng"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -280,15 +292,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
                             app:formHint="Số giấy tờ"
-                            app:formShowClear="true" />
-
-
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -312,14 +329,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down" />
-
-
+                            app:formAction="@drawable/ic_arrow_down"
+                            app:formDrawablePadding="@dimen/dimen_10dp"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -343,14 +366,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down" />
-
-
+                            app:formAction="@drawable/ic_arrow_down"
+                            app:formDrawablePadding="@dimen/dimen_10dp"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                 </LinearLayout>
 
@@ -361,7 +390,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen_10dp"
-                android:gravity="right"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp">
 
@@ -369,12 +398,10 @@
                     android:id="@+id/btn_confirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_confirm_continue"
-                    android:drawableLeft="@drawable/ic_arrow_right"
+                    android:background="@drawable/bg_gradient_radius_5"
                     android:drawablePadding="@dimen/dimen_5dp"
                     android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_20dp"
-                    android:paddingRight="@dimen/dimen_20dp"
+                    android:padding="@dimen/dimen_10dp"
                     android:text="Tiếp tục"
                     android:textAllCaps="true"
                     android:textColor="@color/white"

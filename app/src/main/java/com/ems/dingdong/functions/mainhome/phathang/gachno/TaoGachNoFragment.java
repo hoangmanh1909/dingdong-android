@@ -26,7 +26,6 @@ import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.Constants;
@@ -125,7 +124,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                         mPresenter.showDetail(mList.get(position), position);
                     }
                 });*/
-                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
+                ((HolderView) holder).imgContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {

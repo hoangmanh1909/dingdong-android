@@ -165,7 +165,7 @@
                         android:layout_height="@dimen/_200sdp"
                         app:penColor="@android:color/black" />
 
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dimen_10dp"
@@ -205,6 +205,48 @@
                             android:textAllCaps="true"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18sp" />
+                    </LinearLayout>-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_10dp"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/btn_confirm"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_gradient_search"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingRight="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Cập nhật"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/btn_clear_sign"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_red"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingRight="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Xóa"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>

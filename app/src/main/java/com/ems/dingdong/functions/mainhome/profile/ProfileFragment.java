@@ -136,13 +136,13 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     }
 
 
-    @OnClick({R.id.img_back, R.id.tv_logout})
+    @OnClick({R.id.img_back, R.id.img_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
-            case R.id.tv_logout:
+            case R.id.img_logout:
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

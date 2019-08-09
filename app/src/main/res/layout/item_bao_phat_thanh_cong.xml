@@ -20,14 +20,34 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_parcelCode"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:text="COD20180416"
-                android:textColor="#5f3075"
-                android:textSize="@dimen/text_size_14sp" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_parcelCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:gravity="center"
+                    android:text="COD20180416"
+                    android:textColor="#5f3075"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <ImageView
+                    android:id="@+id/img_ContactPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_toRightOf="@+id/tv_parcelCode"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_call_success" />
+            </RelativeLayout>
+
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_receiverName"
@@ -74,7 +94,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -85,13 +105,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_gradient_search"
-                    android:drawableLeft="@drawable/ic_tel"
+                    android:drawableLeft="@drawable/ic_call_success"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_14sp" />
 
-            </RelativeLayout>
+            </RelativeLayout>-->
         </LinearLayout>
 
     </LinearLayout>

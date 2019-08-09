@@ -1,32 +1,35 @@
 package com.ems.dingdong.functions.mainhome.main;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.core.base.viper.ViewFragment;
-import com.ems.dingdong.utiles.NumberUtils;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
+import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * The Home Fragment
@@ -98,10 +101,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (userInfo != null) {
                 if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
-                    tvAmountMax.setText(String.format("%s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+                    tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
                 }
                 if (!TextUtils.isEmpty(userInfo.getBalance())) {
-                    tvBalance.setText(String.format("%s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
+                    tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
                 }
             }
         }
@@ -150,4 +153,23 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         return new Fragment();
     }
 
+
+    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_call: {
+                Intent intent = new Intent(getActivity(), CallActivity.class);
+                startActivity(intent);
+            }
+            break;
+            case R.id.img_top_person: {
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent);
+            }
+            break;
+            case R.id.img_top_setting:
+                mPresenter.showSetting();
+                break;
+        }
+    }
 }

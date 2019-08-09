@@ -26,6 +26,8 @@ interface MainContract {
         PhatHangPresenter getPhatHangPresenter();
 
         LocationPresenter getLocationPresenter();
+
+        void showSetting();
     }
 }
 
