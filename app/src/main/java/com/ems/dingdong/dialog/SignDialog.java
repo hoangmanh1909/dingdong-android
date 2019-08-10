@@ -3,8 +3,10 @@ package com.ems.dingdong.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Html;
 import android.util.Base64;
 import android.view.View;
+import android.widget.TextView;
 
 import com.core.base.BaseActivity;
 import com.ems.dingdong.callback.SignCallback;
@@ -27,6 +29,8 @@ public class SignDialog extends Dialog {
     View llSign;
     @BindView(R.id.signature_pad)
     SignaturePad signature;
+    @BindView(R.id.btn_clear_sign)
+    TextView btnClearSign;
 
     public SignDialog(Context context, SignCallback reasonCallback) {
 
@@ -36,6 +40,7 @@ public class SignDialog extends Dialog {
         View view = View.inflate(getContext(), R.layout.dialog_sign, null);
         setContentView(view);
         ButterKnife.bind(this, view);
+        btnClearSign.setText(Html.fromHtml(getContext().getString(R.string.sign_retry)));
     }
 
     @Override

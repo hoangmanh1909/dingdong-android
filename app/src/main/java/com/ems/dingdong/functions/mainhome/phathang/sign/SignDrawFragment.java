@@ -3,9 +3,11 @@ package com.ems.dingdong.functions.mainhome.phathang.sign;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
+import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -41,7 +43,6 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
     CustomTextView tvRealReceiverName;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
-
     private boolean isSigned = false;
 
     public static SignDrawFragment getInstance() {
@@ -82,7 +83,6 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
         }
         tvMaE.setText(code);
         tvRealReceiverName.setText(mPresenter.getBaoPhatCommon().get(0).getRealReceiverName().toUpperCase());
-
     }
 
     @OnClick({R.id.img_back, R.id.btn_confirm, R.id.btn_clear_sign})
