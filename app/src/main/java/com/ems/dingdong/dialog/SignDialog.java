@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Base64;
 import android.view.View;
 import android.widget.TextView;
@@ -40,7 +42,10 @@ public class SignDialog extends Dialog {
         View view = View.inflate(getContext(), R.layout.dialog_sign, null);
         setContentView(view);
         ButterKnife.bind(this, view);
-        btnClearSign.setText(Html.fromHtml(getContext().getString(R.string.sign_retry)));
+        String mystring = getContext().getString(R.string.sign_retry);
+        SpannableString content = new SpannableString(mystring);
+        content.setSpan(new UnderlineSpan(), 0, mystring.length(), 0);
+        btnClearSign.setText(content);
     }
 
     @Override
@@ -70,7 +75,7 @@ public class SignDialog extends Dialog {
                     }
                 }
                 if (mDelegate != null) {
-                    mDelegate.onResponse(base64,bitmap);
+                    mDelegate.onResponse(base64, bitmap);
                     dismiss();
                 }
 
