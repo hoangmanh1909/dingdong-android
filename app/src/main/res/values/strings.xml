@@ -24,7 +24,7 @@
     <string name="about">about</string>
     <string name="exit">exit</string>
     <string name="quet_ma_vach">Quét mã vạch</string>
-    <string name="notification_channel_id">default</string>
+    <string name="notification_channel_id">channel_id_dingdong</string>
     <string name="cam_use_capture">Sử dụng</string>
     <string name="retry">Thử lại</string>
     <string name="sign_retry">Ký lại</string>

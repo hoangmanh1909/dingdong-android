@@ -171,6 +171,7 @@
                 android:layout_toLeftOf="@+id/img_search"
                 app:formHint="Nhập số hiệu bưu gửi"
                 app:formShowUnderline="false"
+                android:maxLines="1"
                 app:formShowClear="true"/>
             <!--<com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_parcelcode"

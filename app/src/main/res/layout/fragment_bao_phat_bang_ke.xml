@@ -99,6 +99,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
                 app:formHint="Tìm kiếm"
+                android:maxLines="1"
                 app:formShowUnderline="false" />
         </RelativeLayout>
 

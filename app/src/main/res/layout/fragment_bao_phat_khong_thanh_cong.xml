@@ -45,6 +45,7 @@
                             android:textSize="@dimen/text_size_14sp"
                             app:formHint="Số hiệu bưu gửi"
                             app:formShowUnderline="false"
+                            android:maxLines="1"
                             app:formShowClear="true">
 
                             <requestFocus />

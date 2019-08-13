@@ -103,8 +103,15 @@ public class NetWorkController {
     public static void callForwardCallCenter(String callerNumber, String calleeNumber,
                                              String callForwardType, String hotlineNumber,
                                              String ladingCode, CommonCallback<SimpleResult> callback) {
+        String type = "1";
+        if (Constants.HEADER_NUMBER.equals("tel:159")) {
+            type = "1";
+        } else {
+            type = "2";
+        }
         String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber, ladingCode,signature);
+        Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
+                hotlineNumber, ladingCode, type, signature);
         call.enqueue(callback);
     }
 

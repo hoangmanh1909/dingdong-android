@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -84,6 +85,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private int mCountSearch = 0;
     private String text1;
     private String text2 = "";
+    private boolean isLoading;
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -114,8 +116,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList, new ListBaoPhatBangKeAdapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
-                tvCount.setText(String.format(" %s", count + ""));
-                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (isLoading) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        tvCount.setText(String.format(" %s", count + ""));
+                        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+                    }
+                },1000);
+
             }
         }) {
             @Override
@@ -162,7 +177,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         });
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        initSearch();
+        //initSearch();
         mRefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -216,11 +231,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void initSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
+            isLoading = true;
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0");
         }
     }
 
-    @OnClick({ R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.tv_search})
+    @OnClick({R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.tv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -319,6 +335,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter.notifyDataSetChanged();
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+        isLoading = false;
     }
 
     @Override

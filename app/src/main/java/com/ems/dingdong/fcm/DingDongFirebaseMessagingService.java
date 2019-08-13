@@ -34,6 +34,16 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     private int numMessages = 0;
     private NotificationUtils notificationUtils;
 
+  /*   "notification": {
+        "click_action": ".fcm.NotificationActivity",
+                "body": "Xin chào, tôi là bob!",
+                "title": "DingDong",
+                "android_channel_id":"channel_id_dingdong"
+    },
+            "data": {
+        "body": "Xin chào, tôi là bob!",
+                "title": "DingDong",
+    }*/
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -84,15 +94,11 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
+            }
             if (notificationManager != null)
-                notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-        } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            notificationUtils = new NotificationUtils(getApplicationContext());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            notificationUtils.showNotificationMessage("Thông báo", messageBody, new Date().getTime() + "", intent);
+                notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
         }
     }
 
@@ -123,38 +129,13 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 .setNumber(++numMessages)
                 .setSmallIcon(R.drawable.ic_notification);
 
-        try {
-            String picture = data.get(FCM_PARAM);
-            if (picture != null && !"".equals(picture)) {
-                URL url = new URL(picture);
-                Bitmap bigPicture = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                notificationBuilder.setStyle(
-                        new NotificationCompat.BigPictureStyle().bigPicture(bigPicture).setSummaryText(notification.getBody())
-                );
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    getString(R.string.notification_channel_id), CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
-            );
-            channel.setDescription(CHANNEL_DESC);
-            channel.setShowBadge(true);
-            channel.canShowBadge();
-            channel.enableLights(true);
-            channel.setLightColor(Color.RED);
-            channel.enableVibration(true);
-            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500});
-
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(channel);
+            notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
         }
 
         assert notificationManager != null;
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(1, notificationBuilder.build());
     }
 }
