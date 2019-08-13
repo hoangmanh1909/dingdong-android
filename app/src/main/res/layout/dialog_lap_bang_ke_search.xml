@@ -35,7 +35,6 @@
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
-                android:text="TÌM KIẾM BẢN KÊ ĐI PHÁT"
                 android:textColor="#555356"
                 android:textSize="@dimen/text_size_16sp" />
 

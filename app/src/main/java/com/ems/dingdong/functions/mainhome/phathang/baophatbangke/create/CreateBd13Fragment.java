@@ -153,7 +153,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
         calendar = Calendar.getInstance();
-        mChuyenThu = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);//String.format("%s", 5000 + calendar.get(Calendar.DATE));
+        // mChuyenThu = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);//String.format("%s", 5000 + calendar.get(Calendar.DATE));
         /*tvChuyenthu.setText(mChuyenThu);
         tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
         tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);
@@ -161,19 +161,20 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         tvShift.getImageViewLeft().setVisibility(View.GONE);*/
         new CreateBangKeSearchDialog(getActivity(), calendar, new CreatebangKeSearchCallback() {
             @Override
-            public void onResponse(String fromDate, String shiftID, String bag) {
+            public void onResponse(String fromDate, String shiftID, String bag, String chuyenthu) {
                 calendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                 mBag = bag;
                 mShift = shiftID;
                /* tvBag.setText(bag);
                 tvShift.setText(shiftID);*/
-                tvTitle.setText(StringUtils.getCharSequence(text1, mChuyenThu + " - " + bag + " - " + "Ca " + shiftID, getActivity()));
+                mChuyenThu = chuyenthu;
+                tvTitle.setText(StringUtils.getCharSequence(text1, chuyenthu + " - " + bag + " - " + "Ca " + shiftID, getActivity()));
             }
         }).show();
     }
 
     public void getQuery(String parcelCode) {
-        if(!parcelCode.isEmpty()) {
+        if (!parcelCode.isEmpty()) {
             if (!checkInList(parcelCode)) {
                 Bd13Code bd13Code = new Bd13Code(parcelCode);
                 mList.add(bd13Code);

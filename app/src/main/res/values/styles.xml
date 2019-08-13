@@ -40,7 +40,9 @@
         <attr name="formTextStyle" format="integer" />
         <attr name="formText" format="string" />
         <attr name="formShowClear" format="boolean" />
+        <attr name="formLines" format="integer" />
         <attr name="formShowUnderline" format="boolean" />
+        <attr name="formSingleLine" format="boolean" />
     </declare-styleable>
 
     <style name="FormItemLayout">

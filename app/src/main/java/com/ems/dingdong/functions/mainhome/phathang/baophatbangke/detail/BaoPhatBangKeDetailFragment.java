@@ -133,7 +133,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
-    FormItemEditText edtReceiverName;
+    CustomEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
     FormItemEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)

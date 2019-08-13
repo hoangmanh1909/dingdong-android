@@ -182,7 +182,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             }
             tvInfo.setText(String.format("Lần phát: %s", item.getInfo()));
             tvDate.setText(item.getDateSearch());
-            if (item.getStatus().equals("N")) {
+            if (item.getStatus().equals("N")) {// gach no khong
                 ivStatus.setVisibility(View.GONE);
             } else {
                 ivStatus.setVisibility(View.VISIBLE);

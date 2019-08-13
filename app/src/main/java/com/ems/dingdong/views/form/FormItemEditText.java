@@ -57,9 +57,17 @@ public class FormItemEditText extends FormItemText {
             int minLines = inputFormEditText.getInt(R.styleable.FormItem_android_minLines, 1);
             mTextView.setMinLines(minLines);
         }
+        if (inputFormEditText.hasValue(R.styleable.FormItem_formSingleLine)) {
+            boolean singleLine = inputFormEditText.getBoolean(R.styleable.FormItem_formSingleLine, false);
+            mTextView.setSingleLine(singleLine);
+        }
         if (inputFormEditText.hasValue(R.styleable.FormItem_formShowUnderline)) {
             boolean vi = inputFormEditText.getBoolean(R.styleable.FormItem_formShowUnderline, false);
             mDevider.setVisibility(vi ? VISIBLE : GONE);
+        }
+        if (inputFormEditText.hasValue(R.styleable.FormItem_formLines)) {
+            int lines = inputFormEditText.getInt(R.styleable.FormItem_formLines, 1);
+            mTextView.setLines(lines);
         }
         if (inputFormEditText.hasValue(R.styleable.FormItem_formDrawablePadding)) {
             int gravity = inputFormEditText.getDimensionPixelSize(R.styleable.FormItem_formDrawablePadding, 0);

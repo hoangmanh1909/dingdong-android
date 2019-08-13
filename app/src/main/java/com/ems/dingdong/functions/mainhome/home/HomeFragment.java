@@ -42,6 +42,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.ll_package)
+    View llPackage;
     private HomeGroupAdapter adapter;
     ArrayList<GroupInfo> mList;
 
@@ -74,12 +76,14 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
+            llPackage.setVisibility(View.GONE);
             homeInfos.add(new HomeInfo(13, R.drawable.ic_bao_phat_offline, "Nhập báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
            /* homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
             mList.add(new GroupInfo("Người dùng", homeInfos));*/
         } else {
+            llPackage.setVisibility(View.VISIBLE);
            /* homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
             homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
             mList.add(new GroupInfo("Gom hàng", homeInfos));*/

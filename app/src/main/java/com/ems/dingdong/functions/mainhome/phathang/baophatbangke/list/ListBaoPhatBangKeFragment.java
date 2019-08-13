@@ -85,7 +85,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private int mCountSearch = 0;
     private String text1;
     private String text2 = "";
-    private boolean isLoading;
+    private boolean isLoading = false;
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -129,7 +129,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         tvCount.setText(String.format(" %s", count + ""));
                         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
                     }
-                },1000);
+                }, 1000);
 
             }
         }) {
@@ -346,6 +346,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter.notifyDataSetChanged();
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+        isLoading = false;
     }
 
     @Override

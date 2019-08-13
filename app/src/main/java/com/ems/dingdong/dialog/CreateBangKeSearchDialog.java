@@ -97,7 +97,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                     Toast.showToast(mActivity, "Phải chọn túi số");
                     return;
                 }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(), mBag);
+                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(), mBag,mChuyenThu);
                 dismiss();
                 break;
             case R.id.tv_shift:

@@ -385,7 +385,22 @@
                               app:met_textColor="#253854"
                               app:met_textColorHint="#253854"
                               app:met_underlineColor="@color/transparent" />-->
-                        <com.ems.dingdong.views.form.FormItemEditText
+                        <com.ems.dingdong.views.CustomEditText
+                            android:id="@+id/edt_ReceiverName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:gravity="right"
+                            android:inputType="textMultiLine"
+                            android:background="@color/transparent"
+                            android:lines="3"
+                            android:maxLines="10"
+                            android:minLines="1"
+                            android:padding="@dimen/dimen_5dp"
+                            android:scrollbars="vertical"
+                            android:textColor="#253854"
+                            android:textSize="@dimen/text_size_14sp" />
+                       <!-- <com.ems.dingdong.views.form.FormItemEditText
                             android:id="@+id/edt_ReceiverName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -395,9 +410,11 @@
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="#253854"
                             android:textSize="@dimen/text_size_14sp"
+                            app:formLines="3"
+                            android:inputType="textMultiLine"
                             app:formShowClear="true"
                             app:formShowUnderline="false"
-                            app:formTextStyle="3" />
+                            app:formTextStyle="3" />-->
 
                     </LinearLayout>
 
@@ -464,6 +481,7 @@
                             android:textColor="#253854"
                             android:textSize="@dimen/text_size_14sp"
                             app:formShowClear="true"
+                            app:formHint="Nhập số GTTT"
                             app:formShowUnderline="false" />
 
                     </LinearLayout>
