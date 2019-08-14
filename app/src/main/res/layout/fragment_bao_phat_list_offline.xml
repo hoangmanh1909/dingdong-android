@@ -91,6 +91,7 @@
                 app:formHint="Nhập số hiệu bưu gửi"
                 app:formShowUnderline="false"
                 android:maxLines="1"
+                app:formSingleLine="true"
                 app:formShowClear="true"/>
 
             <ImageView

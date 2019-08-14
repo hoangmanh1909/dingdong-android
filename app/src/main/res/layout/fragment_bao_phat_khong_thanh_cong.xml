@@ -46,6 +46,7 @@
                             app:formHint="Số hiệu bưu gửi"
                             app:formShowUnderline="false"
                             android:maxLines="1"
+                            app:formSingleLine="true"
                             app:formShowClear="true">
 
                             <requestFocus />

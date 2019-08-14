@@ -30,7 +30,7 @@ interface BaoPhatOfflineContract {
     }
 
     interface View extends PresentView<Presenter> {
-        void showData(CommonObject commonObject);
+       // void showData(CommonObject commonObject);
 
         void showCallSuccess();
     }
@@ -38,7 +38,7 @@ interface BaoPhatOfflineContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void showBarcode(BarCodeCallback barCodeCallback);
 
-        void searchParcelCodeDelivery(String parcelCode);
+       // void searchParcelCodeDelivery(String parcelCode);
 
         void showDetail(CommonObject commonObject, int position);
 

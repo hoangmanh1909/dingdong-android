@@ -231,6 +231,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
         }
         mList.clear();
+        mAmount =0;
         mAdapter.clear();
         if (results.size() > 0) {
             for (CommonObject item : results) {
@@ -248,7 +249,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         }
     }
 
-    @Override
+  /*  @Override
     public void showData(CommonObject commonObject) {
         if (!checkInList(commonObject)) {
             mList.add(commonObject);
@@ -258,7 +259,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 mAmount += Long.parseLong(commonObject.getCollectAmount());
             tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
         }
-    }
+    }*/
 
     @Override
     public void showCallSuccess() {

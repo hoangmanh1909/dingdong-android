@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -46,8 +47,10 @@ public class TaoGachNoAdapter extends RecyclerBaseAdapter {
         ImageView imgContactPhone;
         @BindView(R.id.img_clear)
         public ImageView imgClear;
-        @BindView(R.id.iv_status)
-        public ImageView ivStatus;
+        @BindView(R.id.tv_services)
+        TextView tvServices;
+        /*@BindView(R.id.iv_status)
+        public ImageView ivStatus;*/
 
         public HolderView(View itemView) {
             super(itemView);
@@ -78,10 +81,11 @@ public class TaoGachNoAdapter extends RecyclerBaseAdapter {
             } else {
                 imgContactPhone.setVisibility(View.GONE);
             }
-            if (item.getIsCOD().toUpperCase().equals("Y")) {
-                ivStatus.setVisibility(View.VISIBLE);
+            if ("Y".equals(item.getIsCOD().toUpperCase())) {
+                tvServices.setVisibility(View.VISIBLE);
+                tvServices.setText("COD");
             } else {
-                ivStatus.setVisibility(View.GONE);
+                tvServices.setVisibility(View.GONE);
             }
         }
 

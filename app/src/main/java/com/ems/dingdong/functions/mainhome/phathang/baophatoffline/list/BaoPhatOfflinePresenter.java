@@ -58,7 +58,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 
-    @Override
+ /*   @Override
     public void searchParcelCodeDelivery(String parcelCode) {
         mView.showProgress();
         mInteractor.searchParcelCodeDelivery(parcelCode, new CommonCallback<CommonObjectResult>((Activity) mContainerView) {
@@ -81,7 +81,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 mView.showErrorToast(message);
             }
         });
-    }
+    }*/
 
     @Override
     public void showDetail(CommonObject commonObject, int position) {
