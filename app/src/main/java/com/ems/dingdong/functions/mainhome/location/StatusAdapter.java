@@ -57,6 +57,12 @@ public class StatusAdapter extends RecyclerBaseAdapter {
             } else {
                 tvStatusMessage.setVisibility(View.GONE);
             }
+            if (item.getStatusTime() == null) {
+                item.setStatusTime("");
+            }
+            if (item.getStatusDate() == null) {
+                item.setStatusDate("");
+            }
             tvStatusDateStatusTime.setText(String.format("%s %s", item.getStatusDate(), item.getStatusTime()));
             if (item.getStatusCode().equals("C14")) {
                 tvStatusCode.setText("Thành công");

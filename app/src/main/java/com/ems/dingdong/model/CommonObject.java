@@ -348,10 +348,7 @@ public class CommonObject extends RealmObject {
     public ArrayList<StatusInfo> getStatusInfoArrayList() {
         ArrayList<StatusInfo> statusInfos = new ArrayList<>();
         if (statusInfoArrayList != null) {
-            Realm realm = Realm.getDefaultInstance();
-            for (StatusInfo statusInfo : statusInfoArrayList) {
-                statusInfos.add(realm.copyFromRealm(statusInfo));
-            }
+            statusInfos.addAll(statusInfoArrayList);
         }
         return statusInfos;
     }

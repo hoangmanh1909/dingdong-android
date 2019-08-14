@@ -49,4 +49,12 @@ public class StatusInfo extends RealmObject{
     public String getReasonCode() {
         return reasonCode;
     }
+
+    public void setStatusDate(String statusDate) {
+        StatusDate = statusDate;
+    }
+
+    public void setStatusTime(String statusTime) {
+        StatusTime = statusTime;
+    }
 }
