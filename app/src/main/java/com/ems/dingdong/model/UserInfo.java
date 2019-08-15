@@ -22,6 +22,8 @@ public class UserInfo {
     private String amountMax;
     @SerializedName("Balance")
     private String balance;
+    @SerializedName("IsEms")
+    private String isEms;
 
 
 
@@ -59,5 +61,9 @@ public class UserInfo {
 
     public String getBalance() {
         return balance;
+    }
+
+    public String getIsEms() {
+        return isEms;
     }
 }

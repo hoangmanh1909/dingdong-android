@@ -59,7 +59,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public ListBaoPhatBangKeContract.Interactor onCreateInteractor() {
         return new ListBaoPhatBangKeInteractor(this);
     }
-
+/*
     @Override
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
         mView.showProgress();
@@ -83,7 +83,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             }
         });
 
-    }
+    }*/
 
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso) {

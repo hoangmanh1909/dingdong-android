@@ -82,6 +82,7 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
             }
             if (item.getIsCOD().toUpperCase().equals("Y")) {
                 tvServices.setVisibility(View.VISIBLE);
+                tvServices.setText("COD");
             } else {
                 tvServices.setVisibility(View.GONE);
             }

@@ -25,7 +25,10 @@ import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
@@ -91,8 +94,18 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
             homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_ban_ke, "Báo phát bản kê (BD13)"));
-            homeInfos.add(new HomeInfo(9, R.drawable.ic_lap_ban_ke, "Lập bản kê (BD13)"));
-            homeInfos.add(new HomeInfo(10, R.drawable.ic_tra_cuu_ban_ke, "Tra cứu bản kê BD13"));
+            SharedPref sharedPref = new SharedPref(getActivity());
+            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+            if (!userJson.isEmpty()) {
+                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                if (userInfo != null) {
+                    if ("Y".equals(userInfo.getIsEms())) {
+                        homeInfos.add(new HomeInfo(9, R.drawable.ic_lap_ban_ke, "Lập bản kê (BD13)"));
+                        homeInfos.add(new HomeInfo(10, R.drawable.ic_tra_cuu_ban_ke, "Tra cứu bản kê BD13"));
+                    }
+                }
+            }
+
             homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
             homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
 

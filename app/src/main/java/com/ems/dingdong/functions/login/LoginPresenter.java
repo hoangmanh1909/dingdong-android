@@ -60,6 +60,11 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
+                    if ("Y".equals(response.body().getUserInfo().getIsEms())) {
+                        Constants.HEADER_NUMBER = "tel:159";
+                    } else {
+                        Constants.HEADER_NUMBER = "tel:18002037,";
+                    }
                 } else if (response.body().getErrorCode().equals("05")) {
                     mView.hideProgress();
                     mView.showMessage("Số điện thoại đã được kích hoạt ở thiết bị khác, xin vui lòng thực hiện kích hoạt lại trên thiết bị này.");
@@ -143,6 +148,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
         });
     }
+
     private void getReasons() {
         mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
             @Override

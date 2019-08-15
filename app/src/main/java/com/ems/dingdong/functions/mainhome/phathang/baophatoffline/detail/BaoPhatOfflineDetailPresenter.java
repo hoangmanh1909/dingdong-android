@@ -140,7 +140,7 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
                         mView.hideProgress();
-                        if (response.body().getErrorCode().equals("00")) {
+                        if ("00".equals(response.body().getErrorCode())) {
 
                             // xóa local
                             final String parcelCode = baoPhat.getParcelCode();
@@ -159,6 +159,23 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
                                 }
                             });
 
+                        } else if ("01".equals(response.body().getErrorCode())) {
+                            // xóa local
+                            final String parcelCode = baoPhat.getParcelCode();
+                            Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                                    result.deleteAllFromRealm();
+                                }
+                            });
+                            mView.showAlertDialog(response.body().getMessage(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    back();
+                                }
+                            });
                         } else {
                             mView.showAlertDialog(response.body().getMessage());
                         }

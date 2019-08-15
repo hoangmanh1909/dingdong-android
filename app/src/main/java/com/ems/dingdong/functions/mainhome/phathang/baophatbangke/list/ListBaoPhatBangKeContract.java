@@ -55,12 +55,12 @@ interface ListBaoPhatBangKeContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void searchOrderPostmanCollect(String orderPostmanID,
+        /*void searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate);
+                                       String toAssignDate);*/
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String shiftID, String chuyenthu, String tuiso);
