@@ -57,10 +57,9 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//production
-       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0888862106;DBC8F3B595A448DAE9279CD6B290982C0BF4DB80F585EA48F3B29F5B210CD285");//production
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev guest
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");// dev vinatti
+       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//production
+
+        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;9377325AE062954048FF3B3CA877516A2BD69C2F791D3FA9E0019FD477BA8A72");// dev vinatti
         checkPermissionCall();
     }
 
@@ -112,6 +111,11 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             if (!userJson.isEmpty()) {
                 UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                 if (userInfo != null) {
+                    if ("Y".equals(userInfo.getIsEms())) {
+                        Constants.HEADER_NUMBER = "tel:159";
+                    } else {
+                        Constants.HEADER_NUMBER = "tel:18002037,";
+                    }
                     gotoHome();
                 }
             }
@@ -157,7 +161,6 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     public void gotoHome() {
         if (getActivity() != null) {
             // showUIShift();
-            Constants.HEADER_NUMBER = "tel:18002037,";
             Intent intent = new Intent(getActivity(), MainActivity.class);
             getActivity().finish();
             getActivity().startActivity(intent);
