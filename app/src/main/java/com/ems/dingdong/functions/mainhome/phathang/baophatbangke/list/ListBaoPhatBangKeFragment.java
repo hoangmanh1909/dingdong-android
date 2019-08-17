@@ -86,6 +86,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String text1;
     private String text2 = "";
     private boolean isLoading = false;
+    private String mChuyenThu = "0";
+    private String mTuiSo = "0";
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -183,10 +185,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     @Override
                     public void onRefresh() {
                         mRefresh.setRefreshing(true);
-                        initSearch();
+                        refreshSearch();
                     }
                 }
         );
+    }
+
+    private void refreshSearch() {
+        if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
+            isLoading = true;
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo);
+        }
     }
 
     private void showViewDetail(CommonObject baoPhatBd) {
@@ -208,15 +217,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
-                public void onResponse(String fromDate, String shiftID, String chuyenthu, String tuiso) {
+                public void onResponse(String fromDate, String shiftID, String chuyenThu, String tuiSo) {
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
                     Constants.SHIFT = mShiftID;
                     text2 = "Ca " + mShiftID;
+                    mChuyenThu = chuyenThu;
+                    mTuiSo = tuiSo;
                     CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
                     tvTitle.setText(finalText);
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenthu, tuiso);
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo);
 
                 }
             }).show();
