@@ -370,25 +370,25 @@ public class NumberUtils {
         } else {
             String _leading = mobileNumber.substring(0, 1);
             if (_leading.equals("0")) {
-                String _operator1 = mobileNumber.substring(1, 2);
+               /* String _operator1 = mobileNumber.substring(1, 2);
                 String _operator2 = mobileNumber.substring(1, 3);
                 String _operator3 = mobileNumber.substring(1, 4);
                 if (isInArray(_operator1, operatorCode1) || isInArray(_operator2, operatorCode2) || isInArray(_operator3, operatorCode3)) {
                     return true;
-                }
+                }*/
 
                 if (mobileNumber.length() == 10) {
-                    if (isInArray(_operator2, operatorCode9y)
+                    /*if (isInArray(_operator2, operatorCode9y)
                             || isInArray(_operator3, operatorCode9yy)
                             || isInArray(_operator2, operatorCode10)
                             || isInArray(_operator3, operatorCode10)
 
-                    ) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else if (mobileNumber.length() == 11) {
+                    ) {*/
+                    return true;
+                } else {
+                    return false;
+                }
+             /*else if (mobileNumber.length() == 11) {
                     if (isInArray(_operator3, operatorCode1yy)
                             || isInArray(_operator3, operatorCode10)
                     ) {
@@ -396,14 +396,18 @@ public class NumberUtils {
                     } else {
                         return false;
                     }
-                } else {
-                    return false;
-                }
+                } */
             } else {
+                if (mobileNumber.startsWith("+84")) {
+                    if (mobileNumber.length() == 12) {
+                        return true;
+                    } else return false;
+                }
                 return false;
             }
         }
     }
+
 
     public static boolean checkActiveCode(String activeCode) {
         if (activeCode.length() == 6) {

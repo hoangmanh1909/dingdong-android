@@ -3,10 +3,18 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -35,6 +43,8 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +143,117 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     private void attemptSendMedia(String path_media) {
         Uri picUri = Uri.fromFile(new File(path_media));
         ivPackage.setImageURI(picUri);
-        mPresenter.postImage(path_media);
+        File file = new File(path_media);
+        Bitmap bitmap = processingBitmap(picUri);
+        if (bitmap != null) {
+
+            if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                mPresenter.postImage(path);
+                picUri = Uri.fromFile(new File(path));
+                ivPackage.setImageURI(picUri);
+                if (file.exists())
+                    file.delete();
+            } else {
+                mPresenter.postImage(path_media);
+            }
+        } else {
+            mPresenter.postImage(path_media);
+        }
+    }
+
+    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
+                             int quality) {
+        if (quality > 100) {
+            Log.d("saveImage", "quality cannot be greater that 100");
+            return false;
+        }
+        File file;
+        FileOutputStream out = null;
+        try {
+            switch (format) {
+                case PNG:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
+                case JPEG:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                default:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public Bitmap processingBitmap(Uri source) {
+        Bitmap bm1 = null;
+        Bitmap newBitmap = null;
+        try {
+            bm1 = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(source));
+            int SIZE_SCALE = 3;
+            bm1 = Bitmap.createScaledBitmap(bm1, (int) (bm1.getWidth() / SIZE_SCALE), (int) (bm1.getHeight() / SIZE_SCALE), true);
+
+            try {
+                newBitmap = rotateImageIfRequired(bm1, source);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return newBitmap;
+    }
+
+    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
+
+        if (selectedImage.getScheme().equals("content")) {
+            String[] projection = {MediaStore.Images.ImageColumns.ORIENTATION};
+            Cursor c = getActivity().getContentResolver().query(selectedImage, projection, null, null, null);
+            if (c.moveToFirst()) {
+                final int rotation = c.getInt(0);
+                c.close();
+                return rotateImage(img, rotation);
+            }
+            return img;
+        } else {
+            ExifInterface ei = new ExifInterface(selectedImage.getPath());
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateImage(img, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateImage(img, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateImage(img, 270);
+                default:
+                    return img;
+            }
+        }
+    }
+
+    private Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        return rotatedImg;
     }
 
     @Override
@@ -145,7 +265,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     @Override
     public void deleteFile() {
         mFile = "";
-        ivPackage.setActualImageResource(R.drawable.ic_camera_capture);
+        ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
     }
 
     @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture})
