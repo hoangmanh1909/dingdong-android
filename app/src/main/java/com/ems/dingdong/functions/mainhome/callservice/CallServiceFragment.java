@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -15,7 +15,6 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 
 import butterknife.BindView;

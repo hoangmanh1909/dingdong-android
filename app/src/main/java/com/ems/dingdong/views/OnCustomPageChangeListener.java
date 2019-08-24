@@ -1,6 +1,6 @@
 package com.ems.dingdong.views;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by QuyenLx on 7/17/2017.

@@ -34,7 +34,7 @@
 -keep public class android.support.design.R$* { *; }
 
 ########### For Android Support CardView ###########
--keep class android.support.v7.widget.RoundRectDrawable { *; }
+-keep class androidx.recyclerview.widget.RoundRectDrawable { *; }
 
 ########### For Android appcombat ###########
 -dontwarn android.support.v7.**
@@ -42,13 +42,13 @@
 -keep interface android.support.v7.** { *; }
 
 ########## For RecyclerView$LayoutManager ###########
--keep public class * extends android.support.v7.widget.RecyclerView$LayoutManager {
+-keep public class * extends androidx.recyclerview.widget.RecyclerView$LayoutManager {
     public <init>(...);
 }
 
 ########### For v7 ###########
--keep class android.support.v7.widget.** { *; }
--dontwarn android.support.v7.widget.**
+-keep class androidx.recyclerview.widget.** { *; }
+-dontwarn androidx.recyclerview.widget.**
 
 ########### For butter knife ###########
 -dontwarn butterknife.internal.**

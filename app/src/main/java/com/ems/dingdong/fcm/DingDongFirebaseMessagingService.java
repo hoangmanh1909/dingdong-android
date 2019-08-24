@@ -1,29 +1,28 @@
 package com.ems.dingdong.fcm;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.ems.dingdong.functions.login.LoginActivity;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ems.dingdong.R;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
 import java.util.Map;
 
 public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
@@ -44,6 +43,17 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         "body": "Xin chào, tôi là bob!",
                 "title": "DingDong",
     }*/
+
+    @Override
+    public void onNewToken(@NonNull String refreshedToken) {
+        super.onNewToken(refreshedToken);
+        sendRegistrationToServer(refreshedToken);
+    }
+    private void sendRegistrationToServer(String token) {
+
+        SharedPref sharedPref=new SharedPref(this);
+        sharedPref.putString(Constants.KEY_PUSH_NOTIFICATION,token);
+    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);

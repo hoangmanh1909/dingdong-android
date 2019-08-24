@@ -16,7 +16,7 @@
         android:visibility="invisible"
         android:src="@drawable/ic_cancel" />
 
-    <android.support.v7.widget.CardView
+    <androidx.recyclerview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -267,5 +267,5 @@
 
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.recyclerview.widget.CardView>
 </RelativeLayout>

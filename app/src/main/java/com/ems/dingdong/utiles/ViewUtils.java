@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -18,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.views.picker.PickerUI;

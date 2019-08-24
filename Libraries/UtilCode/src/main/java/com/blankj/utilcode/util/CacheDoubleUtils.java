@@ -3,8 +3,8 @@ package com.blankj.utilcode.util;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.util.SimpleArrayMap;
+import androidx.annotation.NonNull;
+import androidx.collection.SimpleArrayMap;
 
 import com.blankj.utilcode.constant.CacheConstants;
 

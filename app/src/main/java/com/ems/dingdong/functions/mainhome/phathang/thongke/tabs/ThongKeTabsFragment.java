@@ -1,7 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.thongke.tabs;
 
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 

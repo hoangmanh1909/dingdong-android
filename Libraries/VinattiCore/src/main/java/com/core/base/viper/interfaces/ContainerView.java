@@ -1,6 +1,7 @@
 package com.core.base.viper.interfaces;
 
-import android.support.v4.app.FragmentManager;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.core.base.viper.ViewFragment;
 

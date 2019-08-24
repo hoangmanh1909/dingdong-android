@@ -285,7 +285,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18sp" />-->
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_above="@+id/btn_confirm_all"
             android:layout_width="match_parent"
@@ -295,7 +295,7 @@
             android:layout_marginBottom="@dimen/dimen_5dp"
             android:layout_marginRight="@dimen/dimen_10dp">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
 

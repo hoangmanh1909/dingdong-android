@@ -1,6 +1,7 @@
 package com.ems.dingdong.app;
 
-import android.support.multidex.MultiDexApplication;
+
+import androidx.multidex.MultiDexApplication;
 
 import com.ems.dingdong.app.realm.DingDongRealm;
 import com.facebook.drawee.backends.pipeline.Fresco;

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80000000">
-    <android.support.v7.widget.CardView
+    <androidx.recyclerview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -159,5 +159,5 @@
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
-    </android.support.v7.widget.CardView>
+    </androidx.recyclerview.widget.CardView>
 </RelativeLayout>

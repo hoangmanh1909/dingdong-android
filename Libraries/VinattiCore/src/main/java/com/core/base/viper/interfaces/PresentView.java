@@ -1,7 +1,7 @@
 package com.core.base.viper.interfaces;
 
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Views can present on a {@link ContainerView}

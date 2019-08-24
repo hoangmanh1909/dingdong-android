@@ -1,6 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.gachno;
 
-import android.support.v7.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.base.DingDongActivity;

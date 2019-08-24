@@ -1,7 +1,7 @@
 package com.ems.dingdong.functions.mainhome.setting;
 
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
 

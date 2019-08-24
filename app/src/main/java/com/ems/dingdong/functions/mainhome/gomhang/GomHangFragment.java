@@ -1,8 +1,8 @@
 package com.ems.dingdong.functions.mainhome.gomhang;
 
 import android.content.Intent;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
