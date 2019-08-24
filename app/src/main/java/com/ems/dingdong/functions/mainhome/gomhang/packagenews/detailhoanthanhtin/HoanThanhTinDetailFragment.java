@@ -172,14 +172,11 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         FileOutputStream out = null;
         try {
             switch (format) {
-                case PNG:
-                    file = new File(filePath, filename);
-                    out = new FileOutputStream(file);
-                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
                 case JPEG:
                     file = new File(filePath, filename);
                     out = new FileOutputStream(file);
                     return bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                case PNG:
                 default:
                     file = new File(filePath, filename);
                     out = new FileOutputStream(file);
