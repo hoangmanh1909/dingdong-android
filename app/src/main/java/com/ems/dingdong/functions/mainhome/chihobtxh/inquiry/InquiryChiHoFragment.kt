@@ -55,6 +55,8 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
             if (list.size == 1) {
                 bankAccountNumber = list[0]
                 tvAccount.text = list[0].bankAccountNumber
+            } else {
+                showAccount()
             }
         }
 
