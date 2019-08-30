@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <!--tools:overrideLibrary="com.tsongkha.spinnerdatepicker"-->
     <application
-        android:name="com.ems.dingdong.app.ApplicationController"
+        android:name=".app.ApplicationController"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme"
 
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name="com.ems.dingdong.functions.login.LoginActivity">
+        <activity android:name=".functions.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.main.MainActivity"
+            android:name=".functions.mainhome.main.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -40,7 +40,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity"
+            android:name=".functions.mainhome.gomhang.listcommon.ListCommonActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -48,7 +48,15 @@
             android:noHistory="false"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity"
+            android:name=".functions.mainhome.chihobtxh.BtxhActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:noHistory="false"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -58,7 +66,7 @@
             android:theme="@style/AppTheme_Actionbar"
             />
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity"
+            android:name=".functions.mainhome.phathang.thongke.tabs.StatictisActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -66,7 +74,7 @@
             android:noHistory="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity"
+            android:name=".functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -74,7 +82,7 @@
             android:noHistory="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.callservice.CallActivity"
+            android:name=".functions.mainhome.callservice.CallActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -82,7 +90,7 @@
             android:noHistory="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.location.LocationActivity"
+            android:name=".functions.mainhome.location.LocationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -91,7 +99,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_Actionbar" />
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.profile.ProfileActivity"
+            android:name=".functions.mainhome.profile.ProfileActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -99,7 +107,7 @@
             android:noHistory="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ems.dingdong.notification.NotificationActivity"
+            android:name=".notification.NotificationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -108,7 +116,7 @@
             android:screenOrientation="portrait" />
         <!--android:theme="@style/AppTheme_Actionbar"-->
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity"
+            android:name=".functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -125,7 +133,7 @@
             </intent-filter>-->
         </activity>
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity"
+            android:name=".functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -142,7 +150,7 @@
             </intent-filter>-->
         </activity>
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity"
+            android:name=".functions.mainhome.phathang.gachno.TaoGachNoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -160,7 +168,7 @@
         </activity>
         <!--android:theme="@style/AppTheme_Actionbar"-->
         <activity
-            android:name="com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity"
+            android:name=".functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
             android:label="@string/app_name"
@@ -186,11 +194,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.ems.dingdong.fcm.DingDongFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
+
 
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.

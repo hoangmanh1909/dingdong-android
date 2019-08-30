@@ -1,18 +1,17 @@
 package com.ems.dingdong.functions.mainhome.home;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.view.View;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
+import com.ems.dingdong.functions.mainhome.chihobtxh.BtxhActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
@@ -34,9 +33,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * The Home Fragment
@@ -112,6 +109,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             //  mList.add(new GroupInfo("Phát hàng", homeInfos));
             homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
             homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
+            homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Thu hộ BTXH"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
 
             homeInfos = new ArrayList<>();
@@ -184,6 +182,9 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                             } else if (homeInfo.getId() == 14) {
                                 Intent intent = new Intent(getActivity(), BaoPhatOfflineActivity.class);
                                 intent.putExtra(Constants.IS_ONLINE, true);
+                                startActivity(intent);
+                            }else if (homeInfo.getId() == 16) {
+                                Intent intent = new Intent(getActivity(), BtxhActivity.class);
                                 startActivity(intent);
                             }
 

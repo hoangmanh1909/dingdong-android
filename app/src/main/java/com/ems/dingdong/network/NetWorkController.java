@@ -3,6 +3,12 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.SeaBankInquiryRequest;
+import com.ems.dingdong.model.request.SeaBankPaymentRequest;
+import com.ems.dingdong.model.response.BankAccountNumberResponse;
+import com.ems.dingdong.model.response.IdentifyCationResponse;
+import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ems.dingdong.BuildConfig;
@@ -23,6 +29,8 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -33,6 +41,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClient;
+import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClientTh;
 
 
 public class NetWorkController {
@@ -41,6 +50,7 @@ public class NetWorkController {
     }
 
     private static volatile VinattiAPI apiBuilder;
+    private static volatile ThuHoBtxhAPI thuHoBtxhAPI;
 
 
     public static Gson getGson() {
@@ -49,6 +59,20 @@ public class NetWorkController {
                 .create();
     }
 
+    private static ThuHoBtxhAPI getThuHoBtxhAPI() {
+        if (thuHoBtxhAPI == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_URL_TH)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClientTh(120, 120))
+                    .build();
+            thuHoBtxhAPI = retrofit.create(ThuHoBtxhAPI.class);
+        }
+        return thuHoBtxhAPI;
+    }
     private static VinattiAPI getAPIBuilder() {
         if (apiBuilder == null) {
             Gson gson = new GsonBuilder()
@@ -322,6 +346,28 @@ public class NetWorkController {
         MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
         //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
         Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
+        call.enqueue(callback);
+    }
+
+    //Thu ho BTXH
+
+    public static void getBankAccountNumber(BankAccountNumberRequest bankAccountNumberRequest, CommonCallback<BankAccountNumberResponse> callback) {
+        Call<BankAccountNumberResponse> call = getThuHoBtxhAPI().getBankAccountNumber(bankAccountNumberRequest);
+        call.enqueue(callback);
+    }
+    public static void seaBankInquiry(SeaBankInquiryRequest seaBankInquiryRequest, CommonCallback<SeaBankInquiryResponse> callback) {
+        Call<SeaBankInquiryResponse> call = getThuHoBtxhAPI().seaBankInquiry(seaBankInquiryRequest);
+        call.enqueue(callback);
+    }
+
+
+    public static void getIdentifyCation(@NotNull CommonCallback<IdentifyCationResponse> callback) {
+        Call<IdentifyCationResponse> call = getThuHoBtxhAPI().getIdentifyCation();
+        call.enqueue(callback);
+    }
+
+    public static void seaBankPayment(@NotNull SeaBankPaymentRequest seaBankPaymentRequest, @NotNull CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getThuHoBtxhAPI().seaBankPayment(seaBankPaymentRequest);
         call.enqueue(callback);
     }
 }
