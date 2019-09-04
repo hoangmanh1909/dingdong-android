@@ -6,6 +6,7 @@ import butterknife.BindView
 import butterknife.BindViews
 import butterknife.OnClick
 import com.core.base.viper.ViewFragment
+import com.ems.dingdong.BuildConfig
 import com.ems.dingdong.R
 import com.ems.dingdong.model.UserInfo
 import com.ems.dingdong.model.request.BankAccountNumberRequest
@@ -13,8 +14,10 @@ import com.ems.dingdong.network.NetWorkController
 import com.ems.dingdong.utiles.Constants
 import com.ems.dingdong.utiles.SharedPref
 import com.ems.dingdong.utiles.Toast
+import com.ems.dingdong.utiles.Utils
 import com.ems.dingdong.views.CustomEditText
 import kotlinx.android.synthetic.main.fragment_check_reference.*
+import java.util.*
 
 /**
  * The CheckReference Fragment
@@ -52,7 +55,10 @@ class CheckReferenceFragment : ViewFragment<CheckReferenceContract.Presenter>(),
                 val userJson = sharedPref.getString(Constants.KEY_USER_INFO, "")
                 if (!TextUtils.isEmpty(userJson)) {
                     val userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo::class.java)
-                    var bankAccountNumberRequest = BankAccountNumberRequest(userInfo.mobileNumber, edtReference?.text.toString(), "")
+                    val bankAccountNumberRequest = BankAccountNumberRequest(userInfo.mobileNumber, edtReference?.text.toString(), "")
+                    bankAccountNumberRequest.apply {
+                       //Signature= Utils.SHA256(MobileNumber + IdentifyNumber + BankAccountNumber + BuildConfig.PRIVATE_KEY).toUpperCase(Locale.getDefault())
+                    }
                     mPresenter.getBankAccountNumber(bankAccountNumberRequest)
                 }
             }

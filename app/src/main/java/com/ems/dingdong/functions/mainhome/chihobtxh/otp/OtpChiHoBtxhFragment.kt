@@ -34,10 +34,10 @@ class OtpChiHoBtxhFragment : ViewFragment<OtpChiHoBtxhContract.Presenter>(), Otp
 
     override fun initLayout() {
         super.initLayout()
-        var seaBankPaymentRequest: SeaBankPaymentRequest = mPresenter.getSeaBankPaymentRequest()
-        var seaBankInquiryModel: SeaBankInquiryModel = mPresenter.getSeaBankInquiryModel()
+        //val seaBankPaymentRequest: SeaBankPaymentRequest = mPresenter.getSeaBankPaymentRequest()
+        val seaBankInquiryModel: SeaBankInquiryModel = mPresenter.getSeaBankInquiryModel()
         tvAmount.text = seaBankInquiryModel.amount?.toInt()?.let { NumberUtils.formatPriceNumber(it)+" VNĐ" }
-        tvGttt.text = seaBankPaymentRequest.PIDNumber
+        tvGttt.text = seaBankInquiryModel.identifyNumber
     }
 
     @OnClick(R.id.img_back, R.id.btn_check)

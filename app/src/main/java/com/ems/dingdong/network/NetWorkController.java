@@ -41,7 +41,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClient;
-import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClientTh;
 
 
 public class NetWorkController {
@@ -50,7 +49,7 @@ public class NetWorkController {
     }
 
     private static volatile VinattiAPI apiBuilder;
-    private static volatile ThuHoBtxhAPI thuHoBtxhAPI;
+    private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
 
 
     public static Gson getGson() {
@@ -59,19 +58,19 @@ public class NetWorkController {
                 .create();
     }
 
-    private static ThuHoBtxhAPI getThuHoBtxhAPI() {
-        if (thuHoBtxhAPI == null) {
+    private static ChiHoBtxhAPI getChiHoBtxhAPI() {
+        if (chiHoBtxhAPI == null) {
             Gson gson = new GsonBuilder()
                     .setLenient()
                     .create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.API_URL_TH)
+                    .baseUrl(BuildConfig.API_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(getUnsafeOkHttpClientTh(120, 120))
+                    .client(getUnsafeOkHttpClient(120, 120))
                     .build();
-            thuHoBtxhAPI = retrofit.create(ThuHoBtxhAPI.class);
+            chiHoBtxhAPI = retrofit.create(ChiHoBtxhAPI.class);
         }
-        return thuHoBtxhAPI;
+        return chiHoBtxhAPI;
     }
     private static VinattiAPI getAPIBuilder() {
         if (apiBuilder == null) {
@@ -352,22 +351,22 @@ public class NetWorkController {
     //Thu ho BTXH
 
     public static void getBankAccountNumber(BankAccountNumberRequest bankAccountNumberRequest, CommonCallback<BankAccountNumberResponse> callback) {
-        Call<BankAccountNumberResponse> call = getThuHoBtxhAPI().getBankAccountNumber(bankAccountNumberRequest);
+        Call<BankAccountNumberResponse> call = getChiHoBtxhAPI().getBankAccountNumber(bankAccountNumberRequest);
         call.enqueue(callback);
     }
     public static void seaBankInquiry(SeaBankInquiryRequest seaBankInquiryRequest, CommonCallback<SeaBankInquiryResponse> callback) {
-        Call<SeaBankInquiryResponse> call = getThuHoBtxhAPI().seaBankInquiry(seaBankInquiryRequest);
+        Call<SeaBankInquiryResponse> call = getChiHoBtxhAPI().seaBankInquiry(seaBankInquiryRequest);
         call.enqueue(callback);
     }
 
 
     public static void getIdentifyCation(@NotNull CommonCallback<IdentifyCationResponse> callback) {
-        Call<IdentifyCationResponse> call = getThuHoBtxhAPI().getIdentifyCation();
+        Call<IdentifyCationResponse> call = getChiHoBtxhAPI().getIdentifyCation();
         call.enqueue(callback);
     }
 
     public static void seaBankPayment(@NotNull SeaBankPaymentRequest seaBankPaymentRequest, @NotNull CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getThuHoBtxhAPI().seaBankPayment(seaBankPaymentRequest);
+        Call<SimpleResult> call = getChiHoBtxhAPI().seaBankPayment(seaBankPaymentRequest);
         call.enqueue(callback);
     }
 }

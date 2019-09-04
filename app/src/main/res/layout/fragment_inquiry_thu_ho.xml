@@ -127,6 +127,7 @@
                 android:weightSum="2">
 
                 <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tvTitleMoney"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

@@ -19,18 +19,13 @@ import retrofit2.http.Query;
 /**
  * Created by HungNX on 6/30/16.
  */
-public interface ThuHoBtxhAPI {
+public interface ChiHoBtxhAPI {
 
     @POST("api/SeaBank/GetBankAccountNumber")
     Call<BankAccountNumberResponse> getBankAccountNumber(@Body BankAccountNumberRequest bankAccountNumberRequest);
 
     @POST("api/SeaBank/Inquiry")
     Call<SeaBankInquiryResponse> seaBankInquiry(@Body SeaBankInquiryRequest seaBankInquiryRequest);
-
-
-    @GET("api/Delivery/GetPaypostError")
-    Call<GachNoResult> deliveryGetPaypostError(@Query("fromDate") String fromDate,
-                                               @Query("toDate") String toDate);
 
     @GET("api/SeaBank/GetIdentifyCation")
     Call<IdentifyCationResponse> getIdentifyCation();

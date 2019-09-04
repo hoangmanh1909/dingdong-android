@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import com.core.base.viper.Presenter
 import com.core.base.viper.interfaces.ContainerView
+import com.ems.dingdong.BuildConfig
 import com.ems.dingdong.callback.CommonCallback
 import com.ems.dingdong.functions.mainhome.chihobtxh.payment.PaymentChiHoBtxhPresenter
 import com.ems.dingdong.model.SimpleResult
@@ -11,8 +12,10 @@ import com.ems.dingdong.model.request.SeaBankPaymentRequest
 import com.ems.dingdong.model.response.SeaBankInquiryModel
 import com.ems.dingdong.model.response.SeaBankInquiryResponse
 import com.ems.dingdong.utiles.Toast
+import com.ems.dingdong.utiles.Utils
 import retrofit2.Call
 import retrofit2.Response
+import java.util.*
 
 /**
  * The OtpChiHoBtxh Presenter
@@ -52,6 +55,7 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
     override fun payment(otp: String) {
         mSeaBankPaymentRequest.apply {
             OTPNumber = otp
+            Signature = Utils.SHA256(MobileNumber + OTPNumber + BuildConfig.PRIVATE_KEY).toUpperCase(Locale.getDefault())
         }
         mView.showProgress()
         mInteractor.seaBankPayment(mSeaBankPaymentRequest, object : CommonCallback<SimpleResult>(mContainerView as Activity) {

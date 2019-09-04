@@ -7,6 +7,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
 import com.core.base.viper.ViewFragment
+import com.ems.dingdong.BuildConfig
 import com.ems.dingdong.R
 import com.ems.dingdong.extensions.editTextListener
 import com.ems.dingdong.extensions.fillColor
@@ -18,8 +19,9 @@ import com.ems.dingdong.network.NetWorkController
 import com.ems.dingdong.utiles.Constants
 import com.ems.dingdong.utiles.SharedPref
 import com.ems.dingdong.utiles.Toast
+import com.ems.dingdong.utiles.Utils
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment
-import java.util.ArrayList
+import java.util.*
 
 /**
  * The InquiryThuHo Fragment
@@ -27,6 +29,8 @@ import java.util.ArrayList
 class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), InquiryChiHoContract.View {
     @BindView(R.id.tvTitleAccount)
     lateinit var tvTitleAccount: TextView
+    @BindView(R.id.tvTitleMoney)
+    lateinit var tvTitleMoney: TextView
     @BindView(R.id.tvAccount)
     lateinit var tvAccount: TextView
     @BindView(R.id.edt_amount)
@@ -49,6 +53,9 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
         super.initLayout()
         tvTitleAccount.text = "Số tài khoản (*)"
         tvTitleAccount.fillColor("(*)", R.color.red_light)
+
+        tvTitleMoney.text = "Số tiền rút (*)"
+        tvTitleMoney.fillColor("(*)", R.color.red_light)
         val list = mPresenter.getListAccount()
         edtAmount.editTextListener()
         if (list.isNotEmpty()) {
@@ -59,7 +66,6 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
                 showAccount()
             }
         }
-
     }
 
     @OnClick(R.id.img_back, R.id.btn_check, R.id.tvAccount)
