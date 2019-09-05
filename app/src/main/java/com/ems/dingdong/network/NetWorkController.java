@@ -8,6 +8,7 @@ import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.IdentifyCationResponse;
+import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +31,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -367,6 +369,11 @@ public class NetWorkController {
 
     public static void seaBankPayment(@NotNull SeaBankPaymentRequest seaBankPaymentRequest, @NotNull CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getChiHoBtxhAPI().seaBankPayment(seaBankPaymentRequest);
+        call.enqueue(callback);
+    }
+
+    public static void getHistoryPaymentSeaBank(@Nullable String mobileNumber, @Nullable String fromDate, @Nullable String toDate, @NotNull CommonCallback<SeaBankHistoryPaymentResponse> callback) {
+        Call<SeaBankHistoryPaymentResponse> call = getChiHoBtxhAPI().getHistoryPaymentSeaBank(mobileNumber, fromDate, toDate);
         call.enqueue(callback);
     }
 }

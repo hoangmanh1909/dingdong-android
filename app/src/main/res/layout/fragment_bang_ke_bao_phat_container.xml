@@ -47,7 +47,7 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <androidx.recyclerview.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/lo_tab"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             app:tabSelectedTextColor="@color/black"
             app:tabTextAppearance="@style/TabLayoutTextAppearance"
             app:tabTextColor="@color/n_gray_text" />-->
-    </androidx.recyclerview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

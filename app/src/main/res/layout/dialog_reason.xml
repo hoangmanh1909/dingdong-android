@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#80000000">
 
-    <androidx.recyclerview.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,5 +89,5 @@
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
-    </androidx.recyclerview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
