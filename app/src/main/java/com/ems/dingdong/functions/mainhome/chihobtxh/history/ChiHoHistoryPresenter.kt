@@ -34,7 +34,7 @@ class ChiHoHistoryPresenter(containerView: ContainerView) : Presenter<ChiHoHisto
             override fun onSuccess(call: Call<SeaBankHistoryPaymentResponse>, response: Response<SeaBankHistoryPaymentResponse>) {
                 super.onSuccess(call, response)
                 if ("00" == response.body().errorCode) {
-                    mView.showResponseSuccess(response.body().data)
+                    mView.showResponseSuccess(response.body().data!!)
                 } else {
                     mView.showAlertDialog(response.body().message)
                 }

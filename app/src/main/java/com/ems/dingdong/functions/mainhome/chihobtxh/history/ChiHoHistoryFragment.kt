@@ -5,10 +5,10 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.OnClick
@@ -17,7 +17,6 @@ import com.ems.dingdong.R
 import com.ems.dingdong.callback.OnChooseDay
 import com.ems.dingdong.dialog.EditDayDialog
 import com.ems.dingdong.functions.mainhome.chihobtxh.history.ChiHoHistoryAdapter
-import com.ems.dingdong.model.CommonObject
 import com.ems.dingdong.model.UserInfo
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentModel
 import com.ems.dingdong.network.NetWorkController
@@ -35,7 +34,6 @@ import java.util.*
 class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), ChiHoHistoryContract.View {
 
 
-
     @BindView(R.id.recycler)
     lateinit var recycler: RecyclerView
     @BindView(R.id.tv_nodata)
@@ -50,7 +48,7 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
     private var fromDate: String? = null
     private var toDate: String? = null
     lateinit var mAdapter: ChiHoHistoryAdapter
-    lateinit var mList: ArrayList<CommonObject>
+    lateinit var mList: ArrayList<SeaBankHistoryPaymentModel>
     private var isLoading: Boolean = false
     override fun getLayoutId(): Int {
         return R.layout.fragment_chi_ho_history
@@ -100,8 +98,11 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
                 }, 1000)
             }
         })
-
-
+        recycler.apply {
+            addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
+            layoutManager = LinearLayoutManager(activity)
+            adapter = mAdapter
+        }
     }
 
 
@@ -109,6 +110,7 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
     fun onViewClicked(view: View) {
         when (view.id) {
             R.id.img_back -> {
+                mPresenter.back()
             }
             R.id.img_search -> {
                 showDialog()
@@ -133,7 +135,20 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
             search()
         }).show()
     }
-    override fun showResponseSuccess(data: List<SeaBankHistoryPaymentModel>?) {
+
+    override fun showResponseSuccess(data: List<SeaBankHistoryPaymentModel>) {
+        var amount: Long = 0
+        for (item in data) {
+            mList.add(item)
+            if (!TextUtils.isEmpty(item.stringValue)) {
+                val values = item.stringValue?.split("#")
+                val amountString = values!![1].replace("Số tiền rút: ", "")
+                amount += amountString.toLong()
+            }
+        }
+        mAdapter.notifyDataSetChanged()
+        tvCount.text = String.format(" %s", mList.size)
+        tvAmount.text = String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount))
         isLoading = false
     }
 }

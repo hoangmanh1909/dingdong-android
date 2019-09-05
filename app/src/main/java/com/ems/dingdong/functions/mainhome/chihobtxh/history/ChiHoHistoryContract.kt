@@ -18,7 +18,7 @@ interface ChiHoHistoryContract {
     }
 
     interface View : PresentView<Presenter> {
-        fun showResponseSuccess(data: List<SeaBankHistoryPaymentModel>?)
+        fun showResponseSuccess(data: List<SeaBankHistoryPaymentModel>)
     }
 
     interface Presenter : IPresenter<View, Interactor> {

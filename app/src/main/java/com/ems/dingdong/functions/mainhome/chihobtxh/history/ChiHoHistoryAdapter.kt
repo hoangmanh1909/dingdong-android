@@ -23,12 +23,13 @@ import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.ems.dingdong.model.response.SeaBankHistoryPaymentModel
 
-class ChiHoHistoryAdapter(items: List<CommonObject>, private val mFilterDone: FilterDone?) : RecyclerView.Adapter<ChiHoHistoryAdapter.HolderView>(), Filterable {
+class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val mFilterDone: FilterDone?) : RecyclerView.Adapter<ChiHoHistoryAdapter.HolderView>(), Filterable {
 
-    var listFilter: List<CommonObject>? = null
+    var listFilter: List<SeaBankHistoryPaymentModel>? = null
         private set
-    private val mList: List<CommonObject>
+    private val mList: List<SeaBankHistoryPaymentModel>
 
     init {
 
@@ -57,12 +58,13 @@ class ChiHoHistoryAdapter(items: List<CommonObject>, private val mFilterDone: Fi
                 listFilter = if (charString.isEmpty()) {
                     mList
                 } else {
-                    val filteredList = ArrayList<CommonObject>()
+                    val filteredList = ArrayList<SeaBankHistoryPaymentModel>()
                     for (row in mList) {
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.code.toLowerCase().contains(charString.toLowerCase())) {
+                        if (row.stringValue?.toLowerCase()!!.contains(charString.toLowerCase())
+                                || row.seaBankRetRefNumber?.toLowerCase()!!.contains(charString.toLowerCase())) {
                             filteredList.add(row)
                         }
                     }
@@ -76,12 +78,16 @@ class ChiHoHistoryAdapter(items: List<CommonObject>, private val mFilterDone: Fi
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
-                listFilter = filterResults.values as ArrayList<CommonObject>
+                listFilter = filterResults.values as ArrayList<SeaBankHistoryPaymentModel>
                 if (mFilterDone != null) {
                     var amount: Long = 0
                     for (item in listFilter!!) {
-                        if (!TextUtils.isEmpty(item.amount))
-                            amount += java.lang.Long.parseLong(item.amount)
+
+                        if (!TextUtils.isEmpty(item.stringValue)) {
+                            val values = item.stringValue?.split("#")
+                            val amountString = values!![1].replace("Số tiền rút: ", "")
+                            amount += amountString.toLong()
+                        }
                     }
                     mFilterDone.getCount(listFilter!!.size, amount)
                 }
@@ -93,7 +99,7 @@ class ChiHoHistoryAdapter(items: List<CommonObject>, private val mFilterDone: Fi
     inner class HolderView(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @BindView(R.id.tv_code)
-         lateinit var tvCode: CustomBoldTextView
+        lateinit var tvCode: CustomBoldTextView
         @BindView(R.id.tv_time)
         lateinit var tvTime: CustomTextView
         @BindView(R.id.tv_amount)
@@ -106,8 +112,14 @@ class ChiHoHistoryAdapter(items: List<CommonObject>, private val mFilterDone: Fi
         }
 
         fun bindView(model: Any) {
-            val item = model as CommonObject
-
+            val item = model as SeaBankHistoryPaymentModel
+            val values = item.stringValue?.split("#")
+            val amountString = values!![1].replace("Số tiền rút: ", "")
+            val gttt = values!![2]
+            tvAmount.text = "${NumberUtils.formatPriceNumber(amountString.toLong())} VNĐ"
+            tvTime.text = item.pIdDate
+            tvId.text = gttt
+            tvCode.text = item.seaBankRetRefNumber
 
         }
     }
