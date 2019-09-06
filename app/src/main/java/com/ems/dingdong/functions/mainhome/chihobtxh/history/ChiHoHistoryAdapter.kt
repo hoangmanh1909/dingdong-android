@@ -64,7 +64,7 @@ class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val m
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
                         if (row.stringValue?.toLowerCase()!!.contains(charString.toLowerCase())
-                                || row.seaBankRetRefNumber?.toLowerCase()!!.contains(charString.toLowerCase())) {
+                                || row.payPostRetRefNumber?.toLowerCase()!!.contains(charString.toLowerCase())) {
                             filteredList.add(row)
                         }
                     }
@@ -119,7 +119,7 @@ class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val m
             tvAmount.text = "${NumberUtils.formatPriceNumber(amountString.toLong())} VNĐ"
             tvTime.text = item.pIdDate
             tvId.text = gttt
-            tvCode.text = item.seaBankRetRefNumber
+            tvCode.text = item.payPostRetRefNumber
 
         }
     }

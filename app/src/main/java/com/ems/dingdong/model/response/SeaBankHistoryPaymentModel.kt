@@ -22,6 +22,9 @@ class SeaBankHistoryPaymentModel {
     @SerializedName("SeaBankRetRefNumber")
     @Expose
     val seaBankRetRefNumber: String? = null
+    @SerializedName("PayPostRetRefNumber")
+    @Expose
+    val payPostRetRefNumber: String? = null
     @SerializedName("OTPNumber")
     @Expose
     val otpNumber: String? = null
