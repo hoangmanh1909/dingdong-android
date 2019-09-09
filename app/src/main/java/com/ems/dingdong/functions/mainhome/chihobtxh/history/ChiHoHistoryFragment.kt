@@ -138,6 +138,7 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
 
     override fun showResponseSuccess(data: List<SeaBankHistoryPaymentModel>) {
         var amount: Long = 0
+        mList.clear()
         for (item in data) {
             mList.add(item)
             if (!TextUtils.isEmpty(item.stringValue)) {

@@ -117,7 +117,7 @@ class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val m
             val amountString = values!![1].replace("Số tiền rút: ", "")
             val gttt = values!![2]
             tvAmount.text = "${NumberUtils.formatPriceNumber(amountString.toLong())} VNĐ"
-            tvTime.text = item.pIdDate
+            tvTime.text = item.createDate
             tvId.text = gttt
             tvCode.text = item.payPostRetRefNumber
 
