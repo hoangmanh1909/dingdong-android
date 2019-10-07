@@ -1,8 +1,10 @@
 package com.ems.dingdong.functions.mainhome.gomhang;
 
 import android.content.Intent;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
@@ -12,7 +14,10 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.ArrayList;
 
@@ -46,10 +51,16 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
         mList = new ArrayList<>();
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
-        //homeInfos.add(new HomeInfo(R.drawable.ic_collect_service, getString(R.string.info_gomhang), "Gom hàng"));
-        homeInfos.add(new HomeInfo(1, R.drawable.ic_xac_nhan_tin, "Xác nhận tin"));
-        homeInfos.add(new HomeInfo(2, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
-        mList.add(new GroupInfo("Gom hàng", homeInfos));
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            if (!"6".equals(userInfo.getEmpGroupID())) {
+                homeInfos.add(new HomeInfo(1, R.drawable.ic_xac_nhan_tin, "Xác nhận tin"));
+                homeInfos.add(new HomeInfo(2, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
+                mList.add(new GroupInfo("Gom hàng", homeInfos));
+            }
+        }
         adapter = new HomeGroupAdapter(mList) {
             @Override
             public void onBindItemViewHolder(ItemViewHolder viewHolder, final int section, final int position) {

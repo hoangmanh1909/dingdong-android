@@ -96,16 +96,6 @@ android {
             applicationId "com.ems.dingdong"
             resValue "string", "app_name", "DingDong"
         }
-        production_0911818968 {
-            def API_URL = '"http://222.255.250.233:92/"'
-            applicationId "com.ems.dingdong.test"
-            resValue "string", "app_name", "0911818968"
-            def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
-            buildConfigField("String", "API_URL", API_URL)
-            buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
-            applicationId "com.ems.dingdong"
-            resValue "string", "app_name", "DingDong"
-        }
         uat_ems {
             def API_URL = '"http://222.255.250.245:50011/"'
             def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'

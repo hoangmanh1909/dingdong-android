@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.home;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
     RecyclerView recycler;
     @BindView(R.id.ll_package)
     View llPackage;
+    @BindView(R.id.ll_gom_hang)
+    LinearLayout llGomHang;
     private HomeGroupAdapter adapter;
     ArrayList<GroupInfo> mList;
 
@@ -75,57 +78,49 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         mList = new ArrayList<>();
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
-        if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
-            llPackage.setVisibility(View.GONE);
-            homeInfos.add(new HomeInfo(13, R.drawable.ic_bao_phat_offline, "Nhập báo phát"));
-            mList.add(new GroupInfo("Phát hàng", homeInfos));
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            if ("6".equals(userInfo.getEmpGroupID())) {
+                llGomHang.setVisibility(View.GONE);
+                homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
+                mList.add(new GroupInfo("Phát hàng", homeInfos));
+            } else {
+                llGomHang.setVisibility(View.VISIBLE);
+                if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
+                    llPackage.setVisibility(View.GONE);
+                    homeInfos.add(new HomeInfo(13, R.drawable.ic_bao_phat_offline, "Nhập báo phát"));
+                    mList.add(new GroupInfo("Phát hàng", homeInfos));
            /* homeInfos = new ArrayList<>();
             homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
             mList.add(new GroupInfo("Người dùng", homeInfos));*/
-        } else {
-            llPackage.setVisibility(View.VISIBLE);
-           /* homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
-            homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
-            mList.add(new GroupInfo("Gom hàng", homeInfos));*/
-
-            //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
-            homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_ban_ke, "Báo phát bản kê (BD13)"));
-            SharedPref sharedPref = new SharedPref(getActivity());
-            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-            if (!userJson.isEmpty()) {
-                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                if (userInfo != null) {
+                } else {
+                    llPackage.setVisibility(View.VISIBLE);
+                    homeInfos = new ArrayList<>();
+                    homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_ban_ke, "Báo phát bản kê (BD13)"));
                     if ("Y".equals(userInfo.getIsEms())) {
                         homeInfos.add(new HomeInfo(9, R.drawable.ic_lap_ban_ke, "Lập bản kê (BD13)"));
                         homeInfos.add(new HomeInfo(10, R.drawable.ic_tra_cuu_ban_ke, "Tra cứu bản kê BD13"));
                     }
+
+                    homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
+                    homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
+
+                    //  mList.add(new GroupInfo("Phát hàng", homeInfos));
+                    homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
+                    homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
+                    //  homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
+                    mList.add(new GroupInfo("Phát hàng", homeInfos));
+
+                    homeInfos = new ArrayList<>();
+                    homeInfos.add(new HomeInfo(15, R.drawable.ic_nhap_bao_phat, "Nhập báo phát"));
+                    homeInfos.add(new HomeInfo(14, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
+                    mList.add(new GroupInfo("Offline", homeInfos));
                 }
             }
-
-            homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
-            homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
-
-            //  mList.add(new GroupInfo("Phát hàng", homeInfos));
-            homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
-            homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
-            homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
-            mList.add(new GroupInfo("Phát hàng", homeInfos));
-
-            homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(15, R.drawable.ic_nhap_bao_phat, "Nhập báo phát"));
-            homeInfos.add(new HomeInfo(14, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
-            mList.add(new GroupInfo("Offline", homeInfos));
-
-
-        /*    homeInfos = new ArrayList<>();
-            mList.add(new GroupInfo("Call", homeInfos));*/
-          /*  homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
-            homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
-            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
-            mList.add(new GroupInfo("Người dùng", homeInfos));*/
         }
+
 
         adapter = new HomeGroupAdapter(mList) {
             @Override
@@ -183,7 +178,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 Intent intent = new Intent(getActivity(), BaoPhatOfflineActivity.class);
                                 intent.putExtra(Constants.IS_ONLINE, true);
                                 startActivity(intent);
-                            }else if (homeInfo.getId() == 16) {
+                            } else if (homeInfo.getId() == 16) {
                                 Intent intent = new Intent(getActivity(), BtxhActivity.class);
                                 startActivity(intent);
                             }
@@ -197,23 +192,6 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         };
         mLayoutManager = new StickyHeaderGridLayoutManager(SPAN_SIZE);
         mLayoutManager.setHeaderBottomOverlapMargin(getResources().getDimensionPixelSize(R.dimen.dimen_2dp));
-       /* mLayoutManager.setSpanSizeLookup(new StickyHeaderGridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int section, int position) {
-                switch (section) {
-                    case 0:
-                        return 3;
-                    case 1:
-                        return 1;
-                    case 2:
-                        return 3 - position % 3;
-                    case 3:
-                        return position % 2 + 1;
-                    default:
-                        return 1;
-                }
-            }
-        });*/
 
         recycler.setItemAnimator(new DefaultItemAnimator() {
             @Override
