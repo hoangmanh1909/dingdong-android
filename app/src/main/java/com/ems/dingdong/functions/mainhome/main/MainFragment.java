@@ -118,8 +118,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             }
             else
             {
-                imgCall.setVisibility(View.GONE);
-                imgTopSetting.setVisibility(View.GONE);
+                imgCall.setVisibility(View.INVISIBLE);
+                imgTopSetting.setVisibility(View.INVISIBLE);
             }
         }
     }
