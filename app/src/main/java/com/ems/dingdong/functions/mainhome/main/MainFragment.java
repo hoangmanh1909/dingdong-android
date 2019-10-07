@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -40,6 +41,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     CustomTextView tvAmountMax;
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
+    @BindView(R.id.img_call)
+    ImageView imgCall;
+    @BindView(R.id.img_top_setting)
+    ImageView imgTopSetting;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
     private Fragment gomHangFragment;
@@ -105,7 +110,18 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
-
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            if (!"6".equals(userInfo.getEmpGroupID())) {
+                imgCall.setVisibility(View.VISIBLE);
+                imgTopSetting.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                imgCall.setVisibility(View.GONE);
+                imgTopSetting.setVisibility(View.GONE);
+            }
+        }
     }
 
     void setupAdapter() {

@@ -13,6 +13,10 @@ import android.widget.LinearLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
@@ -61,6 +65,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     SimpleDraweeView imgSign;
     @BindView(R.id.ll_sign)
     LinearLayout llSign;
+    @BindView(R.id.ll_location)
+    LinearLayout llLocation;
     private ArrayList<StatusInfo> mList;
     private StatusAdapter mAdapter;
 
@@ -82,6 +88,18 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
         edtLadingCode.getEditText().setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            if (!"6".equals(userInfo.getEmpGroupID())) {
+                llLocation.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                llLocation.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected void checkSelfPermission() {

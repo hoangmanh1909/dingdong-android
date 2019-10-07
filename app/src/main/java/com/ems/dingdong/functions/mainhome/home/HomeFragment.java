@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.home;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -47,6 +48,8 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
     View llPackage;
     @BindView(R.id.ll_gom_hang)
     LinearLayout llGomHang;
+    @BindView(R.id.iv_add_shift)
+    ImageView ivAddShift;
     private HomeGroupAdapter adapter;
     ArrayList<GroupInfo> mList;
 
@@ -84,10 +87,12 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if ("6".equals(userInfo.getEmpGroupID())) {
                 llGomHang.setVisibility(View.GONE);
+                ivAddShift.setVisibility(View.GONE);
                 homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             } else {
                 llGomHang.setVisibility(View.VISIBLE);
+                ivAddShift.setVisibility(View.VISIBLE);
                 if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
                     llPackage.setVisibility(View.GONE);
                     homeInfos.add(new HomeInfo(13, R.drawable.ic_bao_phat_offline, "Nhập báo phát"));
