@@ -376,4 +376,8 @@ public class NetWorkController {
         Call<SeaBankHistoryPaymentResponse> call = getChiHoBtxhAPI().getHistoryPaymentSeaBank(mobileNumber, fromDate, toDate);
         call.enqueue(callback);
     }
+    public static void getReasonsHoanTat(CommonCallback<ReasonResult> callback) {
+        Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTat();
+        call.enqueue(callback);
+    }
 }

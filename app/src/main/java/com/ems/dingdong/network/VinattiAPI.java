@@ -234,6 +234,8 @@ public interface VinattiAPI {
 
     @GET("api/Dictionary/GetReasons")
     Call<ReasonResult> getReasons();
+    @GET("api/Dictionary/GetPickUpReasons")
+    Call<ReasonResult> getReasonsHoanTat();
 
 
     @POST("API/TaskOfWork/Create")

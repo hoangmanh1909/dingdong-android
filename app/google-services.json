@@ -40,6 +40,14 @@
           }
         },
         {
+          "client_id": "853538468534-evfgb206l92d6g3mi5leaqasea191v09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tct.dingdong",
+            "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
+          }
+        },
+        {
           "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -80,6 +88,19 @@
         "mobilesdk_app_id": "1:853538468534:android:eff0bb6706160df3",
         "android_client_info": {
           "package_name": "com.ems.dingdong"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6DHBatj4ypbxhFNFhu0_fKssg50pX1ig"
+        }
+      ]
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853538468534:android:eff0bb6706160df3",
+        "android_client_info": {
+          "package_name": "com.tct.dingdong"
         }
       },
       "api_key": [

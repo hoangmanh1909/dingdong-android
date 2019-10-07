@@ -52,4 +52,12 @@ public class ReasonInfo extends RealmObject{
     public void setSolution(String solution) {
         this.solution = solution;
     }
+
+    public ReasonInfo() {
+    }
+
+    public ReasonInfo(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 }
