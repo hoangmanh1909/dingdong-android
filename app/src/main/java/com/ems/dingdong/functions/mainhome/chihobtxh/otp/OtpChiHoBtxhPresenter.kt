@@ -63,7 +63,9 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
                 super.onSuccess(call, response)
                 if ("00" == response.body().errorCode) {
                     Toast.showToast(mContainerView as Context, response.body().message)
-                    (mContainerView as Activity).finish()
+                    back()
+                    back()
+                    back()
                 } else {
                     mView.showAlertDialog(response.body().message)
                 }

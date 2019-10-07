@@ -60,12 +60,14 @@ fun EditText.editTextListener() {
                 removeTextChangedListener(this)
                 var cleanString = s.toString().replace(" VNĐ","")
                 cleanString = cleanString.replace(Regex("[$,.]"), "")
-                val parsed = cleanString.toDouble()
-                val formatter = DecimalFormat("#,###")
-                val formatted = formatter.format(parsed)
-                current = "$formatted VNĐ"
-                setText(current)
-                setSelection(formatted?.length!!)
+                if(cleanString !="") {
+                    val parsed = cleanString.toDouble()
+                    val formatter = DecimalFormat("#,###")
+                    val formatted = formatter.format(parsed)
+                    current = "$formatted VNĐ"
+                    setText(current)
+                    setSelection(formatted?.length!!)
+                }
                 addTextChangedListener(this)
             }
         }

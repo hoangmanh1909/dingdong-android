@@ -137,6 +137,7 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
     }
 
     override fun showResponseSuccess(data: List<SeaBankHistoryPaymentModel>) {
+        edtSearch.setText("")
         var amount: Long = 0
         mList.clear()
         for (item in data) {
