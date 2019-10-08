@@ -45,6 +45,12 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     CustomTextView btnConfirm;
     @BindView(R.id.btn_reject)
     CustomTextView btnReject;
+    @BindView(R.id.tv_ReceiverName)
+    CustomTextView tvReceiverName;
+    @BindView(R.id.tv_TrackingCode)
+    CustomTextView tvTrackingCode;
+    @BindView(R.id.tv_OrderNumber)
+    CustomTextView tvOrderNumber;
     private String mUser;
     private int mType;
 
@@ -126,6 +132,9 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         tvQuantity.setText(commonObject.getQuantity());
         tvWeigh.setText(commonObject.getWeigh());
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
+        tvReceiverName.setText(commonObject.getReceiverName());
+        tvTrackingCode.setText(commonObject.getTrackingCode());
+        tvOrderNumber.setText(commonObject.getOrderNumber());
     }
 
     @Override

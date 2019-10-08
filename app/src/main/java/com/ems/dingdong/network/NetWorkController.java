@@ -2,6 +2,9 @@ package com.ems.dingdong.network;
 
 
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
+import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.ConfirmOrderPostmanRequest;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
@@ -34,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -308,9 +312,9 @@ public class NetWorkController {
 
     public static void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                                   String statusCode, String quantity, String collectReason, String pickUpDate,
-                                                  String pickUpTime, String file, String scan, CommonCallback<SimpleResult> callback) {
+                                                  String pickUpTime, String file, String scan, String reasonCode, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan);
+                statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan, reasonCode);
         call.enqueue(callback);
     }
 
@@ -378,6 +382,16 @@ public class NetWorkController {
     }
     public static void getReasonsHoanTat(CommonCallback<ReasonResult> callback) {
         Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTat();
+        call.enqueue(callback);
+    }
+
+    public static void getReasonsHoanTatMiss(CommonCallback<ReasonResult> callback) {
+        Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTatMiss();
+        call.enqueue(callback);
+    }
+
+    public static void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
+        Call<ConfirmAllOrderPostmanResult> call = getAPIBuilder().confirmAllOrderPostman(request);
         call.enqueue(callback);
     }
 }

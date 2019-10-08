@@ -4,6 +4,9 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CommonObjectResult;
+import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
+import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.ConfirmOrderPostmanRequest;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
@@ -16,6 +19,8 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
+
+import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -97,7 +102,8 @@ public interface VinattiAPI {
                                                   @Field("PickUpDate") String pickUpDate,
                                                   @Field("PickUpTime") String pickUpTime,
                                                   @Field("OrderImage") String file,
-                                                  @Field("ShipmentCode") String scan);
+                                                  @Field("ShipmentCode") String scan,
+                                                  @Field("ReasonCode") String reasonCode);
 
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")
@@ -237,7 +243,8 @@ public interface VinattiAPI {
     @GET("api/Dictionary/GetPickUpReasons")
     Call<ReasonResult> getReasonsHoanTat();
 
-
+    @GET("api/Dictionary/GetCancelOrderReason")
+    Call<ReasonResult> getReasonsHoanTatMiss();
     @POST("API/TaskOfWork/Create")
     Call<SimpleResult> taskOfWork(@Body SimpleResult taskRequest);
 
@@ -272,5 +279,10 @@ public interface VinattiAPI {
     @Multipart
     @POST("api/Handle/UploadImage")
     Call<UploadSingleResult> postImageSingle(@Part MultipartBody.Part image);
+
+
+    @POST("api/Collect/ConfirmAllOrderPostman")
+    Call<ConfirmAllOrderPostmanResult> confirmAllOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
+
 
 }

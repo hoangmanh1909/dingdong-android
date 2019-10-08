@@ -20,7 +20,7 @@ interface HoanThanhTinDetailContract {
 
         void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                         String statusCode, String quantity, String collectReason, String pickUpDate,
-                                        String pickUpTime,  String file, String scan,CommonCallback<SimpleResult> callback);
+                                        String pickUpTime, String file, String scan, String reasonCode, CommonCallback<SimpleResult> callback);
 
         void postImage(String pathMedia, CommonCallback<UploadSingleResult> commonCallback);
     }
@@ -44,7 +44,7 @@ interface HoanThanhTinDetailContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                         String statusCode, String quantity, String collectReason, String pickUpDate,
-                                        String pickUpTime, String file, String scan);
+                                        String pickUpTime, String file, String scan, String reasonCode);
 
         void searchOrderPostman();
 

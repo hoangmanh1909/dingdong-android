@@ -47,10 +47,10 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     @Override
     public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                            String statusCode, String quantity, String collectReason,
-                                           String pickUpDate, String pickUpTime, String file, String scan) {
+                                           String pickUpDate, String pickUpTime, String file, String scan, String reasonCode) {
         mView.showProgress();
         mInteractor.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID, statusCode, quantity,
-                collectReason, pickUpDate, pickUpTime, file, scan, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                collectReason, pickUpDate, pickUpTime, file, scan, reasonCode,new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

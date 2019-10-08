@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -44,6 +46,8 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
         CustomTextView tvContactDescription;
         @BindView(R.id.tv_status)
         CustomTextView tvStatus;
+        @BindView(R.id.cb_selected)
+        CheckBox cbSelected;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -62,9 +66,22 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                 tvContactDescription.setText(item.getDescription());
             }
 
-
+            cbSelected.setVisibility(View.GONE);
             if (mType == 1) {
-                if (item.getStatusCode().equals("P0")) {
+                cbSelected.setVisibility(View.VISIBLE);
+                cbSelected.setChecked(item.isSelected());
+                cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            item.setSelected(true);
+                        } else {
+                            item.setSelected(false);
+                        }
+                    }
+                });
+                if ("P0".equals(item.getStatusCode())) {
+                    cbSelected.setVisibility(View.VISIBLE);
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
                     if (typeface != null) {
                         tvStt.setTypeface(typeface);
@@ -77,6 +94,7 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                     tvStatus.setText("Chưa xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
+                    cbSelected.setVisibility(View.GONE);
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
@@ -91,7 +109,7 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                 }
 
             } else if (mType == 2) {
-                if (item.getStatusCode().equals("P1") || item.getStatusCode().equals("P5")) {
+                if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode())) {
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
                     if (typeface != null) {

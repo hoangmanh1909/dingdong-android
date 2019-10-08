@@ -23,6 +23,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
+import com.ems.dingdong.model.ReasonInfo;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -75,13 +76,18 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     CustomTextView tvContactAddress;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
+    @BindView(R.id.tv_TrackingCode)
+    CustomTextView tvTrackingCode;
+    @BindView(R.id.tv_OrderNumber)
+    CustomTextView tvOrderNumber;
     @BindView(R.id.iv_package)
     SimpleDraweeView ivPackage;
     @BindView(R.id.recycler_scan)
     RecyclerView recyclerScan;
     @BindView(R.id.edt_code)
     MaterialEditText edtCode;
-
+    @BindView(R.id.tv_ReceiverName)
+    CustomTextView tvReceiverName;
     private String mUser;
     private CommonObject mHoanThanhTin;
     private String mFile;
@@ -281,13 +287,16 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 if (mHoanThanhTin != null) {
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new HoanThanhTinCallback() {
                         @Override
-                        public void onResponse(String statusCode, String quantity, String collectReason, String pickUpDate, String pickUpTime) {
+                        public void onResponse(String statusCode, String quantity, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime) {
                             if (getActivity() != null) {
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 if (!userJson.isEmpty()) {
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                                    mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(), mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, collectReason, pickUpDate, pickUpTime, mFile, scans.toString());
+                                    mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(),
+                                            mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, reasonInfo.getName(),
+                                            pickUpDate, pickUpTime, mFile,
+                                            scans.toString(),reasonInfo.getCode());
                                 }
                             }
 
@@ -356,7 +365,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         tvQuantity.setText(commonObject.getQuantity());
         tvWeigh.setText(commonObject.getWeigh());
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
-
+        tvTrackingCode.setText(commonObject.getTrackingCode());
+        tvOrderNumber.setText(commonObject.getOrderNumber());
         String[] phones = commonObject.getReceiverPhone().split(",");
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
@@ -369,6 +379,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         .commit();
             }
         }
+        tvReceiverName.setText(commonObject.getReceiverName());
     }
 
     @Override

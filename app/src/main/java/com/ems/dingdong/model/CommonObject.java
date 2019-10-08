@@ -25,6 +25,12 @@ public class CommonObject extends RealmObject {
     @SerializedName("Quantity")
     String quantity;
     //endregion
+    //region hoantattin
+    @SerializedName("TrackingCode")
+    String trackingCode;
+    @SerializedName("OrderNumber")
+    String orderNumber;
+    //endregion
     //region common
     @SerializedName("StatusCode")
     String statusCode;
@@ -460,5 +466,13 @@ public class CommonObject extends RealmObject {
 
     public void setSolutionName(String solutionName) {
         this.solutionName = solutionName;
+    }
+
+    public String getTrackingCode() {
+        return trackingCode;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
     }
 }

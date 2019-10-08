@@ -70,7 +70,68 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Mã bưu gửi"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/tv_TrackingCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Số đơn hàng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/tv_OrderNumber"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -213,6 +274,37 @@
 
                         <com.ems.dingdong.views.CustomTextView
                             android:id="@+id/tv_Weigh"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Người nhận"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/tv_ReceiverName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"

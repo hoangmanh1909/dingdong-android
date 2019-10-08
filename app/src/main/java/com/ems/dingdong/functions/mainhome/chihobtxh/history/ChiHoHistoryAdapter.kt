@@ -1,29 +1,21 @@
 package com.ems.dingdong.functions.mainhome.chihobtxh.history
 
-import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.CompoundButton
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.ems.dingdong.R
-import com.ems.dingdong.model.CommonObject
+import com.ems.dingdong.model.response.SeaBankHistoryPaymentModel
 import com.ems.dingdong.utiles.NumberUtils
 import com.ems.dingdong.views.CustomBoldTextView
 import com.ems.dingdong.views.CustomMediumTextView
 import com.ems.dingdong.views.CustomTextView
-
-import java.util.ArrayList
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import com.ems.dingdong.model.response.SeaBankHistoryPaymentModel
+import java.util.*
 
 class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val mFilterDone: FilterDone?) : RecyclerView.Adapter<ChiHoHistoryAdapter.HolderView>(), Filterable {
 

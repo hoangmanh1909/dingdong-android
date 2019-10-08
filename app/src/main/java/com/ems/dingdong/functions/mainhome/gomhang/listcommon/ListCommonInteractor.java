@@ -3,7 +3,11 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
+import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.network.NetWorkController;
+
+import java.util.ArrayList;
 
 /**
  * The CommonObject interactor
@@ -22,6 +26,11 @@ class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
 
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String route, String order, CommonCallback<CommonObjectListResult> callback) {
-       // NetWorkController.searchDeliveryPostman(postmanID, fromDate, route, order,callback);
+        // NetWorkController.searchDeliveryPostman(postmanID, fromDate, route, order,callback);
+    }
+
+    @Override
+    public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
+        NetWorkController.confirmAllOrderPostman(request, callback);
     }
 }

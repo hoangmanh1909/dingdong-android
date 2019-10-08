@@ -32,32 +32,55 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
+            <ImageView
+                android:id="@+id/img_confirm"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_collect_service_success" />
         </RelativeLayout>
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/ll_gom_hang"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:background="@color/line_gray"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_10sdp">
-
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_accept_count"
-            android:layout_width="wrap_content"
+        android:weightSum="2"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/ll_gom_hang"
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_16sp" />
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp">
 
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_accept_reject"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_000080"
-            android:textSize="@dimen/text_size_16sp" />
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_accept_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_accept_reject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_000080"
+                android:textSize="@dimen/text_size_16sp" />
+        </LinearLayout>
+        <CheckBox
+            android:id="@+id/cb_all"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:text="Chọn tất cả"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"
