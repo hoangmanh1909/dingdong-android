@@ -11,8 +11,10 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -294,9 +296,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                 if (!userJson.isEmpty()) {
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                                     mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(),
-                                            mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, reasonInfo.getName(),
+                                            mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, reasonInfo != null ? reasonInfo.getName() : "",
                                             pickUpDate, pickUpTime, mFile,
-                                            scans.toString(),reasonInfo.getCode());
+                                            scans.toString(), reasonInfo != null ? reasonInfo.getCode() : "");
                                 }
                             }
 
