@@ -35,7 +35,9 @@ class CheckReferencePresenter(containerView: ContainerView) : Presenter<CheckRef
                 super.onSuccess(call, response)
                 mView.hideProgress()
                 if (response.body().errorCode == "00") {
+                    mView.clearText()
                     InquiryChiHoPresenter(mContainerView).setDataBankAccountNumber(response.body().data).pushView()
+
                 } else {
                     mView.showAlertDialog(response.body().message)
                 }

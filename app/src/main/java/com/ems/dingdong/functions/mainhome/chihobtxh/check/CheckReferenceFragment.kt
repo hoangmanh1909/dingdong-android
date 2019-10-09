@@ -23,6 +23,8 @@ import java.util.*
  * The CheckReference Fragment
  */
 class CheckReferenceFragment : ViewFragment<CheckReferenceContract.Presenter>(), CheckReferenceContract.View {
+
+
     @BindView(R.id.edt_reference)
     lateinit var edtReference: CustomEditText
 
@@ -63,5 +65,8 @@ class CheckReferenceFragment : ViewFragment<CheckReferenceContract.Presenter>(),
                 }
             }
         }
+    }
+    override fun clearText() {
+        edt_reference.setText("")
     }
 }

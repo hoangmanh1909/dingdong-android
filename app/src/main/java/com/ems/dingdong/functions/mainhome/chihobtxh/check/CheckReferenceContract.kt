@@ -17,7 +17,9 @@ public interface CheckReferenceContract {
         fun getBankAccountNumber(bankAccountNumberRequest: BankAccountNumberRequest, callback: CommonCallback<BankAccountNumberResponse>)
     }
 
-    interface View : PresentView<Presenter>
+    interface View : PresentView<Presenter> {
+        fun clearText()
+    }
 
     interface Presenter : IPresenter<View, Interactor> {
         fun getBankAccountNumber(bankAccountNumberRequest: BankAccountNumberRequest)
