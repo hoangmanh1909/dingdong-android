@@ -157,7 +157,7 @@
                 android:textColor="#253854"
                 android:hint="Chi hộ đối tượng BTXH"
                 android:background="@color/transparent"
-                android:inputType="number"
+                android:inputType="text"
                 android:textSize="@dimen/text_size_14sp" />
         </LinearLayout>
 
