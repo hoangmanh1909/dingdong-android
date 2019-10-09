@@ -58,7 +58,7 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
         tvTitleMoney.fillColor("(*)", R.color.red_light)
         val list = mPresenter.getListAccount()
         edtAmount.editTextListener()
-        if (list.isNotEmpty()) {
+        if (list != null && list.isNotEmpty()) {
             if (list.size == 1) {
                 bankAccountNumber = list[0]
                 tvAccount.text = list[0].bankAccountNumber
@@ -107,21 +107,26 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
 
     private fun showAccount() {
         val items = ArrayList<Item>()
-        for (item in mPresenter.getList()) {
-            items.add(Item(item.bankAccountNumber, item.bankAccountNumber))
-        }
-        if (picker == null) {
-            picker = ItemBottomSheetPickerUIFragment(items, "Chọn số tài khoản",
-                    ItemBottomSheetPickerUIFragment.PickerUiListener { item, _ ->
-                        tvAccount.text = item.text
-                        bankAccountNumber = mPresenter.getListAccount().find { it.bankAccountNumber == item.value }!!
-                    }, 0)
-            picker?.show(activity?.supportFragmentManager, picker?.tag)
-        } else {
-            picker?.setData(items, 0)
-            if (!picker?.isShow!!) {
-                picker?.show(activity?.supportFragmentManager, picker?.tag)
+        val list = mPresenter.getList()
+        if (list != null) {
+            for (item in list) {
+                items.add(Item(item.bankAccountNumber, item.bankAccountNumber))
             }
+            if (picker == null) {
+                picker = ItemBottomSheetPickerUIFragment(items, "Chọn số tài khoản",
+                        ItemBottomSheetPickerUIFragment.PickerUiListener { item, _ ->
+                            tvAccount.text = item.text
+                            bankAccountNumber = mPresenter.getListAccount()?.find { it.bankAccountNumber == item.value }!!
+                        }, 0)
+                picker?.show(activity?.supportFragmentManager, picker?.tag)
+            } else {
+                picker?.setData(items, 0)
+                if (!picker?.isShow!!) {
+                    picker?.show(activity?.supportFragmentManager, picker?.tag)
+                }
+            }
+        } else {
+            Toast.showToast(activity, "Không lấy được danh sách tài khoản")
         }
     }
 }

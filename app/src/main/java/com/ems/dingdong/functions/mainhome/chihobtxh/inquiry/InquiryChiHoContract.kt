@@ -20,9 +20,9 @@ import com.ems.dingdong.model.response.SeaBankInquiryResponse
     interface View : PresentView<Presenter>
 
     interface Presenter : IPresenter<View, Interactor> {
-        fun getListAccount(): List<BankAccountNumber>
+        fun getListAccount(): List<BankAccountNumber>?
         fun seaBankInquiry(seaBankInquiryRequest: SeaBankInquiryRequest)
-        fun getList(): List<BankAccountNumber>
+        fun getList(): List<BankAccountNumber>?
     }
 }
 

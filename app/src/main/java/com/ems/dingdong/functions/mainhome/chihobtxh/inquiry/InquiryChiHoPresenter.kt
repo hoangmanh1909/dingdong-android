@@ -30,11 +30,11 @@ class InquiryChiHoPresenter(containerView: ContainerView) : Presenter<InquiryChi
         return InquiryChiHoInteractor(this)
     }
 
-    override fun getListAccount(): List<BankAccountNumber> {
-        return mDataBankAccountNumber!!
+    override fun getListAccount(): List<BankAccountNumber>? {
+        return mDataBankAccountNumber
     }
 
-    fun setDataBankAccountNumber(dataBankAccountNumber: List<BankAccountNumber>): InquiryChiHoPresenter {
+    fun setDataBankAccountNumber(dataBankAccountNumber: List<BankAccountNumber>?): InquiryChiHoPresenter {
         mDataBankAccountNumber = dataBankAccountNumber
         return this
     }
@@ -58,7 +58,7 @@ class InquiryChiHoPresenter(containerView: ContainerView) : Presenter<InquiryChi
         })
     }
 
-    override fun getList(): List<BankAccountNumber> {
-        return mDataBankAccountNumber!!
+    override fun getList(): List<BankAccountNumber>? {
+        return mDataBankAccountNumber
     }
 }
