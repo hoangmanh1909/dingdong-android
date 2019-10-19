@@ -52,7 +52,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     @Override
     public void onClick(View v) {
         Calendar maxStart = Calendar.getInstance();
-        maxStart.add(Calendar.DATE,-1);
+      //  maxStart.add(Calendar.DATE,-1);
         Calendar maxToStart = Calendar.getInstance();
         switch (v.getId()) {
 

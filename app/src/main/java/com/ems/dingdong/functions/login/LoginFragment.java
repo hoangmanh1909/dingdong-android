@@ -59,7 +59,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         mSharedPref = new SharedPref(getActivity());
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev EMS
 
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0385537906;96D5C95013E36E313C6A558B783D26829E0916D6078A14745571660A37A92F4F");// dev vinatti
+       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0979765735;A17317CA607CFBACD4C875B31478444420EDFF3E9633746EFE846C83A01E1407");// dev vinatti
        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;90949F37ADA47AAC3667B69EB1E1B0C9193C45238EA93D54E16B07D2DD12FC57");// dev UAT
         checkPermissionCall();
     }
@@ -115,7 +115,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     if ("Y".equals(userInfo.getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
-                        Constants.HEADER_NUMBER = "tel:18002037,";
+                        Constants.HEADER_NUMBER = "tel:18002009,";
                     }
                     gotoHome();
                 }

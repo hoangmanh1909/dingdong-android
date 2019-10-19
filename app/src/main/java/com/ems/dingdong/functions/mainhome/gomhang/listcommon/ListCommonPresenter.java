@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.parcel.ListParcelPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.ems.dingdong.callback.CommonCallback;
@@ -105,6 +106,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     public void showDetailView(CommonObject commonObject) {
         if (mType == 1) {
             new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
+           // new ListParcelPresenter(mContainerView).setList(commonObject.getListParcelCode()).pushView();
         } else if (mType == 2) {
             new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 3) {

@@ -3,6 +3,7 @@ package com.ems.dingdong.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -135,6 +136,13 @@ public class CommonObject extends RealmObject {
     private String isPaypost;
 
     private String dateSearch;
+    @SerializedName("Shipments")
+    private RealmList<ParcelCodeInfo> listParcelCode;
+
+
+    public List<ParcelCodeInfo> getListParcelCode() {
+        return listParcelCode;
+    }
 
     public String getSignatureCapture() {
         return signatureCapture;

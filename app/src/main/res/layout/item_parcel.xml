@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/cb_selected"
+            android:layout_width="wrap_content"
+            android:visibility="invisible"
+            android:layout_height="wrap_content" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_code"
+            android:layout_toRightOf="@+id/cb_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:gravity="center|left"
+            android:paddingLeft="@dimen/dimen_8dp"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/text_size_14sp"
+            tools:text="1234567890" />
+    </RelativeLayout>
+    <View
+        style="@style/Devider"
+        android:layout_marginTop="@dimen/dimen_5dp" />
+
+</LinearLayout>

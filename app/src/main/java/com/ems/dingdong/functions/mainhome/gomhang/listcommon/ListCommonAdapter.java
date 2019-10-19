@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.adapter.RecyclerBaseAdapter;
+import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
 
@@ -46,8 +50,13 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
         CustomTextView tvContactDescription;
         @BindView(R.id.tv_status)
         CustomTextView tvStatus;
+        @BindView(R.id.tv_ParcelCode)
+        CustomTextView tvParcelCode;
+        @BindView(R.id.recycler)
+        RecyclerView recycler;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
+        ParcelAdapter adapter;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -69,7 +78,30 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
             cbSelected.setVisibility(View.GONE);
             if (mType == 1) {
                 cbSelected.setVisibility(View.VISIBLE);
-                cbSelected.setChecked(item.isSelected());
+                tvParcelCode.setVisibility(View.VISIBLE);
+                recycler.setVisibility(View.GONE);
+                binParcelCode(item.getListParcelCode());
+                cbSelected.setOnCheckedChangeListener(null);
+                if (item.isSelected())
+                    cbSelected.setChecked(true);
+                else {
+                    cbSelected.setChecked(false);
+                }
+                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
+                    tvParcelCode.setVisibility(View.VISIBLE);
+                } else {
+                    tvParcelCode.setVisibility(View.GONE);
+                }
+                tvParcelCode.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (recycler.getVisibility() == View.GONE) {
+                            recycler.setVisibility(View.VISIBLE);
+                        } else {
+                            recycler.setVisibility(View.GONE);
+                        }
+                    }
+                });
                 cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -135,6 +167,17 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
             }
+        }
+
+        private void binParcelCode(List<ParcelCodeInfo> listParcelCode) {
+            adapter = new ParcelAdapter(mContext, listParcelCode) {
+                @Override
+                public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                    super.onBindViewHolder(holder, position);
+                }
+            };
+            RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
+            recycler.setAdapter(adapter);
         }
     }
 }
