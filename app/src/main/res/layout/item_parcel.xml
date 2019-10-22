@@ -13,7 +13,6 @@
         <CheckBox
             android:id="@+id/cb_selected"
             android:layout_width="wrap_content"
-            android:visibility="invisible"
             android:layout_height="wrap_content" />
 
         <com.ems.dingdong.views.CustomTextView

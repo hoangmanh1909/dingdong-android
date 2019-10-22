@@ -9,9 +9,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.BaseActivity;
+import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.callback.HoanThanhTinCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ParcelAdapter;
+import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.network.NetWorkController;
@@ -29,6 +36,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,17 +69,23 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
     @BindView(R.id.rad_success)
     RadioButton radSuccess;
+    @BindView(R.id.rad_success_part)
+    RadioButton radSuccessPart;
     @BindView(R.id.rad_fail)
     RadioButton radFail;
     @BindView(R.id.rad_miss)
     RadioButton radMiss;
-   // private ArrayList<CollectReason> mListReasonFail;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+    @BindView(R.id.tv_count)
+    CustomTextView tvCount;
+    // private ArrayList<CollectReason> mListReasonFail;
     //  private ItemBottomSheetPickerUIFragment pickerUIReasonFail;
-   // private CollectReason mReasonFail;
-   // private ArrayList<CollectReason> mListReasonMiss;
-   // private CollectReason mReasonMiss;
+    // private CollectReason mReasonFail;
+    // private ArrayList<CollectReason> mListReasonMiss;
+    // private CollectReason mReasonMiss;
     //  private ItemBottomSheetPickerUIFragment pickerUIReasonMiss;
-   private ReasonInfo mReason ;
+    private ReasonInfo mReason;
     private Calendar calDate;
     private int mHour;
     private int mMinute;
@@ -80,16 +94,22 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     private ItemBottomSheetPickerUIFragment pickerUIReasonFail;
     private ItemBottomSheetPickerUIFragment pickerUIReasonMiss;
     private ArrayList<ReasonInfo> mListReasonMiss;
+    List<ParcelCodeInfo> mList;
+    ParcelAdapter adapter;
+    int mCount=0;
 
-    public HoanTatTinDialog(Context context, String code, HoanThanhTinCallback reasonCallback) {
+    public HoanTatTinDialog(Context context, String code, List<ParcelCodeInfo> list, HoanThanhTinCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         mActivity = (BaseActivity) context;
         this.mCode = code;
         this.mDelegate = reasonCallback;
+        this.mList = list;
         View view = View.inflate(getContext(), R.layout.dialog_hoan_tat_tin, null);
         setContentView(view);
         ButterKnife.bind(this, view);
+        edtMon.setVisibility(View.GONE);
+        recycler.setVisibility(View.GONE);
         tvCode.setText(mCode);
         radSuccess.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -97,12 +117,31 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 if (isChecked) {
                     radFail.setChecked(false);
                     radMiss.setChecked(false);
-                    tvStatus.setText("Số món");
+                    tvStatus.setText("");
                     tvReason.setVisibility(View.GONE);
                     llDateTime.setVisibility(View.GONE);
-                    edtMon.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
+                    tvCount.setVisibility(View.GONE);
+                    // edtMon.setVisibility(View.VISIBLE);
                     resetView();
                     mType = 0;
+                }
+            }
+        });
+        radSuccessPart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    radFail.setChecked(false);
+                    radMiss.setChecked(false);
+                    tvStatus.setText("");
+                    tvReason.setVisibility(View.GONE);
+                    llDateTime.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
+                    tvCount.setVisibility(View.VISIBLE);
+                    resetView();
+                    loadList();
+                    mType = 3;
                 }
             }
         });
@@ -114,7 +153,9 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     radSuccess.setChecked(false);
                     tvStatus.setText("Lý do");
                     tvReason.setVisibility(View.VISIBLE);
-                    edtMon.setVisibility(View.GONE);
+                    recycler.setVisibility(View.GONE);
+                    tvCount.setVisibility(View.GONE);
+                    // edtMon.setVisibility(View.GONE);
                     loadReasonFail();
                     resetView();
                     mType = 1;
@@ -129,7 +170,9 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     radSuccess.setChecked(false);
                     tvStatus.setText("Lý do");
                     tvReason.setVisibility(View.VISIBLE);
-                    edtMon.setVisibility(View.GONE);
+                    recycler.setVisibility(View.GONE);
+                    tvCount.setVisibility(View.GONE);
+                    //  edtMon.setVisibility(View.GONE);
                     loadReasonMiss();
                     resetView();
                     mType = 2;
@@ -138,7 +181,43 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
         });
         calDate = Calendar.getInstance();
         llDateTime.setVisibility(View.GONE);
+        radSuccess.setChecked(true);
     }
+
+    private void loadList() {
+        if (adapter == null) {
+            for (ParcelCodeInfo item : mList) {
+                item.setSelected(true);
+            }
+            mCount = mList.size();
+            tvCount.setText(String.format("Số bưi gửi: %s", mCount));
+            adapter = new ParcelAdapter(mActivity, mList) {
+                @Override
+                public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                    super.onBindViewHolder(holder, position);
+                    ((HolderView)holder).cbSelected.setVisibility(View.VISIBLE);
+                    ((HolderView)holder).cbSelected.setOnCheckedChangeListener(null);
+                    ((HolderView)holder).cbSelected.setChecked(mList.get(position).isSelected());
+                    ((HolderView)holder).cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                mList.get(position).setSelected(true);
+                                mCount++;
+                            } else {
+                                mList.get(position).setSelected(false);
+                                mCount--;
+                            }
+                            tvCount.setText(String.format("Số bưi gửi: %s", mCount));
+                        }
+                    });
+                }
+            };
+            RecyclerUtils.setupVerticalRecyclerView(mActivity, recycler);
+            recycler.setAdapter(adapter);
+        }
+    }
+
 
     private void loadReasonFail() {
         if (mListReasonFail == null) {
@@ -162,6 +241,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
             });
         }
     }
+
     private void loadReasonMiss() {
         if (mListReasonMiss == null) {
             mActivity.showProgress();
@@ -187,8 +267,8 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
     private void resetView() {
         tvReason.setText("");
-       // mReasonFail = null;
-       // mReasonMiss = null;
+        // mReasonFail = null;
+        // mReasonMiss = null;
         llDateTime.setVisibility(View.GONE);
     }
 
@@ -313,7 +393,9 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
     @OnClick({R.id.tv_reason, R.id.tv_update, R.id.tv_close, R.id.tv_date, R.id.tv_time})
     public void onViewClicked(View view) {
+        ArrayList<Integer> arrayInt = null;
         switch (view.getId()) {
+
             case R.id.tv_reason:
                 if (mType == 1) {
                     showUIReasonFail();
@@ -322,7 +404,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 }
                 break;
             case R.id.tv_update:
-                String statusCode = "", quantity = "", pickUpDate = "", pickUpTime = "";
+                String statusCode = "", pickUpDate = "", pickUpTime = "";// quantity = "",
                 if (mType == -1) {
                     Toast.showToast(mActivity, "Chọn kết quả");
                     return;
@@ -344,9 +426,24 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                         return;
                     }
                 }
-                if (edtMon.getVisibility() == View.VISIBLE) {
-                    quantity = edtMon.getText().toString().trim();
+                if (mType == 3) {
+                    arrayInt = new ArrayList<>();
+                    statusCode = "P7";
+                    int check = 0;
+                    for (ParcelCodeInfo info : mList) {
+                        if (info.isSelected()) {
+                            check++;
+                            arrayInt.add(info.getShipmentID());
+                        }
+                    }
+                    if (check == 0) {
+                        Toast.showToast(mActivity, "Vui lòng chọn ít nhất 1 bưu gửi");
+                        return;
+                    }
                 }
+              /*  if (edtMon.getVisibility() == View.VISIBLE) {
+                    quantity = edtMon.getText().toString().trim();
+                }*/
                 if (llDateTime.getVisibility() == View.VISIBLE) {
                     if (TextUtils.isEmpty(tvDate.getText())) {
                         Toast.showToast(mActivity, "Vui lòng nhập ngày hẹn");
@@ -370,7 +467,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 if (pickUpDate.isEmpty()) {
                     pickUpDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 }
-                mDelegate.onResponse(statusCode, quantity, mReason, pickUpDate, pickUpTime);
+                mDelegate.onResponse(statusCode, mReason, pickUpDate, pickUpTime, arrayInt);//quantity,
                 dismiss();
                 break;
             case R.id.tv_close:
@@ -442,10 +539,10 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                                 if (mReason.getCode().equals("R0")) {
                                     //show Date
                                     llDateTime.setVisibility(View.GONE);
-                                    edtMon.setVisibility(View.VISIBLE);
+                                    //edtMon.setVisibility(View.VISIBLE);
                                     tvStatus.setText("Số món");
                                 } else {
-                                    edtMon.setVisibility(View.GONE);
+                                    // edtMon.setVisibility(View.GONE);
                                     tvStatus.setText("Lý do");
                                 }
                             }
@@ -459,13 +556,12 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
 
             }
-        }
-        else
-        {
+        } else {
             loadReasonFail();
             Toast.showToast(mActivity, "Chưa lấy được lý do, vui lòng chờ hoặc thao tác lại");
         }
     }
+
     private void showUIReasonMiss() {
         if (mListReasonMiss != null) {
             ArrayList<Item> items = new ArrayList<>();
@@ -488,10 +584,10 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                                 if (mReason.getCode().equals("R0")) {
                                     //show Date
                                     llDateTime.setVisibility(View.GONE);
-                                    edtMon.setVisibility(View.VISIBLE);
+                                    /// edtMon.setVisibility(View.VISIBLE);
                                     tvStatus.setText("Số món");
                                 } else {
-                                    edtMon.setVisibility(View.GONE);
+                                    // edtMon.setVisibility(View.GONE);
                                     tvStatus.setText("Lý do");
                                 }
                             }
@@ -505,9 +601,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
 
             }
-        }
-        else
-        {
+        } else {
             loadReasonFail();
             Toast.showToast(mActivity, "Chưa lấy được lý do, vui lòng chờ hoặc thao tác lại");
         }

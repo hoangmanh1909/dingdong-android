@@ -74,6 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.ems.dingdong.views.CustomTextView
@@ -99,12 +100,14 @@
                     </LinearLayout>
                     <View
                         style="@style/Devider"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.ems.dingdong.views.CustomTextView
@@ -130,6 +133,7 @@
                     </LinearLayout>
                     <View
                         style="@style/Devider"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
                     <LinearLayout
@@ -285,11 +289,13 @@
                     </LinearLayout>
                     <View
                         style="@style/Devider"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -474,7 +480,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"

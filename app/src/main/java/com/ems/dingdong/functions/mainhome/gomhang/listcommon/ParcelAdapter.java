@@ -32,12 +32,12 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
         return new HolderView(inflateView(parent, R.layout.item_parcel));
     }
 
-    class HolderView extends BaseViewHolder {
+    public class HolderView extends BaseViewHolder {
 
         @BindView(R.id.tv_code)
         CustomTextView tvCode;
         @BindView(R.id.cb_selected)
-        CheckBox cbSelected;
+        public CheckBox cbSelected;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -47,17 +47,7 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
             tvCode.setText(item.getParcelCode());
-            cbSelected.setChecked(item.isSelected());
-            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        item.setSelected(true);
-                    } else {
-                        item.setSelected(false);
-                    }
-                }
-            });
+
         }
     }
 }
