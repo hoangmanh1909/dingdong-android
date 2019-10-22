@@ -78,30 +78,13 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
             cbSelected.setVisibility(View.GONE);
             if (mType == 1) {
                 cbSelected.setVisibility(View.VISIBLE);
-                tvParcelCode.setVisibility(View.VISIBLE);
-                recycler.setVisibility(View.GONE);
-                binParcelCode(item.getListParcelCode());
                 cbSelected.setOnCheckedChangeListener(null);
                 if (item.isSelected())
                     cbSelected.setChecked(true);
                 else {
                     cbSelected.setChecked(false);
                 }
-                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
-                    tvParcelCode.setVisibility(View.VISIBLE);
-                } else {
-                    tvParcelCode.setVisibility(View.GONE);
-                }
-                tvParcelCode.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (recycler.getVisibility() == View.GONE) {
-                            recycler.setVisibility(View.VISIBLE);
-                        } else {
-                            recycler.setVisibility(View.GONE);
-                        }
-                    }
-                });
+
                 cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -165,6 +148,30 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                     }
                     tvStatus.setText("Đã hoàn tất");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
+                }
+            }
+            if (mType == 1 || mType == 2) {
+                binParcelCode(item.getListParcelCode());
+                tvParcelCode.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (recycler.getVisibility() == View.GONE) {
+                            recycler.setVisibility(View.VISIBLE);
+                        } else {
+                            recycler.setVisibility(View.GONE);
+                        }
+                    }
+                });
+                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
+                    if (item.getListParcelCode().size() == 1) {
+                        recycler.setVisibility(View.VISIBLE);
+                        tvParcelCode.setVisibility(View.GONE);
+                    } else {
+                        recycler.setVisibility(View.GONE);
+                        tvParcelCode.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    tvParcelCode.setVisibility(View.GONE);
                 }
             }
         }
