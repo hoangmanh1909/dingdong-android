@@ -9,9 +9,13 @@ import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.request.HoanTatTinRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -46,9 +50,10 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
 
     @Override
     public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
-                                           String statusCode, String quantity, String collectReason,
+                                           String statusCode,  String collectReason,
                                            String pickUpDate, String pickUpTime, String file, String scan, String reasonCode) {
         mView.showProgress();
+        String quantity = "0";
         mInteractor.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID, statusCode, quantity,
                 collectReason, pickUpDate, pickUpTime, file, scan, reasonCode,new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
@@ -137,6 +142,36 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     @Override
     public void showBarcode(BarCodeCallback barCodeCallback) {
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    @Override
+    public List<ParcelCodeInfo> getList() {
+        return commonObject.getListParcelCode();
+    }
+
+    @Override
+    public void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest) {
+        mView.showProgress();
+        String quantity = "0";
+        hoanTatTinRequest.setQuantity(quantity);
+        mInteractor.collectOrderPostmanCollect(hoanTatTinRequest,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        mView.hideProgress();
+                        if (response.body().getErrorCode().equals("00")) {
+                            mView.controlViews();
+                        }
+                        mView.showMessage(response.body().getMessage());
+                    }
+
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.hideProgress();
+                        mView.showError(message);
+                    }
+                });
     }
 
     public HoanThanhTinDetailPresenter setCommonObject(CommonObject commonObject) {

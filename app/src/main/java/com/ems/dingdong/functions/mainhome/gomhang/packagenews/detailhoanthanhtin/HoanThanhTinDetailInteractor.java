@@ -5,6 +5,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -33,5 +34,10 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
     @Override
     public void postImage(String pathMedia, CommonCallback<UploadSingleResult> callback) {
         NetWorkController.postImageSingle(pathMedia, callback);
+    }
+
+    @Override
+    public void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
+        NetWorkController.collectOrderPostmanCollect(hoanTatTinRequest, callback);
     }
 }

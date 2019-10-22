@@ -270,6 +270,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            mList = new ArrayList<>();
+                            mAdapter.refresh(mList);
                             sweetAlertDialog.dismiss();
                         }
                     }).show();
@@ -279,7 +281,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void showResult(ConfirmAllOrderPostman allOrderPostman) {
         if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
                     .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")

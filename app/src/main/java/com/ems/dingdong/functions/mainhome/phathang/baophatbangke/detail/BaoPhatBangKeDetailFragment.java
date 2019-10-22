@@ -197,7 +197,14 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         });
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
-        tvWeigh.setText(String.format("%s - %s", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
+        if(TextUtils.isEmpty(mBaoPhatBangke.getNote()))
+        {
+            tvWeigh.setText(String.format("Khối lượng %s gram", mBaoPhatBangke.getWeigh()));
+        }else
+        {
+            tvWeigh.setText(String.format("%s - Khối lượng  %s gram", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
+        }
+
         tvSenderName.setText(mBaoPhatBangke.getSenderName());
         tvSenderAddress.setText(mBaoPhatBangke.getSenderAddress());
         tvReciverName.setText(mBaoPhatBangke.getReciverName());

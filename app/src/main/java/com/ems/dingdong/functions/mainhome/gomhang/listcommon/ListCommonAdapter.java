@@ -174,6 +174,7 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                 @Override
                 public void onBindViewHolder(BaseViewHolder holder, final int position) {
                     super.onBindViewHolder(holder, position);
+                    ((HolderView) (holder)).cbSelected.setVisibility(View.INVISIBLE);
                 }
             };
             RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);

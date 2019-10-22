@@ -26,6 +26,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.model.ReasonInfo;
+import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -287,18 +288,33 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
 
                 if (mHoanThanhTin != null) {
-                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), new HoanThanhTinCallback() {
+                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(),mPresenter.getList(), new HoanThanhTinCallback() {
                         @Override
-                        public void onResponse(String statusCode, String quantity, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime) {
+                        public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
+                                               String pickUpTime, ArrayList<Integer> array) {
                             if (getActivity() != null) {
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 if (!userJson.isEmpty()) {
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                                    mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(),
-                                            mHoanThanhTin.getOrderPostmanID(), statusCode, quantity, reasonInfo != null ? reasonInfo.getName() : "",
+                                    HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
+                                    hoanTatTinRequest.setEmployeeID(userInfo.getiD());
+                                    hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD());
+                                    hoanTatTinRequest.setOrderPostmanID( mHoanThanhTin.getOrderPostmanID());
+                                    hoanTatTinRequest.setStatusCode(statusCode);
+                                    hoanTatTinRequest.setCollectReason(reasonInfo != null ? reasonInfo.getName() : "");
+                                    hoanTatTinRequest.setPickUpDate(pickUpDate);
+                                    hoanTatTinRequest.setPickUpTime(pickUpTime);
+                                    hoanTatTinRequest.setFile(mFile);
+                                    hoanTatTinRequest.setScan(scans.toString());
+                                    hoanTatTinRequest.setReasonCode( reasonInfo != null ? reasonInfo.getCode() : "");
+                                    hoanTatTinRequest.setShipmentIds(array);
+                                    mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
+                                   /* mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(),
+                                            mHoanThanhTin.getOrderPostmanID(), statusCode,  reasonInfo != null ? reasonInfo.getName() : "",
                                             pickUpDate, pickUpTime, mFile,
-                                            scans.toString(), reasonInfo != null ? reasonInfo.getCode() : "");
+                                            scans.toString(), reasonInfo != null ? reasonInfo.getCode() : "");*/
+
                                 }
                             }
 
@@ -365,7 +381,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         // tvContactPhone.setText(commonObject.getReceiverPhone());
         tvDescription.setText(commonObject.getDescription());
         tvQuantity.setText(commonObject.getQuantity());
-        tvWeigh.setText(commonObject.getWeigh());
+        tvWeigh.setText(String.format("%s gram", commonObject.getWeigh()));
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
         tvTrackingCode.setText(commonObject.getTrackingCode());
         tvOrderNumber.setText(commonObject.getOrderNumber());

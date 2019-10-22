@@ -19,6 +19,7 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.request.HoanTatTinRequest;
 
 import java.util.ArrayList;
 
@@ -285,4 +286,6 @@ public interface VinattiAPI {
     Call<ConfirmAllOrderPostmanResult> confirmAllOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
 
 
+    @POST("api/Collect/CollectOrderPostman")
+    Call<SimpleResult> collectOrderPostmanCollect(@Body HoanTatTinRequest hoanTatTinRequest);
 }

@@ -7,6 +7,7 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanRequest;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
@@ -313,9 +314,9 @@ public class NetWorkController {
     public static void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                                   String statusCode, String quantity, String collectReason, String pickUpDate,
                                                   String pickUpTime, String file, String scan, String reasonCode, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan, reasonCode);
-        call.enqueue(callback);
+            Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
+                    statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan, reasonCode);
+            call.enqueue(callback);
     }
 
     public static void locationAddNew(String postmanID, String latitude, String longitude, CommonCallback<SimpleResult> callback) {
@@ -392,6 +393,11 @@ public class NetWorkController {
 
     public static void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
         Call<ConfirmAllOrderPostmanResult> call = getAPIBuilder().confirmAllOrderPostman(request);
+        call.enqueue(callback);
+    }
+
+    public static void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(hoanTatTinRequest);
         call.enqueue(callback);
     }
 }
