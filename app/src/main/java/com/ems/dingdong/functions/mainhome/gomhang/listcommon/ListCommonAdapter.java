@@ -2,41 +2,100 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeAdapter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class ListCommonAdapter extends RecyclerBaseAdapter {
+public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.HolderView> implements Filterable {
 
     private final int mType;
-
+    List<CommonObject> mListFilter;
+    List<CommonObject> mList;
+    Context mContext;
+    String parcelCodeSearch = "";
     public ListCommonAdapter(Context context, int type, List<CommonObject> items) {
-        super(context, items);
         mType = type;
+        mContext = context;
+        mList = items;
+        mListFilter = items;
     }
-
+    @Override
+    public int getItemCount() {
+        return mListFilter.size();
+    }
+    @Override
+    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+        holder.bindView(mListFilter.get(position));
+    }
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new HolderView(inflateView(parent, R.layout.item_xac_nhan_tin));
+        //return new HolderView(inflateView(parent, R.layout.item_xac_nhan_tin));
+        return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xac_nhan_tin, parent, false));
     }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                parcelCodeSearch = charString;
+                if (charString.isEmpty()) {
+                    mListFilter = mList;
+                } else {
+                    List<CommonObject> filteredList = new ArrayList<>();
+                    for (CommonObject row : mList) {
+                        boolean checkCode= false;
+                        for(ParcelCodeInfo item: row.getListParcelCode())
+                        {
+                            if (item.getParcelCode().toLowerCase().contains(charString.toLowerCase())) {
+                                checkCode = true;
+                                break;
+                            }
+                        }
+                        if(checkCode)
+                            filteredList.add(row);
 
-    class HolderView extends BaseViewHolder {
+                    }
+
+                    mListFilter = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mListFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                notifyDataSetChanged();
+            }
+        };
+    }
+    class HolderView extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_stt)
         CustomTextView tvStt;
@@ -60,10 +119,10 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
 
         public HolderView(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        @Override
-        public void bindView(Object model, int position) {
+        public void bindView(Object model) {
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
@@ -156,7 +215,19 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                 }
             }
             if (mType == 1 || mType == 2) {
-                binParcelCode(item.getListParcelCode());
+                List<ParcelCodeInfo> filteredList = new ArrayList<>();
+                if(parcelCodeSearch.equals(""))
+                {
+                    filteredList = item.getListParcelCode();
+                }
+                else {
+                    for (ParcelCodeInfo row : item.getListParcelCode()) {
+                        if (row.getParcelCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+                }
+                binParcelCode(filteredList);
                 tvParcelCode.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -182,15 +253,21 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
         }
 
         private void binParcelCode(List<ParcelCodeInfo> listParcelCode) {
-            adapter = new ParcelAdapter(mContext, listParcelCode) {
-                @Override
-                public void onBindViewHolder(BaseViewHolder holder, final int position) {
-                    super.onBindViewHolder(holder, position);
-                    ((HolderView) (holder)).cbSelected.setVisibility(View.INVISIBLE);
-                }
-            };
-            RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
-            recycler.setAdapter(adapter);
+            if(adapter == null) {
+                adapter = new ParcelAdapter(mContext, listParcelCode) {
+                    @Override
+                    public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                        super.onBindViewHolder(holder, position);
+                        ((HolderView)holder).cbSelected.setVisibility(View.GONE);
+                    }
+                };
+                RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
+                recycler.setAdapter(adapter);
+            }
+            else
+            {
+                adapter.refresh(listParcelCode);
+            }
         }
     }
 }

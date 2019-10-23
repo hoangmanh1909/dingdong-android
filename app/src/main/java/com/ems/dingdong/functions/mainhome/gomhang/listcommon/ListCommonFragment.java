@@ -4,7 +4,9 @@ import android.content.Intent;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,6 +19,7 @@ import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.CustomEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
@@ -59,6 +62,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     LinearLayout llGomHang;
     @BindView(R.id.img_confirm)
     ImageView imgConfirm;
+    @BindView(R.id.edt_search)
+    CustomEditText edtSearch;
     private ListCommonAdapter mAdapter;
     private UserInfo mUserInfo;
     private String mDate;
@@ -93,7 +98,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         mCalendar = Calendar.getInstance();
         mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
-            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+            public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -145,6 +150,24 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 mAdapter.notifyDataSetChanged();
             }
         });
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s.toString());
+            }
+        });
+        edtSearch.setSelected(true);
     }
 
     private void showDialog() {
@@ -227,8 +250,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
-        mList = list;
-        mAdapter.refresh(list);
+        mList.clear();
+        mList.addAll(list);
+        edtSearch.setVisibility(View.VISIBLE);
+        mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
             int countP1 = 0;
@@ -263,6 +288,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
+            edtSearch.setVisibility(View.GONE);
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
@@ -270,8 +296,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            mList = new ArrayList<>();
-                            mAdapter.refresh(mList);
+                            mList.clear();
+                            mAdapter.notifyDataSetChanged();
                             sweetAlertDialog.dismiss();
                         }
                     }).show();
