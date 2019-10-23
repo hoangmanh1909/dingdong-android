@@ -124,7 +124,7 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                 }
 
             } else if (mType == 2) {
-                if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode())) {
+                if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
                     if (typeface != null) {
@@ -134,9 +134,14 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                         tvContactAddress.setTypeface(typeface);
                         tvContactDescription.setTypeface(typeface);
                     }
-                    tvStatus.setText("Chưa hoàn tất");
+                    if ("P7".equals(item.getStatusCode())) {
+                        tvStatus.setText("Hoàn tất một phần");
+                    } else {
+                        tvStatus.setText("Chưa hoàn tất");
+                    }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
-                } else {
+                }
+                else {
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
