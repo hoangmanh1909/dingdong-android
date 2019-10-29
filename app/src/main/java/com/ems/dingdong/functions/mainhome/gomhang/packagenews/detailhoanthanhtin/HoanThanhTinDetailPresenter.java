@@ -48,7 +48,7 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
         return new HoanThanhTinDetailInteractor(this);
     }
 
-    @Override
+    /*@Override
     public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                            String statusCode,  String collectReason,
                                            String pickUpDate, String pickUpTime, String file, String scan, String reasonCode) {
@@ -74,7 +74,7 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                     }
                 });
 
-    }
+    }*/
 
     @Override
     public void searchOrderPostman() {

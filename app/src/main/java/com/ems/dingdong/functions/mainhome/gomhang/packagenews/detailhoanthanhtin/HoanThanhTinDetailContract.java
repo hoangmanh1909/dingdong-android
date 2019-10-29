@@ -48,9 +48,9 @@ interface HoanThanhTinDetailContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
+       /* void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                         String statusCode, String collectReason, String pickUpDate,
-                                        String pickUpTime, String file, String scan, String reasonCode);
+                                        String pickUpTime, String file, String scan, String reasonCode);*/
 
         void searchOrderPostman();
 
