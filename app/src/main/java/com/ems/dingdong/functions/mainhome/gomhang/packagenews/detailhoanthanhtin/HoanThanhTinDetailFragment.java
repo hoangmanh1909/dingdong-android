@@ -368,7 +368,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         if (getActivity() == null) {
             return;
         }
-        if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
+        if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")
+                || commonObject.getStatusCode().equals("P7")) {
             btnConfirm.setEnabled(true);
         } else {
             btnConfirm.setEnabled(false);
