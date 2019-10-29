@@ -50,16 +50,7 @@
                 tools:text="Trần Văn Anh"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_auto_call"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:drawableLeft="@drawable/ic_person"
-                android:gravity="center|left"
-                tools:text="Trần Văn Anh"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+
 
 
             <RelativeLayout

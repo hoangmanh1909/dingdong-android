@@ -111,8 +111,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         CustomTextView tvStatus;
         @BindView(R.id.tv_ParcelCode)
         CustomTextView tvParcelCode;
-        @BindView(R.id.tv_auto_call)
-        CustomTextView tvAutoCall;
+
         @BindView(R.id.recycler)
         RecyclerView recycler;
         @BindView(R.id.cb_selected)
@@ -130,7 +129,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(item.getReceiverAddress().trim());
-            tvAutoCall.setText(item.getAutoCallStatus());
+
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             } else {

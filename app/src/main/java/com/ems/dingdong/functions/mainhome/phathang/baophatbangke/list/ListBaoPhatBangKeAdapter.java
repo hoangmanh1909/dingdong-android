@@ -138,6 +138,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         CheckBox cbSelected;
         @BindView(R.id.iv_status)
         ImageView ivStatus;
+        @BindView(R.id.tv_auto_call)
+        CustomTextView tvAutoCall;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -150,6 +152,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(item.getReceiverAddress());
+            tvAutoCall.setText(String.format("Auto call: %s", item.getAutoCallStatus()));
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             } else {
@@ -179,6 +182,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 } else {
                     tvServices.setVisibility(View.GONE);
                 }
+            }
+            else
+            {
+                tvServices.setVisibility(View.INVISIBLE);
             }
             tvInfo.setText(String.format("Lần phát: %s", item.getInfo()));
             tvDate.setText(item.getDateSearch());
