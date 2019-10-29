@@ -35,6 +35,8 @@ public class CommonObject extends RealmObject {
     //region common
     @SerializedName("StatusCode")
     String statusCode;
+    @SerializedName("AutoCallStatus")
+    String autoCallStatus;
 
     @PrimaryKey
     @SerializedName(value = "Code", alternate = {"MaE", "ParcelCode"})
@@ -139,6 +141,9 @@ public class CommonObject extends RealmObject {
     @SerializedName("Shipments")
     private RealmList<ParcelCodeInfo> listParcelCode;
 
+    public String getAutoCallStatus() {
+        return autoCallStatus;
+    }
 
     public List<ParcelCodeInfo> getListParcelCode() {
         return listParcelCode;
