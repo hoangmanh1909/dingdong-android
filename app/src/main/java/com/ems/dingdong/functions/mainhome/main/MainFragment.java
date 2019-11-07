@@ -1,12 +1,16 @@
 package com.ems.dingdong.functions.mainhome.main;
 
 import android.content.Intent;
+
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.core.base.viper.ViewFragment;
@@ -23,6 +27,7 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,11 +50,14 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     ImageView imgCall;
     @BindView(R.id.img_top_setting)
     ImageView imgTopSetting;
+    @BindView(R.id.view_top)
+    View viewTop;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
     private Fragment gomHangFragment;
     private Fragment phatHangFragment;
     private Fragment locationFragment;
+    UserInfo userInfo;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -63,6 +71,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void initLayout() {
         super.initLayout();
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
         setupAdapter();
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -95,32 +108,39 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 //on page scroll state changed
             }
         });
-        SharedPref sharedPref = new SharedPref(getActivity());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            if (userInfo != null) {
-                if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
-                    tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
-                }
-                if (!TextUtils.isEmpty(userInfo.getBalance())) {
-                    tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
-                }
+
+        if (userInfo != null) {
+
+            if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
+                tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+            }
+            if (!TextUtils.isEmpty(userInfo.getBalance())) {
+                tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
             }
         }
+
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            if (!"6".equals(userInfo.getEmpGroupID())) {
-                imgCall.setVisibility(View.VISIBLE);
-                imgTopSetting.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                imgCall.setVisibility(View.INVISIBLE);
-                imgTopSetting.setVisibility(View.INVISIBLE);
-            }
+        if (!"6".equals(userInfo.getEmpGroupID())) {
+            imgCall.setVisibility(View.VISIBLE);
+            imgTopSetting.setVisibility(View.VISIBLE);
+            viewTop.setVisibility(View.VISIBLE);
+        } else {
+            imgCall.setVisibility(View.INVISIBLE);
+            imgTopSetting.setVisibility(View.INVISIBLE);
+            viewTop.setVisibility(View.INVISIBLE);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ViewGroup v = bottomBar.findViewById(R.id.bb_bottom_bar_item_container);
+                    v.removeViewAt(3);
+                    v.removeViewAt(2);
+                    v.removeViewAt(1);
+                }
+            },100);
+
+
         }
     }
 
@@ -133,7 +153,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
             @Override
             public int getCount() {
-                return 4;
+                if (!"6".equals(userInfo.getEmpGroupID())) {
+                    return 4;
+                } else {
+                    return 1;
+                }
             }
         };
     }
