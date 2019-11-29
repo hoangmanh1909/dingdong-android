@@ -57,13 +57,20 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 if (response.body().getErrorCode().equals("00")) {
                     getSolutions();
                     getReasons();
-                    getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
+
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
                     if ("Y".equals(response.body().getUserInfo().getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
                         Constants.HEADER_NUMBER = "tel:18002009,";
+                    }
+                    if (!"6".equals(response.body().getUserInfo().getEmpGroupID())) {
+                        getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
+                    }
+                    else
+                    {
+                        mView.gotoHome();
                     }
                 } else if (response.body().getErrorCode().equals("05")) {
                     mView.hideProgress();
