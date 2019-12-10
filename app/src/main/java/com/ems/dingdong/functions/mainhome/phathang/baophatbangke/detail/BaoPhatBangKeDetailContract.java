@@ -29,6 +29,7 @@ interface BaoPhatBangKeDetailContract {
                                String note,
                                String collectAmount,
                                String ladingPostmanID,
+                               String routeCode,
                                CommonCallback<SimpleResult> commonCallback);
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
@@ -50,13 +51,13 @@ interface BaoPhatBangKeDetailContract {
                                String deliveryType,
                                String collectAmount,
                                String signatureCapture,
-                               String ladingPostmanID,
+                               String ladingPostmanID,String routeCode,
                                CommonCallback<SimpleResult> callback);
 
         void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
                              String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
                              String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
-                             String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback);
+                             String signatureCapture, String note, String collectAmount, String routeCode, CommonCallback<SimpleResult> commonCallback);
 
         void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);
 

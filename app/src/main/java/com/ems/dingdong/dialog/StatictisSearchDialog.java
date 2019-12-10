@@ -6,7 +6,9 @@ import android.view.View;
 
 import com.core.base.BaseActivity;
 import com.ems.dingdong.callback.StatictisSearchCallback;
+import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.ems.dingdong.R;
@@ -16,6 +18,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,9 +56,12 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
         items.add(new Item("C18", "Không thành công"));
         tvStatus.setText(items.get(0).getText());
         mItem = items.get(0);*/
-        items.add(new Item("1", "Ca 1"));
-        items.add(new Item("2", "Ca 2"));
-        items.add(new Item("3", "Ca 3"));
+        SharedPref sharedPref= new SharedPref(mActivity);
+        List<ShiftInfo> list= sharedPref.getListShift();
+        for (ShiftInfo item :list)
+        {
+            items.add(new Item(item.getShiftId(), item.getShiftName()));
+        }
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
     }

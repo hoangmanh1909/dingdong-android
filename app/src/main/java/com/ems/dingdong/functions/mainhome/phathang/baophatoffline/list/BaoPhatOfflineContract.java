@@ -26,7 +26,7 @@ interface BaoPhatOfflineContract {
                                String deliveryTime, String receiverName,
                                String reasonCode, String solutionCode, String status,
                                String paymentChannel, String deliveryType,
-                               String sign, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback);
+                               String sign, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

@@ -36,17 +36,17 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode,
                                   String deliveryDate, String deliveryTime, String receiverName,
                                   String reasonCode, String solutionCode, String status, String paymentChannel,
-                                  String deliveryType, String sign, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback) {
+                                  String deliveryType, String sign, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
                 deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel,
-                deliveryType, sign,note, amount,ladingPostmanID, commonCallback);
+                deliveryType, sign,note, amount,ladingPostmanID,routeCode, commonCallback);
     }
 
     @Override
-    public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback) {
+    public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, String routeCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note,collectAmount, commonCallback);
+                note,collectAmount,routeCode, commonCallback);
     }
 }

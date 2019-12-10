@@ -69,7 +69,7 @@ android {
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDongDev"
         }
-        staging {
+        NAT {
             def API_URL = '"http://118.70.72.107:50031/"'
             def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
             buildConfigField("String", "API_URL", API_URL)

@@ -80,6 +80,8 @@ public class CommonObject extends RealmObject {
     String Info;
     @SerializedName("Instruction")
     String instruction;
+    @SerializedName("RouteCode")
+    String routeCode;
 
 
     @SerializedName("RealReceiverName")
@@ -488,4 +490,10 @@ public class CommonObject extends RealmObject {
     public String getOrderNumber() {
         return orderNumber;
     }
+
+    public String getRouteCode() {
+        return routeCode;
+    }
+
+
 }

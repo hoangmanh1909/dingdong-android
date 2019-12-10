@@ -6,6 +6,7 @@ import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanRequest;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
@@ -203,11 +204,11 @@ public class NetWorkController {
                                          String status,
                                          String paymentChannel,
                                          String deliveryType,
-                                         String signatureCapture, String note, String amount, String ladingPostmanID, CommonCallback<SimpleResult> callback) {
+                                         String signatureCapture, String note, String amount, String ladingPostmanID,String routeCode, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
                 deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType,
-                signatureCapture, note, amount, ladingPostmanID, Constants.SHIFT, signature);
+                signatureCapture, note, amount, ladingPostmanID, Constants.SHIFT, routeCode, signature);
         call.enqueue(callback);
     }
 
@@ -245,13 +246,13 @@ public class NetWorkController {
                                        String deliveryType,
                                        String signatureCapture,
                                        String note,
-                                       String collectAmount,
+                                       String collectAmount,String routeCode,
                                        CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT, signature);
+                note, collectAmount, Constants.SHIFT,routeCode, signature);
         call.enqueue(callback);
     }
 
@@ -270,13 +271,13 @@ public class NetWorkController {
                                       String deliveryType,
                                       String signatureCapture,
                                       String note,
-                                      String collectAmount,
+                                      String collectAmount,String routeCode,
                                       CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().paymentPaypost(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT, signature);
+                note, collectAmount, Constants.SHIFT,routeCode, signature);
         call.enqueue(callback);
     }
 
@@ -287,6 +288,10 @@ public class NetWorkController {
 
     public static void deliveryGetPaypostError(String fromDate, String toDate, CommonCallback<GachNoResult> callback) {
         Call<GachNoResult> call = getAPIBuilder().deliveryGetPaypostError(fromDate, toDate);
+        call.enqueue(callback);
+    }
+    public static void getPostmanShift(String poCode, CommonCallback<ShiftResult> callback) {
+        Call<ShiftResult> call = getAPIBuilder().getPostmanShift(poCode);
         call.enqueue(callback);
     }
 

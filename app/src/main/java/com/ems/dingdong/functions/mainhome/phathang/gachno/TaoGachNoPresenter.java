@@ -133,12 +133,12 @@ public class TaoGachNoPresenter extends Presenter<TaoGachNoContract.View, TaoGac
     private void payment(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, final int size) {
+                         String note, String amount,String routeCode, final int size) {
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                 solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount,routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

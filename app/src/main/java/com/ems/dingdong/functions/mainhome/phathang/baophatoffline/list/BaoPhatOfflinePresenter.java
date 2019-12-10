@@ -174,7 +174,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
             amount = commonObject.getCollectAmount();
         }
         mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, commonObject.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, commonObject.getiD(), commonObject.getRouteCode(),new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

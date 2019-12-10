@@ -9,6 +9,7 @@ public class Constants {
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
     public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
     public static final String KEY_POST_OFFICE = "OBJECT_POST_OFFICE";
+    public static final String KEY_POST_SHIFT = "KEY_POST_SHIFT";
     public static final String KEY_USER_INFO = "user_info";
     public static final String TYPE_GOM_HANG = "type_gom_hang";
     public static final String  HOTLINE_CALL_SHOW = "02836229988";

@@ -63,10 +63,14 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             } else {
                 tvReceiverName.setText(String.format("%s", item.getReciverName()));
             }
-            if ("Y".equals(item.getIsPaypost())) {
+            if("".equals(item.getIsPaypost()) || item.getIsPaypost() == null)
+            {
+                tvStatusPaypost.setText("");
+            }
+           else if ("Y".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thành công");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-            } else if ("E".equals(item.getIsPaypost())) {
+            } /*else if ("E".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thất bại");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
             } else if ("N".equals(item.getIsPaypost())) {
@@ -75,8 +79,8 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvStatusPaypost.setText("N/A");
             } else if ("L".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("98");
-            } else {
-                tvStatusPaypost.setText("");
+            }*/ else {
+                tvStatusPaypost.setText("Gạch nợ thất bại");
             }
 
             // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));

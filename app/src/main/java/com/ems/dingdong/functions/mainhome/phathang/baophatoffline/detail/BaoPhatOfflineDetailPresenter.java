@@ -135,7 +135,7 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signature,
-                note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, baoPhat.getRouteCode(),new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
@@ -233,7 +233,8 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
             amount = mBaoPhatBangke.getCollectAmount();
         }
         mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, mBaoPhatBangke.getiD(),
+                mBaoPhatBangke.getRouteCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

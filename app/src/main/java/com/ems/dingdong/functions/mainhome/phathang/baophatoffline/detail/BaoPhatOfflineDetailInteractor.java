@@ -20,19 +20,19 @@ class BaoPhatOfflineDetailInteractor extends Interactor<BaoPhatOfflineDetailCont
     public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName,
                                 String receiverIDNumber, String reasonCode, String solutionCode, String status,
                                 String paymentChannel, String deliveryType, String signature,
-                                String note, String amount, CommonCallback<SimpleResult> commonCallback) {
+                                String note, String amount, String routeCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signature,
-                note,amount, commonCallback);
+                note,amount,routeCode, commonCallback);
     }
 
     @Override
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
                                   String deliveryTime, String receiverName, String reasonCode, String solutionCode,
                                   String status, String paymentChannel, String deliveryType, String sign, String note,
-                                  String amount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
+                                  String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, sign,note, amount,ladingPostmanID, commonCallback);
+                solutionCode, status, paymentChannel, deliveryType, sign,note, amount,ladingPostmanID,routeCode, commonCallback);
     }
 }

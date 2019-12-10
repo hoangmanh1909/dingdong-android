@@ -25,9 +25,9 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
 
     @Override
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status,
-                                  String paymentChannel, String deliveryType, String sign, String note, String collectAmount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
+                                  String paymentChannel, String deliveryType, String sign, String note, String collectAmount, String ladingPostmanID,String routeCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, sign, note, collectAmount, ladingPostmanID, commonCallback);
+                solutionCode, status, paymentChannel, deliveryType, sign, note, collectAmount, ladingPostmanID, routeCode, commonCallback);
     }
 
     @Override
@@ -44,16 +44,17 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     @Override
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
                                   String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
-                                  String deliveryType, String collectAmount, String signatureCapture, String ladingPostmanID, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount, ladingPostmanID, callback);
+                                  String deliveryType, String collectAmount, String signatureCapture, String ladingPostmanID,String routeCode, CommonCallback<SimpleResult> callback) {
+        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount, ladingPostmanID,routeCode, callback);
     }
 
     @Override
-    public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback) {
+    public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, String routeCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, commonCallback);
+                note, collectAmount, routeCode, commonCallback);
     }
 
     @Override

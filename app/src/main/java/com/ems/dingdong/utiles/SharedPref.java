@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ems.dingdong.model.ShiftInfo;
+import com.ems.dingdong.network.NetWorkController;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SharedPref {
@@ -78,6 +83,7 @@ public class SharedPref {
             editor.remove(Constants.KEY_USER_INFO);
             editor.remove(Constants.KEY_MOBILE_NUMBER_SIGN_CODE);
             editor.remove(Constants.KEY_POST_OFFICE);
+            editor.remove(Constants.KEY_POST_SHIFT);
 
             editor.commit();
         } catch (Exception ex) {
@@ -193,7 +199,19 @@ public class SharedPref {
         this.autoCommit = autoCommit;
     }
     // ---------------------------------------------------------------------//
+// List shift
+    public  List<ShiftInfo> getListShift()
+    {
+        String data = pref.getString(Constants.KEY_POST_SHIFT, "");
+        if(!data.isEmpty())
+        {
+            return NetWorkController.getGson().<ArrayList<ShiftInfo>>fromJson(data, new TypeToken<List<ShiftInfo>>(){}.getType());
+        }
+        else {
+            return new ArrayList<>();
+        }
 
+    }
 
     public void saveCountFragmentHomeNewCreate(int count) {
         SharedPreferences.Editor editor = pref.edit();

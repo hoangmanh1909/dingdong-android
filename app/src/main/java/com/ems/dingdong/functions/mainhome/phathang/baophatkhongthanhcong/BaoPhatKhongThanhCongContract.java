@@ -23,7 +23,7 @@ interface BaoPhatKhongThanhCongContract {
 
         void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode,
                        String deliveryDate, String deliveryTime, String receiverName,
-                       String status, String reasonCode, String solutionCode, String note,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback);
+                       String status, String reasonCode, String solutionCode, String note, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
         void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback);
@@ -45,7 +45,7 @@ interface BaoPhatKhongThanhCongContract {
         void getReasons();
 
         void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
-                       String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note,String ladingPostmanID);
+                       String deliveryTime, String receiverName, String status, String reasonCode, String solutionCode, String note, String ladingPostmanID, String routeCode);
 
         void getSolutionByReasonCode(String code);
         void checkLadingCode(String parcelCode);

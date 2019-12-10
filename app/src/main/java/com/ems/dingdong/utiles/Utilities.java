@@ -13,7 +13,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+
 import androidx.fragment.app.FragmentActivity;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.io.BufferedReader;
@@ -696,27 +699,17 @@ public class Utilities {
     }
 
     public static void showUIShift(FragmentActivity activity) {
+        SharedPref sharedPref = new SharedPref(activity);
+        ArrayList<ShiftInfo> list = (ArrayList<ShiftInfo>) sharedPref.getListShift();
         ItemBottomSheetPickerUIFragment pickerShift = null;
         ArrayList<Item> items = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            items.add(new Item(i + "", "Ca " + i));
+        for (ShiftInfo item : list) {
+            items.add(new Item(item.getShiftId(), item.getShiftName()));
         }
+        pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+                (item, position) -> Constants.SHIFT = item.getValue(), 0);
+        pickerShift.show(activity.getSupportFragmentManager(), pickerShift.getTag());
 
-        if (pickerShift == null) {
-            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            Constants.SHIFT = item.getValue();
-                        }
-                    }, 0);
-            pickerShift.show(activity.getSupportFragmentManager(), pickerShift.getTag());
-        } else {
-            pickerShift.setData(items, 0);
-            if (!pickerShift.isShow) {
-                pickerShift.show(activity.getSupportFragmentManager(), pickerShift.getTag());
-            }
-        }
     }
 }
 

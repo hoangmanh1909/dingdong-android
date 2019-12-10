@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.core.base.BaseActivity;
 import com.ems.dingdong.callback.CreatebangKeSearchCallback;
+import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
@@ -18,6 +20,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,9 +61,12 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         if (calCreate == null)
             calCreate = Calendar.getInstance();
         tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
-        items.add(new Item("1", "Ca 1"));
-        items.add(new Item("2", "Ca 2"));
-        items.add(new Item("3", "Ca 3"));
+        SharedPref sharedPref= new SharedPref(mActivity);
+        List<ShiftInfo> list= sharedPref.getListShift();
+        for (ShiftInfo item :list)
+        {
+            items.add(new Item(item.getShiftId(), item.getShiftName()));
+        }
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
         mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));

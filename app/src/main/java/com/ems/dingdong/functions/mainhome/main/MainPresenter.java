@@ -1,12 +1,28 @@
 package com.ems.dingdong.functions.mainhome.main;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.ReasonInfo;
+import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
+
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * The Home Presenter
@@ -26,8 +42,31 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     @Override
     public void start() {
         // Start getting data here
+        getShift();
     }
+    private void getShift() {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!posOfficeJson.isEmpty()) {
+            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+            mInteractor.getShift(postOffice.getCode(),new CommonCallback<ShiftResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<ShiftResult> call, Response<ShiftResult> response) {
+                    super.onSuccess(call, response);
+                    mView.hideProgress();
+                    sharedPref.putString(Constants.KEY_POST_SHIFT, NetWorkController.getGson().toJson(response.body().getShiftInfos()));
+                }
 
+                @Override
+                protected void onError(Call<ShiftResult> call, String message) {
+                    mView.hideProgress();
+                    super.onError(call, message);
+                    mView.showErrorToast(message);
+                }
+            });
+        }
+
+    }
     @Override
     public MainContract.Interactor onCreateInteractor() {
         return new MainInteractor(this);

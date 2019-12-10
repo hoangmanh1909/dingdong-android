@@ -14,6 +14,7 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -161,6 +162,7 @@ public interface VinattiAPI {
                                          @Field("CollectAmount") String collectAmount,
                                          @Field("LadingPostmanID") String ladingPostmanID,
                                          @Field("ShiftID") String shiftID,
+                                         @Field("RouteCode") String routeCode,
                                          @Field("Signature") String signature);
 
     @FormUrlEncoded
@@ -199,6 +201,7 @@ public interface VinattiAPI {
                                        @Field("Note") String note,
                                        @Field("CollectAmount") String collectAmount,
                                        @Field("ShiftID") String shiftID,
+                                       @Field("RouteCode") String routeCode,
                                        @Field("Signature") String signature
     );
 
@@ -221,6 +224,7 @@ public interface VinattiAPI {
                                       @Field("Note") String note,
                                       @Field("CollectAmount") String collectAmount,
                                       @Field("ShiftID") String shiftID,
+                                      @Field("RouteCode") String routeCode,
                                       @Field("Signature") String signature
     );
 
@@ -228,6 +232,8 @@ public interface VinattiAPI {
     @GET("api/Delivery/GetPaypostError")
     Call<GachNoResult> deliveryGetPaypostError(@Query("fromDate") String fromDate,
                                                @Query("toDate") String toDate);
+    @GET("api/Dictionary/GetPostmanShift")
+    Call<ShiftResult> getPostmanShift(@Query("poCode") String poCode);
 
 
     @GET("api/Dictionary/GetPostOfficeByCode")

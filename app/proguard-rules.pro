@@ -114,7 +114,7 @@
 }
 -keep class sun.misc.Unsafe { *; }
 #your package path where your gson models are stored
--keep class com.example.models.** { *; }
+-keep class com.ems.dingdong.model.** { *; }
 
 -dontnote com.android.vending.licensing.ILicensingService
 -dontnote android.net.http.*
