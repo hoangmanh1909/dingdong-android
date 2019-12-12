@@ -6,14 +6,17 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.List;
 
@@ -148,11 +151,12 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
                          String note, String amount, String routeCode, String ladingPostmanID) {
         final int size = mListBaoPhatOffline.size();
-        mInteractor.paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
-                solutionCode,
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, routeCode, ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature);
+        mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

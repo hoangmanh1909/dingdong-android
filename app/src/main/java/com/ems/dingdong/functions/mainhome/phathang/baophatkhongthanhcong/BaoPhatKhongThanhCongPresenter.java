@@ -4,12 +4,16 @@ import android.app.Activity;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Utils;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -66,8 +70,10 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
     public void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
                           String deliveryTime, String receiverName, String status, final String reasonCode, String solutionCode, String note, String ladingPostmanID, String routeCode) {
         mView.showProgress();
-        mInteractor.pushToPNS(postmanID, ladingCode, deliveryPOCode, deliveryDate,
-                deliveryTime, receiverName, status, reasonCode, solutionCode, note,  ladingPostmanID , routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, "", "", "", "", "0", ladingPostmanID, Constants.SHIFT, routeCode, signature);
+        mInteractor.pushToPNS(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

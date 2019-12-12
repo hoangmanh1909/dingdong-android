@@ -10,6 +10,7 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
 
@@ -21,12 +22,11 @@ interface BaoPhatKhongThanhCongContract {
     interface Interactor extends IInteractor<Presenter> {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNS(String postmanID, String ladingCode, String deliveryPOCode,
-                       String deliveryDate, String deliveryTime, String receiverName,
-                       String status, String reasonCode, String solutionCode, String note, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
         void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback);
+
+        void pushToPNS(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

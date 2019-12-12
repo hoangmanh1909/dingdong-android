@@ -6,14 +6,18 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.List;
 
@@ -121,10 +125,13 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     }
 
     private void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
-                                   String receiverName, String reasonCode, String solutionCode, String status, final String paymentChannel, String deliveryType, String amount, String signatureCapture, String ladingPostmanID, String routeCode) {
+                                   String receiverName, String reasonCode, String solutionCode, String status, final String paymentChannel,
+                                   String deliveryType, String amount, String signatureCapture, String ladingPostmanID, String routeCode) {
         final int size = mBaoPhatCommon.size();
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, ladingPostmanID,routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode, signature);
+        mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -213,46 +220,48 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
                          String note, String amount, String routeCode, String ladingPostmanID) {
         final int size = mBaoPhatCommon.size();
-        mInteractor.paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
-                solutionCode,
+
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount,routeCode, ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        mCount++;
-                        if (mCount == size) {
-                            mView.hideProgress();
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature);
+        mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mCount++;
+                if (mCount == size) {
+                    mView.hideProgress();
+                }
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showSuccess();
+                    if (paymentChannel.equals("2")) {
+                        try {
+                            mView.callAppToMpost();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.showSuccess();
-                            if (paymentChannel.equals("2")) {
-                                try {
-                                    mView.callAppToMpost();
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            } else {
-                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                mView.finishView();
-                            }
-                        } else {
-                            mView.showError(response.body().getMessage());
-                        }
+                    } else {
+                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                        mView.finishView();
                     }
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mCount++;
-                        if (mCount == size) {
-                            mView.hideProgress();
-                        }
-                        mView.showError(message);
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mCount++;
+                if (mCount == size) {
+                    mView.hideProgress();
+                }
+                mView.showError(message);
 
-                    }
-                });
+            }
+        });
     }
 
     public SignDrawPresenter setBaoPhatBangKe(List<CommonObject> baoPhatBangKe) {

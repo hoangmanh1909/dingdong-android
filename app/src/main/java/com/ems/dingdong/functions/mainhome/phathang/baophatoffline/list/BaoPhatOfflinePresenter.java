@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.detail.BaoPhatOfflineDetailPresenter;
@@ -17,9 +18,11 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.List;
 
@@ -167,43 +170,46 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         String reasonCode = commonObject.getReasonCode();
         String solutionCode = commonObject.getSolutionCode();
         String note = commonObject.getNote();
-        String sign = commonObject.getSignatureCapture();
+        String signatureCapture = commonObject.getSignatureCapture();
         String status = "C18";
         String amount = commonObject.getAmount();
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = commonObject.getCollectAmount();
         }
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, commonObject.getiD(), commonObject.getRouteCode(),new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        if (response.body().getErrorCode().equals("00")) {
-                            final String parcelCode = commonObject.getParcelCode();
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.executeTransaction(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-                                    result.deleteAllFromRealm();
-                                }
-                            });
-                            mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    back();
-                                }
-                            });
-                        } else {
-                            mView.showErrorToast(response.body().getMessage());
-                        }
-                    }
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, "", deliveryType, signatureCapture, note, amount, commonObject.getiD(), Constants.SHIFT, commonObject.getRouteCode(), signature);
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.showErrorToast(message);
-                    }
-                });
+        mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                if (response.body().getErrorCode().equals("00")) {
+                    final String parcelCode = commonObject.getParcelCode();
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                            result.deleteAllFromRealm();
+                        }
+                    });
+                    mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            back();
+                        }
+                    });
+                } else {
+                    mView.showErrorToast(response.body().getMessage());
+                }
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showErrorToast(message);
+            }
+        });
     }
 }

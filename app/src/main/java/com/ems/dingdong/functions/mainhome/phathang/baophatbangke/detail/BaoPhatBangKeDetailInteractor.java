@@ -6,6 +6,8 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -23,12 +25,6 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
         NetWorkController.getReasons(commonCallback);
     }
 
-    @Override
-    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status,
-                                  String paymentChannel, String deliveryType, String sign, String note, String collectAmount, String ladingPostmanID,String routeCode, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, sign, note, collectAmount, ladingPostmanID, routeCode, commonCallback);
-    }
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
@@ -41,21 +37,8 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
         NetWorkController.getSolutionByReasonCode(code, commonCallback);
     }
 
-    @Override
-    public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate,
-                                  String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
-                                  String deliveryType, String collectAmount, String signatureCapture, String ladingPostmanID,String routeCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", collectAmount, ladingPostmanID,routeCode, callback);
-    }
 
-    @Override
-    public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
-                status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, routeCode,ladingPostmanID, commonCallback);
-    }
+
 
     @Override
     public void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
@@ -65,5 +48,15 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     @Override
     public void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.updateMobile(code, mobileNumber, commonCallback);
+    }
+
+    @Override
+    public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
+        NetWorkController.paymentDelivery(request, callback);
+    }
+
+    @Override
+    public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
+        NetWorkController.pushToPNSDelivery(request, callback);
     }
 }

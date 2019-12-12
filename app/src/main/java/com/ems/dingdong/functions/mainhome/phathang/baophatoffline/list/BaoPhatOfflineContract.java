@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.List;
 
@@ -21,12 +22,8 @@ interface BaoPhatOfflineContract {
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
-        void pushToPNSDelivery(String postmanID, String ladingCode,
-                               String deliveryPOCode, String deliveryDate,
-                               String deliveryTime, String receiverName,
-                               String reasonCode, String solutionCode, String status,
-                               String paymentChannel, String deliveryType,
-                               String sign, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback);
+
+        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

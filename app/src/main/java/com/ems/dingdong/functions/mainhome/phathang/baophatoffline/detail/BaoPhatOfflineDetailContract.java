@@ -6,6 +6,8 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 /**
  * The BaoPhatBangKeDetail Contract
@@ -13,13 +15,10 @@ import com.ems.dingdong.model.SimpleResult;
 interface BaoPhatOfflineDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void   paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signature, String note, String amount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback);
-        void pushToPNSDelivery(String postmanID, String ladingCode,
-                               String deliveryPOCode, String deliveryDate,
-                               String deliveryTime, String receiverName,
-                               String reasonCode, String solutionCode, String status,
-                               String paymentChannel, String deliveryType,
-                               String sign, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback);
+
+        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
+
+        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

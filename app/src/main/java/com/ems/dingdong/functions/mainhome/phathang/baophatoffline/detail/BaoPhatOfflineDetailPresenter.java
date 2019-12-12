@@ -7,14 +7,18 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Utils;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -126,17 +130,20 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         String status = "C14";
         String note = "";
         String amount = baoPhat.getAmount();
-        String signature = baoPhat.getSignatureCapture();
+        String signatureCapture = baoPhat.getSignatureCapture();
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = baoPhat.getCollectAmount();
         }
         final String paymentChannel = baoPhat.getCurrentPaymentType();
         String deliveryType = baoPhat.getDeliveryType();
         String ladingPostmanID = baoPhat.getiD();
-        mInteractor.paymentDelivery(postmanID,
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
-                status, paymentChannel, deliveryType, signature,
-                note, amount, baoPhat.getRouteCode(), ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                status, paymentChannel, deliveryType, signatureCapture,
+                note, amount, Constants.SHIFT ,mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature);
+
+        mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
@@ -227,15 +234,16 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         String reasonCode = mBaoPhatBangke.getReasonCode();
         String solutionCode = mBaoPhatBangke.getSolutionCode();
         String note = mBaoPhatBangke.getNote();
-        String sign = mBaoPhatBangke.getSignatureCapture();
+        String signatureCapture = mBaoPhatBangke.getSignatureCapture();
         String status = "C18";
         String amount = mBaoPhatBangke.getAmount();
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                receiverName, reasonCode, solutionCode, status, "", deliveryType, sign, note, amount, mBaoPhatBangke.getiD(),
-                mBaoPhatBangke.getRouteCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, "", "", signatureCapture, note, amount, mBaoPhatBangke.getiD(), Constants.SHIFT, mBaoPhatBangke.getRouteCode(), signature);
+        mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

@@ -10,6 +10,8 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +33,10 @@ interface ListBaoPhatBangKeContract {
                                    String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback);
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNSDelivery(String postmanID, String ladingCode,
-                               String deliveryPOCode, String deliveryDate,
-                               String deliveryTime, String receiverName,
-                               String reasonCode, String solutionCode, String status,
-                               String paymentChannel, String deliveryType,
-                               String sign, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> commonCallback);
-        void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
-                             String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
-                             String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
-                             String signatureCapture, String note, String collectAmount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback);
+
+        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
+
+        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

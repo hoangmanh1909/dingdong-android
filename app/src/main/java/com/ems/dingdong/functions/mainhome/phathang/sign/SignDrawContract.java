@@ -7,6 +7,8 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.List;
 
@@ -15,42 +17,32 @@ import java.util.List;
  */
 interface SignDrawContract {
 
-  interface Interactor extends IInteractor<Presenter> {
-    void pushToPNSDelivery(String postmanID,
-                           String ladingCode,
-                           String deliveryPOCode,
-                           String deliveryDate,
-                           String deliveryTime,
-                           String receiverName,
-                           String reasonCode,
-                           String solutionCode,
-                           String status,
-                           String paymentChannel,
-                           String deliveryType,
-                           String amount,
-                           String signatureCapture, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> callback);
+    interface Interactor extends IInteractor<Presenter> {
 
-    void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String amount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback);
-  }
+        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
 
-  interface View extends PresentView<Presenter> {
-    void showError(String message);
+        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+    }
 
-    void showSuccess();
+    interface View extends PresentView<Presenter> {
+        void showError(String message);
 
-    void showSuccessMessage(String message);
+        void showSuccess();
 
-    void callAppToMpost();
+        void showSuccessMessage(String message);
 
-      void finishView();
-  }
+        void callAppToMpost();
 
-  interface Presenter extends IPresenter<View, Interactor> {
-    List<CommonObject> getBaoPhatCommon();
-    void signDataAndSubmitToPNS(String base64);
+        void finishView();
+    }
 
-    void paymentDelivery(String base64);
-  }
+    interface Presenter extends IPresenter<View, Interactor> {
+        List<CommonObject> getBaoPhatCommon();
+
+        void signDataAndSubmitToPNS(String base64);
+
+        void paymentDelivery(String base64);
+    }
 }
 
 

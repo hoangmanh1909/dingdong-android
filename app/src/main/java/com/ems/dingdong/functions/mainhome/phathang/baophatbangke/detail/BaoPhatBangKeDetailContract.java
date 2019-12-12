@@ -11,6 +11,8 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
 
@@ -22,15 +24,6 @@ interface BaoPhatBangKeDetailContract {
     interface Interactor extends IInteractor<Presenter> {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode,
-                               String deliveryDate, String deliveryTime, String receiverName,
-                               String reasonCode, String solutionCode, String status,
-                               String paymentChannel, String deliveryType, String sign,
-                               String note,
-                               String collectAmount,
-                               String ladingPostmanID,
-                               String routeCode,
-                               CommonCallback<SimpleResult> commonCallback);
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
@@ -38,30 +31,14 @@ interface BaoPhatBangKeDetailContract {
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 
-        void pushToPNSDelivery(String postmanID,
-                               String ladingCode,
-                               String deliveryPOCode,
-                               String deliveryDate,
-                               String deliveryTime,
-                               String receiverName,
-                               String reasonCode,
-                               String solutionCode,
-                               String status,
-                               String paymentChannel,
-                               String deliveryType,
-                               String collectAmount,
-                               String signatureCapture,
-                               String ladingPostmanID,String routeCode,
-                               CommonCallback<SimpleResult> callback);
-
-        void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
-                             String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
-                             String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
-                             String signatureCapture, String note, String collectAmount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback);
 
         void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);
 
         void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
+        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
+        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

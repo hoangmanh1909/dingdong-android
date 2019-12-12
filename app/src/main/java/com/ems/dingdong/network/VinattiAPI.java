@@ -21,6 +21,8 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
 
@@ -144,26 +146,8 @@ public interface VinattiAPI {
                                           @Field("Signature") String signature
     );
 
-    @FormUrlEncoded
     @POST("api/Delivery/PushToPNS")
-    Call<SimpleResult> pushToPNSDelivery(@Field("PostmanID") String postmanID,
-                                         @Field("LadingCode") String ladingCode,
-                                         @Field("DeliveryPOCode") String deliveryPOCode,
-                                         @Field("DeliveryDate") String deliveryDate,
-                                         @Field("DeliveryTime") String deliveryTime,
-                                         @Field("ReceiverName") String receiverName,
-                                         @Field("ReasonCode") String reasonCode,
-                                         @Field("SolutionCode") String solutionCode,
-                                         @Field("Status") String status,
-                                         @Field("PaymentChannel") String paymentChannel,
-                                         @Field("DeliveryType") String deliveryType,
-                                         @Field("SignatureCapture") String signatureCapture,
-                                         @Field("Note") String note,
-                                         @Field("CollectAmount") String collectAmount,
-                                         @Field("LadingPostmanID") String ladingPostmanID,
-                                         @Field("ShiftID") String shiftID,
-                                         @Field("RouteCode") String routeCode,
-                                         @Field("Signature") String signature);
+    Call<SimpleResult> pushToPNSDelivery(@Body PushToPnsRequest request);
 
     @FormUrlEncoded
     @POST("api/CallCenter/AddNew")
@@ -182,28 +166,8 @@ public interface VinattiAPI {
                                              @Field("ToDate") String toDate,
                                              @Field("Signature") String signature);
 
-    @FormUrlEncoded
     @POST("api/Delivery/Payment")
-    Call<SimpleResult> paymentDelivery(@Field("PostmanID") String postmanID,
-                                       @Field("ParcelCode") String parcelCode,
-                                       @Field("MobileNumber") String mobileNumber,
-                                       @Field("DeliveryPOCode") String deliveryPOCode,
-                                       @Field("DeliveryDate") String deliveryDate,
-                                       @Field("DeliveryTime") String deliveryTime,
-                                       @Field("ReceiverName") String receiverName,
-                                       @Field("ReceiverIDNumber") String receiverIDNumber,
-                                       @Field("ReasonCode") String reasonCode,
-                                       @Field("SolutionCode") String solutionCode,
-                                       @Field("Status") String status,
-                                       @Field("PaymentChannel") String paymentChannel,
-                                       @Field("DeliveryType") String deliveryType,
-                                       @Field("SignatureCapture") String signatureCapture,
-                                       @Field("Note") String note,
-                                       @Field("CollectAmount") String collectAmount,
-                                       @Field("ShiftID") String shiftID,
-                                       @Field("RouteCode") String routeCode,
-                                       @Field("LadingPostmanID") String ladingPostmanID,
-                                       @Field("Signature") String signature);
+    Call<SimpleResult> paymentDelivery(@Body PaymentDeviveryRequest request);
 
     @FormUrlEncoded
     @POST("api/Delivery/PaymentPaypost")

@@ -8,6 +8,8 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
@@ -192,26 +194,6 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().checkLadingCode(parcelCode, signature);
         call.enqueue(callback);
     }
-
-    public static void pushToPNSDelivery(String postmanID,
-                                         String ladingCode,
-                                         String deliveryPOCode,
-                                         String deliveryDate,
-                                         String deliveryTime,
-                                         String receiverName,
-                                         String reasonCode,
-                                         String solutionCode,
-                                         String status,
-                                         String paymentChannel,
-                                         String deliveryType,
-                                         String signatureCapture, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> callback) {
-        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
-                deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType,
-                signatureCapture, note, amount, ladingPostmanID, Constants.SHIFT, routeCode, signature);
-        call.enqueue(callback);
-    }
-
     public static void addNewCallCenter(String amndEmp,
                                         String postmanID,
                                         String senderPhone,
@@ -231,29 +213,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void paymentDelivery(String postmanID,
-                                       String parcelCode,
-                                       String mobileNumber,
-                                       String deliveryPOCode,
-                                       String deliveryDate,
-                                       String deliveryTime,
-                                       String receiverName,
-                                       String receiverIDNumber,
-                                       String reasonCode,
-                                       String solutionCode,
-                                       String status,
-                                       String paymentChannel,
-                                       String deliveryType,
-                                       String signatureCapture,
-                                       String note,
-                                       String collectAmount, String routeCode,
-                                       String ladingPostmanID, CommonCallback<SimpleResult> callback) {
-        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
-                status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT, routeCode, ladingPostmanID, signature);
-        call.enqueue(callback);
+    public static void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
+                    Call<SimpleResult> call = getAPIBuilder().paymentDelivery(request);
+                    call.enqueue(callback);
     }
 
     public static void paymentPaypost(String postmanID,
@@ -406,6 +368,11 @@ public class NetWorkController {
 
     public static void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(hoanTatTinRequest);
+        call.enqueue(callback);
+    }
+
+    public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
         call.enqueue(callback);
     }
 }

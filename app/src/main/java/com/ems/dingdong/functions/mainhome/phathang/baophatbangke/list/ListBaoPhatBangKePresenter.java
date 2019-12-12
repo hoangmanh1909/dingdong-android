@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
@@ -17,12 +18,15 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.Date;
 import java.util.List;
@@ -88,7 +92,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso) {
         mView.showProgress();
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID,chuyenthu,tuiso, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
@@ -160,7 +164,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
 
     @Override
-    public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign) {
+    public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String signatureCapture) {
         String postmanID = "";
         String mobileNumber = "";
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
@@ -177,7 +181,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             deliveryPOSCode = postOffice.getCode();
         }
         for (CommonObject item : commonObjects) {
-            String ladingCode = item.getParcelCode();
+            String parcelCode = item.getParcelCode();
             String deliveryPOCode = !TextUtils.isEmpty(deliveryPOSCode) ? deliveryPOSCode : item.getPoCode();
             String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
@@ -188,9 +192,14 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String ladingPostmanID = item.getiD();
             if (item.getService().equals("12")) {
                 status = "C14";
-
-                mInteractor.paymentDelivery(postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                        item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(),item.getRouteCode(),ladingPostmanID, new CommonCallback<SimpleResult>((Context) mContainerView) {
+                String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+                PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
+                        parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
+                        status, "", "", signatureCapture,
+                        note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature);
+              /*  postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
+                        item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(),item.getRouteCode(),ladingPostmanID*/
+                mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
                             @Override
                             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                                 super.onSuccess(call, response);
@@ -211,8 +220,12 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             } else {
                 if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                     status = "C14";
-                    mInteractor.paymentDelivery(postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                            item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(), item.getRouteCode(), ladingPostmanID, new CommonCallback<SimpleResult>((Context) mContainerView) {
+                    String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+                    PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
+                            parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
+                            status, "", "", signatureCapture,
+                            note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature);
+                    mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
                                 @Override
                                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                                     super.onSuccess(call, response);
@@ -231,8 +244,10 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             }
                     );
                 } else {
-                    mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                            solutionCode, status, "", "", sign, note, item.getAmount(), item.getiD(),item.getRouteCode(),
+                    String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+                    PushToPnsRequest request = new PushToPnsRequest(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                            solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature);
+                    mInteractor.pushToPNSDelivery(request,
                             new CommonCallback<SimpleResult>((Activity) mContainerView) {
                                 @Override
                                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
