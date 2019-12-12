@@ -19,15 +19,22 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
+import com.ems.dingdong.callback.SignCallback;
+import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.views.CustomEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.common.util.CollectionUtils;
+import com.google.common.collect.Collections2;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
@@ -45,10 +52,14 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
+import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.Predicate;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -91,11 +102,23 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     MaterialEditText edtCode;
     @BindView(R.id.tv_ReceiverName)
     CustomTextView tvReceiverName;
+    @BindView(R.id.tv_count_scan)
+    CustomBoldTextView tvCountScan;
+    @BindView(R.id.ll_signed)
+    LinearLayout llSigned;
+    @BindView(R.id.img_sign)
+    ImageView imgSign;
+
+    @BindView(R.id.edt_Description)
+    CustomEditText edtDescription;
+    @BindView(R.id.tv_Quantity)
+    CustomEditText edtQuantity;
     private String mUser;
     private CommonObject mHoanThanhTin;
     private String mFile;
-    private ArrayList<ScanItem> mList;
+    private List<ScanItem> mList;
     private ItemScanAdapter mAdapter;
+    private String mSign = "";
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -273,7 +296,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
     }
 
-    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture})
+    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture, R.id.btn_sign})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -288,10 +311,10 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
 
                 if (mHoanThanhTin != null) {
-                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(),mPresenter.getList(), new HoanThanhTinCallback() {
+                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(), new HoanThanhTinCallback() {
                         @Override
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
-                                               String pickUpTime, ArrayList<Integer> array) {
+                                               String pickUpTime, ArrayList<Integer> ShipmentID) {
                             if (getActivity() != null) {
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -300,20 +323,17 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
                                     hoanTatTinRequest.setEmployeeID(userInfo.getiD());
                                     hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD());
-                                    hoanTatTinRequest.setOrderPostmanID( mHoanThanhTin.getOrderPostmanID());
+                                    hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID());
                                     hoanTatTinRequest.setStatusCode(statusCode);
                                     hoanTatTinRequest.setCollectReason(reasonInfo != null ? reasonInfo.getName() : "");
                                     hoanTatTinRequest.setPickUpDate(pickUpDate);
                                     hoanTatTinRequest.setPickUpTime(pickUpTime);
                                     hoanTatTinRequest.setFile(mFile);
                                     hoanTatTinRequest.setScan(scans.toString());
-                                    hoanTatTinRequest.setReasonCode( reasonInfo != null ? reasonInfo.getCode() : "");
-                                    hoanTatTinRequest.setShipmentIds(array);
+                                    hoanTatTinRequest.setReasonCode(reasonInfo != null ? reasonInfo.getCode() : "");
+                                    hoanTatTinRequest.setShipmentIds(ShipmentID);
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
-                                   /* mPresenter.collectOrderPostmanCollect(userInfo.getiD(), mHoanThanhTin.getiD(),
-                                            mHoanThanhTin.getOrderPostmanID(), statusCode,  reasonInfo != null ? reasonInfo.getName() : "",
-                                            pickUpDate, pickUpTime, mFile,
-                                            scans.toString(), reasonInfo != null ? reasonInfo.getCode() : "");*/
+
 
                                 }
                             }
@@ -336,15 +356,36 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     }
                 });
                 break;
+            case R.id.btn_sign:
+                new SignDialog(getActivity(), new SignCallback() {
+                    @Override
+                    public void onResponse(String sign, Bitmap bitmap) {
+                        mSign = sign;
+                        imgSign.setImageBitmap(bitmap);
+                        if (bitmap != null) {
+                            llSigned.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }).show();
+                break;
         }
     }
 
     private void addItem(String item) {
         if (!item.isEmpty()) {
-            mAdapter.addItem(new ScanItem(item));
-            edtCode.setText("");
-        } else {
-            Toast.showToast(getActivity(), "Chưa nhập mã");
+            ScanItem scanItem = IterableUtils.find(mList, object -> item.equals(object.getCode()));
+            if (scanItem == null) {
+                mList.add(new ScanItem(item));
+                mAdapter.addItem(new ScanItem(item));
+                edtCode.setText("");
+            } else {
+                Toast.showToast(getActivity(), "Chưa nhập mã");
+            }
+            tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
+        }
+        else
+        {
+            Toast.showToast(getActivity(), "Đã tồn tại bưu gửi trong danh sách");
         }
     }
 
@@ -354,12 +395,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 .setConfirmText("OK")
                 .setTitleText("Thông báo")
                 .setContentText(message)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                        mPresenter.back();
-                    }
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    mPresenter.back();
                 }).show();
     }
 
@@ -381,7 +419,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         tvContactName.setText(commonObject.getReceiverName());
         // tvContactPhone.setText(commonObject.getReceiverPhone());
         tvDescription.setText(commonObject.getDescription());
+        edtDescription.setText(commonObject.getDescription());
         tvQuantity.setText(commonObject.getQuantity());
+        edtQuantity.setText(commonObject.getQuantity());
         tvWeigh.setText(String.format("%s gram", commonObject.getWeigh()));
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
         tvTrackingCode.setText(commonObject.getTrackingCode());

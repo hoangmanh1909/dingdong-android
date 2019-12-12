@@ -363,10 +363,11 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         }
         final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
+        String ladingPostmanID = mBaoPhatBangke.getiD();
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount,mBaoPhatBangke.getRouteCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount,mBaoPhatBangke.getRouteCode(), ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

@@ -132,10 +132,11 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         }
         final String paymentChannel = baoPhat.getCurrentPaymentType();
         String deliveryType = baoPhat.getDeliveryType();
+        String ladingPostmanID = baoPhat.getiD();
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signature,
-                note, amount, baoPhat.getRouteCode(),new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, baoPhat.getRouteCode(), ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

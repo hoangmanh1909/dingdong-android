@@ -185,11 +185,12 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String reasonCode = reason;
             String solutionCode = solution;
             String status = "C18";
-
+            String ladingPostmanID = item.getiD();
             if (item.getService().equals("12")) {
                 status = "C14";
+
                 mInteractor.paymentDelivery(postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                        item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(),item.getRouteCode(), new CommonCallback<SimpleResult>((Context) mContainerView) {
+                        item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(),item.getRouteCode(),ladingPostmanID, new CommonCallback<SimpleResult>((Context) mContainerView) {
                             @Override
                             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                                 super.onSuccess(call, response);
@@ -211,7 +212,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                     status = "C14";
                     mInteractor.paymentDelivery(postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                            item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(), item.getRouteCode(), new CommonCallback<SimpleResult>((Context) mContainerView) {
+                            item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(), item.getRouteCode(), ladingPostmanID, new CommonCallback<SimpleResult>((Context) mContainerView) {
                                 @Override
                                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                                     super.onSuccess(call, response);

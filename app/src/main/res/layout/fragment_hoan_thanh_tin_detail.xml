@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -99,11 +100,13 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+                        android:layout_height="0.5dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -132,11 +135,13 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+                        android:layout_height="0.5dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,10 +169,12 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -195,10 +202,12 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -226,10 +235,12 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -257,10 +268,12 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -288,16 +301,18 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+                        android:layout_height="0.5dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.ems.dingdong.views.CustomTextView
@@ -372,10 +387,12 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -403,10 +420,12 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -452,6 +471,140 @@
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_header_common"
                     android:padding="@dimen/dimen_10dp"
+                    android:text="Người gửi xác nhận"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Nội dung"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomEditText
+                            android:id="@+id/edt_Description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:background="@color/transparent"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            tools:text="1\n1\n1\n1"
+                            android:gravity="right"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Số lượng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomEditText
+                            android:id="@+id/edt_Quantity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:background="@color/transparent"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:gravity="right"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/btn_sign"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_gradient_radius_5"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dimen_20dp"
+                            android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingRight="@dimen/dimen_20dp"
+                            android:paddingBottom="@dimen/dimen_5dp"
+                            android:text="Ký gửi"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_signed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+
+                        <ImageView
+                            android:id="@+id/img_sign"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dimen_20dp"
+                            android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingRight="@dimen/dimen_20dp"
+                            android:paddingBottom="@dimen/dimen_5dp" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    style="@style/HeaderNews"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_header_common"
+                    android:padding="@dimen/dimen_10dp"
                     android:text="CHỤP ẢNH ĐƠN HÀNG"
                     android:textAllCaps="true"
                     android:textColor="@color/white" />
@@ -469,9 +622,9 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:scaleType="center"
-                        fresco:viewAspectRatio="1"
                         fresco:placeholderImage="@drawable/ic_camera_capture"
-                        fresco:placeholderImageScaleType="centerInside" />
+                        fresco:placeholderImageScaleType="centerInside"
+                        fresco:viewAspectRatio="1" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -481,10 +634,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical"
-                tools:visibility="visible"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_count_scan"
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_header_common"
@@ -510,9 +664,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_radius_search"
-                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:orientation="horizontal"
                         android:padding="@dimen/dimen_5dp"
-                        android:orientation="horizontal">
+                        android:paddingLeft="@dimen/dimen_5dp">
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:id="@+id/edt_code"
@@ -521,8 +675,8 @@
                             android:layout_gravity="center"
                             android:layout_toLeftOf="@+id/img_search"
                             android:hint="Nhập số hiệu bưu gửi"
-                            android:inputType="text"
                             android:imeOptions="actionDone"
+                            android:inputType="text"
                             android:textColorHint="@color/colorBlackTrans20"
                             android:textSize="@dimen/text_size_14sp"
                             app:met_bottomTextSize="@dimen/text_size_sub"
@@ -532,10 +686,11 @@
                             app:met_textColor="@color/black"
                             app:met_textColorHint="@color/colorBlackTrans20"
                             app:met_underlineColor="@color/transparent" />
+
                         <ImageView
                             android:id="@+id/img_search"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/dimen_40dp"
+                            android:layout_height="@dimen/dimen_40dp"
                             android:layout_centerVertical="true"
                             android:layout_toLeftOf="@+id/img_capture"
                             android:src="@drawable/ic_add_plus" />
@@ -544,9 +699,9 @@
                             android:id="@+id/img_capture"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/_2sdp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:padding="@dimen/_2sdp"
                             android:src="@drawable/ic_qr" />
                     </RelativeLayout>
                 </LinearLayout>

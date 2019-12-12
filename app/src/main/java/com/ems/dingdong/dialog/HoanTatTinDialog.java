@@ -190,7 +190,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 item.setSelected(true);
             }
             mCount = mList.size();
-            tvCount.setText(String.format("Số bưi gửi: %s", mCount));
+            tvCount.setText(String.format("Số bưu gửi: %s", mCount));
             adapter = new ParcelAdapter(mActivity, mList) {
                 @Override
                 public void onBindViewHolder(BaseViewHolder holder, final int position) {
@@ -208,7 +208,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                                 mList.get(position).setSelected(false);
                                 mCount--;
                             }
-                            tvCount.setText(String.format("Số bưi gửi: %s", mCount));
+                            tvCount.setText(String.format("Số bưu gửi: %s", mCount));
                         }
                     });
                 }
@@ -393,7 +393,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
     @OnClick({R.id.tv_reason, R.id.tv_update, R.id.tv_close, R.id.tv_date, R.id.tv_time})
     public void onViewClicked(View view) {
-        ArrayList<Integer> arrayInt = null;
+        ArrayList<Integer> arrayShipmentID = null;
         switch (view.getId()) {
 
             case R.id.tv_reason:
@@ -427,13 +427,13 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     }
                 }
                 if (mType == 3) {
-                    arrayInt = new ArrayList<>();
+                    arrayShipmentID = new ArrayList<>();
                     statusCode = "P7";
                     int check = 0;
                     for (ParcelCodeInfo info : mList) {
                         if (info.isSelected()) {
                             check++;
-                            arrayInt.add(info.getShipmentID());
+                            arrayShipmentID.add(info.getShipmentID());
                         }
                     }
                     if (check == 0) {
@@ -467,7 +467,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 if (pickUpDate.isEmpty()) {
                     pickUpDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 }
-                mDelegate.onResponse(statusCode, mReason, pickUpDate, pickUpTime, arrayInt);//quantity,
+                mDelegate.onResponse(statusCode, mReason, pickUpDate, pickUpTime, arrayShipmentID);//quantity,
                 dismiss();
                 break;
             case R.id.tv_close:

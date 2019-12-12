@@ -96,20 +96,21 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
             if (TextUtils.isEmpty(amount) || amount.equals("0")) {
                 amount = item.getCollectAmount();
             }
+            String ladingPostmanID = item.getiD();
             if (!TextUtils.isEmpty(item.getIsCOD())) {
                 if (item.getIsCOD().toUpperCase().equals("Y")) {
                     payment(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode());
+                            note, amount, item.getRouteCode(), ladingPostmanID);
                 } else {
                     if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                         payment(postmanID,
                                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                                 solutionCode,
                                 status, paymentChannel, deliveryType, signatureCapture,
-                                note, amount, item.getRouteCode());
+                                note, amount, item.getRouteCode(), ladingPostmanID);
                     }
                 }
             } else {
@@ -118,7 +119,7 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode());
+                            note, amount, item.getRouteCode(), ladingPostmanID);
                 }
             }
         }
@@ -145,13 +146,13 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
     private void payment(String postmanID, final String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String routeCode) {
+                         String note, String amount, String routeCode, String ladingPostmanID) {
         final int size = mListBaoPhatOffline.size();
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                 solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, routeCode,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, routeCode, ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

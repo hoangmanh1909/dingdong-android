@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f5f6fa"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical">
@@ -35,7 +35,7 @@
                 android:text="Thông tin vận đơn"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp"  />
+                android:textSize="@dimen/text_size_16sp" />
 
             <ImageView
                 android:id="@+id/img_send"
@@ -55,8 +55,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:orientation="vertical">
 
 
@@ -70,20 +68,16 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Xác nhận phát"
                         android:textColor="@color/n_gray_text"
                         android:textSize="@dimen/text_size_16sp" />
@@ -93,6 +87,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -115,15 +112,21 @@
                         <com.ems.dingdong.views.form.FormItemTextView
                             android:id="@+id/tv_userDelivery"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formShowClear="true" />
-
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:id="@+id/ll_pay_ment"
@@ -154,13 +157,19 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.2"
+                                android:gravity="right"
                                 android:paddingTop="@dimen/dimen_5dp"
                                 android:paddingBottom="@dimen/dimen_5dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp"
-                                app:formShowClear="true" />
-
+                                app:formShowClear="true"
+                                app:formShowUnderline="false" />
                         </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -184,13 +193,19 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.2"
+                                android:gravity="right"
                                 android:paddingTop="@dimen/dimen_5dp"
                                 android:paddingBottom="@dimen/dimen_5dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp"
-                                app:formShowClear="true" />
-
+                                app:formShowClear="true"
+                                app:formShowUnderline="false" />
                         </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -246,7 +261,10 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -281,6 +299,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/dimen_15dp"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:inputType="text|textAutoCorrect"
                             android:textSize="@dimen/text_size_14sp"
                             app:met_bottomTextSize="@dimen/text_size_sub"
@@ -289,10 +308,13 @@
                             app:met_primaryColor="@color/black"
                             app:met_textColor="@color/black"
                             app:met_textColorHint="@color/black"
-                            app:met_underlineColor="@color/colorBlackTrans50" />
-
-
+                            app:met_underlineColor="@color/transparent" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -329,6 +351,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/dimen_15dp"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:hint="Số giấy tờ"
                             android:inputType="text|textAutoCorrect"
                             android:textSize="@dimen/text_size_14sp"
@@ -338,9 +361,13 @@
                             app:met_primaryColor="@color/black"
                             app:met_textColor="@color/black"
                             app:met_textColorHint="@color/black"
-                            app:met_underlineColor="@color/colorBlackTrans50" />
-
+                            app:met_underlineColor="@color/transparent" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -364,14 +391,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down" />
-
-
+                            app:formAction="@drawable/ic_arrow_down"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -395,14 +427,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down" />
-
-
+                            app:formAction="@drawable/ic_arrow_down"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
 
                     <LinearLayout
@@ -449,24 +486,19 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="THÔNG TIN HÀNG HÓA"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN HÀNG HÓA "
                         android:textColor="@color/n_gray_text"
                         android:textSize="@dimen/text_size_16sp" />
                 </RelativeLayout>
@@ -475,6 +507,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -498,12 +533,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
-
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
 
                     <LinearLayout
@@ -527,12 +567,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
-
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -555,12 +600,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
-
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -583,12 +633,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_14sp" />
-
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -598,31 +653,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
                         android:text="THÔNG TIN NHẬN"
                         android:textColor="@color/n_gray_text"
                         android:textSize="@dimen/text_size_16sp" />
                 </RelativeLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -646,12 +700,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
-
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -681,6 +740,11 @@
 
                     </LinearLayout>
 
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -705,9 +769,14 @@
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
+                            android:textSize="@dimen/text_size_14sp"
+                            android:gravity="right" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
 
                 </LinearLayout>
@@ -720,31 +789,30 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/gray" />
 
                     <com.ems.dingdong.views.CustomTextView
                         style="@style/HeaderNews"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white"
-                        android:padding="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
                         android:text="THÔNG TIN GỬI"
                         android:textColor="@color/n_gray_text"
                         android:textSize="@dimen/text_size_16sp" />
                 </RelativeLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -771,9 +839,14 @@
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
+                            android:textSize="@dimen/text_size_14sp"
+                            android:gravity="right" />
                     </LinearLayout>
+
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
 
 
                     <LinearLayout

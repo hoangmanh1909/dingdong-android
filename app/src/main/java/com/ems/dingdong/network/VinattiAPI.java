@@ -202,8 +202,8 @@ public interface VinattiAPI {
                                        @Field("CollectAmount") String collectAmount,
                                        @Field("ShiftID") String shiftID,
                                        @Field("RouteCode") String routeCode,
-                                       @Field("Signature") String signature
-    );
+                                       @Field("LadingPostmanID") String ladingPostmanID,
+                                       @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/PaymentPaypost")

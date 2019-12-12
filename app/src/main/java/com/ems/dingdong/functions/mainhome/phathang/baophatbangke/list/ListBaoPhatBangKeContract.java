@@ -40,7 +40,7 @@ interface ListBaoPhatBangKeContract {
         void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
                              String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
                              String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
-                             String signatureCapture, String note, String collectAmount, String routeCode, CommonCallback<SimpleResult> commonCallback);
+                             String signatureCapture, String note, String collectAmount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

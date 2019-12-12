@@ -180,12 +180,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="#253854"
                             android:textSize="@dimen/text_size_14sp"
                             app:formShowClear="true"
+                            android:gravity="right"
                             app:formShowUnderline="false" />
                     </LinearLayout>
 

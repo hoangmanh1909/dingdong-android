@@ -86,20 +86,21 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             if (TextUtils.isEmpty(amount) || amount.equals("0")) {
                 amount = item.getCollectAmount();
             }
+            String ladingPostmanID = item.getiD();
             if (!TextUtils.isEmpty(item.getIsCOD())) {
                 if (item.getIsCOD().toUpperCase().equals("Y")) {
                     payment(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode());
+                            note, amount, item.getRouteCode(), ladingPostmanID);
                 } else {
                     if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                         payment(postmanID,
                                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                                 solutionCode,
                                 status, paymentChannel, deliveryType, signatureCapture,
-                                note, amount, item.getRouteCode());
+                                note, amount, item.getRouteCode(), ladingPostmanID);
                     } else {
                         pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode());
                     }
@@ -110,7 +111,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode());
+                            note, amount, item.getRouteCode(), ladingPostmanID);
                 } else {
                     pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode());
                 }
@@ -189,13 +190,14 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String note = "";
             final String paymentChannel = item.getCurrentPaymentType();
             String deliveryType = item.getDeliveryType();
+            String ladingPostmanID = item.getiD();
             if (!TextUtils.isEmpty(item.getIsCOD())) {
                 if (item.getIsCOD().toUpperCase().equals("Y")) {
                     payment(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, item.getCollectAmount(), item.getRouteCode());
+                            note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID);
                 } else {
                     pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode());
                 }
@@ -209,13 +211,13 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     private void payment(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String routeCode) {
+                         String note, String amount, String routeCode, String ladingPostmanID) {
         final int size = mBaoPhatCommon.size();
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                 solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount,routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount,routeCode, ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

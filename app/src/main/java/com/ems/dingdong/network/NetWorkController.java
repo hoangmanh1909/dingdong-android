@@ -4,7 +4,6 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.ConfirmOrderPostmanRequest;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
@@ -80,6 +79,7 @@ public class NetWorkController {
         }
         return chiHoBtxhAPI;
     }
+
     private static VinattiAPI getAPIBuilder() {
         if (apiBuilder == null) {
             Gson gson = new GsonBuilder()
@@ -204,7 +204,7 @@ public class NetWorkController {
                                          String status,
                                          String paymentChannel,
                                          String deliveryType,
-                                         String signatureCapture, String note, String amount, String ladingPostmanID,String routeCode, CommonCallback<SimpleResult> callback) {
+                                         String signatureCapture, String note, String amount, String ladingPostmanID, String routeCode, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
                 deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType,
@@ -246,13 +246,13 @@ public class NetWorkController {
                                        String deliveryType,
                                        String signatureCapture,
                                        String note,
-                                       String collectAmount,String routeCode,
-                                       CommonCallback<SimpleResult> callback) {
+                                       String collectAmount, String routeCode,
+                                       String ladingPostmanID, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT,routeCode, signature);
+                note, collectAmount, Constants.SHIFT, routeCode, ladingPostmanID, signature);
         call.enqueue(callback);
     }
 
@@ -271,13 +271,13 @@ public class NetWorkController {
                                       String deliveryType,
                                       String signatureCapture,
                                       String note,
-                                      String collectAmount,String routeCode,
+                                      String collectAmount, String routeCode,
                                       CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().paymentPaypost(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT,routeCode, signature);
+                note, collectAmount, Constants.SHIFT, routeCode, signature);
         call.enqueue(callback);
     }
 
@@ -290,6 +290,7 @@ public class NetWorkController {
         Call<GachNoResult> call = getAPIBuilder().deliveryGetPaypostError(fromDate, toDate);
         call.enqueue(callback);
     }
+
     public static void getPostmanShift(String poCode, CommonCallback<ShiftResult> callback) {
         Call<ShiftResult> call = getAPIBuilder().getPostmanShift(poCode);
         call.enqueue(callback);
@@ -319,9 +320,9 @@ public class NetWorkController {
     public static void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
                                                   String statusCode, String quantity, String collectReason, String pickUpDate,
                                                   String pickUpTime, String file, String scan, String reasonCode, CommonCallback<SimpleResult> callback) {
-            Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                    statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan, reasonCode);
-            call.enqueue(callback);
+        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
+                statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan, reasonCode);
+        call.enqueue(callback);
     }
 
     public static void locationAddNew(String postmanID, String latitude, String longitude, CommonCallback<SimpleResult> callback) {
@@ -366,6 +367,7 @@ public class NetWorkController {
         Call<BankAccountNumberResponse> call = getChiHoBtxhAPI().getBankAccountNumber(bankAccountNumberRequest);
         call.enqueue(callback);
     }
+
     public static void seaBankInquiry(SeaBankInquiryRequest seaBankInquiryRequest, CommonCallback<SeaBankInquiryResponse> callback) {
         Call<SeaBankInquiryResponse> call = getChiHoBtxhAPI().seaBankInquiry(seaBankInquiryRequest);
         call.enqueue(callback);
@@ -386,6 +388,7 @@ public class NetWorkController {
         Call<SeaBankHistoryPaymentResponse> call = getChiHoBtxhAPI().getHistoryPaymentSeaBank(mobileNumber, fromDate, toDate);
         call.enqueue(callback);
     }
+
     public static void getReasonsHoanTat(CommonCallback<ReasonResult> callback) {
         Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTat();
         call.enqueue(callback);

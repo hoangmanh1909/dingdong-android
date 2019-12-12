@@ -20,11 +20,11 @@ class BaoPhatOfflineDetailInteractor extends Interactor<BaoPhatOfflineDetailCont
     public void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName,
                                 String receiverIDNumber, String reasonCode, String solutionCode, String status,
                                 String paymentChannel, String deliveryType, String signature,
-                                String note, String amount, String routeCode, CommonCallback<SimpleResult> commonCallback) {
+                                String note, String amount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signature,
-                note,amount,routeCode, commonCallback);
+                note,amount,routeCode, ladingPostmanID, commonCallback);
     }
 
     @Override

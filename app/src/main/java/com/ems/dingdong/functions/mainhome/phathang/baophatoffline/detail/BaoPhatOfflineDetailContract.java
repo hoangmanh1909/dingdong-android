@@ -13,7 +13,7 @@ import com.ems.dingdong.model.SimpleResult;
 interface BaoPhatOfflineDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void   paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signature, String note, String amount, String routeCode, CommonCallback<SimpleResult> commonCallback);
+        void   paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signature, String note, String amount, String routeCode, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback);
         void pushToPNSDelivery(String postmanID, String ladingCode,
                                String deliveryPOCode, String deliveryDate,
                                String deliveryTime, String receiverName,
