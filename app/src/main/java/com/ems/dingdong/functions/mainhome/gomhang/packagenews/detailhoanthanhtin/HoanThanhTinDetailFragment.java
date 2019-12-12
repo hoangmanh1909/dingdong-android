@@ -29,6 +29,7 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.callback.SignCallback;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
+import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.views.CustomEditText;
@@ -303,6 +304,10 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 mPresenter.back();
                 break;
             case R.id.btn_confirm:
+                if (mAdapter.getItemCount() == 0) {
+                    Toast.showToast(getActivity(), "Chưa scan bưu gửi trong tin gom");
+                    return;
+                }
                 final StringBuilder scans = new StringBuilder();
                 List<ScanItem> scanItems = mAdapter.getItems();
                 for (ScanItem item : scanItems) {
@@ -373,18 +378,21 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     private void addItem(String item) {
         if (!item.isEmpty()) {
-            ScanItem scanItem = IterableUtils.find(mList, object -> item.equals(object.getCode()));
-            if (scanItem == null) {
-                mList.add(new ScanItem(item));
-                mAdapter.addItem(new ScanItem(item));
-                edtCode.setText("");
+            ParcelCodeInfo scanItemCheck = IterableUtils.find(mHoanThanhTin.getListParcelCode(), object -> item.equals(object.getParcelCode()));
+            if (scanItemCheck == null) {
+                Toast.showToast(getActivity(), "Không tồn tại bưu gửi trong tin gom");
             } else {
-                Toast.showToast(getActivity(), "Chưa nhập mã");
+                ScanItem scanItem = IterableUtils.find(mList, object -> item.equals(object.getCode()));
+                if (scanItem == null) {
+                    mList.add(new ScanItem(item));
+                    mAdapter.addItem(new ScanItem(item));
+                    edtCode.setText("");
+                } else {
+                    Toast.showToast(getActivity(), "Chưa nhập mã");
+                }
+                tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
             }
-            tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
-        }
-        else
-        {
+        } else {
             Toast.showToast(getActivity(), "Đã tồn tại bưu gửi trong danh sách");
         }
     }
