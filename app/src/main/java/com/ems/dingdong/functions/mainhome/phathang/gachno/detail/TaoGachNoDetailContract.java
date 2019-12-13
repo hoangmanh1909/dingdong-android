@@ -10,6 +10,7 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.PaymentPaypostRequest;
 
 import java.util.ArrayList;
 
@@ -26,10 +27,8 @@ interface TaoGachNoDetailContract {
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 
-        void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
-                             String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
-                             String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
-                             String signatureCapture, String note, String collectAmount, String routeCode, CommonCallback<SimpleResult> commonCallback);
+
+        void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

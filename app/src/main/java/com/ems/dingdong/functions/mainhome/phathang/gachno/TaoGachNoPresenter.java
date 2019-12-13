@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailPresenter;
@@ -15,9 +16,11 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.List;
 
@@ -134,11 +137,12 @@ public class TaoGachNoPresenter extends Presenter<TaoGachNoContract.View, TaoGac
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
                          String note, String amount,String routeCode, final int size) {
-        mInteractor.paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
-                solutionCode,
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PaymentPaypostRequest request= new PaymentPaypostRequest(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount,routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, Constants.SHIFT, routeCode, signature);
+        mInteractor.paymentPaypost(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

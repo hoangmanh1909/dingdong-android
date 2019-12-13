@@ -38,6 +38,7 @@ import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
@@ -119,9 +120,9 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
-    MaterialEditText edtReceiverName;
+    CustomEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
+    FormItemEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -379,7 +380,7 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
         }
         mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
         mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
-        mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll(".", ""));
+        mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll("\\.", ""));
         mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
         mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
         mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));

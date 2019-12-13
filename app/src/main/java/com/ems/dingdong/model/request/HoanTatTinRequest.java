@@ -29,6 +29,12 @@ public class HoanTatTinRequest {
     String reasonCode;
     @SerializedName("ShipmentIds")
     List<Integer> shipmentIds;
+    @SerializedName("ConfirmContent")
+    String confirmContent;
+    @SerializedName("ConfirmQuantity")
+    String confirmQuantity;
+    @SerializedName("ConfirmSignature")
+    String confirmSignature;
 
     public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
@@ -76,5 +82,17 @@ public class HoanTatTinRequest {
 
     public void setShipmentIds(List<Integer> shipmentIds) {
         this.shipmentIds = shipmentIds;
+    }
+
+    public void setConfirmContent(String confirmContent) {
+        this.confirmContent = confirmContent;
+    }
+
+    public void setConfirmQuantity(String confirmQuantity) {
+        this.confirmQuantity = confirmQuantity;
+    }
+
+    public void setConfirmSignature(String confirmSignature) {
+        this.confirmSignature = confirmSignature;
     }
 }

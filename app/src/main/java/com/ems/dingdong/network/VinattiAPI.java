@@ -6,7 +6,6 @@ import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.ConfirmOrderPostmanRequest;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
@@ -22,6 +21,7 @@ import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public interface VinattiAPI {
                                              @Field("CallForwardType") String callForwardType,
                                              @Field("HotlineNumber") String hotlineNumber,
                                              @Field("LadingCode") String ladingCode,
-                                             @Field("Type") String type ,
+                                             @Field("Type") String type,
                                              @Field("Signature") String signature
     );
 
@@ -95,19 +95,6 @@ public interface VinattiAPI {
                                                        @Field("ChThu") String chuyenthu,
                                                        @Field("TuiSo") String tuiso);
 
-    @FormUrlEncoded
-    @POST("api/Collect/CollectOrderPostman")
-    Call<SimpleResult> collectOrderPostmanCollect(@Field("EmployeeID") String employeeID,
-                                                  @Field("OrderID") String orderID,
-                                                  @Field("OrderPostmanID") String orderPostmanID,
-                                                  @Field("StatusCode") String statusCode,
-                                                  @Field("Quantity") String quantity,
-                                                  @Field("CollectReason") String collectReason,
-                                                  @Field("PickUpDate") String pickUpDate,
-                                                  @Field("PickUpTime") String pickUpTime,
-                                                  @Field("OrderImage") String file,
-                                                  @Field("ShipmentCode") String scan,
-                                                  @Field("ReasonCode") String reasonCode);
 
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")
@@ -169,33 +156,14 @@ public interface VinattiAPI {
     @POST("api/Delivery/Payment")
     Call<SimpleResult> paymentDelivery(@Body PaymentDeviveryRequest request);
 
-    @FormUrlEncoded
     @POST("api/Delivery/PaymentPaypost")
-    Call<SimpleResult> paymentPaypost(@Field("PostmanID") String postmanID,
-                                      @Field("ParcelCode") String parcelCode,
-                                      @Field("MobileNumber") String mobileNumber,
-                                      @Field("DeliveryPOCode") String deliveryPOCode,
-                                      @Field("DeliveryDate") String deliveryDate,
-                                      @Field("DeliveryTime") String deliveryTime,
-                                      @Field("ReceiverName") String receiverName,
-                                      @Field("ReceiverIDNumber") String receiverIDNumber,
-                                      @Field("ReasonCode") String reasonCode,
-                                      @Field("SolutionCode") String solutionCode,
-                                      @Field("Status") String status,
-                                      @Field("PaymentChannel") String paymentChannel,
-                                      @Field("DeliveryType") String deliveryType,
-                                      @Field("SignatureCapture") String signatureCapture,
-                                      @Field("Note") String note,
-                                      @Field("CollectAmount") String collectAmount,
-                                      @Field("ShiftID") String shiftID,
-                                      @Field("RouteCode") String routeCode,
-                                      @Field("Signature") String signature
-    );
+    Call<SimpleResult> paymentPaypost(@Body PaymentPaypostRequest request);
 
 
     @GET("api/Delivery/GetPaypostError")
     Call<GachNoResult> deliveryGetPaypostError(@Query("fromDate") String fromDate,
                                                @Query("toDate") String toDate);
+
     @GET("api/Dictionary/GetPostmanShift")
     Call<ShiftResult> getPostmanShift(@Query("poCode") String poCode);
 
@@ -211,11 +179,13 @@ public interface VinattiAPI {
 
     @GET("api/Dictionary/GetReasons")
     Call<ReasonResult> getReasons();
+
     @GET("api/Dictionary/GetPickUpReasons")
     Call<ReasonResult> getReasonsHoanTat();
 
     @GET("api/Dictionary/GetCancelOrderReason")
     Call<ReasonResult> getReasonsHoanTatMiss();
+
     @POST("API/TaskOfWork/Create")
     Call<SimpleResult> taskOfWork(@Body SimpleResult taskRequest);
 

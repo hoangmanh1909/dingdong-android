@@ -23,13 +23,6 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
         NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, commonCallback);
     }
 
-    @Override
-    public void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID, String statusCode,
-                                           String quantity, String collectReason, String pickUpDate, String pickUpTime, String file, String scan,
-                                           String reasonCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                statusCode, quantity, collectReason, pickUpDate, pickUpTime,file, scan,reasonCode, callback);
-    }
 
     @Override
     public void postImage(String pathMedia, CommonCallback<UploadSingleResult> callback) {

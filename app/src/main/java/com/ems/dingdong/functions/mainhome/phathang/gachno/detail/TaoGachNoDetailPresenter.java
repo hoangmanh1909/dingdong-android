@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
@@ -13,9 +14,11 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Utils;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -170,7 +173,7 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline,mBaoPhatBangke.getParcelCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, mBaoPhatBangke.getParcelCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -260,31 +263,32 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
     private void payment(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String routeCode) {
-        mInteractor.paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
-                solutionCode,
+                         String note, String collectAmount, String routeCode) {
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PaymentPaypostRequest request = new PaymentPaypostRequest(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount,routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        mView.hideProgress();
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                        } else {
-                            mView.showError(response.body().getMessage());
-                        }
-                    }
+                note, collectAmount, Constants.SHIFT, routeCode, signature);
+        mInteractor.paymentPaypost(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.hideProgress();
-                        mView.showError(message);
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
 
-                    }
-                });
+            }
+        });
     }
 
     @Override
@@ -321,29 +325,33 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
         }
         final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
-        mInteractor.paymentDelivery(postmanID,
+
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PaymentPaypostRequest request = new PaymentPaypostRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, mBaoPhatBangke.getRouteCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        mView.hideProgress();
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                        } else {
-                            mView.showError(response.body().getMessage());
-                        }
-                    }
+                note, amount, Constants.SHIFT, mBaoPhatBangke.getRouteCode(), signature);
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.hideProgress();
-                        mView.showError(message);
+        mInteractor.paymentPaypost(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
 
-                    }
-                });
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
+
+            }
+        });
 
     }
 

@@ -22,9 +22,6 @@ interface HoanThanhTinDetailContract {
     interface Interactor extends IInteractor<Presenter> {
         void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
 
-        void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
-                                        String statusCode, String quantity, String collectReason, String pickUpDate,
-                                        String pickUpTime, String file, String scan, String reasonCode, CommonCallback<SimpleResult> callback);
 
         void postImage(String pathMedia, CommonCallback<UploadSingleResult> commonCallback);
 

@@ -9,6 +9,7 @@ import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
@@ -194,6 +195,7 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().checkLadingCode(parcelCode, signature);
         call.enqueue(callback);
     }
+
     public static void addNewCallCenter(String amndEmp,
                                         String postmanID,
                                         String senderPhone,
@@ -214,32 +216,12 @@ public class NetWorkController {
     }
 
     public static void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
-                    Call<SimpleResult> call = getAPIBuilder().paymentDelivery(request);
-                    call.enqueue(callback);
+        Call<SimpleResult> call = getAPIBuilder().paymentDelivery(request);
+        call.enqueue(callback);
     }
 
-    public static void paymentPaypost(String postmanID,
-                                      String parcelCode,
-                                      String mobileNumber,
-                                      String deliveryPOCode,
-                                      String deliveryDate,
-                                      String deliveryTime,
-                                      String receiverName,
-                                      String receiverIDNumber,
-                                      String reasonCode,
-                                      String solutionCode,
-                                      String status,
-                                      String paymentChannel,
-                                      String deliveryType,
-                                      String signatureCapture,
-                                      String note,
-                                      String collectAmount, String routeCode,
-                                      CommonCallback<SimpleResult> callback) {
-        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().paymentPaypost(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
-                status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT, routeCode, signature);
+    public static void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().paymentPaypost(request);
         call.enqueue(callback);
     }
 
@@ -279,13 +261,6 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void collectOrderPostmanCollect(String employeeID, String orderID, String orderPostmanID,
-                                                  String statusCode, String quantity, String collectReason, String pickUpDate,
-                                                  String pickUpTime, String file, String scan, String reasonCode, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(employeeID, orderID, orderPostmanID,
-                statusCode, quantity, collectReason, pickUpDate, pickUpTime, file, scan, reasonCode);
-        call.enqueue(callback);
-    }
 
     public static void locationAddNew(String postmanID, String latitude, String longitude, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(postmanID + BuildConfig.PRIVATE_KEY).toUpperCase();

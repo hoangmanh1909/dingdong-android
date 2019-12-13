@@ -10,11 +10,8 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
-
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,45 +20,50 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
-import com.ems.dingdong.callback.SignCallback;
-import com.ems.dingdong.dialog.SignDialog;
-import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
-import com.ems.dingdong.model.ParcelCodeInfo;
-import com.ems.dingdong.model.ReasonInfo;
-import com.ems.dingdong.model.request.HoanTatTinRequest;
-import com.ems.dingdong.views.CustomEditText;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.gms.common.util.CollectionUtils;
-import com.google.common.collect.Collections2;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.HoanThanhTinCallback;
+import com.ems.dingdong.callback.SignCallback;
 import com.ems.dingdong.dialog.HoanTatTinDialog;
+import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ScanItem;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
-import org.apache.commons.collections4.IterableUtils;
-import org.apache.commons.collections4.Predicate;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -71,6 +73,7 @@ import butterknife.OnClick;
  */
 public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailContract.Presenter> implements HoanThanhTinDetailContract.View {
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
+    private static final String[] PERMISSION_STORAGES = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 99;
     private static final String TAG = HoanThanhTinDetailFragment.class.getSimpleName();
     @BindView(R.id.tv_title)
@@ -112,14 +115,16 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @BindView(R.id.edt_Description)
     CustomEditText edtDescription;
-    @BindView(R.id.tv_Quantity)
+    @BindView(R.id.edt_Quantity)
     CustomEditText edtQuantity;
     private String mUser;
     private CommonObject mHoanThanhTin;
-    private String mFile;
+    private String mFile = "";
     private List<ScanItem> mList;
     private ItemScanAdapter mAdapter;
     private String mSign = "";
+    private boolean mSignPosition = false;
+    private String mFileSign = "";
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -135,7 +140,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        checkPermissionCall();
+        checkPermission();
         mList = new ArrayList<>();
         mAdapter = new ItemScanAdapter(getActivity(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerScan);
@@ -152,13 +157,16 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         });
     }
 
-    private void checkPermissionCall() {
+    private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
-
+            hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSION_STORAGES, REQUEST_CODE_ASK_PERMISSIONS);
+            }
         }
     }
 
@@ -181,6 +189,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
             if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
                 String path = file.getParent() + File.separator + "Process_" + file.getName();
+                mSignPosition = false;
                 mPresenter.postImage(path);
                 picUri = Uri.fromFile(new File(path));
                 ivPackage.setImageURI(picUri);
@@ -234,7 +243,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         try {
             bm1 = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(source));
             int SIZE_SCALE = 3;
-            bm1 = Bitmap.createScaledBitmap(bm1, (int) (bm1.getWidth() / SIZE_SCALE), (int) (bm1.getHeight() / SIZE_SCALE), true);
+            bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
 
             try {
                 newBitmap = rotateImageIfRequired(bm1, source);
@@ -287,8 +296,13 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @Override
     public void showImage(String file) {
-        if (!file.isEmpty())
-            mFile = file;
+        if (!file.isEmpty()) {
+            if (!mSignPosition) {
+                mFile = file;
+            } else {
+                mFileSign = file;
+            }
+        }
     }
 
     @Override
@@ -334,12 +348,13 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setPickUpDate(pickUpDate);
                                     hoanTatTinRequest.setPickUpTime(pickUpTime);
                                     hoanTatTinRequest.setFile(mFile);
+                                    hoanTatTinRequest.setConfirmSignature(mFileSign);
+                                    hoanTatTinRequest.setConfirmContent(edtDescription.getText().toString());
+                                    hoanTatTinRequest.setConfirmQuantity(edtQuantity.getText().toString());
                                     hoanTatTinRequest.setScan(scans.toString());
                                     hoanTatTinRequest.setReasonCode(reasonInfo != null ? reasonInfo.getCode() : "");
                                     hoanTatTinRequest.setShipmentIds(ShipmentID);
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
-
-
                                 }
                             }
 
@@ -370,30 +385,58 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         if (bitmap != null) {
                             llSigned.setVisibility(View.VISIBLE);
                         }
+                        File saveDir = null;
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                            saveDir = new File(Environment.getExternalStorageDirectory(), "MaterialCamera");
+                            saveDir.mkdirs();
+                        }
+                        File file = makeTempFile(saveDir.getAbsolutePath(), "IMG_", ".jpg");
+                        if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 100)) {
+                            String path = file.getParent() + File.separator + "Process_" + file.getName();
+                            mSignPosition = true;
+                            mPresenter.postImage(path);
+                            if (file.exists())
+                                file.delete();
+                        }
                     }
                 }).show();
                 break;
         }
     }
 
+    public File makeTempFile(String saveDir, String prefix, String extension) {
+        if (saveDir == null) saveDir = getActivity().getExternalCacheDir().getAbsolutePath();
+        final String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        final File dir = new File(saveDir);
+        dir.mkdirs();
+        return new File(dir, prefix + timeStamp + extension);
+    }
+
     private void addItem(String item) {
         if (!item.isEmpty()) {
-            ParcelCodeInfo scanItemCheck = IterableUtils.find(mHoanThanhTin.getListParcelCode(), object -> item.equals(object.getParcelCode()));
-            if (scanItemCheck == null) {
+            boolean scanItemCheck = FluentIterable.from(mHoanThanhTin.getListParcelCode()).anyMatch(new Predicate<ParcelCodeInfo>() {
+                @Override
+                public boolean apply(@Nullable ParcelCodeInfo input) {
+                    return item.equals(input.getParcelCode());
+                }
+            });
+            if (!scanItemCheck) {
                 Toast.showToast(getActivity(), "Không tồn tại bưu gửi trong tin gom");
             } else {
-                ScanItem scanItem = IterableUtils.find(mList, object -> item.equals(object.getCode()));
-                if (scanItem == null) {
+                boolean scanItem = FluentIterable.from(mList).anyMatch(input -> item.equals(input.getCode()));
+                if (!scanItem) {
                     mList.add(new ScanItem(item));
                     mAdapter.addItem(new ScanItem(item));
                     edtCode.setText("");
                 } else {
-                    Toast.showToast(getActivity(), "Chưa nhập mã");
+                    Toast.showToast(getActivity(), "Đã tồn tại bưu gửi trong danh sách");
                 }
                 tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
             }
         } else {
-            Toast.showToast(getActivity(), "Đã tồn tại bưu gửi trong danh sách");
+            Toast.showToast(getActivity(), "Chưa nhập mã");
+
         }
     }
 
