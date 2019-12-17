@@ -76,6 +76,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="left|center"
                                 android:paddingLeft="@dimen/dimen_5dp"
+                                android:visibility="gone"
                                 android:text="Thành công một phần"
                                 android:textColor="@color/blue" />
                             <RadioButton

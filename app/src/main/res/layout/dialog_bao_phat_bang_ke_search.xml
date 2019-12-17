@@ -63,7 +63,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|center"
                             android:layout_weight="4"
-                            android:text="Ngày tạo vận đơn"
+                            android:text="Ngày lập bản kê BD13"
                             android:textColor="#253854"
                             android:textSize="14sp" />
 
