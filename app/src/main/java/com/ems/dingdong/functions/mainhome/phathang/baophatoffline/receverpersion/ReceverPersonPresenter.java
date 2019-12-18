@@ -92,7 +92,7 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            final String paymentChannel = item.getCurrentPaymentType();
+            final String paymentChannel = item.getPaymentChannel();
             String signatureCapture = item.getSignatureCapture();
             String deliveryType = item.getDeliveryType();
             String amount = item.getAmount();
@@ -106,14 +106,14 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode(), ladingPostmanID);
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                 } else {
                     if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                         payment(postmanID,
                                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                                 solutionCode,
                                 status, paymentChannel, deliveryType, signatureCapture,
-                                note, amount, item.getRouteCode(), ladingPostmanID);
+                                note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                     }
                 }
             } else {
@@ -122,7 +122,7 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode(), ladingPostmanID);
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                 }
             }
         }
@@ -149,13 +149,13 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
     private void payment(String postmanID, final String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String routeCode, String ladingPostmanID) {
+                         String note, String amount, String routeCode, String ladingPostmanID, String imageDelivery) {
         final int size = mListBaoPhatOffline.size();
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature);
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature,imageDelivery);
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

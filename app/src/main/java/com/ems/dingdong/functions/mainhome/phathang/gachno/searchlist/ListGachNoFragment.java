@@ -111,7 +111,7 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
             CommonObject object=new CommonObject();
             object.setCode(gachNo.getLadingCode());
             object.setRealReceiverName(gachNo.getReceiverName());
-            object.setCurrentPaymentType("1");
+            object.setPaymentChanel("1");
             object.setCollectAmount(gachNo.getCollectAmount());
             object.setUserDelivery(userDelivery);
             object.setRealReceiverIDNumber(gachNo.getReceiverPID());

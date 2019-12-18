@@ -43,8 +43,13 @@ public class PaymentDeviveryRequest {
     String ladingPostmanID;
     @SerializedName("Signature")
     String signature;
+    @SerializedName("ImageDelivery")
+    String imageDelivery;
 
-    public PaymentDeviveryRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, String shiftID, String routeCode, String ladingPostmanID, String signature) {
+    public PaymentDeviveryRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
+                                  String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode,
+                                  String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount,
+                                  String shiftID, String routeCode, String ladingPostmanID, String signature, String imageDelivery) {
         this.postmanID = postmanID;
         this.parcelCode = parcelCode;
         this.mobileNumber = mobileNumber;
@@ -65,5 +70,6 @@ public class PaymentDeviveryRequest {
         this.routeCode = routeCode;
         this.ladingPostmanID = ladingPostmanID;
         this.signature = signature;
+        this.imageDelivery = imageDelivery;
     }
 }

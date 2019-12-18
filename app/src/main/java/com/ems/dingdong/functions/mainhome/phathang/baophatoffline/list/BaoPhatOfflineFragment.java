@@ -390,7 +390,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                                     commonObject.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
                                     String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
                                     commonObject.setDeliveryTime(time);
-                                    commonObject.setCurrentPaymentType(1 + "");
+                                    commonObject.setPaymentChanel(1 + "");
                                     commonObject.setSaveLocal(true);
 
                                     if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {

@@ -348,7 +348,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setPickUpDate(pickUpDate);
                                     hoanTatTinRequest.setPickUpTime(pickUpTime);
                                     hoanTatTinRequest.setFile(mFile);
-                                    hoanTatTinRequest.setConfirmSignature(mFileSign);
+                                    hoanTatTinRequest.setConfirmSignature(mSign);
                                     hoanTatTinRequest.setConfirmContent(edtDescription.getText().toString());
                                     hoanTatTinRequest.setConfirmQuantity(edtQuantity.getText().toString());
                                     hoanTatTinRequest.setScan(scans.toString());
@@ -385,7 +385,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         if (bitmap != null) {
                             llSigned.setVisibility(View.VISIBLE);
                         }
-                        File saveDir = null;
+                       /* File saveDir = null;
                         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                             saveDir = new File(Environment.getExternalStorageDirectory(), "MaterialCamera");
                             saveDir.mkdirs();
@@ -397,7 +397,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                             mPresenter.postImage(path);
                             if (file.exists())
                                 file.delete();
-                        }
+                        }*/
                     }
                 }).show();
                 break;

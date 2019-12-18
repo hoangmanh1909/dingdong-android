@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -90,7 +89,8 @@ public class CommonObject extends RealmObject {
     private String realReceiverIDNumber;
     private String DeliveryType;
     private String userDelivery;
-    private String currentPaymentType;
+    private String paymentChanel;
+    private String imageDelivery ;
     private boolean selected;
     private boolean local;
     //endregion
@@ -268,8 +268,8 @@ public class CommonObject extends RealmObject {
         this.userDelivery = userDelivery;
     }
 
-    public void setCurrentPaymentType(String currentPaymentType) {
-        this.currentPaymentType = currentPaymentType;
+    public void setPaymentChanel(String paymentChanel) {
+        this.paymentChanel = paymentChanel;
     }
 
     public void setCollectAmount(String collectAmount) {
@@ -288,8 +288,8 @@ public class CommonObject extends RealmObject {
         return userDelivery;
     }
 
-    public String getCurrentPaymentType() {
-        return currentPaymentType;
+    public String getPaymentChannel() {
+        return paymentChanel;
     }
 
     public String getIsCOD() {
@@ -495,5 +495,11 @@ public class CommonObject extends RealmObject {
         return routeCode;
     }
 
+    public String getImageDelivery() {
+        return imageDelivery;
+    }
 
+    public void setImageDelivery(String imageDelivery) {
+        this.imageDelivery = imageDelivery;
+    }
 }

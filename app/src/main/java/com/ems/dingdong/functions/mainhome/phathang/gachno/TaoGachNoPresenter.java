@@ -119,7 +119,7 @@ public class TaoGachNoPresenter extends Presenter<TaoGachNoContract.View, TaoGac
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            final String paymentChannel = item.getCurrentPaymentType();
+            final String paymentChannel = item.getPaymentChannel();
             String deliveryType = item.getDeliveryType();
             String amount = item.getAmount();
             if (TextUtils.isEmpty(amount) || amount.equals("0")) {

@@ -84,7 +84,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            final String paymentChannel = item.getCurrentPaymentType();
+            final String paymentChannel = item.getPaymentChannel();
             String deliveryType = item.getDeliveryType();
             String amount = item.getAmount();
             if (TextUtils.isEmpty(amount) || amount.equals("0")) {
@@ -97,16 +97,16 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode(), ladingPostmanID);
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                 } else {
                     if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                         payment(postmanID,
                                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                                 solutionCode,
                                 status, paymentChannel, deliveryType, signatureCapture,
-                                note, amount, item.getRouteCode(), ladingPostmanID);
+                                note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                     } else {
-                        pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode());
+                        pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                     }
                 }
             } else {
@@ -115,9 +115,9 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode(), ladingPostmanID);
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                 } else {
-                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode());
+                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                 }
             }
         }
@@ -126,11 +126,11 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
 
     private void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
                                    String receiverName, String reasonCode, String solutionCode, String status, final String paymentChannel,
-                                   String deliveryType, String amount, String signatureCapture, String ladingPostmanID, String routeCode) {
+                                   String deliveryType, String amount, String signatureCapture, String ladingPostmanID, String routeCode, String imageDelivery) {
         final int size = mBaoPhatCommon.size();
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode, signature);
+                solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode, signature, imageDelivery);
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -195,7 +195,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            final String paymentChannel = item.getCurrentPaymentType();
+            final String paymentChannel = item.getPaymentChannel();
             String deliveryType = item.getDeliveryType();
             String ladingPostmanID = item.getiD();
             if (!TextUtils.isEmpty(item.getIsCOD())) {
@@ -204,12 +204,12 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID);
+                            note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                 } else {
-                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode());
+                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                 }
             } else {
-                pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode());
+                pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
             }
         }
 
@@ -218,14 +218,14 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     private void payment(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String routeCode, String ladingPostmanID) {
+                         String note, String amount, String routeCode, String ladingPostmanID, String imageDelivery) {
         final int size = mBaoPhatCommon.size();
 
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature);
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature, imageDelivery);
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

@@ -39,8 +39,13 @@ public class PushToPnsRequest {
     String routeCode;
     @SerializedName("Signature")
     String signature;
+    @SerializedName("ImageDelivery")
+    String imageDelivery;
 
-    public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID, String shiftID, String routeCode, String signature) {
+    public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
+                            String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
+                            String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID,
+                            String shiftID, String routeCode, String signature, String imageDelivery) {
         this.postmanID = postmanID;
         this.ladingCode = ladingCode;
         this.deliveryPOCode = deliveryPOCode;
@@ -59,5 +64,6 @@ public class PushToPnsRequest {
         this.shiftID = shiftID;
         this.routeCode = routeCode;
         this.signature = signature;
+        this.imageDelivery = imageDelivery;
     }
 }

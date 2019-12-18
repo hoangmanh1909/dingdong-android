@@ -262,7 +262,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
         }
         for (CommonObject item : mPresenter.getBaoPhatCommon()) {
             item.setRealReceiverName(edtRealReceiverName.getText());
-            item.setCurrentPaymentType(mPaymentType + "");
+            item.setPaymentChanel(mPaymentType + "");
             item.setUserDelivery(tvUserDelivery.getText());
             item.setRealReceiverIDNumber(edtReceiverIDNumber.getText());
             item.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));

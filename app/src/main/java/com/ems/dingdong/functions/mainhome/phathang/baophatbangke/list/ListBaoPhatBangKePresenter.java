@@ -196,7 +196,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                         parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
                         status, "", "", signatureCapture,
-                        note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature);
+                        note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
               /*  postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
                         item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(),item.getRouteCode(),ladingPostmanID*/
                 mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
@@ -224,7 +224,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
                             status, "", "", signatureCapture,
-                            note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature);
+                            note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
                     mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
                                 @Override
                                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -246,7 +246,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 } else {
                     String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                     PushToPnsRequest request = new PushToPnsRequest(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                            solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature);
+                            solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature, item.getImageDelivery());
                     mInteractor.pushToPNSDelivery(request,
                             new CommonCallback<SimpleResult>((Activity) mContainerView) {
                                 @Override

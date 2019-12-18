@@ -3,15 +3,22 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import androidx.core.app.ActivityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +46,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
+import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
@@ -50,6 +58,7 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
@@ -57,6 +66,9 @@ import com.ems.dingdong.R;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -152,6 +164,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     ImageView imgSign;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
+    @BindView(R.id.iv_package)
+    SimpleDraweeView ivPackage;
 
     private ArrayList<ReasonInfo> mListReason;
     private CommonObject mBaoPhatBangke;
@@ -169,6 +183,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private String mPhone;
     private String mCollectAmount = "";
     private PhoneConectDialog mPhoneConectDialog;
+    private String mFile = "";
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -342,7 +357,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_SenderPhone, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime})
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.iv_package})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -443,6 +458,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
+                break;
+            case R.id.iv_package:
+                MediaUltis.captureImage(this);
                 break;
         }
     }
@@ -547,7 +565,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     private void confirmSend(String collectAmount) {
         mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
-        mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
+        mBaoPhatBangke.setPaymentChanel(mPaymentType + "");
         mBaoPhatBangke.setCollectAmount(collectAmount);
         mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
         mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
@@ -555,6 +573,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         if (!TextUtils.isEmpty(mSign)) {
             mBaoPhatBangke.setSignatureCapture(mSign);
         }
+        mBaoPhatBangke.setImageDelivery(mFile);
         String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         mBaoPhatBangke.setDeliveryTime(time);
         if (("0".equals(collectAmount) || "0".equals(mCollectAmount)) && "Y".equals(mBaoPhatBangke.getIsCOD())) {
@@ -685,6 +704,17 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         mPhoneConectDialog.updateText();
     }
 
+    @Override
+    public void showImage(String file) {
+        mFile = file;
+    }
+
+    @Override
+    public void deleteFile() {
+        mFile = "";
+        ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+    }
+
     private void showUIReason() {
         ArrayList<Item> items = new ArrayList<>();
         for (ReasonInfo item : mListReason) {
@@ -753,5 +783,129 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calDate.set(year, monthOfYear, dayOfMonth);
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                attemptSendMedia(data.getData().getPath());
+            }
+        }
+    }
+
+    private void attemptSendMedia(String path_media) {
+        Uri picUri = Uri.fromFile(new File(path_media));
+        ivPackage.setImageURI(picUri);
+        File file = new File(path_media);
+        Bitmap bitmap = processingBitmap(picUri);
+        if (bitmap != null) {
+
+            if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+               // mSignPosition = false;
+                mPresenter.postImage(path);
+                picUri = Uri.fromFile(new File(path));
+                ivPackage.setImageURI(picUri);
+                if (file.exists())
+                    file.delete();
+            } else {
+                mPresenter.postImage(path_media);
+            }
+        } else {
+            mPresenter.postImage(path_media);
+        }
+    }
+
+    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
+                             int quality) {
+        if (quality > 100) {
+            Log.d("saveImage", "quality cannot be greater that 100");
+            return false;
+        }
+        File file;
+        FileOutputStream out = null;
+        try {
+            switch (format) {
+                case JPEG:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                case PNG:
+                default:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public Bitmap processingBitmap(Uri source) {
+        Bitmap bm1 = null;
+        Bitmap newBitmap = null;
+        try {
+            bm1 = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(source));
+            int SIZE_SCALE = 3;
+            bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
+
+            try {
+                newBitmap = rotateImageIfRequired(bm1, source);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return newBitmap;
+    }
+
+    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
+
+        if (selectedImage.getScheme().equals("content")) {
+            String[] projection = {MediaStore.Images.ImageColumns.ORIENTATION};
+            Cursor c = getActivity().getContentResolver().query(selectedImage, projection, null, null, null);
+            if (c.moveToFirst()) {
+                final int rotation = c.getInt(0);
+                c.close();
+                return rotateImage(img, rotation);
+            }
+            return img;
+        } else {
+            ExifInterface ei = new ExifInterface(selectedImage.getPath());
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateImage(img, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateImage(img, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateImage(img, 270);
+                default:
+                    return img;
+            }
+        }
+    }
+
+    private Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        return rotatedImg;
     }
 }

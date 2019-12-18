@@ -243,7 +243,7 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
         String solutionCode = "";
         String status = "C14";
         String note = "";
-        final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
+        final String paymentChannel = mBaoPhatBangke.getPaymentChannel();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
         String amount = mBaoPhatBangke.getAmount();
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
@@ -323,7 +323,7 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
+        final String paymentChannel = mBaoPhatBangke.getPaymentChannel();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
 
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();

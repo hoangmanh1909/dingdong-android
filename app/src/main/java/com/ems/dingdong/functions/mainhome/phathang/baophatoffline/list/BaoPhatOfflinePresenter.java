@@ -14,7 +14,6 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.detail.BaoPha
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -178,7 +177,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         }
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, "", deliveryType, signatureCapture, note, amount, commonObject.getiD(), Constants.SHIFT, commonObject.getRouteCode(), signature);
+                solutionCode, status, "", deliveryType, signatureCapture, note, amount, commonObject.getiD(), Constants.SHIFT, commonObject.getRouteCode(), signature, commonObject.getImageDelivery());
 
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override

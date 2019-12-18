@@ -11,6 +11,7 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
@@ -39,6 +40,8 @@ interface BaoPhatBangKeDetailContract {
         void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
         void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+
+        void postImage(String path, CommonCallback<UploadSingleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -60,6 +63,10 @@ interface BaoPhatBangKeDetailContract {
         void finishView();
 
         void showView();
+
+        void showImage(String file);
+
+        void deleteFile();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -87,6 +94,8 @@ interface BaoPhatBangKeDetailContract {
         int getPositionRow();
 
         void updateMobile(String phone);
+
+        void postImage(String path);
     }
 }
 

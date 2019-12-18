@@ -44,7 +44,6 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.ems.dingdong.R;
@@ -379,7 +378,7 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
             return;
         }
         mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
-        mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
+        mBaoPhatBangke.setPaymentChanel(mPaymentType + "");
         mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll("\\.", ""));
         mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
         mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());

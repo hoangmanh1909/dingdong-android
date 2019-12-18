@@ -531,7 +531,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         mBaoPhat.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
         String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         mBaoPhat.setDeliveryTime(time);
-        mBaoPhat.setCurrentPaymentType(mPaymentType + "");
+        mBaoPhat.setPaymentChanel(mPaymentType + "");
         mBaoPhat.setDeliveryType(mDeliveryType + "");
         mBaoPhat.setSaveLocal(true);
         if (mDeliveryType == 2) {

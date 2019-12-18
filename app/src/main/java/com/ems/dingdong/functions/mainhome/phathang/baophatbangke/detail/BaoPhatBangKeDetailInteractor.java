@@ -6,6 +6,7 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
@@ -58,5 +59,10 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     @Override
     public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         NetWorkController.pushToPNSDelivery(request, callback);
+    }
+
+    @Override
+    public void postImage(String path, CommonCallback<UploadSingleResult> callback) {
+        NetWorkController.postImageSingle(path, callback);
     }
 }
