@@ -101,7 +101,7 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
                 if (TextUtils.isEmpty(chuyenthu)) {
                     chuyenthu = "0";
                 }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(), chuyenthu, mBag);
+                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(),mItem.getText(), chuyenthu, mBag);
                 dismiss();
                 break;
             case R.id.tv_shift:

@@ -138,6 +138,8 @@ public class CommonObject extends RealmObject {
     private String serviceName;
     @SerializedName("IsPaypost")
     private String isPaypost;
+    @SerializedName("ShiftId")
+    private String shiftId;
 
     private String dateSearch;
     @SerializedName("Shipments")
@@ -501,5 +503,9 @@ public class CommonObject extends RealmObject {
 
     public void setImageDelivery(String imageDelivery) {
         this.imageDelivery = imageDelivery;
+    }
+
+    public String getShiftId() {
+        return shiftId;
     }
 }

@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -134,8 +135,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     FormItemTextView tvCollectAmount;
     @BindView(R.id.edt_CollectAmount)
     FormItemEditText edtCollectAmount;
-  /*  @BindView(R.id.rad_cash)
-    RadioButton radCash;*/
+    /*  @BindView(R.id.rad_cash)
+      RadioButton radCash;*/
     /*  @BindView(R.id.rad_mpos)
       RadioButton radMpos;*/
 /*    @BindView(R.id.radio_group_money)
@@ -166,6 +167,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     NestedScrollView scrollView;
     @BindView(R.id.iv_package)
     SimpleDraweeView ivPackage;
+    @BindView(R.id.ll_capture)
+    View llCapture;
 
     private ArrayList<ReasonInfo> mListReason;
     private CommonObject mBaoPhatBangke;
@@ -212,11 +215,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         });
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
-        if(TextUtils.isEmpty(mBaoPhatBangke.getNote()))
-        {
+        if (TextUtils.isEmpty(mBaoPhatBangke.getNote())) {
             tvWeigh.setText(String.format("Khối lượng %s gram", mBaoPhatBangke.getWeigh()));
-        }else
-        {
+        } else {
             tvWeigh.setText(String.format("%s - Khối lượng  %s gram", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
         }
 
@@ -285,10 +286,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     mBaoPhatBangke.setDeliveryType("2");
                     llConfirmSuccess.setVisibility(View.VISIBLE);
                     llConfirmFail.setVisibility(View.GONE);
+                    llCapture.setVisibility(View.VISIBLE);
                 } else {
                     mDeliveryType = 1;
                     mBaoPhatBangke.setDeliveryType("1");
                     llConfirmSuccess.setVisibility(View.GONE);
+                    llCapture.setVisibility(View.GONE);
                     llConfirmFail.setVisibility(View.VISIBLE);
                 }
             }
@@ -489,7 +492,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     private void submit() {
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
+       /* if (TextUtils.isEmpty(Constants.SHIFT)) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
+            return;
+        }*/
+        if (mBaoPhatBangke.getShiftId() == null || "0".equals(mBaoPhatBangke.getShiftId())) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             Utilities.showUIShift(getActivity());
             return;
@@ -804,7 +812,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
             if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
                 String path = file.getParent() + File.separator + "Process_" + file.getName();
-               // mSignPosition = false;
+                // mSignPosition = false;
                 mPresenter.postImage(path);
                 picUri = Uri.fromFile(new File(path));
                 ivPackage.setImageURI(picUri);

@@ -109,19 +109,19 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                         homeInfos.add(new HomeInfo(10, R.drawable.ic_tra_cuu_ban_ke, "Tra cứu bản kê BD13"));
                     }
 
-                    homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
+                   // homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
                     homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
 
                     //  mList.add(new GroupInfo("Phát hàng", homeInfos));
-                    homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
+                  //  homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
                     homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
                     //  homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
                     mList.add(new GroupInfo("Phát hàng", homeInfos));
 
-                    homeInfos = new ArrayList<>();
-                    homeInfos.add(new HomeInfo(15, R.drawable.ic_nhap_bao_phat, "Nhập báo phát"));
-                    homeInfos.add(new HomeInfo(14, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
-                    mList.add(new GroupInfo("Offline", homeInfos));
+                   // homeInfos = new ArrayList<>();
+                  //  homeInfos.add(new HomeInfo(15, R.drawable.ic_nhap_bao_phat, "Nhập báo phát"));
+                   // homeInfos.add(new HomeInfo(14, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
+                   // mList.add(new GroupInfo("Offline", homeInfos));
                 }
             }
         }

@@ -204,9 +204,14 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
+        String shiftId = mBaoPhatBangke.getShiftId();
+        if(shiftId == null || "0".equals(shiftId))
+        {
+            shiftId = Constants.SHIFT;
+        }
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, "", "", signatureCapture, "", amount, mBaoPhatBangke.getiD(), Constants.SHIFT, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
+                solutionCode, status, "", "", signatureCapture, "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -311,6 +316,11 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
+        String shiftId = mBaoPhatBangke.getShiftId();
+        if(shiftId == null || "0".equals(shiftId))
+        {
+            shiftId = Constants.SHIFT;
+        }
         if ("12".equals(mBaoPhatBangke.getService())) {
             paymentDelivery(signatureCapture);
         } else {
@@ -319,7 +329,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             } else {
                 String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                 PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                        solutionCode, status, "", "", signatureCapture, "", amount, mBaoPhatBangke.getiD(), Constants.SHIFT, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
+                        solutionCode, status, "", "", signatureCapture, "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
                 mInteractor.pushToPNSDelivery(request,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override
@@ -389,10 +399,15 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryType = mBaoPhatBangke.getDeliveryType();
         String ladingPostmanID = mBaoPhatBangke.getiD();
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        String shiftId = mBaoPhatBangke.getShiftId();
+        if(shiftId == null || "0".equals(shiftId))
+        {
+            shiftId = Constants.SHIFT;
+        }
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery());
+                note, amount, shiftId, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery());
 
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override

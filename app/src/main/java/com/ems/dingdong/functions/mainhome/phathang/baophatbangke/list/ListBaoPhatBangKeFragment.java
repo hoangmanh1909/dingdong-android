@@ -84,7 +84,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private int mCountSearch = 0;
     private String text1;
-    private String text2 = "";
+    private String mShiftName = "Ca 1";
     private boolean isLoading = false;
     private String mChuyenThu = "0";
     private String mTuiSo = "0";
@@ -110,7 +110,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             return;
         }
         text1 = "Bản kê đi phát (BD13)";
-        CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
+        CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
         tvTitle.setText(finalText);
 
         mList = new ArrayList<>();
@@ -217,15 +217,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
-                public void onResponse(String fromDate, String shiftID, String chuyenThu, String tuiSo) {
+                public void onResponse(String fromDate, String shiftID,String shiftName, String chuyenThu, String tuiSo) {
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
                     Constants.SHIFT = mShiftID;
-                    text2 = "Ca " + mShiftID;
+                    mShiftName = shiftName;
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
-                    CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
+                    CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
                     tvTitle.setText(finalText);
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo);
 
@@ -323,7 +323,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mList.clear();
         long amount = 0;
         for (CommonObject item : list) {
-            item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT) + " - Ca " + mShiftID);
+            item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5,
+                    DateTimeUtils.SIMPLE_DATE_FORMAT) +" - "+ mShiftName);
             /*if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 if (item.getStatus().equals("N")) {
                     mList.add(item);
