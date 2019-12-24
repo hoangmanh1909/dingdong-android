@@ -51,7 +51,7 @@ interface ListBaoPhatBangKeContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        /*void searchOrderPostmanCollect(String orderPostmanID,
+        /*void searchStatisticCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,

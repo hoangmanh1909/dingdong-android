@@ -17,6 +17,7 @@ import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -228,4 +229,10 @@ public interface VinattiAPI {
 
     @POST("api/Collect/CollectOrderPostman")
     Call<SimpleResult> collectOrderPostmanCollect(@Body HoanTatTinRequest hoanTatTinRequest);
+
+    @FormUrlEncoded
+    @POST("api/Statistic/Collect")
+    Call<StatisticCollectResult> searchStatisticCollect(@Field("PostmanId") String postmanID,
+                                                        @Field("FromDate") String fromDate,
+                                                        @Field("ToDate") String toDate);
 }

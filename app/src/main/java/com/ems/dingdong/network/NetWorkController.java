@@ -6,6 +6,7 @@ import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
@@ -348,6 +349,11 @@ public class NetWorkController {
 
     public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
+        call.enqueue(callback);
+    }
+
+    public static void searchStatisticCollect(String postmanID, String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {
+        Call<StatisticCollectResult> call = getAPIBuilder().searchStatisticCollect(postmanID, fromDate, toDate);
         call.enqueue(callback);
     }
 }

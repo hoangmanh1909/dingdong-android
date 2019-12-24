@@ -239,7 +239,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
     }
 
 
-    @OnClick({R.id.ll_xac_nhan_tin, R.id.ll_hoan_tat_tin})
+    @OnClick({R.id.ll_xac_nhan_tin, R.id.ll_hoan_tat_tin, R.id.ll_thong_ke})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_xac_nhan_tin: {
@@ -252,6 +252,10 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                 Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                 intent.putExtra(Constants.TYPE_GOM_HANG, 2);
                 startActivity(intent);
+            }
+            break;
+            case R.id.ll_thong_ke: {
+               mPresenter.showStatistic();
             }
             break;
         }

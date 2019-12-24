@@ -318,10 +318,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 mPresenter.back();
                 break;
             case R.id.btn_confirm:
-                if (mAdapter.getItemCount() == 0) {
-                    Toast.showToast(getActivity(), "Chưa scan bưu gửi trong tin gom");
-                    return;
-                }
+
                 final StringBuilder scans = new StringBuilder();
                 List<ScanItem> scanItems = mAdapter.getItems();
                 for (ScanItem item : scanItems) {
@@ -335,6 +332,13 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
                                                String pickUpTime, ArrayList<Integer> ShipmentID) {
                             if (getActivity() != null) {
+                                if("P4".equals(statusCode))
+                                {
+                                    if (mAdapter.getItemCount() == 0) {
+                                        Toast.showToast(getActivity(), "Chưa scan bưu gửi trong tin gom");
+                                        return;
+                                    }
+                                }
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 if (!userJson.isEmpty()) {

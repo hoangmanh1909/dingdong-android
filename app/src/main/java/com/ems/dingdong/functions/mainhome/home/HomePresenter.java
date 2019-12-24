@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.home;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.gomhang.statistic.ListStatisticPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Presenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.listbd13.ListBd13Presenter;
@@ -31,10 +32,10 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
         return new HomeInteractor(this);
     }
 
-    @Override
+  /*  @Override
     public void showViewCreateBd13() {
         new CreateBd13Presenter(mContainerView).pushView();
-    }
+    }*/
 
     @Override
     public void showViewListCreateBd13() {
@@ -44,5 +45,10 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     @Override
     public void showSetting() {
         new SettingPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showStatistic() {
+        new ListStatisticPresenter(mContainerView).pushView();
     }
 }
