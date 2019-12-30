@@ -10,7 +10,6 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
@@ -355,7 +353,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setConfirmSignature(mSign);
                                     hoanTatTinRequest.setConfirmContent(edtDescription.getText().toString());
                                     hoanTatTinRequest.setConfirmQuantity(edtQuantity.getText().toString());
-                                    hoanTatTinRequest.setScan(scans.toString());
+                                    hoanTatTinRequest.setShipmentCode(scans.toString());
                                     hoanTatTinRequest.setReasonCode(reasonInfo != null ? reasonInfo.getCode() : "");
                                     hoanTatTinRequest.setShipmentIds(ShipmentID);
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);

@@ -43,6 +43,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -157,6 +158,15 @@ public class NetWorkController {
                                                  String fromAssignDate,
                                                  String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
         Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+        call.enqueue(callback);
+    }
+    public static void searchAllOrderPostmanCollect(String orderPostmanID,
+                                                 String orderID,
+                                                 String postmanID,
+                                                 String status,
+                                                 String fromAssignDate,
+                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
         call.enqueue(callback);
     }
 
@@ -354,6 +364,11 @@ public class NetWorkController {
 
     public static void searchStatisticCollect(String postmanID, String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {
         Call<StatisticCollectResult> call = getAPIBuilder().searchStatisticCollect(postmanID, fromDate, toDate);
+        call.enqueue(callback);
+    }
+
+    public static void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().collectAllOrderPostman(list);
         call.enqueue(callback);
     }
 }

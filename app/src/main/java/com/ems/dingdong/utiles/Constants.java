@@ -12,7 +12,7 @@ public class Constants {
     public static final String KEY_POST_SHIFT = "KEY_POST_SHIFT";
     public static final String KEY_USER_INFO = "user_info";
     public static final String TYPE_GOM_HANG = "type_gom_hang";
-    public static final String  HOTLINE_CALL_SHOW = "02836229988";
+    public static final String HOTLINE_CALL_SHOW = "02836229988";
     public static final int TYPE_BAO_PHAT_THANH_CONG = 1;
     public static final String KEY_PUSH_NOTIFICATION = "KEY_PUSH_NOTIFICATION";
     public static final int DI_PHAT = 0;
@@ -23,7 +23,12 @@ public class Constants {
     public static final int TYPE_BAO_PHAT_BD13_KHONG_THANH_CONG = 4;
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
     public static final int TYPE_BAO_PHAT_THANH_CONG_DETAIL = 5;
-    public static  String HEADER_NUMBER = "tel:159";
+    public static final int RED = 2;
+    public static final int GREEN = 0;
+    public static final int GREY = 1;
+    public static final String GOM_HANG_THANH_CONG = "P4";
+    public static final String GOM_HANG_KHONG_THANH_CONG = "P5";
+    public static String HEADER_NUMBER = "tel:159";
     public static final String HEADER_NUMBER_LOG = "159";
     public static final String MANUFACTURE_XIAOMI = "Xiaomi";
 

@@ -22,6 +22,8 @@ interface HomeContract {
         void showSetting();
 
         void showStatistic();
+
+        void showHoanTatNhieuTin();
     }
 }
 

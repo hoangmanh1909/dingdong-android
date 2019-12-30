@@ -26,6 +26,7 @@ import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -82,6 +83,14 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Collect/SearchOrderPostman")
     Call<CommonObjectListResult> searchOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
+                                                           @Field("OrderID") String orderID,
+                                                           @Field("PostmanID") String postmanID,
+                                                           @Field("Status") String status,
+                                                           @Field("FromAssignDate") String fromAssignDate,
+                                                           @Field("ToAssignDate") String toAssignDate);
+    @FormUrlEncoded
+    @POST("api/Collect/SearchOrderPostmanCollectAll")
+    Call<CommonObjectListResult> searchAllOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
                                                            @Field("OrderID") String orderID,
                                                            @Field("PostmanID") String postmanID,
                                                            @Field("Status") String status,
@@ -235,4 +244,7 @@ public interface VinattiAPI {
     Call<StatisticCollectResult> searchStatisticCollect(@Field("PostmanId") String postmanID,
                                                         @Field("FromDate") String fromDate,
                                                         @Field("ToDate") String toDate);
+
+    @POST("api/Collect/CollectAllOrderPostman")
+    Call<SimpleResult> collectAllOrderPostman(@Body List<HoanTatTinRequest> list);
 }

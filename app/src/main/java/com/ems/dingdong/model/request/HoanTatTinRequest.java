@@ -24,7 +24,7 @@ public class HoanTatTinRequest {
     @SerializedName("OrderImage")
     String file;
     @SerializedName("ShipmentCode")
-    String scan;
+    String shipmentCode;
     @SerializedName("ReasonCode")
     String reasonCode;
     @SerializedName("ShipmentIds")
@@ -72,8 +72,8 @@ public class HoanTatTinRequest {
         this.file = file;
     }
 
-    public void setScan(String scan) {
-        this.scan = scan;
+    public void setShipmentCode(String shipmentCode) {
+        this.shipmentCode = shipmentCode;
     }
 
     public void setReasonCode(String reasonCode) {
