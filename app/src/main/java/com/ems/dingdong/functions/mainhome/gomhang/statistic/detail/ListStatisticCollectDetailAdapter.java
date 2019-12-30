@@ -30,6 +30,8 @@ public class ListStatisticCollectDetailAdapter extends RecyclerBaseAdapter {
 
     public class HolderView extends BaseViewHolder {
 
+        @BindView(R.id.tv_so_tt)
+        CustomBoldTextView tvSoTt;
         @BindView(R.id.tv_order_name)
         CustomBoldTextView tvOrderName;
         @BindView(R.id.tv_lading)
@@ -43,6 +45,7 @@ public class ListStatisticCollectDetailAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             StatisticDetailCollect item = (StatisticDetailCollect) model;
             tvOrderName.setText(item.getOrderCode());
+            tvSoTt.setText(String.format("%s", position + 1));
             StringBuilder ladings = new StringBuilder();
             for (StatisticOrderDetailCollect it : item.getLadings()) {
                 ladings.append(it.getLadingCode()).append("\n");
