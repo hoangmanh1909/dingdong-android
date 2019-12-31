@@ -642,7 +642,7 @@
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_header_common"
                     android:padding="@dimen/dimen_10dp"
-                    android:text="shipmentCode đơn hàng"
+                    android:text="Scan đơn hàng"
                     android:textAllCaps="true"
                     android:textColor="@color/white" />
 

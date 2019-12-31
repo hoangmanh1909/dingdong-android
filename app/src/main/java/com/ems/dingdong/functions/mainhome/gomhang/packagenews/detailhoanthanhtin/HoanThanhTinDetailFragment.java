@@ -153,6 +153,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 return false;
             }
         });
+        showView(mPresenter.getCommonObject());
     }
 
     private void checkPermission() {
@@ -330,8 +331,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
                                                String pickUpTime, ArrayList<Integer> ShipmentID) {
                             if (getActivity() != null) {
-                                if("P4".equals(statusCode))
-                                {
+                                if ("P4".equals(statusCode)) {
                                     if (mAdapter.getItemCount() == 0) {
                                         Toast.showToast(getActivity(), "Chưa scan bưu gửi trong tin gom");
                                         return;
@@ -442,7 +442,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         }
     }
 
-    @Override
+  /*  @Override
     public void showErrorAndBack(String message) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                 .setConfirmText("OK")
@@ -452,10 +452,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     sweetAlertDialog.dismiss();
                     mPresenter.back();
                 }).show();
-    }
+    }*/
 
-    @Override
-    public void showView(CommonObject commonObject) {
+    private void showView(CommonObject commonObject) {
         if (getActivity() == null) {
             return;
         }

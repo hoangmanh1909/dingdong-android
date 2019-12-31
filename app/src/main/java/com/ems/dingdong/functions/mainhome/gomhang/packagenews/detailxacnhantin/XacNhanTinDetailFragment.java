@@ -68,6 +68,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        showView(mPresenter.getCommonObject());
     }
 
     @OnClick({R.id.img_back, R.id.btn_confirm, R.id.btn_reject})
@@ -99,7 +100,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         }
     }
 
-    @Override
+  /*  @Override
     public void showErrorAndBack(String message) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                 .setConfirmText("OK")
@@ -112,7 +113,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
                         mPresenter.back();
                     }
                 }).show();
-    }
+    }*/
 
     @Override
     public void showView(CommonObject commonObject) {

@@ -70,12 +70,7 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
             @Override
             public void onBindViewHolder(BaseViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPresenter.showDetailView(mList.get(position));
-                    }
-                });
+                holder.itemView.setOnClickListener(v -> mPresenter.showDetailView(mList.get(position)));
             }
 
         };
@@ -83,21 +78,20 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!TextUtils.isEmpty(userJson)) {
-            mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
         fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+        if (!TextUtils.isEmpty(userJson)) {
+            mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            mPresenter.searchStatisticCollect(mUserInfo.getiD(), fromDate, toDate);
+        }
+
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), new OnChooseDay() {
-            @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-                toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-                mPresenter.searchStatisticCollect(mUserInfo.getiD(), fromDate, toDate);
-            }
+        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+            fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+            toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+            mPresenter.searchStatisticCollect(mUserInfo.getiD(), fromDate, toDate);
         }).show();
     }
 
@@ -122,7 +116,7 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
     @Override
     public void showResponseSuccess(ArrayList<StatisticCollect> list) {
         if (list == null || list.isEmpty()) {
-            showDialog();
+           Toast.showToast(getActivity(),"Không có dữ liệu");
         }
         mList.clear();
         mAdapter.clear();

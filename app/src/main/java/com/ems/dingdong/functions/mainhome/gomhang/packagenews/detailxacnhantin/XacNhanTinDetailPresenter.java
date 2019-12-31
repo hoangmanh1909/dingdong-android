@@ -32,7 +32,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
     @Override
     public void start() {
         // Start getting data here
-        searchOrderPostman();
+     //   searchOrderPostman();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
         return new XacNhanTinDetailInteractor(this);
     }
 
-    @Override
+   /* @Override
     public void searchOrderPostman() {
         String orderPostmanID = commonObject.getOrderPostmanID();
         String orderID = "0";
@@ -77,7 +77,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
                 mView.showErrorAndBack(message);
             }
         });
-    }
+    }*/
 
     @Override
     public CommonObject getCommonObject() {

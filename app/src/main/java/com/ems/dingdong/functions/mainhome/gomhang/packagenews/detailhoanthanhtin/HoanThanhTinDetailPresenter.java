@@ -40,7 +40,7 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     @Override
     public void start() {
         // Start getting data here
-        searchOrderPostman();
+       // searchOrderPostman();
     }
 
     @Override
@@ -76,44 +76,7 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
 
     }*/
 
-    @Override
-    public void searchOrderPostman() {
-        String orderPostmanID = commonObject.getOrderPostmanID();
-        String orderID = "0";
-        String postmanID = "0";
-        String status = "";
-        String fromAssignDate = "0";
-        String toAssignDate = "0";
-        mView.showProgress();
-        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    if (response.body().getList() != null) {
 
-                        if (!response.body().getList().isEmpty()) {
-                            mView.showView(response.body().getList().get(0));
-                        } else {
-                            mView.showErrorAndBack(response.body().getMessage());
-                        }
-                    } else {
-                        mView.showErrorAndBack(response.body().getMessage());
-                    }
-                } else {
-                    mView.showErrorAndBack(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorAndBack(message);
-            }
-        });
-    }
 
     @Override
     public CommonObject getCommonObject() {

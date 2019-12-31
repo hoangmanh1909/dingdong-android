@@ -18,10 +18,7 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
         super(presenter);
     }
 
-    @Override
-    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback) {
-        NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, commonCallback);
-    }
+
 
 
     @Override

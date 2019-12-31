@@ -14,14 +14,14 @@ import com.ems.dingdong.model.CommonObjectListResult;
 interface XacNhanTinDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
+       // void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
 
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                         String statusCode, String confirmReason, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
-        void showErrorAndBack(String message);
+      //  void showErrorAndBack(String message);
 
         void showView(CommonObject commonObject);
 
@@ -33,7 +33,7 @@ interface XacNhanTinDetailContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, String statusCode, String reason);
 
-        void searchOrderPostman();
+       // void searchOrderPostman();
         CommonObject getCommonObject();
     }
 }

@@ -289,7 +289,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     private void showCount() {
         tvSuccessCount.setText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()));
         tvFailCount.setText(String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()));
-        tvInvalidateCount.setText(String.format("Không hợp lệ: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.RED).toList().size()));
+        tvInvalidateCount.setText(String.format("Chưa xác định: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.RED).toList().size()));
     }
 
     @Override

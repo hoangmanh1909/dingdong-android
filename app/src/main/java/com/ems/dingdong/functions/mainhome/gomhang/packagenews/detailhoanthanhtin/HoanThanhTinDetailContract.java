@@ -20,7 +20,7 @@ import java.util.List;
 interface HoanThanhTinDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
+      //  void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
 
 
         void postImage(String pathMedia, CommonCallback<UploadSingleResult> commonCallback);
@@ -29,9 +29,8 @@ interface HoanThanhTinDetailContract {
     }
 
     interface View extends PresentView<Presenter> {
-        void showErrorAndBack(String message);
+     //   void showErrorAndBack(String message);
 
-        void showView(CommonObject commonObject);
 
         void showMessage(String message);
 
@@ -49,7 +48,6 @@ interface HoanThanhTinDetailContract {
                                         String statusCode, String collectReason, String pickUpDate,
                                         String pickUpTime, String file, String scan, String reasonCode);*/
 
-        void searchOrderPostman();
 
         CommonObject getCommonObject();
 

@@ -16,10 +16,10 @@ class XacNhanTinDetailInteractor extends Interactor<XacNhanTinDetailContract.Pre
         super(presenter);
     }
 
-    @Override
+  /*  @Override
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback) {
         NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, commonCallback);
-    }
+    }*/
 
     @Override
     public void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
