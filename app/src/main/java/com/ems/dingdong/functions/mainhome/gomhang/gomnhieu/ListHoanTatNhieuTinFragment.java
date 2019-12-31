@@ -104,6 +104,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 ((HolderView) holder).imgRemove.setOnClickListener(v -> {
                     mList.remove(position);
                     mAdapter.removeItem(position);
+                    showCount();
                 });
             }
         };
