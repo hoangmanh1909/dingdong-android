@@ -259,5 +259,8 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST(" api/Statistic/DeliveryDetail")
     Call<StatisticDeliveryDetailResult> statisticDeliveryDetail(@Field("ServiceCode") String serviceCode,
-                                                                @Field("Type") int typeDelivery);
+                                                                @Field("Type") int typeDelivery,
+                                                                @Field("PostmanId") String postmanID,
+                                                                @Field("FromDate") String fromDate,
+                                                                @Field("ToDate") String toDate);
 }

@@ -24,7 +24,9 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
     private String mServiceCode;
     private String mServiceName;
     private int mTypeDelivery;
-
+    private String mPostmanID;
+    private String mFromDate;
+    private String mToDate;
     public ListDeliverySuccessDetailPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -47,7 +49,7 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
 
     public void statisticDeliveryDetail() {
         mView.showProgress();
-        mInteractor.statisticDeliveryDetail(mServiceCode, mTypeDelivery, new CommonCallback<StatisticDeliveryDetailResult>((Activity) mContainerView) {
+        mInteractor.statisticDeliveryDetail(mServiceCode, mTypeDelivery,mPostmanID, mFromDate, mToDate, new CommonCallback<StatisticDeliveryDetailResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDeliveryDetailResult> call, Response<StatisticDeliveryDetailResult> response) {
                 super.onSuccess(call, response);
@@ -67,10 +69,13 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
             }
         });
     }
-    public ListDeliverySuccessDetailPresenter setData(String serviceCode, String serviceName, int typeDelivery) {
+    public ListDeliverySuccessDetailPresenter setData(String serviceCode, String serviceName, int typeDelivery, String postmanID, String fromDate, String toDate) {
         mServiceCode = serviceCode;
         mServiceName = serviceName;
         mTypeDelivery = typeDelivery;
+        mPostmanID = postmanID;
+        mFromDate = fromDate;
+        mToDate = toDate;
         return this;
     }
 

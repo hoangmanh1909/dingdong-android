@@ -17,7 +17,9 @@ import retrofit2.Response;
 public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSuccessContract.View, HistoryDetailSuccessContract.Interactor>
         implements HistoryDetailSuccessContract.Presenter {
 
-    private String mParcelCode;
+    private String mPostmanID;
+    private String mFromDate;
+    private String mToDate;
 
     public HistoryDetailSuccessPresenter(ContainerView containerView) {
         super(containerView);
@@ -38,18 +40,13 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
         return new HistoryDetailSuccessInteractor(this);
     }
 
-    public HistoryDetailSuccessPresenter setParcelCode(String parcelCode) {
-        this.mParcelCode = parcelCode;
-        return this;
-    }
 
-    @Override
-    public String getParcelCode() {
-        return mParcelCode;
-    }
 
     @Override
     public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate) {
+        mPostmanID = postmanID;
+        mFromDate = fromDate;
+        mToDate = toDate;
         mView.showProgress();
         mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
             @Override
@@ -74,7 +71,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
 
     @Override
     public void showDetail(String serviceCode, String serviceName, int typeDelivery) {
-        new ListDeliverySuccessDetailPresenter(mContainerView).setData(serviceCode, serviceName, typeDelivery).pushView();
+        new ListDeliverySuccessDetailPresenter(mContainerView).setData(serviceCode, serviceName, typeDelivery, mPostmanID, mFromDate, mToDate).pushView();
     }
 
 }

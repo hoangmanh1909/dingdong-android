@@ -379,8 +379,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, CommonCallback<StatisticDeliveryDetailResult> callback) {
-        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery);
+    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryDetailResult> callback) {
+        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate);
         call.enqueue(callback);
     }
 }

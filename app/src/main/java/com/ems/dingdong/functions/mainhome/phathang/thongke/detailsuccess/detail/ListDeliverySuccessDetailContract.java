@@ -5,11 +5,9 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
-import com.ems.dingdong.model.StatisticDetailCollect;
 import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The CommonObject Contract
@@ -17,7 +15,7 @@ import java.util.List;
 interface ListDeliverySuccessDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void statisticDeliveryDetail(String serviceCode, int typeDelivery, CommonCallback<StatisticDeliveryDetailResult> callback);
+        void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryDetailResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

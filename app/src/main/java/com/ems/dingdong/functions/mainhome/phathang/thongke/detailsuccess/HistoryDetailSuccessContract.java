@@ -26,7 +26,6 @@ interface HistoryDetailSuccessContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        String getParcelCode();
 
         void statisticDeliveryGeneral(String id, String fromDate, String toDate);
 
