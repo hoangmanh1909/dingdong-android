@@ -18,6 +18,8 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.StatisticCollectResult;
+import com.ems.dingdong.model.StatisticDeliveryDetailResult;
+import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -247,4 +249,15 @@ public interface VinattiAPI {
 
     @POST("api/Collect/CollectAllOrderPostman")
     Call<SimpleResult> collectAllOrderPostman(@Body List<HoanTatTinRequest> list);
+
+    @FormUrlEncoded
+    @POST("api/Statistic/DeliveryGeneral")
+    Call<StatisticDeliveryGeneralResult> statisticDeliveryGeneral(@Field("PostmanId") String postmanID,
+                                                                  @Field("FromDate") String fromDate,
+                                                                  @Field("ToDate") String toDate);
+
+    @FormUrlEncoded
+    @POST(" api/Statistic/DeliveryDetail")
+    Call<StatisticDeliveryDetailResult> statisticDeliveryDetail(@Field("ServiceCode") String serviceCode,
+                                                                @Field("Type") int typeDelivery);
 }

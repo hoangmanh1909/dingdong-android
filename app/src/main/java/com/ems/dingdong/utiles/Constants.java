@@ -46,4 +46,9 @@ public class Constants {
     public static final String REASONINFO_CODE = "code";
     public static final String SOLUTIONINFO_CODE = "code";
     public static String SHIFT = "";
+
+    public static final int TYPE_DELIVERY_COUNT = 0;
+    public static final int TYPE_DELIVERY_COD = 1;
+    public static final int TYPE_DELIVERY_C = 2;
+    public static final int TYPE_DELIVERY_PPA = 3;
 }

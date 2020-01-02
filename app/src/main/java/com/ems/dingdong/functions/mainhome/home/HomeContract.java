@@ -24,6 +24,8 @@ interface HomeContract {
         void showStatistic();
 
         void showHoanTatNhieuTin();
+
+        void showViewStatisticPtc();
     }
 }
 

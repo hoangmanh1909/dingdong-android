@@ -1,6 +1,12 @@
 package com.ems.dingdong.functions.mainhome.phathang.scanner;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -19,11 +25,12 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     ZBarScannerView cameraView;
     @BindView(R.id.img_back)
     View imgBack;
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     public static ScannerCodeFragment getInstance() {
         return new ScannerCodeFragment();
     }
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_scanner_code;
@@ -45,6 +52,7 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
+        checkSelfPermission();
         if (((DingDongActivity) getActivity()).getSupportActionBar() != null)
             ((DingDongActivity) getActivity()).getSupportActionBar().hide();
         imgBack.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +62,27 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
             }
         });
     }
+    protected void checkSelfPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
 
+        }
+    }
     @Override
     public void handleResult(Result result) {
         mPresenter.getDelegate().scanQrcodeResponse(result.getContents());
         mPresenter.back();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS: {
+                cameraView.startCamera();
+            }
+        }
     }
 }

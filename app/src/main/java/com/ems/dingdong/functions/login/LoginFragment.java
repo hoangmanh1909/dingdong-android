@@ -38,7 +38,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     private SharedPref mSharedPref;
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG,
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
             Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
@@ -70,9 +70,11 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
             int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
             int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission4 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }

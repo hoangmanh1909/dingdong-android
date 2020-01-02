@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Thống kê PHÁT HÀNG thành công"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <com.ems.dingdong.views.CustomMediumTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines"
+            android:gravity="center|left"
+            android:text="Dịch vụ"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_18sp" />
+
+        <com.ems.dingdong.views.CustomMediumTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines"
+            android:gravity="center"
+            android:padding="@dimen/dimen_5dp"
+            android:text="Số lượng"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_18sp" />
+
+        <com.ems.dingdong.views.CustomMediumTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines"
+            android:gravity="center"
+            android:text="Số tiền COD"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_18sp" />
+
+        <com.ems.dingdong.views.CustomMediumTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines"
+            android:gravity="center"
+            android:text="Tiền C"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_18sp" />
+
+        <com.ems.dingdong.views.CustomMediumTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines"
+            android:gravity="center"
+            android:text="Tiền PPA"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_18sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:src="@drawable/ic_choose_calendar" />
+        </RelativeLayout>
+
+
+    </FrameLayout>
+</LinearLayout>

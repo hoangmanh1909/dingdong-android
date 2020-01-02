@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_so_tt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Số TT"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp" />
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_LadingCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="4.5"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/text_size_14sp"
+            tools:text="10.000" />
+
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_Amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.5"
+            android:gravity="right"
+            android:textColor="@color/red_light"
+            android:textSize="@dimen/text_size_14sp"
+            android:visibility="visible"
+            tools:text="10.000" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/Devider"
+        android:layout_marginTop="@dimen/dimen_5dp" />
+
+</LinearLayout>

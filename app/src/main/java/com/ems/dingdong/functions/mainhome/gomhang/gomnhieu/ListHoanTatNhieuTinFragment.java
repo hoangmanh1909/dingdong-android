@@ -268,7 +268,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
             }
         }
         mAdapter.setItems(mList);
-
+        showCount();
     }
 
     private void processData(ItemHoanTatNhieuTin tin) {

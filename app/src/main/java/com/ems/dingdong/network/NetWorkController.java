@@ -7,6 +7,8 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.StatisticCollectResult;
+import com.ems.dingdong.model.StatisticDeliveryDetailResult;
+import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
@@ -369,6 +371,16 @@ public class NetWorkController {
 
     public static void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().collectAllOrderPostman(list);
+        call.enqueue(callback);
+    }
+
+    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryGeneralResult> callback) {
+        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate);
+        call.enqueue(callback);
+    }
+
+    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, CommonCallback<StatisticDeliveryDetailResult> callback) {
+        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery);
         call.enqueue(callback);
     }
 }
