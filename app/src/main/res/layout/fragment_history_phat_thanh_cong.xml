@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_56dp"
         android:layout_alignParentTop="true">
 
         <include layout="@layout/item_head_bg_common" />
@@ -25,16 +25,21 @@
                 android:layout_centerVertical="true"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/img_back">
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:gravity="center"
                 android:text="Thống kê PHÁT HÀNG thành công"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp" />
+                android:textSize="@dimen/text_size_14sp" />
+        </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>
 

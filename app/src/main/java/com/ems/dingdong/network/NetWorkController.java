@@ -374,13 +374,13 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryGeneralResult> callback) {
-        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate);
+    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryGeneralResult> callback) {
+        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate, isSuccess);
         call.enqueue(callback);
     }
 
-    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryDetailResult> callback) {
-        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate);
+    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryDetailResult> callback) {
+        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess);
         call.enqueue(callback);
     }
 }

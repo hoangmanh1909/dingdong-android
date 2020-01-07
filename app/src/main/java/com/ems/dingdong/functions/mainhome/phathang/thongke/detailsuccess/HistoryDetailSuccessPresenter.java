@@ -21,6 +21,10 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
     private String mFromDate;
     private String mToDate;
 
+
+
+    private boolean mIsSuccess = false;
+
     public HistoryDetailSuccessPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -48,7 +52,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
         mFromDate = fromDate;
         mToDate = toDate;
         mView.showProgress();
-        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
+        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate,mIsSuccess, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDeliveryGeneralResult> call, Response<StatisticDeliveryGeneralResult> response) {
                 super.onSuccess(call, response);
@@ -71,7 +75,18 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
 
     @Override
     public void showDetail(String serviceCode, String serviceName, int typeDelivery) {
-        new ListDeliverySuccessDetailPresenter(mContainerView).setData(serviceCode, serviceName, typeDelivery, mPostmanID, mFromDate, mToDate).pushView();
+        new ListDeliverySuccessDetailPresenter(mContainerView).setData(serviceCode, serviceName, typeDelivery, mPostmanID, mFromDate, mToDate, mIsSuccess).pushView();
+    }
+
+    @Override
+    public boolean getIsSuccess() {
+        return mIsSuccess;
+    }
+
+
+    public HistoryDetailSuccessPresenter setIsSuccess(boolean isSuccess) {
+        this.mIsSuccess = isSuccess;
+        return this;
     }
 
 }

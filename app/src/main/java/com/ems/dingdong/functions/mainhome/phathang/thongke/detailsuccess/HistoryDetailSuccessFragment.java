@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,8 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     private HistoryDetailSuccessAdapter mAdapter;
     private UserInfo mUserInfo;
     private String fromDate;
@@ -76,6 +79,13 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate);
+        }
+        if(mPresenter.getIsSuccess())
+        {
+            tvTitle.setText("THỐNG KÊ PHÁT HÀNG THÀNH CÔNG");
+        }
+        else{
+            tvTitle.setText("THỐNG KÊ PHÁT HÀNG KHÔNG THÀNH CÔNG");
         }
     }
 

@@ -116,6 +116,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                   //  homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
                     homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
                     homeInfos.add(new HomeInfo(17, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết PTC"));
+                    homeInfos.add(new HomeInfo(18, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết PKTC"));
                     //  homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
                     mList.add(new GroupInfo("Phát hàng", homeInfos));
 
@@ -189,7 +190,10 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 startActivity(intent);
                             }
                             else if (homeInfo.getId() == 17) {
-                                mPresenter.showViewStatisticPtc();
+                                mPresenter.showViewStatisticPtc(true);
+                            }
+                            else if (homeInfo.getId() == 18) {
+                                mPresenter.showViewStatisticPtc(false);
                             }
 
                         }

@@ -17,7 +17,7 @@ class ListDeliverySuccessDetailInteractor extends Interactor<ListDeliverySuccess
 
 
     @Override
-    public void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryDetailResult> callback) {
-        NetWorkController.statisticDeliveryDetail(serviceCode, typeDelivery,postmanID, fromDate, toDate, callback);
+    public void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryDetailResult> callback) {
+        NetWorkController.statisticDeliveryDetail(serviceCode, typeDelivery,postmanID, fromDate, toDate,isSuccess, callback);
     }
 }

@@ -6,7 +6,6 @@ import com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinP
 import com.ems.dingdong.functions.mainhome.gomhang.statistic.ListStatisticPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Presenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.listbd13.ListBd13Presenter;
 
 /**
@@ -60,7 +59,7 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     }
 
     @Override
-    public void showViewStatisticPtc() {
-        new HistoryDetailSuccessPresenter(mContainerView).pushView();
+    public void showViewStatisticPtc(boolean isSuccess) {
+        new HistoryDetailSuccessPresenter(mContainerView).setIsSuccess(isSuccess).pushView();
     }
 }

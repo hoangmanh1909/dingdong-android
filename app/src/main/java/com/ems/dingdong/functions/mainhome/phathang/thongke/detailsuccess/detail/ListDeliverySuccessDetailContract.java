@@ -15,7 +15,7 @@ import java.util.ArrayList;
 interface ListDeliverySuccessDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryDetailResult> callback);
+        void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryDetailResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -25,6 +25,8 @@ interface ListDeliverySuccessDetailContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         String getServiceName();
+
+        boolean getIsSuccess();
     }
 }
 

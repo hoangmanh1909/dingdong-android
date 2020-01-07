@@ -56,6 +56,13 @@ public class ListDeliverySuccessDetailFragment extends ViewFragment<ListDelivery
         mAdapter = new ListDeliverySuccessCollectDetailAdapter(getActivity(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
+        if(mPresenter.getIsSuccess())
+        {
+            tvTitle.setText("THỐNG KÊ PHÁT HÀNG THÀNH CÔNG");
+        }
+        else{
+            tvTitle.setText("THỐNG KÊ PHÁT HÀNG KHÔNG THÀNH CÔNG");
+        }
     }
 
 

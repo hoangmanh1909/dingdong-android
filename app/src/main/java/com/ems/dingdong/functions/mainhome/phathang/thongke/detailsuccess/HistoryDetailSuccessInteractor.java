@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.network.NetWorkController;
 
@@ -18,7 +17,7 @@ class HistoryDetailSuccessInteractor extends Interactor<HistoryDetailSuccessCont
 
 
     @Override
-    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDeliveryGeneralResult> callback) {
-        NetWorkController.statisticDeliveryGeneral(postmanID, fromDate, toDate, callback);
+    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryGeneralResult> callback) {
+        NetWorkController.statisticDeliveryGeneral(postmanID, fromDate, toDate,isSuccess, callback);
     }
 }

@@ -254,7 +254,8 @@ public interface VinattiAPI {
     @POST("api/Statistic/DeliveryGeneral")
     Call<StatisticDeliveryGeneralResult> statisticDeliveryGeneral(@Field("PostmanId") String postmanID,
                                                                   @Field("FromDate") String fromDate,
-                                                                  @Field("ToDate") String toDate);
+                                                                  @Field("ToDate") String toDate,
+                                                                  @Field("IsSuccess") boolean isSuccess);
 
     @FormUrlEncoded
     @POST(" api/Statistic/DeliveryDetail")
@@ -262,5 +263,7 @@ public interface VinattiAPI {
                                                                 @Field("Type") int typeDelivery,
                                                                 @Field("PostmanId") String postmanID,
                                                                 @Field("FromDate") String fromDate,
-                                                                @Field("ToDate") String toDate);
+                                                                @Field("ToDate") String toDate,
+                                                                @Field("IsSuccess") boolean isSuccess
+                                                                );
 }
