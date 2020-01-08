@@ -30,6 +30,7 @@ public class DateTimeUtils {
     public static final String DEFAULT_DATETIME_FORMAT7 = "HH:mm:ss";
     public static final String SIMPLE_DATE_FORMAT5 = "yyyyMMdd";
     public static final String SIMPLE_DATE_FORMAT6 =   "HHmmss";
+    public static final String SIMPLE_DATE_FORMAT7 =   "HHmm";
 
     public static boolean isValidDate(String inDate, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);

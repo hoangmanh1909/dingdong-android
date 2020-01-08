@@ -22,6 +22,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,14 +61,21 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
         if (calCreate == null)
             calCreate = Calendar.getInstance();
         tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
-        SharedPref sharedPref= new SharedPref(mActivity);
-        List<ShiftInfo> list= sharedPref.getListShift();
-        for (ShiftInfo item :list)
-        {
+        SharedPref sharedPref = new SharedPref(mActivity);
+        List<ShiftInfo> list = sharedPref.getListShift();
+        int time = Integer.parseInt(DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT7));
+        for (ShiftInfo item : list) {
+            if (time >= Integer.parseInt(item.getFromTime().replace(":", "")) &&
+                    time < Integer.parseInt(item.getToTime().replace(":", ""))
+            ) {
+                mItem = new Item(item.getShiftId(), item.getShiftName());
+            }
             items.add(new Item(item.getShiftId(), item.getShiftName()));
         }
-        tvShift.setText(items.get(0).getText());
-        mItem = items.get(0);
+        if (mItem == null) {
+            mItem = items.get(0);
+        }
+        tvShift.setText(mItem.getText());
         tvBag.setText("Tất cả");
         edtChuyenthu.getEditText().setInputType(EditorInfo.TYPE_CLASS_NUMBER);
     }
@@ -101,7 +109,7 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
                 if (TextUtils.isEmpty(chuyenthu)) {
                     chuyenthu = "0";
                 }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(),mItem.getText(), chuyenthu, mBag);
+                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(), mItem.getText(), chuyenthu, mBag);
                 dismiss();
                 break;
             case R.id.tv_shift:

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,7 +26,9 @@ import com.ems.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
+import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -45,6 +48,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,14 +108,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter != null) {
             if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 checkSelfPermission();
-                showDialog();
+                //  showDialog();
             }
         } else {
             return;
         }
-        text1 = "Bản kê đi phát (BD13)";
-        CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
-        tvTitle.setText(finalText);
+
 
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
@@ -189,11 +191,27 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
                 }
         );
+        List<ShiftInfo> list = sharedPref.getListShift();
+        int time = Integer.parseInt(DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT7));
+        for (ShiftInfo item : list) {
+            if (time >= Integer.parseInt(item.getFromTime().replace(":", "")) &&
+                    time < Integer.parseInt(item.getToTime().replace(":", ""))
+            ) {
+                mShiftID = item.getShiftId();
+                mShiftName = item.getShiftName();
+                break;
+            }
+
+        }
+        text1 = "Bản kê đi phát (BD13)";
+        CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
+        tvTitle.setText(finalText);
     }
 
     private void refreshSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             isLoading = true;
+
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo);
         }
     }
@@ -217,7 +235,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
-                public void onResponse(String fromDate, String shiftID,String shiftName, String chuyenThu, String tuiSo) {
+                public void onResponse(String fromDate, String shiftID, String shiftName, String chuyenThu, String tuiSo) {
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
@@ -243,6 +261,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private void initSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             isLoading = true;
+
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0");
         }
     }
@@ -324,7 +343,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         long amount = 0;
         for (CommonObject item : list) {
             item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5,
-                    DateTimeUtils.SIMPLE_DATE_FORMAT) +" - "+ mShiftName);
+                    DateTimeUtils.SIMPLE_DATE_FORMAT) + " - " + mShiftName);
             /*if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 if (item.getStatus().equals("N")) {
                     mList.add(item);

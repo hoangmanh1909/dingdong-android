@@ -639,13 +639,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
                     .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            finishView();
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        finishView();
 
-                        }
                     }).show();
             //finishView();
         }
@@ -653,7 +650,15 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getActivity(), message);
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                .setConfirmText("OK")
+                .setTitleText("Thông báo")
+                .setContentText(message)
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    finishView();
+
+                }).show();
     }
 
     @Override
