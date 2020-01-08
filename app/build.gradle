@@ -101,7 +101,7 @@ android {
             buildConfigField("String", "API_URL", API_URL)
             buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
             applicationId "com.tct.dingdong"
-            resValue "string", "app_name", "DingDong-Pre"
+            resValue "string", "app_name", "DingDong VNPost"
         }
         pro_smartpost {
             def API_URL = '"https://pns.vnpost.vn/ddsmartpos/"'

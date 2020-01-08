@@ -78,6 +78,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 } else {
                     mView.hideProgress();
                     mView.showError(response.body().getMessage());
+                    gotoValidation();
                 }
             }
 
