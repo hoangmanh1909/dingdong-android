@@ -122,7 +122,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     private ItemScanAdapter mAdapter;
     private String mSign = "";
     private boolean mSignPosition = false;
-    private String mFileSign = "";
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -298,8 +297,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         if (!file.isEmpty()) {
             if (!mSignPosition) {
                 mFile = file;
-            } else {
-                mFileSign = file;
             }
         }
     }
@@ -331,12 +328,12 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
                                                String pickUpTime, ArrayList<Integer> ShipmentID) {
                             if (getActivity() != null) {
-                                if ("P4".equals(statusCode)) {
+                               /* if ("P4".equals(statusCode)) {
                                     if (mAdapter.getItemCount() == 0) {
                                         Toast.showToast(getActivity(), "Chưa scan bưu gửi trong tin gom");
                                         return;
                                     }
-                                }
+                                }*/
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 if (!userJson.isEmpty()) {

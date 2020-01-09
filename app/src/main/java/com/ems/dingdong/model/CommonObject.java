@@ -7,6 +7,7 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 public class CommonObject extends RealmObject {
@@ -14,6 +15,7 @@ public class CommonObject extends RealmObject {
     //region xacnhantin
     @SerializedName("OrderPostmanID")
     String orderPostmanID;
+
     @SerializedName("Count")
     String count;
     @SerializedName("Description")
@@ -90,7 +92,7 @@ public class CommonObject extends RealmObject {
     private String DeliveryType;
     private String userDelivery;
     private String paymentChanel;
-    private String imageDelivery ;
+    private String imageDelivery;
     private boolean selected;
     private boolean local;
     //endregion
@@ -144,6 +146,34 @@ public class CommonObject extends RealmObject {
     private String dateSearch;
     @SerializedName("Shipments")
     private RealmList<ParcelCodeInfo> listParcelCode;
+    @Ignore
+    List<String> orderPostmanIDS;
+    @Ignore
+    List<String> codeS;
+    @Ignore
+    public int weightS = 0;
+
+    public void addOrderPostmanID(String id) {
+        if (orderPostmanIDS == null) {
+            orderPostmanIDS = new ArrayList<>();
+        }
+        orderPostmanIDS.add(id);
+    }
+
+    public void addCode(String code) {
+        if (codeS == null) {
+            codeS = new ArrayList<>();
+        }
+        codeS.add(code);
+    }
+
+    public List<String> getOrderPostmanIDS() {
+        return orderPostmanIDS;
+    }
+
+    public List<String> getCodeS() {
+        return codeS;
+    }
 
     public String getAutoCallStatus() {
         return autoCallStatus;

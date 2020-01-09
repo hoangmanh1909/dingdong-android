@@ -497,11 +497,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             Utilities.showUIShift(getActivity());
             return;
         }*/
-        if (mBaoPhatBangke.getShiftId() == null || "0".equals(mBaoPhatBangke.getShiftId())) {
+      /*  if (mBaoPhatBangke.getShiftId() == null || "0".equals(mBaoPhatBangke.getShiftId())) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             Utilities.showUIShift(getActivity());
             return;
-        }
+        }*/
         if (mDeliveryType == 2) {
             if (TextUtils.isEmpty(edtCollectAmount.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");
@@ -516,11 +516,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
             }*/
-            if (TextUtils.isEmpty(mSign)) {
+           /* if (TextUtils.isEmpty(mSign)) {
                 //
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                 return;
-            }
+            }*/
             final String collectAmount = edtCollectAmount.getText().replaceAll("\\.", "");
             String message = "";
           /*  if (mCollectAmount.equals(collectAmount)) {

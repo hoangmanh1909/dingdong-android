@@ -23,13 +23,13 @@
             <LinearLayout
                 android:id="@+id/ll_package"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_50sdp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/ll_xac_nhan_tin"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -42,7 +42,34 @@
                         android:drawableLeft="@drawable/ic_xac_nhan_tin"
                         android:drawablePadding="@dimen/dimen_10dp"
                         android:gravity="center"
+                        android:layout_gravity="center"
                         android:text="Xác nhận tin"
+                        android:textColor="#555356" />
+                </LinearLayout>
+
+                <View
+                    style="@style/LightGrayDevider"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:id="@+id/ll_xac_nhan_tin_dia_chi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_xac_nhan_tin"
+                        android:drawablePadding="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:paddingRight="@dimen/dimen_5dp"
+                        android:text="Xác nhận tin địa chỉ"
                         android:textColor="#555356" />
                 </LinearLayout>
 
@@ -54,7 +81,7 @@
                 <LinearLayout
                     android:id="@+id/ll_hoan_tat_tin"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal"

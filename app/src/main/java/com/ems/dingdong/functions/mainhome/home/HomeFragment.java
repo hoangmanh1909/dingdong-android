@@ -14,6 +14,7 @@ import com.core.utils.NetworkUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.chihobtxh.BtxhActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
@@ -246,11 +247,16 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
     }
 
 
-    @OnClick({R.id.ll_xac_nhan_tin, R.id.ll_hoan_tat_tin, R.id.ll_thong_ke, R.id.ll_hoan_tat_nhieu_tin})
+    @OnClick({R.id.ll_xac_nhan_tin, R.id.ll_hoan_tat_tin, R.id.ll_thong_ke, R.id.ll_hoan_tat_nhieu_tin, R.id.ll_xac_nhan_tin_dia_chi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_xac_nhan_tin: {
                 Intent intent = new Intent(getActivity(), ListCommonActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                startActivity(intent);
+            }
+            case R.id.ll_xac_nhan_tin_dia_chi: {
+                Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
                 intent.putExtra(Constants.TYPE_GOM_HANG, 1);
                 startActivity(intent);
             }

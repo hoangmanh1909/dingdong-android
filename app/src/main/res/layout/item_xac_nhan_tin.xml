@@ -64,6 +64,7 @@
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_ParcelCode"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="@dimen/dimen_5dp"
                     android:paddingTop="@dimen/dimen_5dp"

@@ -122,8 +122,17 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                     }*/
                 } else {
                     //
-                    Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
-                    return;
+                   /* Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
+                    return;*/
+                    if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
+                        if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
+                            mPresenter.paymentDelivery("");
+                        } else {
+                            mPresenter.signDataAndSubmitToPNS("");
+                        }
+                    } else {
+                        mPresenter.signDataAndSubmitToPNS("");
+                    }
                 }
                 break;
             case R.id.btn_clear_sign:

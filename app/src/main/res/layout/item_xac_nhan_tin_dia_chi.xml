@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen_5dp"
+    android:paddingBottom="@dimen/dimen_5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_contact_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_toLeftOf="@+id/cb_selected"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_12sp"
+                    tools:text="241, Xuân Thủy, Cầu Giấy" />
+
+                <CheckBox
+                    android:id="@+id/cb_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dimen_5dp" />
+            </RelativeLayout>
+
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_contactName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:gravity="center|left"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12sp"
+                tools:text="Trần Văn Anh" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_ParcelCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:text="Số lượng bưu gửi: "
+                    android:textColor="@color/tx_blue_link"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/bg_status_not"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp"
+                    tools:text="Chưa Xác nhận" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <View
+        style="@style/Devider"
+        android:layout_marginTop="@dimen/dimen_5dp" />
+</LinearLayout>

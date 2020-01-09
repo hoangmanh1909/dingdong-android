@@ -12,6 +12,8 @@ public class ConfirmOrderPostman {
     @SerializedName("ConfirmReason")
     String confirmReason;
 
+    public String parcel;
+
     public void setOrderPostmanID(String orderPostmanID) {
         this.orderPostmanID = orderPostmanID;
     }
