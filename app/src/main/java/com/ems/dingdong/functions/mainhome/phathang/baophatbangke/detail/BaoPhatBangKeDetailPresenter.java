@@ -211,7 +211,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         }
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, "", "", signatureCapture, "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
+                solutionCode, status, "", "", signatureCapture, note, amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -275,8 +275,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    //  mListSolution = response.body().getSolutionInfos();
-                    mView.showUISolution(response.body().getSolutionInfos());
+                    mView.showSolution(response.body().getSolutionInfos());
                 }
             }
 

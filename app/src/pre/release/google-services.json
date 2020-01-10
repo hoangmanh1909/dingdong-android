@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "243901930739-f2fu5kqodqemfvgg09kfd32je6hb7gup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tct.dingdong",
+            "certificate_hash": "044680c2cad370c8745bc14d619ad2fc1663db48"
+          }
+        },
+        {
           "client_id": "243901930739-0vri35opo2oijsjl88un56rrldin6450.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

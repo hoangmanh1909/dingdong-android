@@ -54,7 +54,7 @@ interface BaoPhatBangKeDetailContract {
 
         void showCallSuccess();
 
-        void showUISolution(ArrayList<SolutionInfo> solutionInfos);
+        void showSolution(ArrayList<SolutionInfo> solutionInfos);
 
         void showSuccess();
 

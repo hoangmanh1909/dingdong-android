@@ -320,7 +320,7 @@ public class BaoPhatKhongThanhCongFragment extends ViewFragment<BaoPhatKhongThan
     @Override
     public void showSolutionSuccess(ArrayList<SolutionInfo> solutionInfos) {
         mListSolution = solutionInfos;
-        // showUISolution();
+        // showSolution();
         mListSolutionString = new String[solutionInfos.size()];
         for (int i = 0; i < solutionInfos.size(); i++) {
             mListSolutionString[i] = solutionInfos.get(i).getName();

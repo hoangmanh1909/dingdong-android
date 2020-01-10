@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -261,7 +263,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                 scanQr();
                 break;
             case R.id.iv_search:
-               mPresenter.showViewList();
+                mPresenter.showViewList();
                 break;
         }
     }
@@ -280,6 +282,16 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (mList != null)
+            mList.clear();
+        if (mAdapter != null)
+            mAdapter.clear();
+        loadViewCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

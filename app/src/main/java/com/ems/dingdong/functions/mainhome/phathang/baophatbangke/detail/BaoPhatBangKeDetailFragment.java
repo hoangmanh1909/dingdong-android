@@ -187,6 +187,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private String mCollectAmount = "";
     private PhoneConectDialog mPhoneConectDialog;
     private String mFile = "";
+    private boolean mClickSolution = false;
+    private boolean mReloadSolution = false;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -206,12 +208,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         scrollView.setFocusable(true);
         scrollView.setFocusableInTouchMode(true);
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.requestFocusFromTouch();
-                return false;
-            }
+        scrollView.setOnTouchListener((v, event) -> {
+            v.requestFocusFromTouch();
+            return false;
         });
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
@@ -278,22 +277,19 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
         mPresenter.getReasons();
         checkPermissionCall();
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rad_success) {
-                    mDeliveryType = 2;
-                    mBaoPhatBangke.setDeliveryType("2");
-                    llConfirmSuccess.setVisibility(View.VISIBLE);
-                    llConfirmFail.setVisibility(View.GONE);
-                    llCapture.setVisibility(View.VISIBLE);
-                } else {
-                    mDeliveryType = 1;
-                    mBaoPhatBangke.setDeliveryType("1");
-                    llConfirmSuccess.setVisibility(View.GONE);
-                    llCapture.setVisibility(View.GONE);
-                    llConfirmFail.setVisibility(View.VISIBLE);
-                }
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rad_success) {
+                mDeliveryType = 2;
+                mBaoPhatBangke.setDeliveryType("2");
+                llConfirmSuccess.setVisibility(View.VISIBLE);
+                llConfirmFail.setVisibility(View.GONE);
+                llCapture.setVisibility(View.VISIBLE);
+            } else {
+                mDeliveryType = 1;
+                mBaoPhatBangke.setDeliveryType("1");
+                llConfirmSuccess.setVisibility(View.GONE);
+                llCapture.setVisibility(View.GONE);
+                llConfirmFail.setVisibility(View.VISIBLE);
             }
         });
 
@@ -388,14 +384,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 }
                 break;
             case R.id.btn_sign:
-                new SignDialog(getActivity(), new SignCallback() {
-                    @Override
-                    public void onResponse(String sign, Bitmap bitmap) {
-                        mSign = sign;
-                        imgSign.setImageBitmap(bitmap);
-                        if (bitmap != null) {
-                            llSigned.setVisibility(View.VISIBLE);
-                        }
+                new SignDialog(getActivity(), (sign, bitmap) -> {
+                    mSign = sign;
+                    imgSign.setImageBitmap(bitmap);
+                    if (bitmap != null) {
+                        llSigned.setVisibility(View.VISIBLE);
                     }
                 }).show();
                 break;
@@ -403,7 +396,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 showUIReason();
                 break;
             case R.id.tv_solution:
-                if (mListSolution != null) {
+                mClickSolution = true;
+                if(mReloadSolution) {
+                    mReloadSolution = false;
+                    loadSolution();
+                }
+                else {
                     showUISolution();
                 }
                 break;
@@ -629,6 +627,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @Override
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
         mListReason = reasonInfos;
+        if (mListReason != null && mListReason.size() > 0) {
+            mReasonInfo = mListReason.get(0);
+            tvReason.setText(mReasonInfo.getName());
+            loadSolution();
+        }
     }
 
 
@@ -669,9 +672,14 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     @Override
-    public void showUISolution(ArrayList<SolutionInfo> solutionInfos) {
+    public void showSolution(ArrayList<SolutionInfo> solutionInfos) {
         mListSolution = solutionInfos;
-        showUISolution();
+        if (mListSolution != null && mListSolution.size() > 0) {
+            mSolutionInfo = mListSolution.get(0);
+            tvSolution.setText(mSolutionInfo.getName());
+        }
+        if (mClickSolution)
+            showUISolution();
     }
 
     @Override
@@ -735,21 +743,14 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         }
         if (pickerUIReason == null) {
             pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            tvReason.setText(item.getText());
-                            mReasonInfo = mListReason.get(position);
-                            mListSolution = null;
-                            tvSolution.setText("");
-                            loadSolution();
-                          /*  if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
-                                edtReason.setVisibility(View.VISIBLE);
-                            } else {
-                                edtReason.setVisibility(View.GONE);
-                            }*/
+                    (item, position) -> {
+                        tvReason.setText(item.getText());
+                        mReasonInfo = mListReason.get(position);
+                        mListSolution = null;
+                        tvSolution.setText("");
+                        mReloadSolution = true;
+                        loadSolution();
 
-                        }
                     }, 0);
             pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
         } else {
@@ -763,7 +764,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     private void loadSolution() {
-        mPresenter.loadSolution(mReasonInfo.getCode());
+        if (mReasonInfo != null)
+            mPresenter.loadSolution(mReasonInfo.getCode());
     }
 
     private void showUISolution() {

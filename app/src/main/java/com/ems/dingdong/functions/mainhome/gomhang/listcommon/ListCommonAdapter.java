@@ -76,6 +76,15 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                                 break;
                             }
                         }
+                        if (!checkCode)
+                        {
+                            if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
+                            || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
+                            || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
+                            ) {
+                                checkCode = true;
+                            }
+                        }
                         if(checkCode)
                             filteredList.add(row);
 
