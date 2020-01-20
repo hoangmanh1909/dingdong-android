@@ -111,7 +111,7 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                     }
 
                    // homeInfos.add(new HomeInfo(4, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
-                    homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
+                  //  homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
 
                     //  mList.add(new GroupInfo("Phát hàng", homeInfos));
                   //  homeInfos.add(new HomeInfo(5, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));

@@ -107,7 +107,7 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                     if (TextUtils.isEmpty(base64)) {
                         base64 = "";
                     }
-                    if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
+                   /* if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
                         if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
                             mPresenter.paymentDelivery(base64);
                         } else {
@@ -115,7 +115,8 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                         }
                     } else {
                         mPresenter.signDataAndSubmitToPNS(base64);
-                    }
+                    }*/
+                    mPresenter.paymentDelivery(base64);
                    /* } else {
                         Toast.showToast(getActivity(), "Có lỗi trong quá trình ký, vui lòng liên hệ ban quản trị");
                         return;
@@ -124,7 +125,7 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                     //
                    /* Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                     return;*/
-                    if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
+                    /*if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
                         if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {
                             mPresenter.paymentDelivery("");
                         } else {
@@ -132,7 +133,8 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                         }
                     } else {
                         mPresenter.signDataAndSubmitToPNS("");
-                    }
+                    }*/
+                    mPresenter.paymentDelivery("");
                 }
                 break;
             case R.id.btn_clear_sign:

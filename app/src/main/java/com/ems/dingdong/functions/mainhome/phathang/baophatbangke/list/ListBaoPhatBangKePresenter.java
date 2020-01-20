@@ -190,15 +190,13 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String solutionCode = solution;
             String status = "C18";
             String ladingPostmanID = item.getiD();
-            if (item.getService().equals("12")) {
-                status = "C14";
-                String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        /*    if (item.getService().equals("12")) {
+                status = "C14";*/
+        /*        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                 PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                         parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
                         status, "", "", signatureCapture,
                         note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
-              /*  postmanID, ladingCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                        item.getReceiverIDNumber(), reasonCode, solutionCode, status, "", "", sign, note, item.getAmount(),item.getRouteCode(),ladingPostmanID*/
                 mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
                             @Override
                             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -216,9 +214,9 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                                 mView.showError(message);
                             }
                         }
-                );
-            } else {
-                if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
+                );*/
+       /*     } else {*/
+        /*        if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                     status = "C14";
                     String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                     PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
@@ -243,7 +241,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                                 }
                             }
                     );
-                } else {
+                } else {*/
                     String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                     PushToPnsRequest request = new PushToPnsRequest(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
                             solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature, item.getImageDelivery());
@@ -265,8 +263,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                                     mView.showError(message);
                                 }
                             });
-                }
-            }
+               // }
+           // }
         }
     }
 
