@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingTop="@dimen/dimen_5dp"
     android:paddingBottom="@dimen/dimen_5dp">
@@ -25,6 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:textColor="@color/blue"
+                tools:text="12345678"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
