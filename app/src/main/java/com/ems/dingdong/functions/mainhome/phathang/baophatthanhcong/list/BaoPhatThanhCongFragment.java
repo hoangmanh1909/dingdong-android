@@ -203,7 +203,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
         startActivity(intent);
     }
 

@@ -80,7 +80,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + edtPhone.getText().toString().trim()));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
         startActivity(intent);
     }
 
