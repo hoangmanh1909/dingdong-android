@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.google.gson.reflect.TypeToken;
@@ -206,6 +207,19 @@ public class SharedPref {
         if(!data.isEmpty())
         {
             return NetWorkController.getGson().<ArrayList<ShiftInfo>>fromJson(data, new TypeToken<List<ShiftInfo>>(){}.getType());
+        }
+        else {
+            return new ArrayList<>();
+        }
+
+    }
+
+    public  List<RouteInfo> getListRoute()
+    {
+        String data = pref.getString(Constants.KEY_ROUTE_INFO, "");
+        if(!data.isEmpty())
+        {
+            return NetWorkController.getGson().<ArrayList<RouteInfo>>fromJson(data, new TypeToken<List<RouteInfo>>(){}.getType());
         }
         else {
             return new ArrayList<>();

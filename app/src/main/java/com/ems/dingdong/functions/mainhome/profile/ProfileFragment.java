@@ -87,7 +87,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
             if (!postOfficeJson.isEmpty()) {
                 PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-                tvUsername.setText(String.format("%s( %s %s )", tvUsername.getText(), postOffice.getRouteCode(), postOffice.getRouteName()));
+//                tvUsername.setText(String.format("%s( %s %s )", tvUsername.getText(), postOffice.getRouteCode(), postOffice.getRouteName()));
             }
             tvFullname.setText(userInfo.getFullName());
         }

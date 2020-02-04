@@ -279,8 +279,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         if (!posOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
             bd13Create.setDeliveryPOCode(postOffice.getCode());
-            bd13Create.setRoutePOCode(postOffice.getRouteCode());
-            bd13Create.setSignature(Utils.SHA256(postOffice.getCode() + postOffice.getRouteCode() + BuildConfig.PRIVATE_KEY).toUpperCase());
+//            bd13Create.setRoutePOCode(postOffice.getRouteCode());
+//            bd13Create.setSignature(Utils.SHA256(postOffice.getCode() + postOffice.getRouteCode() + BuildConfig.PRIVATE_KEY).toUpperCase());
         }
         String json = NetWorkController.getGson().toJson(bd13Create);
         Log.d("JSON POST ====>", json);

@@ -133,7 +133,7 @@ public class ListBd13Fragment extends ViewFragment<ListBd13Contract.Presenter> i
         if (!posOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
             deliveryPOCode = postOffice.getCode();
-            routePOCode = postOffice.getRouteCode();
+//            routePOCode = postOffice.getRouteCode();
         }
         String createDate = DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mPresenter.searchCreateBd13(deliveryPOCode, routePOCode, mBag, mChuyenThu, createDate, mShift);

@@ -15,9 +15,13 @@ import android.widget.ImageView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.RouteOptionCallBack;
+import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -28,6 +32,8 @@ import com.ems.dingdong.views.MyViewPager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,6 +50,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     CustomTextView tvBalance;
     @BindView(R.id.tv_AmountMax)
     CustomTextView tvAmountMax;
+    @BindView(R.id.tv_acc_info)
+    CustomTextView tvAccInfo;
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
     @BindView(R.id.img_call)
@@ -58,6 +66,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private Fragment phatHangFragment;
     private Fragment locationFragment;
     UserInfo userInfo;
+    PostOffice postOffice;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -73,8 +82,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
         }
         setupAdapter();
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
@@ -108,7 +121,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 //on page scroll state changed
             }
         });
-
+        String accInfo = "";
         if (userInfo != null) {
 
             if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
@@ -117,7 +130,24 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             if (!TextUtils.isEmpty(userInfo.getBalance())) {
                 tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
             }
+            if (!TextUtils.isEmpty(userInfo.getFullName())) {
+                accInfo = userInfo.getFullName();
+            }
         }
+
+        if (postOffice != null) {
+            List<RouteInfo> routeInfos = postOffice.getRoutes();
+            if (routeInfos.size() > 0) {
+                if (routeInfos.size() == 1) {
+                    sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos));
+                    accInfo += " - " + routeInfos.get(0).getRouteCode() + routeInfos.get(0).getRouteCode();
+                } else {
+
+                }
+            }
+        }
+
+        tvAccInfo.setText(accInfo);
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
@@ -138,10 +168,20 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                     v.removeViewAt(2);
                     v.removeViewAt(1);
                 }
-            },100);
+            }, 100);
 
 
         }
+    }
+
+    void showDialog(List<RouteInfo> routeInfos){
+        new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
+
+            @Override
+            public void onRouteOptionResponse(String reason) {
+                String s = reason;
+            }
+        }).show();
     }
 
     void setupAdapter() {
