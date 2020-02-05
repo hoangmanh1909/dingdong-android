@@ -20,6 +20,7 @@ import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
@@ -139,10 +140,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             List<RouteInfo> routeInfos = postOffice.getRoutes();
             if (routeInfos.size() > 0) {
                 if (routeInfos.size() == 1) {
-                    sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos));
-                    accInfo += " - " + routeInfos.get(0).getRouteCode() + routeInfos.get(0).getRouteCode();
+                    sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos.get(0)));
+                    accInfo += " - " + routeInfos.get(0).getRouteName();
                 } else {
-
+                    showDialog(routeInfos);
                 }
             }
         }
@@ -169,8 +170,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                     v.removeViewAt(1);
                 }
             }, 100);
-
-
         }
     }
 
@@ -178,8 +177,15 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
 
             @Override
-            public void onRouteOptionResponse(String reason) {
-                String s = reason;
+            public void onRouteOptionResponse(Item item) {
+                RouteInfo routeInfo = new RouteInfo();
+                routeInfo.setRouteCode(item.getValue());
+                routeInfo.setRouteName(item.getText());
+                SharedPref sharedPref = new SharedPref(getActivity());
+                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
+                String accInfo = tvAccInfo.getText().toString();
+                accInfo += " - " + routeInfo.getRouteCode() + routeInfo.getRouteName();
+                tvAccInfo.setText(accInfo);
             }
         }).show();
     }

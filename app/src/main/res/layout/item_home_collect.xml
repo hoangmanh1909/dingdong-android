@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_label"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines_item"
+            android:gravity="center|left"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12sp"
+            tools:text="Nội dung" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_count_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textlines_item"
+            android:gravity="center|left"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12sp"
+            tools:text="Địa chỉ" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_count"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.17"
+            android:background="@drawable/textlines_item"
+            android:gravity="center|left"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12sp"
+            tools:text="Số lượng" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_weight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.17"
+            android:background="@drawable/textlines_item"
+            android:gravity="center|left"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12sp"
+            tools:text="Khối lượng" />
+    </LinearLayout>
+</LinearLayout>

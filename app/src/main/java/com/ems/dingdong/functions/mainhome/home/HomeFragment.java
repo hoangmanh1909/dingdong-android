@@ -24,7 +24,10 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThan
 import com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
+import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.GroupInfo;
+import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.UserInfo;
@@ -276,5 +279,16 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             }
             break;
         }
+    }
+
+
+    @Override
+    public void showObjectSuccess(HomeCollectInfoResult objectResult) {
+
+    }
+
+    @Override
+    public void showObjectEmpty() {
+
     }
 }

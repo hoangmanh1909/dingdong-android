@@ -9,6 +9,7 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
@@ -266,4 +267,9 @@ public interface VinattiAPI {
                                                                 @Field("ToDate") String toDate,
                                                                 @Field("IsSuccess") boolean isSuccess
                                                                 );
+    @POST("api/DingDong/GetMainview")
+    Call<HomeCollectInfoResult> getHomeData(@Field("FromDate") String fromDate,
+                                            @Field("ToDate") String toDate,
+                                            @Field("PostmanCode") String postmanCode,
+                                            @Field("RouteCode") String routeCode);
 }

@@ -4,6 +4,7 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.StatisticCollectResult;
@@ -162,12 +163,13 @@ public class NetWorkController {
         Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
         call.enqueue(callback);
     }
+
     public static void searchAllOrderPostmanCollect(String orderPostmanID,
-                                                 String orderID,
-                                                 String postmanID,
-                                                 String status,
-                                                 String fromAssignDate,
-                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
+                                                    String orderID,
+                                                    String postmanID,
+                                                    String status,
+                                                    String fromAssignDate,
+                                                    String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
         Call<CommonObjectListResult> call = getAPIBuilder().searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
         call.enqueue(callback);
     }
@@ -381,6 +383,11 @@ public class NetWorkController {
 
     public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryDetailResult> callback) {
         Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess);
+        call.enqueue(callback);
+    }
+
+    public static void getHomeData(String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
+        Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData("", "", postmanCode, routeCode);
         call.enqueue(callback);
     }
 }
