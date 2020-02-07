@@ -73,9 +73,9 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     }
 
     @Override
-    public void getHomeView() {
+    public void getHomeView(String postmanCode,String routeCode) {
         mView.showProgress();
-        mInteractor.getHomeView( new CommonCallback<HomeCollectInfoResult>((Activity) mContainerView) {
+        mInteractor.getHomeView(postmanCode,routeCode, new CommonCallback<HomeCollectInfoResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<HomeCollectInfoResult> call, Response<HomeCollectInfoResult> response) {
                 super.onSuccess(call, response);

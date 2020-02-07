@@ -12,6 +12,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
@@ -31,19 +32,20 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
     private final CreatebangKeSearchCallback mDelegate;
     private final BaseActivity mActivity;
 
-    @BindView(R.id.tv_date_create)
-    FormItemTextView tvDateCreate;
-    @BindView(R.id.tv_shift)
-    FormItemTextView tvShift;
-
+    @BindView(R.id.tv_from_date)
+    FormItemTextView tv_from_date;
+    @BindView(R.id.tv_to_date)
+    FormItemTextView tv_to_date;
     @BindView(R.id.tv_chuyenthu)
-    FormItemTextView tvChuyenthu;
-    @BindView(R.id.tv_bag)
-    FormItemTextView tvBag;
+    FormItemEditText tv_chuyenthu;
 
-    Calendar calCreate;
+
+    Calendar calFromCreate;
+    Calendar calToCreate;
     private ItemBottomSheetPickerUIFragment pickerUIShift;
+
     ArrayList<Item> items = new ArrayList<>();
+    private int typeDate; //0 dateStart, 1 dateEnd
     private Item mItem;
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "1";
@@ -53,25 +55,31 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
-        this.calCreate = calendar;
+        this.calFromCreate = calendar;
+        this.calToCreate = calendar;
+
         View view = View.inflate(getContext(), R.layout.dialog_lap_bang_ke_search, null);
         setContentView(view);
         ButterKnife.bind(this, view);
         mActivity = (BaseActivity) context;
-        if (calCreate == null)
-            calCreate = Calendar.getInstance();
-        tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
-        SharedPref sharedPref= new SharedPref(mActivity);
-        List<ShiftInfo> list= sharedPref.getListShift();
-        for (ShiftInfo item :list)
-        {
+        if (calFromCreate == null) {
+            calFromCreate = Calendar.getInstance();
+            calToCreate = Calendar.getInstance();
+        }
+
+        tv_from_date.setText(TimeUtils.convertDateToString(calFromCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+        tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+
+        SharedPref sharedPref = new SharedPref(mActivity);
+        List<ShiftInfo> list = sharedPref.getListShift();
+        for (ShiftInfo item : list) {
             items.add(new Item(item.getShiftId(), item.getShiftName()));
         }
-        tvShift.setText(items.get(0).getText());
+//        tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
-        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
-        tvChuyenthu.setText(mChuyenThu);
-        tvBag.setText(mBag);
+//        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
+//        tv_chuyenthu.setText(mChuyenThu);
+//        tvBag.setText(mBag);
     }
 
     @Override
@@ -79,39 +87,53 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         super.show();
     }
 
-    @OnClick({R.id.tv_date_create, R.id.tv_search, R.id.tv_shift, R.id.btnBack, R.id.tv_bag})
+    @OnClick({R.id.tv_from_date, R.id.tv_to_date, R.id.tv_search, R.id.btnBack,})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_date_create:
+            case R.id.tv_from_date:
+                typeDate = 0;
                 new SpinnerDatePickerDialogBuilder()
                         .context(mActivity)
                         .callback(this)
                         .spinnerTheme(R.style.DatePickerSpinner)
                         .showTitle(true)
                         .showDaySpinner(true)
-                        .defaultDate(calCreate.get(Calendar.YEAR), calCreate.get(Calendar.MONTH), calCreate.get(Calendar.DAY_OF_MONTH))
+                        .defaultDate(calFromCreate.get(Calendar.YEAR), calFromCreate.get(Calendar.MONTH), calFromCreate.get(Calendar.DAY_OF_MONTH))
+                        .minDate(1979, 0, 1)
+                        .build()
+                        .show();
+                break;
+            case R.id.tv_to_date:
+                typeDate = 1;
+                new SpinnerDatePickerDialogBuilder()
+                        .context(mActivity)
+                        .callback(this)
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calToCreate.get(Calendar.YEAR), calToCreate.get(Calendar.MONTH), calToCreate.get(Calendar.DAY_OF_MONTH))
                         .minDate(1979, 0, 1)
                         .build()
                         .show();
                 break;
             case R.id.tv_search:
-                if (TextUtils.isEmpty(tvShift.getText())) {
-                    Toast.showToast(mActivity, "Phải chọn ca");
-                    return;
-                }
-                if (TextUtils.isEmpty(tvBag.getText())) {
-                    Toast.showToast(mActivity, "Phải chọn túi số");
-                    return;
-                }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mItem.getValue(), mBag,mChuyenThu);
+//                if (TextUtils.isEmpty(tvShift.getText())) {
+//                    Toast.showToast(mActivity, "Phải chọn ca");
+//                    return;
+//                }
+//                if (TextUtils.isEmpty(tvBag.getText())) {
+//                    Toast.showToast(mActivity, "Phải chọn túi số");
+//                    return;
+//                }
+                mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5),DateTimeUtils.convertDateToString(calToCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mChuyenThu);
                 dismiss();
                 break;
-            case R.id.tv_shift:
-                showUIShift();
-                break;
-            case R.id.tv_bag:
-                showUIBag();
-                break;
+//            case R.id.tv_shift:
+//                showUIShift();
+//                break;
+//            case R.id.tv_bag:
+//                showUIBag();
+//                break;
             case R.id.btnBack:
                 dismiss();
                 break;
@@ -128,7 +150,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {
-                            tvBag.setText(item.getText());
+//                            tvBag.setText(item.getText());
                             mBag = item.getValue();
 
                         }
@@ -146,8 +168,22 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-        calCreate.set(year, monthOfYear, dayOfMonth);
-        tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+        calFromCreate.set(year, monthOfYear, dayOfMonth);
+        if (typeDate != 0) {
+            calToCreate.set(year, monthOfYear, dayOfMonth);
+            if (calToCreate.before(calFromCreate)) {
+                calFromCreate.setTime(calToCreate.getTime());
+            }
+        } else {
+            calFromCreate.set(year, monthOfYear, dayOfMonth);
+            if (calFromCreate.after(calToCreate)) {
+                calToCreate.setTime(calFromCreate.getTime());
+            }
+        }
+        if (typeDate == 0)
+            tv_from_date.setText(TimeUtils.convertDateToString(calFromCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+        else
+            tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
     }
 
     private void showUIShift() {
@@ -157,7 +193,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {
-                            tvShift.setText(item.getText());
+//                            tvShift.setText(item.getText());
                             mItem = item;
                         }
                     }, 0);

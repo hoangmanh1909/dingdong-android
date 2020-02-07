@@ -23,10 +23,12 @@ import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,7 +204,7 @@ public interface VinattiAPI {
     @POST("API/TaskOfWork/Create")
     Call<SimpleResult> taskOfWork(@Body SimpleResult taskRequest);
 
-    @POST("api/BD13/AddNew")
+    @POST("api/DingDong/CreateBD13")
     Call<SimpleResult> addNewBD13(@Body Bd13Create taskRequest);
 
     @FormUrlEncoded
@@ -267,9 +269,13 @@ public interface VinattiAPI {
                                                                 @Field("ToDate") String toDate,
                                                                 @Field("IsSuccess") boolean isSuccess
                                                                 );
+    @FormUrlEncoded
     @POST("api/DingDong/GetMainview")
     Call<HomeCollectInfoResult> getHomeData(@Field("FromDate") String fromDate,
                                             @Field("ToDate") String toDate,
                                             @Field("PostmanCode") String postmanCode,
                                             @Field("RouteCode") String routeCode);
+
+    @POST("api/DingDong/GetLadingCreateBD13")
+    Call<DeliveryPostmanResponse> searchLadingCreatedBd13(@Body DingDongGetLadingCreateBD13Request request);
 }

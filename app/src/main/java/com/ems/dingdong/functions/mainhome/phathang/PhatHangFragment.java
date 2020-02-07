@@ -9,8 +9,10 @@ import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.model.GroupInfo;
@@ -28,7 +30,7 @@ import butterknife.BindView;
  * The PhatHang Fragment
  */
 public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> implements PhatHangContract.View {
-    private static final int SPAN_SIZE = 2;
+    private static final int SPAN_SIZE = 3;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     private HomeGroupAdapter adapter;
@@ -59,6 +61,11 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
               //  homeInfos.add(new HomeInfo(2, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
                // homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
                 homeInfos.add(new HomeInfo(4, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
+                homeInfos.add(new HomeInfo(5, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết PTC"));
+                homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết PKTC"));
+                homeInfos.add(new HomeInfo(7, R.drawable.ic_lap_ban_ke, "Lập bản kê BD13"));
+                homeInfos.add(new HomeInfo(8, R.drawable.ic_nhap_bao_phat, "Nhập báo phát offline"));
+                homeInfos.add(new HomeInfo(9, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
@@ -83,6 +90,23 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                         } else if (homeInfo.getId() == 4) {
                             Intent intent = new Intent(getActivity(), StatictisActivity.class);
                             startActivity(intent);
+                        }
+                        else if (homeInfo.getId() == 5) {
+                            mPresenter.showViewStatisticPtc(true);
+                        }
+                        else if (homeInfo.getId() == 6) {
+                            mPresenter.showViewStatisticPtc(false);
+                        }
+                        else if(homeInfo.getId() == 7){
+                            Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
+                            startActivity(intent);
+                        }
+                        else if(homeInfo.getId() == 8){
+                            Intent intent = new Intent(getActivity(), BaoPhatOfflineActivity.class);
+                            startActivity(intent);
+                        }
+                        else if(homeInfo.getId() == 9){
+//                            mPresenter.showListOffline();
                         }
                     }
                 });

@@ -47,6 +47,31 @@
                 android:gravity="right" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_route"
+                android:text="Tuyến"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_route_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:text="Đổi tuyến"
+                android:gravity="right"
+                android:textColor="@color/background_blue"
+                android:textSize="@dimen/_16sdp"/>
+        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

@@ -2,6 +2,9 @@ package com.ems.dingdong.functions.mainhome.phathang;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 
 /**
  * The PhatHang Presenter
@@ -27,4 +30,16 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     public PhatHangContract.Interactor onCreateInteractor() {
         return new PhatHangInteractor(this);
     }
+
+    @Override
+    public void showViewStatisticPtc(boolean isSuccess) {
+        new HistoryDetailSuccessPresenter(mContainerView).setIsSuccess(isSuccess).pushView();
+    }
+
+    @Override
+    public void showListOffline() {
+        new ReceverPersonPresenter(mContainerView).pushView();
+    }
+
+
 }

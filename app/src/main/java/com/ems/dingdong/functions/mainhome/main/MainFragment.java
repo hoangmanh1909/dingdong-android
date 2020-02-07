@@ -68,6 +68,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private Fragment locationFragment;
     UserInfo userInfo;
     PostOffice postOffice;
+    RouteInfo routeInfo;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -84,12 +85,18 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
         if (!postOfficeJson.isEmpty()) {
             postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
         }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
         setupAdapter();
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -135,16 +142,15 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 accInfo = userInfo.getFullName();
             }
         }
+        if(routeInfo != null){
+            if(!TextUtils.isEmpty(routeInfo.getRouteName())){
+                accInfo += " - " + routeInfo.getRouteName();
+            }
+        }
 
-        if (postOffice != null) {
-            List<RouteInfo> routeInfos = postOffice.getRoutes();
-            if (routeInfos.size() > 0) {
-                if (routeInfos.size() == 1) {
-                    sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos.get(0)));
-                    accInfo += " - " + routeInfos.get(0).getRouteName();
-                } else {
-                    showDialog(routeInfos);
-                }
+        if(postOffice != null){
+            if(!TextUtils.isEmpty(postOffice.getName())){
+                accInfo += " - " + postOffice.getName();
             }
         }
 
@@ -173,22 +179,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
     }
 
-    void showDialog(List<RouteInfo> routeInfos){
-        new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
 
-            @Override
-            public void onRouteOptionResponse(Item item) {
-                RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setRouteCode(item.getValue());
-                routeInfo.setRouteName(item.getText());
-                SharedPref sharedPref = new SharedPref(getActivity());
-                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
-                String accInfo = tvAccInfo.getText().toString();
-                accInfo += " - " + routeInfo.getRouteCode() + routeInfo.getRouteName();
-                tvAccInfo.setText(accInfo);
-            }
-        }).show();
-    }
 
     void setupAdapter() {
         adapter = new FragmentPagerAdapter(getChildFragmentManager()) {

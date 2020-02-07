@@ -1,10 +1,12 @@
 package com.ems.dingdong.functions.mainhome.home;
 
-import android.view.LayoutInflater;
+import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter;
+import com.core.base.adapter.RecyclerBaseAdapter;
+import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.views.CustomTextView;
@@ -14,34 +16,20 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeCollectAdapter extends StickyHeaderGridAdapter {
+public class HomeCollectAdapter extends RecyclerBaseAdapter {
     private ArrayList<HomeCollectInfo> mList;
-    public  HomeCollectAdapter(ArrayList<HomeCollectInfo> items){
-        mList = items;
+
+    public HomeCollectAdapter(Context context, ArrayList<HomeCollectInfo> items) {
+        super(context, items);
     }
+
 
     @Override
-    public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int headerType) {
-        return  null;
+    public HolderView onCreateViewHolder(ViewGroup parent, int itemType) {
+        return new HolderView(inflateView(parent, R.layout.item_home_collect));
     }
 
-    @Override
-    public ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int itemType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_collect, parent, false);
-        return new MyItemViewHolder(view);
-    }
-
-    @Override
-    public void onBindHeaderViewHolder(HeaderViewHolder viewHolder, int section) {
-
-    }
-
-    @Override
-    public void onBindItemViewHolder(ItemViewHolder viewHolder, int section, int offset) {
-
-    }
-
-    class MyItemViewHolder extends ItemViewHolder {
+    class HolderView extends BaseViewHolder {
 
         @BindView(R.id.tv_label)
         CustomTextView tv_label;
@@ -52,25 +40,29 @@ public class HomeCollectAdapter extends StickyHeaderGridAdapter {
         @BindView(R.id.tv_weight)
         CustomTextView tv_weight;
 
-        public MyItemViewHolder(View itemView) {
+        public HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         public void bindView(Object model, int position) {
             HomeCollectInfo homeInfo = (HomeCollectInfo) model;
-            if(position == 0)
-            {
+            if (position == 1) {
                 tv_label.setText(homeInfo.getLabelCollect());
-                tv_count_address.setText(Float.toString(homeInfo.getTotalAddressNotCollect()));
-                tv_count.setText(Float.toString(homeInfo.getTotalLadingNotCollect()));
-                tv_weight.setText(Float.toString(homeInfo.getTotalWeightNotCollect()));
+                tv_count_address.setText(!TextUtils.isEmpty(homeInfo.getTotalAddressNotCollect()) ? homeInfo.getTotalAddressNotCollect() : "0");
+                tv_count.setText(!TextUtils.isEmpty(homeInfo.getTotalLadingNotCollect()) ? homeInfo.getTotalLadingNotCollect() : "0");
+                tv_weight.setText(!TextUtils.isEmpty(homeInfo.getTotalWeightNotCollect()) ? homeInfo.getTotalWeightNotCollect() : "0");
             }
-            else{
+            else if (position == 2) {
                 tv_label.setText(homeInfo.getLabelCollect());
-                tv_count_address.setText(Float.toString(homeInfo.getTotalAddressCollect()));
-                tv_count.setText(Float.toString(homeInfo.getTotalLadingCollect()));
-                tv_weight.setText(Float.toString(homeInfo.getTotalWeightCollect()));
+                tv_count_address.setText(!TextUtils.isEmpty(homeInfo.getTotalAddressCollect()) ? homeInfo.getTotalAddressCollect() : "0");
+                tv_count.setText(!TextUtils.isEmpty(homeInfo.getTotalLadingCollect()) ? homeInfo.getTotalLadingCollect() : "0");
+                tv_weight.setText(!TextUtils.isEmpty(homeInfo.getTotalWeightCollect()) ? homeInfo.getTotalWeightCollect() : "0");
+            }else {
+                tv_label.setText(homeInfo.getLabelCollect());
+                tv_count_address.setText(!TextUtils.isEmpty(homeInfo.getTotalAddressNotCollect()) ? homeInfo.getTotalAddressNotCollect() : "0");
+                tv_count.setText(!TextUtils.isEmpty(homeInfo.getTotalLadingNotCollect()) ? homeInfo.getTotalLadingNotCollect() : "0");
+                tv_weight.setText(!TextUtils.isEmpty(homeInfo.getTotalWeightNotCollect()) ? homeInfo.getTotalWeightNotCollect() : "0");
             }
         }
     }

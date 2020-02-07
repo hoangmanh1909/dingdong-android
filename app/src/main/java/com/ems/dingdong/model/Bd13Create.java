@@ -6,53 +6,60 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Bd13Create {
-    @SerializedName("ListCode")
+    @SerializedName("PostmanId")
     @Expose
-    private List<Bd13Code> listCode = null;
-    @SerializedName("RoutePOCode")
+    private Integer postmanId;
+    @SerializedName("PoDeliveryCode")
     @Expose
-    private String routePOCode;
-    @SerializedName("DeliveryPOCode")
+    private String poDeliveryCode;
+    @SerializedName("RouteDeliveryCode")
     @Expose
-    private String deliveryPOCode;
-    @SerializedName("BagNumber")
+    private String routeDeliveryCode;
+    @SerializedName("PostmanCode")
     @Expose
-    private String bagNumber;
-    @SerializedName("Signature")
+    private String postmanCode;
+    @SerializedName("Ids")
     @Expose
-    private String signature;
-    @SerializedName("ChuyenThu")
-    @Expose
-    private String chuyenThu;
-    @SerializedName("Shift")
-    @Expose
-    private String shift;
+    private List<Integer> ids;
 
-    public void setListCode(List<Bd13Code> listCode) {
-        this.listCode = listCode;
+    public List<Integer> getIds() {
+        return ids;
     }
 
-    public void setRoutePOCode(String routePOCode) {
-        this.routePOCode = routePOCode;
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
     }
 
-    public void setDeliveryPOCode(String deliveryPOCode) {
-        this.deliveryPOCode = deliveryPOCode;
+    public Integer getPostmanId() {
+        return postmanId;
     }
 
-    public void setBagNumber(String bagNumber) {
-        this.bagNumber = bagNumber;
+    public void setPostmanId(Integer postmanId) {
+        this.postmanId = postmanId;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public String getPoDeliveryCode() {
+        return poDeliveryCode;
     }
 
-    public void setChuyenThu(String chuyenThu) {
-        this.chuyenThu = chuyenThu;
+    public void setPoDeliveryCode(String poDeliveryCode) {
+        this.poDeliveryCode = poDeliveryCode;
     }
 
-    public void setShift(String shift) {
-        this.shift = shift;
+    public String getRouteDeliveryCode() {
+        return routeDeliveryCode;
     }
+
+    public void setRouteDeliveryCode(String routeDeliveryCode) {
+        this.routeDeliveryCode = routeDeliveryCode;
+    }
+
+    public String getPostmanCode() {
+        return postmanCode;
+    }
+
+    public void setPostmanCode(String postmanCode) {
+        this.postmanCode = postmanCode;
+    }
+
 }

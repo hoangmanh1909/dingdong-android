@@ -28,7 +28,7 @@ import butterknife.BindView;
  */
 public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> implements GomHangContract.View {
 
-    private static final int SPAN_SIZE = 2;
+    private static final int SPAN_SIZE = 3;
     private StickyHeaderGridLayoutManager mLayoutManager;
 
     public static GomHangFragment getInstance() {
@@ -57,7 +57,11 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (!"6".equals(userInfo.getEmpGroupID())) {
                 homeInfos.add(new HomeInfo(1, R.drawable.ic_xac_nhan_tin, "Xác nhận tin"));
-                homeInfos.add(new HomeInfo(2, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
+                homeInfos.add(new HomeInfo(2, R.drawable.ic_xac_nhan_tin, "Xác nhận nhiều tin"));
+                homeInfos.add(new HomeInfo(3, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
+                homeInfos.add(new HomeInfo(4, R.drawable.ic_hoan_tat_tin, "Hoàn tất nhiều tin"));
+                homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_manage, "Thống kê"));
+
                 mList.add(new GroupInfo("Gom hàng", homeInfos));
             }
         }
@@ -73,10 +77,16 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                             Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                             intent.putExtra(Constants.TYPE_GOM_HANG, 1);
                             startActivity(intent);
-                        } else if (homeInfo.getId() == 2) {
+                        } else if (homeInfo.getId() == 3) {
                             Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                             intent.putExtra(Constants.TYPE_GOM_HANG, 2);
                             startActivity(intent);
+                        } else if (homeInfo.getId() == 2) {
+                            mPresenter.showXacNhanDiaChiPresenter();
+                        } else if (homeInfo.getId() == 4) {
+                            mPresenter.showListHoanTatNhieuTin();
+                        } else {
+                            mPresenter.showListStatistic();
                         }
                     }
                 });

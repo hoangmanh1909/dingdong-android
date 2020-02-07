@@ -10,7 +10,12 @@ import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
+import com.ems.dingdong.callback.RouteOptionCallBack;
+import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
+import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
@@ -22,6 +27,8 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -163,12 +170,49 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @Override
     public void gotoHome() {
-        if (getActivity() != null) {
-            // showUIShift();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            getActivity().finish();
-            getActivity().startActivity(intent);
+        SharedPref sharedPref = new SharedPref(getActivity());
 
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        PostOffice postOffice = null;
+        RouteInfo routeInfo = null;
+
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
+        if(routeInfo != null){
+            if (getActivity() != null) {
+                // showUIShift();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                getActivity().finish();
+                getActivity().startActivity(intent);
+
+            }
+        }
+        else {
+            if (postOffice != null) {
+                List<RouteInfo> routeInfos = postOffice.getRoutes();
+                if (routeInfos.size() > 0) {
+                    if (routeInfos.size() == 1) {
+                        sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos.get(0)));
+                        if (getActivity() != null) {
+                            // showUIShift();
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            getActivity().finish();
+                            getActivity().startActivity(intent);
+
+                        }
+                    } else {
+                        showDialog(routeInfos);
+                    }
+                }
+            }
         }
     }
 
@@ -211,5 +255,27 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                         mPresenter.gotoValidation();
                     }
                 }).show();
+    }
+
+    void showDialog(List<RouteInfo> routeInfos){
+        new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
+
+            @Override
+            public void onRouteOptionResponse(Item item) {
+                RouteInfo routeInfo = new RouteInfo();
+                routeInfo.setRouteCode(item.getValue());
+                routeInfo.setRouteName(item.getText());
+                SharedPref sharedPref = new SharedPref(getActivity());
+                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
+                if (getActivity() != null) {
+                    // showUIShift();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    getActivity().finish();
+                    getActivity().startActivity(intent);
+
+                }
+
+            }
+        }).show();
     }
 }

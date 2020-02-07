@@ -11,6 +11,7 @@ import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
@@ -18,6 +19,7 @@ import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
+import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
@@ -388,6 +390,11 @@ public class NetWorkController {
 
     public static void getHomeData(String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
         Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData("", "", postmanCode, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void searchLadingCreatedBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> callback) {
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchLadingCreatedBd13(objRequest);
         call.enqueue(callback);
     }
 }

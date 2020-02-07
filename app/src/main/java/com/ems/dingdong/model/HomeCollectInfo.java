@@ -1,25 +1,25 @@
 package com.ems.dingdong.model;
 
 public class HomeCollectInfo {
-    private float TotalQuantity;
-    private float TotalWeight;
-    private float TotalCODAmount;
-    private float TotalFee;
-    private float TotalQuantityToday;
-    private float TotalWeightToday;
-    private float TotalCODAmountToday;
-    private float TotalFeeToday;
-    private float TotalQuantityPast;
-    private float TotalWeightPast;
-    private float TotalCODAmountPast;
-    private float TotalFeePast;
+    private String TotalQuantity;
+    private String TotalWeight;
+    private String TotalCODAmount;
+    private String TotalFee;
+    private String TotalQuantityToday;
+    private String TotalWeightToday;
+    private String TotalCODAmountToday;
+    private String TotalFeeToday;
+    private String TotalQuantityPast;
+    private String TotalWeightPast;
+    private String TotalCODAmountPast;
+    private String TotalFeePast;
 
-    private float TotalAddressNotCollect;
-    private float TotalLadingNotCollect;
-    private float TotalWeightNotCollect;
-    private float TotalAddressCollect;
-    private float TotalLadingCollect;
-    private float TotalWeightCollect;
+    private String TotalAddressNotCollect;
+    private String TotalLadingNotCollect;
+    private String TotalWeightNotCollect;
+    private String TotalAddressCollect;
+    private String TotalLadingCollect;
+    private String TotalWeightCollect;
 
     private String LabelCollect;
     private String LabelDelivery;
@@ -44,149 +44,149 @@ public class HomeCollectInfo {
 
     // Getter Methods
 
-    public float getTotalQuantity() {
+    public String getTotalQuantity() {
         return TotalQuantity;
     }
 
-    public float getTotalWeight() {
+    public String getTotalWeight() {
         return TotalWeight;
     }
 
-    public float getTotalCODAmount() {
+    public String getTotalCODAmount() {
         return TotalCODAmount;
     }
 
-    public float getTotalFee() {
+    public String getTotalFee() {
         return TotalFee;
     }
 
-    public float getTotalQuantityToday() {
+    public String getTotalQuantityToday() {
         return TotalQuantityToday;
     }
 
-    public float getTotalWeightToday() {
+    public String getTotalWeightToday() {
         return TotalWeightToday;
     }
 
-    public float getTotalCODAmountToday() {
+    public String getTotalCODAmountToday() {
         return TotalCODAmountToday;
     }
 
-    public float getTotalFeeToday() {
+    public String getTotalFeeToday() {
         return TotalFeeToday;
     }
 
-    public float getTotalQuantityPast() {
+    public String getTotalQuantityPast() {
         return TotalQuantityPast;
     }
 
-    public float getTotalWeightPast() {
+    public String getTotalWeightPast() {
         return TotalWeightPast;
     }
 
-    public float getTotalCODAmountPast() {
+    public String getTotalCODAmountPast() {
         return TotalCODAmountPast;
     }
 
-    public float getTotalFeePast() {
+    public String getTotalFeePast() {
         return TotalFeePast;
     }
 
-    public float getTotalAddressNotCollect() {
+    public String getTotalAddressNotCollect() {
         return TotalAddressNotCollect;
     }
 
-    public float getTotalLadingNotCollect() {
+    public String getTotalLadingNotCollect() {
         return TotalLadingNotCollect;
     }
 
-    public float getTotalWeightNotCollect() {
+    public String getTotalWeightNotCollect() {
         return TotalWeightNotCollect;
     }
 
-    public float getTotalAddressCollect() {
+    public String getTotalAddressCollect() {
         return TotalAddressCollect;
     }
 
-    public float getTotalLadingCollect() {
+    public String getTotalLadingCollect() {
         return TotalLadingCollect;
     }
 
-    public float getTotalWeightCollect() {
+    public String getTotalWeightCollect() {
         return TotalWeightCollect;
     }
 
     // Setter Methods
 
-    public void setTotalQuantity(float TotalQuantity) {
+    public void setTotalQuantity(String TotalQuantity) {
         this.TotalQuantity = TotalQuantity;
     }
 
-    public void setTotalWeight(float TotalWeight) {
+    public void setTotalWeight(String TotalWeight) {
         this.TotalWeight = TotalWeight;
     }
 
-    public void setTotalCODAmount(float TotalCODAmount) {
+    public void setTotalCODAmount(String TotalCODAmount) {
         this.TotalCODAmount = TotalCODAmount;
     }
 
-    public void setTotalFee(float TotalFee) {
+    public void setTotalFee(String TotalFee) {
         this.TotalFee = TotalFee;
     }
 
-    public void setTotalQuantityToday(float TotalQuantityToday) {
+    public void setTotalQuantityToday(String TotalQuantityToday) {
         this.TotalQuantityToday = TotalQuantityToday;
     }
 
-    public void setTotalWeightToday(float TotalWeightToday) {
+    public void setTotalWeightToday(String TotalWeightToday) {
         this.TotalWeightToday = TotalWeightToday;
     }
 
-    public void setTotalCODAmountToday(float TotalCODAmountToday) {
+    public void setTotalCODAmountToday(String TotalCODAmountToday) {
         this.TotalCODAmountToday = TotalCODAmountToday;
     }
 
-    public void setTotalFeeToday(float TotalFeeToday) {
+    public void setTotalFeeToday(String TotalFeeToday) {
         this.TotalFeeToday = TotalFeeToday;
     }
 
-    public void setTotalQuantityPast(float TotalQuantityPast) {
+    public void setTotalQuantityPast(String TotalQuantityPast) {
         this.TotalQuantityPast = TotalQuantityPast;
     }
 
-    public void setTotalWeightPast(float TotalWeightPast) {
+    public void setTotalWeightPast(String TotalWeightPast) {
         this.TotalWeightPast = TotalWeightPast;
     }
 
-    public void setTotalCODAmountPast(float TotalCODAmountPast) {
+    public void setTotalCODAmountPast(String TotalCODAmountPast) {
         this.TotalCODAmountPast = TotalCODAmountPast;
     }
 
-    public void setTotalFeePast(float TotalFeePast) {
+    public void setTotalFeePast(String TotalFeePast) {
         this.TotalFeePast = TotalFeePast;
     }
 
-    public void setTotalAddressNotCollect(float TotalAddressNotCollect) {
+    public void setTotalAddressNotCollect(String TotalAddressNotCollect) {
         this.TotalAddressNotCollect = TotalAddressNotCollect;
     }
 
-    public void setTotalLadingNotCollect(float TotalLadingNotCollect) {
+    public void setTotalLadingNotCollect(String TotalLadingNotCollect) {
         this.TotalLadingNotCollect = TotalLadingNotCollect;
     }
 
-    public void setTotalWeightNotCollect(float TotalWeightNotCollect) {
+    public void setTotalWeightNotCollect(String TotalWeightNotCollect) {
         this.TotalWeightNotCollect = TotalWeightNotCollect;
     }
 
-    public void setTotalAddressCollect(float TotalAddressCollect) {
+    public void setTotalAddressCollect(String TotalAddressCollect) {
         this.TotalAddressCollect = TotalAddressCollect;
     }
 
-    public void setTotalLadingCollect(float TotalLadingCollect) {
+    public void setTotalLadingCollect(String TotalLadingCollect) {
         this.TotalLadingCollect = TotalLadingCollect;
     }
 
-    public void setTotalWeightCollect(float TotalWeightCollect) {
+    public void setTotalWeightCollect(String TotalWeightCollect) {
         this.TotalWeightCollect = TotalWeightCollect;
     }
 }

@@ -13,9 +13,14 @@ interface GomHangContract {
     }
 
     interface View extends PresentView<Presenter> {
+
     }
 
+
     interface Presenter extends IPresenter<View, Interactor> {
+        void showListStatistic();
+        void showListHoanTatNhieuTin();
+        void showXacNhanDiaChiPresenter();
     }
 }
 

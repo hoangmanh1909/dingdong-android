@@ -23,7 +23,7 @@
             tools:text="Nội dung" />
 
         <com.ems.dingdong.views.CustomTextView
-            android:id="@+id/tv_count_address"
+            android:id="@+id/tv_count"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -35,7 +35,7 @@
             tools:text="Địa chỉ" />
 
         <com.ems.dingdong.views.CustomTextView
-            android:id="@+id/tv_count"
+            android:id="@+id/tv_weight"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.17"
@@ -47,7 +47,7 @@
             tools:text="Số lượng" />
 
         <com.ems.dingdong.views.CustomTextView
-            android:id="@+id/tv_weight"
+            android:id="@+id/tv_COD"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.17"
@@ -56,6 +56,18 @@
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_12sp"
-            tools:text="Khối lượng" />
+            tools:text="COD" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_fee"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.17"
+            android:background="@drawable/textlines_item"
+            android:gravity="center|right"
+            android:padding="@dimen/dimen_5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12sp"
+            tools:text="Phí" />
     </LinearLayout>
 </LinearLayout>

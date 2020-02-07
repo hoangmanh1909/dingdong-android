@@ -3,6 +3,10 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -14,7 +18,21 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.callback.CreatedBD13Callback;
+import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.dialog.CreatedBd13Dialog;
+import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
+import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.google.gson.Gson;
+import com.google.zxing.common.detector.MathUtils;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.BuildConfig;
@@ -52,12 +70,11 @@ import butterknife.OnClick;
  */
 public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presenter> implements CreateBd13Contract.View {
 
-    /* @BindView(R.id.search)
-     SearchView edtSearch;*/
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    List<Bd13Code> mList = new ArrayList<>();
+    List<DeliveryPostman> mList = new ArrayList<>();
     CreateBd13Adapter mAdapter;
+    private boolean isLoading = false;
     /*    @BindView(R.id.tv_bag)
         FormItemTextView tvBag;
         @BindView(R.id.tv_shift)
@@ -67,8 +84,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
-    @BindView(R.id.edt_parcelcode)
-    FormItemEditText edtParcelCode;
+    @BindView(R.id.edt_search)
+    FormItemEditText edtSearch;
     @BindView(R.id.tv_count)
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
@@ -77,10 +94,17 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     private String mBag = "0";
     private ItemBottomSheetPickerUIFragment pickerShift;
     private String mShift;
-    private String mChuyenThu;
+    private String mChuyenThu = "";
     private Calendar calendar;
+    String mFromDate = "";
+    String mToDate = "";
+    String mPhone = "";
+
     String text1;
-    String text2;
+    //    String text2;
+    UserInfo userInfo;
+    PostOffice postOffice;
+    RouteInfo routeInfo;
 
     public static CreateBd13Fragment getInstance() {
         return new CreateBd13Fragment();
@@ -94,58 +118,71 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-        text1 = "LẬP BẢNG KÊ (BD13)";
-        text2 = "Chưa chọn túi và ca";
-        tvTitle.setText(StringUtils.getCharSequence(text1, text2, getActivity()));
-        edtParcelCode.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        edtParcelCode.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        edtParcelCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
+
+        mAdapter = new CreateBd13Adapter(getActivity(), mList, new CreateBd13Adapter.FilterDone() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-                    String parcelCode = edtParcelCode.getText().toString();
-                    getQuery(parcelCode);
-                }
-                return true;
-            }
-        });
-        edtParcelCode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().length() > 0) {
-
-                    char lastCharacter = s.charAt(s.length() - 1);
-
-                    if (lastCharacter == '\n') {
-                        String barcode = s.subSequence(0, s.length() - 1).toString();
-                        getQuery(barcode);
+            public void getCount(int count, long amount) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (isLoading) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
+                        tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
                     }
-                }
+                }, 1000);
+
             }
-        });
-        mAdapter = new CreateBd13Adapter(getActivity(), mList) {
+        }) {
             @Override
-            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+            public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                ((HolderView) holder).imgClear.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (position < mList.size()) {
-                            mList.remove(position);
-                            mAdapter.removeItem(position);
-                            mAdapter.notifyItemRemoved(position);
-                            tvCount.setText(String.format(" %s", mList.size()));
-                        }
+//                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
+//                            showViewDetail(mList.get(position));
+//                        } else {
+//                            showViewDetail(mAdapter.getListFilter().get(position));
+//                        }
+                    }
+                });
+                ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                            @Override
+                            public void onCallResponse(String phone) {
+                                mPhone = phone;
+                                mPresenter.callForward(phone,mList.get(position).getMaE());
+                            }
+
+                            @Override
+                            public void onUpdateResponse(String phone) {
+                                showConfirmSaveMobile(phone,mList.get(position).getMaE());
+                            }
+                        }).show();
                     }
                 });
             }
@@ -153,54 +190,36 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
         calendar = Calendar.getInstance();
-        // mChuyenThu = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);//String.format("%s", 5000 + calendar.get(Calendar.DATE));
-        /*tvChuyenthu.setText(mChuyenThu);
-        tvBag.getTextView().setTypeface(tvBag.getTextView().getTypeface(), Typeface.BOLD);
-        tvShift.getTextView().setTypeface(tvShift.getTextView().getTypeface(), Typeface.BOLD);
-        tvBag.getImageViewLeft().setVisibility(View.GONE);
-        tvShift.getImageViewLeft().setVisibility(View.GONE);*/
-        new CreateBangKeSearchDialog(getActivity(), calendar, new CreatebangKeSearchCallback() {
+
+        String toDay = TimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        mFromDate = toDay;
+        mToDate = toDay;
+        searchLadingBd13(toDay, toDay, "");
+
+        edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
-            public void onResponse(String fromDate, String shiftID, String bag, String chuyenthu) {
-                calendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                mBag = bag;
-                mShift = shiftID;
-               /* tvBag.setText(bag);
-                tvShift.setText(shiftID);*/
-                mChuyenThu = chuyenthu;
-                tvTitle.setText(StringUtils.getCharSequence(text1, chuyenthu + " - " + bag + " - " + "Ca " + shiftID, getActivity()));
-            }
-        }).show();
-    }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    public void getQuery(String parcelCode) {
-        if (!parcelCode.isEmpty()) {
-            if (!checkInList(parcelCode)) {
-                Bd13Code bd13Code = new Bd13Code(parcelCode);
-                mList.add(bd13Code);
-                mAdapter.addItem(bd13Code);
-                tvCount.setText(String.format(" %s", mList.size()));
-            } else {
-                Toast.showToast(getActivity(), "Đã tồn tại trong danh sách");
             }
-        }
-        edtParcelCode.setText("");
-    }
-    /*private void addNewRow() {
-        if (!TextUtils.isEmpty(edtSearch.getQuery())) {
-            if (!checkInList(edtSearch.getQuery().toString())) {
-                Bd13Code bd13Code = new Bd13Code(edtSearch.getQuery().toString());
-                mList.add(bd13Code);
-                mAdapter.addItem(bd13Code);
-            }
-        }
 
-    }*/
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s.toString());
+            }
+        });
+        edtSearch.setSelected(true);
+    }
 
     private boolean checkInList(String value) {
         boolean check = false;
-        for (Bd13Code item : mList) {
-            if (item.getCode().equals(value)) {
+        for (DeliveryPostman item : mList) {
+            if (item.getMaE().equals(value)) {
                 check = true;
                 break;
             }
@@ -208,46 +227,49 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         return check;
     }
 
+    private void showConfirmSaveMobile(final String phone,String parcelCode) {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setConfirmText("Có")
+                .setTitleText("Thông báo")
+                .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
+                .setCancelText("Không")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        mPresenter.updateMobile(phone,parcelCode);
+                        sweetAlertDialog.dismiss();
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        showCallSuccess();
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
+    }
+
     public void scanQr() {
         mPresenter.showBarcode(new BarCodeCallback() {
             @Override
             public void scanQrcodeResponse(String value) {
-               /* edtSearch.setQuery(value, true);
-                addNewRow();*/
-                getQuery(value);
+                edtSearch.setText(value);
             }
         });
     }
 
-    @OnClick({R.id.img_send, R.id.img_search, R.id.img_capture, R.id.img_back})
-//R.id.btn_confirm_all,R.id.tv_bag, R.id.tv_shift,
+    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search,R.id.img_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-           /* case R.id.img_capture:
-                scanQr();
-                break;*/
-          /*  case R.id.btn_confirm_all:
-                submit();
-                break;*/
-          /*  case R.id.tv_bag:
-                showUIBag();
-                break;*/
             case R.id.img_back:
                 mPresenter.back();
                 break;
-          /*  case R.id.tv_shift:
-                showUIShift();
-                break;*/
             case R.id.img_send:
                 submit();
                 break;
-            case R.id.img_search:
-                String parcelCode = edtParcelCode.getText().toString();
-                if (TextUtils.isEmpty(parcelCode)) {
-                    Toast.showToast(getActivity(), "Chưa nhập bưu gửi");
-                    return;
-                }
-                getQuery(parcelCode);
+            case R.id.tv_search:
+                showDialog();
                 break;
             case R.id.img_capture:
                 scanQr();
@@ -255,36 +277,63 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         }
     }
 
+    private void showDialog() {
+        new CreateBangKeSearchDialog(getActivity(), calendar, new CreatebangKeSearchCallback() {
+
+            @Override
+            public void onResponse(String fromDate, String toDate, String chuyenThu) {
+                mFromDate = fromDate;
+                mToDate = toDate;
+                mChuyenThu = chuyenThu;
+                searchLadingBd13(fromDate, toDate, chuyenThu);
+            }
+        }).show();
+    }
+
+    private void showDialogConfirm(long quantity, long totalAmount) {
+        new CreatedBd13Dialog(getActivity(), quantity, totalAmount, new CreatedBD13Callback() {
+
+            @Override
+            public void onResponse() {
+                final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+                Bd13Create bd13Create = new Bd13Create();
+                List<Integer> ids = new ArrayList<>();
+                for (DeliveryPostman i : deliveryPostmans)
+                {
+                    ids.add(i.getId());
+                }
+                bd13Create.setIds(ids);
+                bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
+                bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
+                bd13Create.setPostmanCode(userInfo.getUserName());
+                bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
+
+                String json = NetWorkController.getGson().toJson(bd13Create);
+                Log.d("JSON POST ====>", json);
+
+                mPresenter.postBD13AddNew(bd13Create);
+            }
+        }).show();
+    }
+
+    private void searchLadingBd13(String fromDate, String toDate, String chuyenThu) {
+        DingDongGetLadingCreateBD13Request objRequest = new DingDongGetLadingCreateBD13Request();
+        objRequest.setFromDate(Integer.parseInt(fromDate));
+        objRequest.setToDate(Integer.parseInt(toDate));
+        objRequest.setMailtripNumber(chuyenThu);
+        objRequest.setPoDeliveryCode(userInfo.getUnitCode());
+        objRequest.setPostmanCode(userInfo.getUserName());
+        objRequest.setRouteDeliveryCode(routeInfo.getRouteCode());
+        mPresenter.searchLadingBd13(objRequest);
+    }
+
     private void submit() {
-        if (mBag.equals("0")) {
-            Toast.showToast(getActivity(), "Bạn chưa chọn số túi");
-            return;
+        final List<DeliveryPostman> deliveryPostmamns = mAdapter.getItemsSelected();
+        long totalAmount = 0;
+        for (DeliveryPostman i : deliveryPostmamns) {
+            totalAmount = totalAmount + i.getAmount();
         }
-        if (TextUtils.isEmpty(mShift)) {
-            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
-            Utilities.showUIShift(getActivity());
-            return;
-        }
-        if (mList.isEmpty()) {
-            Toast.showToast(getActivity(), "Bạn chưa nhập bưu gửi");
-            return;
-        }
-        Bd13Create bd13Create = new Bd13Create();
-        bd13Create.setListCode(mList);
-        bd13Create.setBagNumber(mBag);
-        bd13Create.setChuyenThu(mChuyenThu);
-        bd13Create.setShift(mShift);
-        SharedPref sharedPref = new SharedPref(getActivity());
-        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        if (!posOfficeJson.isEmpty()) {
-            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-            bd13Create.setDeliveryPOCode(postOffice.getCode());
-//            bd13Create.setRoutePOCode(postOffice.getRouteCode());
-//            bd13Create.setSignature(Utils.SHA256(postOffice.getCode() + postOffice.getRouteCode() + BuildConfig.PRIVATE_KEY).toUpperCase());
-        }
-        String json = NetWorkController.getGson().toJson(bd13Create);
-        Log.d("JSON POST ====>", json);
-        mPresenter.postBD13AddNew(bd13Create);
+        showDialogConfirm(deliveryPostmamns.size(), totalAmount);
     }
 
     private void showUIBag() {
@@ -350,11 +399,51 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            mPresenter.back();
-
+                            mList.clear();
+                            searchLadingBd13(mFromDate, mToDate, mChuyenThu);
                         }
                     }).show();
         }
+    }
+
+    @Override
+    public void showListSuccess(ArrayList<DeliveryPostman> list) {
+        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+        long totalAmount = 0;
+        for (DeliveryPostman i : list) {
+            mList.add(i);
+            totalAmount = totalAmount + i.getAmount();
+        }
+        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showListEmpty() {
+
+    }
+
+    @Override
+    public void showCallSuccess() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+        startActivity(intent);
+    }
+
+    @Override
+    public void showSuccess() {
+//        mPresenter.back();
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public void showView() {
+
     }
 
     @Override

@@ -1,75 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80000000">
-
-    <androidx.cardview.widget.CardView
-        style="@style/MyCardViewStyle"
+    android:background="#80000000"
+    android:clickable="true"
+    android:focusable="true">
+<!--    <ImageView-->
+<!--        android:id="@+id/btnBack"-->
+<!--        android:layout_width="@dimen/size_50dp"-->
+<!--        android:layout_height="@dimen/size_50dp"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_margin="@dimen/size_10dp"-->
+<!--        android:src="@drawable/ic_cancel" />-->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/size_16dp">
+        android:layout_margin="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:orientation="vertical">
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            style="@style/alert_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_header_common"
+            android:padding="@dimen/dimen_10dp"
+            android:text="Xác nhận lập bản kê BD13"
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_radius_bottom_common"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/layout_date_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/size_16dp">
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:orientation="vertical">
 
-
-                <ImageView
-                    android:id="@+id/tv_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_50dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_smart_connect" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:text="SĐT"
+                        android:text="Tổng món"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textSize="@dimen/text_size_16sp" />
 
-                    <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_update_phone"
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_quantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="100"
+                        android:gravity="center"
                         android:layout_alignParentRight="true"
-                        android:padding="@dimen/_5sdp"
-                        android:text="Cập nhật"
-                        android:textColor="@color/color_5f2f75"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
                 </RelativeLayout>
 
 
-                <com.ems.dingdong.views.CustomEditText
-                    android:id="@+id/edt_phone"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Nhập số điện thoại"
-                    android:textColor="@color/color_5f2f75"
-                    android:textSize="@dimen/text_size_18sp" />
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:gravity="center">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng tiền"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_total_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1000000"
+                        android:gravity="center"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
+                </RelativeLayout>
             </LinearLayout>
 
             <View
+                style="@style/Devider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="@dimen/size_16dp"
-                android:layout_marginRight="@dimen/size_16dp"
-                android:background="@color/gray" />
+                android:layout_marginTop="@dimen/dimen_8dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,7 +106,7 @@
                 android:padding="@dimen/dimen_10dp">
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_update"
+                    android:id="@+id/tv_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
@@ -89,7 +116,7 @@
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Gọi"
+                    android:text="Xác nhận"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -110,5 +137,6 @@
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 </RelativeLayout>
