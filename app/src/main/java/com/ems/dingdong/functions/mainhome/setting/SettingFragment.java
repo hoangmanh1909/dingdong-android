@@ -117,4 +117,5 @@ public class SettingFragment extends ViewFragment<SettingContract.Presenter> imp
             }
         }).show();
     }
+
 }

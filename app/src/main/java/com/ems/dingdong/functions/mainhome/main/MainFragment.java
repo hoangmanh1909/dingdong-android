@@ -244,4 +244,51 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 break;
         }
     }
+
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
+        String accInfo = "";
+        if (userInfo != null) {
+
+            if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
+                tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+            }
+            if (!TextUtils.isEmpty(userInfo.getBalance())) {
+                tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
+            }
+            if (!TextUtils.isEmpty(userInfo.getFullName())) {
+                accInfo = userInfo.getFullName();
+            }
+        }
+        if(routeInfo != null){
+            if(!TextUtils.isEmpty(routeInfo.getRouteName())){
+                accInfo += " - " + routeInfo.getRouteName();
+            }
+        }
+
+        if(postOffice != null){
+            if(!TextUtils.isEmpty(postOffice.getName())){
+                accInfo += " - " + postOffice.getName();
+            }
+        }
+
+        tvAccInfo.setText(accInfo);
+    }
 }
