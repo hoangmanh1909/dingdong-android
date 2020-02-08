@@ -86,6 +86,14 @@
                 tools:text="Đỗ thị thu thủy/59000 - 0912347775" />
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contact_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

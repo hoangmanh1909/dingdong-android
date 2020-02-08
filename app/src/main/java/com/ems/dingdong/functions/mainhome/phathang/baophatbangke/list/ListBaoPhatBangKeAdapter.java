@@ -120,6 +120,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         CustomBoldTextView tvStt;
         @BindView(R.id.tv_code)
         CustomTextView tvCode;
+        @BindView(R.id.tv_phone)
+        CustomTextView tvPhone;
         @BindView(R.id.tv_date)
         CustomTextView tvDate;
         @BindView(R.id.tv_contactName)
@@ -150,7 +152,16 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
-            tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
+            tvContactName.setText(String.format("%s", item.getReceiverName()));
+            tvPhone.setText(item.getReceiverPhone());
+
+            tvPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
             tvContactAddress.setText(item.getReceiverAddress());
             tvAutoCall.setText(String.format("Auto call: %s", item.getAutoCallStatus()));
             if (mType == 3) {
@@ -194,7 +205,6 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             } else {
                 ivStatus.setVisibility(View.VISIBLE);
             }
-
         }
     }
 
