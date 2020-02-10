@@ -49,4 +49,17 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
                 status, paymentChannel, deliveryType, signatureCapture,
                 note,collectAmount, commonCallback);
     }
+
+    @Override
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                ladingCode, callback);
+    }
+
+    @Override
+    public void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
+        NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
+    }
+
+
 }

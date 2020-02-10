@@ -13,6 +13,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 
+import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -31,6 +33,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
     private final FilterDone mFilterDone;
     private List<CommonObject> mListFilter;
     private List<CommonObject> mList;
+    Context mContext;
 
     public ListBaoPhatBangKeAdapter(Context context, int type, List<CommonObject> items, FilterDone filterDone) {
 
@@ -38,7 +41,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
-
+        mContext = context;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         }
         return commonObjectsSelected;
     }
+
 
     @Override
     public Filter getFilter() {
@@ -124,6 +128,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         CustomTextView tvDate;
         @BindView(R.id.tv_contactName)
         CustomTextView tvContactName;
+        @BindView(R.id.tv_contactPhone)
+        CustomTextView tvContactPhone;
         @BindView(R.id.tv_contact_address)
         CustomTextView tvContactAddress;
         @BindView(R.id.tv_contact_description)
@@ -148,7 +154,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
-            tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
+            tvContactName.setText(item.getReceiverName() + " - ");
+            tvContactPhone.setText(item.getReceiverPhone());
             tvContactAddress.setText(item.getReceiverAddress());
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
@@ -187,6 +194,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             } else {
                 ivStatus.setVisibility(View.VISIBLE);
             }
+
 
         }
     }

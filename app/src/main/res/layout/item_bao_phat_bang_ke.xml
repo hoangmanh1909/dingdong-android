@@ -38,6 +38,7 @@
                     android:id="@+id/tv_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Mã vận đơn"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/text_size_14sp" />
 
@@ -52,13 +53,32 @@
                     android:textSize="@dimen/text_size_14sp" />
             </RelativeLayout>
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_contactName"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+                android:orientation="horizontal">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_contactName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:text="Họ và tên"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_contactPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tv_contactName"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:textColor="@color/blue"
+                    android:text="Số điện thoại"
+                    android:textSize="@dimen/text_size_12sp" />
+            </RelativeLayout>
+
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contact_address"

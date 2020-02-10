@@ -41,6 +41,11 @@ interface ListBaoPhatBangKeContract {
                              String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
                              String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
                              String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback);
+        void callForwardCallCenter(String callerNumber, String calleeNumber,
+                                   String callForwardType, String hotlineNumber,
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
+        void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -52,6 +57,8 @@ interface ListBaoPhatBangKeContract {
         void showSuccessMessage(String message);
 
         void showResponseSuccessEmpty();
+        void showCallSuccess();
+        void showView();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -75,6 +82,10 @@ interface ListBaoPhatBangKeContract {
         void showBarcode(BarCodeCallback barCodeCallback);
 
         int getPositionTab();
+
+        void callForward(String phone,String code);
+        void updateMobile(String phone,String code);
+
     }
 }
 

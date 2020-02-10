@@ -269,5 +269,55 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return mPos;
     }
 
+    @Override
+    public void callForward(String phone,String code) {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String callerNumber = "";
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            callerNumber = userInfo.getMobileNumber();
+        }
+        String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        mView.showProgress();
+        String ladingCode =  code;
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showCallSuccess();
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
 
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void updateMobile(String phone,String code) {
+        mView.showProgress();
+        mInteractor.updateMobile(code, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showView();
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+            }
+        });
+    }
 }

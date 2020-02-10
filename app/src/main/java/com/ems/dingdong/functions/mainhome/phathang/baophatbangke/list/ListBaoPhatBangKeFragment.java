@@ -1,7 +1,9 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -22,9 +24,11 @@ import com.ems.dingdong.callback.BaoPhatBangKeFailCallback;
 import com.ems.dingdong.callback.BaoPhatbangKeConfirmCallback;
 import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.BaoPhatBangKeConfirmDialog;
 import com.ems.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
+import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ReasonInfo;
@@ -40,6 +44,7 @@ import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.R;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -93,7 +98,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private boolean isLoading = false;
     private String mChuyenThu = "0";
     private String mTuiSo = "0";
-
+    private PhoneConectDialog mPhoneConectDialog;
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
     }
@@ -153,6 +158,24 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         }
                     }
                 });
+                holder.tvContactPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        mPhoneConectDialog = new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone(), new PhoneCallback() {
+                            @Override
+                            public void onCallResponse(String phone) {
+                                mPresenter.callForward(phone, mList.get(position).getCode());
+                            }
+
+                            @Override
+                            public void onUpdateResponse(String phone) {
+                                showConfirmSaveMobile(phone, mList.get(position).getCode());
+                            }
+                        });
+                        mPhoneConectDialog.show();
+                    }
+                });
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
@@ -196,6 +219,29 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             mAdapter.notifyDataSetChanged();
         });
+    }
+
+    private void showConfirmSaveMobile(final String phone,String code) {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setConfirmText("Có")
+                .setTitleText("Thông báo")
+                .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
+                .setCancelText("Không")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        mPresenter.updateMobile(phone,code);
+                        sweetAlertDialog.dismiss();
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        showCallSuccess();
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
     }
 
     private void refreshSearch() {
@@ -365,6 +411,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
         isLoading = false;
+    }
+
+    @Override
+    public void showCallSuccess() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+        startActivity(intent);
+    }
+
+    @Override
+    public void showView() {
+        mPhoneConectDialog.updateText();
     }
 
     @Override
