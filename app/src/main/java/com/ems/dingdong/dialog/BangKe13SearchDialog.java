@@ -66,13 +66,16 @@ public class BangKe13SearchDialog extends Dialog implements DatePickerDialog.OnD
             calCreate = Calendar.getInstance();
         tvDateCreate.setText(TimeUtils.convertDateToString(calCreate.getTime(), TimeUtils.DATE_FORMAT_5));
         SharedPref sharedPref= new SharedPref(mActivity);
+
         List<ShiftInfo> list= sharedPref.getListShift();
         for (ShiftInfo item :list)
         {
             items.add(new Item(item.getShiftId(), item.getShiftName()));
         }
         tvShift.setText(items.get(0).getText());
+
         mItem = items.get(0);
+
         mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//String.format("%s", 5000 + calendar.get(Calendar.DATE));
         edtChuyenthu.setText(mChuyenThu);
         tvBag.setText(mBag);

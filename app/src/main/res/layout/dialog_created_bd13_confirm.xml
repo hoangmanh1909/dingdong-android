@@ -23,6 +23,7 @@
 
         <com.ems.dingdong.views.CustomBoldTextView
             style="@style/alert_dialog"
+            android:id="@+id/tbv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_header_common"
@@ -97,6 +98,78 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="@dimen/dimen_8dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_cancel_bd13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text="Lý do hủy"
+                        android:textColor="#253854"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_cancel_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formHint="Chọn lý do"
+                        app:formShowUnderline="false" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text="Ghi chú"
+                        android:textColor="#253854"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/tv_Description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formHint="Ghi chú"
+                        app:formShowUnderline="false"/>
+                </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/dimen_8dp"/>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

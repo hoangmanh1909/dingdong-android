@@ -72,16 +72,6 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    List<DeliveryPostman> mList = new ArrayList<>();
-    CreateBd13Adapter mAdapter;
-    private boolean isLoading = false;
-    /*    @BindView(R.id.tv_bag)
-        FormItemTextView tvBag;
-        @BindView(R.id.tv_shift)
-        FormItemTextView tvShift;
-        @BindView(R.id.tv_chuyenthu)
-        TextView tvChuyenthu;*/
-
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
     @BindView(R.id.edt_search)
@@ -90,12 +80,18 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "0";
     private ItemBottomSheetPickerUIFragment pickerShift;
     private String mShift;
     private String mChuyenThu = "";
     private Calendar calendar;
+
+    List<DeliveryPostman> mList = new ArrayList<>();
+    CreateBd13Adapter mAdapter;
+    private boolean isLoading = false;
+
     String mFromDate = "";
     String mToDate = "";
     String mPhone = "";
@@ -135,7 +131,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         }
 
 
-        mAdapter = new CreateBd13Adapter(getActivity(), mList, new CreateBd13Adapter.FilterDone() {
+        mAdapter = new CreateBd13Adapter(getActivity(),1, mList, new CreateBd13Adapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
                 new Handler().postDelayed(new Runnable() {
@@ -189,6 +185,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
+
         calendar = Calendar.getInstance();
 
         String toDay = TimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -291,10 +288,10 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     private void showDialogConfirm(long quantity, long totalAmount) {
-        new CreatedBd13Dialog(getActivity(), quantity, totalAmount, new CreatedBD13Callback() {
+        new CreatedBd13Dialog(getActivity(),0, quantity, totalAmount, new CreatedBD13Callback() {
 
             @Override
-            public void onResponse() {
+            public void onResponse(String cancelType,String des) {
                 final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
                 Bd13Create bd13Create = new Bd13Create();
                 List<Integer> ids = new ArrayList<>();

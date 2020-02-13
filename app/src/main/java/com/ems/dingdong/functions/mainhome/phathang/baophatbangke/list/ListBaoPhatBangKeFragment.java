@@ -1,7 +1,9 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 
@@ -21,13 +23,19 @@ import com.ems.dingdong.callback.BaoPhatBangKeFailCallback;
 import com.ems.dingdong.callback.BaoPhatbangKeConfirmCallback;
 import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.BaoPhatBangKeConfirmDialog;
 import com.ems.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
+import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -38,9 +46,11 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.R;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,25 +71,27 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.tv_nodata)
-    TextView tvNodata;
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
-    @BindView(R.id.tv_count)
-    TextView tvCount;
-    @BindView(R.id.tv_amount)
-    TextView tvAmount;
-    @BindView(R.id.btn_confirm_all)
-    TextView btnConfirmAll;
-
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mRefresh;
+    @BindView(R.id.tv_count)
+    CustomBoldTextView tvCount;
+    @BindView(R.id.tv_amount)
+    CustomBoldTextView tvAmount;
 
-    ArrayList<CommonObject> mList;
-    private ListBaoPhatBangKeAdapter mAdapter;
-    private UserInfo mUserInfo;
+//    @BindView(R.id.btn_confirm_all)
+//    TextView btnConfirmAll;
+
+//    @BindView(R.id.swipe_refresh)
+//    SwipeRefreshLayout mRefresh;
+
+    ArrayList<DeliveryPostman> mList;
+    private CreateBd13Adapter mAdapter;
+    UserInfo mUserInfo;
+    PostOffice postOffice;
+    RouteInfo routeInfo;
+
     private String mDate;
     private Calendar mCalendar;
     private ArrayList<ReasonInfo> mListReason;
@@ -92,6 +104,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private boolean isLoading = false;
     private String mChuyenThu = "0";
     private String mTuiSo = "0";
+    String mFromDate = "";
+    String mToDate = "";
+    String mPhone = "";
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -117,7 +132,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
-        mAdapter = new ListBaoPhatBangKeAdapter(getActivity(), mPresenter.getType(), mList, new ListBaoPhatBangKeAdapter.FilterDone() {
+        mAdapter = new CreateBd13Adapter(getActivity(),2, mList, new CreateBd13Adapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
                 new Handler().postDelayed(new Runnable() {
@@ -130,8 +145,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                 e.printStackTrace();
                             }
                         }
-                        tvCount.setText(String.format(" %s", count + ""));
-                        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+                        tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
+                        tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
                     }
                 }, 1000);
 
@@ -146,8 +161,25 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         if (TextUtils.isEmpty(edtSearch.getText().toString())) {
                             showViewDetail(mList.get(position));
                         } else {
-                            showViewDetail(mAdapter.getListFilter().get(position));
+//                            showViewDetail(mAdapter.getListFilter().get(position));
                         }
+                    }
+                });
+                ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                            @Override
+                            public void onCallResponse(String phone) {
+                                mPhone = phone;
+                                mPresenter.callForward(phone,mList.get(position).getMaE());
+                            }
+
+                            @Override
+                            public void onUpdateResponse(String phone) {
+                                showConfirmSaveMobile(phone,mList.get(position).getMaE());
+                            }
+                        }).show();
                     }
                 });
             }
@@ -156,10 +188,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
         mPresenter.getReasons();
         EventBus.getDefault().register(this);
         edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
@@ -182,15 +221,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         //initSearch();
-        mRefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        mRefresh.setRefreshing(true);
-                        refreshSearch();
-                    }
-                }
-        );
+//        mRefresh.setOnRefreshListener(
+//                new SwipeRefreshLayout.OnRefreshListener() {
+//                    @Override
+//                    public void onRefresh() {
+//                        mRefresh.setRefreshing(true);
+//                        refreshSearch();
+//                    }
+//                }
+//        );
         List<ShiftInfo> list = sharedPref.getListShift();
         int time = Integer.parseInt(DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT7));
         for (ShiftInfo item : list) {
@@ -203,20 +242,42 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
 
         }
-        text1 = "Bản kê đi phát (BD13)";
-        CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
-        tvTitle.setText(finalText);
+//        text1 = "Bản kê đi phát (BD13)";
+//        CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
+//        tvTitle.setText(finalText);
     }
 
+    private void showConfirmSaveMobile(final String phone,String parcelCode) {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setConfirmText("Có")
+                .setTitleText("Thông báo")
+                .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
+                .setCancelText("Không")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        mPresenter.updateMobile(phone,parcelCode);
+                        sweetAlertDialog.dismiss();
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        showCallSuccess();
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
+    }
     private void refreshSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             isLoading = true;
 
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo,routeInfo.getRouteCode());
         }
     }
 
-    private void showViewDetail(CommonObject baoPhatBd) {
+    private void showViewDetail(DeliveryPostman baoPhatBd) {
         mPresenter.showDetailView(baoPhatBd);
     }
 
@@ -243,9 +304,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mShiftName = shiftName;
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
-                    CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
-                    tvTitle.setText(finalText);
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo);
+//                    CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
+//                    tvTitle.setText(finalText);
+                    mList.clear();
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo,routeInfo.getRouteCode());
 
                 }
             }).show();
@@ -260,13 +322,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void initSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-            isLoading = true;
-
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0");
+//            isLoading = true;
+            mList.clear();
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0",routeInfo.getRouteCode());
         }
     }
 
-    @OnClick({R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.tv_search})
+//    @OnClick({R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.tv_search})
+    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search,R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -277,7 +340,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
                 });
                 break;
-
+            case R.id.img_send:
+                submit();
+                break;
             case R.id.tv_search:
                 showDialog();
                 break;
@@ -294,56 +359,24 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void submit() {
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
-            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
-            Utilities.showUIShift(getActivity());
-            return;
-        }
-        final List<CommonObject> commonObjects = mAdapter.getItemsSelected();
+        final List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
         if (commonObjects.isEmpty()) {
             Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
             return;
         }
-        if (commonObjects.size() == 1) {
-            showViewDetail(commonObjects.get(0));
-        } else {
-            new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
-                @Override
-                public void onResponse(int deliveryType) {
-                    if (deliveryType == 2) {
-                        //next view
-                        for (CommonObject item : commonObjects) {
-                            item.setDeliveryType("2");
-
-                        }
-                        mPresenter.nextReceverPerson(commonObjects);
-                    } else {
-                        //show dialog
-                        if (mListReason != null) {
-                            new BaoPhatBangKeFailDialog(getActivity(), mListReason, new BaoPhatBangKeFailCallback() {
-                                @Override
-                                public void onResponse(String reason, String solution, String note, String sign) {
-                                    mPresenter.submitToPNS(commonObjects, reason, solution, note, sign);
-                                }
-                            }).show();
-                        } else {
-                            Toast.showToast(getActivity(), "Đang lấy dữ liệu");
-                        }
-
-                    }
-                }
-            }).show();
+        else {
+            mPresenter.showConfirmDelivery(commonObjects);
         }
     }
 
-    @Override
-    public void showResponseSuccess(ArrayList<CommonObject> list) {
-        mRefresh.setRefreshing(false);
-        mList.clear();
-        long amount = 0;
-        for (CommonObject item : list) {
-            item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5,
-                    DateTimeUtils.SIMPLE_DATE_FORMAT) + " - " + mShiftName);
+//    @Override
+//    public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
+//        mRefresh.setRefreshing(false);
+//        mList.clear();
+//        long amount = 0;
+//        for (DeliveryPostman item : list) {
+//            item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5,
+//                    DateTimeUtils.SIMPLE_DATE_FORMAT) + " - " + mShiftName);
             /*if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 if (item.getStatus().equals("N")) {
                     mList.add(item);
@@ -357,21 +390,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         amount += Long.parseLong(item.getAmount());
                 }
             }*/
-            mList.add(item);
-            if (!TextUtils.isEmpty(item.getAmount()))
-                amount += Long.parseLong(item.getAmount());
+//            mList.add(item);
+//            if (!TextUtils.isEmpty(item.getAmount()))
+//                amount += Long.parseLong(item.getAmount());
 
 
-        }
-        mAdapter.notifyDataSetChanged();
-        tvCount.setText(String.format(" %s", mList.size()));
-        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
-        isLoading = false;
-    }
+//        }
+//        mAdapter.notifyDataSetChanged();
+//        tvCount.setText(String.format(" %s", mList.size()));
+//        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+//        isLoading = false;
+//    }
 
     @Override
     public void showResponseSuccessEmpty() {
-        mRefresh.setRefreshing(false);
+//        mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
         mAdapter.notifyDataSetChanged();
@@ -381,9 +414,35 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
+    public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
+        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+        long totalAmount = 0;
+        for (DeliveryPostman i : list) {
+            mList.add(i);
+            totalAmount = totalAmount + i.getAmount();
+        }
+        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showListSuccess(ArrayList<DeliveryPostman> list) {
+        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+        long totalAmount = 0;
+        for (DeliveryPostman i : list) {
+            mList.add(i);
+            totalAmount = totalAmount + i.getAmount();
+        }
+        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void showError(String message) {
         if (getActivity() != null) {
-            mRefresh.setRefreshing(false);
+//            mRefresh.setRefreshing(false);
             if (mCountSearch != 0) {
                 Toast.showToast(getActivity(), message);
             }
@@ -403,6 +462,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
+    public void showCallSuccess() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+        startActivity(intent);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
@@ -419,13 +485,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void setSubmitAll() {
-        btnConfirmAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submit();
-            }
-        });
-        btnConfirmAll.performClick();
+//        btnConfirmAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                submit();
+//            }
+//        });
+//        btnConfirmAll.performClick();
     }
 
 }

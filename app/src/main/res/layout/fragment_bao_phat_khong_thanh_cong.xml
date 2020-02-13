@@ -169,8 +169,7 @@
                         android:layout_gravity="left"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Ghi chú
-"
+                        android:text="Ghi chú"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 

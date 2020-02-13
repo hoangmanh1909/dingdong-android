@@ -180,7 +180,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     }
 
 
-
     void setupAdapter() {
         adapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override

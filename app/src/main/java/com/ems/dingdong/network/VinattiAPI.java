@@ -23,12 +23,14 @@ import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
+import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,22 +95,26 @@ public interface VinattiAPI {
                                                            @Field("Status") String status,
                                                            @Field("FromAssignDate") String fromAssignDate,
                                                            @Field("ToAssignDate") String toAssignDate);
+
     @FormUrlEncoded
     @POST("api/Collect/SearchOrderPostmanCollectAll")
     Call<CommonObjectListResult> searchAllOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
-                                                           @Field("OrderID") String orderID,
-                                                           @Field("PostmanID") String postmanID,
-                                                           @Field("Status") String status,
-                                                           @Field("FromAssignDate") String fromAssignDate,
-                                                           @Field("ToAssignDate") String toAssignDate);
+                                                              @Field("OrderID") String orderID,
+                                                              @Field("PostmanID") String postmanID,
+                                                              @Field("Status") String status,
+                                                              @Field("FromAssignDate") String fromAssignDate,
+                                                              @Field("ToAssignDate") String toAssignDate);
 
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryPostman")
-    Call<CommonObjectListResult> searchDeliveryPostman(@Field("PostmanId") String postmanID,
+    Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
                                                        @Field("FromDate") String fromDate,
+                                                       @Field("ToDate") String toDate,
                                                        @Field("ShiftID") String shiftID,
+                                                       @Field("Status") String status,
                                                        @Field("ChThu") String chuyenthu,
-                                                       @Field("TuiSo") String tuiso);
+                                                       @Field("TuiSo") String tuiso,
+                                                       @Field("RouteCode") String routeCode);
 
 
     @FormUrlEncoded
@@ -268,7 +274,8 @@ public interface VinattiAPI {
                                                                 @Field("FromDate") String fromDate,
                                                                 @Field("ToDate") String toDate,
                                                                 @Field("IsSuccess") boolean isSuccess
-                                                                );
+    );
+
     @FormUrlEncoded
     @POST("api/DingDong/GetMainview")
     Call<HomeCollectInfoResult> getHomeData(@Field("FromDate") String fromDate,
@@ -278,4 +285,16 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/GetLadingCreateBD13")
     Call<DeliveryPostmanResponse> searchLadingCreatedBd13(@Body DingDongGetLadingCreateBD13Request request);
+
+    @FormUrlEncoded
+    @POST("api/DingDong/GetCancelDelivery")
+    Call<DingDongGetCancelDeliveryResponse> getCancelDelivery(
+            @Field("PostmanCode") String postmanCode,
+            @Field("RouteCode") String routeCode,
+            @Field("LadingCode") String ladingCode,
+            @Field("FromDate") String fromDate,
+            @Field("ToDate") String toDate);
+
+    @POST("api/DingDong/CancelDelivery")
+    Call<SimpleResult> cancelDelivery(@Body List<DingDongCancelDeliveryRequest> taskRequest);
 }

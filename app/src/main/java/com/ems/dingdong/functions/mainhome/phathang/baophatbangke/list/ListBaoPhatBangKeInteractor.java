@@ -7,6 +7,7 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -25,8 +26,8 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso, callback);
+    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso,String routeCode, CommonCallback<DeliveryPostmanResponse> callback) {
+        NetWorkController.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso,routeCode, callback);
     }
 
     @Override
@@ -43,5 +44,16 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     @Override
     public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         NetWorkController.pushToPNSDelivery(request, callback);
+    }
+
+    @Override
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                ladingCode, callback);
+    }
+
+    @Override
+    public void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
+        NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
     }
 }

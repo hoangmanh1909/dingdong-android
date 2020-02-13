@@ -11,6 +11,7 @@ import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
@@ -20,6 +21,7 @@ import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
+import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
@@ -178,8 +180,12 @@ public class NetWorkController {
 
     public static void searchDeliveryPostman(String postmanID,
                                              String fromDate,
-                                             String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso);
+                                             String shiftID,
+                                             String chuyenthu,
+                                             String tuiso,
+                                             String routeCode,
+                                             CommonCallback<DeliveryPostmanResponse> callback) {
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate,fromDate, shiftID,"", chuyenthu, tuiso,routeCode);
         call.enqueue(callback);
     }
 
@@ -397,4 +403,14 @@ public class NetWorkController {
         Call<DeliveryPostmanResponse> call = getAPIBuilder().searchLadingCreatedBd13(objRequest);
         call.enqueue(callback);
     }
+    public static void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> callback) {
+        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode,routeCode,ladingCode,fromDate,toDate);
+        call.enqueue(callback);
+    }
+
+    public static void cancelDelivery(List<DingDongCancelDeliveryRequest> request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
+        call.enqueue(callback);
+    }
+
 }

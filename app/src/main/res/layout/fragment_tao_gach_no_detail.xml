@@ -745,6 +745,16 @@
 
                         </LinearLayout>
 
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Địa chỉ"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
                     </LinearLayout>
 
                     <View
@@ -757,16 +767,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Địa chỉ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
 
                         <com.ems.dingdong.views.CustomTextView
                             android:id="@+id/tv_ReciverAddress"

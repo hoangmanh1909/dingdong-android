@@ -34,11 +34,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
     private List<DeliveryPostman> mListFilter;
     private List<DeliveryPostman> mList;
+    private final int mType;
 
-    public CreateBd13Adapter(Context context, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
+    public CreateBd13Adapter(Context context,int type, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
+        mType = type;
     }
 
     @Override
@@ -115,29 +117,29 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                     }
                     mFilterDone.getCount(mListFilter.size(), amount);
                 }
-                notifyDataSetChanged();
+                 notifyDataSetChanged();
             }
         };
     }
 
-    class HolderView extends RecyclerView.ViewHolder {
+    public class HolderView extends RecyclerView.ViewHolder {
 
         @BindView(R.id.cb_selected)
-        CheckBox cb_selected;
+        public CheckBox cb_selected;
         @BindView(R.id.tv_code)
-        CustomBoldTextView tv_code;
+        public CustomBoldTextView tv_code;
         @BindView(R.id.img_ContactPhone)
-        ImageView img_ContactPhone;
+        public ImageView img_ContactPhone;
         @BindView(R.id.tv_sender)
-        CustomTextView tv_sender;
+        public CustomTextView tv_sender;
         @BindView(R.id.tv_receiver)
-        CustomTextView tv_receiver;
+        public CustomTextView tv_receiver;
         @BindView(R.id.tv_weight)
-        CustomTextView tv_weight;
+        public CustomTextView tv_weight;
         @BindView(R.id.tv_COD)
-        CustomTextView tv_COD;
+        public CustomTextView tv_COD;
         @BindView(R.id.tv_fee)
-        CustomTextView tv_fee;
+        public CustomTextView tv_fee;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -168,7 +170,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
     }
 
 
-    interface FilterDone {
+    public interface FilterDone {
         void getCount(int count, long amount);
     }
 }

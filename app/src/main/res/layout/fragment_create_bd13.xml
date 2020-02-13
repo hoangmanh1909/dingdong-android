@@ -113,7 +113,7 @@
             <com.ems.dingdong.views.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Tìm kiếm nhanh bừu gửi"
+                android:text="Tìm kiếm nhanh bưu gửi"
                 android:textColor="@color/black">
 
             </com.ems.dingdong.views.CustomTextView>
