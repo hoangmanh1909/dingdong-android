@@ -265,6 +265,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     @Override
     public void showView(String message) {
         Toast.showToast(getContext(),message);
+        mList.clear();
         getCancelDelivery(mFromDate,mToDate,"");
     }
 

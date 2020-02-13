@@ -3,6 +3,24 @@ package com.ems.dingdong.model;
 import com.google.gson.annotations.SerializedName;
 
 public class RouteInfo {
+
+    @SerializedName("RouteCode")
+    private String RouteCode;
+    @SerializedName("RouteName")
+    private String RouteName;
+    @SerializedName("RouteId")
+    private  String RouteId;
+    @SerializedName("RouteType")
+    private  String RouteType;
+
+    public String getRouteType() {
+        return RouteType;
+    }
+
+    public void setRouteType(String routeType) {
+        RouteType = routeType;
+    }
+
     public String getRouteCode() {
         return RouteCode;
     }
@@ -11,8 +29,6 @@ public class RouteInfo {
         RouteCode = routeCode;
     }
 
-    @SerializedName("RouteCode")
-    private String RouteCode;
 
     public String getRouteName() {
         return RouteName;
@@ -22,11 +38,7 @@ public class RouteInfo {
         RouteName = routeName;
     }
 
-    @SerializedName("RouteName")
-    private String RouteName;
 
-    @SerializedName("RouteId")
-    private  String RouteId;
 
     public String getRouteId() {
         return RouteId;

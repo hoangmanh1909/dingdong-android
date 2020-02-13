@@ -206,32 +206,28 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.8"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Lý do"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.ems.dingdong.views.CustomAutoCompleteTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_reason"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1.2"
-                        android:background="@color/transparent"
-                        android:drawableRight="@drawable/ic_arrow_down"
-                        android:drawablePadding="@dimen/dimen_5dp"
-                        android:gravity="right|center"
-                        android:hint="Chọn lý do"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn lý do" />
 
                 </LinearLayout>
 
@@ -243,32 +239,28 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.8"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Phương án xử lý"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.ems.dingdong.views.CustomAutoCompleteTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_solution"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1.2"
-                        android:background="@color/transparent"
-                        android:drawableRight="@drawable/ic_arrow_down"
-                        android:drawablePadding="@dimen/dimen_5dp"
-                        android:gravity="right|center"
-                        android:hint="Chọn phương án"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn phương án" />
 
                 </LinearLayout>
 
@@ -319,32 +311,28 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.8"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Chọn tuyến"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.ems.dingdong.views.CustomAutoCompleteTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_route"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1.2"
-                        android:background="@color/transparent"
-                        android:drawableRight="@drawable/ic_arrow_down"
-                        android:drawablePadding="@dimen/dimen_5dp"
-                        android:gravity="right|center"
-                        android:hint="Chọn tuyến"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn tuyến" />
 
                 </LinearLayout>
 
@@ -356,32 +344,28 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.8"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Bưu tá"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.ems.dingdong.views.CustomAutoCompleteTextView
+                    <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_postman"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1.2"
-                        android:background="@color/transparent"
-                        android:drawableRight="@drawable/ic_arrow_down"
-                        android:drawablePadding="@dimen/dimen_5dp"
-                        android:gravity="right|center"
-                        android:hint="Chọn bưu tá"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn bưu tá" />
 
                 </LinearLayout>
 
@@ -410,6 +394,27 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_signed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:id="@+id/img_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_20dp"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_20dp"
+                    android:paddingBottom="@dimen/dimen_5dp" />
+
+
             </LinearLayout>
 
             <com.ems.dingdong.views.CustomTextView

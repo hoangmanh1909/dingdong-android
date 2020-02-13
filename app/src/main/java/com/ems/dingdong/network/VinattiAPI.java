@@ -14,6 +14,7 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -297,4 +298,7 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/CancelDelivery")
     Call<SimpleResult> cancelDelivery(@Body List<DingDongCancelDeliveryRequest> taskRequest);
+
+    @GET("api/Dictionary/GetDeliveryRoute")
+    Call<RouteInfo> getDeliveryRoute(@Query("poCode") String poCode);
 }
