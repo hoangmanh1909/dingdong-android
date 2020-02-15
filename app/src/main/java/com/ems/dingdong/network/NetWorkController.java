@@ -4,12 +4,15 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
@@ -412,5 +415,17 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
         call.enqueue(callback);
     }
+    public static void getDeliveryRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
+        Call<RouteInfoResult> call = getAPIBuilder().getDeliveryRoute(poCode);
+        call.enqueue(callback);
+    }
+    public static void getPostmanByRoute(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
+        Call<UserInfoResult> call = getAPIBuilder().getPostmanByRoute(poCode,routeId,routeType);
+        call.enqueue(callback);
+    }
 
+    public static void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().cancelDivided(request);
+        call.enqueue(callback);
+    }
 }

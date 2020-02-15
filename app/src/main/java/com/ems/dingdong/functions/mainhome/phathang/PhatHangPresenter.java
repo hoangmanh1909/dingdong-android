@@ -3,6 +3,8 @@ package com.ems.dingdong.functions.mainhome.phathang;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.detail.BaoPhatOfflineDetailPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
@@ -45,6 +47,11 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     @Override
     public void showListOffline() {
         new ReceverPersonPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showNhapBaoPhatOffline() {
+        new CreateBD13OfflinePresenter(mContainerView).pushView();
     }
 
 

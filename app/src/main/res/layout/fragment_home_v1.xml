@@ -38,12 +38,34 @@
             android:layout_width="match_parent"
             android:background="@drawable/bg_header_common"
             android:padding="@dimen/dimen_10dp"
-            android:text="phát hàng"
+            android:text="phát hàng (Thường)"
             android:textAlignment="center"
             android:textColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_delivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_5dp"
+        android:orientation="vertical">
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            style="@style/HeaderNews"
+            android:layout_width="match_parent"
+            android:background="@drawable/bg_header_common"
+            android:padding="@dimen/dimen_10dp"
+            android:text="phát hàng (COD)"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_delivery_cod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_10dp" />

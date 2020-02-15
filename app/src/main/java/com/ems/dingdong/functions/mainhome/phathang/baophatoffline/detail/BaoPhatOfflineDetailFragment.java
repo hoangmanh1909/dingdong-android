@@ -33,6 +33,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
+import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.RealmUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
@@ -43,6 +44,7 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
@@ -60,154 +62,54 @@ import butterknife.OnClick;
  * The BaoPhatBangKeDetail Fragment
  */
 public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDetailContract.Presenter>
-        implements BaoPhatOfflineDetailContract.View, DatePickerDialog.OnDateSetListener {
+        implements BaoPhatOfflineDetailContract.View{
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     private static final String TAG = BaoPhatOfflineDetailFragment.class.getSimpleName();
+
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
     @BindView(R.id.img_back)
-    ImageView imgBack;
+    ImageView img_back;
+    @BindView(R.id.img_capture)
+    ImageView img_capture;
     @BindView(R.id.tv_title)
-    CustomBoldTextView tvTitle;
+    CustomBoldTextView tv_title;
     @BindView(R.id.img_send)
-    ImageView imgSend;
-    @BindView(R.id.header)
-    FrameLayout header;
-    @BindView(R.id.tv_userDelivery)
-    FormItemTextView tvUserDelivery;
-    /*  @BindView(R.id.edt_amount)
-      MaterialEditText edtAmount;*/
-    @BindView(R.id.edt_collectAmount)
-    FormItemEditText edtCollectAmount;
-/*    @BindView(R.id.rad_cash)
-    RadioButton radCash;
-    @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;*/
-    @BindView(R.id.ll_pay_ment)
-    LinearLayout llPayMent;
-    @BindView(R.id.edt_real_ReceiverName)
-    FormItemEditText edtRealReceiverName;
-    /*  @BindView(R.id.edt_ReceiverIDNumber)
-      MaterialEditText edtReceiverIDNumber;*/
-    @BindView(R.id.tv_deliveryDate)
-    FormItemTextView tvDeliveryDate;
-    @BindView(R.id.tv_deliveryTime)
-    FormItemTextView tvDeliveryTime;
+    ImageView img_send;
+    @BindView(R.id.radio_group)
+    RadioGroup radio_group;
+    @BindView(R.id.rad_success)
+    RadioButton rad_success;
+    @BindView(R.id.rad_fail)
+    RadioButton rad_fail;
+    @BindView(R.id.ll_confirm_fail)
+    LinearLayout ll_confirm_fail;
+    @BindView(R.id.ll_confirm_success)
+    LinearLayout ll_confirm_success;
+    @BindView(R.id.tv_reason)
+    FormItemTextView tv_reason;
+    @BindView(R.id.tv_solution)
+    FormItemTextView tv_solution;
+    @BindView(R.id.tv_Description)
+    FormItemEditText tv_Description;
+    @BindView(R.id.tv_collect_amount)
+    FormItemEditText tv_collect_amount;
+    @BindView(R.id.tv_receiver)
+    FormItemEditText tv_receiver;
     @BindView(R.id.btn_sign)
-    CustomTextView btnSign;
-    @BindView(R.id.img_sign)
-    ImageView imgSign;
+    CustomTextView btn_sign;
+    @BindView(R.id.iv_package_1)
+    SimpleDraweeView iv_package_1;
+    @BindView(R.id.iv_package_2)
+    SimpleDraweeView iv_package_2;
+    @BindView(R.id.iv_package_3)
+    SimpleDraweeView iv_package_3;
     @BindView(R.id.ll_signed)
     LinearLayout llSigned;
-    @BindView(R.id.ll_confirm_success)
-    LinearLayout llConfirmSuccess;
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
-
-    @BindView(R.id.rad_success)
-    RadioButton radSuccess;
-    @BindView(R.id.rad_fail)
-    RadioButton radFail;
-    @BindView(R.id.radio_group)
-    RadioGroup radioGroup;
-    @BindView(R.id.ll_status)
-    LinearLayout llStatus;
-
-    @BindView(R.id.ll_confirm_fail)
-    LinearLayout llConfirmFail;
-
-    @BindView(R.id.tv_reason)
-    FormItemTextView tvReason;
-    @BindView(R.id.edt_reason)
-    FormItemEditText edtNote;
-    @BindView(R.id.tv_solution)
-    FormItemTextView tvSolution;
-
-   /* @BindView(R.id.img_back)
-    ImageView imgBack;
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
-    @BindView(R.id.tv_title)
-    CustomBoldTextView tvTitle;
-    @BindView(R.id.img_send)
-    ImageView imgSend;
-    @BindView(R.id.header)
-    FrameLayout header;
-    @BindView(R.id.rad_success)
-    RadioButton radSuccess;
-    @BindView(R.id.rad_fail)
-    RadioButton radFail;
-    @BindView(R.id.radio_group)
-    RadioGroup radioGroup;
-    @BindView(R.id.ll_status)
-    LinearLayout llStatus;
-    @BindView(R.id.tv_userDelivery)
-    FormItemTextView tvUserDelivery;
-    @BindView(R.id.edt_amount)
-    MaterialEditText edtAmount;
-    @BindView(R.id.edt_collectAmount)
-    MaterialEditText edtCollectAmount;
-    @BindView(R.id.rad_cash)
-    RadioButton radCash;
-    @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;
-    @BindView(R.id.ll_pay_ment)
-    LinearLayout llPayMent;
-    @BindView(R.id.edt_real_ReceiverName)
-    MaterialEditText edtRealReceiverName;
-    @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
-    @BindView(R.id.tv_deliveryDate)
-    FormItemTextView tvDeliveryDate;
-    @BindView(R.id.tv_deliveryTime)
-    FormItemTextView tvDeliveryTime;
-    @BindView(R.id.btn_sign)
-    CustomTextView btnSign;
     @BindView(R.id.img_sign)
     ImageView imgSign;
-    @BindView(R.id.ll_signed)
-    LinearLayout llSigned;
-    @BindView(R.id.ll_confirm_success)
-    LinearLayout llConfirmSuccess;
-    @BindView(R.id.tv_MaE)
-    CustomTextView tvMaE;
-    @BindView(R.id.tv_Weigh)
-    CustomTextView tvWeigh;
-    @BindView(R.id.tv_service)
-    CustomTextView tvService;
-    @BindView(R.id.tv_instruction)
-    CustomTextView tvInstruction;
-    @BindView(R.id.ll_info_order)
-    LinearLayout llInfoOrder;
-    @BindView(R.id.edt_reciverName)
-    MaterialEditText edtReciverName;
-    @BindView(R.id.edt_ReceiverPhone)
-    MaterialEditText edtReceiverPhone;
-    @BindView(R.id.ll_input_contact)
-    LinearLayout llInputContact;
-    @BindView(R.id.ll_contact)
-    LinearLayout llContact;
-    @BindView(R.id.edt_ReciverAddress)
-    MaterialEditText edtReciverAddress;
-    @BindView(R.id.edt_SenderName)
-    MaterialEditText edtSenderName;
-    @BindView(R.id.tv_SenderAddress)
-    CustomTextView tvSenderAddress;
-    @BindView(R.id.edt_SenderPhone)
-    MaterialEditText edtSenderPhone;
-    @BindView(R.id.tv_reason)
-    FormItemTextView tvReason;
-    @BindView(R.id.edt_reason)
-    FormItemEditText edtNote;
-    @BindView(R.id.tv_solution)
-    FormItemTextView tvSolution;
-    @BindView(R.id.layout_date_start)
-    LinearLayout layoutDateStart;
-    @BindView(R.id.ll_confirm_fail)
-    LinearLayout llConfirmFail;
-    @BindView(R.id.ll_contact_view)
-    LinearLayout llContactView;*/
-
 
     private CommonObject mBaoPhat;
     private int mDeliveryType = 2;
@@ -223,6 +125,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     private String mSolutionCode = "";
     private SolutionInfo mSolutionInfo;
     private ReasonInfo mReasonInfo;
+    private int imgPosition = 1;
 
     public static BaoPhatOfflineDetailFragment getInstance() {
         return new BaoPhatOfflineDetailFragment();
@@ -236,96 +139,6 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
     @Override
     public void initLayout() {
         super.initLayout();
-        EditTextUtils.editTextListener(edtCollectAmount.getEditText());
-        // EditTextUtils.editTextListener(edtAmount);
-        mBaoPhat = mPresenter.getBaoPhatBangke();
-        if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-            imgSend.setImageResource(R.drawable.ic_send_telegram);
-        } else {
-            imgSend.setImageResource(R.drawable.ic_save_local);
-        }
-      /*  tvMaE.setText(mBaoPhat.getCode());
-        tvWeigh.setText(String.format("%s - %s", mBaoPhat.getNote(), mBaoPhat.getWeigh()));
-        edtSenderName.setText(mBaoPhat.getSenderName());
-        tvSenderAddress.setText(mBaoPhat.getSenderAddress());
-        edtReciverName.setText(mBaoPhat.getReciverName());
-        edtReciverAddress.setText(mBaoPhat.getReciverAddress());
-        if (!TextUtils.isEmpty(mBaoPhat.getServiceName())) {
-            tvService.setText(mBaoPhat.getServiceName());
-        }
-        if (!TextUtils.isEmpty(mBaoPhat.getInstruction())) {
-            tvInstruction.setText(mBaoPhat.getInstruction());
-        }
-        edtSenderPhone.setText(mBaoPhat.getSenderPhone());
-        edtReceiverPhone.setText(mBaoPhat.getReceiverPhone());*/
-        edtRealReceiverName.setText(mBaoPhat.getRealReceiverName());
-        //edtReceiverIDNumber.setText(mBaoPhat.getRealReceiverIDNumber());
-        edtCollectAmount.setText(mBaoPhat.getCollectAmount());
-        //edtAmount.setText(mBaoPhat.getAmount());
-        if (!TextUtils.isEmpty(mBaoPhat.getSignatureCapture())) {
-            llSigned.setVisibility(View.VISIBLE);
-            byte[] decodedString = Base64.decode(mBaoPhat.getSignatureCapture(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            imgSign.setImageBitmap(decodedByte);
-        } else {
-            llSigned.setVisibility(View.GONE);
-        }
-
-      /*  if (!TextUtils.isEmpty(mBaoPhat.getReceiverPhone())) {
-            String[] phones = mBaoPhat.getReceiverPhone().split(",");
-            for (int i = 0; i < phones.length; i++) {
-                if (!phones[i].isEmpty()) {
-                    getChildFragmentManager().beginTransaction()
-                            .add(R.id.ll_contact,
-                                    new PhonePresenter((ContainerView) getActivity())
-                                            .setPhone(phones[i].trim())
-                                            .getFragment(), TAG + i)
-                            .commit();
-                }
-            }
-            llContactView.setVisibility(View.VISIBLE);
-            llInputContact.setVisibility(View.GONE);
-        } else {
-            llContactView.setVisibility(View.GONE);
-            llInputContact.setVisibility(View.VISIBLE);
-        }*/
-        checkPermissionCall();
-        if ("1".equals(mBaoPhat.getDeliveryType())) {
-            calDate = Calendar.getInstance();
-            mHour = calDate.get(Calendar.HOUR_OF_DAY);
-            mMinute = calDate.get(Calendar.MINUTE);
-            mDeliveryType = 1;
-            llConfirmSuccess.setVisibility(View.GONE);
-            llConfirmFail.setVisibility(View.VISIBLE);
-            radioGroup.check(R.id.rad_fail);
-            mReasonCode = mBaoPhat.getReasonCode();
-            tvReason.setText(RealmUtils.getReasonByCode(mReasonCode));
-            mSolutionCode = mBaoPhat.getSolutionCode();
-            tvSolution.setText(RealmUtils.getSolutionByCode(mSolutionCode));
-        } else {
-            mDeliveryType = 2;
-            radioGroup.check(R.id.rad_success);
-            llConfirmSuccess.setVisibility(View.VISIBLE);
-            llConfirmFail.setVisibility(View.GONE);
-            setupReciverPerson();
-        }
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rad_success) {
-                    mDeliveryType = 2;
-                    mBaoPhat.setDeliveryType("2");
-                    llConfirmSuccess.setVisibility(View.VISIBLE);
-                    llConfirmFail.setVisibility(View.GONE);
-                } else {
-                    mDeliveryType = 1;
-                    mBaoPhat.setDeliveryType("1");
-                    llConfirmSuccess.setVisibility(View.GONE);
-                    llConfirmFail.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
 
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         scrollView.setFocusable(true);
@@ -337,34 +150,51 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 return false;
             }
         });
+
+        ll_confirm_fail.setVisibility(LinearLayout.GONE);
+
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rad_fail) {
+                    mDeliveryType = 1;
+                    ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
+                    ll_confirm_success.setVisibility(LinearLayout.GONE);
+                } else if (checkedId == R.id.rad_success) {
+                    mDeliveryType = 2;
+                    ll_confirm_success.setVisibility(LinearLayout.VISIBLE);
+                    ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                }
+            }
+        });
     }
 
-    private void setupReciverPerson() {
-        SharedPref sharedPref = new SharedPref(getActivity());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            tvUserDelivery.setText(userInfo.getiD() + " - " + userInfo.getFullName());
-        }
-        if (TextUtils.isEmpty(mBaoPhat.getDeliveryDate())) {
-            calDate = Calendar.getInstance();
-        } else {
-            calDate = Calendar.getInstance();
-            calDate.setTime(DateTimeUtils.convertStringToDate(mBaoPhat.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-            if (mBaoPhat.getDeliveryTime().length() > 4) {
-                calDate.set(Calendar.HOUR_OF_DAY, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(0, 2)));
-                calDate.set(Calendar.MINUTE, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(2, 4)));
-            }
-        }
-        mHour = calDate.get(Calendar.HOUR_OF_DAY);
-        mMinute = calDate.get(Calendar.MINUTE);
-        if (mHour > 12) {
-            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-        } else {
-            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-        }
-        tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
-    }
+//    private void setupReciverPerson() {
+//        SharedPref sharedPref = new SharedPref(getActivity());
+//        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+//        if (!userJson.isEmpty()) {
+//            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+//            tvUserDelivery.setText(userInfo.getiD() + " - " + userInfo.getFullName());
+//        }
+//        if (TextUtils.isEmpty(mBaoPhat.getDeliveryDate())) {
+//            calDate = Calendar.getInstance();
+//        } else {
+//            calDate = Calendar.getInstance();
+//            calDate.setTime(DateTimeUtils.convertStringToDate(mBaoPhat.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+//            if (mBaoPhat.getDeliveryTime().length() > 4) {
+//                calDate.set(Calendar.HOUR_OF_DAY, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(0, 2)));
+//                calDate.set(Calendar.MINUTE, Integer.parseInt(mBaoPhat.getDeliveryTime().substring(2, 4)));
+//            }
+//        }
+//        mHour = calDate.get(Calendar.HOUR_OF_DAY);
+//        mMinute = calDate.get(Calendar.MINUTE);
+//        if (mHour > 12) {
+//            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
+//        } else {
+//            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
+//        }
+//        tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
+//    }
 
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -376,9 +206,9 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.tv_reason, R.id.tv_solution})
-//R.id.tv_reason, R.id.tv_solution,
+    @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
+            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3})
+
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -405,48 +235,17 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             case R.id.tv_solution:
                 showUISolution();
                 break;
-            case R.id.tv_deliveryDate:
-                String createDate = mBaoPhat.getLoadDate();
-                Calendar calendarCreate = Calendar.getInstance();
-                if (TextUtils.isEmpty(createDate)) {
-                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                    calendarCreate.set(Calendar.DATE, -1);
-                } else {
-                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
-                }
-                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
-                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
-                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
-                    calendarCreate.set(Calendar.DATE, -1);
-                }
-                new SpinnerDatePickerDialogBuilder()
-                        .context(getActivity())
-                        .callback(this)
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
-                        .build()
-                        .show();
+            case R.id.iv_package_1:
+                imgPosition = 1;
+                MediaUltis.captureImage(this);
                 break;
-            case R.id.tv_deliveryTime:
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mHour = hourOfDay;
-                        mMinute = minute;
-                        if (mHour > 12) {
-                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-                        } else {
-                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-                        }
-                    }
-                }, mHour, mMinute, true);
-                timePickerDialog.show();
+            case R.id.iv_package_2:
+                imgPosition = 2;
+                MediaUltis.captureImage(this);
+                break;
+            case R.id.iv_package_3:
+                imgPosition = 3;
+                MediaUltis.captureImage(this);
                 break;
         }
     }
@@ -463,18 +262,13 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                         @Override
                         public void onChooseClick(Item item, int position) {
                             if (!mReasonCode.equals(list.get(position).getCode())) {
-                                tvReason.setText(item.getText());
+                                tv_reason.setText(item.getText());
                                 mReasonCode = list.get(position).getCode();
                                 mReasonInfo = list.get(position);
-                                tvSolution.setText("");
+                                tv_solution.setText("");
                                 mSolutionCode = "";
                                 mSolutionInfo = null;
                                 showUISolution();
-                                if (mReasonCode.equals("99") || mReasonCode.equals("13")) {
-                                    edtNote.setVisibility(View.VISIBLE);
-                                } else {
-                                    edtNote.setVisibility(View.GONE);
-                                }
                             }
                         }
                     }, 0);
@@ -502,7 +296,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                         new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                             @Override
                             public void onChooseClick(Item item, int position) {
-                                tvSolution.setText(item.getText());
+                                tv_solution.setText(item.getText());
                                 mSolutionCode = list.get(position).getCode();
                                 mSolutionInfo = list.get(position);
 
@@ -522,27 +316,29 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
         }
     }
 
-    private void submit() {
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
-            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
-            Utilities.showUIShift(getActivity());
-            return;
-        }
+    private void submit()
+    {
+
+    }
+    private void submitOld() {
+
         mBaoPhat.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
         String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         mBaoPhat.setDeliveryTime(time);
-        mBaoPhat.setPaymentChanel(mPaymentType + "");
+        mBaoPhat.setPaymentChanel("1");
         mBaoPhat.setDeliveryType(mDeliveryType + "");
+
         mBaoPhat.setSaveLocal(true);
+
         if (mDeliveryType == 2) {
-            if (TextUtils.isEmpty(edtCollectAmount.getText())) {
-                Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");
-                return;
-            }
-            if (TextUtils.isEmpty(edtRealReceiverName.getText())) {
-                Toast.showToast(getActivity(), "Bạn chưa nhập tên thực người nhận hàng");
-                return;
-            }
+//            if (TextUtils.isEmpty(edtCollectAmount.getText())) {
+//                Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");
+//                return;
+//            }
+//            if (TextUtils.isEmpty(edtRealReceiverName.getText())) {
+//                Toast.showToast(getActivity(), "Bạn chưa nhập tên thực người nhận hàng");
+//                return;
+//            }
           /*  if (TextUtils.isEmpty(edtAmount.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền");
                 return;
@@ -568,10 +364,10 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 return;
             }*/
 
-            mBaoPhat.setRealReceiverName(edtRealReceiverName.getText().toString());
-
-            mBaoPhat.setCollectAmount(edtCollectAmount.getText().toString().replace(".", ""));
-            mBaoPhat.setUserDelivery(tvUserDelivery.getText());
+//            mBaoPhat.setRealReceiverName(edtRealReceiverName.getText().toString());
+//
+//            mBaoPhat.setCollectAmount(edtCollectAmount.getText().toString().replace(".", ""));
+//            mBaoPhat.setUserDelivery(tvUserDelivery.getText());
             // mBaoPhat.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
             mBaoPhat.setRealReceiverIDNumber("");
 
@@ -609,12 +405,12 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             }
 
         } else {
-            if (TextUtils.isEmpty(tvReason.getText())) {
-                Toast.showToast(tvReason.getContext(), "Xin vui lòng chọn lý do");
+            if (TextUtils.isEmpty(tv_reason.getText())) {
+                Toast.showToast(tv_reason.getContext(), "Xin vui lòng chọn lý do");
                 return;
             }
-            if (TextUtils.isEmpty(tvSolution.getText())) {
-                Toast.showToast(tvSolution.getContext(), "Bạn chưa chọn phương án xử lý");
+            if (TextUtils.isEmpty(tv_solution.getText())) {
+                Toast.showToast(tv_solution.getContext(), "Bạn chưa chọn phương án xử lý");
                 return;
             }
             mBaoPhat.setReasonCode(mReasonCode);
@@ -623,7 +419,7 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 mBaoPhat.setReasonName(mReasonInfo.getName());
             if (mSolutionInfo != null)
                 mBaoPhat.setSolutionName(mSolutionInfo.getName());
-            mBaoPhat.setNote(edtNote.getText());
+//            mBaoPhat.setNote(edtNote.getText());
             if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
                 mPresenter.submitToPNS();
             } else {
@@ -647,21 +443,13 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
 
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-        calDate.set(year, monthOfYear, dayOfMonth);
-        tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
-    }
-
-    @Override
-    public void onDisplay() {
-        super.onDisplay();
-        if (getActivity() != null) {
-            if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
-                ((DingDongActivity) getActivity()).getSupportActionBar().hide();
-            }
-        }
-    }
-
-
+//    @Override
+//    public void onDisplay() {
+//        super.onDisplay();
+//        if (getActivity() != null) {
+//            if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
+//                ((DingDongActivity) getActivity()).getSupportActionBar().hide();
+//            }
+//        }
+//    }
 }

@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.home;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,12 +54,16 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     RecyclerView recycler_collect;
     @BindView(R.id.recycler_delivery)
     RecyclerView recycler_delivery;
+    @BindView(R.id.recycler_delivery_cod)
+    RecyclerView recycler_delivery_cod;
 
     private HomeCollectAdapter homeCollectAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
+    private HomeDeliveryAdapter homeDeliveryCODAdapter;
 
     ArrayList<HomeCollectInfo> mListCollect = new ArrayList<>();
     ArrayList<HomeCollectInfo> mListDelivery = new ArrayList<>();
+    ArrayList<HomeCollectInfo> mListDeliveryCOD = new ArrayList<>();
 
     UserInfo userInfo;
     RouteInfo routeInfo;
@@ -98,6 +103,11 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
         recycler_delivery.setAdapter(homeDeliveryAdapter);
+
+        homeDeliveryCODAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryCOD);
+
+        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_cod);
+        recycler_delivery_cod.setAdapter(homeDeliveryCODAdapter);
     }
 
     @Override
@@ -112,73 +122,73 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             if(i == 0){
-                homeCollectInfo.setLabelCollect("Nội dung");
-                homeCollectInfo.setTotalAddressNotCollect("Địa chỉ");
-                homeCollectInfo.setTotalLadingNotCollect("Số lượng");
-                homeCollectInfo.setTotalWeightNotCollect("Khối lượng");
+                homeCollectInfo.setTotalAddressCollect("THU GOM MỚI");
+                homeCollectInfo.setTotalAddressNotCollect("TỒN CHƯA GOM");
             }
             else if(i == 1){
-                homeCollectInfo.setLabelCollect("Chưa thu gom");
+                homeCollectInfo.setLabelCollect("SL địa chỉ:");
+                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressCollect()))));
                 homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressNotCollect()))));
-                homeCollectInfo.setTotalLadingNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalLadingNotCollect()))));
-                homeCollectInfo.setTotalWeightNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalWeightNotCollect()))));
             }
             else if(i == 2){
-                homeCollectInfo.setLabelCollect("Đang thu gom");
-                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressCollect()))));
-                homeCollectInfo.setTotalLadingNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalLadingCollect()))));
-                homeCollectInfo.setTotalWeightNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalWeightCollect()))));
+                homeCollectInfo.setLabelCollect("SL tin:");
+                homeCollectInfo.setTotalLadingCollect(resInfo.getTotalLadingCollect());
+                homeCollectInfo.setTotalLadingNotCollect(resInfo.getTotalLadingNotCollect());
             }else{
-                homeCollectInfo.setLabelCollect("Tổng");
-                totalAddressNotCollect = Long.parseLong(resInfo.getTotalAddressNotCollect());
-                totalNotCollect = Long.parseLong(resInfo.getTotalLadingNotCollect());
-                totalWeight = Long.parseLong(resInfo.getTotalWeightNotCollect());
-
-                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(totalAddressNotCollect)));
-                homeCollectInfo.setTotalLadingNotCollect(String.format("%s", NumberUtils.formatPriceNumber(totalNotCollect)));
-                homeCollectInfo.setTotalWeightNotCollect(String.format("%s", NumberUtils.formatPriceNumber(totalWeight)));
+                homeCollectInfo.setLabelCollect("Trọng lượng:");
+                homeCollectInfo.setTotalWeightCollect(resInfo.getTotalWeightCollect());
+                homeCollectInfo.setTotalWeightNotCollect(resInfo.getTotalWeightNotCollect());
             }
             mListCollect.add(homeCollectInfo);
         }
         homeCollectAdapter.addItems(mListCollect);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(1);
             if(i == 0){
-                homeCollectInfo.setLabelCollect("Nội dung");
-                homeCollectInfo.setTotalQuantityToday("Số lượng");
-                homeCollectInfo.setTotalWeightToday("Khối lượng");
-                homeCollectInfo.setTotalCODAmountToday("COD");
-                homeCollectInfo.setTotalFeeToday("Phí");
+                homeCollectInfo.setTotalQuantityToday("GIAO MỚI");
+                homeCollectInfo.setTotalQuantityPast("CHƯA PHÁT");
             }
             else if(i == 1){
-                homeCollectInfo.setLabelCollect("Tồn chưa phát");
+                homeCollectInfo.setLabelCollect("Số lượng");
+                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(!TextUtils.isEmpty(resInfo.getTotalQuantityToday()) ? resInfo.getTotalQuantityToday() : "0"))));
                 homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalQuantityPast()))));
-                homeCollectInfo.setTotalWeightPast(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalWeightPast()))));
-                homeCollectInfo.setTotalCODAmountPast(String.format("%sđ", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalCODAmountPast()))));
-                homeCollectInfo.setTotalFeePast(String.format("%sđ", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalFeePast()))));
             }
             else if(i == 2){
-                homeCollectInfo.setLabelCollect("Được giao");
-                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalQuantityToday()))));
-                homeCollectInfo.setTotalWeightToday(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalWeightToday()))));
-                homeCollectInfo.setTotalCODAmountToday(String.format("%sđ", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalCODAmountToday()))));
-                homeCollectInfo.setTotalFeeToday(String.format("%sđ", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalFeeToday()))));
-            }else{
-                homeCollectInfo.setLabelCollect("Tổng");
-                long quantity = Long.parseLong(resInfo.getTotalQuantityPast()) + Long.parseLong(resInfo.getTotalQuantityToday());
-                long weight = Long.parseLong(resInfo.getTotalWeightPast()) + Long.parseLong(resInfo.getTotalWeightToday());
-                long cod = Long.parseLong(resInfo.getTotalCODAmountPast()) + Long.parseLong(resInfo.getTotalCODAmountToday());
-                long fee = Long.parseLong(resInfo.getTotalFeePast()) + Long.parseLong(resInfo.getTotalFeeToday());
-
-                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber(quantity)));
-                homeCollectInfo.setTotalWeightToday(String.format("%s", NumberUtils.formatPriceNumber(weight)));
-                homeCollectInfo.setTotalCODAmountToday(String.format("%sđ", NumberUtils.formatPriceNumber(cod)));
-                homeCollectInfo.setTotalFeeToday(String.format("%sđ", NumberUtils.formatPriceNumber(fee)));
+                homeCollectInfo.setLabelCollect("Cước");
+                homeCollectInfo.setTotalFeeToday(resInfo.getTotalFeeToday());
+                homeCollectInfo.setTotalFeePast(resInfo.getTotalFeePast());
             }
             mListDelivery.add(homeCollectInfo);
         }
         homeDeliveryAdapter.addItems(mListDelivery);
+
+        for (int i = 0; i < 4; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(2);
+            if(i == 0){
+                homeCollectInfo.setTotalQuantityToday("GIAO MỚI");
+                homeCollectInfo.setTotalQuantityPast("CHƯA PHÁT");
+            }
+            else if(i == 1){
+                homeCollectInfo.setLabelCollect("Số lượng");
+                homeCollectInfo.setTotalQuantityTodayCOD(resInfo.getTotalQuantityTodayCOD());
+                homeCollectInfo.setTotalQuantityPastCOD(resInfo.getTotalQuantityPastCOD());
+            }
+            else if(i == 2){
+                homeCollectInfo.setLabelCollect("Số tiền");
+                homeCollectInfo.setTotalCODAmountTodayCOD(resInfo.getTotalCODAmountTodayCOD());
+                homeCollectInfo.setTotalCODAmountPastCOD(resInfo.getTotalCODAmountPastCOD());
+            }
+            else if(i == 3){
+                homeCollectInfo.setLabelCollect("Cước");
+                homeCollectInfo.setTotalFeeTodayCOD(resInfo.getTotalFeeTodayCOD());
+                homeCollectInfo.setTotalFeePastCOD(resInfo.getTotalFeePastCOD());
+            }
+            mListDeliveryCOD.add(homeCollectInfo);
+        }
+        homeDeliveryCODAdapter.addItems(mListDeliveryCOD);
     }
 
     @Override

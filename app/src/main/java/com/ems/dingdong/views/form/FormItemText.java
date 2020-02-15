@@ -128,8 +128,8 @@ public abstract class FormItemText extends FormItem {
         });
     }
 
-    public void removeTextChangedListener() {
-        mTextView.removeTextChangedListener(textWatcher);
+    public void removeTextChangedListener(TextWatcher textWatcher) {
+        mTextView.removeTextChangedListener(this.textWatcher);
     }
 
     public void addTextChangedListener() {

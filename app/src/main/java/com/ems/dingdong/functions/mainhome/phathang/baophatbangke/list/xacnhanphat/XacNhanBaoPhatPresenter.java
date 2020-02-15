@@ -9,21 +9,27 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,6 +40,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     private Calendar calDate;
     private int mHour;
     private int mMinute;
+    RouteInfo routeInfo;
+    UserInfo userInfo;
+    PostOffice postOffice;
 
     public XacNhanBaoPhatPresenter(ContainerView containerView) {
         super(containerView);
@@ -44,6 +53,25 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
+
+
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+
+        if (!routeJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+        }
+
         return this;
     }
 
@@ -108,42 +136,72 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void submitToPNS(String reason, String solution, String note, String sign) {
+    public void submitToPNS(String reason, String solution, String note, String deliveryImage, String signCapture) {
+        String postmanID =  userInfo.getiD();
+        String deliveryPOSCode = postOffice.getCode();
+        String routeCode = routeInfo.getRouteCode();
 
+        for (DeliveryPostman item : mBaoPhatBangke) {
+
+            String ladingCode = item.getMaE();
+            String deliveryPOCode = deliveryPOSCode;
+            String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
+            String receiverName = item.getReciverName();
+            String reasonCode = reason;
+            String solutionCode = solution;
+            String status = "C18";
+            String amount = Integer.toString(item.getAmount());
+            String shiftId = Integer.toString(item.getShiftId());
+
+            String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+
+            PushToPnsRequest request = new PushToPnsRequest(
+                    postmanID,
+                    ladingCode,
+                    deliveryPOCode,
+                    deliveryDate,
+                    deliveryTime,
+                    receiverName,
+                    reasonCode,
+                    solutionCode,
+                    status,
+                    "",
+                    "",
+                    signCapture,
+                    note,
+                    amount,
+                    Integer.toString(item.getId()),
+                    shiftId,
+                    routeCode,
+                    signature,
+                    deliveryImage);
+            mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    super.onSuccess(call, response);
+                    mView.showSuccess(response.body().getErrorCode());
+                }
+
+                @Override
+                protected void onError(Call<SimpleResult> call, String message) {
+                    super.onError(call, message);
+                    mView.showError(message);
+                }
+            });
+
+        }
     }
 
     @Override
-    public void paymentDelivery(String deliveryImage,String signCapture) {
-        String postmanID = "";
-        String mobileNumber = "";
-        String deliveryPOCode = "";
-
-        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            postmanID = userInfo.getiD();
-            mobileNumber = userInfo.getMobileNumber();
-        }
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        if (!postOfficeJson.isEmpty()) {
-            PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-
-            deliveryPOCode = postOffice.getCode();
-        }
-
-        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-        String routeCode = "";
-        if (!postOfficeJson.isEmpty()) {
-            RouteInfo routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
-            routeCode = routeInfo.getRouteCode();
-        }
-
+    public void paymentDelivery(String deliveryImage, String signCapture) {
+        String postmanID = userInfo.getiD();
+        String mobileNumber = userInfo.getMobileNumber();
+        String deliveryPOCode = postOffice.getCode();
+        String routeCode = routeInfo.getRouteCode();
         String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
 
-        mView.showProgress();
         for (DeliveryPostman item : mBaoPhatBangke) {
             String parcelCode = item.getMaE();
             String receiverName = item.getReciverName();
@@ -188,18 +246,83 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
-                    mView.hideProgress();
-                        mView.showSuccess(response.body().getErrorCode());
+                    mView.showSuccess(response.body().getErrorCode());
                 }
 
                 @Override
                 protected void onError(Call<SimpleResult> call, String message) {
                     super.onError(call, message);
-                    mView.hideProgress();
                     mView.showError(message);
                 }
             });
         }
+    }
+
+    @Override
+    public void getRouteByPoCode(String poCode) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
+                super.onSuccess(call, response);
+                mView.showRoute(response.body().getRouteInfos());
+            }
+
+            @Override
+            protected void onError(Call<RouteInfoResult> call, String message) {
+                super.onError(call, message);
+            }
+        });
+    }
+
+    @Override
+    public void getPostman(String poCode, int routeId, String routeType) {
+        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<UserInfoResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UserInfoResult> call, Response<UserInfoResult> response) {
+                super.onSuccess(call, response);
+                mView.showPostman(response.body().getUserInfos());
+            }
+
+            @Override
+            protected void onError(Call<UserInfoResult> call, String message) {
+                super.onError(call, message);
+            }
+        });
+    }
+
+    @Override
+    public void cancelDivided(int toRouteId, int toPostmanId,String signCapture,String fileImg) {
+        List<DingDongCancelDividedRequest> requests = new ArrayList<>();
+
+        for (DeliveryPostman item : mBaoPhatBangke)
+        {
+            DingDongCancelDividedRequest request = new DingDongCancelDividedRequest();
+            request.setAmndPOCode(userInfo.getUnitCode());
+            request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
+            request.setLadingCode(item.getMaE());
+            request.setFromDeliveryRouteId(item.getRouteId());
+            request.setFromPostmanId(item.getId());
+            request.setToDeliveryRouteId(toRouteId);
+            request.setToPostmanId(toPostmanId);
+            request.setDescription("");
+            request.setSignatureCapture(signCapture);
+            request.setImageDelivery(fileImg);
+            requests.add(request);
+        }
+
+        mInteractor.cancelDivided(requests,new CommonCallback<SimpleResult>((Context) mContainerView){
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.showCancelDivided(response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showCancelDivided(message);
+            }
+        });
     }
 
     @Override
