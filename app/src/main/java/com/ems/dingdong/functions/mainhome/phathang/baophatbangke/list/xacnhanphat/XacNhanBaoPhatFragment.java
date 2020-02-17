@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,12 +31,17 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomAutoCompleteTextView;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -48,13 +54,16 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Route;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -121,6 +130,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private ItemBottomSheetPickerUIFragment pickerUISolution;
     private SolutionInfo mSolutionInfo;
 
+    private ArrayList<RouteInfo> mListRoute;
+    private ItemBottomSheetPickerUIFragment pickerUIRoute;
+    private RouteInfo mRouteInfo;
+
+    private ArrayList<UserInfo> mListPostman;
+    private ItemBottomSheetPickerUIFragment pickerUIPostman;
+    private UserInfo mPostmanInfo;
+
     private boolean mClickSolution = false;
     private boolean mReloadSolution = false;
     private int imgPosition = 1;
@@ -128,6 +145,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private int mDeliveryError = 0;
     long totalAmount = 0;
     private String mFile = "";
+
+    UserInfo userInfo;
 
     public static XacNhanBaoPhatFragment getInstance() {
         return new XacNhanBaoPhatFragment();
@@ -153,6 +172,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
+
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
 
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
@@ -186,6 +211,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
 
         mPresenter.getReasons();
+        mPresenter.getRouteByPoCode(userInfo.getUnitCode());
     }
 
 
@@ -212,8 +238,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
                 break;
             case R.id.tv_route:
+                showUIRoute();
                 break;
             case R.id.tv_postman:
+                showUIPostman();
                 break;
             case R.id.btn_sign:
                 new SignDialog(getActivity(), (sign, bitmap) -> {
@@ -250,6 +278,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            showProgress();
                             mPresenter.paymentDelivery(mFile, mSign);
                             sweetAlertDialog.dismiss();
                         }
@@ -260,7 +289,32 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             sweetAlertDialog.dismiss();
                         }
                     }).show();
+        } else if (mDeliveryType == 1) {
+            if (TextUtils.isEmpty(tv_reason.getText())) {
+                Toast.showToast(tv_reason.getContext(), "Xin vui lòng chọn lý do");
+                return;
+            }
+            if (TextUtils.isEmpty(tv_solution.getText())) {
+                Toast.showToast(tv_solution.getContext(), "Bạn chưa chọn phương án xử lý");
+                return;
+            }
+            mPresenter.submitToPNS(
+                    mReasonInfo.getCode(),
+                    mSolutionInfo.getCode(),
+                    tv_Description.getText().toString(),
+                    mFile,
+                    mSign);
         } else {
+            if (TextUtils.isEmpty(tv_route.getText())) {
+                Toast.showToast(tv_route.getContext(), "Bạn chưa chọn tuyến");
+                return;
+            }
+            int postmanId = 0;
+            if(mPostmanInfo != null)
+            {
+                postmanId = Integer.parseInt(mPostmanInfo.getiD());
+            }
+            mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
         }
     }
 
@@ -364,6 +418,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         return newBitmap;
     }
 
+
     private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
 
         if (selectedImage.getScheme().equals("content")) {
@@ -453,6 +508,59 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
+    public void showRoute(ArrayList<RouteInfo> routeInfos) {
+        mListRoute = routeInfos;
+    }
+
+    @Override
+    public void showPostman(ArrayList<UserInfo> userInfos) {
+        mListPostman = userInfos;
+    }
+
+    private void showUIRoute() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (RouteInfo item : mListRoute) {
+            items.add(new Item(item.getRouteId(), item.getRouteName()));
+        }
+        if (pickerUIRoute == null) {
+            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, "Chọn tuyến",
+                    (item, position) -> {
+                        tv_route.setText(item.getText());
+                        mRouteInfo = mListRoute.get(position);
+                        mListPostman = null;
+                        tv_postman.setText("");
+                        mPresenter.getPostman(userInfo.getUnitCode(), Integer.parseInt(item.getValue()), "D");
+                    }, 0);
+            pickerUIRoute.show(getActivity().getSupportFragmentManager(), pickerUIRoute.getTag());
+        } else {
+            pickerUIRoute.setData(items, 0);
+            if (!pickerUIRoute.isShow) {
+                pickerUIRoute.show(getActivity().getSupportFragmentManager(), pickerUIRoute.getTag());
+            }
+        }
+    }
+
+    private void showUIPostman() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (UserInfo item : mListPostman) {
+            items.add(new Item(item.getiD(), item.getFullName()));
+        }
+        if (pickerUIPostman == null) {
+            pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, "Chọn bưu tá",
+                    (item, position) -> {
+                        tv_postman.setText(item.getText());
+                        mPostmanInfo = mListPostman.get(position);
+                    }, 0);
+            pickerUIPostman.show(getActivity().getSupportFragmentManager(), pickerUIPostman.getTag());
+        } else {
+            pickerUIPostman.setData(items, 0);
+            if (!pickerUIPostman.isShow) {
+                pickerUIPostman.show(getActivity().getSupportFragmentManager(), pickerUIPostman.getTag());
+            }
+        }
+    }
+
+    @Override
     public void showImage(String file) {
         mFile = file;
     }
@@ -479,17 +587,25 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showSuccess(String code) {
-        if (code == "00")
+        if (code.equals("00")) {
             mDeliverySuccess += 1;
-        else
+        } else {
             mDeliveryError += 1;
+        }
         int total = mDeliverySuccess + mDeliveryError;
         if (total == mBaoPhatBangke.size()) {
             showFinish();
         }
     }
 
+    @Override
+    public void showCancelDivided(String message) {
+        Toast.showToast(getActivity(), message);
+        finishView();
+    }
+
     private void showFinish() {
+        hideProgress();
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                     .setConfirmText("OK")
@@ -505,11 +621,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void finishView() {
-//        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, mPresenter.getPosition()));
-//        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG_DETAIL, mPresenter.getPositionRow()));
         mPresenter.back();
     }
-
 
     private void showUISolution() {
         ArrayList<Item> items = new ArrayList<>();

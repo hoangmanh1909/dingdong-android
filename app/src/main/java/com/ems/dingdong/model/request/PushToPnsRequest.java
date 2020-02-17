@@ -7,6 +7,8 @@ public class PushToPnsRequest {
     String postmanID;
     @SerializedName("LadingCode")
     String ladingCode;
+
+
     @SerializedName("DeliveryPOCode")
     String deliveryPOCode;
     @SerializedName("DeliveryDate")
@@ -65,5 +67,14 @@ public class PushToPnsRequest {
         this.routeCode = routeCode;
         this.signature = signature;
         this.imageDelivery = imageDelivery;
+    }
+
+
+    public String getLadingCode() {
+        return ladingCode;
+    }
+
+    public void setLadingCode(String ladingCode) {
+        this.ladingCode = ladingCode;
     }
 }

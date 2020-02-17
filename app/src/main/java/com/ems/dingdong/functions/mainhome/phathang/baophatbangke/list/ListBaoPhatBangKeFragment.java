@@ -80,12 +80,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
 
-//    @BindView(R.id.btn_confirm_all)
-//    TextView btnConfirmAll;
-
-//    @BindView(R.id.swipe_refresh)
-//    SwipeRefreshLayout mRefresh;
-
     ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
     UserInfo mUserInfo;
@@ -123,7 +117,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter != null) {
             if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 checkSelfPermission();
-                //  showDialog();
             }
         } else {
             return;
@@ -220,16 +213,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         });
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        //initSearch();
-//        mRefresh.setOnRefreshListener(
-//                new SwipeRefreshLayout.OnRefreshListener() {
-//                    @Override
-//                    public void onRefresh() {
-//                        mRefresh.setRefreshing(true);
-//                        refreshSearch();
-//                    }
-//                }
-//        );
+
         List<ShiftInfo> list = sharedPref.getListShift();
         int time = Integer.parseInt(DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT7));
         for (ShiftInfo item : list) {
@@ -242,9 +226,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
 
         }
-//        text1 = "Bản kê đi phát (BD13)";
-//        CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
-//        tvTitle.setText(finalText);
     }
 
     private void showConfirmSaveMobile(final String phone,String parcelCode) {
@@ -304,8 +285,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mShiftName = shiftName;
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
-//                    CharSequence finalText = StringUtils.getCharSequence(text1, mShiftName, getActivity());
-//                    tvTitle.setText(finalText);
                     mList.clear();
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo,routeInfo.getRouteCode());
 
@@ -317,6 +296,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void onDisplay() {
         super.onDisplay();
+
+        mList.clear();
         initSearch();
     }
 
@@ -368,39 +349,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mPresenter.showConfirmDelivery(commonObjects);
         }
     }
-
-//    @Override
-//    public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
-//        mRefresh.setRefreshing(false);
-//        mList.clear();
-//        long amount = 0;
-//        for (DeliveryPostman item : list) {
-//            item.setDateSearch(DateTimeUtils.convertStringToDateTime(mDate, DateTimeUtils.SIMPLE_DATE_FORMAT5,
-//                    DateTimeUtils.SIMPLE_DATE_FORMAT) + " - " + mShiftName);
-            /*if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
-                if (item.getStatus().equals("N")) {
-                    mList.add(item);
-                    if (!TextUtils.isEmpty(item.getAmount()))
-                        amount += Long.parseLong(item.getAmount());
-                }
-            } else {
-                if (item.getStatus().equals("Y")) {
-                    mList.add(item);
-                    if (!TextUtils.isEmpty(item.getAmount()))
-                        amount += Long.parseLong(item.getAmount());
-                }
-            }*/
-//            mList.add(item);
-//            if (!TextUtils.isEmpty(item.getAmount()))
-//                amount += Long.parseLong(item.getAmount());
-
-
-//        }
-//        mAdapter.notifyDataSetChanged();
-//        tvCount.setText(String.format(" %s", mList.size()));
-//        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
-//        isLoading = false;
-//    }
 
     @Override
     public void showResponseSuccessEmpty() {

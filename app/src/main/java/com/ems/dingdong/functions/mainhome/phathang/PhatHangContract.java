@@ -19,6 +19,7 @@ interface PhatHangContract {
         void showViewStatisticPtc(boolean isSuccess);
         void showViewCancelBd13();
         void showListOffline();
+        void showNhapBaoPhatOffline();
     }
 }
 

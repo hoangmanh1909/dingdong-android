@@ -6,6 +6,7 @@ import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
@@ -15,6 +16,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -24,6 +26,8 @@ import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -300,5 +304,13 @@ public interface VinattiAPI {
     Call<SimpleResult> cancelDelivery(@Body List<DingDongCancelDeliveryRequest> taskRequest);
 
     @GET("api/Dictionary/GetDeliveryRoute")
-    Call<RouteInfo> getDeliveryRoute(@Query("poCode") String poCode);
+    Call<RouteInfoResult> getDeliveryRoute(@Query("poCode") String poCode);
+
+    @GET("api/Dictionary/GetPostmanByRoute")
+    Call<UserInfoResult> getPostmanByRoute(@Query("poCode") String poCode,
+                                           @Query("routeId") Integer routeId,
+                                           @Query("routeType") String routeType);
+
+    @POST("api/DingDong/CancelDivided")
+    Call<SimpleResult> cancelDivided(@Body List<DingDongCancelDividedRequest> taskRequest);
 }
