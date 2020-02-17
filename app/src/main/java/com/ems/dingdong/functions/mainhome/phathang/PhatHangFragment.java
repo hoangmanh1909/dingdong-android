@@ -103,7 +103,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                         } else if (homeInfo.getId() == 8) {
                             mPresenter.showNhapBaoPhatOffline();
                         } else if (homeInfo.getId() == 9) {
-//                            mPresenter.showListOffline();
+                            mPresenter.showListOffline();
                         } else if (homeInfo.getId() == 10) {
                             mPresenter.showViewCancelBd13();
                         }

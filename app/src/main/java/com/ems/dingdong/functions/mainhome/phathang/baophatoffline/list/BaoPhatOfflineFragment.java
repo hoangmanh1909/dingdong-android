@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -73,12 +75,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     CustomBoldTextView tvAmount;
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
-    @BindView(R.id.edt_parcelcode)
-    FormItemEditText edtParcelcode;
-    @BindView(R.id.ll_scan_qr)
-    RelativeLayout llScanRr;
-    /*   @BindView(R.id.tv_shift)
-       CustomBoldTextView tvShift;*/
     private BaoPhatOfflineAdapter mAdapter;
     private List<CommonObject> mList;
     private long mAmount = 0;
@@ -103,25 +99,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
-        String text1 = "BÁO PHÁT OFFLINE";
-        tvTitle.setText(StringUtils.getCharSequence(text1, getActivity()));
-        edtParcelcode.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        edtParcelcode.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        edtParcelcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-                    String parcelCode = edtParcelcode.getText().toString();
-                    getQuery(parcelCode);
-                }
-                return true;
-            }
-        });
-        if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-            llScanRr.setVisibility(View.GONE);
-        } else {
-            llScanRr.setVisibility(View.VISIBLE);
-        }
+
         mList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(layoutManager);
@@ -144,29 +122,29 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                         }
                     }
                 });
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPresenter.showDetail(mList.get(position), position);
-                    }
-                });
-                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
-                            @Override
-                            public void onCallResponse(String phone) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone,  mList.get(position).getParcelCode());
-                            }
-
-                            @Override
-                            public void onUpdateResponse(String phone) {
-
-                            }
-                        }).show();
-                    }
-                });
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        mPresenter.showDetail(mList.get(position), position);
+//                    }
+//                });
+//                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+//                            @Override
+//                            public void onCallResponse(String phone) {
+//                                mPhone = phone;
+//                                mPresenter.callForward(phone,  mList.get(position).getParcelCode());
+//                            }
+//
+//                            @Override
+//                            public void onUpdateResponse(String phone) {
+//
+//                            }
+//                        }).show();
+//                    }
+//                });
             }
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
@@ -185,23 +163,23 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         }
     }
 
-    public void getQuery(String parcelCode) {
-        if(!parcelCode.isEmpty()) {
-            CommonObject object = new CommonObject();
-            object.setCode(parcelCode.toUpperCase().trim());
-            object.setDeliveryType("2");
-            if (!checkInList(object)) {
-                saveLocal(object);
-                mList.add(object);
-                mAdapter.addItem(object);
-                tvCount.setText(String.format(" %s", mList.size()));
-                if (org.apache.commons.lang3.math.NumberUtils.isDigits(object.getCollectAmount()))
-                    mAmount += Long.parseLong(object.getCollectAmount());
-                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
-            }
-        }
-        edtParcelcode.setText("");
-    }
+//    public void getQuery(String parcelCode) {
+//        if(!parcelCode.isEmpty()) {
+//            CommonObject object = new CommonObject();
+//            object.setCode(parcelCode.toUpperCase().trim());
+//            object.setDeliveryType("2");
+//            if (!checkInList(object)) {
+//                saveLocal(object);
+//                mList.add(object);
+//                mAdapter.addItem(object);
+//                tvCount.setText(String.format(" %s", mList.size()));
+//                if (org.apache.commons.lang3.math.NumberUtils.isDigits(object.getCollectAmount()))
+//                    mAmount += Long.parseLong(object.getCollectAmount());
+//                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
+//            }
+//        }
+//        edtParcelcode.setText("");
+//    }
 
     public void saveLocal(CommonObject baoPhat) {
         String parcelCode = baoPhat.getParcelCode();
@@ -230,21 +208,21 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
         }
         mList.clear();
-        mAmount =0;
+        mAmount = 0;
         mAdapter.clear();
         if (results.size() > 0) {
             for (CommonObject item : results) {
                 CommonObject itemReal = realm.copyFromRealm(item);
                 mList.add(itemReal);
                 mAdapter.addItem(itemReal);
-                tvCount.setText(String.format(" %s", mList.size()));
+                tvCount.setText("Số lượng: " + String.format(" %s", mList.size()));
                 if (org.apache.commons.lang3.math.NumberUtils.isDigits(itemReal.getCollectAmount()))
                     mAmount += Long.parseLong(itemReal.getCollectAmount());
-                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
+                tvAmount.setText("Tổng tiền: " + String.format(" %s đ", NumberUtils.formatPriceNumber(mAmount)));
             }
         } else {
-            tvCount.setText(String.format(" %s", mList.size()));
-            tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
+            tvCount.setText("Số lượng: " + String.format(" %s", mList.size()));
+            tvAmount.setText("Tổng tiền: " + String.format(" %s đ", NumberUtils.formatPriceNumber(mAmount)));
         }
     }
 
@@ -267,6 +245,22 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         startActivity(intent);
     }
 
+    @Override
+    public void showError(String message) {
+        Toast.showToast(getContext(),"Cập nhật dữ liệu không thành công");
+    }
+
+    @Override
+    public void showSuccess(String code) {
+        if(code.equals("00")){
+            Toast.showToast(getContext(),"Cập nhật dữ liệu thành công");
+        }
+        else{
+
+            Toast.showToast(getContext(),"Cập nhật dữ liệu không thành công");
+        }
+    }
+
 
     private boolean checkInList(CommonObject commonObject) {
         boolean check = false;
@@ -282,15 +276,15 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
 
-    public void scanQr() {
-        mPresenter.showBarcode(new BarCodeCallback() {
-            @Override
-            public void scanQrcodeResponse(String value) {
-                //Toast.showToast(getActivity(), value);
-                getQuery(value.replace("+", ""));
-            }
-        });
-    }
+//    public void scanQr() {
+//        mPresenter.showBarcode(new BarCodeCallback() {
+//            @Override
+//            public void scanQrcodeResponse(String value) {
+//                //Toast.showToast(getActivity(), value);
+//                getQuery(value.replace("+", ""));
+//            }
+//        });
+//    }
 
     @Override
     public void onDestroy() {
@@ -328,7 +322,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.img_search, R.id.img_capture})
+    @OnClick({R.id.img_back, R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -336,95 +330,107 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 break;
             case R.id.img_send:
                 if (mList != null && !mList.isEmpty())
-                    if (mList.size() > 1) {
-                        if (TextUtils.isEmpty(Constants.SHIFT)) {
-                            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
-                            Utilities.showUIShift(getActivity());
-                            return;
-                        }
-                        showOptionSuccessOrFail();
-
-                    } else {
-                        mPresenter.showDetail(mList.get(0), 0);
-                    }
+                    submit();
+//                    if (mList.size() > 1) {
+//                        if (TextUtils.isEmpty(Constants.SHIFT)) {
+//                            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+//                            Utilities.showUIShift(getActivity());
+//                            return;
+//                        }
+//                    showOptionSuccessOrFail();
+//
+//                    } else {
+//                        mPresenter.showDetail(mList.get(0), 0);
+//                    }
                 break;
-            case R.id.img_search:
-                String parcelCode = edtParcelcode.getText().toString();
-                if (TextUtils.isEmpty(parcelCode)) {
-                    Toast.showToast(getActivity(), "Chưa nhập bưu gửi");
-                    return;
-                }
-                getQuery(parcelCode);
-                break;
-            case R.id.img_capture:
-                scanQr();
-                break;
+//            case R.id.img_search:
+//                String parcelCode = edtParcelcode.getText().toString();
+//                if (TextUtils.isEmpty(parcelCode)) {
+//                    Toast.showToast(getActivity(), "Chưa nhập bưu gửi");
+//                    return;
+//                }
+//                getQuery(parcelCode);
+//                break;
+//            case R.id.img_capture:
+//                scanQr();
+//                break;
         }
     }
 
-    private void showOptionSuccessOrFail() {
-
-        new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
-            @Override
-            public void onResponse(int deliveryType) {
-                if (deliveryType == 2) {
-                    //next view
-                    for (CommonObject item : mList) {
-                        item.setDeliveryType("2");
-                    }
-                    mPresenter.pushViewConfirmAll(mList);
-                } else {
-                    //show dialog
-                    List<ReasonInfo> list = RealmUtils.getReasons();
-                    if (list != null && !list.isEmpty()) {
-                        new BaoPhatOfflineFailDialog(getActivity(), list, new BaoPhatOfflineFailCallback() {
-                            @Override
-                            public void onResponse(ReasonInfo reason, SolutionInfo solution, String note, String sign) {
-                                for (CommonObject commonObject : mList) {
-                                    commonObject.setDeliveryType("1");
-                                    commonObject.setNote(note);
-                                    commonObject.setReasonCode(reason.getCode());
-                                    commonObject.setReasonName(reason.getName());
-                                    commonObject.setSolutionCode(solution.getCode());
-                                    commonObject.setSolutionName(solution.getName());
-                                    commonObject.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                                    String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-                                    commonObject.setDeliveryTime(time);
-                                    commonObject.setPaymentChanel(1 + "");
-                                    commonObject.setSaveLocal(true);
-
-                                    if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-                                        mPresenter.submitToPNS(commonObject);
-                                    } else {
-                                        mPresenter.saveLocal(commonObject);
-                                        if (getActivity() != null) {
-                                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                                                    .setConfirmText("OK")
-                                                    .setTitleText("Thông báo")
-                                                    .setContentText("Lưu thành công")
-                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                        @Override
-                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                            sweetAlertDialog.dismiss();
-                                                            mPresenter.back();
-
-                                                        }
-                                                    }).show();
-                                        }
-                                    }
-                                }
-                                // mPresenter.submitToPNS(mList, reason, solution, note, sign);
-                            }
-                        }).show();
-                    } else {
-                        Toast.showToast(getActivity(), "Đang lấy dữ liệu");
-                    }
-
-                }
-            }
-        }).show();
-
-
+    public void submit() {
+        List<CommonObject> commonObjects = mAdapter.getItemsSelected();
+        if(commonObjects.size() > 0){
+            mPresenter.submitToPNS(commonObjects);
+        }
+        else
+        {
+            Toast.showToast(getContext(),"Không có bản ghi nào được chọn");
+        }
     }
+//
+//    private void showOptionSuccessOrFail() {
+//
+//        new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
+//            @Override
+//            public void onResponse(int deliveryType) {
+//                if (deliveryType == 2) {
+//                    //next view
+//                    for (CommonObject item : mList) {
+//                        item.setDeliveryType("2");
+//                    }
+//                    mPresenter.pushViewConfirmAll(mList);
+//                } else {
+//                    //show dialog
+//                    List<ReasonInfo> list = RealmUtils.getReasons();
+//                    if (list != null && !list.isEmpty()) {
+//                        new BaoPhatOfflineFailDialog(getActivity(), list, new BaoPhatOfflineFailCallback() {
+//                            @Override
+//                            public void onResponse(ReasonInfo reason, SolutionInfo solution, String note, String sign) {
+//                                for (CommonObject commonObject : mList) {
+//                                    commonObject.setDeliveryType("1");
+//                                    commonObject.setNote(note);
+//                                    commonObject.setReasonCode(reason.getCode());
+//                                    commonObject.setReasonName(reason.getName());
+//                                    commonObject.setSolutionCode(solution.getCode());
+//                                    commonObject.setSolutionName(solution.getName());
+//                                    commonObject.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+//                                    String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+//                                    commonObject.setDeliveryTime(time);
+//                                    commonObject.setPaymentChanel(1 + "");
+//                                    commonObject.setSaveLocal(true);
+//
+//                                    if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+//                                        mPresenter.submitToPNS(commonObject);
+//                                    } else {
+//                                        mPresenter.saveLocal(commonObject);
+//                                        if (getActivity() != null) {
+//                                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+//                                                    .setConfirmText("OK")
+//                                                    .setTitleText("Thông báo")
+//                                                    .setContentText("Lưu thành công")
+//                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                        @Override
+//                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                                            sweetAlertDialog.dismiss();
+//                                                            mPresenter.back();
+//
+//                                                        }
+//                                                    }).show();
+//                                        }
+//                                    }
+//                                }
+//                                // mPresenter.submitToPNS(mList, reason, solution, note, sign);
+//                            }
+//                        }).show();
+//                    } else {
+//                        Toast.showToast(getActivity(), "Đang lấy dữ liệu");
+//                    }
+//
+//                }
+//            }
+//        }).show();
+//
+//
+//    }
 
 }

@@ -30,6 +30,9 @@ interface BaoPhatOfflineContract {
        // void showData(CommonObject commonObject);
 
         void showCallSuccess();
+        void showError(String message);
+
+        void showSuccess(String code);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -44,7 +47,7 @@ interface BaoPhatOfflineContract {
 
         void saveLocal(CommonObject commonObject);
 
-        void submitToPNS(CommonObject commonObject);
+        void submitToPNS(List<CommonObject> commonObjects);
     }
 }
 

@@ -46,7 +46,7 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showListOffline() {
-        new ReceverPersonPresenter(mContainerView).pushView();
+        new BaoPhatOfflinePresenter(mContainerView).pushView();
     }
 
     @Override

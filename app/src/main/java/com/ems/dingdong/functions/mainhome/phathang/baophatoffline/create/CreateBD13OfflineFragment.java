@@ -52,6 +52,7 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -273,18 +274,15 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     }
 
     private void submit() {
-        if(TextUtils.isEmpty(edt_parcelcode.getText()))
-        {
+        if (TextUtils.isEmpty(edt_parcelcode.getText())) {
             Toast.showToast(edt_parcelcode.getContext(), "Xin vui lòng nhập bưu gửi");
             return;
         }
         String ladingCode = edt_parcelcode.getText();
 
-        if(mDeliveryType == 2)
-        {
+        if (mDeliveryType == 2) {
 
-        }
-        else{
+        } else {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(tv_reason.getContext(), "Xin vui lòng chọn lý do");
                 return;
@@ -294,8 +292,8 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 return;
             }
 
-            String reason = tv_reason.getText();
-            String solution = tv_solution.getText();
+            String reason = mReasonCode;
+            String solution = mSolutionCode;
             String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
 //            String signature = Utils.SHA256(ladingCode + userInfo.getMobileNumber() + userInfo.getUnitCode() + BuildConfig.PRIVATE_KEY).toUpperCase();
@@ -309,7 +307,23 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             commonObject.setSignatureCapture(mSign);
             commonObject.setReasonCode(reason);
             commonObject.setSolutionCode(solution);
+            commonObject.setImageDelivery("");
+            commonObject.setSignatureCapture("");
             mPresenter.saveLocal(commonObject);
+            if (getActivity() != null) {
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setConfirmText("OK")
+                        .setTitleText("Thông báo")
+                        .setContentText("Lưu thành công")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                                mPresenter.back();
+
+                            }
+                        }).show();
+            }
 //            PushToPnsRequest request = new PushToPnsRequest(userInfo.getiD(),lading,userInfo.getUnitCode(),deliveryDate,
 //                    deliveryTime,tv_receiver.getText(),mReasonCode,mSolutionCode,"C18","1","1",
 //                    mSign,tv_Description.getText(),"0",userInfo.getiD(),"",routeInfo.getRouteCode(),"",mFile);
