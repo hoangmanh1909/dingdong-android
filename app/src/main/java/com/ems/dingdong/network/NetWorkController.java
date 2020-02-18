@@ -10,6 +10,8 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.StatisticCollectResult;
+import com.ems.dingdong.model.StatisticDebitDetailResult;
+import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UserInfoResult;
@@ -394,6 +396,16 @@ public class NetWorkController {
 
     public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryDetailResult> callback) {
         Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess);
+        call.enqueue(callback);
+    }
+
+    public static void statisticDebitGeneral(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDebitGeneralResult> callback) {
+        Call<StatisticDebitGeneralResult> call = getAPIBuilder().statisticDebitGeneral(postmanID, fromDate, toDate);
+        call.enqueue(callback);
+    }
+
+    public static void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, CommonCallback<StatisticDebitDetailResult> callback) {
+        Call<StatisticDebitDetailResult> call = getAPIBuilder().statisticDebitDetail(postmanID, fromDate, toDate, statusCode);
         call.enqueue(callback);
     }
 

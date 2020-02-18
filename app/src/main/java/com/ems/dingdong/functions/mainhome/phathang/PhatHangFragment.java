@@ -69,6 +69,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(8, R.drawable.ic_nhap_bao_phat, "Nhập báo phát offline"));
                 homeInfos.add(new HomeInfo(9, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
                 homeInfos.add(new HomeInfo(10, R.drawable.close, "Hủy báo phát"));
+                homeInfos.add(new HomeInfo(11, R.drawable.ic_gach_no, "Thống kê gạch nợ"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
@@ -106,6 +107,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
 //                            mPresenter.showListOffline();
                         } else if (homeInfo.getId() == 10) {
                             mPresenter.showViewCancelBd13();
+                        } else if(homeInfo.getId() == 11) {
+                            mPresenter.showStatisticDebit();
                         }
                     }
                 });
