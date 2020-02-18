@@ -1,4 +1,4 @@
-package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.gachnothanhcong;
+package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.detail;
 
 import android.content.Context;
 import android.view.View;
@@ -14,9 +14,9 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import java.util.List;
 import butterknife.BindView;
 
-public class GachNoThanhCongAdapter extends RecyclerBaseAdapter {
+public class StatisticDebitDetailAdapter extends RecyclerBaseAdapter {
 
-    public GachNoThanhCongAdapter(Context context, List<StatisticDebitDetailResponse> items) {
+    public StatisticDebitDetailAdapter(Context context, List<StatisticDebitDetailResponse> items) {
         super(context, items);
     }
 

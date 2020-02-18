@@ -5,10 +5,10 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.network.NetWorkController;
 
-public class ThongKeGachNoInteractor extends Interactor<ThongKeGachNoContract.Presenter>
-        implements ThongKeGachNoContract.Interactor {
+public class StatisticDebitInteractor extends Interactor<StatisticDebitContract.Presenter>
+        implements StatisticDebitContract.Interactor {
 
-    public ThongKeGachNoInteractor(ThongKeGachNoPresenter presenter) {
+    public StatisticDebitInteractor(StatisticDebitPresenter presenter) {
         super(presenter);
     }
 

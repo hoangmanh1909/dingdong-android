@@ -5,7 +5,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.ThongKeGachNoPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 
 /**
@@ -55,6 +55,6 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showStatisticDebit() {
-        new ThongKeGachNoPresenter(mContainerView).pushView();
+        new StatisticDebitPresenter(mContainerView).pushView();
     }
 }

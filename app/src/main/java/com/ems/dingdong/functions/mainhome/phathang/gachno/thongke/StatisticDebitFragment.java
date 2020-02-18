@@ -19,7 +19,7 @@ import butterknife.OnClick;
 import static com.ems.dingdong.utiles.Constants.STATUS_CODE_NO;
 import static com.ems.dingdong.utiles.Constants.STATUS_CODE_YES;
 
-public class ThongKeGachNoFragment extends ViewFragment<ThongKeGachNoContract.Presenter> implements ThongKeGachNoContract.View{
+public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.Presenter> implements StatisticDebitContract.View{
 
     @BindView(R.id.tv_Amount)
     CustomTextView successful_quantity;
@@ -68,8 +68,8 @@ public class ThongKeGachNoFragment extends ViewFragment<ThongKeGachNoContract.Pr
         }
     }
 
-    public static ThongKeGachNoFragment getInstance() {
-        return new ThongKeGachNoFragment();
+    public static StatisticDebitFragment getInstance() {
+        return new StatisticDebitFragment();
     }
 
     @Override

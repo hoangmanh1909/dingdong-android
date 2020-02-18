@@ -5,20 +5,20 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.gachnothanhcong.GachNoThanhCongPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.detail.StatisticDebitDetailPresenter;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class ThongKeGachNoPresenter extends Presenter<ThongKeGachNoContract.View, ThongKeGachNoContract.Interactor>
-        implements ThongKeGachNoContract.Presenter {
+public class StatisticDebitPresenter extends Presenter<StatisticDebitContract.View, StatisticDebitContract.Interactor>
+        implements StatisticDebitContract.Presenter {
 
     private String mPostmanID;
     private String mFromDate;
     private String mToDate;
 
-    public ThongKeGachNoPresenter(ContainerView containerView) {
+    public StatisticDebitPresenter(ContainerView containerView) {
         super(containerView);
     }
 
@@ -28,13 +28,13 @@ public class ThongKeGachNoPresenter extends Presenter<ThongKeGachNoContract.View
     }
 
     @Override
-    public ThongKeGachNoContract.Interactor onCreateInteractor() {
-        return new ThongKeGachNoInteractor(this);
+    public StatisticDebitContract.Interactor onCreateInteractor() {
+        return new StatisticDebitInteractor(this);
     }
 
     @Override
-    public ThongKeGachNoContract.View onCreateView() {
-        return ThongKeGachNoFragment.getInstance();
+    public StatisticDebitContract.View onCreateView() {
+        return StatisticDebitFragment.getInstance();
     }
 
     @Override
@@ -62,6 +62,6 @@ public class ThongKeGachNoPresenter extends Presenter<ThongKeGachNoContract.View
 
     @Override
     public void showDetail(String statusCode) {
-        new GachNoThanhCongPresenter(mContainerView).setIsSuccess(statusCode).pushView();
+        new StatisticDebitDetailPresenter(mContainerView).setIsSuccess(statusCode).pushView();
     }
 }

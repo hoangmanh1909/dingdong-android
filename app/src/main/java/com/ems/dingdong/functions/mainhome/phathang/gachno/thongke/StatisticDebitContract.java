@@ -7,7 +7,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
 
-interface ThongKeGachNoContract {
+interface StatisticDebitContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void getDebitStatistic(String postmanID, String fromDate, String toDate,

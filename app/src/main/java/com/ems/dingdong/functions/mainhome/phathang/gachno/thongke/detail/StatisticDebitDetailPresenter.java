@@ -1,4 +1,4 @@
-package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.gachnothanhcong;
+package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.detail;
 
 import android.app.Activity;
 
@@ -9,8 +9,8 @@ import com.ems.dingdong.model.StatisticDebitDetailResult;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class GachNoThanhCongPresenter extends Presenter<GachNoThanhCongContract.View, GachNoThanhCongContract.Interactor>
-        implements GachNoThanhCongContract.Presenter {
+public class StatisticDebitDetailPresenter extends Presenter<StatisticDebitDetailContract.View, StatisticDebitDetailContract.Interactor>
+        implements StatisticDebitDetailContract.Presenter {
 
     private String mStatusCode = "N";
     private String mPostmanID;
@@ -18,7 +18,7 @@ public class GachNoThanhCongPresenter extends Presenter<GachNoThanhCongContract.
     private String mToDate;
 
 
-    public GachNoThanhCongPresenter(ContainerView containerView) {
+    public StatisticDebitDetailPresenter(ContainerView containerView) {
         super(containerView);
     }
 
@@ -27,13 +27,13 @@ public class GachNoThanhCongPresenter extends Presenter<GachNoThanhCongContract.
     }
 
     @Override
-    public GachNoThanhCongContract.Interactor onCreateInteractor() {
-        return new GachNoThanhCongInteractor(this);
+    public StatisticDebitDetailContract.Interactor onCreateInteractor() {
+        return new StatisticDebitDetailInteractor(this);
     }
 
     @Override
-    public GachNoThanhCongContract.View onCreateView() {
-        return GachNoThanhCongFragment.getInstance();
+    public StatisticDebitDetailContract.View onCreateView() {
+        return StatisticDebitDetailFragment.getInstance();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GachNoThanhCongPresenter extends Presenter<GachNoThanhCongContract.
         return mStatusCode;
     }
 
-    public GachNoThanhCongPresenter setIsSuccess(String statusCode) {
+    public StatisticDebitDetailPresenter setIsSuccess(String statusCode) {
         this.mStatusCode = statusCode;
         return this;
     }

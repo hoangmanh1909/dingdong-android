@@ -1,4 +1,4 @@
-package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.gachnothanhcong;
+package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.detail;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -21,15 +21,15 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import static com.ems.dingdong.utiles.Constants.STATUS_CODE_YES;
 
-public class GachNoThanhCongFragment extends ViewFragment<GachNoThanhCongContract.Presenter>
-        implements GachNoThanhCongContract.View {
+public class StatisticDebitDetailFragment extends ViewFragment<StatisticDebitDetailContract.Presenter>
+        implements StatisticDebitDetailContract.View {
 
     @BindView(R.id.tv_title)
     CustomBoldTextView title;
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
-    private GachNoThanhCongAdapter mAdapter;
+    private StatisticDebitDetailAdapter mAdapter;
     private UserInfo mUserInfo;
     private String fromDate;
     private String toDate;
@@ -51,7 +51,7 @@ public class GachNoThanhCongFragment extends ViewFragment<GachNoThanhCongContrac
         }
 
         mList = new ArrayList<>();
-        mAdapter = new GachNoThanhCongAdapter(getActivity(), mList);
+        mAdapter = new StatisticDebitDetailAdapter(getActivity(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
 
@@ -74,8 +74,8 @@ public class GachNoThanhCongFragment extends ViewFragment<GachNoThanhCongContrac
         }
     }
 
-    public static GachNoThanhCongFragment getInstance() {
-        return new GachNoThanhCongFragment();
+    public static StatisticDebitDetailFragment getInstance() {
+        return new StatisticDebitDetailFragment();
     }
 
     @Override
