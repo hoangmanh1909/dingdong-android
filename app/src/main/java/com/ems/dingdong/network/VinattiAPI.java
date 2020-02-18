@@ -22,6 +22,8 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.StatisticCollectResult;
+import com.ems.dingdong.model.StatisticDebitDetailResult;
+import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UploadResult;
@@ -280,6 +282,19 @@ public interface VinattiAPI {
                                                                 @Field("ToDate") String toDate,
                                                                 @Field("IsSuccess") boolean isSuccess
     );
+
+    @FormUrlEncoded
+    @POST("api/Statistic/DebitGeneral")
+    Call<StatisticDebitGeneralResult> statisticDebitGeneral(@Field("PostmanId") String postmanID,
+                                                            @Field("FromDate") String fromDate,
+                                                            @Field("ToDate") String toDate);
+
+    @FormUrlEncoded
+    @POST(" api/Statistic/DebitDetail")
+    Call<StatisticDebitDetailResult> statisticDebitDetail(@Field("PostmanId") String postmanID,
+                                                          @Field("FromDate") String fromDate,
+                                                          @Field("ToDate") String toDate,
+                                                          @Field("StatusCode") String statusCode);
 
     @FormUrlEncoded
     @POST("api/DingDong/GetMainview")

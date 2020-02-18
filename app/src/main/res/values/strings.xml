@@ -28,4 +28,13 @@
     <string name="cam_use_capture">Sử dụng</string>
     <string name="retry">Thử lại</string>
     <string name="sign_retry">Ký lại</string>
+    <string name="thong_ke_gach_no">Thống kê gạch nợ</string>
+    <string name="success">THÀNH CÔNG</string>
+    <string name="amount">Số lượng:</string>
+    <string name="amount_of_money">Số tiền</string>
+    <string name="vietnamese_currency">đ</string>
+    <string name="not_success">KHÔNG THÀNH CÔNG</string>
+    <string name="gach_no_thanh_cong">THỐNG KÊ GẠCH NỢ THÀNH CÔNG</string>
+    <string name="gach_no_khong_thanh_cong">THỐNG KÊ GẠCH NỢ KHÔNG THÀNH CÔNG</string>
+
 </resources>
