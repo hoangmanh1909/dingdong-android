@@ -83,6 +83,9 @@ public class CommonObject extends RealmObject {
     String instruction;
     @SerializedName("RouteCode")
     String routeCode;
+    @SerializedName("BatchCode")
+    String batchCode;
+
 
 
     @SerializedName("RealReceiverName")
@@ -266,6 +269,10 @@ public class CommonObject extends RealmObject {
 
     public String getPoCode() {
         return poCode;
+    }
+
+    public String getBatchCode() {
+        return batchCode;
     }
 
     public String getIssuePOCode() {

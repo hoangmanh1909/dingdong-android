@@ -137,7 +137,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void submitToPNS(String reason, String solution, String note, String deliveryImage, String signCapture) {
-        String postmanID =  userInfo.getiD();
+        String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
 
@@ -217,7 +217,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String ladingPostmanID = Integer.toString(item.getId());
             String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
             String shiftId = Integer.toString(item.getShiftId());
-
             PaymentDeviveryRequest request = new PaymentDeviveryRequest(
                     postmanID,
                     parcelCode,
@@ -239,7 +238,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     routeCode,
                     ladingPostmanID,
                     signature,
-                    deliveryImage
+                    deliveryImage,
+                    userInfo.getUserName(),
+                    item.getBatchCode()
             );
 
             mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
@@ -291,11 +292,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void cancelDivided(int toRouteId, int toPostmanId,String signCapture,String fileImg) {
+    public void cancelDivided(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
         List<DingDongCancelDividedRequest> requests = new ArrayList<>();
 
-        for (DeliveryPostman item : mBaoPhatBangke)
-        {
+        for (DeliveryPostman item : mBaoPhatBangke) {
             DingDongCancelDividedRequest request = new DingDongCancelDividedRequest();
             request.setAmndPOCode(userInfo.getUnitCode());
             request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
@@ -310,7 +310,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             requests.add(request);
         }
 
-        mInteractor.cancelDivided(requests,new CommonCallback<SimpleResult>((Context) mContainerView){
+        mInteractor.cancelDivided(requests, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

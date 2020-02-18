@@ -92,7 +92,7 @@
                             android:id="@+id/tv_Amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
+                            android:layout_weight="0.5"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
@@ -122,21 +122,10 @@
                             android:id="@+id/tv_AmountOfMoney"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.4"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_Currency"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/vietnamese_currency"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -187,7 +176,7 @@
                             android:id="@+id/tv_Unsuccess_Amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
+                            android:layout_weight="0.5"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
@@ -217,21 +206,10 @@
                             android:id="@+id/tv_Unsuccess_AmountOfMoney"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.3"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_Unsuccess_Currency"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/vietnamese_currency"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 

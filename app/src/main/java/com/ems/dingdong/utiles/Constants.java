@@ -54,5 +54,5 @@ public class Constants {
     public static final int TYPE_DELIVERY_PPA = 3;
 
     public static final String STATUS_CODE_YES = "Y";
-    public static final String STATUS_CODE_NO = "Y";
+    public static final String STATUS_CODE_NO = "N";
 }

@@ -85,6 +85,10 @@ public class DeliveryPostman {
     @SerializedName("NewInstruction")
     @Expose
     private String newInstruction;
+    @SerializedName("BatchCode")
+    @Expose
+    private String batchCode;
+
     private boolean selected;
 
     public void setSelected(boolean selected) {
@@ -311,6 +315,11 @@ public class DeliveryPostman {
         this.newInstruction = newInstruction;
     }
 
+    public String getBatchCode() {
+        return batchCode;
+    }
 
-
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
 }
