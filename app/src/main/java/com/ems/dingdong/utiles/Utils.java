@@ -31,6 +31,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.ems.dingdong.model.response.StatisticDebitDetailResponse;
+import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
+import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 import com.ems.dingdong.network.VinattiAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -804,6 +807,50 @@ public class Utils {
         } catch (Exception e) {
 
         }
+    }
+
+    public static ArrayList<StatisticDeliveryGeneralResponse> getGeneralList(ArrayList<StatisticDeliveryGeneralResponse> statisticList) {
+        String service = "Tổng";
+        long quantity = 0;
+        long moneyCod = 0;
+        long moneyC = 0;
+        long moneyPPA = 0;
+        for (StatisticDeliveryGeneralResponse item: statisticList) {
+            quantity += Long.parseLong(item.getQuantity());
+            moneyCod += Long.parseLong(item.getQuantityCOD());
+            moneyC += Long.parseLong(item.getQuantityC());
+            moneyPPA += Long.parseLong(item.getQuantityPPA());
+        }
+        StatisticDeliveryGeneralResponse total = new StatisticDeliveryGeneralResponse();
+        total.setServiceName(service);
+        total.setQuantity(String.valueOf(quantity));
+        total.setQuantityC(String.valueOf(moneyC));
+        total.setQuantityCOD(String.valueOf(moneyCod));
+        total.setQuantityPPA(String.valueOf(moneyPPA));
+        statisticList.add(total);
+        return statisticList;
+    }
+
+    public static ArrayList<StatisticDeliveryDetailResponse> getGeneralDeliveryDetailList(ArrayList<StatisticDeliveryDetailResponse> statisticList) {
+        long totalAmount = 0;
+        for(StatisticDeliveryDetailResponse item : statisticList) {
+            totalAmount += Long.parseLong(item.getAmount());
+        }
+        StatisticDeliveryDetailResponse totalStatistic = new StatisticDeliveryDetailResponse();
+        totalStatistic.setAmount(String.valueOf(totalAmount));
+        statisticList.add(totalStatistic);
+        return statisticList;
+    }
+
+    public static ArrayList<StatisticDebitDetailResponse> getGeneralDebitDetailList(ArrayList<StatisticDebitDetailResponse> statisticList) {
+        long totalAmount = 0;
+        for(StatisticDebitDetailResponse item : statisticList) {
+            totalAmount += Long.parseLong(item.getAmount());
+        }
+        StatisticDebitDetailResponse totalStatistic = new StatisticDebitDetailResponse();
+        totalStatistic.setAmount(String.valueOf(totalAmount));
+        statisticList.add(totalStatistic);
+        return statisticList;
     }
 
    /* public static String convertToNewMaVung(String phoneNumber,String oldCode,String newCode){

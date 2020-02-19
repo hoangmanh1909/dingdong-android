@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -81,5 +83,10 @@ public class CreateBD13OfflinePresenter extends Presenter<CreateBD13OfflineContr
             realm.copyToRealm(request);
             realm.commitTransaction();
         }
+    }
+
+    @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 }

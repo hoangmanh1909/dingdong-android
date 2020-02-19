@@ -55,6 +55,10 @@ public class BaoPhatThanhCongAdapter extends RecyclerBaseAdapter {
             super(itemView);
         }
 
+//        public CommonObject getItem(int position) {
+////            return mItems.get(position);
+//        }
+
         @Override
         public void bindView(Object model, int position) {
             CommonObject item = (CommonObject) model;

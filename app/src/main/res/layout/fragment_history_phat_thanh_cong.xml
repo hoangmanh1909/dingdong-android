@@ -58,7 +58,7 @@
             android:gravity="center|left"
             android:text="Dịch vụ"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <com.ems.dingdong.views.CustomMediumTextView
             android:layout_width="0dp"
@@ -69,7 +69,7 @@
             android:padding="@dimen/dimen_5dp"
             android:text="Số lượng"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <com.ems.dingdong.views.CustomMediumTextView
             android:layout_width="0dp"
@@ -80,7 +80,7 @@
             android:text="Số tiền COD"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <com.ems.dingdong.views.CustomMediumTextView
             android:layout_width="0dp"
@@ -91,7 +91,7 @@
             android:text="Tiền C"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <com.ems.dingdong.views.CustomMediumTextView
             android:layout_width="0dp"
@@ -102,7 +102,7 @@
             android:text="Tiền PPA"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18sp" />
+            android:textSize="@dimen/text_size_16sp" />
     </LinearLayout>
 
     <FrameLayout

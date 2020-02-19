@@ -1,8 +1,10 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,6 +150,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             ButterKnife.bind(this, itemView);
         }
 
+        public CommonObject getItem(int position) {
+            return mList.get(position);
+        }
+
         public void bindView(final Object model) {
             CommonObject item = (CommonObject) model;
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
@@ -181,10 +187,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 }
             });
             if (!TextUtils.isEmpty(item.getAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd","")))));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd", "")))));
             }
             if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount().replace("vnd","")))));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount().replace("vnd", "")))));
             }
             if (!TextUtils.isEmpty(item.getService())) {
                 if (!TextUtils.isEmpty(item.getServiceName().trim())) {
@@ -193,9 +199,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 } else {
                     tvServices.setVisibility(View.GONE);
                 }
-            }
-            else
-            {
+            } else {
                 tvServices.setVisibility(View.INVISIBLE);
             }
             tvInfo.setText(String.format("Lần phát: %s", item.getInfo()));

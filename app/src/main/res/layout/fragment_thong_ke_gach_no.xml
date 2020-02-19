@@ -92,7 +92,7 @@
                             android:id="@+id/tv_Amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
+                            android:layout_weight="0.5"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
@@ -122,21 +122,10 @@
                             android:id="@+id/tv_AmountOfMoney"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.4"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_Currency"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/vietnamese_currency"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -187,7 +176,7 @@
                             android:id="@+id/tv_Unsuccess_Amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
+                            android:layout_weight="0.5"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
@@ -217,21 +206,10 @@
                             android:id="@+id/tv_Unsuccess_AmountOfMoney"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.3"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_Unsuccess_Currency"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/vietnamese_currency"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -240,14 +218,24 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:padding="@dimen/dimen_10dp"></LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/dimen_40dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
+
+        <ImageView
+            android:id="@+id/img_searchDebit"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_choose_calendar" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -7,7 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detail.ListDeliverySuccessDetailPresenter;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
-
+import com.ems.dingdong.utiles.Utils;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -58,7 +58,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(response.body().getStatisticDeliveryGeneralResponses());
+                    mView.showListSuccess(Utils.getGeneralList(response.body().getStatisticDeliveryGeneralResponses()));
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }
@@ -88,5 +88,4 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
         this.mIsSuccess = isSuccess;
         return this;
     }
-
 }

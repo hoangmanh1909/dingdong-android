@@ -12,20 +12,16 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 
 import com.core.base.viper.ViewFragment;
-import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.SignCallback;
 import com.ems.dingdong.dialog.SignDialog;
@@ -36,7 +32,6 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -45,7 +40,6 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.RealmUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
@@ -150,12 +144,9 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         scrollView.setFocusable(true);
         scrollView.setFocusableInTouchMode(true);
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.requestFocusFromTouch();
-                return false;
-            }
+        scrollView.setOnTouchListener((v, event) -> {
+            v.requestFocusFromTouch();
+            return false;
         });
 
         SharedPref sharedPref = new SharedPref(getActivity());
@@ -230,8 +221,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3})
-
+            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3, R.id.ll_scan_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -270,6 +260,11 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 imgPosition = 3;
                 MediaUltis.captureImage(this);
                 break;
+            case R.id.ll_scan_qr:
+                mPresenter.showBarcode(value -> {
+                    edt_parcelcode.setText(value);
+                });
+
         }
     }
 

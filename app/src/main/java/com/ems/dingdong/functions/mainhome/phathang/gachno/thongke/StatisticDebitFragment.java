@@ -5,21 +5,26 @@ import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.OnChooseDay;
+import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
+
 import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.ems.dingdong.utiles.Constants.STATUS_CODE_NO;
 import static com.ems.dingdong.utiles.Constants.STATUS_CODE_YES;
 
-public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.Presenter> implements StatisticDebitContract.View{
+public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.Presenter> implements StatisticDebitContract.View {
 
     @BindView(R.id.tv_Amount)
     CustomTextView successful_quantity;
@@ -53,7 +58,7 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
         }
     }
 
-    @OnClick({R.id.img_back, R.id.layout_success, R.id.layout_unsuccess})
+    @OnClick({R.id.img_back, R.id.layout_success, R.id.layout_unsuccess, R.id.img_searchDebit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -65,6 +70,8 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
             case R.id.layout_unsuccess:
                 mPresenter.showDetail(STATUS_CODE_NO);
                 break;
+            case R.id.img_searchDebit:
+                showDialog();
         }
     }
 
@@ -77,9 +84,17 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
         if (null != value) {
             mValue = value;
             successful_quantity.setText(value.getSuccessQuantity());
-            successful_amount_of_money.setText(value.getSuccessAmount());
+            successful_amount_of_money.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
             unsuccessful_quantity.setText(value.getErrorQuantity());
-            unsuccessful_amount_of_money.setText(value.getErrorAmount());
+            unsuccessful_amount_of_money.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
         }
+    }
+
+    private void showDialog() {
+        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+            fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+            toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+            mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate);
+        }).show();
     }
 }

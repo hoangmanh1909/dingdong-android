@@ -16,10 +16,14 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
+
+import java.util.Calendar;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -44,6 +48,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     public void start() {
         // Start getting data here
         getShift();
+        getBalance();
     }
     private void getShift() {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
@@ -66,8 +71,29 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                 }
             });
         }
-
     }
+
+    private void getBalance() {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+        String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        mInteractor.getBalance(userInfo.getiD(), fromDate, toDate, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
+                mView.hideProgress();
+                mView.updateBalance(response.body().getStatisticDebitGeneralResponses());
+            }
+            @Override
+            protected void onError(Call<StatisticDebitGeneralResult> call, String message) {
+            }
+        });
+    }
+
     @Override
     public MainContract.Interactor onCreateInteractor() {
         return new MainInteractor(this);

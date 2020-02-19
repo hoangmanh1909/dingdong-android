@@ -8,7 +8,11 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.StatisticDetailCollect;
+import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
+import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
+import com.ems.dingdong.utiles.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,7 +60,7 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(response.body().getStatisticDeliveryDetailResponses());
+                    mView.showListSuccess(Utils.getGeneralDeliveryDetailList(response.body().getStatisticDeliveryDetailResponses()));
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }

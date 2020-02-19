@@ -1,50 +1,21 @@
 package com.ems.dingdong.functions.mainhome.home;
 
-import android.content.Intent;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
-import com.core.utils.NetworkUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
-import com.ems.dingdong.functions.mainhome.chihobtxh.BtxhActivity;
-import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
-import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
-import com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity;
-import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
-import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
-import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.CommonObjectResult;
-import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.model.HomeCollectInfoResult;
-import com.ems.dingdong.model.HomeInfo;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-
 import java.util.ArrayList;
-
+import java.util.Objects;
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * The Home Fragment
@@ -60,13 +31,11 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     private HomeCollectAdapter homeCollectAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
     private HomeDeliveryAdapter homeDeliveryCODAdapter;
-
-    ArrayList<HomeCollectInfo> mListCollect = new ArrayList<>();
-    ArrayList<HomeCollectInfo> mListDelivery = new ArrayList<>();
-    ArrayList<HomeCollectInfo> mListDeliveryCOD = new ArrayList<>();
-
-    UserInfo userInfo;
-    RouteInfo routeInfo;
+    private ArrayList<HomeCollectInfo> mListCollect = new ArrayList<>();
+    private ArrayList<HomeCollectInfo> mListDelivery = new ArrayList<>();
+    private ArrayList<HomeCollectInfo> mListDeliveryCOD = new ArrayList<>();
+    private UserInfo userInfo;
+    private RouteInfo routeInfo;
 
     public static HomeV1Fragment getInstance() {
         return new HomeV1Fragment();
@@ -81,7 +50,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     public void initLayout() {
         super.initLayout();
 
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!userJson.isEmpty()) {
@@ -91,7 +60,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
 
-        mPresenter.getHomeView(userInfo.getUserName(),routeInfo.getRouteCode());
+        mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
 //        mPresenter.getHomeView("","");
 
         homeCollectAdapter = new HomeCollectAdapter(getContext(), mListCollect);
@@ -113,29 +82,23 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     @Override
     public void showObjectSuccess(HomeCollectInfoResult objectResult) {
         HomeCollectInfo homeCollectInfo = null;
-        long totalAddressNotCollect = 0;
-        long totalNotCollect = 0;
-        long totalWeight = 0;
-
         HomeCollectInfo resInfo = objectResult.getHomeCollectInfo();
 
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
-            if(i == 0){
-                homeCollectInfo.setTotalAddressCollect("THU GOM MỚI");
-                homeCollectInfo.setTotalAddressNotCollect("TỒN CHƯA GOM");
-            }
-            else if(i == 1){
-                homeCollectInfo.setLabelCollect("SL địa chỉ:");
+            if (i == 0) {
+                homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
+                homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
                 homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressCollect()))));
                 homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressNotCollect()))));
-            }
-            else if(i == 2){
-                homeCollectInfo.setLabelCollect("SL tin:");
+            } else if (i == 2) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
                 homeCollectInfo.setTotalLadingCollect(resInfo.getTotalLadingCollect());
                 homeCollectInfo.setTotalLadingNotCollect(resInfo.getTotalLadingNotCollect());
-            }else{
-                homeCollectInfo.setLabelCollect("Trọng lượng:");
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
                 homeCollectInfo.setTotalWeightCollect(resInfo.getTotalWeightCollect());
                 homeCollectInfo.setTotalWeightNotCollect(resInfo.getTotalWeightNotCollect());
             }
@@ -146,17 +109,15 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         for (int i = 0; i < 3; i++) {
             homeCollectInfo = new HomeCollectInfo();
             homeCollectInfo.setType(1);
-            if(i == 0){
-                homeCollectInfo.setTotalQuantityToday("GIAO MỚI");
-                homeCollectInfo.setTotalQuantityPast("CHƯA PHÁT");
-            }
-            else if(i == 1){
-                homeCollectInfo.setLabelCollect("Số lượng");
+            if (i == 0) {
+                homeCollectInfo.setTotalQuantityToday(getResources().getString(R.string.new_delivery));
+                homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
                 homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(!TextUtils.isEmpty(resInfo.getTotalQuantityToday()) ? resInfo.getTotalQuantityToday() : "0"))));
                 homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalQuantityPast()))));
-            }
-            else if(i == 2){
-                homeCollectInfo.setLabelCollect("Cước");
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
                 homeCollectInfo.setTotalFeeToday(resInfo.getTotalFeeToday());
                 homeCollectInfo.setTotalFeePast(resInfo.getTotalFeePast());
             }
@@ -167,22 +128,19 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             homeCollectInfo.setType(2);
-            if(i == 0){
-                homeCollectInfo.setTotalQuantityToday("GIAO MỚI");
-                homeCollectInfo.setTotalQuantityPast("CHƯA PHÁT");
-            }
-            else if(i == 1){
-                homeCollectInfo.setLabelCollect("Số lượng");
+            if (i == 0) {
+                homeCollectInfo.setTotalQuantityToday(getResources().getString(R.string.new_delivery));
+                homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
                 homeCollectInfo.setTotalQuantityTodayCOD(resInfo.getTotalQuantityTodayCOD());
                 homeCollectInfo.setTotalQuantityPastCOD(resInfo.getTotalQuantityPastCOD());
-            }
-            else if(i == 2){
-                homeCollectInfo.setLabelCollect("Số tiền");
+            } else if (i == 2) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount_of_money));
                 homeCollectInfo.setTotalCODAmountTodayCOD(resInfo.getTotalCODAmountTodayCOD());
                 homeCollectInfo.setTotalCODAmountPastCOD(resInfo.getTotalCODAmountPastCOD());
-            }
-            else if(i == 3){
-                homeCollectInfo.setLabelCollect("Cước");
+            } else if (i == 3) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
                 homeCollectInfo.setTotalFeeTodayCOD(resInfo.getTotalFeeTodayCOD());
                 homeCollectInfo.setTotalFeePastCOD(resInfo.getTotalFeePastCOD());
             }

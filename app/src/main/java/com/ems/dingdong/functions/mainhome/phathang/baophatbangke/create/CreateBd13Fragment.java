@@ -226,10 +226,10 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     private void showConfirmSaveMobile(final String phone,String parcelCode) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                .setConfirmText("Có")
-                .setTitleText("Thông báo")
-                .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
-                .setCancelText("Không")
+                .setConfirmText(getResources().getString(R.string.yes))
+                .setTitleText(getResources().getString(R.string.notification))
+                .setContentText(getResources().getString(R.string.update_phone_number))
+                .setCancelText(getResources().getString(R.string.no))
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -339,7 +339,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             items.add(new Item(i + "", i + ""));
         }
         if (pickerBag == null) {
-            pickerBag = new ItemBottomSheetPickerUIFragment(items, "Chọn túi",
+            pickerBag = new ItemBottomSheetPickerUIFragment(items, getResources().getString(R.string.chon_tui),
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {
@@ -365,7 +365,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             items.add(new Item(i + "", "Ca " + i));
         }
         if (pickerShift == null) {
-            pickerShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, getResources().getString(R.string.chon_tuyen),
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {
@@ -390,7 +390,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                     .setConfirmText("OK")
-                    .setTitleText("Thông báo")
+                    .setTitleText(getResources().getString(R.string.notification))
                     .setContentText(message)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override

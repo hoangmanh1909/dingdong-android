@@ -130,6 +130,10 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             ButterKnife.bind(this, itemView);
         }
 
+        public DingDongGetCancelDelivery getItem(int position) {
+            return mList.get(position);
+        }
+
         public void bindView(Object model) {
             DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
             tv_code.setText(item.getLadingCode());
@@ -147,18 +151,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             }
 
             tv_status_paypost.setText(status);
-
             cb_selected.setChecked(item.isSelected());
-            cb_selected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        ((DingDongGetCancelDelivery) model).setSelected(true);
-                    } else {
-                        ((DingDongGetCancelDelivery) model).setSelected(false);
-                    }
-                }
-            });
         }
     }
     interface FilterDone {

@@ -59,10 +59,11 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     public void signDataAndSubmitToPNS(String signatureCapture) {
         String postmanID = "";
         String mobileNumber = "";
+        UserInfo userInfo = null;
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
             mobileNumber = userInfo.getMobileNumber();
         }
@@ -97,14 +98,14 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
                 } else {
                     if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                         payment(postmanID,
                                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                                 solutionCode,
                                 status, paymentChannel, deliveryType, signatureCapture,
-                                note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
+                                note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
                     } else {
                         pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                     }
@@ -115,7 +116,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
                 } else {
                     pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                 }
@@ -170,10 +171,11 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         String postmanID = "";
         String mobileNumber = "";
         String deliveryPOCode = "";
+        UserInfo userInfo = null;
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
             mobileNumber = userInfo.getMobileNumber();
         }
@@ -215,7 +217,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                     parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                     solutionCode,
                     status, paymentChannel, deliveryType, signatureCapture,
-                    note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
+                    note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
         }
 
     }
@@ -223,14 +225,14 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     private void payment(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String routeCode, String ladingPostmanID, String imageDelivery) {
+                         String note, String amount, String routeCode, String ladingPostmanID, String imageDelivery, String postmanCode) {
         final int size = mBaoPhatCommon.size();
 
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature, imageDelivery);
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature, imageDelivery, postmanCode, null);
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

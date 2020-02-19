@@ -25,9 +25,11 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.callback.BaoPhatOfflineFailCallback;
 import com.ems.dingdong.callback.BaoPhatbangKeConfirmCallback;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.BaoPhatBangKeConfirmDialog;
 import com.ems.dingdong.dialog.BaoPhatOfflineFailDialog;
+import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -247,17 +249,16 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getContext(),"Cập nhật dữ liệu không thành công");
+        Toast.showToast(getContext(), "Cập nhật dữ liệu không thành công");
     }
 
     @Override
     public void showSuccess(String code) {
-        if(code.equals("00")){
-            Toast.showToast(getContext(),"Cập nhật dữ liệu thành công");
-        }
-        else{
+        if (code.equals("00")) {
+            Toast.showToast(getContext(), "Cập nhật dữ liệu thành công");
+        } else {
 
-            Toast.showToast(getContext(),"Cập nhật dữ liệu không thành công");
+            Toast.showToast(getContext(), "Cập nhật dữ liệu không thành công");
         }
     }
 
@@ -322,7 +323,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_send})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_searchDeliveryOffline})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -343,6 +344,11 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 //                        mPresenter.showDetail(mList.get(0), 0);
 //                    }
                 break;
+
+            case R.id.tv_searchDeliveryOffline:
+
+
+                break;
 //            case R.id.img_search:
 //                String parcelCode = edtParcelcode.getText().toString();
 //                if (TextUtils.isEmpty(parcelCode)) {
@@ -359,13 +365,22 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     public void submit() {
         List<CommonObject> commonObjects = mAdapter.getItemsSelected();
-        if(commonObjects.size() > 0){
+        if (commonObjects.size() > 0) {
             mPresenter.submitToPNS(commonObjects);
+        } else {
+            Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
         }
-        else
-        {
-            Toast.showToast(getContext(),"Không có bản ghi nào được chọn");
-        }
+    }
+
+    private void showDialog() {
+        new EditDayDialog(getActivity(), new OnChooseDay() {
+            @Override
+            public void onChooseDay(Calendar calFrom, Calendar calTo) {
+//                String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+//                String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+//                mPresenter.getHistory(fromDate, toDate);
+            }
+        }).show();
     }
 //
 //    private void showOptionSuccessOrFail() {
