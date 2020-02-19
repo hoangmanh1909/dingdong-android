@@ -217,7 +217,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 return phatHangFragment;
             case 3:
                 if (locationFragment == null) {
-                    locationFragment = mPresenter.getLocationPresenter().getFragment();
+                    locationFragment = mPresenter.getAddressPresenter().getFragment();
                 }
                 return locationFragment;
         }

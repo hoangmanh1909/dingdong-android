@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f6fa"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Địa chỉ chi tiết"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <com.ems.dingdong.views.CustomTextView
+        style="@style/HeaderNews"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:text="Thông tin vị trí"
+        android:textColor="@color/n_gray_text"
+        android:textSize="@dimen/text_size_16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/dimen_10dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kinh độ"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Tòa nhà iph"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </RelativeLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/dimen_10dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dimen_8dp">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vĩ độ"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Tòa nhà iph"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.ems.dingdong.views.CustomTextView
+        style="@style/HeaderNews"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:text="Thông tin thuộc tính"
+        android:textColor="@color/n_gray_text"
+        android:textSize="@dimen/text_size_16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/dimen_10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Tên địa chỉ"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="16sp"
+                app:formHint="Tên địa chỉ"
+                app:formShowUnderline="false" />
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Địa chỉ chi tiết"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_street"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="16sp"
+                app:formHint="Địa chỉ chi tiết"
+                app:formShowUnderline="false" />
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Quốc gia"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="16sp"
+                app:formHint="Quốc gia"
+                app:formShowUnderline="false" />
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Tỉnh/TP"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="16sp"
+                app:formHint="Tỉnh/TP"
+                app:formShowUnderline="false" />
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Quận/Huyện"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_county"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="16sp"
+                app:formHint="Quận/Huyện"
+                app:formShowUnderline="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Bán kính (km)"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_confidence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="16sp"
+                app:formHint="Bán kính"
+                app:formShowUnderline="false" />
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_10dp"
+            android:weightSum="2">
+
+<!--            <com.ems.dingdong.views.CustomMediumTextView-->
+<!--                android:id="@+id/tv_update"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/dimen_10dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/bg_gradient_search"-->
+<!--                android:gravity="center"-->
+<!--                android:paddingLeft="@dimen/dimen_10dp"-->
+<!--                android:paddingTop="@dimen/dimen_10dp"-->
+<!--                android:paddingRight="@dimen/dimen_10dp"-->
+<!--                android:paddingBottom="@dimen/dimen_10dp"-->
+<!--                android:text="Cập nhật"-->
+<!--                android:textAllCaps="true"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="16sp" />-->
+
+            <com.ems.dingdong.views.CustomMediumTextView
+                android:id="@+id/tv_verify"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_weight="2"
+                android:background="@drawable/bg_gradient_search"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Xác minh địa chỉ"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.address.AddressPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
@@ -90,6 +91,11 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     @Override
     public LocationPresenter getLocationPresenter() {
         return new LocationPresenter(mContainerView);
+    }
+
+    @Override
+    public AddressPresenter getAddressPresenter() {
+        return new AddressPresenter(mContainerView);
     }
 
     @Override

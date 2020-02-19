@@ -215,6 +215,10 @@ public class FormItemEditText extends FormItemText {
     public void setHorizontallyScrolling(boolean value) {
         mTextView.setHorizontallyScrolling(value);
     }
+    public void setEnabled(boolean value)
+    {
+        mTextView.setEnabled(value);
+    }
 
     public void setImeOptions(int imeActionNext) {
         mTextView.setImeOptions(imeActionNext);

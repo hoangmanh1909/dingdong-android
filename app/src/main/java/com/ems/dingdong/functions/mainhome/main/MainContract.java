@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.address.AddressPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
@@ -29,6 +30,8 @@ interface MainContract {
         PhatHangPresenter getPhatHangPresenter();
 
         LocationPresenter getLocationPresenter();
+
+        AddressPresenter getAddressPresenter();
 
         void showSetting();
     }

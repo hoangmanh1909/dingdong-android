@@ -18,6 +18,6 @@
     <tab
         id="@+id/action_location"
         icon="@drawable/ic_dinh_vi_tab"
-        title="Định vị"
+        title="Địa chỉ"
         />
 </tabs>

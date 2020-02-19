@@ -30,6 +30,7 @@ import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -115,13 +116,13 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryPostman")
     Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
-                                                       @Field("FromDate") String fromDate,
-                                                       @Field("ToDate") String toDate,
-                                                       @Field("ShiftID") String shiftID,
-                                                       @Field("Status") String status,
-                                                       @Field("ChThu") String chuyenthu,
-                                                       @Field("TuiSo") String tuiso,
-                                                       @Field("RouteCode") String routeCode);
+                                                        @Field("FromDate") String fromDate,
+                                                        @Field("ToDate") String toDate,
+                                                        @Field("ShiftID") String shiftID,
+                                                        @Field("Status") String status,
+                                                        @Field("ChThu") String chuyenthu,
+                                                        @Field("TuiSo") String tuiso,
+                                                        @Field("RouteCode") String routeCode);
 
 
     @FormUrlEncoded
@@ -328,4 +329,15 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/CancelDivided")
     Call<SimpleResult> cancelDivided(@Body List<DingDongCancelDividedRequest> taskRequest);
+
+    @GET("api/VietMap/Reverse")
+    Call<XacMinhDiaChiResult> getAddressByLocation(@Query("longitude") double longitude,
+                                                   @Query("latitude") double latitude);
+
+    @FormUrlEncoded
+    @POST("api/VietMap/Verify")
+    Call<SimpleResult> vietmapVerify(@Field("Id") String id,
+                                     @Field("IdUser") String idUser,
+                                     @Field("IsVerify") boolean isVerify,
+                                     @Field("Layer") String layer);
 }

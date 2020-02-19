@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Xác minh địa chỉ"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_get_location"
+        android:layout_below="@+id/header"/>
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/btn_get_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient_radius_5"
+        android:gravity="center"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:text="Lấy địa chỉ cần xác minh"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_18sp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

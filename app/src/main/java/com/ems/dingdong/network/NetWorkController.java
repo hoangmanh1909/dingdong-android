@@ -15,6 +15,7 @@ import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
@@ -190,7 +191,7 @@ public class NetWorkController {
                                              String tuiso,
                                              String routeCode,
                                              CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate,fromDate, shiftID,"", chuyenthu, tuiso,routeCode);
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, fromDate, shiftID, "", chuyenthu, tuiso, routeCode);
         call.enqueue(callback);
     }
 
@@ -418,8 +419,9 @@ public class NetWorkController {
         Call<DeliveryPostmanResponse> call = getAPIBuilder().searchLadingCreatedBd13(objRequest);
         call.enqueue(callback);
     }
+
     public static void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> callback) {
-        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode,routeCode,ladingCode,fromDate,toDate);
+        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, ladingCode, fromDate, toDate);
         call.enqueue(callback);
     }
 
@@ -427,17 +429,29 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
         call.enqueue(callback);
     }
+
     public static void getDeliveryRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
         Call<RouteInfoResult> call = getAPIBuilder().getDeliveryRoute(poCode);
         call.enqueue(callback);
     }
+
     public static void getPostmanByRoute(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
-        Call<UserInfoResult> call = getAPIBuilder().getPostmanByRoute(poCode,routeId,routeType);
+        Call<UserInfoResult> call = getAPIBuilder().getPostmanByRoute(poCode, routeId, routeType);
         call.enqueue(callback);
     }
 
     public static void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().cancelDivided(request);
+        call.enqueue(callback);
+    }
+
+    public static void getAddressByLocation(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
+        Call<XacMinhDiaChiResult> call = getAPIBuilder().getAddressByLocation(longitude, latitude);
+        call.enqueue(callback);
+    }
+
+    public static void vietmapVerify(String id, String userId, String layer, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().vietmapVerify(id, userId, true, layer);
         call.enqueue(callback);
     }
 }

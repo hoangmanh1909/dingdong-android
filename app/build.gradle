@@ -20,7 +20,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 android {
     compileSdkVersion project.compileSdkVersion as int
     buildToolsVersion project.buildToolsVersion as String
@@ -152,6 +151,10 @@ android {
         experimental = true
     }
 }
+repositories {
+    mavenCentral()
+    jcenter()
+}
 
 dependencies {
     configurations {
@@ -202,5 +205,8 @@ dependencies {
     //implementation 'org.apache.commons:commons-collections4:4.4'
     implementation("com.google.guava:guava:28.1-jre")
 
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2@aar'){
+        transitive=true
+    }
 }
 apply plugin: 'com.google.gms.google-services'
