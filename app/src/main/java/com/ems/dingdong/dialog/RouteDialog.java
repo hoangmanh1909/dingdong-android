@@ -80,7 +80,7 @@ public class RouteDialog extends Dialog {
 
     private void showUIRoute() {
         if (pickerUIRoute == null) {
-            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
+            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, mActivity.getResources().getString(R.string.chon_tuyen),
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                         @Override
                         public void onChooseClick(Item item, int position) {

@@ -29,12 +29,31 @@
     <string name="retry">Thử lại</string>
     <string name="sign_retry">Ký lại</string>
     <string name="thong_ke_gach_no">Thống kê gạch nợ</string>
-    <string name="success">THÀNH CÔNG</string>
+    <string name="success">gạch nợ thành công</string>
     <string name="amount">Số lượng:</string>
     <string name="amount_of_money">Số tiền:</string>
     <string name="vietnamese_currency">đ</string>
-    <string name="not_success">KHÔNG THÀNH CÔNG</string>
+    <string name="not_success">gạch nợ thất bại</string>
     <string name="gach_no_thanh_cong">THỐNG KÊ GẠCH NỢ THÀNH CÔNG</string>
     <string name="gach_no_khong_thanh_cong">THỐNG KÊ GẠCH NỢ KHÔNG THÀNH CÔNG</string>
+
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="notification">Thông báo</string>
+    <string name="chon_tuyen">Chọn tuyến</string>
+    <string name="chon_tui">Chọn túi</string>
+    <string name="update_phone_number">Bạn có muốn cập nhật số điện thoại lên hệ thống không?</string>
+    <string name="fee">Cước:</string>
+    <string name="new_delivery">GIAO MỚI</string>
+    <string name="not_deliver_yet">CHƯA PHÁT</string>
+    <string name="new_collected">THU GOM MỚI</string>
+    <string name="not_collect_yet">TỒN CHƯA GOM</string>
+    <string name="sl_dia_chi">SL địa chỉ:</string>
+    <string name="sl_tin">SL tin:</string>
+    <string name="weigh">Trọng lượng:</string>
+    <string name="employee_balance">Số tiền cần nộp</string>
+    <string name="employee_balance_success">Số tiền đã nộp</string>
+    <string name="employee_balance_missing">Số tiền còn phải nộp:</string>
+
 
 </resources>

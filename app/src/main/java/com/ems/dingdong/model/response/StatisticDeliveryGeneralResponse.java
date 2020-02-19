@@ -39,4 +39,24 @@ public class StatisticDeliveryGeneralResponse {
     public String getQuantityPPA() {
         return quantityPPA;
     }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setQuantityCOD(String quantityCOD) {
+        this.quantityCOD = quantityCOD;
+    }
+
+    public void setQuantityC(String quantityC) {
+        this.quantityC = quantityC;
+    }
+
+    public void setQuantityPPA(String quantityPPA) {
+        this.quantityPPA = quantityPPA;
+    }
 }

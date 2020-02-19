@@ -6,6 +6,8 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
+import com.ems.dingdong.utiles.Utils;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -48,7 +50,7 @@ public class StatisticDebitDetailPresenter extends Presenter<StatisticDebitDetai
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListDetail(response.body().getStatisticDebitDetailResponses());
+                    mView.showListDetail(Utils.getGeneralDebitDetailList(response.body().getStatisticDebitDetailResponses()));
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }

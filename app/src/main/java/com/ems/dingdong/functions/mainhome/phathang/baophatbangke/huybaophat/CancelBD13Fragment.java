@@ -114,15 +114,15 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                holder.itemView.setOnClickListener(v -> {
 //                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
 //                            showViewDetail(mList.get(position));
 //                        } else {
 //                            showViewDetail(mAdapter.getListFilter().get(position));
 //                        }
-                    }
+                    holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
+                    holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+
                 });
             }
         };
@@ -158,11 +158,8 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     public void scanQr() {
-        mPresenter.showBarcode(new BarCodeCallback() {
-            @Override
-            public void scanQrcodeResponse(String value) {
-                edtSearch.setText(value);
-            }
+        mPresenter.showBarcode(value -> {
+            edtSearch.setText(value);
         });
     }
 
@@ -202,20 +199,19 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     private void submit() {
         final List<DingDongGetCancelDelivery> deliveryPostmamns = mAdapter.getItemsSelected();
-        if(deliveryPostmamns.size() > 0) {
+        if (deliveryPostmamns.size() > 0) {
             long totalAmount = 0;
             for (DingDongGetCancelDelivery i : deliveryPostmamns) {
                 totalAmount = totalAmount + i.getAmount();
             }
             showDialogConfirm(deliveryPostmamns.size(), totalAmount);
-        }
-        else{
-            Toast.showToast(getContext(),"Không có bản ghi nào được chọn");
+        } else {
+            Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
         }
     }
 
     private void showDialogConfirm(long quantity, long totalAmount) {
-        new CreatedBd13Dialog(getActivity(),1, quantity, totalAmount, new CreatedBD13Callback() {
+        new CreatedBd13Dialog(getActivity(), 1, quantity, totalAmount, new CreatedBD13Callback() {
 
             @Override
             public void onResponse(String type, String description) {
@@ -264,9 +260,9 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     @Override
     public void showView(String message) {
-        Toast.showToast(getContext(),message);
+        Toast.showToast(getContext(), message);
         mList.clear();
-        getCancelDelivery(mFromDate,mToDate,"");
+        getCancelDelivery(mFromDate, mToDate, "");
     }
 
 }

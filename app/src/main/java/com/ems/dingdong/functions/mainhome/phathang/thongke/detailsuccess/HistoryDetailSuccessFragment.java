@@ -56,18 +56,20 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
             @Override
             public void onBindViewHolder(BaseViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
-                ((HolderView) holder).tvCount.setOnClickListener(v -> {
-                    mPresenter.showDetail(mList.get(position).getServiceCode(),mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COUNT);
-                });
-                ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> {
-                    mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD);
-                });
-                ((HolderView) holder).tvMoneyC.setOnClickListener(v -> {
-                    mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C);
-                });
-                ((HolderView) holder).tvMoneyPpa.setOnClickListener(v -> {
-                    mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA);
-                });
+                if (position != mList.size() - 1) {
+                    ((HolderView) holder).tvCount.setOnClickListener(v -> {
+                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COUNT);
+                    });
+                    ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> {
+                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD);
+                    });
+                    ((HolderView) holder).tvMoneyC.setOnClickListener(v -> {
+                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C);
+                    });
+                    ((HolderView) holder).tvMoneyPpa.setOnClickListener(v -> {
+                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA);
+                    });
+                }
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);

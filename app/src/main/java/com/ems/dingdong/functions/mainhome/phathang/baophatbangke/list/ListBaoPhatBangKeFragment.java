@@ -41,6 +41,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
@@ -122,10 +123,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             return;
         }
 
-
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
-        mAdapter = new CreateBd13Adapter(getActivity(),2, mList, new CreateBd13Adapter.FilterDone() {
+        mAdapter = new CreateBd13Adapter(getActivity(), 2, mList, new CreateBd13Adapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
                 new Handler().postDelayed(new Runnable() {
@@ -156,6 +156,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         } else {
 //                            showViewDetail(mAdapter.getListFilter().get(position));
                         }
+                        holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                     }
                 });
                 ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
@@ -165,12 +167,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             @Override
                             public void onCallResponse(String phone) {
                                 mPhone = phone;
-                                mPresenter.callForward(phone,mList.get(position).getMaE());
+                                mPresenter.callForward(phone, mList.get(position).getMaE());
                             }
 
                             @Override
                             public void onUpdateResponse(String phone) {
-                                showConfirmSaveMobile(phone,mList.get(position).getMaE());
+                                showConfirmSaveMobile(phone, mList.get(position).getMaE());
                             }
                         }).show();
                     }
@@ -203,7 +205,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-
             }
 
             @Override
@@ -228,7 +229,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    private void showConfirmSaveMobile(final String phone,String parcelCode) {
+    private void showConfirmSaveMobile(final String phone, String parcelCode) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -237,7 +238,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        mPresenter.updateMobile(phone,parcelCode);
+                        mPresenter.updateMobile(phone, parcelCode);
                         sweetAlertDialog.dismiss();
 
                     }
@@ -250,11 +251,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
                 }).show();
     }
+
     private void refreshSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             isLoading = true;
 
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo,routeInfo.getRouteCode());
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo, routeInfo.getRouteCode());
         }
     }
 
@@ -286,7 +288,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
                     mList.clear();
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo,routeInfo.getRouteCode());
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
 
                 }
             }).show();
@@ -305,20 +307,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
 //            isLoading = true;
             mList.clear();
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0",routeInfo.getRouteCode());
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
         }
     }
 
-//    @OnClick({R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.tv_search})
-    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search,R.id.img_send})
+    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search, R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
-                mPresenter.showBarcode(new BarCodeCallback() {
-                    @Override
-                    public void scanQrcodeResponse(String value) {
-                        edtSearch.setText(value);
-                    }
+                mPresenter.showBarcode(v -> {
+                    edtSearch.setText(v);
                 });
                 break;
             case R.id.img_send:
@@ -344,8 +342,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (commonObjects.isEmpty()) {
             Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
             return;
-        }
-        else {
+        } else {
             mPresenter.showConfirmDelivery(commonObjects);
         }
     }

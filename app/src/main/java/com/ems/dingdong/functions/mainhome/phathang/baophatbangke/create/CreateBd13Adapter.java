@@ -93,6 +93,20 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                                 || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
                                 || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase())
+                                || row.getPoCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getAutoCallStatus().toLowerCase().contains(charString.toLowerCase())
+                                || row.getInfo().toLowerCase().contains(charString.toLowerCase())
+                                || row.getRouteCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getServiceName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getService().toLowerCase().contains(charString.toLowerCase())
+                                || row.getStatus().toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getRoute()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getRouteId()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getShiftId()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getCount()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getWeight()).toLowerCase().contains(charString.toLowerCase())
                                 || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -146,6 +160,10 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             ButterKnife.bind(this, itemView);
         }
 
+        public DeliveryPostman getItem(int position) {
+            return mList.get(position);
+        }
+
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
             tv_code.setText(item.getMaE());
@@ -154,18 +172,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tv_weight.setText("Khối lương: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getWeight())));
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
-
             cb_selected.setChecked(item.isSelected());
-            cb_selected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        ((DeliveryPostman) model).setSelected(true);
-                    } else {
-                        ((DeliveryPostman) model).setSelected(false);
-                    }
-                }
-            });
         }
     }
 

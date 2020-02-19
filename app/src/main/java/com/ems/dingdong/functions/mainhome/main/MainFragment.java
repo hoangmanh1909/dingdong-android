@@ -1,29 +1,23 @@
 package com.ems.dingdong.functions.mainhome.main;
 
 import android.content.Intent;
-
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.RouteOptionCallBack;
-import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -32,10 +26,6 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -44,15 +34,14 @@ import butterknife.OnClick;
  */
 public class MainFragment extends ViewFragment<MainContract.Presenter> implements MainContract.View {
 
-
     @BindView(R.id.bottomBar)
     BottomBar bottomBar;
-    @BindView(R.id.tv_balance)
-    CustomTextView tvBalance;
     @BindView(R.id.tv_AmountMax)
     CustomTextView tvAmountMax;
-    @BindView(R.id.tv_acc_info)
-    CustomTextView tvAccInfo;
+    @BindView(R.id.tv_AmountSuccess)
+    CustomTextView tvAmountSuccess;
+    @BindView(R.id.tv_AmountError)
+    CustomTextView tvAmountError;
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
     @BindView(R.id.img_call)
@@ -66,9 +55,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private Fragment gomHangFragment;
     private Fragment phatHangFragment;
     private Fragment locationFragment;
-    UserInfo userInfo;
-    PostOffice postOffice;
-    RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private RouteInfo routeInfo;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -129,32 +118,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 //on page scroll state changed
             }
         });
-        String accInfo = "";
-        if (userInfo != null) {
-
-            if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
-                tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
-            }
-            if (!TextUtils.isEmpty(userInfo.getBalance())) {
-                tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
-            }
-            if (!TextUtils.isEmpty(userInfo.getFullName())) {
-                accInfo = userInfo.getFullName();
-            }
-        }
-        if(routeInfo != null){
-            if(!TextUtils.isEmpty(routeInfo.getRouteName())){
-                accInfo += " - " + routeInfo.getRouteName();
-            }
-        }
-
-        if(postOffice != null){
-            if(!TextUtils.isEmpty(postOffice.getName())){
-                accInfo += " - " + postOffice.getName();
-            }
-        }
-
-        tvAccInfo.setText(accInfo);
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
@@ -248,46 +211,14 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onDisplay() {
         super.onDisplay();
-        SharedPref sharedPref = new SharedPref(getActivity());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+    }
 
-        if (!userJson.isEmpty()) {
-            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+    @Override
+    public void updateBalance(StatisticDebitGeneralResponse value) {
+        if (value != null) {
+            tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
+            tvAmountSuccess.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
+            tvAmountError.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
         }
-        if (!postOfficeJson.isEmpty()) {
-            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-        }
-        if (!routeInfoJson.isEmpty()) {
-            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
-        }
-
-        String accInfo = "";
-        if (userInfo != null) {
-
-            if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
-                tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
-            }
-            if (!TextUtils.isEmpty(userInfo.getBalance())) {
-                tvBalance.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
-            }
-            if (!TextUtils.isEmpty(userInfo.getFullName())) {
-                accInfo = userInfo.getFullName();
-            }
-        }
-        if(routeInfo != null){
-            if(!TextUtils.isEmpty(routeInfo.getRouteName())){
-                accInfo += " - " + routeInfo.getRouteName();
-            }
-        }
-
-        if(postOffice != null){
-            if(!TextUtils.isEmpty(postOffice.getName())){
-                accInfo += " - " + postOffice.getName();
-            }
-        }
-
-        tvAccInfo.setText(accInfo);
     }
 }

@@ -42,7 +42,11 @@ public class StatisticDebitDetailAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             StatisticDebitDetailResponse item = (StatisticDebitDetailResponse) model;
             tvLadingCode.setText(item.getLadingCode());
-            tvSoTt.setText(String.format("%s", position + 1));
+            if (position == mItems.size() - 1) {
+                tvSoTt.setText("Tổng");
+            } else {
+                tvSoTt.setText(String.format("%s", position + 1));
+            }
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount()))));
         }
     }

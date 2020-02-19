@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -77,8 +79,8 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     private long mAmount = 0;
     private int mPosition = -1;
     private String mPhone;
-    String text1;
-    String text2;
+    private String text1;
+
     public static BaoPhatThanhCongFragment getInstance() {
         return new BaoPhatThanhCongFragment();
     }
@@ -92,7 +94,6 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     public void initLayout() {
         super.initLayout();
         text1 = "BÁO PHÁT THÀNH CÔNG";
-        text2 = "";
         tvTitle.setText(StringUtils.getCharSequence(text1, getActivity()));
         edtParcelcode.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         edtParcelcode.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -116,23 +117,18 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                ((HolderView) holder).imgClear.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (position < mList.size()) {
-                            mList.remove(position);
-                            mAdapter.removeItem(position);
-                            mAdapter.notifyItemRemoved(position);
-                            loadViewCount();
-                        }
+                ((HolderView) holder).imgClear.setOnClickListener(v -> {
+                    if (position < mList.size()) {
+                        mList.remove(position);
+                        mAdapter.removeItem(position);
+                        mAdapter.notifyItemRemoved(position);
+                        loadViewCount();
                     }
+
                 });
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPosition = position;
-                        mPresenter.showDetail(mList.get(position), position);
-                    }
+                holder.itemView.setOnClickListener(v -> {
+                    mPosition = position;
+                    mPresenter.showDetail(mList.get(position), position);
                 });
                 ((HolderView) holder).imgContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -141,7 +137,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                             @Override
                             public void onCallResponse(String phone) {
                                 mPhone = phone;
-                                mPresenter.callForward(phone,mList.get(position).getParcelCode());
+                                mPresenter.callForward(phone, mList.get(position).getParcelCode());
                             }
 
                             @Override
@@ -170,7 +166,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
     }
 
     public void getQuery(String parcelCode) {
-        if(!parcelCode.isEmpty()) {
+        if (!parcelCode.isEmpty()) {
             mPresenter.searchParcelCodeDelivery(parcelCode.trim());
         }
         edtParcelcode.setText("");
@@ -318,7 +314,6 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
         }
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
     }
-
 
 
 }

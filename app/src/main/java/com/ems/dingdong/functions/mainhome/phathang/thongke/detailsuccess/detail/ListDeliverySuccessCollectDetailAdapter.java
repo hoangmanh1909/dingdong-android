@@ -19,7 +19,6 @@ import butterknife.BindView;
 
 public class ListDeliverySuccessCollectDetailAdapter extends RecyclerBaseAdapter {
 
-
     public ListDeliverySuccessCollectDetailAdapter(Context context, List<StatisticDeliveryDetailResponse> items) {
         super(context, items);
     }
@@ -45,7 +44,11 @@ public class ListDeliverySuccessCollectDetailAdapter extends RecyclerBaseAdapter
         public void bindView(Object model, int position) {
             StatisticDeliveryDetailResponse item = (StatisticDeliveryDetailResponse) model;
             tvLadingCode.setText(item.getLadingCode());
-            tvSoTt.setText(String.format("%s", position + 1));
+            if (position == mItems.size() - 1) {
+                tvSoTt.setText("Tổng");
+            } else {
+                tvSoTt.setText(String.format("%s", position + 1));
+            }
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount()))));
         }
     }
