@@ -51,8 +51,8 @@
     <string name="sl_dia_chi">SL địa chỉ:</string>
     <string name="sl_tin">SL tin:</string>
     <string name="weigh">Trọng lượng:</string>
-    <string name="employee_balance">Số tiền cần nộp</string>
-    <string name="employee_balance_success">Số tiền đã nộp</string>
+    <string name="employee_balance">Số tiền cần nộp:</string>
+    <string name="employee_balance_success">Số tiền đã nộp:</string>
     <string name="employee_balance_missing">Số tiền còn phải nộp:</string>
 
 

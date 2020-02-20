@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -154,6 +155,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tv_COD;
         @BindView(R.id.tv_fee)
         public CustomTextView tv_fee;
+        @BindView(R.id.layout_itemBD13)
+        public LinearLayout linearLayout;
+
 
         public HolderView(View itemView) {
             super(itemView);

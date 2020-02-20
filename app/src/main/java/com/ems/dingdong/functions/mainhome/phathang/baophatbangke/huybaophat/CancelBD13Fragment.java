@@ -122,7 +122,11 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 //                        }
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-
+                    if (holder.getItem(position).isSelected()) {
+                        holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
+                    } else {
+                        holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.white));
+                    }
                 });
             }
         };
