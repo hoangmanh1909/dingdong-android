@@ -73,6 +73,12 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         return commonObjectsSelected;
     }
 
+    public void clearList()
+    {
+        mListFilter.clear();
+        mList.clear();
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -179,11 +185,9 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        ((CommonObject) model).setSelected(true);
-                    } else {
-                        ((CommonObject) model).setSelected(false);
-                    }
+                    cbSelected.setChecked(isChecked);
+
+                        ((CommonObject) model).setSelected(isChecked);
                 }
             });
             if (!TextUtils.isEmpty(item.getAmount())) {

@@ -64,7 +64,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
     public List<DeliveryPostman> getItemsSelected() {
         List<DeliveryPostman> commonObjectsSelected = new ArrayList<>();
-        List<DeliveryPostman> items = mList;
+        List<DeliveryPostman> items = mListFilter;
         for (DeliveryPostman item : items) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);

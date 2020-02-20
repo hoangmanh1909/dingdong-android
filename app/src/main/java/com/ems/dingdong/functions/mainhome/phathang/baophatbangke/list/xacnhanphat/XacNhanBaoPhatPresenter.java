@@ -301,7 +301,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
             request.setLadingCode(item.getMaE());
             request.setFromDeliveryRouteId(item.getRouteId());
-            request.setFromPostmanId(item.getId());
+            request.setFromPostmanId(Integer.parseInt(userInfo.getiD())) ;
             request.setToDeliveryRouteId(toRouteId);
             request.setToPostmanId(toPostmanId);
             request.setDescription("");

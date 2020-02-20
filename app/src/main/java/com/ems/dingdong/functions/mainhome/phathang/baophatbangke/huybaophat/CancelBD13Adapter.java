@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
+import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -89,7 +90,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
     public List<DingDongGetCancelDelivery> getItemsSelected() {
         List<DingDongGetCancelDelivery> commonObjectsSelected = new ArrayList<>();
-        List<DingDongGetCancelDelivery> items = mList;
+        List<DingDongGetCancelDelivery> items = mListFilter;
         for (DingDongGetCancelDelivery item : items) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);
@@ -139,12 +140,10 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             tv_code.setText(item.getLadingCode());
             tv_amount.setText("Số tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             String status = "";
-            if(!TextUtils.isEmpty(item.getPaymentPayPostStatus()))
-            {
-                if(item.getPaymentPayPostStatus() == "Y"){
+            if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
+                if (item.getPaymentPayPostStatus().equals("Y")) {
                     status = "Gạch nợ thành công";
-                }
-                else{
+                } else {
                     status = "Gạch nợ thất bại";
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
                 }
@@ -152,8 +151,16 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
             tv_status_paypost.setText(status);
             cb_selected.setChecked(item.isSelected());
+            cb_selected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    ((DingDongGetCancelDelivery) model).setSelected(isChecked);
+                    cb_selected.setChecked(isChecked);
+                }
+            });
         }
     }
+
     interface FilterDone {
         void getCount(int count, long amount);
     }
