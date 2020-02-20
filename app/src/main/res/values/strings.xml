@@ -55,6 +55,7 @@
     <string name="employee_balance">Số tiền cần nộp:</string>
     <string name="employee_balance_success">Số tiền đã nộp:</string>
     <string name="employee_balance_missing">Số tiền còn phải nộp:</string>
-
+    <string name="amount_max">HẠN MỨC:</string>
+    <string name="so_tien_da_thu">SỐ TIỀN ĐÃ THU:</string>
 
 </resources>

@@ -48,7 +48,6 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     public void start() {
         // Start getting data here
         getShift();
-        getBalance();
     }
     private void getShift() {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
@@ -73,7 +72,8 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
         }
     }
 
-    private void getBalance() {
+    @Override
+    public void getBalance() {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = null;
