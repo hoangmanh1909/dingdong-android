@@ -294,6 +294,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
                     mList.clear();
+                    mAdapter.notifyDataSetChanged();
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
 
                 }
@@ -306,6 +307,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         super.onDisplay();
 
         mList.clear();
+        mAdapter.notifyDataSetChanged();
         initSearch();
     }
 

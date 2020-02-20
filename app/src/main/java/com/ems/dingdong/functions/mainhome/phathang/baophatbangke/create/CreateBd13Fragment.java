@@ -162,6 +162,13 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 //                        } else {
 //                            showViewDetail(mAdapter.getListFilter().get(position));
 //                        }
+                        holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+//                        if (holder.getItem(position).isSelected()) {
+//                            holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
+//                        } else {
+//                            holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.white));
+//                        }
                     }
                 });
                 ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
