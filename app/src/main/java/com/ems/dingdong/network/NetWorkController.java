@@ -1,19 +1,34 @@
 package com.ems.dingdong.network;
 
 
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.GachNoResult;
+import com.ems.dingdong.model.HistoryCallResult;
+import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.PostOfficeResult;
+import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.UploadResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
@@ -31,25 +46,10 @@ import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ems.dingdong.BuildConfig;
-import com.ems.dingdong.model.ActiveResult;
-import com.ems.dingdong.model.Bd13Create;
-import com.ems.dingdong.model.CommonObjectResult;
-import com.ems.dingdong.model.GachNoResult;
-import com.ems.dingdong.model.HistoryCallResult;
-import com.ems.dingdong.model.HistoryCreateBd13Result;
-import com.ems.dingdong.model.LoginResult;
-import com.ems.dingdong.model.PostOfficeResult;
-import com.ems.dingdong.model.ReasonResult;
-import com.ems.dingdong.model.SimpleResult;
-import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.CommonObjectListResult;
-import com.ems.dingdong.model.UploadResult;
-import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -186,12 +186,13 @@ public class NetWorkController {
 
     public static void searchDeliveryPostman(String postmanID,
                                              String fromDate,
+                                             String toDate,
                                              String shiftID,
                                              String chuyenthu,
                                              String tuiso,
                                              String routeCode,
                                              CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, fromDate, shiftID, "", chuyenthu, tuiso, routeCode);
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, "", chuyenthu, tuiso, routeCode);
         call.enqueue(callback);
     }
 

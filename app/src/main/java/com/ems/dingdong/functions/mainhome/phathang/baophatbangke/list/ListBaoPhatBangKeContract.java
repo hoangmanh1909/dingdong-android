@@ -30,33 +30,43 @@ interface ListBaoPhatBangKeContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate, CommonCallback<CommonObjectListResult> callback);
+
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
+                                   String toDate,
                                    String shiftID,
                                    String chuyenthu,
                                    String tuiso,
                                    String routeCode,
                                    CommonCallback<DeliveryPostmanResponse> callback);
+
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
 
         void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
 
         void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
+
         void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
     }
 
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<DeliveryPostman> list);
+
         void showListSuccess(ArrayList<DeliveryPostman> list);
+
         void showError(String message);
+
         void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
 
         void showSuccessMessage(String message);
+
         void showCallSuccess();
+
         void showResponseSuccessEmpty();
     }
 
@@ -69,16 +79,23 @@ interface ListBaoPhatBangKeContract {
                                        String toAssignDate);*/
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
+                                   String toDate,
                                    String shiftID,
                                    String chuyenthu,
                                    String tuiso,
                                    String routeCode
         );
+
         void showDetailView(DeliveryPostman commonObject);
+
         void showConfirmDelivery(List<DeliveryPostman> commonObject);
+
         ListBaoPhatBangKePresenter setType(int type);
+
         void getReasons();
+
         int getType();
+
         void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign);
 
         void nextReceverPerson(List<CommonObject> commonObjects);
@@ -86,9 +103,10 @@ interface ListBaoPhatBangKeContract {
         void showBarcode(BarCodeCallback barCodeCallback);
 
         int getPositionTab();
-        void callForward(String phone,String parcelCode);
 
-        void updateMobile(String phone,String parcelCode);
+        void callForward(String phone, String parcelCode);
+
+        void updateMobile(String phone, String parcelCode);
     }
 }
 

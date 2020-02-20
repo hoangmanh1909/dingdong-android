@@ -9,7 +9,7 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
-public class CreateBD13OfflineContract {
+interface CreateBD13OfflineContract {
     interface Interactor extends IInteractor<Presenter> {
         void postImage(String path, CommonCallback<UploadSingleResult> callback);
     }

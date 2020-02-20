@@ -161,7 +161,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
-
         }
     }
 

@@ -1,11 +1,10 @@
 package com.ems.dingdong.functions.mainhome.phathang;
 
 import android.content.Intent;
+import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
@@ -14,7 +13,6 @@ import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.model.GroupInfo;
@@ -70,6 +68,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(9, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
                 homeInfos.add(new HomeInfo(10, R.drawable.close, "Hủy báo phát"));
                 homeInfos.add(new HomeInfo(11, R.drawable.ic_gach_no, "Thống kê gạch nợ"));
+                homeInfos.add(new HomeInfo(12, R.drawable.ic_location_blue, "Định vị"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
@@ -107,8 +106,10 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showListOffline();
                         } else if (homeInfo.getId() == 10) {
                             mPresenter.showViewCancelBd13();
-                        } else if(homeInfo.getId() == 11) {
+                        } else if (homeInfo.getId() == 11) {
                             mPresenter.showStatisticDebit();
+                        } else if (homeInfo.getId() == 12) {
+                            mPresenter.showLocation();
                         }
                     }
                 });

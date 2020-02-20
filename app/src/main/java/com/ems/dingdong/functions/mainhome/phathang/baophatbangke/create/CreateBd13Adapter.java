@@ -6,22 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.core.widget.BaseViewHolder;
-import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.R;
 import com.ems.dingdong.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -37,7 +33,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
     private List<DeliveryPostman> mList;
     private final int mType;
 
-    public CreateBd13Adapter(Context context,int type, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
+    public CreateBd13Adapter(Context context, int type, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
@@ -132,7 +128,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                     }
                     mFilterDone.getCount(mListFilter.size(), amount);
                 }
-                 notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         };
     }
@@ -157,6 +153,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tv_fee;
         @BindView(R.id.layout_itemBD13)
         public LinearLayout linearLayout;
+        @BindView(R.id.tv_index)
+        public CustomBoldTextView tvIndex;
 
 
         public HolderView(View itemView) {
@@ -176,6 +174,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tv_weight.setText("Khối lương: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getWeight())));
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
+            tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setChecked(item.isSelected());
         }
     }
