@@ -55,4 +55,6 @@ public class Constants {
 
     public static final String STATUS_CODE_YES = "Y";
     public static final String STATUS_CODE_NO = "N";
+    public static final String ALL = "Tất cả";
+
 }

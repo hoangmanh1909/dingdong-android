@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -125,6 +126,9 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         CustomTextView tv_amount;
         @BindView(R.id.tv_status_paypost)
         CustomTextView tv_status_paypost;
+        @BindView(R.id.layout_cancel_delivery)
+        RelativeLayout layoutDelivery;
+
 
         public HolderView(View itemView) {
             super(itemView);

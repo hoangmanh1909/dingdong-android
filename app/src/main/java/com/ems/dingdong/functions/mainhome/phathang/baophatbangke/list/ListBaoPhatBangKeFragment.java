@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -158,6 +159,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         }
                         holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                        if (holder.getItem(position).isSelected()) {
+                            holder.linearLayout.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
+                        } else {
+                            holder.linearLayout.setBackgroundColor(getResources().getColor(R.color.white));
+                        }
                     }
                 });
                 ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
