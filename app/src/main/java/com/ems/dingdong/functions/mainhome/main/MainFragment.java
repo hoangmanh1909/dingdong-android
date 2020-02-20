@@ -1,14 +1,17 @@
 package com.ems.dingdong.functions.mainhome.main;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import androidx.annotation.IdRes;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
@@ -25,7 +28,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -34,14 +37,14 @@ import butterknife.OnClick;
  */
 public class MainFragment extends ViewFragment<MainContract.Presenter> implements MainContract.View {
 
+    @BindView(R.id.first_header)
+    CustomTextView firstHeader;
+    @BindView(R.id.second_header)
+    CustomTextView secondHeader;
+    @BindView(R.id.thirst_header)
+    CustomTextView thirstHeader;
     @BindView(R.id.bottomBar)
     BottomBar bottomBar;
-    @BindView(R.id.tv_AmountMax)
-    CustomTextView tvAmountMax;
-    @BindView(R.id.tv_AmountSuccess)
-    CustomTextView tvAmountSuccess;
-    @BindView(R.id.tv_AmountError)
-    CustomTextView tvAmountError;
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
     @BindView(R.id.img_call)
@@ -87,20 +90,25 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
 
         setupAdapter();
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                if (tabId == R.id.action_home) {
-                    viewPager.setCurrentItem(0);
-                } else if (tabId == R.id.action_cart) {
-                    viewPager.setCurrentItem(1);
-                } else if (tabId == R.id.action_airplane) {
-                    viewPager.setCurrentItem(2);
-                } else if (tabId == R.id.action_location) {
-                    viewPager.setCurrentItem(3);
-                }
+        bottomBar.setOnTabSelectListener(tabId -> {
+
+            int currentPage = viewPager.getCurrentItem();
+            if(currentPage == 2) {
+                updateUserHeader();
+            }
+
+            if (tabId == R.id.action_home) {
+                viewPager.setCurrentItem(0);
+            } else if (tabId == R.id.action_cart) {
+                viewPager.setCurrentItem(1);
+            } else if (tabId == R.id.action_airplane) {
+                viewPager.setCurrentItem(2);
+                mPresenter.getBalance();
+            } else if (tabId == R.id.action_location) {
+                viewPager.setCurrentItem(3);
             }
         });
+
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -118,6 +126,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 //on page scroll state changed
             }
         });
+
+        updateUserHeader();
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
@@ -142,8 +152,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
-    void setupAdapter() {
+    private void setupAdapter() {
         adapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -211,14 +225,43 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onDisplay() {
         super.onDisplay();
+        updateUserHeader();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void updateBalance(StatisticDebitGeneralResponse value) {
         if (value != null) {
-            tvAmountMax.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
-            tvAmountSuccess.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
-            tvAmountError.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
+            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
+            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
+            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateUserHeader() {
+        String accInfo = "";
+        if (userInfo != null) {
+            if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
+                secondHeader.setText(getResources().getString(R.string.amount_max) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+            }
+            if (!TextUtils.isEmpty(userInfo.getBalance())) {
+                thirstHeader.setText(getResources().getString(R.string.so_tien_da_thu) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
+            }
+            if (!TextUtils.isEmpty(userInfo.getFullName())) {
+                accInfo = userInfo.getFullName();
+            }
+        }
+        if (routeInfo != null) {
+            if (!TextUtils.isEmpty(routeInfo.getRouteName())) {
+                accInfo += " - " + routeInfo.getRouteName();
+            }
+        }
+        if (postOffice != null) {
+            if (!TextUtils.isEmpty(postOffice.getName())) {
+                accInfo += " - " + postOffice.getName();
+            }
+        }
+        firstHeader.setText(accInfo);
     }
 }

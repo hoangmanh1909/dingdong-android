@@ -88,15 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="@string/employee_balance"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_AmountMax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:text="VNĐ"
+                    android:id="@+id/first_header"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -112,16 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="@string/employee_balance_success"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_AmountSuccess"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:text="VNĐ"
+                    android:id="@+id/second_header"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -136,16 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="@string/employee_balance_missing"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_AmountError"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:text="VNĐ"
+                    android:id="@+id/thirst_header"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>

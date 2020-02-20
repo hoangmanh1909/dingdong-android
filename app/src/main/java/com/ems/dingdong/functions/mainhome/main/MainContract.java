@@ -30,15 +30,12 @@ interface MainContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         HomePresenter getHomePresenter();
-
         GomHangPresenter getGomHangPresenter();
         PhatHangPresenter getPhatHangPresenter();
-
         LocationPresenter getLocationPresenter();
-
         AddressPresenter getAddressPresenter();
-
         void showSetting();
+        void getBalance();
     }
 }
 
