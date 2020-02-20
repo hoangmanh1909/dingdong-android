@@ -154,14 +154,18 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                holder.itemView.setOnClickListener(v -> {
 //                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
 //                            showViewDetail(mList.get(position));
 //                        } else {
 //                            showViewDetail(mAdapter.getListFilter().get(position));
 //                        }
+                    holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
+                    holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    if (holder.getItem(position).isSelected()) {
+                        holder.linearLayout.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
+                    } else {
+                        holder.linearLayout.setBackgroundColor(getResources().getColor(R.color.white));
                     }
                 });
                 ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
