@@ -13,6 +13,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -102,6 +103,17 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     @Override
     public void showMessageRequest(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+        if (getActivity() != null) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText(getResources().getString(R.string.notification))
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    }).show();
+        }
     }
 }

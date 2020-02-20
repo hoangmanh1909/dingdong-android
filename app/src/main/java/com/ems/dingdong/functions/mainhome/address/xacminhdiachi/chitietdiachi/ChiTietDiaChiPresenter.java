@@ -52,7 +52,7 @@ public class ChiTietDiaChiPresenter extends Presenter<ChiTietDiaChiContract.View
                 super.onSuccess(call, response);
 
                 mView.hideProgress();
-                mView.showMessageRequest(response.message());
+                mView.showMessageRequest( response.body().getMessage());
             }
 
             @Override

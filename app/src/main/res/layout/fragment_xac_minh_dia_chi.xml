@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -40,12 +41,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_get_location"
-        android:layout_below="@+id/header"/>
+        android:layout_below="@+id/header"
+        mapbox:mapbox_cameraZoom="12" />
 
     <com.ems.dingdong.views.CustomTextView
         android:id="@+id/btn_get_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/bg_gradient_radius_5"
         android:gravity="center"
         android:paddingTop="@dimen/dimen_10dp"
@@ -53,7 +56,6 @@
         android:text="Lấy địa chỉ cần xác minh"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_18sp"
-        android:layout_alignParentBottom="true"/>
+        android:textSize="@dimen/text_size_18sp" />
 
 </RelativeLayout>

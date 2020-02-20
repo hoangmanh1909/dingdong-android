@@ -56,6 +56,7 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
     private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
     Location mLocation;
+    public boolean isLoad = true;
     // Variables needed to listen to location updates
     private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
 
@@ -112,12 +113,6 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
-
-                        if (mLocation != null)
-                        {
-                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 12), 10);
-                        }
                     }
                 });
 
@@ -168,12 +163,12 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
     @SuppressLint("MissingPermission")
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(getContext());
-
-        LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-                .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();
-
-        locationEngine.requestLocationUpdates(request, callback, getContext().getMainLooper());
+//
+//        LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+//                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+//                .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();
+//
+//        locationEngine.requestLocationUpdates(request, callback, getContext().getMainLooper());
         locationEngine.getLastLocation(callback);
     }
 
@@ -208,6 +203,10 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                     return;
                 }
                 activity.mLocation = location;
+
+//                activity.mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+//                        new LatLng(location.getLatitude(), location.getLongitude()), 12), 10);
+
 //                CameraPosition position = new CameraPosition.Builder()
 //                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
 //                        .zoom(13)
