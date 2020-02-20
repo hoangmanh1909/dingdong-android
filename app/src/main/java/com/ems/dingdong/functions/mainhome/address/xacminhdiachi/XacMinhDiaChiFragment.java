@@ -112,8 +112,15 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
+
+                        if (mLocation != null)
+                        {
+                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 12), 10);
+                        }
                     }
                 });
+
     }
 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
@@ -201,12 +208,12 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                     return;
                 }
                 activity.mLocation = location;
-                CameraPosition position = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .zoom(13)
-                        .tilt(1)
-                        .build();
-                activity.mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
+//                CameraPosition position = new CameraPosition.Builder()
+//                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
+//                        .zoom(13)
+//                        .tilt(1)
+//                        .build();
+//                activity.mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
                 // Create a Toast which displays the new location's coordinates
                 /*Toast.makeText(activity, String.format(activity.getString(R.string.new_location),
                         String.valueOf(result.getLastLocation().getLatitude()), String.valueOf(result.getLastLocation().getLongitude())),

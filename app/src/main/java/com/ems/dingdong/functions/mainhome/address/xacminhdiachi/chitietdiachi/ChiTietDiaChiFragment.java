@@ -36,8 +36,8 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     FormItemEditText edt_county;
     @BindView(R.id.edt_confidence)
     FormItemEditText edt_confidence;
-    @BindView(R.id.tv_update)
-    CustomMediumTextView tv_update;
+//    @BindView(R.id.tv_update)
+//    CustomMediumTextView tv_update;
     @BindView(R.id.tv_verify)
     CustomMediumTextView tv_verify;
 
@@ -84,7 +84,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         edt_county.setEnabled(false);
     }
 
-    @OnClick({R.id.img_back, R.id.tv_update, R.id.tv_verify})
+    @OnClick({R.id.img_back, R.id.tv_verify})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
