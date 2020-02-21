@@ -26,6 +26,7 @@ interface MainContract {
 
     interface View extends PresentView<Presenter> {
         void updateBalance(StatisticDebitGeneralResponse value);
+        void updateBalanceUntilNow(StatisticDebitGeneralResponse value);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -36,6 +37,7 @@ interface MainContract {
         AddressPresenter getAddressPresenter();
         void showSetting();
         void getBalance();
+        void getBalanceUntilNow();
     }
 }
 

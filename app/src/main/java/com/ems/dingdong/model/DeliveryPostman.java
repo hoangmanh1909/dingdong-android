@@ -88,6 +88,9 @@ public class DeliveryPostman {
     @SerializedName("BatchCode")
     @Expose
     private String batchCode;
+    @SerializedName("VATCode")
+    @Expose
+    private String vatCode;
 
     private boolean selected;
 

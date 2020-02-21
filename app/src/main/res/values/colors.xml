@@ -354,4 +354,5 @@
     <color name="colorBlackTrans20">#33000000</color>
     <color name="text_color_primary">#253854</color>
     <color name="color_background_bd13">#def6ff</color>
+    <color name="color_debit_unsuccessful">#ff1100</color>
 </resources>

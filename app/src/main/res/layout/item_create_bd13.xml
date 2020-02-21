@@ -97,6 +97,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_12sp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_gtgt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:text="GTGT: "
+                android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

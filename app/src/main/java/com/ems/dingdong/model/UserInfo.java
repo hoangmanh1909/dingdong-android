@@ -64,6 +64,10 @@ public class UserInfo {
         return balance;
     }
 
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
     public String getIsEms() {
         return isEms;
     }

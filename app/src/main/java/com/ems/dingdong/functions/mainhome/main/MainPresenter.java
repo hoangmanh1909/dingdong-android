@@ -95,6 +95,26 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     }
 
     @Override
+    public void getBalanceUntilNow() {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        mInteractor.getBalance(userInfo.getiD(), null, null, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
+                mView.hideProgress();
+                mView.updateBalanceUntilNow(response.body().getStatisticDebitGeneralResponses());
+            }
+            @Override
+            protected void onError(Call<StatisticDebitGeneralResult> call, String message) {
+            }
+        });
+    }
+
+    @Override
     public MainContract.Interactor onCreateInteractor() {
         return new MainInteractor(this);
     }

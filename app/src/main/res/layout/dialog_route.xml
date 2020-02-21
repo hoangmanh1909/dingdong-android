@@ -103,6 +103,21 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:textAllCaps="true" />
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_cancel_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:background="@drawable/bg_gradient_search"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/dimen_40dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_40dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:textAllCaps="true" />
 
             </LinearLayout>
         </LinearLayout>
