@@ -37,6 +37,7 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 
@@ -340,4 +341,6 @@ public interface VinattiAPI {
                                      @Field("IdUser") String idUser,
                                      @Field("IsVerify") boolean isVerify,
                                      @Field("Layer") String layer);
+    @POST("api/VietMap/Update")
+    Call<SimpleResult> vietmapUpdate(@Body UpdateRequest taskRequest);
 }

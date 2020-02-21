@@ -25,6 +25,7 @@ import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
+import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
@@ -452,6 +453,11 @@ public class NetWorkController {
 
     public static void vietmapVerify(String id, String userId, String layer, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().vietmapVerify(id, userId, true, layer);
+        call.enqueue(callback);
+    }
+
+    public static void vietmapUpdate(UpdateRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().vietmapUpdate(request);
         call.enqueue(callback);
     }
 }

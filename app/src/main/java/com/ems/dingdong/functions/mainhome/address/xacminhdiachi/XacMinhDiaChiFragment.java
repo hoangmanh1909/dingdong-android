@@ -124,7 +124,7 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
 
             LocationComponentOptions locationComponentOptions = LocationComponentOptions.builder(getContext())
                     // .layerAbove("simple-tiles")
-                    .backgroundDrawable(R.drawable.mapbox_compass_icon)
+                    .backgroundDrawable(R.drawable.ic_gps)
                     //.foregroundDrawable(R.drawable.)
 
                     .build();
