@@ -88,7 +88,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
                 mPresenter.getBalance();
-                mPresenter.getBalanceUntilNow();
             } else if (tabId == R.id.action_location) {
                 viewPager.setCurrentItem(3);
                 removeHeader();
@@ -144,11 +143,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onResume() {
         super.onResume();
-        if (viewPager.getCurrentItem() != 2) {
-            updateUserHeader();
-        } else {
-            mPresenter.getBalance();
-        }
     }
 
     private void setupAdapter() {
@@ -229,19 +223,17 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        userInfo.setBalance(String.valueOf(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount())));
         sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
         if (value != null) {
+            userInfo.setBalance(String.valueOf(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount())));
             firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
             secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
+            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
+        } else {
+            firstHeader.setText(getResources().getString(R.string.employee_balance));
+            secondHeader.setText(getResources().getString(R.string.employee_balance_success));
+            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing));
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void updateBalanceUntilNow(StatisticDebitGeneralResponse value) {
-        thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
-
     }
 
     @SuppressLint("SetTextI18n")
