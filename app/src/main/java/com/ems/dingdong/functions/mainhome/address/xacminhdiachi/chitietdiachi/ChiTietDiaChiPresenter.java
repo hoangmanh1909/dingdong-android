@@ -7,6 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -52,13 +53,31 @@ public class ChiTietDiaChiPresenter extends Presenter<ChiTietDiaChiContract.View
                 super.onSuccess(call, response);
 
                 mView.hideProgress();
-                mView.showMessageRequest(response.message());
+                mView.showMessageRequest( response.body().getMessage());
             }
 
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
+                mView.showMessageRequest(message);
+            }
+        });
+    }
+
+    @Override
+    public void vietmapUpdate(UpdateRequest request) {
+        mView.showProgress();
+        mInteractor.vietmapUpdate(request,new CommonCallback<SimpleResult>((Activity)mContainerView){
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.showMessageRequest(response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
                 mView.showMessageRequest(message);
             }
         });

@@ -182,14 +182,12 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 tvContactDescription.setText(item.getDescription());
             }
             cbSelected.setChecked(item.isSelected());
-            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    cbSelected.setChecked(isChecked);
-
-                        ((CommonObject) model).setSelected(isChecked);
-                }
-            });
+//            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    item.setSelected(isChecked);
+//                }
+//            });
             if (!TextUtils.isEmpty(item.getAmount())) {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd", "")))));
             }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f6fa"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <FrameLayout
@@ -39,70 +40,77 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <com.ems.dingdong.views.CustomTextView
-        style="@style/HeaderNews"
-        android:layout_width="wrap_content"
-        android:padding="@dimen/dimen_10dp"
-        android:paddingTop="@dimen/dimen_10dp"
-        android:paddingBottom="@dimen/dimen_10dp"
-        android:text="Thông tin vị trí"
-        android:textColor="@color/n_gray_text"
-        android:textSize="@dimen/text_size_16sp" />
-
-    <LinearLayout
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="@dimen/dimen_10dp"
-        android:orientation="vertical">
+        android:layout_height="@dimen/dimen_250dp"
+        android:layout_above="@+id/btn_get_location"
+        android:layout_below="@+id/header"
+        mapbox:mapbox_cameraZoom="15" />
+<!--    <com.ems.dingdong.views.CustomTextView-->
+<!--        style="@style/HeaderNews"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:padding="@dimen/dimen_10dp"-->
+<!--        android:paddingTop="@dimen/dimen_10dp"-->
+<!--        android:paddingBottom="@dimen/dimen_10dp"-->
+<!--        android:text="Thông tin vị trí"-->
+<!--        android:textColor="@color/n_gray_text"-->
+<!--        android:textSize="@dimen/text_size_16sp" />-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/white"-->
+<!--        android:padding="@dimen/dimen_10dp"-->
+<!--        android:orientation="vertical">-->
 
-            <com.ems.dingdong.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kinh độ"
-                android:textSize="@dimen/text_size_14sp" />
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_longitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Tòa nhà iph"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp" />
-        </RelativeLayout>
+<!--            <com.ems.dingdong.views.CustomTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Kinh độ"-->
+<!--                android:textSize="@dimen/text_size_14sp" />-->
 
-        <View
-            style="@style/Devider"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/dimen_10dp" />
+<!--            <com.ems.dingdong.views.CustomTextView-->
+<!--                android:id="@+id/tv_longitude"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:text="Tòa nhà iph"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="@dimen/text_size_14sp" />-->
+<!--        </RelativeLayout>-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dimen_8dp">
+<!--        <View-->
+<!--            style="@style/Devider"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0.5dp"-->
+<!--            android:layout_marginTop="@dimen/dimen_10dp" />-->
 
-            <com.ems.dingdong.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vĩ độ"
-                android:textSize="@dimen/text_size_14sp" />
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingTop="@dimen/dimen_8dp">-->
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_latitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Tòa nhà iph"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp" />
-        </RelativeLayout>
-    </LinearLayout>
+<!--            <com.ems.dingdong.views.CustomTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Vĩ độ"-->
+<!--                android:textSize="@dimen/text_size_14sp" />-->
+
+<!--            <com.ems.dingdong.views.CustomTextView-->
+<!--                android:id="@+id/tv_latitude"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:text="Tòa nhà iph"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="@dimen/text_size_14sp" />-->
+<!--        </RelativeLayout>-->
+<!--    </LinearLayout>-->
 
     <com.ems.dingdong.views.CustomTextView
         style="@style/HeaderNews"
@@ -304,22 +312,22 @@
             android:padding="@dimen/dimen_10dp"
             android:weightSum="2">
 
-<!--            <com.ems.dingdong.views.CustomMediumTextView-->
-<!--                android:id="@+id/tv_update"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="@dimen/dimen_10dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@drawable/bg_gradient_search"-->
-<!--                android:gravity="center"-->
-<!--                android:paddingLeft="@dimen/dimen_10dp"-->
-<!--                android:paddingTop="@dimen/dimen_10dp"-->
-<!--                android:paddingRight="@dimen/dimen_10dp"-->
-<!--                android:paddingBottom="@dimen/dimen_10dp"-->
-<!--                android:text="Cập nhật"-->
-<!--                android:textAllCaps="true"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="16sp" />-->
+            <com.ems.dingdong.views.CustomMediumTextView
+                android:id="@+id/tv_update"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gradient_search"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Cập nhật"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <com.ems.dingdong.views.CustomMediumTextView
                 android:id="@+id/tv_verify"
@@ -327,8 +335,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_weight="2"
-                android:background="@drawable/bg_gradient_search"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gradient_color"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"

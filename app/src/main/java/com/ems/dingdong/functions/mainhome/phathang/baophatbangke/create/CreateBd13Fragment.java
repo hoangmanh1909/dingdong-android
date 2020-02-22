@@ -393,7 +393,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     public void showSuccessMessage(String message) {
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText("OK")
+                    .setConfirmText(message)
                     .setTitleText(getResources().getString(R.string.notification))
                     .setContentText(message)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
