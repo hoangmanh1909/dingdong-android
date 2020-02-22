@@ -21,7 +21,7 @@ interface StatisticDebitDetailContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void statisticDebitDetail(String postmanID, String fromDate, String toDate);
+        void statisticDebitDetail(String postmanID);
 
         void showDetail();
 

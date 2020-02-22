@@ -81,6 +81,7 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvStatusPaypost.setText("98");
             }*/ else {
                 tvStatusPaypost.setText("Gạch nợ thất bại");
+                tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.color_debit_unsuccessful));
             }
 
             // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));

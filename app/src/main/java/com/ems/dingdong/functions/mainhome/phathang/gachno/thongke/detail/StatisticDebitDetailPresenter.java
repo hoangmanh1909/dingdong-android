@@ -39,12 +39,10 @@ public class StatisticDebitDetailPresenter extends Presenter<StatisticDebitDetai
     }
 
     @Override
-    public void statisticDebitDetail(String postmanID, String fromDate, String toDate) {
+    public void statisticDebitDetail(String postmanID) {
         mPostmanID = postmanID;
-        mFromDate = fromDate;
-        mToDate = toDate;
         mView.showProgress();
-        mInteractor.statisticDebitDetail(postmanID, fromDate, toDate, mStatusCode, new CommonCallback<StatisticDebitDetailResult>((Activity) mContainerView) {
+        mInteractor.statisticDebitDetail(postmanID, mFromDate, mToDate, mStatusCode, new CommonCallback<StatisticDebitDetailResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDebitDetailResult> call, Response<StatisticDebitDetailResult> response) {
                 super.onSuccess(call, response);
@@ -77,6 +75,16 @@ public class StatisticDebitDetailPresenter extends Presenter<StatisticDebitDetai
 
     public StatisticDebitDetailPresenter setIsSuccess(String statusCode) {
         this.mStatusCode = statusCode;
+        return this;
+    }
+
+    public StatisticDebitDetailPresenter setmFromDate(String mFromDate) {
+        this.mFromDate = mFromDate;
+        return this;
+    }
+
+    public StatisticDebitDetailPresenter setmToDate(String mToDate) {
+        this.mToDate = mToDate;
         return this;
     }
 }

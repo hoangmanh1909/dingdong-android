@@ -57,11 +57,9 @@ public class StatisticDebitDetailFragment extends ViewFragment<StatisticDebitDet
 
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            mPresenter.statisticDebitDetail(mUserInfo.getiD(), fromDate, toDate);
+            mPresenter.statisticDebitDetail(mUserInfo.getiD());
         }
     }
 

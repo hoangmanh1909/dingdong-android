@@ -1,20 +1,16 @@
 package com.ems.dingdong.functions.mainhome.setting;
 
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.RouteOptionCallBack;
 import com.ems.dingdong.dialog.RouteDialog;
-import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
-import com.ems.dingdong.functions.mainhome.main.MainActivity;
-import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
-import com.ems.dingdong.model.Item;
+import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -103,18 +99,16 @@ public class SettingFragment extends ViewFragment<SettingContract.Presenter> imp
         }
     }
 
-    void showDialog(List<RouteInfo> routeInfos){
-        new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
-
-            @Override
-            public void onRouteOptionResponse(Item item) {
-                RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setRouteCode(item.getValue());
-                routeInfo.setRouteName(item.getText());
-                SharedPref sharedPref = new SharedPref(getActivity());
-                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
-                tv_route.setText(routeInfo.getRouteName());
-            }
+    void showDialog(List<RouteInfo> routeInfos) {
+        new RouteDialog(getActivity(), routeInfos, item -> {
+            RouteInfo routeInfo = new RouteInfo();
+            routeInfo.setRouteCode(item.getValue());
+            routeInfo.setRouteName(item.getText());
+            SharedPref sharedPref = new SharedPref(getActivity());
+            sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
+            tv_route.setText(routeInfo.getRouteName());
+            mPresenter.back();
+            getViewContext().sendBroadcast(new Intent(HomeV1Fragment.ACTION_HOME_VIEW_CHANGE));
         }).show();
     }
 

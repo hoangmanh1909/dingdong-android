@@ -22,6 +22,6 @@ interface StatisticDebitContract {
 
         void showStatistic(String postmanID, String fromDate, String toDate);
 
-        void showDetail(String statusCode);
+        void showDetail(String statusCode, String fromDate, String toDate);
     }
 }

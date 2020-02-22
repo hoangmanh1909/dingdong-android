@@ -35,6 +35,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.RealmUtils;
@@ -58,6 +59,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 
 public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineContract.Presenter>
         implements CreateBD13OfflineContract.View {
@@ -170,18 +172,15 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
 
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rad_fail) {
-                    mDeliveryType = 1;
-                    ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
-                    ll_confirm_success.setVisibility(LinearLayout.GONE);
-                } else if (checkedId == R.id.rad_success) {
-                    mDeliveryType = 2;
-                    ll_confirm_success.setVisibility(LinearLayout.VISIBLE);
-                    ll_confirm_fail.setVisibility(LinearLayout.GONE);
-                }
+        radio_group.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rad_fail) {
+                mDeliveryType = 1;
+                ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
+                ll_confirm_success.setVisibility(LinearLayout.GONE);
+            } else if (checkedId == R.id.rad_success) {
+                mDeliveryType = 2;
+                ll_confirm_success.setVisibility(LinearLayout.VISIBLE);
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
             }
         });
 
@@ -231,14 +230,11 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 submit();
                 break;
             case R.id.btn_sign:
-                new SignDialog(getActivity(), new SignCallback() {
-                    @Override
-                    public void onResponse(String sign, Bitmap bitmap) {
-                        mSign = sign;
-                        imgSign.setImageBitmap(bitmap);
-                        if (bitmap != null) {
-                            llSigned.setVisibility(View.VISIBLE);
-                        }
+                new SignDialog(getActivity(), (sign, bitmap) -> {
+                    mSign = sign;
+                    imgSign.setImageBitmap(bitmap);
+                    if (bitmap != null) {
+                        llSigned.setVisibility(View.VISIBLE);
                     }
                 }).show();
                 break;
@@ -274,55 +270,63 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             return;
         }
         String ladingCode = edt_parcelcode.getText();
-
+        CommonObject commonObject;
         if (mDeliveryType == 2) {
-
+            if (TextUtils.isEmpty(tv_collect_amount.getText())) {
+                Toast.showToast(getViewContext(), "Xin vui lòng nhập số tiền thu");
+                return;
+            }
+            if (TextUtils.isEmpty(tv_receiver.getText())) {
+                Toast.showToast(getViewContext(), "Xin vui lòng nhập người nhận");
+                return;
+            }
+            commonObject = new CommonObject();
+            commonObject.setReceiverName(tv_receiver.getText());
+            commonObject.setCollectAmount(tv_collect_amount.getText().replace(".", ""));
         } else {
             if (TextUtils.isEmpty(tv_reason.getText())) {
-                Toast.showToast(tv_reason.getContext(), "Xin vui lòng chọn lý do");
+                Toast.showToast(getViewContext(), "Xin vui lòng chọn lý do");
                 return;
             }
             if (TextUtils.isEmpty(tv_solution.getText())) {
-                Toast.showToast(tv_solution.getContext(), "Bạn chưa chọn phương án xử lý");
+                Toast.showToast(getViewContext(), "Bạn chưa chọn phương án xử lý");
                 return;
             }
+            commonObject = new CommonObject();
+            commonObject.setSolutionName(tv_solution.getText());
+            commonObject.setReasonName(tv_reason.getText());
+        }
 
-            String reason = mReasonCode;
-            String solution = mSolutionCode;
-            String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-//            String signature = Utils.SHA256(ladingCode + userInfo.getMobileNumber() + userInfo.getUnitCode() + BuildConfig.PRIVATE_KEY).toUpperCase();
+        String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+//            String signature = Utils.SHA256(ladingCode + userInfo.getMobileNumber() + userInfo.getUnitCode() + BuildConfig.PRIVATE_KEY).toUpperCase()
+        commonObject.setCode(ladingCode);
+        commonObject.setImageDelivery(mPath);
+        commonObject.setDeliveryType(String.valueOf(mDeliveryType));
+        commonObject.setDeliveryTime(deliveryTime);
+        commonObject.setDeliveryDate(deliveryDate);
+        commonObject.setSignatureCapture(mSign);
+        commonObject.setImageDelivery("");
+        commonObject.setSignatureCapture("");
+        mPresenter.saveLocal(commonObject);
+        if (getActivity() != null) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText("Lưu thành công")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            mPresenter.back();
 
-            CommonObject commonObject = new CommonObject();
-            commonObject.setCode(ladingCode);
-            commonObject.setImageDelivery(mPath);
-            commonObject.setDeliveryType("1");
-            commonObject.setDeliveryTime(deliveryTime);
-            commonObject.setDeliveryDate(deliveryDate);
-            commonObject.setSignatureCapture(mSign);
-            commonObject.setReasonCode(reason);
-            commonObject.setSolutionCode(solution);
-            commonObject.setImageDelivery("");
-            commonObject.setSignatureCapture("");
-            mPresenter.saveLocal(commonObject);
-            if (getActivity() != null) {
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                        .setConfirmText("OK")
-                        .setTitleText("Thông báo")
-                        .setContentText("Lưu thành công")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                                mPresenter.back();
-
-                            }
-                        }).show();
-            }
+                        }
+                    }).show();
+        }
 //            PushToPnsRequest request = new PushToPnsRequest(userInfo.getiD(),lading,userInfo.getUnitCode(),deliveryDate,
 //                    deliveryTime,tv_receiver.getText(),mReasonCode,mSolutionCode,"C18","1","1",
 //                    mSign,tv_Description.getText(),"0",userInfo.getiD(),"",routeInfo.getRouteCode(),"",mFile);
-        }
+
     }
 
     @Override

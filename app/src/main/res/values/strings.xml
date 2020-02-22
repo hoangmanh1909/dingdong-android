@@ -29,11 +29,11 @@
     <string name="retry">Thử lại</string>
     <string name="sign_retry">Ký lại</string>
     <string name="thong_ke_gach_no">Thống kê gạch nợ</string>
-    <string name="success">THÀNH CÔNG</string>
+    <string name="success">Gạch nợ thành công</string>
     <string name="amount">Số lượng:</string>
     <string name="amount_of_money">Số tiền</string>
     <string name="vietnamese_currency">đ</string>
-    <string name="not_success">KHÔNG THÀNH CÔNG</string>
+    <string name="not_success">gạch nợ thất bại</string>
     <string name="gach_no_thanh_cong">THỐNG KÊ GẠCH NỢ THÀNH CÔNG</string>
     <string name="gach_no_khong_thanh_cong">THỐNG KÊ GẠCH NỢ KHÔNG THÀNH CÔNG</string>
     <string name="mapbox_access_token">kocankey</string>
@@ -52,10 +52,11 @@
     <string name="sl_dia_chi">SL địa chỉ:</string>
     <string name="sl_tin">SL tin:</string>
     <string name="weigh">Trọng lượng:</string>
-    <string name="employee_balance">Số tiền cần nộp:</string>
+    <string name="employee_balance">Số tiền đã thu:</string>
     <string name="employee_balance_success">Số tiền đã nộp:</string>
     <string name="employee_balance_missing">Số tiền còn phải nộp:</string>
     <string name="amount_max">HẠN MỨC:</string>
     <string name="so_tien_da_thu">SỐ TIỀN ĐÃ THU:</string>
+    <string name="cancel">Hủy bỏ</string>
 
 </resources>

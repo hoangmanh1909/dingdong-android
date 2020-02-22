@@ -37,6 +37,6 @@
             android:lines="3"
             android:paddingBottom="8dp"
             android:textColor="#555356"
-            android:textSize="@dimen/text_size_12sp" />
+            android:textSize="@dimen/text_size_16sp" />
     </LinearLayout>
 </LinearLayout>

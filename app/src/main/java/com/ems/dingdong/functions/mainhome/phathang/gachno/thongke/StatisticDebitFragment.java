@@ -65,10 +65,10 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
                 mPresenter.back();
                 break;
             case R.id.layout_success:
-                mPresenter.showDetail(STATUS_CODE_YES);
+                mPresenter.showDetail(STATUS_CODE_YES, fromDate, toDate);
                 break;
             case R.id.layout_unsuccess:
-                mPresenter.showDetail(STATUS_CODE_NO);
+                mPresenter.showDetail(STATUS_CODE_NO, fromDate, toDate);
                 break;
             case R.id.img_searchDebit:
                 showDialog();

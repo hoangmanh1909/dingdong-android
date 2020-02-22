@@ -85,8 +85,9 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
             });
 
             if ("2".equals(item.getDeliveryType())) {
-                tvDeliveryType.setText("Báo phát không thành công");
-                tvCollectAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+                tvDeliveryType.setText("Báo phát thành công");
+                if (!TextUtils.isEmpty(item.getCollectAmount()))
+                    tvCollectAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
 //                if (!TextUtils.isEmpty(item.getNote())) {
 //                    tvNote.setText(String.format("Ghi chú phát: %s", item.getNote()));
 //                    tvNote.setVisibility(View.VISIBLE);

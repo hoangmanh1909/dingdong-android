@@ -1,7 +1,13 @@
 package com.ems.dingdong.functions.mainhome.home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.text.TextUtils;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
@@ -13,8 +19,10 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
 import butterknife.BindView;
 
 /**
@@ -37,6 +45,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     private UserInfo userInfo;
     private RouteInfo routeInfo;
 
+    public static final String ACTION_HOME_VIEW_CHANGE = "action_home_view_change";
+
+    private HomeViewChangeListerner homeViewChangeListerner;
     public static HomeV1Fragment getInstance() {
         return new HomeV1Fragment();
     }
@@ -50,19 +61,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     public void initLayout() {
         super.initLayout();
 
-        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-        if (!userJson.isEmpty()) {
-            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        if (!routeJson.isEmpty()) {
-            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
-        }
-
-        mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
-//        mPresenter.getHomeView("","");
-
+        updateHomeView();
+        homeViewChangeListerner = new HomeViewChangeListerner();
+        getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
         homeCollectAdapter = new HomeCollectAdapter(getContext(), mListCollect);
 
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_collect);
@@ -80,10 +81,31 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    private void updateHomeView() {
+        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!routeJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+        }
+
+        mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
+    }
+
+    @Override
     public void showObjectSuccess(HomeCollectInfoResult objectResult) {
         HomeCollectInfo homeCollectInfo = null;
         HomeCollectInfo resInfo = objectResult.getHomeCollectInfo();
-
+        mListDelivery.clear();
+        mListDeliveryCOD.clear();
+        mListCollect.clear();
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             if (i == 0) {
@@ -104,6 +126,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             }
             mListCollect.add(homeCollectInfo);
         }
+        homeCollectAdapter.clear();
         homeCollectAdapter.addItems(mListCollect);
 
         for (int i = 0; i < 3; i++) {
@@ -114,15 +137,16 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
             } else if (i == 1) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
-                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(!TextUtils.isEmpty(resInfo.getTotalQuantityToday()) ? resInfo.getTotalQuantityToday() : "0"))));
-                homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalQuantityPast()))));
+                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber((resInfo.getTotalQuantityTodayNormal()))));
+                homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(resInfo.getTotalQuantityPastNormal())));
             } else {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
-                homeCollectInfo.setTotalFeeToday(resInfo.getTotalFeeToday());
-                homeCollectInfo.setTotalFeePast(resInfo.getTotalFeePast());
+                homeCollectInfo.setTotalFeeToday(resInfo.getTotalFeeTodayNormal());
+                homeCollectInfo.setTotalFeePast(resInfo.getTotalFeePastNormal());
             }
             mListDelivery.add(homeCollectInfo);
         }
+        homeDeliveryAdapter.clear();
         homeDeliveryAdapter.addItems(mListDelivery);
 
         for (int i = 0; i < 4; i++) {
@@ -146,11 +170,22 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             }
             mListDeliveryCOD.add(homeCollectInfo);
         }
+        homeDeliveryCODAdapter.clear();
         homeDeliveryCODAdapter.addItems(mListDeliveryCOD);
     }
 
     @Override
     public void showObjectEmpty() {
 
+    }
+
+    private class HomeViewChangeListerner extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_HOME_VIEW_CHANGE.equals(intent.getAction())) {
+                updateHomeView();
+            }
+        }
     }
 }

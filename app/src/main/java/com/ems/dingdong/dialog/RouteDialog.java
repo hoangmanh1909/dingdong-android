@@ -55,7 +55,7 @@ public class RouteDialog extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_route,R.id.tv_select_route})
+    @OnClick({R.id.tv_route,R.id.tv_select_route, R.id.tv_cancel_route})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_select_route:
@@ -75,6 +75,9 @@ public class RouteDialog extends Dialog {
 //            case R.id.tv_close:
 //                dismiss();
 //                break;
+            case R.id.tv_cancel_route:
+                dismiss();
+                break;
         }
     }
 

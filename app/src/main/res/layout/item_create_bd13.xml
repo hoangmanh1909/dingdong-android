@@ -13,7 +13,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-
         <CheckBox
             android:id="@+id/cb_selected"
             android:button="@drawable/custom_btn_radio"
@@ -34,10 +33,20 @@
                 android:gravity="center">
 
                 <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_index"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="left"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_16sp" />
+
+                <com.ems.dingdong.views.CustomBoldTextView
                     android:id="@+id/tv_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/tv_index"
                     android:gravity="center"
                     android:text="COD20180416"
                     android:textColor="@color/blue"
@@ -87,6 +96,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_12sp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_gtgt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:text="GTGT: "
                 android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
     </LinearLayout>

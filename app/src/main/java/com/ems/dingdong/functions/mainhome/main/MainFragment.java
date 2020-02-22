@@ -62,6 +62,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private PostOffice postOffice;
     private RouteInfo routeInfo;
 
+
     public static MainFragment getInstance() {
         return new MainFragment();
     }
@@ -74,38 +75,23 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void initLayout() {
         super.initLayout();
-        SharedPref sharedPref = new SharedPref(getActivity());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
 
-        if (!userJson.isEmpty()) {
-            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        if (!postOfficeJson.isEmpty()) {
-            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-        }
-        if (!routeInfoJson.isEmpty()) {
-            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
-        }
-
+        updateUserHeader();
         setupAdapter();
         bottomBar.setOnTabSelectListener(tabId -> {
-
-            int currentPage = viewPager.getCurrentItem();
-            if(currentPage == 2) {
-                updateUserHeader();
-            }
-
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
+                updateUserHeader();
             } else if (tabId == R.id.action_cart) {
                 viewPager.setCurrentItem(1);
+                removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
                 mPresenter.getBalance();
+                mPresenter.getBalanceUntilNow();
             } else if (tabId == R.id.action_location) {
                 viewPager.setCurrentItem(3);
+                removeHeader();
             }
         });
 
@@ -126,8 +112,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 //on page scroll state changed
             }
         });
-
-        updateUserHeader();
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
@@ -155,6 +139,16 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (viewPager.getCurrentItem() != 2) {
+            updateUserHeader();
+        } else {
+            mPresenter.getBalance();
+        }
     }
 
     private void setupAdapter() {
@@ -231,15 +225,42 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @SuppressLint("SetTextI18n")
     @Override
     public void updateBalance(StatisticDebitGeneralResponse value) {
+        viewTop.setVisibility(View.VISIBLE);
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        userInfo.setBalance(String.valueOf(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount())));
+        sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
         if (value != null) {
             firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
             secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
-            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
         }
     }
 
     @SuppressLint("SetTextI18n")
+    @Override
+    public void updateBalanceUntilNow(StatisticDebitGeneralResponse value) {
+        thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
+
+    }
+
+    @SuppressLint("SetTextI18n")
     private void updateUserHeader() {
+        viewTop.setVisibility(View.VISIBLE);
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
         String accInfo = "";
         if (userInfo != null) {
             if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
@@ -263,5 +284,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             }
         }
         firstHeader.setText(accInfo);
+    }
+
+    private void removeHeader() {
+        firstHeader.setText("");
+        secondHeader.setText("");
+        thirstHeader.setText("");
+        viewTop.setVisibility(View.GONE);
     }
 }

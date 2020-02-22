@@ -9,26 +9,21 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
-import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
-import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Utils;
 
 import java.util.Date;
@@ -137,9 +132,9 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso, String routeCode) {
+    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String shiftID, String chuyenthu, String tuiso, String routeCode) {
         mView.showProgress();
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso, routeCode, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, chuyenthu, tuiso, routeCode, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
                 super.onSuccess(call, response);

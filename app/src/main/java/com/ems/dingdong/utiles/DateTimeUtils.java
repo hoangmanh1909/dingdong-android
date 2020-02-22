@@ -1,4 +1,5 @@
 package com.ems.dingdong.utiles;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,7 +12,7 @@ import java.util.Locale;
  * Created by TiepBM on 12/2/2016.
  */
 public class DateTimeUtils {
-	
+
     public static final String TAG = DateTimeUtils.class.getSimpleName();
     public static final String DEFAULT_DATETIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
     public static final String DEFAULT_DATETIME_FORMAT4 = "MM/dd/yyyy HH:mm:ss";
@@ -23,14 +24,14 @@ public class DateTimeUtils {
     public static final String SIMPLE_DATE_FORMAT_HOUR = "HH:mm:ss";
     public static final String SIMPLE_DATE_FORMAT_HOUR1 = "mm:ss";
     public static final String BIRTHDAY_DATE_NULL = "0000-00-00";
-    public static final String SIMPLE_DATE_FORMAT3= "dd-MM-yyyy";
+    public static final String SIMPLE_DATE_FORMAT3 = "dd-MM-yyyy";
     public static final String SIMPLE_DATE_FORMAT4 = "MM/yyyy";
     public static final String DEFAULT_DATETIME_FORMAT5 = "HH:mm:ss, dd/MM";
     public static final String DEFAULT_DATETIME_FORMAT6 = "dd/MM";
     public static final String DEFAULT_DATETIME_FORMAT7 = "HH:mm:ss";
     public static final String SIMPLE_DATE_FORMAT5 = "yyyyMMdd";
-    public static final String SIMPLE_DATE_FORMAT6 =   "HHmmss";
-    public static final String SIMPLE_DATE_FORMAT7 =   "HHmm";
+    public static final String SIMPLE_DATE_FORMAT6 = "HHmmss";
+    public static final String SIMPLE_DATE_FORMAT7 = "HHmm";
 
     public static boolean isValidDate(String inDate, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
@@ -56,14 +57,14 @@ public class DateTimeUtils {
 
     public static String convertStringToDatToString(String dateStr, String format) {
         Date date = new Date();
-        String str ;
+        String str;
         SimpleDateFormat formatter = new SimpleDateFormat(format);
         try {
             date = formatter.parse(dateStr);
             return convertDateToString(date, format);
         } catch (Exception e) {
             MyLogger.log(e);
-            str="";
+            str = "";
         }
         return str;
     }
@@ -93,16 +94,16 @@ public class DateTimeUtils {
         return dateStr;
     }
 
-    public static int convertStringToInt(String string, String format){
+    public static int convertStringToInt(String string, String format) {
         long datelong = 0;
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         try {
             Date date = sdf.parse(string);
             datelong = date.getTime();
-        } catch (Exception e){
+        } catch (Exception e) {
             MyLogger.log(e);
         }
-        return (int)datelong;
+        return (int) datelong;
     }
 
     /**
@@ -137,7 +138,7 @@ public class DateTimeUtils {
             Date callDayTime = new Date(millisecond);
             String date = new SimpleDateFormat(format).format(callDayTime);
             return date;
-        } catch (Exception e){
+        } catch (Exception e) {
             MyLogger.log(e);
             return "";
         }
@@ -160,11 +161,11 @@ public class DateTimeUtils {
     }
 
 
-    public static String getTimeContestExpireDate(String str){
+    public static String getTimeContestExpireDate(String str) {
 
-        String result="";
+        String result = "";
         Date dateCurent = DateTimeUtils.getCurrentDate(DateTimeUtils.DEFAULT_DATETIME_FORMAT3);
-        Date date  = DateTimeUtils.convertStringToDate(str,DateTimeUtils.DEFAULT_DATETIME_FORMAT3);
+        Date date = DateTimeUtils.convertStringToDate(str, DateTimeUtils.DEFAULT_DATETIME_FORMAT3);
 
         //in milliseconds
         long diff = date.getTime() - dateCurent.getTime();
@@ -172,16 +173,16 @@ public class DateTimeUtils {
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
-        if(diffDays>0){
-            result = diffDays+" ngày ";
-            if(diffHours>0){
-                result = result+diffHours+" giờ";
+        if (diffDays > 0) {
+            result = diffDays + " ngày ";
+            if (diffHours > 0) {
+                result = result + diffHours + " giờ";
             }
-        }else{
-            if(diffHours>0){
-                result = result+diffHours+" giờ";
-            }else{
-                result = result+diffMinutes+" phút";
+        } else {
+            if (diffHours > 0) {
+                result = result + diffHours + " giờ";
+            } else {
+                result = result + diffMinutes + " phút";
             }
         }
         return result;
@@ -275,7 +276,7 @@ public class DateTimeUtils {
         return new Timestamp(date.getTime());
     }
 
-    public static String getMonthFromStringDate(String date, String dateFormat){
+    public static String getMonthFromStringDate(String date, String dateFormat) {
         Date d = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
         try {
@@ -285,19 +286,20 @@ public class DateTimeUtils {
         }
         return new SimpleDateFormat("MM").format(d);
     }
-    public static int getCurrentMonth(){
+
+    public static int getCurrentMonth() {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("MM");
         return Integer.parseInt(format.format(date));
     }
 
-    public static int getCurrentYear(){
+    public static int getCurrentYear() {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
         return Integer.parseInt(format.format(date));
     }
 
-    public static String convertDateStringToDateString(String date, String dateFormat1, String dateFormat2){
+    public static String convertDateStringToDateString(String date, String dateFormat1, String dateFormat2) {
         Date d = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat1);
         try {
@@ -326,7 +328,7 @@ public class DateTimeUtils {
         long mEnd = end.getTime();
         long current = new Date().getTime(); // 2nd date want to compare
         long diff = (mEnd - current) / (MILLIS_PER_DAY);
-        return  (diff == 0) ? 1 : diff;
+        return (diff == 0) ? 1 : diff;
     }
 
     public static int getDay(String date) {
@@ -340,5 +342,13 @@ public class DateTimeUtils {
             MyLogger.log(e);
         }
         return day;
+    }
+
+    public static String calculateDay(int distance) {
+        Date currentTime = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentTime);
+        c.add(Calendar.DATE, distance);
+        return DateTimeUtils.convertDateToString(c.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
     }
 }

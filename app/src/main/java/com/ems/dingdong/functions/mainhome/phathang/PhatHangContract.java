@@ -17,10 +17,16 @@ interface PhatHangContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         void showViewStatisticPtc(boolean isSuccess);
+
         void showViewCancelBd13();
+
         void showListOffline();
+
         void showNhapBaoPhatOffline();
+
         void showStatisticDebit();
+
+        void showLocation();
     }
 }
 

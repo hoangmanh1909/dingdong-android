@@ -39,7 +39,9 @@ public class StatisticDebitPresenter extends Presenter<StatisticDebitContract.Vi
 
     @Override
     public void showStatistic(String postmanID, String fromDate, String toDate) {
-        mInteractor.getDebitStatistic(postmanID, fromDate, toDate, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+        mFromDate = fromDate;
+        mToDate = toDate;
+        mInteractor.getDebitStatistic(postmanID, mFromDate, mToDate, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
                 super.onSuccess(call, response);
@@ -61,7 +63,7 @@ public class StatisticDebitPresenter extends Presenter<StatisticDebitContract.Vi
     }
 
     @Override
-    public void showDetail(String statusCode) {
-        new StatisticDebitDetailPresenter(mContainerView).setIsSuccess(statusCode).pushView();
+    public void showDetail(String statusCode, String fromDate, String toDate) {
+        new StatisticDebitDetailPresenter(mContainerView).setIsSuccess(statusCode).setmFromDate(mFromDate).setmToDate(mToDate).pushView();
     }
 }

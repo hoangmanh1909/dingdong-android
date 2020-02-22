@@ -67,10 +67,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
-                android:text="Đổi tuyến"
                 android:gravity="right"
+                android:text="Đổi tuyến"
                 android:textColor="@color/background_blue"
-                android:textSize="@dimen/_16sdp"/>
+                android:textSize="@dimen/_16sdp" />
         </RelativeLayout>
     </LinearLayout>
 

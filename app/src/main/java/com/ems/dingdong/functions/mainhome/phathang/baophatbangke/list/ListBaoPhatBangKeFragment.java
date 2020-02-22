@@ -3,37 +3,27 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
-import com.ems.dingdong.callback.BaoPhatBangKeFailCallback;
-import com.ems.dingdong.callback.BaoPhatbangKeConfirmCallback;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
-import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.dialog.BaoPhatBangKeConfirmDialog;
-import com.ems.dingdong.dialog.BaoPhatBangKeFailDialog;
 import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
@@ -42,16 +32,12 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.ems.dingdong.R;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -261,8 +247,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private void refreshSearch() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             isLoading = true;
-
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, mChuyenThu, mTuiSo, routeInfo.getRouteCode());
+            String toDate = DateTimeUtils.calculateDay(-10);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, toDate, mShiftID, mChuyenThu, mTuiSo, routeInfo.getRouteCode());
         }
     }
 
@@ -294,8 +280,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
                     mList.clear();
-                    mAdapter.notifyDataSetChanged();
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
+                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
 
                 }
             }).show();
@@ -307,7 +292,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         super.onDisplay();
 
         mList.clear();
-        mAdapter.notifyDataSetChanged();
         initSearch();
     }
 
@@ -315,7 +299,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
 //            isLoading = true;
             mList.clear();
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
+            String toDate = DateTimeUtils.calculateDay(-10);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
         }
     }
 
