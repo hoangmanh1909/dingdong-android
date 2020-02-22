@@ -11,6 +11,7 @@ import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -35,6 +36,7 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
     TextView tvTitle;
     private HistoryDetailSuccessAdapter mAdapter;
     private UserInfo mUserInfo;
+    private RouteInfo mRouteInfo;
     private String fromDate;
     private String toDate;
     private ArrayList<StatisticDeliveryGeneralResponse> mList;
@@ -76,11 +78,13 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-        if (!TextUtils.isEmpty(userJson)) {
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        if (!TextUtils.isEmpty(userJson) && !TextUtils.isEmpty(routeJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate);
+            mRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+            mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());
         }
         if(mPresenter.getIsSuccess())
         {
@@ -105,9 +109,9 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
 
     private void showDialog() {
         new EditDayDialog(getActivity(), (calFrom, calTo) -> {
-            fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-            toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-            mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate);
+            fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());
         }).show();
     }
 

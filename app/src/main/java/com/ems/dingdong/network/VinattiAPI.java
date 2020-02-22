@@ -70,7 +70,8 @@ public interface VinattiAPI {
     Call<CommonObjectListResult> searchDeliveryStatistic(@Field("FromDate") String fromDate,
                                                          @Field("Status") String status,
                                                          @Field("PostmanId") String postmanId,
-                                                         @Field("ShiftID") String shift);
+                                                         @Field("ShiftID") String shift,
+                                                         @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryLadingJourney")
@@ -272,10 +273,11 @@ public interface VinattiAPI {
     Call<StatisticDeliveryGeneralResult> statisticDeliveryGeneral(@Field("PostmanId") String postmanID,
                                                                   @Field("FromDate") String fromDate,
                                                                   @Field("ToDate") String toDate,
-                                                                  @Field("IsSuccess") boolean isSuccess);
+                                                                  @Field("IsSuccess") boolean isSuccess,
+                                                                  @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
-    @POST(" api/Statistic/DeliveryDetail")
+    @POST("api/Statistic/DeliveryDetail")
     Call<StatisticDeliveryDetailResult> statisticDeliveryDetail(@Field("ServiceCode") String serviceCode,
                                                                 @Field("Type") int typeDelivery,
                                                                 @Field("PostmanId") String postmanID,

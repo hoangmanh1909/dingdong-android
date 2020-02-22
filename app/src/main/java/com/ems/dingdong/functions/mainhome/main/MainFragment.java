@@ -213,6 +213,19 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onDisplay() {
         super.onDisplay();
+        switch (viewPager.getCurrentItem()) {
+            case 0:
+                updateUserHeader();
+                break;
+            case 2:
+                mPresenter.getBalance();
+                break;
+
+            default:
+                removeHeader();
+                break;
+
+        }
         updateUserHeader();
     }
 

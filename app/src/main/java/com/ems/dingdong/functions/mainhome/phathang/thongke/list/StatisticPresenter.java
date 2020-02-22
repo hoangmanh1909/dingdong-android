@@ -44,7 +44,7 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
     }
 
     @Override
-    public void search(String fromDate, String status, String shift) {
+    public void search(String fromDate, String status, String shift, String routeCode) {
         String postmanID = "";
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -53,7 +53,7 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             postmanID = userInfo.getiD();
         }
         mView.showProgress();
-        mInteractor.searchDeliveryStatistic(fromDate, status, postmanID,shift, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchDeliveryStatistic(fromDate, status, postmanID,shift, routeCode, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
