@@ -172,6 +172,30 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/layout_item_pick_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp">
+
+        <CheckBox
+            android:id="@+id/cb_pick_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_5sdp"
+            android:button="@drawable/custom_btn_radio"
+            android:clickable="false" />
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:layout_gravity="right"
+            android:layout_toRightOf="@id/cb_pick_all"
+            android:text="@string/pick_all" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

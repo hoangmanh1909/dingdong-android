@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -63,9 +64,16 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
 //        public ImageView ivStatus;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
+        @BindView(R.id.layout_bp_offline)
+        RelativeLayout layoutBpOffline;
+
 
         public HolderView(View itemView) {
             super(itemView);
+        }
+
+        public CommonObject getItem(int position) {
+            return commonObjects.get(position);
         }
 
         @Override
@@ -73,16 +81,17 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
             CommonObject item = (CommonObject) model;
             tvParcelCode.setText(item.getParcelCode());
             cbSelected.setChecked(item.isSelected());
-            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        ((CommonObject) model).setSelected(true);
-                    } else {
-                        ((CommonObject) model).setSelected(false);
-                    }
-                }
-            });
+//            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        ((CommonObject) model).setSelected(true);
+//                    } else {
+//                        ((CommonObject) model).setSelected(false);
+//                    }
+//                }
+//            });
+
 
             if ("2".equals(item.getDeliveryType())) {
                 tvDeliveryType.setText("Báo phát thành công");

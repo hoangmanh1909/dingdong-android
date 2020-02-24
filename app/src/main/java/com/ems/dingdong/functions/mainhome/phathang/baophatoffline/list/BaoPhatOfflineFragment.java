@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
+import android.widget.CheckBox;
 
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,41 +14,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.InputType;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
-import com.ems.dingdong.callback.BaoPhatOfflineFailCallback;
-import com.ems.dingdong.callback.BaoPhatbangKeConfirmCallback;
-import com.ems.dingdong.callback.BarCodeCallback;
-import com.ems.dingdong.callback.OnChooseDay;
-import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.dialog.BaoPhatBangKeConfirmDialog;
-import com.ems.dingdong.dialog.BaoPhatOfflineFailDialog;
-import com.ems.dingdong.dialog.EditDayDialog;
-import com.ems.dingdong.dialog.PhoneConectDialog;
-import com.ems.dingdong.eventbus.BaoPhatCallback;
-import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.RealmUtils;
-import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utilities;
-import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.views.form.FormItemEditText;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.OnChooseDay;
+import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.ReasonInfo;
-import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
-import com.ems.dingdong.utiles.StringUtils;
+import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -77,6 +56,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     CustomBoldTextView tvAmount;
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
+    @BindView(R.id.cb_pick_all)
+    CheckBox cbPickAll;
+
     private BaoPhatOfflineAdapter mAdapter;
     private List<CommonObject> mList;
     private long mAmount = 0;
@@ -101,19 +83,20 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
-
+        tvTitle.setText(getResources().getString(R.string.offline_delivery));
         mList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(layoutManager);
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
-
         mAdapter = new BaoPhatOfflineAdapter(getActivity(), mList) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                ((HolderView) holder).imgClear.setOnClickListener(new View.OnClickListener() {
+                HolderView holderView = ((HolderView) holder);
+
+                holderView.imgClear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (position < mList.size()) {
@@ -124,6 +107,21 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                         }
                     }
                 });
+
+                holderView.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        holderView.cbSelected.setChecked(!holderView.getItem(position).isSelected());
+                        holderView.getItem(position).setSelected(!holderView.getItem(position).isSelected());
+                        if (holderView.getItem(position).isSelected()) {
+                            holderView.layoutBpOffline.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
+                        } else {
+                            holderView.layoutBpOffline.setBackgroundColor(getResources().getColor(R.color.white));
+                        }
+                    }
+                });
+
 //                holder.itemView.setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
@@ -207,6 +205,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
         } else {
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
+
         }
         mList.clear();
         mAmount = 0;
@@ -248,16 +247,19 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getContext(), "Cập nhật dữ liệu không thành công");
+        Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
     }
 
     @Override
     public void showSuccess(String code) {
         if (code.equals("00")) {
             Toast.showToast(getContext(), "Cập nhật dữ liệu thành công");
+            for (CommonObject item : mAdapter.getItemsSelected()) {
+                mList.remove(item);
+            }
+            mAdapter.notifyDataSetChanged();
         } else {
-
-            Toast.showToast(getContext(), "Cập nhật dữ liệu không thành công");
+            Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
         }
     }
 
@@ -322,7 +324,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_searchDeliveryOffline})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_searchDeliveryOffline, R.id.layout_item_pick_all})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -359,6 +361,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 //            case R.id.img_capture:
 //                scanQr();
 //                break;
+            case R.id.layout_item_pick_all:
+                setAllCheckBox();
+                break;
         }
     }
 
@@ -380,6 +385,25 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 //                mPresenter.getHistory(fromDate, toDate);
             }
         }).show();
+    }
+
+    private void setAllCheckBox() {
+        if (cbPickAll.isChecked()) {
+            for (CommonObject item : mList) {
+                if (item.isSelected()) {
+                    item.setSelected(false);
+                }
+            }
+            cbPickAll.setChecked(false);
+        } else {
+            for (CommonObject item : mList) {
+                if (!item.isSelected()) {
+                    item.setSelected(true);
+                }
+            }
+            cbPickAll.setChecked(true);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 //
 //    private void showOptionSuccessOrFail() {

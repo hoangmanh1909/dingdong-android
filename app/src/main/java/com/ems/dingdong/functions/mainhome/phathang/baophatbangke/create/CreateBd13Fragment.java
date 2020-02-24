@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,6 +65,10 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.layout_item_pick_all)
+    RelativeLayout relativeLayout;
+    @BindView(R.id.cb_pick_all)
+    CheckBox cbPickAll;
 
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "0";
@@ -245,7 +251,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         });
     }
 
-    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back})
+    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back, R.id.layout_item_pick_all})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -260,6 +266,11 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             case R.id.img_capture:
                 scanQr();
                 break;
+            case R.id.layout_item_pick_all:
+                setAllCheckBox();
+                break;
+            default:
+                throw new IllegalArgumentException("cant not find view just have clicked");
         }
     }
 
@@ -399,9 +410,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @Override
     public void showListSuccess(ArrayList<DeliveryPostman> list) {
+        mList.clear();
         if (list == null || list.isEmpty()) {
             showErrorToast("Không tìm thấy dữ liệu");
-            mList.clear();
             tvAmount.setText("Số lương: 0");
         } else {
             tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
@@ -450,7 +461,25 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 ((DingDongActivity) getActivity()).getSupportActionBar().show();
             }
         }*/
+    }
 
+    private void setAllCheckBox() {
+        if (cbPickAll.isChecked()) {
+            for (DeliveryPostman item : mList) {
+                if (item.isSelected()) {
+                    item.setSelected(false);
+                }
+            }
+            cbPickAll.setChecked(false);
+        } else {
+            for (DeliveryPostman item : mList) {
+                if (!item.isSelected()) {
+                    item.setSelected(true);
+                }
+            }
+            cbPickAll.setChecked(true);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
 }
