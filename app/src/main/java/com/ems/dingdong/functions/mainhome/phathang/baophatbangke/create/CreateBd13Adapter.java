@@ -187,6 +187,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             cb_selected.setChecked(item.isSelected());
             if(null != item.getVatCode())
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
+            else {
+                gtgt.setText("GTGT:");
+            }
             if (item.getStatus().equals("N")) {// gach no khong
                 ivStatus.setVisibility(View.GONE);
             } else {
