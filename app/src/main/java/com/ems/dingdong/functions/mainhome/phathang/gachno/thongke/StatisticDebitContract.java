@@ -11,7 +11,7 @@ interface StatisticDebitContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void getDebitStatistic(String postmanID, String fromDate, String toDate,
-                               CommonCallback<StatisticDebitGeneralResult> callback);
+                               String routeCode, CommonCallback<StatisticDebitGeneralResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -20,7 +20,7 @@ interface StatisticDebitContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
 
-        void showStatistic(String postmanID, String fromDate, String toDate);
+        void showStatistic(String postmanID, String fromDate, String toDate, String routeCode);
 
         void showDetail(String statusCode, String fromDate, String toDate);
     }

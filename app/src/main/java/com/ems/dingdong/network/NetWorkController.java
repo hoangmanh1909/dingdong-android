@@ -397,18 +397,18 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryDetailResult> callback) {
-        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess);
+    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
+        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess, routeCode);
         call.enqueue(callback);
     }
 
-    public static void statisticDebitGeneral(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDebitGeneralResult> callback) {
-        Call<StatisticDebitGeneralResult> call = getAPIBuilder().statisticDebitGeneral(postmanID, fromDate, toDate);
+    public static void statisticDebitGeneral(String postmanID, String fromDate, String toDate, String routeCode, CommonCallback<StatisticDebitGeneralResult> callback) {
+        Call<StatisticDebitGeneralResult> call = getAPIBuilder().statisticDebitGeneral(postmanID, fromDate, toDate, routeCode);
         call.enqueue(callback);
     }
 
-    public static void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, CommonCallback<StatisticDebitDetailResult> callback) {
-        Call<StatisticDebitDetailResult> call = getAPIBuilder().statisticDebitDetail(postmanID, fromDate, toDate, statusCode);
+    public static void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, String routeCode, CommonCallback<StatisticDebitDetailResult> callback) {
+        Call<StatisticDebitDetailResult> call = getAPIBuilder().statisticDebitDetail(postmanID, fromDate, toDate, statusCode, routeCode);
         call.enqueue(callback);
     }
 

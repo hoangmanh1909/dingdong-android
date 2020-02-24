@@ -21,7 +21,7 @@ interface MainContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void getShift(String code, CommonCallback<ShiftResult> callback);
-        void getBalance(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDebitGeneralResult> callback);
+        void getBalance(String postmanID, String fromDate, String toDate, String routeCode, CommonCallback<StatisticDebitGeneralResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

@@ -57,4 +57,7 @@ public class Constants {
     public static final String STATUS_CODE_NO = "N";
     public static final String ALL = "Tất cả";
 
+    public static final int ERROR_TIME_CODE = 1;
+    public static final int SUCCESS_TIME_CODE = 2;
+
 }

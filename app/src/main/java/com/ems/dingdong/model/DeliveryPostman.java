@@ -91,6 +91,9 @@ public class DeliveryPostman {
     @SerializedName("VATCode")
     @Expose
     private String vatCode;
+    @SerializedName("Description")
+    @Expose
+    private String description;
 
     private boolean selected;
 
@@ -324,5 +327,13 @@ public class DeliveryPostman {
 
     public void setBatchCode(String batchCode) {
         this.batchCode = batchCode;
+    }
+
+    public String getVatCode() {
+        return vatCode;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

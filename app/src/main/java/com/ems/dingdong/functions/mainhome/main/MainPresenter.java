@@ -8,13 +8,12 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.address.AddressPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
+import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
-import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.ReasonInfo;
-import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.UserInfo;
@@ -25,7 +24,6 @@ import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.Calendar;
 
-import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -49,12 +47,13 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
         // Start getting data here
         getShift();
     }
+
     private void getShift() {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!posOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-            mInteractor.getShift(postOffice.getCode(),new CommonCallback<ShiftResult>((Activity) mContainerView) {
+            mInteractor.getShift(postOffice.getCode(), new CommonCallback<ShiftResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<ShiftResult> call, Response<ShiftResult> response) {
                     super.onSuccess(call, response);
@@ -76,18 +75,22 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     public void getBalance() {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         UserInfo userInfo = null;
+        RouteInfo routeInfo = null;
         String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-        mInteractor.getBalance(userInfo.getiD(), fromDate, toDate, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+        mInteractor.getBalance(userInfo.getiD(), fromDate, toDate, routeInfo.getRouteCode(), new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
                 mView.hideProgress();
                 mView.updateBalance(response.body().getStatisticDebitGeneralResponses());
             }
+
             @Override
             protected void onError(Call<StatisticDebitGeneralResult> call, String message) {
             }

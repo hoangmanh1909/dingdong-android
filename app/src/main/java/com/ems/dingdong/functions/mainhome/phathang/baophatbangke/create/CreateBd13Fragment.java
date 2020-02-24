@@ -1,65 +1,48 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
-import com.core.widget.BaseViewHolder;
-import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.callback.CreatedBD13Callback;
-import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.dialog.CreatedBd13Dialog;
-import com.ems.dingdong.dialog.PhoneConectDialog;
-import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.RouteInfo;
-import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
-import com.ems.dingdong.utiles.NumberUtils;
-import com.ems.dingdong.utiles.TimeUtils;
-import com.ems.dingdong.views.form.FormItemEditText;
-import com.google.gson.Gson;
-import com.google.zxing.common.detector.MathUtils;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
-import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CreatebangKeSearchCallback;
+import com.ems.dingdong.callback.CreatedBD13Callback;
+import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.CreateBangKeSearchDialog;
-import com.ems.dingdong.model.Bd13Code;
+import com.ems.dingdong.dialog.CreatedBd13Dialog;
+import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.StringUtils;
+import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utilities;
-import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -86,7 +69,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     private ItemBottomSheetPickerUIFragment pickerShift;
     private String mShift;
     private String mChuyenThu = "";
-    private Calendar calendar;
+    private Calendar calFromDate;
+    private Calendar calToDate;
 
     List<DeliveryPostman> mList = new ArrayList<>();
     CreateBd13Adapter mAdapter;
@@ -131,7 +115,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         }
 
 
-        mAdapter = new CreateBd13Adapter(getActivity(),1, mList, new CreateBd13Adapter.FilterDone() {
+        mAdapter = new CreateBd13Adapter(getActivity(), 1, mList, new CreateBd13Adapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
                 new Handler().postDelayed(new Runnable() {
@@ -175,12 +159,12 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                             @Override
                             public void onCallResponse(String phone) {
                                 mPhone = phone;
-                                mPresenter.callForward(phone,mList.get(position).getMaE());
+                                mPresenter.callForward(phone, mList.get(position).getMaE());
                             }
 
                             @Override
                             public void onUpdateResponse(String phone) {
-                                showConfirmSaveMobile(phone,mList.get(position).getMaE());
+                                showConfirmSaveMobile(phone, mList.get(position).getMaE());
                             }
                         }).show();
                     }
@@ -190,9 +174,10 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
 
-        calendar = Calendar.getInstance();
+        calFromDate = Calendar.getInstance();
+        calToDate = Calendar.getInstance();
 
-        String toDay = TimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String toDay = TimeUtils.convertDateToString(calFromDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mFromDate = toDay;
         mToDate = toDay;
         searchLadingBd13(toDay, toDay, "");
@@ -228,7 +213,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         return check;
     }
 
-    private void showConfirmSaveMobile(final String phone,String parcelCode) {
+    private void showConfirmSaveMobile(final String phone, String parcelCode) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText(getResources().getString(R.string.yes))
                 .setTitleText(getResources().getString(R.string.notification))
@@ -237,7 +222,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        mPresenter.updateMobile(phone,parcelCode);
+                        mPresenter.updateMobile(phone, parcelCode);
                         sweetAlertDialog.dismiss();
 
                     }
@@ -260,7 +245,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         });
     }
 
-    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search,R.id.img_back})
+    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -279,28 +264,33 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     private void showDialog() {
-        new CreateBangKeSearchDialog(getActivity(), calendar, new CreatebangKeSearchCallback() {
+        new CreateBangKeSearchDialog(getActivity(), calFromDate, calToDate, new CreatebangKeSearchCallback() {
 
             @Override
-            public void onResponse(String fromDate, String toDate, String chuyenThu) {
-                mFromDate = fromDate;
-                mToDate = toDate;
-                mChuyenThu = chuyenThu;
-                searchLadingBd13(fromDate, toDate, chuyenThu);
+            public void onResponse(String fromDate, String toDate, String chuyenThu, int timeCode) {
+                if (timeCode == Constants.ERROR_TIME_CODE) {
+                    Toast.showToast(getViewContext(), "Nhập sai ngày");
+                } else {
+                    mFromDate = fromDate;
+                    mToDate = toDate;
+                    calFromDate.setTime(DateTimeUtils.convertStringToDate(mFromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                    calToDate.setTime(DateTimeUtils.convertStringToDate(mToDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                    mChuyenThu = chuyenThu;
+                    searchLadingBd13(fromDate, toDate, chuyenThu);
+                }
             }
         }).show();
     }
 
     private void showDialogConfirm(long quantity, long totalAmount) {
-        new CreatedBd13Dialog(getActivity(),0, quantity, totalAmount, new CreatedBD13Callback() {
+        new CreatedBd13Dialog(getActivity(), 0, quantity, totalAmount, new CreatedBD13Callback() {
 
             @Override
-            public void onResponse(String cancelType,String des) {
+            public void onResponse(String cancelType, String des) {
                 final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
                 Bd13Create bd13Create = new Bd13Create();
                 List<Integer> ids = new ArrayList<>();
-                for (DeliveryPostman i : deliveryPostmans)
-                {
+                for (DeliveryPostman i : deliveryPostmans) {
                     ids.add(i.getId());
                 }
                 bd13Create.setIds(ids);
@@ -409,14 +399,19 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @Override
     public void showListSuccess(ArrayList<DeliveryPostman> list) {
-        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
-        long totalAmount = 0;
-        for (DeliveryPostman i : list) {
-            mList.add(i);
-            totalAmount = totalAmount + i.getAmount();
+        if (list == null || list.isEmpty()) {
+            showErrorToast("Không tìm thấy dữ liệu");
+            mList.clear();
+            tvAmount.setText("Số lương: 0");
+        } else {
+            tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+            long totalAmount = 0;
+            for (DeliveryPostman i : list) {
+                mList.add(i);
+                totalAmount = totalAmount + i.getAmount();
+            }
+            tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
-        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
-
         mAdapter.notifyDataSetChanged();
     }
 

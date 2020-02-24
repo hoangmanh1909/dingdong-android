@@ -159,6 +159,10 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomBoldTextView tvIndex;
         @BindView(R.id.iv_status)
         public ImageView ivStatus;
+        @BindView(R.id.tv_gtgt)
+        public CustomTextView gtgt;
+        @BindView(R.id.tv_info)
+        public CustomTextView tvInfo;
 
 
         public HolderView(View itemView) {
@@ -175,11 +179,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tv_code.setText(item.getMaE());
             tv_receiver.setText("Người nhận: " + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress());
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + item.getSenderMobile() + " - " + item.getSenderAddress());
-            tv_weight.setText("Khối lương: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getWeight())));
+            tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
+            tvInfo.setText(String.format("Nội dung: %s", item.getInfo()));
             tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setChecked(item.isSelected());
+            gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             if (item.getStatus().equals("N")) {// gach no khong
                 ivStatus.setVisibility(View.GONE);
             } else {

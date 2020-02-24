@@ -14,7 +14,7 @@ public class StatisticDebitDetailInteractor extends Interactor<StatisticDebitDet
 
     @Override
     public void statisticDebitDetail(String postmanID, String fromDate, String toDate,
-                                     String statusCode, CommonCallback<StatisticDebitDetailResult> callback) {
-        NetWorkController.statisticDebitDetail(postmanID, fromDate, toDate, statusCode, callback);
+                                     String statusCode, String routeCode, CommonCallback<StatisticDebitDetailResult> callback) {
+        NetWorkController.statisticDebitDetail(postmanID, fromDate, toDate, statusCode, routeCode, callback);
     }
 }
