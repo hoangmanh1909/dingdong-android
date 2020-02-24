@@ -97,10 +97,21 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp">
 
+        <CheckBox
+            android:id="@+id/cb_selected_all"
+            android:button="@drawable/custom_btn_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_5dp"/>
+
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/cb_selected_all"
+            android:layout_centerVertical="true"
+            android:text="Số lượng"
             android:textColor="#38044B"
             android:textSize="@dimen/text_size_14sp" />
 
@@ -109,7 +120,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:textColor="@color/colorPrimary"
+            android:text="Số tiền"
             android:textSize="@dimen/text_size_14sp" />
     </RelativeLayout>
 
