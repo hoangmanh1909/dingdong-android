@@ -113,29 +113,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_item_pick_all"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp">
-
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:layout_gravity="right"
-            android:text="@string/pick_all" />
-
-        <CheckBox
-            android:id="@+id/cb_pick_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/_5sdp"
-            android:button="@drawable/custom_btn_radio"
-            android:clickable="false" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView

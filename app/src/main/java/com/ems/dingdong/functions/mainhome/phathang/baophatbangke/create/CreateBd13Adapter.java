@@ -179,7 +179,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
-            tvInfo.setText(String.format("Nội dung: %s", item.getInfo()));
+            tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
             tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setChecked(item.isSelected());
             gtgt.setText(String.format("GTGT: %s", item.getVatCode()));

@@ -200,10 +200,10 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
                     String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
                     String cleanString = s.toString().replaceAll(replaceable, "");
-
-
-                    String formatted = String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(cleanString)));
-
+                    String formatted = "";
+                    if (!cleanString.isEmpty()) {
+                        formatted = String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(cleanString)));
+                    }
                     current = formatted;
                     tv_collect_amount.setText(formatted);
                     tv_collect_amount.setSelection(formatted.length());
@@ -272,10 +272,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         String ladingCode = edt_parcelcode.getText();
         CommonObject commonObject;
         if (mDeliveryType == 2) {
-            if (TextUtils.isEmpty(tv_collect_amount.getText())) {
-                Toast.showToast(getViewContext(), "Xin vui lòng nhập số tiền thu");
-                return;
-            }
+
             if (TextUtils.isEmpty(tv_receiver.getText())) {
                 Toast.showToast(getViewContext(), "Xin vui lòng nhập người nhận");
                 return;

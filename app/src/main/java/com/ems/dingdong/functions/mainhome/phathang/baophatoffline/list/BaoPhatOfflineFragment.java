@@ -101,7 +101,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
-
+        tvTitle.setText(getResources().getString(R.string.offline_delivery));
         mList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(layoutManager);
@@ -248,7 +248,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getContext(), "Cập nhật dữ liệu không thành công");
+        Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
     }
 
     @Override
@@ -257,7 +257,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             Toast.showToast(getContext(), "Cập nhật dữ liệu thành công");
         } else {
 
-            Toast.showToast(getContext(), "Cập nhật dữ liệu không thành công");
+            Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
         }
     }
 
