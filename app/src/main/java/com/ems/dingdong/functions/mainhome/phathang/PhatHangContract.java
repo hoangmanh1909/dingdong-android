@@ -27,6 +27,8 @@ interface PhatHangContract {
         void showStatisticDebit();
 
         void showLocation();
+
+        void showStatisticForward();
     }
 }
 

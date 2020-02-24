@@ -134,8 +134,8 @@ public class NetWorkController {
     }
 
     public static void searchDeliveryStatistic(String fromDate, String status,
-                                               String postmanId, String shift, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId, shift);
+                                               String postmanId, String shift, String routeCode, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId, shift, routeCode);
         call.enqueue(callback);
     }
 
@@ -392,8 +392,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryGeneralResult> callback) {
-        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate, isSuccess);
+    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> callback) {
+        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate, isSuccess, routeCode);
         call.enqueue(callback);
     }
 

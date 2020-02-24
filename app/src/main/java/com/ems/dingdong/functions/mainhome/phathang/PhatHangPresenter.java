@@ -7,6 +7,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.Can
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.deliveryforward.DeliveryForwardPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 
 /**
@@ -62,5 +63,10 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     @Override
     public void showLocation() {
         new LocationPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showStatisticForward() {
+//        new DeliveryForwardPresenter(mContainerView).pushView();
     }
 }

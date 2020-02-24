@@ -47,12 +47,12 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
 
 
     @Override
-    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate) {
+    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, String routeCode) {
         mPostmanID = postmanID;
         mFromDate = fromDate;
         mToDate = toDate;
         mView.showProgress();
-        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate,mIsSuccess, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
+        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate,mIsSuccess, routeCode, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDeliveryGeneralResult> call, Response<StatisticDeliveryGeneralResult> response) {
                 super.onSuccess(call, response);

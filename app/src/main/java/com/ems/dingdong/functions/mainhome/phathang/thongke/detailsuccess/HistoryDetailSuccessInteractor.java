@@ -17,7 +17,7 @@ class HistoryDetailSuccessInteractor extends Interactor<HistoryDetailSuccessCont
 
 
     @Override
-    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, CommonCallback<StatisticDeliveryGeneralResult> callback) {
-        NetWorkController.statisticDeliveryGeneral(postmanID, fromDate, toDate,isSuccess, callback);
+    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> callback) {
+        NetWorkController.statisticDeliveryGeneral(postmanID, fromDate, toDate,isSuccess, routeCode, callback);
     }
 }

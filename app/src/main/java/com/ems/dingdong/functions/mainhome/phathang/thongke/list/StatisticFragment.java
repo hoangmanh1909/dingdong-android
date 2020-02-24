@@ -13,8 +13,12 @@ import com.ems.dingdong.callback.StatictisSearchCallback;
 import com.ems.dingdong.dialog.StatictisSearchDialog;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.R;
 
@@ -44,6 +48,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
     private String mDateSearch;
+    private RouteInfo mRouteInfo;
     private ArrayList<CommonObject> mList;
     private StatictisAdapter mAdapter;
 
@@ -75,7 +80,12 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(mAdapter);
-        mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mPresenter.getStatus(), "1");
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        if (!TextUtils.isEmpty(routeJson)) {
+            mRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+            mPresenter.search(DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mPresenter.getStatus(), "1", mRouteInfo.getRouteCode());
+        }
     }
 
     @OnClick({R.id.img_search})
@@ -88,7 +98,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
                     public void onResponse(String fromDate, String shift) {
                         mDateSearch = fromDate;
                         calendarDate.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                        mPresenter.search(fromDate, mPresenter.getStatus(), shift);
+                        mPresenter.search(fromDate, mPresenter.getStatus(), shift, mRouteInfo.getRouteCode());
                         if ("C14".equals(mPresenter.getStatus())) {
                             ((StatictisActivity) getActivity()).setShift("Ca " + shift, 0);
                         } else {
