@@ -10,6 +10,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,6 +69,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.layout_item_pick_all)
+    LinearLayout pickAll;
+    @BindView(R.id.cb_pick_all)
+    CheckBox cbPickAll;
+
 
     ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
@@ -109,7 +116,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         } else {
             return;
         }
-
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
         mAdapter = new CreateBd13Adapter(getActivity(), 2, mList, new CreateBd13Adapter.FilterDone() {
@@ -290,7 +296,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void onDisplay() {
         super.onDisplay();
-
+        cbPickAll.setChecked(false);
         mList.clear();
         initSearch();
     }
@@ -304,7 +310,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search, R.id.img_send})
+    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search, R.id.img_send, R.id.layout_item_pick_all})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -323,6 +329,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 break;
             case R.id.img_back:
                 mPresenter.back();
+                break;
+            case R.id.layout_item_pick_all:
+                setAllCheckBox();
                 break;
            /* case R.id.img_send:
                 submit();
@@ -366,15 +375,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showListSuccess(ArrayList<DeliveryPostman> list) {
-        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
-        long totalAmount = 0;
-        for (DeliveryPostman i : list) {
-            mList.add(i);
-            totalAmount = totalAmount + i.getAmount();
-        }
-        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        if (list == null || list.isEmpty()) {
+            pickAll.setVisibility(View.GONE);
+        } else {
+            pickAll.setVisibility(View.VISIBLE);
+            tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+            long totalAmount = 0;
+            for (DeliveryPostman i : list) {
+                mList.add(i);
+                totalAmount = totalAmount + i.getAmount();
+            }
+            tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
 
-        mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -420,6 +434,25 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 initSearch();
             }
         }
+    }
+
+    private void setAllCheckBox() {
+        if (cbPickAll.isChecked()) {
+            for (DeliveryPostman item : mList) {
+                if (item.isSelected()) {
+                    item.setSelected(false);
+                }
+            }
+            cbPickAll.setChecked(false);
+        } else {
+            for (DeliveryPostman item : mList) {
+                if (!item.isSelected()) {
+                    item.setSelected(true);
+                }
+            }
+            cbPickAll.setChecked(true);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     public void setSubmitAll() {

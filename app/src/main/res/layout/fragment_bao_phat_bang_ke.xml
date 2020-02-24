@@ -44,6 +44,7 @@
                 android:src="@drawable/ic_confirm" />
         </RelativeLayout>
     </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
+
         <RelativeLayout
             android:id="@+id/ll_scan_qr"
             android:layout_width="match_parent"
@@ -75,8 +77,8 @@
                 android:layout_toRightOf="@+id/img_search"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                app:formShowUnderline="false"
-                app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ" />
+                app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ"
+                app:formShowUnderline="false" />
 
             <ImageView
                 android:id="@+id/img_capture"
@@ -110,6 +112,28 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_14sp" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_item_pick_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp">
+
+        <CheckBox
+            android:id="@+id/cb_pick_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:button="@drawable/custom_btn_radio" />
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/pick_all" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

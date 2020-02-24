@@ -4,6 +4,9 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,6 +54,10 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.layout_item_pick_all)
+    RelativeLayout pickAll;
+    @BindView(R.id.cb_pick_all)
+    CheckBox cbPickAll;
 
     UserInfo userInfo;
     PostOffice postOffice;
@@ -172,7 +179,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         mPresenter.getCancelDelivery(userInfo.getUserName(), routeInfo.getRouteCode(), fromDate, toDate, ladingCode);
     }
 
-    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back})
+    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back, R.id.layout_item_pick_all})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -187,6 +194,11 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             case R.id.img_capture:
                 scanQr();
                 break;
+            case R.id.layout_item_pick_all:
+                setAllCheckBox();
+                break;
+            default:
+                throw new IllegalArgumentException("cant not find view just have clicked");
         }
     }
 
@@ -267,6 +279,25 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         Toast.showToast(getContext(), message);
         mList.clear();
         getCancelDelivery(mFromDate, mToDate, "");
+    }
+
+    private void setAllCheckBox() {
+        if (cbPickAll.isChecked()) {
+            for (DingDongGetCancelDelivery item : mList) {
+                if (item.isSelected()) {
+                    item.setSelected(false);
+                }
+            }
+            cbPickAll.setChecked(false);
+        } else {
+            for (DingDongGetCancelDelivery item : mList) {
+                if (!item.isSelected()) {
+                    item.setSelected(true);
+                }
+            }
+            cbPickAll.setChecked(true);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
 }

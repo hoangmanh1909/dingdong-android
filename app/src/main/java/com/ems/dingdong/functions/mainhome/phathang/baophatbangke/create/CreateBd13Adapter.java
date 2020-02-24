@@ -155,7 +155,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public LinearLayout linearLayout;
         @BindView(R.id.tv_index)
         public CustomBoldTextView tvIndex;
-
+        @BindView(R.id.iv_status)
+        public ImageView ivStatus;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -176,6 +177,11 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
             tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setChecked(item.isSelected());
+            if (item.getStatus().equals("N")) {// gach no khong
+                ivStatus.setVisibility(View.GONE);
+            } else {
+                ivStatus.setVisibility(View.VISIBLE);
+            }
         }
     }
 

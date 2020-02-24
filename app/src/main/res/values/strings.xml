@@ -58,5 +58,6 @@
     <string name="amount_max">HẠN MỨC:</string>
     <string name="so_tien_da_thu">SỐ TIỀN ĐÃ THU:</string>
     <string name="cancel">Hủy bỏ</string>
+    <string name="pick_all">Chọn tất cả</string>
 
 </resources>
