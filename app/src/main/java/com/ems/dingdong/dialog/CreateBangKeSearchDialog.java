@@ -8,6 +8,7 @@ import android.view.View;
 import com.core.base.BaseActivity;
 import com.ems.dingdong.callback.CreatebangKeSearchCallback;
 import com.ems.dingdong.model.ShiftInfo;
+import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
@@ -51,12 +52,12 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
     private String mBag = "1";
     private String mChuyenThu;
 
-    public CreateBangKeSearchDialog(Context context, Calendar calendar, CreatebangKeSearchCallback reasonCallback) {
+    public CreateBangKeSearchDialog(Context context, Calendar calFromDate, Calendar calToDate, CreatebangKeSearchCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
-        this.calFromCreate = calendar;
-        this.calToCreate = calendar;
+        this.calFromCreate = calFromDate;
+        this.calToCreate = calToDate;
 
         View view = View.inflate(getContext(), R.layout.dialog_lap_bang_ke_search, null);
         setContentView(view);
@@ -125,7 +126,10 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 //                    Toast.showToast(mActivity, "Phải chọn túi số");
 //                    return;
 //                }
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5),DateTimeUtils.convertDateToString(calToCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mChuyenThu);
+                if (calFromCreate.after(calToCreate) || calToCreate.after(Calendar.getInstance()))
+                    mDelegate.onResponse(null, null, null, Constants.ERROR_TIME_CODE);
+                else
+                    mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), DateTimeUtils.convertDateToString(calToCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mChuyenThu, Constants.SUCCESS_TIME_CODE);
                 dismiss();
                 break;
 //            case R.id.tv_shift:
@@ -168,22 +172,13 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-        calFromCreate.set(year, monthOfYear, dayOfMonth);
         if (typeDate != 0) {
             calToCreate.set(year, monthOfYear, dayOfMonth);
-            if (calToCreate.before(calFromCreate)) {
-                calFromCreate.setTime(calToCreate.getTime());
-            }
+            tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
         } else {
             calFromCreate.set(year, monthOfYear, dayOfMonth);
-            if (calFromCreate.after(calToCreate)) {
-                calToCreate.setTime(calFromCreate.getTime());
-            }
-        }
-        if (typeDate == 0)
             tv_from_date.setText(TimeUtils.convertDateToString(calFromCreate.getTime(), TimeUtils.DATE_FORMAT_5));
-        else
-            tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+        }
     }
 
     private void showUIShift() {

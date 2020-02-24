@@ -39,10 +39,10 @@ public class StatisticDebitDetailPresenter extends Presenter<StatisticDebitDetai
     }
 
     @Override
-    public void statisticDebitDetail(String postmanID) {
+    public void statisticDebitDetail(String postmanID, String routeCode) {
         mPostmanID = postmanID;
         mView.showProgress();
-        mInteractor.statisticDebitDetail(postmanID, mFromDate, mToDate, mStatusCode, new CommonCallback<StatisticDebitDetailResult>((Activity) mContainerView) {
+        mInteractor.statisticDebitDetail(postmanID, mFromDate, mToDate, mStatusCode, routeCode, new CommonCallback<StatisticDebitDetailResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDebitDetailResult> call, Response<StatisticDebitDetailResult> response) {
                 super.onSuccess(call, response);

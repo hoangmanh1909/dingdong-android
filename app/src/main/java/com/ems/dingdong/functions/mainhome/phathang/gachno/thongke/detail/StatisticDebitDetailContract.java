@@ -12,7 +12,7 @@ import java.util.ArrayList;
 interface StatisticDebitDetailContract {
     interface Interactor extends IInteractor<Presenter> {
 
-        void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode,
+        void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, String routeCode,
                            CommonCallback<StatisticDebitDetailResult> callback);
     }
 
@@ -21,7 +21,7 @@ interface StatisticDebitDetailContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void statisticDebitDetail(String postmanID);
+        void statisticDebitDetail(String postmanID, String routeCode);
 
         void showDetail();
 

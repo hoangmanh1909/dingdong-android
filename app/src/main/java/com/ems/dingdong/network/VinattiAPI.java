@@ -284,21 +284,23 @@ public interface VinattiAPI {
                                                                 @Field("PostmanId") String postmanID,
                                                                 @Field("FromDate") String fromDate,
                                                                 @Field("ToDate") String toDate,
-                                                                @Field("IsSuccess") boolean isSuccess
-    );
+                                                                @Field("IsSuccess") boolean isSuccess,
+                                                                @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
     @POST("api/Statistic/DebitGeneral")
     Call<StatisticDebitGeneralResult> statisticDebitGeneral(@Field("PostmanId") String postmanID,
                                                             @Field("FromDate") String fromDate,
-                                                            @Field("ToDate") String toDate);
+                                                            @Field("ToDate") String toDate,
+                                                            @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
     @POST(" api/Statistic/DebitDetail")
     Call<StatisticDebitDetailResult> statisticDebitDetail(@Field("PostmanId") String postmanID,
                                                           @Field("FromDate") String fromDate,
                                                           @Field("ToDate") String toDate,
-                                                          @Field("StatusCode") String statusCode);
+                                                          @Field("StatusCode") String statusCode,
+                                                          @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
     @POST("api/DingDong/GetMainview")
@@ -343,6 +345,7 @@ public interface VinattiAPI {
                                      @Field("IdUser") String idUser,
                                      @Field("IsVerify") boolean isVerify,
                                      @Field("Layer") String layer);
+
     @POST("api/VietMap/Update")
     Call<SimpleResult> vietmapUpdate(@Body UpdateRequest taskRequest);
 }

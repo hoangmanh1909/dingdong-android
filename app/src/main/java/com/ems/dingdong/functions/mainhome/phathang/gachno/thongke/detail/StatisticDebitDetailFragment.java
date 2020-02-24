@@ -8,17 +8,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.StatisticDebitDetailResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
+
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+
 import static com.ems.dingdong.utiles.Constants.STATUS_CODE_YES;
 
 public class StatisticDebitDetailFragment extends ViewFragment<StatisticDebitDetailContract.Presenter>
@@ -31,6 +33,7 @@ public class StatisticDebitDetailFragment extends ViewFragment<StatisticDebitDet
 
     private StatisticDebitDetailAdapter mAdapter;
     private UserInfo mUserInfo;
+    private RouteInfo mRouteInfo;
     private String fromDate;
     private String toDate;
     private ArrayList<StatisticDebitDetailResponse> mList;
@@ -57,9 +60,11 @@ public class StatisticDebitDetailFragment extends ViewFragment<StatisticDebitDet
 
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            mPresenter.statisticDebitDetail(mUserInfo.getiD());
+            mRouteInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+            mPresenter.statisticDebitDetail(mUserInfo.getiD(), mRouteInfo.getRouteCode());
         }
     }
 

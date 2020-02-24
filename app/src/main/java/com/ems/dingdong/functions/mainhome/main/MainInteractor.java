@@ -22,7 +22,7 @@ class MainInteractor extends Interactor<MainContract.Presenter>
     }
 
     @Override
-    public void getBalance(String postmanID, String fromDate, String toDate, CommonCallback<StatisticDebitGeneralResult> callback) {
-        NetWorkController.statisticDebitGeneral(postmanID, fromDate, toDate, callback);
+    public void getBalance(String postmanID, String fromDate, String toDate, String routeCode, CommonCallback<StatisticDebitGeneralResult> callback) {
+        NetWorkController.statisticDebitGeneral(postmanID, fromDate, toDate, routeCode, callback);
     }
 }

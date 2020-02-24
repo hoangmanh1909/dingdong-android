@@ -7,6 +7,7 @@ import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -36,6 +37,7 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
     CustomTextView unsuccessful_amount_of_money;
 
     private UserInfo mUserInfo;
+    private RouteInfo mRouteInfo;
     private String fromDate;
     private String toDate;
     private StatisticDebitGeneralResponse mValue;
@@ -50,11 +52,13 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (!TextUtils.isEmpty(userJson)) {
+            mRouteInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate);
+            mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());
         }
     }
 
@@ -94,7 +98,7 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
         new EditDayDialog(getActivity(), (calFrom, calTo) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate);
+            mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());
         }).show();
     }
 }
