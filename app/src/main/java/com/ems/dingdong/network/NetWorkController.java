@@ -461,4 +461,9 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().vietmapUpdate(request);
         call.enqueue(callback);
     }
+
+    public static void vietmapSearch(String text, CommonCallback<XacMinhDiaChiResult> callback) {
+        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text);
+        call.enqueue(callback);
+    }
 }

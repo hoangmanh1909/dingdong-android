@@ -11,6 +11,7 @@ import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
@@ -52,6 +53,8 @@ interface ListBaoPhatBangKeContract {
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
         void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
+        void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -68,6 +71,7 @@ interface ListBaoPhatBangKeContract {
         void showCallSuccess();
 
         void showResponseSuccessEmpty();
+        void showAddressList(Object object);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -107,6 +111,8 @@ interface ListBaoPhatBangKeContract {
         void callForward(String phone, String parcelCode);
 
         void updateMobile(String phone, String parcelCode);
+
+        void vietmapSearch(String address);
     }
 }
 

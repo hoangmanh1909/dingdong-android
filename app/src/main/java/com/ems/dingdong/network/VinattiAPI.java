@@ -345,4 +345,7 @@ public interface VinattiAPI {
                                      @Field("Layer") String layer);
     @POST("api/VietMap/Update")
     Call<SimpleResult> vietmapUpdate(@Body UpdateRequest taskRequest);
+
+    @GET("api/VietMap/Search")
+    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
 }

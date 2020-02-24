@@ -175,6 +175,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         }).show();
                     }
                 });
+                ((HolderView) holder).img_map.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.vietmapSearch(mList.get(position).getReciverAddress());
+                    }
+                });
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
@@ -333,9 +339,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.layout_item_pick_all:
                 setAllCheckBox();
                 break;
-           /* case R.id.img_send:
-                submit();
-                break;*/
         }
     }
 
@@ -358,6 +361,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
         isLoading = false;
+    }
+
+    @Override
+    public void showAddressList(Object object) {
+        String s = "";
     }
 
     @Override

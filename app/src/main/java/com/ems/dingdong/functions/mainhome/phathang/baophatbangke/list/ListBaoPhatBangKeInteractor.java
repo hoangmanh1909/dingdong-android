@@ -5,6 +5,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
@@ -55,5 +56,10 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     @Override
     public void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
         NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
+    }
+
+    @Override
+    public void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback) {
+        NetWorkController.vietmapSearch(address, callback);
     }
 }

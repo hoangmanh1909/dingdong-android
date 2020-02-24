@@ -18,6 +18,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -363,6 +364,29 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
+            }
+        });
+    }
+
+    @Override
+    public void vietmapSearch(String address) {
+        mInteractor.vietmapSearch(address, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
+                super.onSuccess(call, response);
+
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showAddressList(response.body().getResponseLocation());
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
+
+            @Override
+            protected void onError(Call<XacMinhDiaChiResult> call, String message) {
+                super.onError(call, message);
+
+                mView.showError(message);
             }
         });
     }
