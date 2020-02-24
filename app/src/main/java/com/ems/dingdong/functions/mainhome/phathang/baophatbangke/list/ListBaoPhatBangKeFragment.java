@@ -10,6 +10,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,6 +69,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.cb_selected_all)
+    CheckBox cb_selected_all;
 
     ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
@@ -219,6 +223,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
 
         }
+
+        cb_selected_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                for (DeliveryPostman item : mList) {
+                    item.setSelected(isChecked);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void showConfirmSaveMobile(final String phone, String parcelCode) {
@@ -280,6 +295,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mChuyenThu = chuyenThu;
                     mTuiSo = tuiSo;
                     mList.clear();
+                    cb_selected_all.setSelected(false);
                     mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
 
                 }
@@ -292,6 +308,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         super.onDisplay();
 
         mList.clear();
+        cb_selected_all.setSelected(false);
+        mAdapter.notifyDataSetChanged();
         initSearch();
     }
 
@@ -299,6 +317,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
 //            isLoading = true;
             mList.clear();
+            mAdapter.notifyDataSetChanged();
+            cb_selected_all.setSelected(false);
             String toDate = DateTimeUtils.calculateDay(-10);
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
         }
@@ -345,6 +365,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //        mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
+        cb_selected_all.setSelected(false);
         mAdapter.notifyDataSetChanged();
         tvCount.setText(String.format(" %s", mList.size()));
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
