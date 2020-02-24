@@ -182,7 +182,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
             tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setChecked(item.isSelected());
-            gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
+            if(null != item.getVatCode())
+                gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             if (item.getStatus().equals("N")) {// gach no khong
                 ivStatus.setVisibility(View.GONE);
             } else {

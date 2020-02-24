@@ -48,8 +48,6 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
         CustomBoldTextView tvStatusName;
         @BindView(R.id.tv_amount)
         CustomBoldTextView tvAmount;
-        @BindView(R.id.tv_phone_number)
-        CustomBoldTextView tvPhone;
 
         public HolderView(View itemView) {
             super(itemView);

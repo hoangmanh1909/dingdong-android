@@ -410,9 +410,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @Override
     public void showListSuccess(ArrayList<DeliveryPostman> list) {
+        mList.clear();
         if (list == null || list.isEmpty()) {
             showErrorToast("Không tìm thấy dữ liệu");
-            mList.clear();
             tvAmount.setText("Số lương: 0");
         } else {
             tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
