@@ -9,6 +9,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
@@ -389,6 +390,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.showError(message);
             }
         });
+    }
+
+    @Override
+    public void showAddressList(Object object) {
+        new AddressListPresenter(mContainerView).setObject(object,2).pushView();
     }
 
 

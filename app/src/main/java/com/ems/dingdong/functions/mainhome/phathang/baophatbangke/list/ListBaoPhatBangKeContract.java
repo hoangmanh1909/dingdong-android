@@ -113,6 +113,8 @@ interface ListBaoPhatBangKeContract {
         void updateMobile(String phone, String parcelCode);
 
         void vietmapSearch(String address);
+
+        void showAddressList(Object object);
     }
 }
 

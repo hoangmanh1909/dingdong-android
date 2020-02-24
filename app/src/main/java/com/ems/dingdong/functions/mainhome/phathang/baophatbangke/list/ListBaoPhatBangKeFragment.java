@@ -365,7 +365,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showAddressList(Object object) {
-        String s = "";
+        mPresenter.showAddressList(object);
     }
 
     @Override

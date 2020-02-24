@@ -10,6 +10,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
         implements AddressListContract.Presenter {
 
     Object object;
+    int mType;
 
     public AddressListPresenter(ContainerView containerView) {
         super(containerView);
@@ -20,9 +21,9 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
     }
 
-    public AddressListPresenter setObject(Object object)
-    {
+    public AddressListPresenter setObject(Object object, int type) {
         this.object = object;
+        this.mType = type;
         return this;
     }
 
@@ -32,7 +33,11 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
     @Override
     public void showAddressDetail(AddressListModel addressListModel) {
-        new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
+        if (mType == 1) {
+            new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
+        } else {
+
+        }
     }
 
     @Override
