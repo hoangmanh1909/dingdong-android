@@ -40,6 +40,7 @@ import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
+import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
@@ -464,6 +465,11 @@ public class NetWorkController {
 
     public static void vietmapSearch(String text, CommonCallback<XacMinhDiaChiResult> callback) {
         Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text);
+        call.enqueue(callback);
+    }
+
+    public static void vietmapRoute(List<RouteRequest> request, CommonCallback<XacMinhDiaChiResult> callback) {
+        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRoute(request);
         call.enqueue(callback);
     }
 }

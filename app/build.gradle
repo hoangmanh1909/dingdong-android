@@ -110,6 +110,14 @@ android {
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDong"
         }
+        pro_vnpost {
+            def API_URL = '"http://103.21.149.237:1235/"'
+            def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
+            buildConfigField("String", "API_URL", API_URL)
+            buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
+            applicationId "com.tct.dingdong"
+            resValue "string", "app_name", "DingDong"
+        }
         /*uat_ems {
         https://pns.vnpost.vn/ddsmartpos/
             def API_URL = '"http://222.255.250.245:50011/"'

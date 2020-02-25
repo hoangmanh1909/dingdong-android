@@ -3,7 +3,9 @@
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:background="@color/white">
 
     <FrameLayout
         android:id="@+id/header"
@@ -30,82 +32,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Tìm đường đi"
+                android:text="Xác minh địa chỉ"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
         </RelativeLayout>
     </FrameLayout>
 
-    <LinearLayout
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:weightSum="10">
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        mapbox:mapbox_cameraZoom="12" />
 
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:id="@+id/mapView"
+    <RelativeLayout
+        android:id="@+id/rll_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp">
+
+        <ImageView
+            android:id="@+id/img_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_pin32" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_address_to"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="9"
-            mapbox:mapbox_cameraZoom="12" />
-
-
-        <LinearLayout
-            android:id="@+id/ll_footer"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp">
-
-                <ImageView
-                    android:id="@+id/img_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_pin_from"/>
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_address_from"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_toRightOf="@+id/img_from"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:text="Hà nội" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp">
-
-                <ImageView
-                    android:id="@+id/img_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_pin32" />
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_address_to"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_toRightOf="@+id/img_to"
-                    android:text="Hà nội" />
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_toRightOf="@+id/img_to"
+            android:text="241 xuân thủy cầu giấy hà nội"
+            android:textSize="@dimen/text_size_16sp" />
+    </RelativeLayout>
 </LinearLayout>
