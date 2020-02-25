@@ -144,7 +144,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showListSuccess(response.body().getDeliveryPostmens());
                 } else {
-                    mView.showErrorToast(response.body().getMessage());
+                    mView.showError(response.body().getMessage());
                 }
             }
 

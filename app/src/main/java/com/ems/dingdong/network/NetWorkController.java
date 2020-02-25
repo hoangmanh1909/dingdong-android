@@ -472,4 +472,20 @@ public class NetWorkController {
         Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRoute(request);
         call.enqueue(callback);
     }
+
+    public static void getLadingStatusGeneral(String postmanID, String fromDate, String toDate,
+                                              int ladingType, String routeCode,
+                                              CommonCallback<StatisticDeliveryGeneralResult> callback) {
+        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().getLadingStatusGeneral(postmanID,
+                fromDate, toDate, ladingType, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void getLadingStatusDetail(int type, String serviceCode, String postmanID,
+                                             String fromDate, String toDate, int ladingType,
+                                             String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
+        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().getLadingStatusDetail(type,
+                serviceCode, postmanID, fromDate, toDate, ladingType, routeCode);
+        call.enqueue(callback);
+    }
 }

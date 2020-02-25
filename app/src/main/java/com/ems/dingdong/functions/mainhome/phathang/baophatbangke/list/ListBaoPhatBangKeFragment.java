@@ -75,11 +75,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     CheckBox cbPickAll;
 
 
-    ArrayList<DeliveryPostman> mList;
+    private ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
-    UserInfo mUserInfo;
-    PostOffice postOffice;
-    RouteInfo routeInfo;
+    private UserInfo mUserInfo;
+    private PostOffice postOffice;
+    private RouteInfo routeInfo;
 
     private String mDate;
     private Calendar mCalendar;
@@ -96,6 +96,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     String mFromDate = "";
     String mToDate = "";
     String mPhone = "";
+    boolean isReturnedFromScanDialog = false;
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -185,7 +186,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -234,7 +235,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void showConfirmSaveMobile(final String phone, String parcelCode) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+        new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
                 .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
@@ -284,6 +285,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
                 public void onResponse(String fromDate, String shiftID, String shiftName, String chuyenThu, String tuiSo) {
+                    isReturnedFromScanDialog = false;
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
@@ -303,8 +305,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void onDisplay() {
         super.onDisplay();
         cbPickAll.setChecked(false);
-        mList.clear();
-        initSearch();
+        if (!isReturnedFromScanDialog) {
+            mList.clear();
+            initSearch();
+        }
     }
 
     private void initSearch() {
@@ -322,6 +326,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.ll_scan_qr:
                 mPresenter.showBarcode(v -> {
                     edtSearch.setText(v);
+                    edtSearch.setSelected(false);
+                    isReturnedFromScanDialog = true;
                 });
                 break;
             case R.id.img_send:
@@ -370,7 +376,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
-        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+        tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
         long totalAmount = 0;
         for (DeliveryPostman i : list) {
             mList.add(i);
@@ -385,18 +391,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void showListSuccess(ArrayList<DeliveryPostman> list) {
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
+            mList.clear();
         } else {
             pickAll.setVisibility(View.VISIBLE);
-            tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+            tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
             long totalAmount = 0;
             for (DeliveryPostman i : list) {
                 mList.add(i);
                 totalAmount = totalAmount + i.getAmount();
             }
             tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
-
-            mAdapter.notifyDataSetChanged();
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -408,6 +414,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             mCountSearch++;
         }
+        mList.clear();
+        pickAll.setVisibility(View.GONE);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

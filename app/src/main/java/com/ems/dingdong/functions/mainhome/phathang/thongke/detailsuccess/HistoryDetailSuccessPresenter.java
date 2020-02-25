@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detail.ListDeliverySuccessDetailPresenter;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.utiles.Utils;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -21,9 +22,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
     private String mFromDate;
     private String mToDate;
 
-
-
-    private boolean mIsSuccess = false;
+    private StatisticType mStatisticType;
 
     public HistoryDetailSuccessPresenter(ContainerView containerView) {
         super(containerView);
@@ -45,14 +44,13 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
     }
 
 
-
     @Override
     public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, String routeCode) {
         mPostmanID = postmanID;
         mFromDate = fromDate;
         mToDate = toDate;
         mView.showProgress();
-        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate,mIsSuccess, routeCode, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
+        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, mStatisticType, routeCode, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<StatisticDeliveryGeneralResult> call, Response<StatisticDeliveryGeneralResult> response) {
                 super.onSuccess(call, response);
@@ -75,17 +73,17 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
 
     @Override
     public void showDetail(String serviceCode, String serviceName, int typeDelivery) {
-        new ListDeliverySuccessDetailPresenter(mContainerView).setData(serviceCode, serviceName, typeDelivery, mPostmanID, mFromDate, mToDate, mIsSuccess).pushView();
+        new ListDeliverySuccessDetailPresenter(mContainerView).setData(serviceCode, serviceName, typeDelivery, mPostmanID, mFromDate, mToDate, mStatisticType).pushView();
     }
 
     @Override
-    public boolean getIsSuccess() {
-        return mIsSuccess;
+    public StatisticType getStatisticType() {
+        return mStatisticType;
     }
 
 
-    public HistoryDetailSuccessPresenter setIsSuccess(boolean isSuccess) {
-        this.mIsSuccess = isSuccess;
+    public HistoryDetailSuccessPresenter setStatisticType(StatisticType statisticType) {
+        this.mStatisticType = statisticType;
         return this;
     }
 }

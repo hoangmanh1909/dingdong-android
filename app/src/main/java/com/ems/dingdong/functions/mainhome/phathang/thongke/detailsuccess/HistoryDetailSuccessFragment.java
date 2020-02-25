@@ -59,18 +59,10 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
             public void onBindViewHolder(BaseViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
                 if (position != mList.size() - 1) {
-                    ((HolderView) holder).tvCount.setOnClickListener(v -> {
-                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COUNT);
-                    });
-                    ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> {
-                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD);
-                    });
-                    ((HolderView) holder).tvMoneyC.setOnClickListener(v -> {
-                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C);
-                    });
-                    ((HolderView) holder).tvMoneyPpa.setOnClickListener(v -> {
-                        mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA);
-                    });
+                    ((HolderView) holder).tvCount.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COUNT));
+                    ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD));
+                    ((HolderView) holder).tvMoneyC.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C));
+                    ((HolderView) holder).tvMoneyPpa.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA));
                 }
             }
         };
@@ -86,12 +78,22 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
             mRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
             mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());
         }
-        if(mPresenter.getIsSuccess())
-        {
-            tvTitle.setText("THỐNG KÊ PHÁT HÀNG THÀNH CÔNG");
-        }
-        else{
-            tvTitle.setText("THỐNG KÊ PHÁT HÀNG KHÔNG THÀNH CÔNG");
+        switch (mPresenter.getStatisticType()) {
+            case ERROR_DELIVERY:
+                tvTitle.setText(getResources().getString(R.string.statistic_error_delivery));
+                break;
+            case RETURN_DELIVERY:
+                tvTitle.setText(getString(R.string.statistic_returned_delivery));
+                break;
+
+            case SUCCESS_DELIVERY:
+                tvTitle.setText(getString(R.string.statistic_success_delivery));
+                break;
+
+            case CONTINUOUS_DELIVERY:
+                tvTitle.setText(getString(R.string.statistic_continuous_delivery));
+                break;
+
         }
     }
 

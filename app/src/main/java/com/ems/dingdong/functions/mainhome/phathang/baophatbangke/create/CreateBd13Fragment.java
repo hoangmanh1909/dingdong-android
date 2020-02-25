@@ -413,9 +413,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         mList.clear();
         if (list == null || list.isEmpty()) {
             showErrorToast("Không tìm thấy dữ liệu");
-            tvAmount.setText("Số lương: 0");
+            tvAmount.setText("Số lượng: 0");
         } else {
-            tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+            tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
             long totalAmount = 0;
             for (DeliveryPostman i : list) {
                 mList.add(i);

@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 interface ListDeliverySuccessDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback);
+        void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -26,7 +27,7 @@ interface ListDeliverySuccessDetailContract {
     interface Presenter extends IPresenter<View, Interactor> {
         String getServiceName();
 
-        boolean getIsSuccess();
+        StatisticType getStatisticType();
     }
 }
 

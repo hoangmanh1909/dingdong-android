@@ -1,6 +1,5 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,25 +22,19 @@ import androidx.core.widget.NestedScrollView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.dialog.SignDialog;
-import com.ems.dingdong.eventbus.BaoPhatCallback;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
-import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.views.CustomAutoCompleteTextView;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
@@ -51,21 +43,14 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Route;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.View {
 
@@ -310,8 +295,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
             int postmanId = 0;
-            if(mPostmanInfo != null)
-            {
+            if (mPostmanInfo != null) {
                 postmanId = Integer.parseInt(mPostmanInfo.getiD());
             }
             mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
@@ -541,28 +525,32 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private void showUIPostman() {
-        ArrayList<Item> items = new ArrayList<>();
-        for (UserInfo item : mListPostman) {
-            items.add(new Item(item.getiD(), item.getFullName()));
-        }
-        if (pickerUIPostman == null) {
-            pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, "Chọn bưu tá",
-                    (item, position) -> {
-                        tv_postman.setText(item.getText());
-                        mPostmanInfo = mListPostman.get(position);
-                    }, 0);
-            pickerUIPostman.show(getActivity().getSupportFragmentManager(), pickerUIPostman.getTag());
+        if (null == mListPostman || mListPostman.isEmpty()) {
+            showErrorToast("Vui lòng chọn tuyến");
         } else {
-            pickerUIPostman.setData(items, 0);
-            if (!pickerUIPostman.isShow) {
+            ArrayList<Item> items = new ArrayList<>();
+            for (UserInfo item : mListPostman) {
+                items.add(new Item(item.getiD(), item.getFullName()));
+            }
+            if (pickerUIPostman == null) {
+                pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, "Chọn bưu tá",
+                        (item, position) -> {
+                            tv_postman.setText(item.getText());
+                            mPostmanInfo = mListPostman.get(position);
+                        }, 0);
                 pickerUIPostman.show(getActivity().getSupportFragmentManager(), pickerUIPostman.getTag());
+            } else {
+                pickerUIPostman.setData(items, 0);
+                if (!pickerUIPostman.isShow) {
+                    pickerUIPostman.show(getActivity().getSupportFragmentManager(), pickerUIPostman.getTag());
+                }
             }
         }
     }
 
     @Override
     public void showImage(String file) {
-        mFile = file;
+        mFile += file;
     }
 
     @Override

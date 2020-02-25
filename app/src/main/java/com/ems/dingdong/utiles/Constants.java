@@ -60,4 +60,7 @@ public class Constants {
     public static final int ERROR_TIME_CODE = 1;
     public static final int SUCCESS_TIME_CODE = 2;
 
+    public static final int CONTINUOUS_DELIVERY_CODE = 2;
+    public static final int RETURNED_DELIVERY_CODE = 1;
+
 }

@@ -231,7 +231,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     status,
                     paymentChannel,
                     deliveryType,
-                    signature,
+                    signCapture,
                     note,
                     amount,
                     shiftId,

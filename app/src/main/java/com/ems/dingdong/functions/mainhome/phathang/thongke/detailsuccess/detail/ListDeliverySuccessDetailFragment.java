@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.model.StatisticDetailCollect;
 import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
 
 import java.util.ArrayList;
@@ -56,12 +55,23 @@ public class ListDeliverySuccessDetailFragment extends ViewFragment<ListDelivery
         mAdapter = new ListDeliverySuccessCollectDetailAdapter(getActivity(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
-        if(mPresenter.getIsSuccess())
-        {
-            tvTitle.setText("THỐNG KÊ PHÁT HÀNG THÀNH CÔNG");
-        }
-        else{
-            tvTitle.setText("THỐNG KÊ PHÁT HÀNG KHÔNG THÀNH CÔNG");
+
+        switch (mPresenter.getStatisticType()) {
+            case ERROR_DELIVERY:
+                tvTitle.setText(getResources().getString(R.string.statistic_error_delivery));
+                break;
+            case RETURN_DELIVERY:
+                tvTitle.setText(getString(R.string.statistic_returned_delivery));
+                break;
+
+            case SUCCESS_DELIVERY:
+                tvTitle.setText(getString(R.string.statistic_success_delivery));
+                break;
+
+            case CONTINUOUS_DELIVERY:
+                tvTitle.setText(getString(R.string.statistic_continuous_delivery));
+                break;
+
         }
     }
 
