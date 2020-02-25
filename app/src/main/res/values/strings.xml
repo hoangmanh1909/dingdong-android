@@ -60,5 +60,9 @@
     <string name="cancel">Hủy bỏ</string>
     <string name="pick_all">Chọn tất cả</string>
     <string name="offline_delivery">Báo phát offline</string>
+    <string name="statistic_success_delivery">THỐNG KÊ BÁO PHÁT THÀNH CÔNG</string>
+    <string name="statistic_error_delivery">THỐNG KÊ BÁO PHÁT KHÔNG THÀNH CÔNG</string>
+    <string name="statistic_returned_delivery">THỐNG KÊ CHUYỂN HOÀN</string>
+    <string name="statistic_continuous_delivery">THỐNG KÊ CHUYỂN TIẾP</string>
 
 </resources>

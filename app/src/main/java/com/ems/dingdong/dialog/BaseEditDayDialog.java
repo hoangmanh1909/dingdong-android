@@ -51,7 +51,6 @@ public class BaseEditDayDialog extends Dialog implements com.tsongkha.spinnerdat
     {
         getWindow().setWindowAnimations(R.style.DialogAnimation);
         mActivity = (BaseActivity) context;
-        calFrom.add(Calendar.DATE, -6);
         setContentView(R.layout.dialog_edit_day);
         final Unbinder unbinder = ButterKnife.bind(this);
         setOnDismissListener(new OnDismissListener() {

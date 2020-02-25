@@ -14,6 +14,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateB
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
@@ -69,7 +70,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(10, R.drawable.close, "Hủy báo phát"));
                 homeInfos.add(new HomeInfo(11, R.drawable.ic_gach_no, "Thống kê gạch nợ"));
                 homeInfos.add(new HomeInfo(12, R.drawable.ic_location_blue, "Tra cứu bưu gửi"));
-//                homeInfos.add(new HomeInfo(13, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển hoàn"));
+                homeInfos.add(new HomeInfo(13, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển hoàn"));
+                homeInfos.add(new HomeInfo(14, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển tiếp"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
@@ -95,9 +97,9 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             Intent intent = new Intent(getActivity(), StatictisActivity.class);
                             startActivity(intent);
                         } else if (homeInfo.getId() == 5) {
-                            mPresenter.showViewStatisticPtc(true);
+                            mPresenter.showViewStatisticPtc(StatisticType.SUCCESS_DELIVERY);
                         } else if (homeInfo.getId() == 6) {
-                            mPresenter.showViewStatisticPtc(false);
+                            mPresenter.showViewStatisticPtc(StatisticType.ERROR_DELIVERY);
                         } else if (homeInfo.getId() == 7) {
                             Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
                             startActivity(intent);
@@ -111,8 +113,10 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showStatisticDebit();
                         } else if (homeInfo.getId() == 12) {
                             mPresenter.showLocation();
-                        }   else if (homeInfo.getId() == 13) {
-                            mPresenter.showStatisticForward();
+                        } else if (homeInfo.getId() == 13) {
+                            mPresenter.showViewStatisticPtc(StatisticType.RETURN_DELIVERY);
+                        } else if (homeInfo.getId() == 14) {
+                            mPresenter.showViewStatisticPtc(StatisticType.CONTINUOUS_DELIVERY);
                         }
                     }
                 });

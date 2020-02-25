@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.network.NetWorkController;
@@ -29,7 +30,7 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
     private String mFromDate;
     private String mToDate;
 
-    private boolean mIsSuccess = false;
+    private StatisticType mStatisticType;
 
     public ListDeliverySuccessDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -57,7 +58,7 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
         String routeCode = NetWorkController.getGson().fromJson(sharedPref.getString(
                 Constants.KEY_ROUTE_INFO, ""), RouteInfo.class).getRouteCode();
         mInteractor.statisticDeliveryDetail(mServiceCode, mTypeDelivery, mPostmanID, mFromDate,
-                mToDate, mIsSuccess, routeCode,
+                mToDate, mStatisticType, routeCode,
                 new CommonCallback<StatisticDeliveryDetailResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<StatisticDeliveryDetailResult> call,
@@ -83,14 +84,14 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
 
     public ListDeliverySuccessDetailPresenter setData(String serviceCode, String serviceName,
                                                       int typeDelivery, String postmanID, String fromDate,
-                                                      String toDate, boolean isSuccess) {
+                                                      String toDate, StatisticType statisticType) {
         mServiceCode = serviceCode;
         mServiceName = serviceName;
         mTypeDelivery = typeDelivery;
         mPostmanID = postmanID;
         mFromDate = fromDate;
         mToDate = toDate;
-        mIsSuccess = isSuccess;
+        mStatisticType = statisticType;
         return this;
     }
 
@@ -100,7 +101,7 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
     }
 
     @Override
-    public boolean getIsSuccess() {
-        return mIsSuccess;
+    public StatisticType getStatisticType() {
+        return mStatisticType;
     }
 }

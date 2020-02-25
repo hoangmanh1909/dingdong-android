@@ -7,8 +7,8 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.Can
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.thongke.deliveryforward.DeliveryForwardPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 
 /**
  * The PhatHang Presenter
@@ -36,8 +36,8 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     }
 
     @Override
-    public void showViewStatisticPtc(boolean isSuccess) {
-        new HistoryDetailSuccessPresenter(mContainerView).setIsSuccess(isSuccess).pushView();
+    public void showViewStatisticPtc(StatisticType statisticType) {
+        new HistoryDetailSuccessPresenter(mContainerView).setStatisticType(statisticType).pushView();
     }
 
     @Override

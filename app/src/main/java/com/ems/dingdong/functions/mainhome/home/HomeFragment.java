@@ -22,6 +22,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPha
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoActivity;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.model.CommonObject;
@@ -194,10 +195,10 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
                                 startActivity(intent);
                             }
                             else if (homeInfo.getId() == 17) {
-                                mPresenter.showViewStatisticPtc(true);
+                                mPresenter.showViewStatisticPtc(StatisticType.SUCCESS_DELIVERY);
                             }
                             else if (homeInfo.getId() == 18) {
-                                mPresenter.showViewStatisticPtc(false);
+                                mPresenter.showViewStatisticPtc(StatisticType.ERROR_DELIVERY);
                             }
 
                         }

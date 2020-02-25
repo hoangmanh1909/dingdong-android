@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
@@ -36,7 +37,7 @@ interface HomeContract {
 
         void showHoanTatNhieuTin();
 
-        void showViewStatisticPtc(boolean isSuccess);
+        void showViewStatisticPtc(StatisticType isSuccess);
 
         void getHomeView(String postmanCode,String routeCode);
     }

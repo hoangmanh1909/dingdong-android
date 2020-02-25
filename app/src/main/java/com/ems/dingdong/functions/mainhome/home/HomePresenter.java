@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.statistic.ListStatisticPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.listbd13.ListBd13Presenter;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -68,8 +69,8 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     }
 
     @Override
-    public void showViewStatisticPtc(boolean isSuccess) {
-        new HistoryDetailSuccessPresenter(mContainerView).setIsSuccess(isSuccess).pushView();
+    public void showViewStatisticPtc(StatisticType isSuccess) {
+        new HistoryDetailSuccessPresenter(mContainerView).setStatisticType(isSuccess).pushView();
     }
 
     @Override

@@ -247,7 +247,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     @Override
     public void showListSuccess(ArrayList<DingDongGetCancelDelivery> list) {
-        tvCount.setText("Số lương: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+        tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
         long totalAmount = 0;
         for (DingDongGetCancelDelivery i : list) {
             mList.add(i);
