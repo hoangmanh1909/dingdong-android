@@ -195,8 +195,8 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         new EditDayDialog(getActivity(), new OnChooseDay() {
             @Override
             public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 getCancelDelivery(mFromDate, mToDate, "");
             }
         }).show();

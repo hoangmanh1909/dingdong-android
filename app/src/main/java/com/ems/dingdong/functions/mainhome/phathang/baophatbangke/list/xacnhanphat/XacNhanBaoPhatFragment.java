@@ -550,7 +550,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showImage(String file) {
-        mFile += file;
+        if (mFile.equals("")) {
+            mFile = file;
+        } else {
+            mFile += ",";
+            mFile += file;
+        }
     }
 
     @Override
