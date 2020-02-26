@@ -6,6 +6,10 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,10 +17,12 @@ import androidx.annotation.Nullable;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.request.vietmap.Geometry;
 import com.ems.dingdong.model.request.vietmap.MathchedRoute;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.views.CustomTextView;
 import com.google.gson.Gson;
 import com.mapbox.android.core.location.LocationEngine;
@@ -32,6 +38,8 @@ import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.utils.PolylineUtils;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
@@ -44,7 +52,6 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.ColorUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +64,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
@@ -79,12 +87,18 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
     public Location mLocation;
+
+//    MarkerViewManager markerViewManager;
+//    MarkerView markerView;
+    LatLng mLatLng;
+
+
+
     private TimDuongDiFragment.MainActivityLocationCallback callback = new TimDuongDiFragment.MainActivityLocationCallback(this);
 
     public static TimDuongDiFragment getInstance() {
         return new TimDuongDiFragment();
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -99,6 +113,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         addressListModel = mPresenter.getAddressListModel();
 
         tv_address_to.setText(addressListModel.getLabel());
+        mLatLng = new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude());
     }
 
     @Override
@@ -125,7 +140,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         this.mapboxMap = mapboxMap;
 
         //mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"));
-        mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"),
+        mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
@@ -133,6 +148,9 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 
                     }
                 });
+
+//        markerViewManager = new MarkerViewManager(mapView, mapboxMap);
+
     }
 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
@@ -189,6 +207,15 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         locationEngine.getLastLocation(callback);
     }
 
+
+    @OnClick({R.id.img_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+        }
+    }
     @Override
     public void showListSuccess(Object object) {
         // new DrawGeoJson(TimDuongDiFragment.this).execute();
@@ -233,6 +260,12 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 
                     mathchedRoute.setType("FeatureCollection");
                     mathchedRoute.setFeatures(features);
+
+
+                    List<Double> endPoint = new ArrayList<>();
+                    JSONArray element = coordinates.getJSONArray(coordinates.length() - 1);
+
+
 
                     new DrawGeoJson(TimDuongDiFragment.this, mathchedRoute).execute();
                 }
@@ -382,19 +415,30 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         if (features != null && features.size() > 0) {
             Feature feature = features.get(0);
             drawBeforeSimplify(feature);
-            drawSimplify(feature);
+//            drawSimplify(feature);
         }
     }
 
     private void drawBeforeSimplify(@NonNull Feature lineStringFeature) {
-        addLine("rawLine", lineStringFeature, "#3bb2d0");
+        List<Point> points = ((LineString) Objects.requireNonNull(lineStringFeature.geometry())).coordinates();
+        Point point = points.get(points.size() - 1);
+
+//        View customView = LayoutInflater.from(getContext()).inflate(
+//                R.layout.marker_view_bubble, null);
+//        customView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        markerView = new MarkerView(new LatLng(point.latitude(), point.longitude()), customView);
+//        markerViewManager.addMarker(markerView);
+
+        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude(), point.longitude())));
+
+        addLine("rawLine", lineStringFeature, "#1E90FF");
     }
 
     private void drawSimplify(@NonNull Feature feature) {
         List<Point> points = ((LineString) Objects.requireNonNull(feature.geometry())).coordinates();
 
         List<Point> after = PolylineUtils.simplify(points, 0.001);
-        addLine("simplifiedLine", Feature.fromGeometry(LineString.fromLngLats(after)), "#3bb2d0");
+        addLine("simplifiedLine", Feature.fromGeometry(LineString.fromLngLats(after)), "#1E90FF");
     }
 
     private void addLine(String layerId, Feature feature, String lineColorHex) {

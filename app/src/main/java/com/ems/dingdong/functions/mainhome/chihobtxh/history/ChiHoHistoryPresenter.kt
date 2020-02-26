@@ -33,10 +33,10 @@ class ChiHoHistoryPresenter(containerView: ContainerView) : Presenter<ChiHoHisto
         mInteractor.getHistoryPaymentSeaBank(mobileNumber, fromDate, toDate, object : CommonCallback<SeaBankHistoryPaymentResponse>(mContainerView as Activity) {
             override fun onSuccess(call: Call<SeaBankHistoryPaymentResponse>, response: Response<SeaBankHistoryPaymentResponse>) {
                 super.onSuccess(call, response)
-                if ("00" == response.body().errorCode) {
-                    mView.showResponseSuccess(response.body().data!!)
+                if ("00" == response.body()!!.errorCode) {
+                    mView.showResponseSuccess(response.body()!!.data!!)
                 } else {
-                    mView.showAlertDialog(response.body().message)
+                    mView.showAlertDialog(response.body()!!.message)
                 }
             }
 

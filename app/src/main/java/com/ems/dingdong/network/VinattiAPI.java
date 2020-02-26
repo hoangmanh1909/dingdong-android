@@ -350,12 +350,6 @@ public interface VinattiAPI {
     @POST("api/VietMap/Update")
     Call<SimpleResult> vietmapUpdate(@Body UpdateRequest taskRequest);
 
-    @GET("api/VietMap/Search")
-    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
-
-    @POST("api/VietMap/Route")
-    Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
-
     @FormUrlEncoded
     @POST("api/Statistic/LadingStatusGeneral")
     Call<StatisticDeliveryGeneralResult> getLadingStatusGeneral(@Field("PostmanId") String postmanID,
@@ -373,4 +367,11 @@ public interface VinattiAPI {
                                              @Field("ToDate") String toDate,
                                              @Field("LadingType") int ladingType,
                                              @Field("RouteCode") String routeCode);
+
+    @GET("api/VietMap/Search")
+    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
+
+    @POST("api/VietMap/Route")
+    Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
+
 }

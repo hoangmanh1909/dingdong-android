@@ -371,7 +371,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void vietmapSearch(String address) {
-        address = "cầu Long biên, Hà Nội";
+//        address = "cầu Long biên, Hà Nội";
         mInteractor.vietmapSearch(address, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {

@@ -34,12 +34,12 @@ class CheckReferencePresenter(containerView: ContainerView) : Presenter<CheckRef
             override fun onSuccess(call: Call<BankAccountNumberResponse>, response: Response<BankAccountNumberResponse>) {
                 super.onSuccess(call, response)
                 mView.hideProgress()
-                if (response.body().errorCode == "00") {
+                if (response.body()?.errorCode == "00") {
                     mView.clearText()
-                    InquiryChiHoPresenter(mContainerView).setDataBankAccountNumber(response.body().data).pushView()
+                    InquiryChiHoPresenter(mContainerView).setDataBankAccountNumber(response.body()?.data).pushView()
 
                 } else {
-                    mView.showAlertDialog(response.body().message)
+                    mView.showAlertDialog(response.body()?.message)
                 }
             }
 

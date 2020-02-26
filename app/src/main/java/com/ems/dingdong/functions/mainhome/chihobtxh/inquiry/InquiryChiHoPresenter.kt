@@ -44,10 +44,10 @@ class InquiryChiHoPresenter(containerView: ContainerView) : Presenter<InquiryChi
         mInteractor.seaBankInquiry(seaBankInquiryRequest, object : CommonCallback<SeaBankInquiryResponse>(mContainerView as Activity) {
             override fun onSuccess(call: Call<SeaBankInquiryResponse>, response: Response<SeaBankInquiryResponse>) {
                 super.onSuccess(call, response)
-                if ("00" == response.body().errorCode) {
-                    PaymentChiHoBtxhPresenter(mContainerView).setSeaBankInquiryModel(response.body().data!!).pushView()
+                if ("00" == response.body()!!.errorCode) {
+                    PaymentChiHoBtxhPresenter(mContainerView).setSeaBankInquiryModel(response.body()!!.data!!).pushView()
                 } else {
-                    mView.showAlertDialog(response.body().message)
+                    mView.showAlertDialog(response.body()!!.message)
                 }
             }
 

@@ -108,7 +108,7 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
         this.mapboxMap = mapboxMap;
 
         //mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"));
-        mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"),
+        mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
