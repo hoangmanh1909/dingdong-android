@@ -95,8 +95,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mTuiSo = "0";
     String mFromDate = "";
     String mToDate = "";
-    String mPhone = "";
-    boolean isReturnedFromScanDialog = false;
+    private String mPhone = "";
+    private boolean isReturnedFromXacNhanBaoPhat = false;
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -226,6 +226,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
 
         }
+        initSearch();
     }
 
     private void showConfirmSaveMobile(final String phone, String parcelCode) {
@@ -251,14 +252,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 }).show();
     }
 
-    private void refreshSearch() {
-        if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-            isLoading = true;
-            String toDate = DateTimeUtils.calculateDay(-10);
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, toDate, mShiftID, mChuyenThu, mTuiSo, routeInfo.getRouteCode());
-        }
-    }
-
     private void showViewDetail(DeliveryPostman baoPhatBd) {
         mPresenter.showDetailView(baoPhatBd);
     }
@@ -279,7 +272,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
                 @Override
                 public void onResponse(String fromDate, String shiftID, String shiftName, String chuyenThu, String tuiSo) {
-                    isReturnedFromScanDialog = false;
                     mDate = fromDate;
                     mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
                     mShiftID = shiftID;
@@ -299,8 +291,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void onDisplay() {
         super.onDisplay();
         cbPickAll.setChecked(false);
-        if (!isReturnedFromScanDialog) {
-            mList.clear();
+        if (isReturnedFromXacNhanBaoPhat) {
+            isReturnedFromXacNhanBaoPhat = false;
             initSearch();
         }
     }
@@ -321,7 +313,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 mPresenter.showBarcode(v -> {
                     edtSearch.setText(v);
                     edtSearch.setSelected(false);
-                    isReturnedFromScanDialog = true;
                 });
                 break;
             case R.id.img_send:
@@ -351,6 +342,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
             return;
         } else {
+            isReturnedFromXacNhanBaoPhat = true;
             mPresenter.showConfirmDelivery(commonObjects);
         }
     }
@@ -394,6 +386,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
+        mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
     }
 

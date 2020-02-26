@@ -22,13 +22,10 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
-    List<CommonObject> commonObjects;
+public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter<CommonObject, BaoPhatOfflineAdapter.HolderView> {
 
     public BaoPhatOfflineAdapter(Context context, List<CommonObject> items) {
         super(context, items);
-
-        commonObjects = items;
     }
 
     @Override
@@ -38,7 +35,7 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
 
     public List<CommonObject> getItemsSelected() {
         List<CommonObject> commonObjectsSelected = new ArrayList<>();
-        for (CommonObject item : commonObjects) {
+        for (CommonObject item : mItems) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);
             }
@@ -46,7 +43,7 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
         return commonObjectsSelected;
     }
 
-    class HolderView extends BaseViewHolder {
+    class HolderView extends BaseViewHolder<CommonObject> {
 
         @BindView(R.id.tv_parcelCode)
         CustomBoldTextView tvParcelCode;
@@ -73,11 +70,11 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter {
         }
 
         public CommonObject getItem(int position) {
-            return commonObjects.get(position);
+            return mItems.get(position);
         }
 
         @Override
-        public void bindView(Object model, int position) {
+        public void bindView(CommonObject model, int position) {
             CommonObject item = (CommonObject) model;
             tvParcelCode.setText(item.getParcelCode());
             cbSelected.setChecked(item.isSelected());

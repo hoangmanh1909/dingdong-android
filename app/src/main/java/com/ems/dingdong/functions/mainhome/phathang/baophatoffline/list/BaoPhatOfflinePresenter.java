@@ -2,8 +2,6 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -14,7 +12,6 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.detail.BaoPha
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SimpleResult;
@@ -26,6 +23,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -179,8 +177,50 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     }
 
     @Override
+    public void getLocalRecord(String fromDate, String toDate) {
+        List<CommonObject> list = new ArrayList<>();
+        Date from = DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        Date to = DateTimeUtils.convertStringToDate(toDate, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<CommonObject> results;
+        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
+        } else {
+            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
+        }
+
+        if (results.size() > 0) {
+            for (CommonObject item : results) {
+                CommonObject itemReal = realm.copyFromRealm(item);
+                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getCreateDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                if(compareDate.after(from) && compareDate.before(to)) {
+                    list.add(itemReal);
+                }
+            }
+        } else {
+            mView.showError("");
+        }
+        mView.showListFromSearchDialog(list);
+    }
+
+    @Override
+    public void removeOfflineItem(String parcelCode) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+        if (result != null) {
+            realm.beginTransaction();
+            result.deleteAllFromRealm();
+            realm.commitTransaction();
+            realm.close();
+        } else {
+            mView.showError("");
+        }
+    }
+
+    @Override
     public void submitToPNS(List<CommonObject> commonObjects) {
-        String postmanID =  userInfo.getiD();
+        String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
 
