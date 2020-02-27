@@ -193,8 +193,8 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         if (results.size() > 0) {
             for (CommonObject item : results) {
                 CommonObject itemReal = realm.copyFromRealm(item);
-                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getCreateDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                if(compareDate.after(from) && compareDate.before(to)) {
+                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                if (compareDate.compareTo(from) >= 0 && compareDate.compareTo(to) <= 0) {
                     list.add(itemReal);
                 }
             }
