@@ -145,6 +145,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomBoldTextView tv_code;
         @BindView(R.id.img_ContactPhone)
         public ImageView img_ContactPhone;
+        @BindView(R.id.img_map)
+        public ImageView img_map;
         @BindView(R.id.tv_sender)
         public CustomTextView tv_sender;
         @BindView(R.id.tv_receiver)
@@ -165,6 +167,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView gtgt;
         @BindView(R.id.tv_info)
         public CustomTextView tvInfo;
+
 
         public HolderView(View itemView) {
             super(itemView);

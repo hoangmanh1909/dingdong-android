@@ -57,6 +57,6 @@ public class XacMinhDiaChiPresenter extends Presenter<XacMinhDiaChiContract.View
 
     @Override
     public void showAddressList(Object object) {
-        new AddressListPresenter(mContainerView).setObject(object).pushView();
+        new AddressListPresenter(mContainerView).setObject(object, 1).pushView();
     }
 }

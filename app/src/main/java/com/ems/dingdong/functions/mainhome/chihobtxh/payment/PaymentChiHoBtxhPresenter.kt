@@ -39,11 +39,11 @@ class PaymentChiHoBtxhPresenter(containerView: ContainerView) : Presenter<Paymen
         mInteractor.getIdentifyCation(object : CommonCallback<IdentifyCationResponse>(mContainerView as Activity) {
             override fun onSuccess(call: Call<IdentifyCationResponse>, response: Response<IdentifyCationResponse>) {
                 super.onSuccess(call, response)
-                if ("00" == response.body().errorCode) {
-                    mList = response.body().data
+                if ("00" == response.body()!!.errorCode) {
+                    mList = response.body()!!.data
 
                 } else {
-                    mView.showAlertDialog(response.body().message)
+                    mView.showAlertDialog(response.body()!!.message)
                 }
             }
 

@@ -4,12 +4,15 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.address.AddressFragment;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiPresenter;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiInteractor;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.model.AddressListModel;
 
 public class AddressListPresenter extends Presenter<AddressListContract.View, AddressListContract.Interactor>
         implements AddressListContract.Presenter {
 
     Object object;
+    int mType;
 
     public AddressListPresenter(ContainerView containerView) {
         super(containerView);
@@ -20,9 +23,9 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
     }
 
-    public AddressListPresenter setObject(Object object)
-    {
+    public AddressListPresenter setObject(Object object, int type) {
         this.object = object;
+        this.mType = type;
         return this;
     }
 
@@ -32,7 +35,11 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
     @Override
     public void showAddressDetail(AddressListModel addressListModel) {
-        new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
+        if (mType == 1) {
+            new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
+        } else {
+            new TimDuongDiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
+        }
     }
 
     @Override

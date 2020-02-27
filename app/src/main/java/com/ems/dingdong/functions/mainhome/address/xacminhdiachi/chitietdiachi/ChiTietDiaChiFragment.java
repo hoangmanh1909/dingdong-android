@@ -1,16 +1,22 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi;
 
 import android.annotation.SuppressLint;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -29,7 +35,14 @@ import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.geocoding.v5.GeocodingCriteria;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
+import com.mapbox.core.exceptions.ServicesException;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -42,18 +55,32 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerView;
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager;
+import com.mapbox.mapboxsdk.style.layers.Layer;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.mapbox.mapboxsdk.style.layers.Property.NONE;
+import static com.mapbox.mapboxsdk.style.layers.Property.VISIBLE;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
+
 
 public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Presenter>
         implements ChiTietDiaChiContract.View, OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener {
 
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
     @BindView(R.id.mapView)
     MapView mapView;
 
@@ -77,6 +104,9 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     CustomMediumTextView tv_update;
     @BindView(R.id.tv_verify)
     CustomMediumTextView tv_verify;
+    @BindView(R.id.select_location_button)
+    Button selectLocationButton;
+
 
     UserInfo userInfo;
     AddressListModel addressListModel;
@@ -84,9 +114,11 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     public MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
     private Location mLocation;
-    MarkerViewManager markerViewManager;
-    MarkerView markerView;
+    private ImageView hoveringMarker;
+    private Layer droppedMarkerLayer;
+
     LatLng mLatLng;
+    private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
 
     public static ChiTietDiaChiFragment getInstance() {
         return new ChiTietDiaChiFragment();
@@ -111,6 +143,15 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     @Override
     public void initLayout() {
         super.initLayout();
+
+
+        scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        scrollView.setFocusable(true);
+        scrollView.setFocusableInTouchMode(true);
+        scrollView.setOnTouchListener((v, event) -> {
+            v.requestFocusFromTouch();
+            return false;
+        });
 
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -137,7 +178,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 //        edt_region.setEnabled(false);
 //        edt_county.setEnabled(false);
 
-        mLatLng = new LatLng(addressListModel.getLatitude(),addressListModel.getLongitude());
+        mLatLng = new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude());
 
     }
 
@@ -160,8 +201,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         mPresenter.vietmapVerify(addressListModel.getId(), userInfo.getiD(), addressListModel.getLayer());
     }
 
-    private void update()
-    {
+    private void update() {
 
         Data data = new Data();
         CenterPoint centerPoint = new CenterPoint();
@@ -182,6 +222,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
         mPresenter.vietmapUpdate(request);
     }
+
     @Override
     public void showMessageRequest(String message) {
         if (getActivity() != null) {
@@ -213,28 +254,156 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         this.mapboxMap = mapboxMap;
         this.mapboxMap.addOnMapClickListener(this);
 
-        mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"),
+        mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
+
+                        hoveringMarker = new ImageView(getContext());
+                        hoveringMarker.setImageResource(R.drawable.mapbox_marker_icon_default);
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+                        hoveringMarker.setLayoutParams(params);
+                        mapView.addView(hoveringMarker);
+
+// Initialize, but don't show, a SymbolLayer for the marker icon which will represent a selected location.
+                        initDroppedMarker(style);
+
+// Button for user to drop marker or to pick marker back up.
+                        selectLocationButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (hoveringMarker.getVisibility() == View.VISIBLE) {
+
+// Use the map target's coordinates to make a reverse geocoding search
+                                    final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
+                                    mLatLng = mapboxMap.getCameraPosition().target;
+// Hide the hovering red hovering ImageView marker
+                                    hoveringMarker.setVisibility(View.INVISIBLE);
+
+// Transform the appearance of the button to become the cancel button
+                                    selectLocationButton.setBackgroundColor(
+                                            ContextCompat.getColor(getContext(), R.color.colorAccent));
+                                    selectLocationButton.setText("Hủy chọn");
+//
+// Show the SymbolLayer icon to represent the selected map location
+                                    if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
+                                        GeoJsonSource source = style.getSourceAs("dropped-marker-source-id");
+                                        if (source != null) {
+                                            source.setGeoJson(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
+                                        }
+                                        droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
+                                        if (droppedMarkerLayer != null) {
+                                            droppedMarkerLayer.setProperties(visibility(VISIBLE));
+                                        }
+                                    }
+
+// Use the map camera target's coordinates to make a reverse geocoding search
+                                    reverseGeocode(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
+
+                                } else {
+
+// Switch the button appearance back to select a location.
+                                    selectLocationButton.setBackgroundColor(
+                                            ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                                    selectLocationButton.setText("Chọn vị trí");
+
+// Show the red hovering ImageView marker
+                                    hoveringMarker.setVisibility(View.VISIBLE);
+
+// Hide the selected location SymbolLayer
+                                    droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
+                                    if (droppedMarkerLayer != null) {
+                                        droppedMarkerLayer.setProperties(visibility(NONE));
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
 
-        markerViewManager = new MarkerViewManager(mapView, mapboxMap);
 
-        View customView = LayoutInflater.from(getContext()).inflate(
-                R.layout.marker_view_bubble, null);
-        customView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        markerView = new MarkerView(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude()), customView);
-        markerViewManager.addMarker(markerView);
+//        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude())));
 
+//        markerViewManager = new MarkerViewManager(mapView, mapboxMap);
+//
+//        View customView = LayoutInflater.from(getContext()).inflate(
+//                R.layout.marker_view_bubble, null);
+//        customView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        markerView = new MarkerView(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude()), customView);
+//        markerViewManager.addMarker(markerView);
+//
+//        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude())));
+//
         CameraPosition position = new CameraPosition.Builder()
                 .target(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude()))
-                .zoom(15)
+                .zoom(12)
                 .build();
 
         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
+    }
+
+    private void reverseGeocode(final Point point) {
+        try {
+            MapboxGeocoding client = MapboxGeocoding.builder()
+                    .accessToken(getString(R.string.mapbox_access_token))
+                    .query(Point.fromLngLat(point.longitude(), point.latitude()))
+                    .geocodingTypes(GeocodingCriteria.TYPE_ADDRESS)
+                    .build();
+
+            client.enqueueCall(new Callback<GeocodingResponse>() {
+                @Override
+                public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+
+                    if (response.body() != null) {
+                        List<CarmenFeature> results = response.body().features();
+                        if (results.size() > 0) {
+                            CarmenFeature feature = results.get(0);
+
+// If the geocoder returns a result, we take the first in the list and show a Toast with the place name.
+                            mapboxMap.getStyle(new Style.OnStyleLoaded() {
+                                @Override
+                                public void onStyleLoaded(@NonNull Style style) {
+                                    if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
+//                                        Toast.makeText(MainActivity.this,
+//                                                String.format(getString(R.string.location_picker_place_name_result),
+//                                                        feature.placeName()), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                        } else {
+//                            Toast.makeText(LocationPickerActivity.this,
+//                                    getString(R.string.location_picker_dropped_marker_snippet_no_results), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+//                    Timber.e("Geocoding Failure: %s", throwable.getMessage());
+                }
+            });
+        } catch (ServicesException servicesException) {
+//            Timber.e("Error geocoding: %s", servicesException.toString());
+//            servicesException.printStackTrace();
+        }
+    }
+
+    private void initDroppedMarker(@NonNull Style loadedMapStyle) {
+// Add the marker image to map
+        loadedMapStyle.addImage("dropped-icon-image", BitmapFactory.decodeResource(
+                getResources(), R.drawable.mapbox_marker_icon_default));
+        loadedMapStyle.addSource(new GeoJsonSource("dropped-marker-source-id"));
+        loadedMapStyle.addLayer(new SymbolLayer(DROPPED_MARKER_LAYER_ID,
+                "dropped-marker-source-id").withProperties(
+                iconImage("dropped-icon-image"),
+                visibility(NONE),
+                iconAllowOverlap(true),
+                iconIgnorePlacement(true)
+        ));
     }
 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
@@ -278,14 +447,14 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     @Override
     public boolean onMapClick(@NonNull LatLng point) {
-        markerViewManager.removeMarker(markerView);
-        mLatLng = point;
-        View customView = LayoutInflater.from(getContext()).inflate(
-                R.layout.marker_view_bubble, null);
-        customView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        markerView = new MarkerView(new LatLng(point.getLatitude(), point.getLongitude()), customView);
-
-        markerViewManager.addMarker(markerView);
+//        markerViewManager.removeMarker(markerView);
+//        mLatLng = point;
+//        View customView = LayoutInflater.from(getContext()).inflate(
+//                R.layout.marker_view_bubble, null);
+//        customView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        markerView = new MarkerView(new LatLng(point.getLatitude(), point.getLongitude()), customView);
+//
+//        markerViewManager.addMarker(markerView);
         return false;
     }
 
@@ -324,7 +493,6 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         super.onDestroy();
 
         mapView.onDestroy();
-        markerViewManager.onDestroy();
     }
 
     @Override

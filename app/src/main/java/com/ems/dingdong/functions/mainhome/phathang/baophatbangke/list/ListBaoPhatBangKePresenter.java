@@ -9,6 +9,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
@@ -18,6 +19,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -365,6 +367,35 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.hideProgress();
             }
         });
+    }
+
+    @Override
+    public void vietmapSearch(String address) {
+//        address = "cầu Long biên, Hà Nội";
+        mInteractor.vietmapSearch(address, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
+                super.onSuccess(call, response);
+
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showAddressList(response.body().getResponseLocation());
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
+
+            @Override
+            protected void onError(Call<XacMinhDiaChiResult> call, String message) {
+                super.onError(call, message);
+
+                mView.showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void showAddressList(Object object) {
+        new AddressListPresenter(mContainerView).setObject(object,2).pushView();
     }
 
 

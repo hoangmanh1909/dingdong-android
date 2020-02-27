@@ -74,31 +74,33 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
             JSONArray features = data.getJSONArray("features");
 
-            for (int i = 0; i < features.length(); i++) {
-                JSONObject item = features.getJSONObject(i);
-                JSONObject geometry = item.getJSONObject("geometry");
-                JSONObject properties = item.getJSONObject("properties");
-                JSONArray coordinates = geometry.getJSONArray("coordinates");
-                double longitude = coordinates.getDouble(0);
-                double latitude =coordinates.getDouble(1);
+            if(features.length() > 0) {
+                for (int i = 0; i < features.length(); i++) {
+                    JSONObject item = features.getJSONObject(i);
+                    JSONObject geometry = item.getJSONObject("geometry");
+                    JSONObject properties = item.getJSONObject("properties");
+                    JSONArray coordinates = geometry.getJSONArray("coordinates");
+                    double longitude = coordinates.getDouble(0);
+                    double latitude = coordinates.getDouble(1);
 
-                AddressListModel addressListModel = new AddressListModel();
-                addressListModel.setName(properties.optString("name"));
-                addressListModel.setConfidence(Float.parseFloat(properties.optString("confidence")));
-                addressListModel.setCountry(properties.optString("country"));
-                addressListModel.setCounty(properties.optString("county"));
-                addressListModel.setId(properties.optString("id"));
-                addressListModel.setLabel(properties.optString("label"));
-                addressListModel.setLayer(properties.optString("layer"));
-                addressListModel.setLocality(properties.optString("locality"));
-                addressListModel.setRegion(properties.optString("region"));
-                addressListModel.setStreet(properties.optString("street"));
-                addressListModel.setLongitude(longitude);
-                addressListModel.setLatitude(latitude);
-                mListObject.add(addressListModel);
+                    AddressListModel addressListModel = new AddressListModel();
+                    addressListModel.setName(properties.optString("name"));
+                    addressListModel.setConfidence(Float.parseFloat(properties.optString("confidence")));
+                    addressListModel.setCountry(properties.optString("country"));
+                    addressListModel.setCounty(properties.optString("county"));
+                    addressListModel.setId(properties.optString("id"));
+                    addressListModel.setLabel(properties.optString("label"));
+                    addressListModel.setLayer(properties.optString("layer"));
+                    addressListModel.setLocality(properties.optString("locality"));
+                    addressListModel.setRegion(properties.optString("region"));
+                    addressListModel.setStreet(properties.optString("street"));
+                    addressListModel.setLongitude(longitude);
+                    addressListModel.setLatitude(latitude);
+                    mListObject.add(addressListModel);
+                }
+
+                addressListAdapter.notifyDataSetChanged();
             }
-
-            addressListAdapter.notifyDataSetChanged();
 
         } catch (JSONException e) {
             e.printStackTrace();

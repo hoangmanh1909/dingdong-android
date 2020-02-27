@@ -61,13 +61,13 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
         mInteractor.seaBankPayment(mSeaBankPaymentRequest, object : CommonCallback<SimpleResult>(mContainerView as Activity) {
             override fun onSuccess(call: Call<SimpleResult>, response: Response<SimpleResult>) {
                 super.onSuccess(call, response)
-                if ("00" == response.body().errorCode) {
-                    Toast.showToast(mContainerView as Context, response.body().message)
+                if ("00" == response.body()!!.errorCode) {
+                    Toast.showToast(mContainerView as Context, response.body()!!.message)
                     back()
                     back()
                     back()
                 } else {
-                    mView.showAlertDialog(response.body().message)
+                    mView.showAlertDialog(response.body()!!.message)
                 }
             }
 

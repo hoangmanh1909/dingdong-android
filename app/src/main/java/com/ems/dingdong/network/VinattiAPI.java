@@ -37,6 +37,7 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
@@ -366,4 +367,11 @@ public interface VinattiAPI {
                                              @Field("ToDate") String toDate,
                                              @Field("LadingType") int ladingType,
                                              @Field("RouteCode") String routeCode);
+
+    @GET("api/VietMap/Search")
+    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
+
+    @POST("api/VietMap/Route")
+    Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
+
 }
