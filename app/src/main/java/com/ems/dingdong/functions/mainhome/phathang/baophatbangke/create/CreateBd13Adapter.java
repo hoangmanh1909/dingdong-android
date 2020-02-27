@@ -59,6 +59,10 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         return mListFilter;
     }
 
+    public void setListFilter(ArrayList<DeliveryPostman> list) {
+        mListFilter = list;
+    }
+
     public List<DeliveryPostman> getItemsSelected() {
         List<DeliveryPostman> commonObjectsSelected = new ArrayList<>();
         List<DeliveryPostman> items = mListFilter;
@@ -171,7 +175,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         }
 
         public DeliveryPostman getItem(int position) {
-            return mList.get(position);
+            return mListFilter.get(position);
         }
 
         public void bindView(Object model) {
@@ -201,7 +205,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             }
         }
     }
-
 
     public interface FilterDone {
         void getCount(int count, long amount);

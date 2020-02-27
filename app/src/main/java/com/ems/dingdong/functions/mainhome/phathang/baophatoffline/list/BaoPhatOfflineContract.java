@@ -10,7 +10,10 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmResults;
 
 /**
  * The BaoPhatThanhCong Contract
@@ -30,9 +33,13 @@ interface BaoPhatOfflineContract {
        // void showData(CommonObject commonObject);
 
         void showCallSuccess();
+
         void showError(String message);
 
         void showSuccess(String code);
+
+        void showListFromSearchDialog(List<CommonObject> list);
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -46,6 +53,10 @@ interface BaoPhatOfflineContract {
         void callForward(String phone, String parcelCode);
 
         void saveLocal(CommonObject commonObject);
+
+        void getLocalRecord(String fromDate, String toDate);
+
+        void removeOfflineItem(String parcelCode);
 
         void submitToPNS(List<CommonObject> commonObjects);
     }

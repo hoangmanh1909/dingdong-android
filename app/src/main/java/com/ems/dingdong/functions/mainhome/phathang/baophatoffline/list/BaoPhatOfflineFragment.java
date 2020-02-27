@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -15,13 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
-import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -58,6 +59,8 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     CustomTextView tvTitle;
     @BindView(R.id.cb_pick_all)
     CheckBox cbPickAll;
+    @BindView(R.id.layout_item_pick_all)
+    RelativeLayout relativeLayout;
 
     private BaoPhatOfflineAdapter mAdapter;
     private List<CommonObject> mList;
@@ -92,19 +95,22 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
         mAdapter = new BaoPhatOfflineAdapter(getActivity(), mList) {
             @Override
-            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+            public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                HolderView holderView = ((HolderView) holder);
+                HolderView holderView = holder;
 
                 holderView.imgClear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (position < mList.size()) {
+                            CommonObject item = mList.get(position);
+                            mPresenter.removeOfflineItem(item.getCode());
                             mList.remove(position);
                             mAdapter.removeItem(position);
                             mAdapter.notifyItemRemoved(position);
                             loadViewCount();
                         }
+                        showAddAll();
                     }
                 });
 
@@ -188,10 +194,12 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(baoPhat);
             realm.commitTransaction();
+            realm.close();
         } else {
             realm.beginTransaction();
             realm.copyToRealm(baoPhat);
             realm.commitTransaction();
+            realm.close();
         }
     }
 
@@ -205,25 +213,24 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
         } else {
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
-
         }
         mList.clear();
         mAmount = 0;
-        mAdapter.clear();
         if (results.size() > 0) {
             for (CommonObject item : results) {
                 CommonObject itemReal = realm.copyFromRealm(item);
                 mList.add(itemReal);
-                mAdapter.addItem(itemReal);
                 tvCount.setText("Số lượng: " + String.format(" %s", mList.size()));
                 if (org.apache.commons.lang3.math.NumberUtils.isDigits(itemReal.getCollectAmount()))
                     mAmount += Long.parseLong(itemReal.getCollectAmount());
                 tvAmount.setText("Tổng tiền: " + String.format(" %s đ", NumberUtils.formatPriceNumber(mAmount)));
             }
+            mAdapter.setItems(mList);
         } else {
             tvCount.setText("Số lượng: " + String.format(" %s", mList.size()));
             tvAmount.setText("Tổng tiền: " + String.format(" %s đ", NumberUtils.formatPriceNumber(mAmount)));
         }
+        showAddAll();
     }
 
   /*  @Override
@@ -253,14 +260,30 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     @Override
     public void showSuccess(String code) {
         if (code.equals("00")) {
+            showProgress();
             Toast.showToast(getContext(), "Cập nhật dữ liệu thành công");
             for (CommonObject item : mAdapter.getItemsSelected()) {
                 mList.remove(item);
+                mPresenter.removeOfflineItem(item.getCode());
             }
+            showAddAll();
+            mAdapter.setItems(mList);
             mAdapter.notifyDataSetChanged();
+            hideProgress();
         } else {
             Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
         }
+    }
+
+    @Override
+    public void showListFromSearchDialog(List<CommonObject> list) {
+        showProgress();
+        Toast.showToast(getContext(), "Tìm kiếm dữ liệu thành công");
+        mList = list;
+        showAddAll();
+        mAdapter.setItems(mList);
+        mAdapter.notifyDataSetChanged();
+        hideProgress();
     }
 
 
@@ -324,7 +347,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_searchDeliveryOffline, R.id.layout_item_pick_all})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.layout_item_pick_all, R.id.iv_searchDeliveryOffline})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -333,34 +356,11 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             case R.id.img_send:
                 if (mList != null && !mList.isEmpty())
                     submit();
-//                    if (mList.size() > 1) {
-//                        if (TextUtils.isEmpty(Constants.SHIFT)) {
-//                            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
-//                            Utilities.showUIShift(getActivity());
-//                            return;
-//                        }
-//                    showOptionSuccessOrFail();
-//
-//                    } else {
-//                        mPresenter.showDetail(mList.get(0), 0);
-//                    }
                 break;
 
-            case R.id.tv_searchDeliveryOffline:
-
-
+            case R.id.iv_searchDeliveryOffline:
+                showDialog();
                 break;
-//            case R.id.img_search:
-//                String parcelCode = edtParcelcode.getText().toString();
-//                if (TextUtils.isEmpty(parcelCode)) {
-//                    Toast.showToast(getActivity(), "Chưa nhập bưu gửi");
-//                    return;
-//                }
-//                getQuery(parcelCode);
-//                break;
-//            case R.id.img_capture:
-//                scanQr();
-//                break;
             case R.id.layout_item_pick_all:
                 setAllCheckBox();
                 break;
@@ -380,9 +380,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         new EditDayDialog(getActivity(), new OnChooseDay() {
             @Override
             public void onChooseDay(Calendar calFrom, Calendar calTo) {
-//                String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-//                String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-//                mPresenter.getHistory(fromDate, toDate);
+                String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                mPresenter.getLocalRecord(fromDate, toDate);
             }
         }).show();
     }
@@ -405,6 +405,14 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         }
         mAdapter.notifyDataSetChanged();
     }
+
+    private void showAddAll() {
+        if (mList.isEmpty())
+            relativeLayout.setVisibility(View.GONE);
+        else
+            relativeLayout.setVisibility(View.VISIBLE);
+    }
+
 //
 //    private void showOptionSuccessOrFail() {
 //
