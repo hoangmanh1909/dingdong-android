@@ -39,29 +39,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:text="SĐT"
+                        android:text="@string/calling_method"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
-
-                    <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_update_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:padding="@dimen/_5sdp"
-                        android:text="Cập nhật"
-                        android:textColor="@color/color_5f2f75"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/text_size_18sp" />
                 </RelativeLayout>
-
-
-                <com.ems.dingdong.views.CustomEditText
-                    android:id="@+id/edt_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Nhập số điện thoại"
-                    android:textColor="@color/color_5f2f75"
-                    android:textSize="@dimen/text_size_18sp" />
             </LinearLayout>
 
             <View
@@ -75,37 +58,59 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:weightSum="3"
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp">
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_update"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_phone_calling"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_gradient_search"
+                    android:layout_weight="1"
+                    android:background="#5BA558"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Gọi"
+                    android:text="@string/calling"
+                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_close"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_phone_updating"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_red"
+                    android:layout_weight="1"
+                    android:background="	#9C9B0F"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Hủy bỏ"
+                    android:text="Sửa gọi"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_phone_messing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+                    android:background="#81A4C5"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="@string/messaging"
+                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>

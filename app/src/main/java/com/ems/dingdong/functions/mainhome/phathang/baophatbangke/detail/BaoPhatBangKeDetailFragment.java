@@ -11,16 +11,10 @@ import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -30,10 +24,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.callback.SignCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -52,7 +51,6 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
@@ -63,7 +61,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -376,8 +373,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         }
 
                         @Override
-                        public void onUpdateResponse(String phone) {
-                            showConfirmSaveMobile(phone);
+                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                            showConfirmSaveMobile(phone, callback);
                         }
                     });
                     mPhoneConectDialog.show();
@@ -397,11 +394,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 break;
             case R.id.tv_solution:
                 mClickSolution = true;
-                if(mReloadSolution) {
+                if (mReloadSolution) {
                     mReloadSolution = false;
                     loadSolution();
-                }
-                else {
+                } else {
                     showUISolution();
                 }
                 break;
@@ -466,7 +462,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         }
     }
 
-    private void showConfirmSaveMobile(final String phone) {
+    private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -477,7 +473,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         mPresenter.updateMobile(phone);
                         sweetAlertDialog.dismiss();
-
+                        callback.dismissDialog();
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {

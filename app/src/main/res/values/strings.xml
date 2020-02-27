@@ -69,5 +69,9 @@
     <string name="default_amount">Tổng tiền: 0 đ</string>
     <string name="default_quantity">Số lượng: 0</string>
     <string name="total_amount">Tổng tiền:</string>
+    <string name="title_edit_phone_number">Sửa số điện thoại</string>
+    <string name="calling_method">Thực hiện thao tác gọi</string>
+    <string name="calling">Gọi</string>
+    <string name="messaging">Nhắn tin</string>
 
 </resources>

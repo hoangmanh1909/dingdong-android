@@ -12,11 +12,15 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
+import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
@@ -38,15 +42,20 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.Manifest.permission.CALL_PHONE;
 
 public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter> implements ListBaoPhatBangKeContract.View {
 
@@ -141,8 +150,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
 
                     @Override
-                    public void onUpdateResponse(String phone) {
-                        showConfirmSaveMobile(phone, mList.get(position).getMaE());
+                    public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                        showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
                     }
                 }).show());
                 holder.img_map.setOnClickListener(v -> mPresenter.vietmapSearch(mList.get(position).getReciverAddress()));
@@ -199,8 +208,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         initSearch();
     }
 
-    private void showConfirmSaveMobile(final String phone, String parcelCode) {
-        new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+    private void showConfirmSaveMobile(final String phone, String parcelCode, DismissDialogCallback callback) {
+        SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
                 .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
@@ -208,12 +217,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 .setConfirmClickListener(sweetAlertDialog -> {
                     mPresenter.updateMobile(phone, parcelCode);
                     sweetAlertDialog.dismiss();
+                    callback.dismissDialog();
 
                 })
                 .setCancelClickListener(sweetAlertDialog -> {
                     showCallSuccess();
                     sweetAlertDialog.dismiss();
-                }).show();
+                });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
     }
 
     private void showViewDetail(DeliveryPostman baoPhatBd) {
@@ -389,9 +401,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showCallSuccess() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
-        startActivity(intent);
+        if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+            startActivity(intent);
+        }
     }
 
     @Override

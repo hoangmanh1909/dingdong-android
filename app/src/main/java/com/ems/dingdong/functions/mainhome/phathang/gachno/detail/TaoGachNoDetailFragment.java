@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -18,8 +16,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -30,6 +33,7 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -46,8 +50,6 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
-import com.ems.dingdong.utiles.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -286,7 +288,7 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                         }
 
                         @Override
-                        public void onUpdateResponse(String phone) {
+                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
 
                         }
                     }).show();

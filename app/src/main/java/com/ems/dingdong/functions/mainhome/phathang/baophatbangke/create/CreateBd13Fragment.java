@@ -18,6 +18,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CreatebangKeSearchCallback;
 import com.ems.dingdong.callback.CreatedBD13Callback;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.CreateBangKeSearchDialog;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
@@ -164,8 +165,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                             }
 
                             @Override
-                            public void onUpdateResponse(String phone) {
-                                showConfirmSaveMobile(phone, mList.get(position).getMaE());
+                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                                showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
                             }
                         }).show();
                     }
@@ -214,7 +215,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         return check;
     }
 
-    private void showConfirmSaveMobile(final String phone, String parcelCode) {
+    private void showConfirmSaveMobile(final String phone, String parcelCode, DismissDialogCallback callback) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText(getResources().getString(R.string.yes))
                 .setTitleText(getResources().getString(R.string.notification))
@@ -225,6 +226,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         mPresenter.updateMobile(phone, parcelCode);
                         sweetAlertDialog.dismiss();
+                        callback.dismissDialog();
 
                     }
                 })
