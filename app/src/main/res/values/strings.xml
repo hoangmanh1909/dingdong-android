@@ -64,5 +64,10 @@
     <string name="statistic_error_delivery">THỐNG KÊ BÁO PHÁT KHÔNG THÀNH CÔNG</string>
     <string name="statistic_returned_delivery">THỐNG KÊ CHUYỂN HOÀN</string>
     <string name="statistic_continuous_delivery">THỐNG KÊ CHUYỂN TIẾP</string>
+    <string name="cancel_sign">Hủy bỏ</string>
+    <string name="update_sign">Cập nhật</string>
+    <string name="default_amount">Tổng tiền: 0 đ</string>
+    <string name="default_quantity">Số lượng: 0</string>
+    <string name="total_amount">Tổng tiền:</string>
 
 </resources>

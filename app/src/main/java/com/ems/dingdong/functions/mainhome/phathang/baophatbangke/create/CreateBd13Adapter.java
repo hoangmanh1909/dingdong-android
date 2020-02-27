@@ -31,6 +31,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
     private List<DeliveryPostman> mListFilter;
     private List<DeliveryPostman> mList;
+    private Context mContext;
+
     private final int mType;
 
     public CreateBd13Adapter(Context context, int type, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
@@ -38,6 +40,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         mList = items;
         mFilterDone = filterDone;
         mType = type;
+        mContext = context;
     }
 
     @Override
@@ -193,6 +196,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvInfo.setText("Nội dung");
             tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setChecked(item.isSelected());
+            cb_selected.setOnCheckedChangeListener((v1, v2) -> {
+                if (v2) {
+                    linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                } else {
+                    linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                }
+            });
             if (null != item.getVatCode())
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             else {

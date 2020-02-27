@@ -220,13 +220,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             case 2:
                 mPresenter.getBalance();
                 break;
-
             default:
                 removeHeader();
-                break;
-
         }
-        updateUserHeader();
     }
 
     @SuppressLint("SetTextI18n")

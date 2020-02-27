@@ -7,18 +7,18 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.core.base.BaseActivity;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,12 +89,14 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_date_create:
+                Calendar calDate = Calendar.getInstance();
                 new SpinnerDatePickerDialogBuilder()
                         .context(mActivity)
                         .callback(this)
                         .spinnerTheme(R.style.DatePickerSpinner)
                         .showTitle(true)
                         .showDaySpinner(true)
+                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
                         .defaultDate(calCreate.get(Calendar.YEAR), calCreate.get(Calendar.MONTH), calCreate.get(Calendar.DAY_OF_MONTH))
                         .minDate(1979, 0, 1)
                         .build()

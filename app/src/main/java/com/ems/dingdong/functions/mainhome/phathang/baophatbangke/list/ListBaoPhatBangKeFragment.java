@@ -12,14 +12,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
@@ -41,22 +38,16 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * The CommonObject Fragment
- */
 public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter> implements ListBaoPhatBangKeContract.View {
 
     @BindView(R.id.recycler)
@@ -74,7 +65,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @BindView(R.id.cb_pick_all)
     CheckBox cbPickAll;
 
-
     private ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
     private UserInfo mUserInfo;
@@ -82,6 +72,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private RouteInfo routeInfo;
 
     private String mDate;
+    private String mDateFilter;
     private Calendar mCalendar;
     private ArrayList<ReasonInfo> mListReason;
     private String mShiftID = "1";
@@ -119,69 +110,42 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
-        mAdapter = new CreateBd13Adapter(getActivity(), 2, mList, new CreateBd13Adapter.FilterDone() {
-            @Override
-            public void getCount(int count, long amount) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (isLoading) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
-                        tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
-                    }
-                }, 1000);
-
+        mAdapter = new CreateBd13Adapter(getActivity(), 2, mList, (count, amount) -> new Handler().postDelayed(() -> {
+            while (isLoading) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }) {
+            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(count)));
+            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
+        }, 1000)) {
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
-                            showViewDetail(mList.get(position));
-                        } else {
+                holder.itemView.setOnClickListener(v -> {
+                    if (TextUtils.isEmpty(edtSearch.getText())) {
+                        showViewDetail(mList.get(position));
+                    } else {
 //                            showViewDetail(mAdapter.getListFilter().get(position));
-                        }
-                        holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
-                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                        if (holder.getItem(position).isSelected()) {
-                            holder.linearLayout.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
-                        } else {
-                            holder.linearLayout.setBackgroundColor(getResources().getColor(R.color.white));
-                        }
                     }
+                    holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
+                    holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                 });
-                ((HolderView) holder).img_ContactPhone.setOnClickListener(new View.OnClickListener() {
+                holder.img_ContactPhone.setOnClickListener(v -> new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                     @Override
-                    public void onClick(View v) {
-                        new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
-                            @Override
-                            public void onCallResponse(String phone) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone, mList.get(position).getMaE());
-                            }
+                    public void onCallResponse(String phone) {
+                        mPhone = phone;
+                        mPresenter.callForward(phone, mList.get(position).getMaE());
+                    }
 
-                            @Override
-                            public void onUpdateResponse(String phone) {
-                                showConfirmSaveMobile(phone, mList.get(position).getMaE());
-                            }
-                        }).show();
-                    }
-                });
-                ((HolderView) holder).img_map.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mPresenter.vietmapSearch(mList.get(position).getReciverAddress());
+                    public void onUpdateResponse(String phone) {
+                        showConfirmSaveMobile(phone, mList.get(position).getMaE());
                     }
-                });
+                }).show());
+                holder.img_map.setOnClickListener(v -> mPresenter.vietmapSearch(mList.get(position).getReciverAddress()));
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
@@ -241,20 +205,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 .setTitleText("Thông báo")
                 .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
                 .setCancelText("Không")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        mPresenter.updateMobile(phone, parcelCode);
-                        sweetAlertDialog.dismiss();
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    mPresenter.updateMobile(phone, parcelCode);
+                    sweetAlertDialog.dismiss();
 
-                    }
                 })
-                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        showCallSuccess();
-                        sweetAlertDialog.dismiss();
-                    }
+                .setCancelClickListener(sweetAlertDialog -> {
+                    showCallSuccess();
+                    sweetAlertDialog.dismiss();
                 }).show();
     }
 
@@ -275,20 +233,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private void showDialog() {
         if (mPresenter.getType() == 3) {
 
-            new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
-                @Override
-                public void onResponse(String fromDate, String shiftID, String shiftName, String chuyenThu, String tuiSo) {
-                    mDate = fromDate;
-                    mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                    mShiftID = shiftID;
-                    Constants.SHIFT = mShiftID;
-                    mShiftName = shiftName;
-                    mChuyenThu = chuyenThu;
-                    mTuiSo = tuiSo;
-                    mList.clear();
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
+            new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, (fromDate, shiftID, shiftName, chuyenThu, tuiSo) -> {
+                mDateFilter = fromDate;
+                mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                mShiftID = shiftID;
+                Constants.SHIFT = mShiftID;
+                mShiftName = shiftName;
+                mChuyenThu = chuyenThu;
+                mTuiSo = tuiSo;
+                mList.clear();
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
 
-                }
             }).show();
         }
     }
@@ -307,8 +262,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
 //            isLoading = true;
             mList.clear();
-            String toDate = DateTimeUtils.calculateDay(-10);
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
+            if (!TextUtils.isEmpty(mDateFilter)) {
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDateFilter, mDateFilter, mShiftID, "0", "0", routeInfo.getRouteCode());
+            } else {
+                String toDate = DateTimeUtils.calculateDay(-10);
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
+            }
         }
     }
 
@@ -356,8 +315,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mList.clear();
         long amount = 0;
         mAdapter.notifyDataSetChanged();
-        tvCount.setText(String.format(" %s", mList.size()));
-        tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount)));
+        tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(mList.size())));
+        tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
         isLoading = false;
     }
 
@@ -368,13 +327,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
-        tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+        tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(list.size())));
         long totalAmount = 0;
         for (DeliveryPostman i : list) {
             mList.add(i);
             totalAmount = totalAmount + i.getAmount();
         }
-        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
 
         mAdapter.notifyDataSetChanged();
     }
@@ -384,15 +343,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
             mList.clear();
+            tvAmount.setText(getResources().getString(R.string.default_amount));
+            tvCount.setText(getResources().getString(R.string.default_quantity));
+            showErrorToast("Không tìm thấy dữ liệu");
         } else {
             pickAll.setVisibility(View.VISIBLE);
-            tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
+            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(list.size())));
             long totalAmount = 0;
             for (DeliveryPostman i : list) {
                 mList.add(i);
                 totalAmount = totalAmount + i.getAmount();
             }
-            tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
@@ -408,6 +370,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mCountSearch++;
         }
         mList.clear();
+        tvAmount.setText(getResources().getString(R.string.default_amount));
+        tvCount.setText(getResources().getString(R.string.default_quantity));
         pickAll.setVisibility(View.GONE);
         mAdapter.notifyDataSetChanged();
     }

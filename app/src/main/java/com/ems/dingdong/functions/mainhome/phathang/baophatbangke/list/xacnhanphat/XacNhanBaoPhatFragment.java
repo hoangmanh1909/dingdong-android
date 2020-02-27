@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
+import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.SignDialog;
@@ -51,6 +52,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.View {
 
@@ -109,7 +113,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private ArrayList<ReasonInfo> mListReason;
     private ItemBottomSheetPickerUIFragment pickerUIReason;
-    ReasonInfo mReasonInfo;
+    private ReasonInfo mReasonInfo;
 
     private ArrayList<SolutionInfo> mListSolution;
     private ItemBottomSheetPickerUIFragment pickerUISolution;
@@ -128,10 +132,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private int imgPosition = 1;
     private int mDeliverySuccess = 0;
     private int mDeliveryError = 0;
-    long totalAmount = 0;
+    private long totalAmount = 0;
     private String mFile = "";
 
-    UserInfo userInfo;
+    private UserInfo userInfo;
 
     public static XacNhanBaoPhatFragment getInstance() {
         return new XacNhanBaoPhatFragment();
@@ -322,32 +326,40 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             iv_package_3.setImageURI(picUri);
 
         File file = new File(path_media);
-        Bitmap bitmap = processingBitmap(picUri);
-        if (bitmap != null) {
-
-            if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
-                String path = file.getParent() + File.separator + "Process_" + file.getName();
-                // mSignPosition = false;
-                mPresenter.postImage(path);
-                picUri = Uri.fromFile(new File(path));
-                if (imgPosition == 1)
-                    iv_package_1.setImageURI(picUri);
-                else if (imgPosition == 2)
-                    iv_package_2.setImageURI(picUri);
-                else
-                    iv_package_3.setImageURI(picUri);
-                if (file.exists())
-                    file.delete();
-            } else {
-                mPresenter.postImage(path_media);
-            }
-        } else {
-            mPresenter.postImage(path_media);
-        }
+        Observable.fromCallable(() -> {
+            Uri uri = Uri.fromFile(new File(path_media));
+            return processingBitmap(uri);
+        }).subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.io())
+                .map(bitmap -> saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                isSavedImage -> {
+                    if (isSavedImage) {
+                        String path = file.getParent() + File.separator + "Process_" + file.getName();
+                        // mSignPosition = false;
+                        mPresenter.postImage(path);
+                        if (imgPosition == 1)
+                            iv_package_1.setImageURI(picUri);
+                        else if (imgPosition == 2)
+                            iv_package_2.setImageURI(picUri);
+                        else
+                            iv_package_3.setImageURI(picUri);
+                        if (file.exists())
+                            file.delete();
+                    } else {
+                        mPresenter.postImage(path_media);
+                    }
+                },
+                onError -> {
+                    Logger.e("error save image");
+                }
+        );
     }
 
     public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
                              int quality) {
+        if (bitmap == null)
+            return false;
         if (quality > 100) {
             Log.d("saveImage", "quality cannot be greater that 100");
             return false;
@@ -553,7 +565,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (mFile.equals("")) {
             mFile = file;
         } else {
-            mFile += ",";
+            mFile += ";";
             mFile += file;
         }
     }
