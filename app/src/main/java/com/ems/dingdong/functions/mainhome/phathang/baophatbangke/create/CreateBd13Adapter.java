@@ -195,7 +195,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             } else
                 tvInfo.setText("Nội dung");
             tvIndex.setText(String.format("%s - ", item.getCount()));
-            cb_selected.setChecked(item.isSelected());
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
@@ -203,6 +202,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 }
             });
+            cb_selected.setChecked(item.isSelected());
             if (null != item.getVatCode())
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             else {

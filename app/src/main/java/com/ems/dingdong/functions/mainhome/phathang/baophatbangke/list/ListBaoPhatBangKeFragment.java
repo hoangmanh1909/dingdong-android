@@ -218,6 +218,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mPresenter.updateMobile(phone, parcelCode);
                     sweetAlertDialog.dismiss();
                     callback.dismissDialog();
+                    initSearch();
 
                 })
                 .setCancelClickListener(sweetAlertDialog -> {
@@ -283,10 +284,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search, R.id.img_send, R.id.layout_item_pick_all})
+    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search, R.id.img_send, R.id.layout_item_pick_all, R.id.tv_additional_barcode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
+            case R.id.tv_additional_barcode:
                 mPresenter.showBarcode(v -> {
                     edtSearch.setText(v);
                     edtSearch.setSelected(false);

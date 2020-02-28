@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
@@ -97,35 +96,22 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                HolderView holderView = holder;
 
-                holderView.imgClear.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (position < mList.size()) {
-                            CommonObject item = mList.get(position);
-                            mPresenter.removeOfflineItem(item.getCode());
-                            mList.remove(position);
-                            mAdapter.removeItem(position);
-                            mAdapter.notifyItemRemoved(position);
-                            loadViewCount();
-                        }
-                        showAddAll();
+                holder.imgClear.setOnClickListener(v -> {
+                    if (position < mList.size()) {
+                        CommonObject item = mList.get(position);
+                        mPresenter.removeOfflineItem(item.getCode());
+                        mList.remove(position);
+                        mAdapter.removeItem(position);
+                        mAdapter.notifyItemRemoved(position);
+                        loadViewCount();
                     }
+                    showAddAll();
                 });
 
-                holderView.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        holderView.cbSelected.setChecked(!holderView.getItem(position).isSelected());
-                        holderView.getItem(position).setSelected(!holderView.getItem(position).isSelected());
-                        if (holderView.getItem(position).isSelected()) {
-                            holderView.layoutBpOffline.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
-                        } else {
-                            holderView.layoutBpOffline.setBackgroundColor(getResources().getColor(R.color.white));
-                        }
-                    }
+                holder.itemView.setOnClickListener(v -> {
+                    holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                    holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                 });
 
 //                holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +139,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 //                });
             }
         };
-        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        recycler.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
         EventBus.getDefault().register(this);
 
@@ -161,9 +147,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            int hasReadExternalPermission = getViewContext().checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+                ActivityCompat.requestPermissions(getViewContext(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
         }
     }
@@ -209,7 +195,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         super.onDisplay();
         Realm realm = Realm.getDefaultInstance();
         RealmResults<CommonObject> results;
-        if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
         } else {
             results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
@@ -220,15 +206,15 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             for (CommonObject item : results) {
                 CommonObject itemReal = realm.copyFromRealm(item);
                 mList.add(itemReal);
-                tvCount.setText("Số lượng: " + String.format(" %s", mList.size()));
+                tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
                 if (org.apache.commons.lang3.math.NumberUtils.isDigits(itemReal.getCollectAmount()))
                     mAmount += Long.parseLong(itemReal.getCollectAmount());
-                tvAmount.setText("Tổng tiền: " + String.format(" %s đ", NumberUtils.formatPriceNumber(mAmount)));
+                tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
             }
             mAdapter.setItems(mList);
         } else {
-            tvCount.setText("Số lượng: " + String.format(" %s", mList.size()));
-            tvAmount.setText("Tổng tiền: " + String.format(" %s đ", NumberUtils.formatPriceNumber(mAmount)));
+            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
+            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
         }
         showAddAll();
     }
@@ -254,14 +240,14 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
+        Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
     }
 
     @Override
     public void showSuccess(String code) {
         if (code.equals("00")) {
             showProgress();
-            Toast.showToast(getContext(), "Cập nhật dữ liệu thành công");
+            Toast.showToast(getContext(), getResources().getString(R.string.message_update_successfully_record_from_local_storage));
             for (CommonObject item : mAdapter.getItemsSelected()) {
                 mList.remove(item);
                 mPresenter.removeOfflineItem(item.getCode());
@@ -271,16 +257,23 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             mAdapter.notifyDataSetChanged();
             hideProgress();
         } else {
-            Toast.showToast(getContext(), "Không tìm thấy bưu gửi trên hệ thống");
+            Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
         }
     }
 
     @Override
     public void showListFromSearchDialog(List<CommonObject> list) {
         showProgress();
-        Toast.showToast(getContext(), "Tìm kiếm dữ liệu thành công");
-        mList = list;
-        showAddAll();
+        if (null == list || list.isEmpty()) {
+            Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
+            tvCount.setText(getResources().getString(R.string.default_quantity));
+            tvAmount.setText(getResources().getString(R.string.default_amount));
+            mList.clear();
+        } else {
+            Toast.showToast(getContext(), getResources().getString(R.string.message_found_record_from_local_storage));
+            mList = list;
+            showAddAll();
+        }
         mAdapter.setItems(mList);
         mAdapter.notifyDataSetChanged();
         hideProgress();
@@ -377,13 +370,10 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), new OnChooseDay() {
-            @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                mPresenter.getLocalRecord(fromDate, toDate);
-            }
+        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+            String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mPresenter.getLocalRecord(fromDate, toDate);
         }).show();
     }
 

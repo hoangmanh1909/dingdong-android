@@ -46,7 +46,7 @@ public class PhoneNumberUpdateDialog extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_update:
-                if (TextUtils.isEmpty(phone)) {
+                if (TextUtils.isEmpty(edtPhone.getText())) {
                     Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
                     return;
                 }
@@ -54,7 +54,7 @@ public class PhoneNumberUpdateDialog extends Dialog {
                     Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
                     return;
                 }
-                mDelegate.onUpdateResponse(phone, dismissCallback);
+                mDelegate.onUpdateResponse(edtPhone.getText().toString(), dismissCallback);
                 break;
 
             case R.id.tv_close:

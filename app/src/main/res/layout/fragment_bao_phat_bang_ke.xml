@@ -186,6 +186,18 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:padding="@dimen/dimen_10dp"
             android:src="@drawable/ic_choose_calendar" />
+
+        <ImageView
+            android:id="@+id/tv_additional_barcode"
+            android:layout_width="@dimen/dimen_70dp"
+            android:layout_height="@dimen/dimen_70dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:padding="@dimen/dimen_10dp"
+            android:src="@drawable/ic_barcode" />
+
     </RelativeLayout>
 
 

@@ -23,6 +23,7 @@ import androidx.core.widget.NestedScrollView;
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
@@ -258,26 +259,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void submit() {
         if (mDeliveryType == 2) {
-            String message = "Bạn có chắc chắn muốn ghi nhận phát thành công " + mBaoPhatBangke.size() + " bưu gửi. Tổng tiền:" + NumberUtils.formatPriceNumber(totalAmount);
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setCancelText("Hủy")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            showProgress();
-                            mPresenter.paymentDelivery(mFile, mSign);
-                            sweetAlertDialog.dismiss();
-                        }
+            new ConfirmDialog(getViewContext(), mBaoPhatBangke.size(), totalAmount)
+                    .setOnCancelListener((ConfirmDialog.OnCancelClickListener) confirmDialog -> {
+                        confirmDialog.dismiss();
                     })
-                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                        }
-                    }).show();
+                    .setOnOkListener(confirmDialog -> {
+                        showProgress();
+                        mPresenter.paymentDelivery(mFile, mSign);
+                        confirmDialog.dismiss();
+                    })
+                    .setWarning("Bạn có chắc chắn muốn ghi nhận phát thành công")
+                    .show();
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(tv_reason.getContext(), "Xin vui lòng chọn lý do");

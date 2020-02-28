@@ -400,7 +400,7 @@
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_package_1"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_150dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/bg_white_radius_bottom_common"
@@ -412,7 +412,7 @@
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_package_2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_150dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/bg_white_radius_bottom_common"
@@ -424,7 +424,7 @@
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_package_3"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_150dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/bg_white_radius_bottom_common"

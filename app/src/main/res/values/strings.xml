@@ -73,5 +73,10 @@
     <string name="calling_method">Thực hiện thao tác gọi</string>
     <string name="calling">Gọi</string>
     <string name="messaging">Nhắn tin</string>
+    <string name="message_not_found_record_from_local_storage">Không tìm thấy bưu gửi trên hệ thống</string>
+    <string name="message_found_record_from_local_storage">Tìm kiếm bưu gửi thành công</string>
+    <string name="message_update_successfully_record_from_local_storage">Cập nhật dữ liệu thành công</string>
+    <string name="delivery_succesfully">Báo phát thành công</string>
+    <string name="delivery_not_succesfully">Báo phát thành không công</string>
 
 </resources>
