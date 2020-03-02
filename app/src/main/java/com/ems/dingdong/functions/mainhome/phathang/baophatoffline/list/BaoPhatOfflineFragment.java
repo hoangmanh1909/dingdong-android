@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
@@ -26,6 +27,7 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,6 +70,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     Calendar calDate;
     private int mHour;
     private int mMinute;
+    private int mDeliverySuccess = 0;
+    private int mDeliveryError = 0;
+    private List<CommonObject> itemsSelected;
 
     public static BaoPhatOfflineFragment getInstance() {
         return new BaoPhatOfflineFragment();
@@ -240,14 +245,17 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
+        mDeliveryError = +1;
+        int total = mDeliverySuccess + mDeliveryError;
+        if (total == itemsSelected.size()) {
+            showFinish();
+        }
     }
 
     @Override
     public void showSuccess(String code) {
         if (code.equals("00")) {
             showProgress();
-            Toast.showToast(getContext(), getResources().getString(R.string.message_update_successfully_record_from_local_storage));
             for (CommonObject item : mAdapter.getItemsSelected()) {
                 mList.remove(item);
                 mPresenter.removeOfflineItem(item.getCode());
@@ -255,9 +263,14 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             showAddAll();
             mAdapter.setItems(mList);
             mAdapter.notifyDataSetChanged();
+            mDeliverySuccess += 1;
             hideProgress();
         } else {
-            Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
+            mDeliveryError += 1;
+        }
+        int total = mDeliverySuccess + mDeliveryError;
+        if (total == itemsSelected.size()) {
+            showFinish();
         }
     }
 
@@ -332,11 +345,17 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     private void loadViewCount() {
         tvCount.setText(String.format(" %s", mList.size()));
         mAmount = 0;
-        for (CommonObject commonObject : mList) {
-            if (org.apache.commons.lang3.math.NumberUtils.isDigits(commonObject.getCollectAmount()))
-                mAmount += Long.parseLong(commonObject.getCollectAmount());
-        }
+        mAmount = getTotalAmount(mList);
         tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
+    }
+
+    private long getTotalAmount(List<CommonObject> list) {
+        long totalAmount = 0;
+        for (CommonObject commonObject : list) {
+            if (org.apache.commons.lang3.math.NumberUtils.isDigits(commonObject.getCollectAmount()))
+                totalAmount += Long.parseLong(commonObject.getCollectAmount());
+        }
+        return totalAmount;
     }
 
 
@@ -349,6 +368,8 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             case R.id.img_send:
                 if (mList != null && !mList.isEmpty())
                     submit();
+                else
+                    Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
                 break;
 
             case R.id.iv_searchDeliveryOffline:
@@ -361,9 +382,19 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     public void submit() {
-        List<CommonObject> commonObjects = mAdapter.getItemsSelected();
-        if (commonObjects.size() > 0) {
-            mPresenter.submitToPNS(commonObjects);
+        itemsSelected = mAdapter.getItemsSelected();
+        if (itemsSelected.size() > 0) {
+            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected))
+                    .setOnCancelListener((ConfirmDialog.OnCancelClickListener) confirmDialog -> {
+                        confirmDialog.dismiss();
+                    })
+                    .setOnOkListener(confirmDialog -> {
+                        showProgress();
+                        mPresenter.offlineDeliver(itemsSelected);
+                        confirmDialog.dismiss();
+                    })
+                    .setWarning("Bạn có muốn thực hiện báo phát với:")
+                    .show();
         } else {
             Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
         }
@@ -401,6 +432,20 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             relativeLayout.setVisibility(View.GONE);
         else
             relativeLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showFinish() {
+        hideProgress();
+        if (getActivity() != null) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText("Báo phát offline hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        mPresenter.back();
+                    }).show();
+        }
     }
 
 //

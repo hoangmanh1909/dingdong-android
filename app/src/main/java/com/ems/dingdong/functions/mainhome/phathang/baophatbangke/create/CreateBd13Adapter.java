@@ -193,7 +193,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             if (null != item.getDescription()) {
                 tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
             } else
-                tvInfo.setText("Nội dung");
+                tvInfo.setText("Nội dung: ");
             tvIndex.setText(String.format("%s - ", item.getCount()));
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
@@ -206,7 +206,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             if (null != item.getVatCode())
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             else {
-                gtgt.setText("GTGT:");
+                gtgt.setText("GTGT: ");
             }
             if (item.getStatus().equals("N")) {// gach no khong
                 ivStatus.setVisibility(View.GONE);

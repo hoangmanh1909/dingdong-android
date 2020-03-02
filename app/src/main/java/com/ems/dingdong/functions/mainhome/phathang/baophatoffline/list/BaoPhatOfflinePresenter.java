@@ -16,6 +16,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -219,60 +220,110 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     }
 
     @Override
-    public void submitToPNS(List<CommonObject> commonObjects) {
+    public void offlineDeliver(List<CommonObject> commonObjects) {
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
+        String mobileNumber = userInfo.getMobileNumber();
+        String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
 
         for (CommonObject item : commonObjects) {
+            if (item.getDeliveryType().equals("1")) {
+                String ladingCode = item.getCode();
+                String receiverName = item.getReciverName();
+                String reasonCode = item.getReasonCode();
+                String solutionCode = item.getSolutionCode();
+                String status = "C18";
+                String amount = item.getAmount();
+                String shiftId = item.getShiftId();
 
-            String ladingCode = item.getCode();
-            String deliveryPOCode = deliveryPOSCode;
-            String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
-            String receiverName = item.getReciverName();
-            String reasonCode = item.getReasonCode();
-            String solutionCode = item.getSolutionCode();
-            String status = "C18";
-            String amount = item.getAmount();
-            String shiftId = item.getShiftId();
+                String signature = Utils.SHA256(ladingCode + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
-            String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+                PushToPnsRequest request = new PushToPnsRequest(
+                        postmanID,
+                        ladingCode,
+                        deliveryPOSCode,
+                        deliveryDate,
+                        deliveryTime,
+                        receiverName,
+                        reasonCode,
+                        solutionCode,
+                        status,
+                        "",
+                        "1",
+                        item.getSignatureCapture(),
+                        item.getNote(),
+                        amount,
+                        postmanID,
+                        shiftId,
+                        routeCode,
+                        signature,
+                        item.getImageDelivery());
+                mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        mView.showSuccess(response.body().getErrorCode());
+                    }
 
-            PushToPnsRequest request = new PushToPnsRequest(
-                    postmanID,
-                    ladingCode,
-                    deliveryPOCode,
-                    deliveryDate,
-                    deliveryTime,
-                    receiverName,
-                    reasonCode,
-                    solutionCode,
-                    status,
-                    "",
-                    "",
-                    item.getSignatureCapture(),
-                    item.getNote(),
-                    amount,
-                    "",
-                    shiftId,
-                    routeCode,
-                    signature,
-                    item.getImageDelivery());
-            mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode());
-                }
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.showError(message);
+                    }
+                });
+            } else {
+                String ladingCode = item.getCode();
+                String receiverName = item.getReciverName();
+                String shiftId = item.getShiftId();
+                String reasonCode = item.getReasonCode();
+                String solutionCode = item.getSolutionCode();
+                String status = "C14";
+                String note = "";
+                final String paymentChannel = "1";
+                String deliveryType = "2";
+                String signature = Utils.SHA256(ladingCode + mobileNumber + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+                PaymentDeviveryRequest request = new PaymentDeviveryRequest(
+                        postmanID,
+                        ladingCode,
+                        mobileNumber,
+                        deliveryPOSCode,
+                        deliveryDate,
+                        deliveryTime,
+                        receiverName,
+                        "",
+                        reasonCode,
+                        solutionCode,
+                        status,
+                        paymentChannel,
+                        deliveryType,
+                        item.getSignatureCapture(),
+                        note,
+                        item.getAmount(),
+                        shiftId,
+                        routeCode,
+                        postmanID,
+                        signature,
+                        item.getImageDelivery(),
+                        userInfo.getUserName(),
+                        item.getBatchCode()
+                );
 
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                    mView.showError(message);
-                }
-            });
+                mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        mView.showSuccess(response.body().getErrorCode());
+                    }
 
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.showError(message);
+                    }
+                });
+            }
         }
     }
 //    @Override

@@ -8,12 +8,10 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmResults;
 
 /**
  * The BaoPhatThanhCong Contract
@@ -22,15 +20,18 @@ interface BaoPhatOfflineContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
+
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
         void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+
+        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
-       // void showData(CommonObject commonObject);
+        // void showData(CommonObject commonObject);
 
         void showCallSuccess();
 
@@ -45,11 +46,12 @@ interface BaoPhatOfflineContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void showBarcode(BarCodeCallback barCodeCallback);
 
-       // void searchParcelCodeDelivery(String parcelCode);
+        // void searchParcelCodeDelivery(String parcelCode);
 
         void showDetail(CommonObject commonObject, int position);
 
         void pushViewConfirmAll(List<CommonObject> list);
+
         void callForward(String phone, String parcelCode);
 
         void saveLocal(CommonObject commonObject);
@@ -58,7 +60,7 @@ interface BaoPhatOfflineContract {
 
         void removeOfflineItem(String parcelCode);
 
-        void submitToPNS(List<CommonObject> commonObjects);
+        void offlineDeliver(List<CommonObject> commonObjects);
     }
 }
 

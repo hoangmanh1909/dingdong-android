@@ -3,6 +3,7 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
@@ -15,20 +16,18 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
-import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
-import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
@@ -361,17 +360,25 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Statistic/LadingStatusDetail")
     Call<StatisticDeliveryDetailResult> getLadingStatusDetail(@Field("Type") int type,
-                                             @Field("ServiceCode") String serviceCode,
-                                             @Field("PostmanId") String postmanID,
-                                             @Field("FromDate") String fromDate,
-                                             @Field("ToDate") String toDate,
-                                             @Field("LadingType") int ladingType,
-                                             @Field("RouteCode") String routeCode);
+                                                              @Field("ServiceCode") String serviceCode,
+                                                              @Field("PostmanId") String postmanID,
+                                                              @Field("FromDate") String fromDate,
+                                                              @Field("ToDate") String toDate,
+                                                              @Field("LadingType") int ladingType,
+                                                              @Field("RouteCode") String routeCode);
 
     @GET("api/VietMap/Search")
     Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
 
     @POST("api/VietMap/Route")
     Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
+
+    @FormUrlEncoded
+    @POST("api/Statistic/Payment")
+    Call<StatisticPaymentResult> statisticPayment(@Field("PostmanId") String postmanID,
+                                                  @Field("POCode") String poCode,
+                                                  @Field("PostmanMobileNumber") String phoneNumber,
+                                                  @Field("FromDate") String fromDate,
+                                                  @Field("ToDate") String toDate);
 
 }

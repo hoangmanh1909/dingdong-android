@@ -27,6 +27,7 @@ import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
@@ -486,6 +487,13 @@ public class NetWorkController {
                                              String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
         Call<StatisticDeliveryDetailResult> call = getAPIBuilder().getLadingStatusDetail(type,
                 serviceCode, postmanID, fromDate, toDate, ladingType, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void statisticPayment(String postmanId, String poCode, String phoneNumber,
+                                        String fromDate, String toDate,
+                                        CommonCallback<StatisticPaymentResult> callback) {
+        Call<StatisticPaymentResult> call = getAPIBuilder().statisticPayment(postmanId, poCode, phoneNumber, fromDate, toDate);
         call.enqueue(callback);
     }
 }

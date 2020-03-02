@@ -20,7 +20,7 @@ import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
+import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -227,22 +227,22 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void updateBalance(StatisticDebitGeneralResponse value) {
+    public void updateBalance(StatisticPaymentResponse value) {
         viewTop.setVisibility(View.VISIBLE);
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
         if (value != null) {
-            userInfo.setBalance(String.valueOf(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount())));
-            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
-            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
-            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
+            userInfo.setBalance(String.valueOf(Long.parseLong(value.getCollectAmount())));
+            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getCollectAmount()))));
+            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getPaymentAmount()))));
+            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getDebitAmount()))));
         } else {
             firstHeader.setText(getResources().getString(R.string.employee_balance));
             secondHeader.setText(getResources().getString(R.string.employee_balance_success));
             thirstHeader.setText(getResources().getString(R.string.employee_balance_missing));
         }
+        sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
     }
 
     @SuppressLint("SetTextI18n")

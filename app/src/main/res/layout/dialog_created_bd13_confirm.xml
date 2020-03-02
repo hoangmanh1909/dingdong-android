@@ -179,25 +179,9 @@
                 android:padding="@dimen/dimen_10dp">
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_gradient_search"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_10dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingRight="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Xác nhận"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:background="@drawable/bg_red"
                     android:gravity="center"
@@ -206,6 +190,22 @@
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:text="Hủy bỏ"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_gradient_search"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="Xác nhận"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
