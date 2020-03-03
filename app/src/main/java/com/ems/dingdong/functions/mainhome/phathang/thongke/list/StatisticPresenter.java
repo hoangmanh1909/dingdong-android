@@ -11,6 +11,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 
 import retrofit2.Call;
@@ -52,8 +53,9 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
         }
+        String toDate = DateTimeUtils.convertDateToString(DateTimeUtils.getCurrentDate(DateTimeUtils.SIMPLE_DATE_FORMAT5), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mView.showProgress();
-        mInteractor.searchDeliveryStatistic(fromDate, status, postmanID,shift, routeCode, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchDeliveryStatistic(fromDate, toDate, status, postmanID,shift, routeCode, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);

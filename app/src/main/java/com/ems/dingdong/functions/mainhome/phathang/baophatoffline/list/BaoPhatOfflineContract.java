@@ -37,6 +37,8 @@ interface BaoPhatOfflineContract {
 
         void showError(String message);
 
+        void showErrorFromRealm();
+
         void showSuccess(String code);
 
         void showListFromSearchDialog(List<CommonObject> list);

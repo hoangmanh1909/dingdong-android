@@ -200,7 +200,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 }
             }
         } else {
-            mView.showError("");
+            mView.showErrorFromRealm();
         }
         mView.showListFromSearchDialog(list);
     }
@@ -215,7 +215,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
             realm.commitTransaction();
             realm.close();
         } else {
-            mView.showError("");
+            mView.showErrorFromRealm();
         }
     }
 

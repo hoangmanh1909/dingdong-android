@@ -253,7 +253,13 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     @Override
+    public void showErrorFromRealm() {
+        Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
+    }
+
+    @Override
     public void showSuccess(String code) {
+        hideProgress();
         if (code.equals("00")) {
             showProgress();
             for (CommonObject item : mAdapter.getItemsSelected()) {
@@ -264,13 +270,14 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             mAdapter.setItems(mList);
             mAdapter.notifyDataSetChanged();
             mDeliverySuccess += 1;
-            hideProgress();
         } else {
             mDeliveryError += 1;
         }
         int total = mDeliverySuccess + mDeliveryError;
         if (total == itemsSelected.size()) {
             showFinish();
+            mDeliverySuccess = 0;
+            mDeliveryError = 0;
         }
     }
 
@@ -443,7 +450,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     .setContentText("Báo phát offline hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismiss();
-                        mPresenter.back();
                     }).show();
         }
     }

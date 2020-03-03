@@ -69,6 +69,7 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryStatistic")
     Call<CommonObjectListResult> searchDeliveryStatistic(@Field("FromDate") String fromDate,
+                                                         @Field("ToDate") String toDate,
                                                          @Field("Status") String status,
                                                          @Field("PostmanId") String postmanId,
                                                          @Field("ShiftID") String shift,

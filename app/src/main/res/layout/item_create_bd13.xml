@@ -96,6 +96,13 @@
             </RelativeLayout>
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_new_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_receiver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

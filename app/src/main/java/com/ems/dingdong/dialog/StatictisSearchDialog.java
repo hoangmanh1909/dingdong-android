@@ -33,6 +33,8 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
     @BindView(R.id.tv_shift)
     FormItemTextView tvShift;
     Calendar calCreate;
+    Calendar nowCal;
+
     ArrayList<Item> items = new ArrayList<>();
     private Item mItem;
     private ItemBottomSheetPickerUIFragment pickerUIShift;
@@ -45,6 +47,7 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
         this.calCreate = calendar;
+        nowCal = Calendar.getInstance();
         View view = View.inflate(getContext(), R.layout.dialog_statictis_search, null);
         setContentView(view);
         ButterKnife.bind(this, view);
@@ -81,6 +84,7 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
                         .spinnerTheme(R.style.DatePickerSpinner)
                         .showTitle(true)
                         .showDaySpinner(true)
+                        .maxDate(nowCal.get(Calendar.YEAR), nowCal.get(Calendar.MONTH), nowCal.get(Calendar.DAY_OF_MONTH))
                         .defaultDate(calCreate.get(Calendar.YEAR), calCreate.get(Calendar.MONTH), calCreate.get(Calendar.DAY_OF_MONTH))
                         .minDate(1979, 0, 1)
                         .build()

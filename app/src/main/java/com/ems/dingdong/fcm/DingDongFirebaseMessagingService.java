@@ -11,17 +11,17 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import android.util.Log;
 
+import com.ems.dingdong.R;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.ems.dingdong.R;
 
 import java.util.Map;
 
@@ -49,11 +49,13 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(refreshedToken);
         sendRegistrationToServer(refreshedToken);
     }
+
     private void sendRegistrationToServer(String token) {
 
-        SharedPref sharedPref=new SharedPref(this);
-        sharedPref.putString(Constants.KEY_PUSH_NOTIFICATION,token);
+        SharedPref sharedPref = new SharedPref(this);
+        sharedPref.putString(Constants.KEY_PUSH_NOTIFICATION, token);
     }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -80,36 +82,36 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+//        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
 
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-            long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setPriority(Notification.PRIORITY_HIGH)
-                            .setWhen(System.currentTimeMillis())
-                            .setSmallIcon(R.drawable.ic_notification)
-                            .setContentTitle("Thông báo")
-                            .setContentText(messageBody)
-                            .setAutoCancel(true)
-                            .setVibrate(vibratePattern)
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setWhen(System.currentTimeMillis())
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle("Thông báo")
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setVibrate(vibratePattern)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
-            }
-            if (notificationManager != null)
-                notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
         }
+        if (notificationManager != null)
+            notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+//        }
     }
 
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {

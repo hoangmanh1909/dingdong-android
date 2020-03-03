@@ -170,7 +170,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView gtgt;
         @BindView(R.id.tv_info)
         public CustomTextView tvInfo;
-
+        @BindView(R.id.tv_new_instruction)
+        public CustomTextView tvNewInstruction;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -212,6 +213,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 ivStatus.setVisibility(View.GONE);
             } else {
                 ivStatus.setVisibility(View.VISIBLE);
+            }
+            if (!TextUtils.isEmpty(item.getNewInstruction())) {
+                tvNewInstruction.setVisibility(View.VISIBLE);
+                tvNewInstruction.setText(String.format("Chỉ dẫn phát: %s", item.getNewInstruction()));
+            } else {
+                tvNewInstruction.setText("");
+                tvNewInstruction.setVisibility(View.GONE);
             }
         }
     }

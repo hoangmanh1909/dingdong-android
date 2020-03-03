@@ -135,9 +135,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void searchDeliveryStatistic(String fromDate, String status,
+    public static void searchDeliveryStatistic(String fromDate, String toDate, String status,
                                                String postmanId, String shift, String routeCode, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId, shift, routeCode);
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, toDate, status, postmanId, shift, routeCode);
         call.enqueue(callback);
     }
 

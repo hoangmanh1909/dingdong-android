@@ -15,7 +15,7 @@ import java.util.ArrayList;
 interface StatisticContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchDeliveryStatistic(String fromDate, String status,
+        void searchDeliveryStatistic(String fromDate, String toDate, String status,
                                      String postmanId, String shift, String routeCode, CommonCallback<CommonObjectListResult> callback);
     }
 
