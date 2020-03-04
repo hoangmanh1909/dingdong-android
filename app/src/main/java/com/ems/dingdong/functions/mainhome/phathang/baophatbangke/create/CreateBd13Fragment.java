@@ -122,7 +122,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         }
 
 
-        mAdapter = new CreateBd13Adapter(getActivity(), 1, mList, new CreateBd13Adapter.FilterDone() {
+        mAdapter = new CreateBd13Adapter(getActivity(), CreateBd13Adapter.TypeBD13.CREATE_BD13, mList, new CreateBd13Adapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
                 new Handler().postDelayed(new Runnable() {

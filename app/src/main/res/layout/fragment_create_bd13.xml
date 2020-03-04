@@ -135,6 +135,8 @@
                     android:layout_toRightOf="@+id/img_search"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp"
+                    android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     app:formShowUnderline="false"
                     app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ" />
 

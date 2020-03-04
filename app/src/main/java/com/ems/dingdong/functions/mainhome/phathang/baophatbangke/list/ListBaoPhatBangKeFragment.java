@@ -119,7 +119,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
-        mAdapter = new CreateBd13Adapter(getActivity(), 2, mList, (count, amount) -> new Handler().postDelayed(() -> {
+        mAdapter = new CreateBd13Adapter(getActivity(), CreateBd13Adapter.TypeBD13.LIST_BD13, mList, (count, amount) -> new Handler().postDelayed(() -> {
             while (isLoading) {
                 try {
                     Thread.sleep(1000);
@@ -291,7 +291,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.tv_additional_barcode:
                 mPresenter.showBarcode(v -> {
                     edtSearch.setText(v);
-                    edtSearch.setSelected(false);
                 });
                 break;
             case R.id.img_send:

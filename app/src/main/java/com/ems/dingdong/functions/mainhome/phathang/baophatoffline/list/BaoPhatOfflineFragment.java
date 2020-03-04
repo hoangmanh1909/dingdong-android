@@ -266,6 +266,9 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 mList.remove(item);
                 mPresenter.removeOfflineItem(item.getCode());
             }
+            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
+            mAmount = getTotalAmount(mList);
+            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
             showAddAll();
             mAdapter.setItems(mList);
             mAdapter.notifyDataSetChanged();

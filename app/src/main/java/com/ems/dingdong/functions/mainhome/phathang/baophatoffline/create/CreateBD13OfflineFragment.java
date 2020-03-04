@@ -118,7 +118,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     private String mReasonCode = "";
     private String mSolutionCode = "";
     private String mFile = "";
-    private String mPath = "";
     private String mSign;
     private SolutionInfo mSolutionInfo;
     private ReasonInfo mReasonInfo;
@@ -290,21 +289,21 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 return;
             }
             commonObject = new CommonObject();
-            commonObject.setSolutionName(tv_solution.getText());
-            commonObject.setReasonName(tv_reason.getText());
+            commonObject.setReasonCode(mReasonCode);
+            commonObject.setReasonName(mReasonInfo.getName());
+            commonObject.setSolutionCode(mSolutionCode);
+            commonObject.setSolutionName(mSolutionInfo.getName());
         }
 
         String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
 //            String signature = Utils.SHA256(ladingCode + userInfo.getMobileNumber() + userInfo.getUnitCode() + BuildConfig.PRIVATE_KEY).toUpperCase()
         commonObject.setCode(ladingCode);
-        commonObject.setImageDelivery(mPath);
+        commonObject.setImageDelivery(mFile);
         commonObject.setDeliveryType(String.valueOf(mDeliveryType));
         commonObject.setDeliveryTime(deliveryTime);
         commonObject.setDeliveryDate(deliveryDate);
         commonObject.setSignatureCapture(mSign);
-        commonObject.setImageDelivery("");
-        commonObject.setSignatureCapture("");
         mPresenter.saveLocal(commonObject);
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
@@ -353,7 +352,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 String path = file.getParent() + File.separator + "Process_" + file.getName();
                 // mSignPosition = false;
                 mPresenter.postImage(path);
-                mPath += path + ";";
                 picUri = Uri.fromFile(new File(path));
                 if (imgPosition == 1)
                     iv_package_1.setImageURI(picUri);
@@ -364,16 +362,14 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 if (file.exists())
                     file.delete();
             } else {
-                mPath += path_media + ";";
                 mPresenter.postImage(path_media);
             }
         } else {
-            mPath += path_media + ";";
             mPresenter.postImage(path_media);
         }
     }
 
-    public Bitmap processingBitmap(Uri source) {
+    private Bitmap processingBitmap(Uri source) {
         Bitmap bm1 = null;
         Bitmap newBitmap = null;
         try {
@@ -532,7 +528,12 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
     @Override
     public void showImage(String file) {
-        mFile = file;
+        if (mFile.equals("")) {
+            mFile = file;
+        } else {
+            mFile += ";";
+            mFile += file;
+        }
     }
 
     @Override

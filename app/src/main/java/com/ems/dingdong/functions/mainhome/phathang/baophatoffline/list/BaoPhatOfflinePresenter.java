@@ -237,7 +237,6 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 String status = "C18";
                 String amount = item.getAmount();
                 String shiftId = item.getShiftId();
-
                 String signature = Utils.SHA256(ladingCode + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
                 PushToPnsRequest request = new PushToPnsRequest(
@@ -255,7 +254,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         item.getSignatureCapture(),
                         item.getNote(),
                         amount,
-                        postmanID,
+                        "0",
                         shiftId,
                         routeCode,
                         signature,

@@ -32,15 +32,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
     private List<DeliveryPostman> mListFilter;
     private List<DeliveryPostman> mList;
     private Context mContext;
+    private TypeBD13 mTypeBD13;
 
-    private final int mType;
-
-    public CreateBd13Adapter(Context context, int type, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
+    public CreateBd13Adapter(Context context, TypeBD13 typeBD13, List<DeliveryPostman> items, CreateBd13Adapter.FilterDone filterDone) {
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
-        mType = type;
         mContext = context;
+        mTypeBD13 = typeBD13;
     }
 
     @Override
@@ -221,10 +220,20 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvNewInstruction.setText("");
                 tvNewInstruction.setVisibility(View.GONE);
             }
+            if (mTypeBD13 == TypeBD13.LIST_BD13) {
+                img_map.setVisibility(View.VISIBLE);
+            } else {
+                img_map.setVisibility(View.GONE);
+            }
         }
     }
 
     public interface FilterDone {
         void getCount(int count, long amount);
+    }
+
+    public enum TypeBD13 {
+        CREATE_BD13,
+        LIST_BD13
     }
 }

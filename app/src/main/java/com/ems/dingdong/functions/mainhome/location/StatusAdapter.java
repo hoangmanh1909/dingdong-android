@@ -42,6 +42,8 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         CustomTextView tvReason;
         @BindView(R.id.tv_StatusCode)
         CustomMediumTextView tvStatusCode;
+        @BindView(R.id.tv_StatusTime)
+        CustomTextView tvStatusTime;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -65,10 +67,12 @@ public class StatusAdapter extends RecyclerBaseAdapter {
             }
             tvStatusDateStatusTime.setText(String.format("%s %s", item.getStatusDate(), item.getStatusTime()));
             if (item.getStatusCode().equals("C14")) {
-                tvStatusCode.setText("Thành công");
+                tvStatusCode.setText("Phát thành công");
+
             } else {
-                tvStatusCode.setText("Không thành công");
+                tvStatusCode.setText("Phát không thành công");
             }
+            tvStatusTime.setText(item.getStatusTime());
             tvReason.setText(item.getReasonCode());
         }
     }
