@@ -3,9 +3,7 @@ package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
-import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.AddressListModel;
-import com.ems.dingdong.model.SimpleResult;
 
 public class AddressListContract {
     interface Interactor extends IInteractor<Presenter> {
@@ -21,6 +19,9 @@ public class AddressListContract {
 
         void showAddressDetail(AddressListModel addressListModel);
 
+    }
 
+    public interface OnCloseAuthenAddress {
+        void closeAuthorise();
     }
 }

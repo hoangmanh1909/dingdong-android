@@ -171,6 +171,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvInfo;
         @BindView(R.id.tv_new_instruction)
         public CustomTextView tvNewInstruction;
+        @BindView(R.id.tv_new_receiver_address)
+        public CustomTextView tvNewReceiverAddress;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -224,6 +226,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 img_map.setVisibility(View.VISIBLE);
             } else {
                 img_map.setVisibility(View.GONE);
+            }
+            if (item.getNewReceiverAddress() != null) {
+                tvNewReceiverAddress.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(item.getNewReceiverAddress().getFullAdress()))
+                    tvNewReceiverAddress.setText(String.format("Địa chỉ mới: %s", item.getNewReceiverAddress().getFullAdress()));
+            } else {
+                tvNewReceiverAddress.setVisibility(View.GONE);
+                tvNewReceiverAddress.setText("");
             }
         }
     }

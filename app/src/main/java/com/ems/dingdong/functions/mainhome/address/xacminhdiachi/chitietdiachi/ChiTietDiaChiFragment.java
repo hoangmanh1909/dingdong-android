@@ -107,7 +107,6 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     @BindView(R.id.select_location_button)
     Button selectLocationButton;
 
-
     UserInfo userInfo;
     AddressListModel addressListModel;
 
@@ -164,7 +163,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 //        tv_longitude.setText(Double.toString(addressListModel.getLongitude()));
 //        tv_latitude.setText(Double.toString(addressListModel.getLatitude()));
 
-        edt_confidence.setText(Float.toString(addressListModel.getConfidence()));
+        edt_confidence.setText(addressListModel.getLocality());
         edt_country.setText(addressListModel.getCountry());
         edt_county.setText(addressListModel.getCounty());
         edt_name.setText(addressListModel.getName());
@@ -182,7 +181,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     }
 
-    @OnClick({R.id.img_back, R.id.tv_verify, R.id.tv_update})
+    @OnClick({R.id.img_back, R.id.tv_verify, R.id.tv_update, R.id.img_cancel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -193,6 +192,10 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
                 break;
             case R.id.tv_update:
                 update();
+                break;
+            case R.id.img_cancel:
+                mPresenter.back();
+                mPresenter.backToXacMinhDiaChi();
                 break;
         }
     }
@@ -234,6 +237,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
+                            mPresenter.back();
                         }
                     }).show();
         }
@@ -253,7 +257,8 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         this.mapboxMap.addOnMapClickListener(this);
-
+        this.mapboxMap.getUiSettings().setAttributionEnabled(false);
+        this.mapboxMap.getUiSettings().setLogoEnabled(false);
         mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override

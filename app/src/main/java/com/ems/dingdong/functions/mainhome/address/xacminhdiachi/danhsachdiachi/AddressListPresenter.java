@@ -2,14 +2,12 @@ package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.functions.mainhome.address.AddressFragment;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiPresenter;
-import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiInteractor;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.model.AddressListModel;
 
 public class AddressListPresenter extends Presenter<AddressListContract.View, AddressListContract.Interactor>
-        implements AddressListContract.Presenter {
+        implements AddressListContract.Presenter, AddressListContract.OnCloseAuthenAddress {
 
     Object object;
     int mType;
@@ -36,7 +34,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     @Override
     public void showAddressDetail(AddressListModel addressListModel) {
         if (mType == 1) {
-            new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
+            new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).setOnCloseListener(this).pushView();
         } else {
             new TimDuongDiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
         }
@@ -53,4 +51,8 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     }
 
 
+    @Override
+    public void closeAuthorise() {
+        back();
+    }
 }

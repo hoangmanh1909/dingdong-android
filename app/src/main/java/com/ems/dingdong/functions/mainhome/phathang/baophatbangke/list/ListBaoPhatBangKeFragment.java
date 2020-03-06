@@ -154,7 +154,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
                     }
                 }).show());
-                holder.img_map.setOnClickListener(v -> mPresenter.vietmapSearch(mList.get(position).getReciverAddress()));
+                holder.img_map.setOnClickListener(v -> {
+                    if (null != mList.get(position).getNewReceiverAddress()) {
+                        if (!TextUtils.isEmpty(mList.get(position).getNewReceiverAddress().getFullAdress()))
+                            mPresenter.vietmapSearch(mList.get(position).getNewReceiverAddress().getFullAdress());
+                    } else
+                        mPresenter.vietmapSearch(mList.get(position).getReciverAddress());
+                });
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);

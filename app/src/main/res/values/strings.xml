@@ -80,5 +80,10 @@
     <string name="delivery_not_succesfully">Báo phát thành không công</string>
     <string name="content">Nội dung:</string>
     <string name="confirm">Đồng ý</string>
+    <string name="town">Xã</string>
+    <string name="district">Quận/Huyện</string>
+    <string name="city">Tỉnh/TP</string>
+    <string name="detail_address">Địa chỉ chi tiết</string>
+    <string name="address_name">Tên địa chỉ</string>
 
 </resources>

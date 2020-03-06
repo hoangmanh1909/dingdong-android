@@ -36,6 +36,13 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
+            <ImageView
+                android:id="@+id/img_cancel"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_cancel" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -155,7 +162,7 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Tên địa chỉ"
+                    android:text="@string/address_name"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.form.FormItemEditText
@@ -165,7 +172,7 @@
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Tên địa chỉ"
+                    app:formHint="@string/address_name"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -185,7 +192,7 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Địa chỉ chi tiết"
+                    android:text="@string/detail_address"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.form.FormItemEditText
@@ -195,7 +202,7 @@
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Địa chỉ chi tiết"
+                    app:formHint="@string/detail_address"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -245,7 +252,7 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Tỉnh/TP"
+                    android:text="@string/city"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.form.FormItemEditText
@@ -255,7 +262,7 @@
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Tỉnh/TP"
+                    app:formHint="@string/city"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -275,7 +282,7 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Quận/Huyện"
+                    android:text="@string/district"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.form.FormItemEditText
@@ -285,7 +292,7 @@
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Quận/Huyện"
+                    app:formHint="@string/district"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -300,7 +307,7 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Bán kính (km)"
+                    android:text="@string/town"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.form.FormItemEditText
@@ -310,7 +317,7 @@
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Bán kính"
+                    app:formHint="@string/town"
                     app:formShowUnderline="false" />
             </LinearLayout>
 

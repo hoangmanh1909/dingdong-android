@@ -94,6 +94,9 @@ public class DeliveryPostman {
     @SerializedName("Description")
     @Expose
     private String description;
+    @SerializedName("NewReceiverAddress")
+    @Expose
+    private PointMyVNPost newReceiverAddress;
 
     private boolean selected;
 
@@ -335,5 +338,9 @@ public class DeliveryPostman {
 
     public String getDescription() {
         return description;
+    }
+
+    public PointMyVNPost getNewReceiverAddress() {
+        return newReceiverAddress;
     }
 }
