@@ -263,7 +263,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
-                        mView.showSuccess(response.body().getErrorCode());
+                        mView.showSuccess(response.body().getErrorCode(), ladingCode);
                     }
 
                     @Override
@@ -313,7 +313,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
-                        mView.showSuccess(response.body().getErrorCode());
+                        mView.showSuccess(response.body().getErrorCode(), ladingCode);
                     }
 
                     @Override

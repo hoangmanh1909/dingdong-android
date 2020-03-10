@@ -7,6 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.utiles.Constants;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -57,6 +58,6 @@ public class XacMinhDiaChiPresenter extends Presenter<XacMinhDiaChiContract.View
 
     @Override
     public void showAddressList(Object object) {
-        new AddressListPresenter(mContainerView).setObject(object, 1).pushView();
+        new AddressListPresenter(mContainerView).setObject(object, Constants.TYPE_DETAIL_ADDRESS).pushView();
     }
 }

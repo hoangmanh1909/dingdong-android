@@ -58,4 +58,8 @@ public class StringUtils {
         }
         return finalText;
     }
+
+    public static String getLadingCode(String source) {
+        return source.substring(8, 21);
+    }
 }

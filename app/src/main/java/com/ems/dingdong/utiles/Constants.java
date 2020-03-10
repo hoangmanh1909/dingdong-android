@@ -13,6 +13,7 @@ public class Constants {
     public static final String KEY_ROUTE_INFO = "KEY_ROUTE_INFO";
     public static final String KEY_USER_INFO = "user_info";
     public static final String TYPE_GOM_HANG = "type_gom_hang";
+    public static final String GOM_HANG = "gom hàng";
     public static final String HOTLINE_CALL_SHOW = "02836229988";
     public static final int TYPE_BAO_PHAT_THANH_CONG = 1;
     public static final String KEY_PUSH_NOTIFICATION = "KEY_PUSH_NOTIFICATION";
@@ -62,5 +63,10 @@ public class Constants {
 
     public static final int CONTINUOUS_DELIVERY_CODE = 2;
     public static final int RETURNED_DELIVERY_CODE = 1;
+
+    public static final int TYPE_ROUTE = 2;
+    public static final int TYPE_DETAIL_ADDRESS = 1;
+
+
 
 }

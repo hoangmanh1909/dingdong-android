@@ -55,7 +55,12 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".fcm.GomHangActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".functions.mainhome.chihobtxh.BtxhActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -105,7 +110,12 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name=".fcm.NotificationActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".functions.mainhome.callservice.CallActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"

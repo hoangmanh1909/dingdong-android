@@ -1,6 +1,7 @@
 package com.ems.dingdong.fcm;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,6 +19,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.login.LoginActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -82,8 +85,17 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-//        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent;
+        Bundle bundle = new Bundle();
+        if (messageBody.contains(Constants.GOM_HANG)) {
+            intent = new Intent(this, XacNhanDiaChiActivity.class);
+            intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+        } else {
+            intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+            intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+        }
+        bundle.putString("message", messageBody);
+        intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -107,6 +119,11 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.notification_channel_id),
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
             notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
         }
         if (notificationManager != null)

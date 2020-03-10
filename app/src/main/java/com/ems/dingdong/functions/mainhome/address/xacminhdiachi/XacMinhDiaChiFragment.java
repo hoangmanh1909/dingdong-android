@@ -100,7 +100,7 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
 
     @Override
     public void showError(String mes) {
-        Toast.makeText(getContext(), mes, Toast.LENGTH_LONG);
+        Toast.makeText(getViewContext(), mes, Toast.LENGTH_LONG);
     }
 
     @Override

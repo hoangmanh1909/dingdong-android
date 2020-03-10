@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -36,6 +37,36 @@
                 android:textSize="@dimen/text_size_18sp" />
         </RelativeLayout>
     </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_change_route"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@drawable/bg_radius_search"
+        android:paddingLeft="@dimen/dimen_5dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:visibility="visible">
+
+        <com.ems.dingdong.views.form.FormItemEditText
+            android:id="@+id/edt_search_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/img_search"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            app:formHint="Nhập địa chỉ"
+            app:formShowUnderline="false" />
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_2sdp"
+            android:src="@drawable/ic_search_blue" />
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

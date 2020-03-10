@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -502,6 +503,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showPostman(ArrayList<UserInfo> userInfos) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            userInfos.removeIf(userInfo1 -> userInfo1.getiD().equals(userInfo.getiD()));
+        } else {
+            for (UserInfo user : userInfos) {
+                if (user.getiD().equals(userInfo.getiD())) {
+                    userInfos.remove(user);
+                }
+            }
+        }
         mListPostman = userInfos;
     }
 

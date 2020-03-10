@@ -249,6 +249,8 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         int total = mDeliverySuccess + mDeliveryError;
         if (total == itemsSelected.size()) {
             showFinish();
+            mDeliverySuccess = 0;
+            mDeliveryError = 0;
         }
     }
 
@@ -258,12 +260,20 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     @Override
-    public void showSuccess(String code) {
+    public void showSuccess(String code, String parcelCode) {
         hideProgress();
         if (code.equals("00")) {
             showProgress();
             for (CommonObject item : mAdapter.getItemsSelected()) {
-                mList.remove(item);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    mList.removeIf(itemSent -> itemSent.getParcelCode().equals(parcelCode));
+                } else {
+                    for (CommonObject itemSent : mList) {
+                        if (itemSent.getParcelCode().equals(parcelCode)) {
+                            mList.remove(itemSent);
+                        }
+                    }
+                }
                 mPresenter.removeOfflineItem(item.getCode());
             }
             tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));

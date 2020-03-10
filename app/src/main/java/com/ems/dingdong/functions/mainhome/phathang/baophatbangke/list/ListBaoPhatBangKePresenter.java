@@ -28,6 +28,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +47,14 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         super(containerView);
     }
 
-    int mType;
+    private int mType;
+
+    public ListBaoPhatBangKePresenter setLadingCode(String ladingCode) {
+        this.ladingCode = ladingCode;
+        return this;
+    }
+
+    private String ladingCode;
 
 
     @Override
@@ -142,7 +150,16 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(response.body().getDeliveryPostmens());
+                    ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
+                    int focusedPosition = 0;
+                    if (!TextUtils.isEmpty(ladingCode)) {
+                        for (DeliveryPostman postman : postmanArrayList) {
+                            if (postman.getMaE().equals(ladingCode)) {
+                                focusedPosition = postmanArrayList.indexOf(postman);
+                            }
+                        }
+                    }
+                    mView.showListSuccess(response.body().getDeliveryPostmens(), focusedPosition);
                 } else {
                     mView.showError(response.body().getMessage());
                 }
@@ -395,7 +412,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void showAddressList(Object object) {
-        new AddressListPresenter(mContainerView).setObject(object,2).pushView();
+        new AddressListPresenter(mContainerView).setObject(object,Constants.TYPE_ROUTE).pushView();
     }
 
 

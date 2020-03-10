@@ -60,7 +60,7 @@ interface ListBaoPhatBangKeContract {
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<DeliveryPostman> list);
 
-        void showListSuccess(ArrayList<DeliveryPostman> list);
+        void showListSuccess(ArrayList<DeliveryPostman> list, int focusedPosition);
 
         void showError(String message);
 

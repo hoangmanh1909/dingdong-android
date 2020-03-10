@@ -358,7 +358,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
-    public void showListSuccess(ArrayList<DeliveryPostman> list) {
+    public void showListSuccess(ArrayList<DeliveryPostman> list, int focusedPosition) {
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
             mList.clear();
@@ -377,6 +377,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
+        recycler.smoothScrollToPosition(focusedPosition);
     }
 
     @Override

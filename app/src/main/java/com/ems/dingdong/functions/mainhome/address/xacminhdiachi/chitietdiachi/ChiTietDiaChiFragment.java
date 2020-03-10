@@ -1,18 +1,14 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi;
 
-import android.annotation.SuppressLint;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -29,10 +25,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
-import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.mapbox.android.core.location.LocationEngine;
-import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
@@ -42,7 +35,6 @@ import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.core.exceptions.ServicesException;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -275,54 +267,15 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
 // Initialize, but don't show, a SymbolLayer for the marker icon which will represent a selected location.
                         initDroppedMarker(style);
-
+                        onSelectLocation(style);
 // Button for user to drop marker or to pick marker back up.
                         selectLocationButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (hoveringMarker.getVisibility() == View.VISIBLE) {
-
-// Use the map target's coordinates to make a reverse geocoding search
-                                    final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
-                                    mLatLng = mapboxMap.getCameraPosition().target;
-// Hide the hovering red hovering ImageView marker
-                                    hoveringMarker.setVisibility(View.INVISIBLE);
-
-// Transform the appearance of the button to become the cancel button
-                                    selectLocationButton.setBackgroundColor(
-                                            ContextCompat.getColor(getContext(), R.color.colorAccent));
-                                    selectLocationButton.setText("Hủy chọn");
-//
-// Show the SymbolLayer icon to represent the selected map location
-                                    if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
-                                        GeoJsonSource source = style.getSourceAs("dropped-marker-source-id");
-                                        if (source != null) {
-                                            source.setGeoJson(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
-                                        }
-                                        droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
-                                        if (droppedMarkerLayer != null) {
-                                            droppedMarkerLayer.setProperties(visibility(VISIBLE));
-                                        }
-                                    }
-
-// Use the map camera target's coordinates to make a reverse geocoding search
-                                    reverseGeocode(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
-
+                                    onSelectLocation(style);
                                 } else {
-
-// Switch the button appearance back to select a location.
-                                    selectLocationButton.setBackgroundColor(
-                                            ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                                    selectLocationButton.setText("Chọn vị trí");
-
-// Show the red hovering ImageView marker
-                                    hoveringMarker.setVisibility(View.VISIBLE);
-
-// Hide the selected location SymbolLayer
-                                    droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
-                                    if (droppedMarkerLayer != null) {
-                                        droppedMarkerLayer.setProperties(visibility(NONE));
-                                    }
+                                    onUnSelectLocation(style);
                                 }
                             }
                         });
@@ -504,5 +457,49 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    private void onSelectLocation(Style style) {
+        // Use the map target's coordinates to make a reverse geocoding search
+        final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
+        mLatLng = mapboxMap.getCameraPosition().target;
+// Hide the hovering red hovering ImageView marker
+        hoveringMarker.setVisibility(View.INVISIBLE);
+
+// Transform the appearance of the button to become the cancel button
+        selectLocationButton.setBackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.colorAccent));
+        selectLocationButton.setText("Hủy chọn");
+//
+// Show the SymbolLayer icon to represent the selected map location
+        if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
+            GeoJsonSource source = style.getSourceAs("dropped-marker-source-id");
+            if (source != null) {
+                source.setGeoJson(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
+            }
+            droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
+            if (droppedMarkerLayer != null) {
+                droppedMarkerLayer.setProperties(visibility(VISIBLE));
+            }
+        }
+
+// Use the map camera target's coordinates to make a reverse geocoding search
+        reverseGeocode(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
+    }
+
+    private void onUnSelectLocation(Style style) {
+        // Switch the button appearance back to select a location.
+        selectLocationButton.setBackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        selectLocationButton.setText("Chọn vị trí");
+
+// Show the red hovering ImageView marker
+        hoveringMarker.setVisibility(View.VISIBLE);
+
+// Hide the selected location SymbolLayer
+        droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
+        if (droppedMarkerLayer != null) {
+            droppedMarkerLayer.setProperties(visibility(NONE));
+        }
     }
 }
