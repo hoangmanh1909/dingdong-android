@@ -7,27 +7,34 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 
+import java.util.List;
+
 public interface AddressListContract {
     interface Interactor extends IInteractor<Presenter> {
-        void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback);
+
+        void vietmapSearchByAddress(String address, CommonCallback<XacMinhDiaChiResult> callback);
+
+        void vietmapSearchByPoint(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
 
-        void showAddressList(Object object);
+        void showAddressList(List<AddressListModel> listObject);
 
         void showError(String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
 
-        Object getObject();
-
         void showAddressDetail(AddressListModel addressListModel);
 
         void vietmapSearch(String address);
 
+        void vietmapSearch();
+
         int getType();
+
+        String getAddress();
     }
 
     public interface OnCloseAuthenAddress {

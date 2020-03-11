@@ -67,6 +67,8 @@ public class Constants {
     public static final int TYPE_ROUTE = 2;
     public static final int TYPE_DETAIL_ADDRESS = 1;
 
-
+    public static final int DELIVERY_LIST_TYPE_COD = 100;
+    public static final int DELIVERY_LIST_TYPE_NORMAL = 200;
+    public static final String DELIVERY_LIST_TYPE = "DELIVERY_LIST_TYPE";
 
 }

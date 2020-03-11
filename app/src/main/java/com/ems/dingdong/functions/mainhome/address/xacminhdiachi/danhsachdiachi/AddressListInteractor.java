@@ -12,7 +12,12 @@ public class AddressListInteractor extends Interactor<AddressListContract.Presen
     }
 
     @Override
-    public void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback) {
+    public void vietmapSearchByAddress(String address, CommonCallback<XacMinhDiaChiResult> callback) {
         NetWorkController.vietmapSearch(address, callback);
+    }
+
+    @Override
+    public void vietmapSearchByPoint(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
+        NetWorkController.getAddressByLocation(longitude, latitude, callback);
     }
 }

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
@@ -73,6 +74,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     LinearLayout pickAll;
     @BindView(R.id.cb_pick_all)
     CheckBox cbPickAll;
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
@@ -212,6 +215,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
         }
         initSearch();
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            initSearch();
+        });
     }
 
     private void showConfirmSaveMobile(final String phone, String parcelCode, DismissDialogCallback callback) {
@@ -278,6 +285,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void initSearch() {
+        swipeRefreshLayout.setRefreshing(true);
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
 //            isLoading = true;
             mList.clear();
@@ -340,11 +348,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
-    public void showAddressList(Object object) {
-        mPresenter.showAddressList(object);
-    }
-
-    @Override
     public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
         tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(list.size())));
         long totalAmount = 0;
@@ -358,7 +361,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
-    public void showListSuccess(ArrayList<DeliveryPostman> list, int focusedPosition) {
+    public void showListSuccess(List<DeliveryPostman> list, int focusedPosition) {
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
             mList.clear();
@@ -378,6 +381,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
         recycler.smoothScrollToPosition(focusedPosition);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -394,6 +398,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         tvCount.setText(getResources().getString(R.string.default_quantity));
         pickAll.setVisibility(View.GONE);
         mAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showCallError(String message) {
+        showErrorToast(message);
     }
 
     @Override

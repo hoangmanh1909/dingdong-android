@@ -124,6 +124,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private ArrayList<RouteInfo> mListRoute;
     private ItemBottomSheetPickerUIFragment pickerUIRoute;
     private RouteInfo mRouteInfo;
+    private RouteInfo mCurrentRouteInfo;
 
     private ArrayList<UserInfo> mListPostman;
     private ItemBottomSheetPickerUIFragment pickerUIPostman;
@@ -166,8 +167,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!routeJson.isEmpty()) {
+            mCurrentRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
 
         ll_change_route.setVisibility(LinearLayout.GONE);
@@ -503,12 +508,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showPostman(ArrayList<UserInfo> userInfos) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            userInfos.removeIf(userInfo1 -> userInfo1.getiD().equals(userInfo.getiD()));
-        } else {
-            for (UserInfo user : userInfos) {
-                if (user.getiD().equals(userInfo.getiD())) {
-                    userInfos.remove(user);
+        if (mCurrentRouteInfo.getRouteCode().equals(mRouteInfo.getRouteCode())) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                userInfos.removeIf(userInfo1 -> userInfo1.getiD().equals(userInfo.getiD()));
+            } else {
+                for (UserInfo user : userInfos) {
+                    if (user.getiD().equals(userInfo.getiD())) {
+                        userInfos.remove(user);
+                    }
                 }
             }
         }

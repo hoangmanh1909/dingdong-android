@@ -54,15 +54,16 @@ interface ListBaoPhatBangKeContract {
 
         void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
-        void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<DeliveryPostman> list);
 
-        void showListSuccess(ArrayList<DeliveryPostman> list, int focusedPosition);
+        void showListSuccess(List<DeliveryPostman> list, int focusedPosition);
 
         void showError(String message);
+
+        void showCallError(String message);
 
         void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
 
@@ -71,7 +72,6 @@ interface ListBaoPhatBangKeContract {
         void showCallSuccess();
 
         void showResponseSuccessEmpty();
-        void showAddressList(Object object);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -114,7 +114,6 @@ interface ListBaoPhatBangKeContract {
 
         void vietmapSearch(String address);
 
-        void showAddressList(Object object);
     }
 }
 

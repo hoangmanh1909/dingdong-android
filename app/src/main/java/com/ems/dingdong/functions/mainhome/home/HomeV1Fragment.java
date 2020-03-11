@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.text.TextUtils;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +35,10 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     RecyclerView recycler_delivery;
     @BindView(R.id.recycler_delivery_cod)
     RecyclerView recycler_delivery_cod;
+    @BindView(R.id.cod_delivery)
+    LinearLayout codDelivery;
+    @BindView(R.id.normal_delivery)
+    LinearLayout normalDelivery;
 
     private HomeCollectAdapter homeCollectAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
@@ -48,6 +52,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     public static final String ACTION_HOME_VIEW_CHANGE = "action_home_view_change";
 
     private HomeViewChangeListerner homeViewChangeListerner;
+
     public static HomeV1Fragment getInstance() {
         return new HomeV1Fragment();
     }
@@ -73,11 +78,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
         recycler_delivery.setAdapter(homeDeliveryAdapter);
-
+        normalDelivery.setOnClickListener(v -> mPresenter.showListBd13(Constants.DELIVERY_LIST_TYPE_NORMAL));
         homeDeliveryCODAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryCOD);
 
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_cod);
         recycler_delivery_cod.setAdapter(homeDeliveryCODAdapter);
+        codDelivery.setOnClickListener(v -> mPresenter.showListBd13(Constants.DELIVERY_LIST_TYPE_COD));
     }
 
     @Override

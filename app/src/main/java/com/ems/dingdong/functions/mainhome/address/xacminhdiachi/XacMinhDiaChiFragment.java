@@ -94,16 +94,6 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
     }
 
     @Override
-    public void showListSuccess(Object object) {
-        mPresenter.showAddressList(object);
-    }
-
-    @Override
-    public void showError(String mes) {
-        Toast.makeText(getViewContext(), mes, Toast.LENGTH_LONG);
-    }
-
-    @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         this.mapboxMap.getUiSettings().setAttributionEnabled(false);

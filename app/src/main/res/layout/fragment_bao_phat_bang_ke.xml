@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -32,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:textColor="@color/white"
-                android:text="Bản kê đi phát (BD13)" />
+                android:text="Bản kê đi phát (BD13)"
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/img_send"
@@ -76,10 +75,10 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/img_capture"
                 android:layout_toRightOf="@+id/img_search"
+                android:inputType="textCapCharacters"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                android:textAllCaps="true"
-                android:inputType="textCapCharacters"
                 app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ"
                 app:formShowUnderline="false" />
 
@@ -115,8 +114,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorPrimary"
             android:text="Số tiền"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_14sp" />
     </RelativeLayout>
 
@@ -130,8 +129,8 @@
             android:id="@+id/cb_pick_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:button="@drawable/custom_btn_radio" />
+            android:button="@drawable/custom_btn_radio"
+            android:clickable="false" />
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:layout_width="wrap_content"
@@ -165,19 +164,23 @@
              android:textAllCaps="true"
              android:textColor="@color/white"
              android:textSize="@dimen/text_size_18sp" />-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/layout_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_5dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            android:layout_marginBottom="@dimen/dimen_5dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ImageView
             android:id="@+id/tv_search"
@@ -194,8 +197,8 @@
             android:id="@+id/tv_additional_barcode"
             android:layout_width="@dimen/dimen_70dp"
             android:layout_height="@dimen/dimen_70dp"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:padding="@dimen/dimen_10dp"

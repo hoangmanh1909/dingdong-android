@@ -58,8 +58,4 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
         NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
     }
 
-    @Override
-    public void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback) {
-        NetWorkController.vietmapSearch(address, callback);
-    }
 }

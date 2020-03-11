@@ -19,7 +19,6 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -42,6 +41,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         implements ListBaoPhatBangKeContract.Presenter {
 
     private int mPos;
+
+    private int mDeliveryListType;
 
     public ListBaoPhatBangKePresenter(ContainerView containerView) {
         super(containerView);
@@ -141,6 +142,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return this;
     }
 
+    public ListBaoPhatBangKePresenter setDeliveryListType(int deliveryListType) {
+        mDeliveryListType = deliveryListType;
+        return this;
+    }
+
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String shiftID, String chuyenthu, String tuiso, String routeCode) {
         mView.showProgress();
@@ -159,7 +165,16 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             }
                         }
                     }
-                    mView.showListSuccess(response.body().getDeliveryPostmens(), focusedPosition);
+                    switch (mDeliveryListType) {
+                        case Constants.DELIVERY_LIST_TYPE_NORMAL:
+                            mView.showListSuccess(getNormalList(response.body().getDeliveryPostmens()), focusedPosition);
+                            break;
+                        case Constants.DELIVERY_LIST_TYPE_COD:
+                            mView.showListSuccess(getCodList(response.body().getDeliveryPostmens()), focusedPosition);
+                            break;
+                        default:
+                            mView.showListSuccess(response.body().getDeliveryPostmens(), focusedPosition);
+                    }
                 } else {
                     mView.showError(response.body().getMessage());
                 }
@@ -354,7 +369,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showCallSuccess();
                 } else {
-                    mView.showError(response.body().getMessage());
+                    mView.showCallError(response.body().getMessage());
                 }
             }
 
@@ -362,7 +377,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showError(message);
+                mView.showCallError(message);
             }
         });
 
@@ -388,32 +403,27 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void vietmapSearch(String address) {
-//        address = "cầu Long biên, Hà Nội";
-        mInteractor.vietmapSearch(address, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
-                super.onSuccess(call, response);
-
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showAddressList(response.body().getResponseLocation());
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<XacMinhDiaChiResult> call, String message) {
-                super.onError(call, message);
-
-                mView.showError(message);
-            }
-        });
+        new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
     }
 
-    @Override
-    public void showAddressList(Object object) {
-        new AddressListPresenter(mContainerView).setObject(object,Constants.TYPE_ROUTE).pushView();
+    private List<DeliveryPostman> getCodList(List<DeliveryPostman> list) {
+        List<DeliveryPostman> codList = new ArrayList<>();
+        for(DeliveryPostman item: list) {
+            if(item.getAmount() != 0) {
+                codList.add(item);
+            }
+        }
+        return codList;
     }
 
+    private List<DeliveryPostman> getNormalList(List<DeliveryPostman> list) {
+        List<DeliveryPostman> codList = new ArrayList<>();
+        for(DeliveryPostman item: list) {
+            if(item.getAmount() == 0) {
+                codList.add(item);
+            }
+        }
+        return codList;
+    }
 
 }
