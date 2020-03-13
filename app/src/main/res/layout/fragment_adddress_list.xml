@@ -44,19 +44,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_10dp"
         android:background="@drawable/bg_radius_search"
-        android:paddingLeft="@dimen/dimen_5dp"
-        android:paddingRight="@dimen/dimen_10dp"
+        android:layout_marginLeft="@dimen/dimen_5dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
         android:visibility="visible">
 
-        <com.ems.dingdong.views.form.FormItemEditText
+        <EditText
             android:id="@+id/edt_search_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/img_search"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
-            app:formHint="Nhập địa chỉ"
-            app:formShowUnderline="false" />
+            android:inputType="textMultiLine"
+            android:hint="Nhập địa chỉ"
+            />
 
         <ImageView
             android:id="@+id/img_search"

@@ -34,15 +34,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
-/**
- * The CommonObject Presenter
- */
 public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContract.View, ListBaoPhatBangKeContract.Interactor>
         implements ListBaoPhatBangKeContract.Presenter {
 
     private int mPos;
 
     private int mDeliveryListType;
+
+    private ListDeliveryConstract.OnTitleTabsListener titleTabsListener;
 
     public ListBaoPhatBangKePresenter(ContainerView containerView) {
         super(containerView);
@@ -72,70 +71,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public ListBaoPhatBangKeContract.Interactor onCreateInteractor() {
         return new ListBaoPhatBangKeInteractor(this);
     }
-/*
-    @Override
-    public void searchStatisticCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
-        mView.showProgress();
-        mInteractor.searchStatisticCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getList());
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
-
-    }*/
-
-//    @Override
-//    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso) {
-//        mView.showProgress();
-//        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-//            @Override
-//            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-//                super.onSuccess(call, response);
-//                mView.hideProgress();
-//                if (response.body().getErrorCode().equals("00")) {
-//                    mView.showResponseSuccess(response.body().getList());
-//                } else {
-//                    mView.showError(response.body().getMessage());
-//                    mView.showResponseSuccessEmpty();
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(Call<CommonObjectListResult> call, String message) {
-//                super.onError(call, message);
-//                mView.hideProgress();
-//                mView.showError(message);
-//            }
-//        });
-//    }
-
-//    @Override
-//    public void showDetailView(CommonObject commonObject) {
-//        if (mType == 1) {
-//            new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
-//        } else if (mType == 2) {
-//            new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
-//        } else if (mType == 3) {
-//            new BaoPhatBangKeDetailPresenter(mContainerView)
-//                    .setBaoPhatBangKe(commonObject)
-//                    .setPositionTab(mPos)
-//                    .pushView();
-//        }
-//    }
 
     public ListBaoPhatBangKePresenter setTypeTab(int position) {
         mPos = position;
@@ -144,6 +79,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     public ListBaoPhatBangKePresenter setDeliveryListType(int deliveryListType) {
         mDeliveryListType = deliveryListType;
+        return this;
+    }
+
+    public ListBaoPhatBangKePresenter setOnTitleChangeListener(ListDeliveryConstract.OnTitleTabsListener listener) {
+        titleTabsListener = listener;
         return this;
     }
 
@@ -157,23 +97,29 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
-                    int focusedPosition = 0;
-                    if (!TextUtils.isEmpty(ladingCode)) {
-                        for (DeliveryPostman postman : postmanArrayList) {
-                            if (postman.getMaE().equals(ladingCode)) {
-                                focusedPosition = postmanArrayList.indexOf(postman);
-                            }
-                        }
-                    }
                     switch (mDeliveryListType) {
                         case Constants.DELIVERY_LIST_TYPE_NORMAL:
-                            mView.showListSuccess(getNormalList(response.body().getDeliveryPostmens()), focusedPosition);
+                        case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
+                            mView.showListSuccess(getNormalList(postmanArrayList));
                             break;
+
                         case Constants.DELIVERY_LIST_TYPE_COD:
-                            mView.showListSuccess(getCodList(response.body().getDeliveryPostmens()), focusedPosition);
+                        case Constants.DELIVERY_LIST_TYPE_COD_NEW:
+                            mView.showListSuccess(getCodList(postmanArrayList));
                             break;
+
+                        case Constants.DELIVERY_LIST_TYPE_NORMAL_FEE:
+                        case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW_FEE:
+                            mView.showListSuccess(getNormalFeeList(postmanArrayList));
+                            break;
+
+                        case Constants.DELIVERY_LIST_TYPE_COD_FEE:
+                        case Constants.DELIVERY_LIST_TYPE_COD_NEW_FEE:
+                            mView.showListSuccess(getCodFeeList(postmanArrayList));
+                            break;
+
                         default:
-                            mView.showListSuccess(response.body().getDeliveryPostmens(), focusedPosition);
+                            mView.showListSuccess(postmanArrayList);
                     }
                 } else {
                     mView.showError(response.body().getMessage());
@@ -229,6 +175,21 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return mType;
     }
 
+    @Override
+    public String getLadingCode() {
+        return ladingCode;
+    }
+
+    @Override
+    public int getDeliverType() {
+        return mDeliveryListType;
+    }
+
+    @Override
+    public void setTitleTab(int quantity) {
+        titleTabsListener.setQuantity(quantity, mType);
+    }
+
 
     @Override
     public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String signatureCapture) {
@@ -257,58 +218,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             String solutionCode = solution;
             String status = "C18";
             String ladingPostmanID = item.getiD();
-        /*    if (item.getService().equals("12")) {
-                status = "C14";*/
-        /*        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-                PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
-                        parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
-                        status, "", "", signatureCapture,
-                        note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
-                mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
-                            @Override
-                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                super.onSuccess(call, response);
-                                if (response.body().getErrorCode().equals("00")) {
-                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                } else {
-                                    mView.showError(response.body().getMessage());
-                                }
-                            }
-
-                            @Override
-                            protected void onError(Call<SimpleResult> call, String message) {
-                                super.onError(call, message);
-                                mView.showError(message);
-                            }
-                        }
-                );*/
-            /*     } else {*/
-        /*        if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
-                    status = "C14";
-                    String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-                    PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
-                            parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
-                            status, "", "", signatureCapture,
-                            note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
-                    mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
-                                @Override
-                                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                    super.onSuccess(call, response);
-                                    if (response.body().getErrorCode().equals("00")) {
-                                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                    } else {
-                                        mView.showError(response.body().getMessage());
-                                    }
-                                }
-
-                                @Override
-                                protected void onError(Call<SimpleResult> call, String message) {
-                                    super.onError(call, message);
-                                    mView.showError(message);
-                                }
-                            }
-                    );
-                } else {*/
             String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
             PushToPnsRequest request = new PushToPnsRequest(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
                     solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature, item.getImageDelivery());
@@ -330,8 +239,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             mView.showError(message);
                         }
                     });
-            // }
-            // }
         }
     }
 
@@ -386,17 +293,20 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void updateMobile(String phone, String parcelCode) {
         mView.showProgress();
+        String tPhone = phone;
         mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
+                mView.showSuccessUpdateMobile(tPhone, response.body().getMessage());
             }
 
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
+                mView.showErrorToast(message);
             }
         });
     }
@@ -408,8 +318,28 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     private List<DeliveryPostman> getCodList(List<DeliveryPostman> list) {
         List<DeliveryPostman> codList = new ArrayList<>();
-        for(DeliveryPostman item: list) {
-            if(item.getAmount() != 0) {
+        for (DeliveryPostman item : list) {
+            if (item.getAmount() != 0) {
+                codList.add(item);
+            }
+        }
+        return codList;
+    }
+
+    private List<DeliveryPostman> getNormalFeeList(List<DeliveryPostman> list) {
+        List<DeliveryPostman> codList = new ArrayList<>();
+        for (DeliveryPostman item : list) {
+            if (item.getTotalFee() != 0 && item.getAmount() == 0) {
+                codList.add(item);
+            }
+        }
+        return codList;
+    }
+
+    private List<DeliveryPostman> getCodFeeList(List<DeliveryPostman> list) {
+        List<DeliveryPostman> codList = new ArrayList<>();
+        for (DeliveryPostman item : list) {
+            if (item.getTotalFee() != 0 && item.getAmount() != 0) {
                 codList.add(item);
             }
         }
@@ -418,8 +348,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     private List<DeliveryPostman> getNormalList(List<DeliveryPostman> list) {
         List<DeliveryPostman> codList = new ArrayList<>();
-        for(DeliveryPostman item: list) {
-            if(item.getAmount() == 0) {
+        for (DeliveryPostman item : list) {
+            if (item.getAmount() == 0) {
                 codList.add(item);
             }
         }

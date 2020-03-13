@@ -35,10 +35,6 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     RecyclerView recycler_delivery;
     @BindView(R.id.recycler_delivery_cod)
     RecyclerView recycler_delivery_cod;
-    @BindView(R.id.cod_delivery)
-    LinearLayout codDelivery;
-    @BindView(R.id.normal_delivery)
-    LinearLayout normalDelivery;
 
     private HomeCollectAdapter homeCollectAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
@@ -65,8 +61,6 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     @Override
     public void initLayout() {
         super.initLayout();
-
-        updateHomeView();
         homeViewChangeListerner = new HomeViewChangeListerner();
         getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
         homeCollectAdapter = new HomeCollectAdapter(getContext(), mListCollect);
@@ -75,15 +69,13 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         recycler_collect.setAdapter(homeCollectAdapter);
 
         homeDeliveryAdapter = new HomeDeliveryAdapter(getContext(), mListDelivery);
-
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
         recycler_delivery.setAdapter(homeDeliveryAdapter);
-        normalDelivery.setOnClickListener(v -> mPresenter.showListBd13(Constants.DELIVERY_LIST_TYPE_NORMAL));
         homeDeliveryCODAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryCOD);
 
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_cod);
         recycler_delivery_cod.setAdapter(homeDeliveryCODAdapter);
-        codDelivery.setOnClickListener(v -> mPresenter.showListBd13(Constants.DELIVERY_LIST_TYPE_COD));
+        updateHomeView();
     }
 
     @Override
@@ -91,7 +83,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         super.onResume();
     }
 
-    private void updateHomeView() {
+    public void updateHomeView() {
         SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");

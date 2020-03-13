@@ -718,7 +718,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void showView() {
-        mPhoneConectDialog.updateText();
+        mPhoneConectDialog.updateText("");
     }
 
     @Override

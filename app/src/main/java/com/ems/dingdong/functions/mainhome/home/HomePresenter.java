@@ -102,7 +102,6 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     @Override
     public void showListBd13(int typeListDelivery) {
         Intent intent = new Intent(getViewContext(), ListBaoPhatBangKeActivity.class);
-        intent.putExtra(Constants.TYPE_GOM_HANG, 3);
         intent.putExtra(Constants.DELIVERY_LIST_TYPE, typeListDelivery);
         getViewContext().startActivity(intent);
     }

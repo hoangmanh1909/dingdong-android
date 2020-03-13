@@ -128,7 +128,6 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         }
         if (notificationManager != null)
             notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
-//        }
     }
 
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {

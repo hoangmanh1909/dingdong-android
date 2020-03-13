@@ -40,7 +40,6 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -62,12 +61,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.tv_title)
-    CustomTextView tvTitle;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    @BindView(R.id.tv_count)
-    CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
     @BindView(R.id.layout_item_pick_all)
@@ -100,6 +95,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     String mToDate = "";
     private String mPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
+    private PhoneConectDialog mPhoneConectDialog;
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -130,8 +126,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     e.printStackTrace();
                 }
             }
-            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(count)));
             tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
+            mPresenter.setTitleTab(count);
         }, 1000)) {
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {
@@ -145,18 +141,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                 });
-                holder.img_ContactPhone.setOnClickListener(v -> new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
-                    @Override
-                    public void onCallResponse(String phone) {
-                        mPhone = phone;
-                        mPresenter.callForward(phone, mList.get(position).getMaE());
-                    }
+                holder.img_ContactPhone.setOnClickListener(v -> {
+                    mPhoneConectDialog = new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                        @Override
+                        public void onCallResponse(String phone) {
+                            mPhone = phone;
+                            mPresenter.callForward(phone, mList.get(position).getMaE());
+                        }
 
-                    @Override
-                    public void onUpdateResponse(String phone, DismissDialogCallback callback) {
-                        showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
-                    }
-                }).show());
+                        @Override
+                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                            showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
+                        }
+                    });
+                    mPhoneConectDialog.show();
+                });
                 holder.img_map.setOnClickListener(v -> {
                     if (null != mList.get(position).getNewReceiverAddress()) {
                         if (!TextUtils.isEmpty(mList.get(position).getNewReceiverAddress().getFullAdress()))
@@ -168,6 +167,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
+
         SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -256,28 +256,37 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    private void showDialog() {
-        if (mPresenter.getType() == 3) {
-
-            new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, (fromDate, shiftID, shiftName, chuyenThu, tuiSo) -> {
-                mDateFilter = fromDate;
-                mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                mShiftID = shiftID;
-                Constants.SHIFT = mShiftID;
-                mShiftName = shiftName;
-                mChuyenThu = chuyenThu;
-                mTuiSo = tuiSo;
-                mList.clear();
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
-
-            }).show();
+    @Override
+    public void showSuccessUpdateMobile(String phone, String message) {
+        showSuccessToast(message);
+        if (mPhoneConectDialog != null) {
+            mPhoneConectDialog.updateText(phone);
         }
+    }
+
+    private void showDialog() {
+//        if (mPresenter.getType() == 3) {
+
+        new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, (fromDate, shiftID, shiftName, chuyenThu, tuiSo) -> {
+            mDateFilter = fromDate;
+            mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+            mShiftID = shiftID;
+            Constants.SHIFT = mShiftID;
+            mShiftName = shiftName;
+            mChuyenThu = chuyenThu;
+            mTuiSo = tuiSo;
+            mList.clear();
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
+
+        }).show();
+//        }
     }
 
     @Override
     public void onDisplay() {
         super.onDisplay();
-        cbPickAll.setChecked(false);
+        if (cbPickAll != null)
+            cbPickAll.setChecked(false);
         if (isReturnedFromXacNhanBaoPhat) {
             isReturnedFromXacNhanBaoPhat = false;
             initSearch();
@@ -286,11 +295,23 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void initSearch() {
         swipeRefreshLayout.setRefreshing(true);
-        if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-//            isLoading = true;
+        if (!TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mList.clear();
+            int deliveryType = mPresenter.getDeliverType();
             if (!TextUtils.isEmpty(mDateFilter)) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDateFilter, mDateFilter, mShiftID, "0", "0", routeInfo.getRouteCode());
+            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW_FEE ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW_FEE) {
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
+            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_FEE ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_FEE ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_COD) {
+                String toDate = DateTimeUtils.calculateDay(-10);
+                String fromDate = DateTimeUtils.calculateDay(-1);
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, mShiftID, "0", "0", routeInfo.getRouteCode());
             } else {
                 String toDate = DateTimeUtils.calculateDay(-10);
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
@@ -298,17 +319,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.img_back, R.id.tv_search, R.id.img_send, R.id.layout_item_pick_all, R.id.tv_additional_barcode})
+    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
             case R.id.tv_additional_barcode:
-                mPresenter.showBarcode(v -> {
-                    edtSearch.setText(v);
-                });
-                break;
-            case R.id.img_send:
-                submit();
+                mPresenter.showBarcode(v -> edtSearch.setText(v));
                 break;
             case R.id.tv_search:
                 showDialog();
@@ -316,16 +332,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.btn_confirm_all:
                 submit();
                 break;
-            case R.id.img_back:
-                mPresenter.back();
-                break;
             case R.id.layout_item_pick_all:
                 setAllCheckBox();
                 break;
         }
     }
 
-    private void submit() {
+    public void submit() {
         final List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
         if (commonObjects.isEmpty()) {
             Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
@@ -338,18 +351,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showResponseSuccessEmpty() {
-//        mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
         mAdapter.notifyDataSetChanged();
-        tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(mList.size())));
+        mPresenter.setTitleTab(mList.size());
         tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
         isLoading = false;
     }
 
     @Override
     public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
-        tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(list.size())));
+        mPresenter.setTitleTab(list.size());
         long totalAmount = 0;
         for (DeliveryPostman i : list) {
             mList.add(i);
@@ -361,26 +373,37 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
-    public void showListSuccess(List<DeliveryPostman> list, int focusedPosition) {
+    public void showListSuccess(List<DeliveryPostman> list) {
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
             mList.clear();
             tvAmount.setText(getResources().getString(R.string.default_amount));
-            tvCount.setText(getResources().getString(R.string.default_quantity));
+            mPresenter.setTitleTab(0);
             showErrorToast("Không tìm thấy dữ liệu");
         } else {
             pickAll.setVisibility(View.VISIBLE);
-            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", NumberUtils.formatPriceNumber(list.size())));
             long totalAmount = 0;
-            for (DeliveryPostman i : list) {
-                mList.add(i);
-                totalAmount = totalAmount + i.getAmount();
+            if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
+                for (DeliveryPostman i : list) {
+                    if (i.getStatus().equals("N")) {
+                        mList.add(i);
+                        totalAmount = totalAmount + i.getAmount();
+                    }
+                }
+            } else {
+                for (DeliveryPostman i : list) {
+                    if (i.getStatus().equals("Y")) {
+                        mList.add(i);
+                        totalAmount = totalAmount + i.getAmount();
+                    }
+                }
             }
+            mPresenter.setTitleTab(mList.size());
             tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
-        recycler.smoothScrollToPosition(focusedPosition);
+        recycler.smoothScrollToPosition(getForcusPosition());
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -395,7 +418,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mList.clear();
         tvAmount.setText(getResources().getString(R.string.default_amount));
-        tvCount.setText(getResources().getString(R.string.default_quantity));
+//        tvCount.setText(getResources().getString(R.string.default_quantity));
+        mPresenter.setTitleTab(0);
         pickAll.setVisibility(View.GONE);
         mAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
@@ -459,6 +483,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             cbPickAll.setChecked(true);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    private int getForcusPosition() {
+        int focusedPosition = 0;
+        if (!TextUtils.isEmpty(mPresenter.getLadingCode())) {
+            for (DeliveryPostman postman : mList) {
+                if (postman.getMaE().equals(mPresenter.getLadingCode())) {
+                    focusedPosition = mList.indexOf(postman);
+                }
+            }
+        }
+        return focusedPosition;
     }
 
     public void setSubmitAll() {

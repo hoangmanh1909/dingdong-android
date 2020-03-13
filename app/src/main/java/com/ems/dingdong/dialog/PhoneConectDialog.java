@@ -70,7 +70,7 @@ public class PhoneConectDialog extends Dialog {
         }
     }
 
-    public void updateText() {
-//        tvUpdatePhone.setText("Đã cập nhật");
+    public void updateText(String phone) {
+        this.phone = phone;
     }
 }

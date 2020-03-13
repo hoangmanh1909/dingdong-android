@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,6 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.views.form.FormItemEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.edt_search_address)
-    FormItemEditText edtSearchAddress;
+    EditText edtSearchAddress;
     @BindView(R.id.img_search)
     ImageView search;
 
@@ -99,7 +99,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                 mPresenter.back();
                 break;
             case R.id.img_search:
-                mAddress = edtSearchAddress.getText();
+                mAddress = edtSearchAddress.getText().toString();
                 mPresenter.vietmapSearch(mAddress);
                 break;
         }
@@ -107,6 +107,9 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
     @Override
     public void showAddressList(List<AddressListModel> listAddress) {
+        if (listAddress.isEmpty()) {
+            showSuccessToast(getString(R.string.not_found_any_address));
+        }
         mListObject.clear();
         mListObject.addAll(listAddress);
         addressListAdapter.notifyDataSetChanged();

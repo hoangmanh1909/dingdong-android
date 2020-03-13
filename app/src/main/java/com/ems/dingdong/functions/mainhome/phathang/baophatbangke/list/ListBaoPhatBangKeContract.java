@@ -59,7 +59,7 @@ interface ListBaoPhatBangKeContract {
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<DeliveryPostman> list);
 
-        void showListSuccess(List<DeliveryPostman> list, int focusedPosition);
+        void showListSuccess(List<DeliveryPostman> list);
 
         void showError(String message);
 
@@ -72,6 +72,8 @@ interface ListBaoPhatBangKeContract {
         void showCallSuccess();
 
         void showResponseSuccessEmpty();
+
+        void showSuccessUpdateMobile(String phone, String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -100,6 +102,12 @@ interface ListBaoPhatBangKeContract {
 
         int getType();
 
+        String getLadingCode();
+
+        int getDeliverType();
+
+        void setTitleTab(int quantity);
+
         void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign);
 
         void nextReceverPerson(List<CommonObject> commonObjects);
@@ -113,8 +121,8 @@ interface ListBaoPhatBangKeContract {
         void updateMobile(String phone, String parcelCode);
 
         void vietmapSearch(String address);
-
     }
+
 }
 
 

@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
+import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.PostOffice;
@@ -82,6 +83,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
                 updateUserHeader();
+                if (homeFragment != null) {
+                    HomeV1Fragment v1Fragment = (HomeV1Fragment)homeFragment;
+                    v1Fragment.updateHomeView();
+                }
             } else if (tabId == R.id.action_cart) {
                 viewPager.setCurrentItem(1);
                 removeHeader();

@@ -80,7 +80,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @Override
     public void showView() {
-        mPhoneConectDialog.updateText();
+        mPhoneConectDialog.updateText("");
     }
 
     private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {

@@ -163,8 +163,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public LinearLayout linearLayout;
         @BindView(R.id.tv_index)
         public CustomBoldTextView tvIndex;
-        @BindView(R.id.iv_status)
-        public ImageView ivStatus;
         @BindView(R.id.tv_gtgt)
         public CustomTextView gtgt;
         @BindView(R.id.tv_info)
@@ -196,7 +194,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
             } else
                 tvInfo.setText("Nội dung: ");
-            tvIndex.setText(String.format("%s - ", item.getCount()));
+            tvIndex.setText(String.format("%s - ", mListFilter.indexOf(item) + 1));
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
@@ -209,11 +207,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             else {
                 gtgt.setText("GTGT: ");
-            }
-            if (item.getStatus().equals("N")) {// gach no khong
-                ivStatus.setVisibility(View.GONE);
-            } else {
-                ivStatus.setVisibility(View.VISIBLE);
             }
             if (!TextUtils.isEmpty(item.getNewInstruction())) {
                 tvNewInstruction.setVisibility(View.VISIBLE);

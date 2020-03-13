@@ -5,46 +5,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <include layout="@layout/item_head_bg_common" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_back_shadown" />
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="Bản kê đi phát (BD13)"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:id="@+id/img_send"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_5dp"
-                android:src="@drawable/ic_confirm" />
-        </RelativeLayout>
-    </FrameLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,15 +58,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp">
-
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Số lượng"
-            android:textColor="#38044B"
-            android:textSize="@dimen/text_size_14sp" />
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_amount"

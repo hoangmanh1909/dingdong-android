@@ -78,7 +78,6 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    mView.showSuccessToast(response.body().getMessage());
                 } else {
                     mView.showError(response.body().getMessage());
                 }

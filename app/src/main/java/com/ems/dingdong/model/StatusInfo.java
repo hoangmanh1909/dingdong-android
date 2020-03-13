@@ -22,6 +22,9 @@ public class StatusInfo extends RealmObject{
     @SerializedName("ReasonCode")
     private String reasonCode;
 
+    @SerializedName("Description")
+    private String description;
+
     public String getPOCode() {
         return POCode;
     }
@@ -32,6 +35,10 @@ public class StatusInfo extends RealmObject{
 
     public String getStatusMessage() {
         return StatusMessage;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getStatusDate() {

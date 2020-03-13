@@ -68,7 +68,16 @@ public class Constants {
     public static final int TYPE_DETAIL_ADDRESS = 1;
 
     public static final int DELIVERY_LIST_TYPE_COD = 100;
+    public static final int DELIVERY_LIST_TYPE_COD_NEW = 300;
+    public static final int DELIVERY_LIST_TYPE_COD_FEE = 500;
+    public static final int DELIVERY_LIST_TYPE_COD_NEW_FEE = 600;
     public static final int DELIVERY_LIST_TYPE_NORMAL = 200;
+    public static final int DELIVERY_LIST_TYPE_NORMAL_NEW = 400;
+    public static final int DELIVERY_LIST_TYPE_NORMAL_FEE = 800;
+    public static final int DELIVERY_LIST_TYPE_NORMAL_NEW_FEE = 700;
     public static final String DELIVERY_LIST_TYPE = "DELIVERY_LIST_TYPE";
+
+    public static final int NOT_YET_DELIVERY_TAB = 10;
+    public static final int NOT_SUCCESSFULLY_DELIVERY_TAB = 20;
 
 }
