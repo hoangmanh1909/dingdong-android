@@ -57,6 +57,12 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
                 .setDeliveryListType(mPresenter
                 .getDeliveryListType())
                 .setOnTitleChangeListener(this)
+                .setDeliveryNotSuccessfulChange(new ListDeliveryConstract.OnDeliveryNotSuccessfulChange() {
+                    @Override
+                    public void onChanged() {
+                        tabList.get(1).initSearch();
+                    }
+                })
                 .setType(Constants.NOT_YET_DELIVERY_TAB).getFragment());
 
         tabList.add((ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter(mPresenter.getContainerView())

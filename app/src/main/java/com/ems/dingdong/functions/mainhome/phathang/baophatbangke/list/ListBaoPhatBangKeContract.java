@@ -108,6 +108,8 @@ interface ListBaoPhatBangKeContract {
 
         void setTitleTab(int quantity);
 
+        ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange();
+
         void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign);
 
         void nextReceverPerson(List<CommonObject> commonObjects);

@@ -41,7 +41,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     private int mDeliveryListType;
 
+    private String ladingCode;
+
     private ListDeliveryConstract.OnTitleTabsListener titleTabsListener;
+
+    private ListDeliveryConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange;
 
     public ListBaoPhatBangKePresenter(ContainerView containerView) {
         super(containerView);
@@ -54,8 +58,10 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return this;
     }
 
-    private String ladingCode;
-
+    public ListBaoPhatBangKePresenter setDeliveryNotSuccessfulChange(ListDeliveryConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange) {
+        this.deliveryNotSuccessfulChange = deliveryNotSuccessfulChange;
+        return this;
+    }
 
     @Override
     public ListBaoPhatBangKeContract.View onCreateView() {
@@ -188,6 +194,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void setTitleTab(int quantity) {
         titleTabsListener.setQuantity(quantity, mType);
+    }
+
+    @Override
+    public ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange() {
+        return deliveryNotSuccessfulChange;
     }
 
 

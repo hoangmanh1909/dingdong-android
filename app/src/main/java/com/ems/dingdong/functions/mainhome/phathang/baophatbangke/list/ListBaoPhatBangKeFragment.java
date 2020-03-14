@@ -290,10 +290,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (isReturnedFromXacNhanBaoPhat) {
             isReturnedFromXacNhanBaoPhat = false;
             initSearch();
+            if (mPresenter.getNotSuccessfulChange() != null) {
+                mPresenter.getNotSuccessfulChange().onChanged();
+            }
         }
     }
 
-    private void initSearch() {
+    public void initSearch() {
         swipeRefreshLayout.setRefreshing(true);
         if (!TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mList.clear();

@@ -26,4 +26,8 @@ public interface ListDeliveryConstract {
     interface OnTitleTabsListener {
         void setQuantity(int quantity, int currentSetTab);
     }
+
+    interface OnDeliveryNotSuccessfulChange{
+        void onChanged();
+    }
 }
