@@ -23,7 +23,7 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.dialog.BaoPhatBangKeSearchDialog;
+import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
@@ -77,22 +77,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private UserInfo mUserInfo;
     private PostOffice postOffice;
     private RouteInfo routeInfo;
-
     private String mDate;
-    private String mDateFilter;
     private Calendar mCalendar;
     private ArrayList<ReasonInfo> mListReason;
-    private String mShiftID = "1";
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private int mCountSearch = 0;
-    private String text1;
-    private String mShiftName = "Ca 1";
     private boolean isLoading = false;
-    private String mChuyenThu = "0";
-    private String mTuiSo = "0";
-    String mFromDate = "";
-    String mToDate = "";
+    private String mFromDate = "";
+    private String mToDate = "";
     private String mPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private PhoneConectDialog mPhoneConectDialog;
@@ -142,16 +135,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                 });
                 holder.img_ContactPhone.setOnClickListener(v -> {
-                    mPhoneConectDialog = new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                    mPhoneConectDialog = new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
-                            mPresenter.callForward(phone, mList.get(position).getMaE());
+                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                         }
 
                         @Override
                         public void onUpdateResponse(String phone, DismissDialogCallback callback) {
-                            showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
+                            showConfirmSaveMobile(phone, mAdapter.getListFilter().get(position).getMaE(), callback);
                         }
                     });
                     mPhoneConectDialog.show();
@@ -204,16 +197,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
         List<ShiftInfo> list = sharedPref.getListShift();
         int time = Integer.parseInt(DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT7));
-        for (ShiftInfo item : list) {
-            if (time >= Integer.parseInt(item.getFromTime().replace(":", "")) &&
-                    time < Integer.parseInt(item.getToTime().replace(":", ""))
-            ) {
-                mShiftID = item.getShiftId();
-                mShiftName = item.getShiftName();
-                break;
-            }
-
-        }
         initSearch();
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(true);
@@ -265,21 +248,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void showDialog() {
-//        if (mPresenter.getType() == 3) {
-
-        new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, (fromDate, shiftID, shiftName, chuyenThu, tuiSo) -> {
-            mDateFilter = fromDate;
-            mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-            mShiftID = shiftID;
-            Constants.SHIFT = mShiftID;
-            mShiftName = shiftName;
-            mChuyenThu = chuyenThu;
-            mTuiSo = tuiSo;
-            mList.clear();
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, fromDate, shiftID, chuyenThu, tuiSo, routeInfo.getRouteCode());
-
+        new EditDayDialog(getActivity(), mFromDate, mToDate, (calFrom, calTo) -> {
+            mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode());
         }).show();
-//        }
     }
 
     @Override
@@ -301,23 +274,19 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (!TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mList.clear();
             int deliveryType = mPresenter.getDeliverType();
-            if (!TextUtils.isEmpty(mDateFilter)) {
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDateFilter, mDateFilter, mShiftID, "0", "0", routeInfo.getRouteCode());
+            if (!TextUtils.isEmpty(mFromDate) && !TextUtils.isEmpty(mToDate)) {
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode());
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW_FEE ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW_FEE) {
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
-            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_FEE ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_FEE ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW) {
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, routeInfo.getRouteCode());
+            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_COD) {
                 String toDate = DateTimeUtils.calculateDay(-10);
                 String fromDate = DateTimeUtils.calculateDay(-1);
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, mShiftID, "0", "0", routeInfo.getRouteCode());
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, routeInfo.getRouteCode());
             } else {
                 String toDate = DateTimeUtils.calculateDay(-10);
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, mShiftID, "0", "0", routeInfo.getRouteCode());
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, routeInfo.getRouteCode());
             }
         }
     }
@@ -377,9 +346,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showListSuccess(List<DeliveryPostman> list) {
+        mList.clear();
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
-            mList.clear();
             tvAmount.setText(getResources().getString(R.string.default_amount));
             mPresenter.setTitleTab(0);
             showErrorToast("Không tìm thấy dữ liệu");
@@ -402,7 +371,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 }
             }
             mPresenter.setTitleTab(mList.size());
-            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+            tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();

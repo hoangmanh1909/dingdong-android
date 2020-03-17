@@ -60,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:id="@+id/confirm_content"
+                        android:text="Vui lòng chọn thao tác chuyển tuyến với:"
                         android:textColor="@color/black"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
@@ -73,12 +74,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
+                        android:text="Số hiệu bưu gửi: "
                         android:textColor="@color/black"
-                        android:text="@string/lading_code"
                         android:textSize="@dimen/text_size_18sp" />
 
                     <com.ems.dingdong.views.CustomBoldTextView
-                        android:id="@+id/total_record"
+                        android:id="@+id/tv_lading_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
@@ -94,17 +95,39 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
+                        android:text="Bưu tá chuyển: "
                         android:textColor="@color/black"
-                        android:text="@string/total_amount"
                         android:textSize="@dimen/text_size_18sp" />
                     <com.ems.dingdong.views.CustomBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:id="@+id/total_amount"
+                        android:id="@+id/start_postman_content"
                         android:textColor="@color/red_light"
                         android:textSize="@dimen/text_size_18sp" />
                 </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/black"
+                        android:text="Tuyến ban đầu: "
+                        android:textSize="@dimen/text_size_18sp" />
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:id="@+id/start_postman_name_content"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_18sp" />
+                </LinearLayout>
+
             </LinearLayout>
 
 
@@ -112,10 +135,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp">
 
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+                    android:background="#81C5C5"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="Trở lại"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_cancel_dialog"
@@ -152,6 +192,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -88,5 +88,8 @@
     <string name="not_found_any_address">Không tìm thấy địa chỉ nào</string>
     <string name="cancel_causal">Nguyên nhân</string>
     <string name="cancel_reason">Lý do</string>
+    <string name="not_yet_approved">Chưa phê duyệt</string>
+    <string name="total_fee">Tổng cước:</string>
+    <string name="lading_code">Số bưu gửi:</string>
 
 </resources>

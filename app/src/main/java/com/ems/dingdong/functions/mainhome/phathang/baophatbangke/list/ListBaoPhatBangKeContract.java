@@ -35,9 +35,6 @@ interface ListBaoPhatBangKeContract {
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String toDate,
-                                   String shiftID,
-                                   String chuyenthu,
-                                   String tuiso,
                                    String routeCode,
                                    CommonCallback<DeliveryPostmanResponse> callback);
 
@@ -86,9 +83,6 @@ interface ListBaoPhatBangKeContract {
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String toDate,
-                                   String shiftID,
-                                   String chuyenthu,
-                                   String tuiso,
                                    String routeCode
         );
 

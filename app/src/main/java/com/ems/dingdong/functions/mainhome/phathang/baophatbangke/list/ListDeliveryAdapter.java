@@ -1,6 +1,9 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,14 +19,19 @@ public class ListDeliveryAdapter extends FragmentStatePagerAdapter {
 
     private final Context mContext;
     private List<ListBaoPhatBangKeFragment> tabs;
-    private String[] mTitleString = new String[2];
+    private CharSequence[] mTitleString = new Spanned[2];
 
     public ListDeliveryAdapter(FragmentManager fm, Context context, ContainerView containerView, List<ListBaoPhatBangKeFragment> tabs) {
         super(fm);
         mContext = context;
         this.tabs = tabs;
-        mTitleString[0] = "Chưa phát (0)";
-        mTitleString[1] = "Không thành công (0)";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mTitleString[0] = Html.fromHtml("Chưa phát " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            mTitleString[1] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            mTitleString[0] = Html.fromHtml("Chưa phát " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+            mTitleString[1] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        }
     }
 
     @Override
@@ -38,9 +46,17 @@ public class ListDeliveryAdapter extends FragmentStatePagerAdapter {
 
     public void setTittle(int quantity, int positionTab) {
         if (positionTab == Constants.NOT_YET_DELIVERY_TAB) {
-            mTitleString[0] = String.format("Chưa phát (%s)", quantity);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                mTitleString[0] = Html.fromHtml("Chưa phát " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            } else {
+                mTitleString[0] = Html.fromHtml("Chưa phát " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+            }
         } else {
-            mTitleString[1] = String.format("Không thành công (%s)", quantity);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                mTitleString[1] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            } else {
+                mTitleString[1] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+            }
         }
     }
 

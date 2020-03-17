@@ -17,6 +17,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
+import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -121,10 +122,6 @@ public interface VinattiAPI {
     Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
                                                         @Field("FromDate") String fromDate,
                                                         @Field("ToDate") String toDate,
-                                                        @Field("ShiftID") String shiftID,
-                                                        @Field("Status") String status,
-                                                        @Field("ChThu") String chuyenthu,
-                                                        @Field("TuiSo") String tuiso,
                                                         @Field("RouteCode") String routeCode);
 
 
@@ -381,5 +378,49 @@ public interface VinattiAPI {
                                                   @Field("PostmanMobileNumber") String phoneNumber,
                                                   @Field("FromDate") String fromDate,
                                                   @Field("ToDate") String toDate);
+
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/SearchForCancel")
+    Call<RouteResult> searchForCancel(@Field("LadingCode") String ladingCode,
+                                      @Field("FromDate") String fromDate,
+                                      @Field("ToDate") String toDate,
+                                      @Field("PostmanId") String postmanId,
+                                      @Field("RouteId") String routeId,
+                                      @Field("POCode") String poCode);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/SearchForApproved")
+    Call<RouteResult> searchForApproved(@Field("LadingCode") String ladingCode,
+                                        @Field("FromDate") String fromDate,
+                                        @Field("ToDate") String toDate,
+                                        @Field("PostmanId") String postmanId,
+                                        @Field("RouteId") String routeId,
+                                        @Field("POCode") String poCode);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/ApprovedAgree")
+    Call<SimpleResult> approvedAgree(@Field("Id") String id,
+                                     @Field("LadingCode") String ladingCode,
+                                     @Field("PostmanId") String postmanId,
+                                     @Field("PostmanCode") String postmanCode,
+                                     @Field("POCode") String poCode,
+                                     @Field("RouteId") String routeId,
+                                     @Field("RouteCode") String routeCode);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/ApprovedDisagree")
+    Call<SimpleResult> approvedDisagree(@Field("Id") String id,
+                                        @Field("LadingCode") String ladingCode,
+                                        @Field("PostmanId") String postmanId,
+                                        @Field("PostmanCode") String postmanCode,
+                                        @Field("POCode") String poCode,
+                                        @Field("RouteId") String routeId,
+                                        @Field("RouteCode") String routeCode);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/Cancel")
+    Call<SimpleResult> cancelRoute(@Field("Id") Integer id,
+                                   @Field("PostmanId") Integer postmanId);
 
 }

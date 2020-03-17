@@ -5,16 +5,12 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
 import com.core.base.BaseActivity;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.RouteOptionCallBack;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.RouteInfo;
-import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 
@@ -34,13 +30,16 @@ public class RouteDialog extends Dialog {
     FormItemTextView tv_route;
     ArrayList<Item> items = new ArrayList<>();
     private Item mItem;
+    private RouteInfo mItemRouteInfo;
+    private List<RouteInfo> mRouteInfos;
     private ItemBottomSheetPickerUIFragment pickerUIRoute;
 
-    public RouteDialog(Context context,List<RouteInfo> routeInfos,RouteOptionCallBack routeOptionCallBack) {
+    public RouteDialog(Context context, List<RouteInfo> routeInfos, RouteOptionCallBack routeOptionCallBack) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
 
         this.mDelegate = routeOptionCallBack;
+        mRouteInfos = routeInfos;
         View view = View.inflate(getContext(), R.layout.dialog_route, null);
         setContentView(view);
         ButterKnife.bind(this, view);
@@ -55,7 +54,7 @@ public class RouteDialog extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_route,R.id.tv_select_route, R.id.tv_cancel_route})
+    @OnClick({R.id.tv_route, R.id.tv_select_route, R.id.tv_cancel_route})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_select_route:
@@ -63,7 +62,7 @@ public class RouteDialog extends Dialog {
                     Toast.showToast(tv_route.getContext(), "Xin vui lòng chọn tuyến.");
                 } else {
                     if (mDelegate != null) {
-                        mDelegate.onRouteOptionResponse(mItem);
+                        mDelegate.onRouteOptionResponse(mItem, mItemRouteInfo);
                         dismiss();
                     }
                 }
@@ -89,6 +88,7 @@ public class RouteDialog extends Dialog {
                         public void onChooseClick(Item item, int position) {
                             tv_route.setText(item.getText());
                             mItem = item;
+                            mItemRouteInfo = mRouteInfos.get(position);
                         }
                     }, 0);
             pickerUIRoute.show(mActivity.getSupportFragmentManager(), pickerUIRoute.getTag());
@@ -97,8 +97,6 @@ public class RouteDialog extends Dialog {
             if (!pickerUIRoute.isShow) {
                 pickerUIRoute.show(mActivity.getSupportFragmentManager(), pickerUIRoute.getTag());
             }
-
-
         }
     }
 }

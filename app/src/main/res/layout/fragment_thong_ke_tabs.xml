@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:pstsIndicatorColor="#0e7959"
-        app:pstsTabBackground="?selectableItemBackground"
+        app:pstsTabBackground="@drawable/bg_tabs"
         app:pstsTabPaddingLeftRight="30dp"
         app:pstsTabTextAlpha="100"
         app:pstsDividerColor="@color/text_color_primary"

@@ -113,7 +113,7 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tổng tiền"
+                            android:text="Tổng tiền COD"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16sp" />
 
@@ -127,8 +127,33 @@
                             android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_8dp"
+                        android:gravity="center">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tổng cước"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_16sp" />
+
+                        <com.ems.dingdong.views.CustomBoldTextView
+                            android:id="@+id/tv_total_fee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center"
+                            android:text="1000000"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_16sp" />
+                    </RelativeLayout>
+
                 </LinearLayout>
             </LinearLayout>
+
 
             <com.ems.dingdong.views.CustomTextView
                 style="@style/HeaderNews"

@@ -1,25 +1,19 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
-import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -124,6 +118,8 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         CustomBoldTextView tv_code;
         @BindView(R.id.tv_amount)
         CustomTextView tv_amount;
+        @BindView(R.id.tv_fee)
+        CustomTextView tvFee;
         @BindView(R.id.tv_status_paypost)
         CustomTextView tv_status_paypost;
         @BindView(R.id.layout_cancel_delivery)
@@ -142,7 +138,8 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         public void bindView(Object model) {
             DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
             tv_code.setText(item.getLadingCode());
-            tv_amount.setText("Số tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+            tv_amount.setText(String.format("Số tiền: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+            tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             String status = "";
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {

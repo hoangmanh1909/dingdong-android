@@ -19,6 +19,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
+import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -190,12 +191,9 @@ public class NetWorkController {
     public static void searchDeliveryPostman(String postmanID,
                                              String fromDate,
                                              String toDate,
-                                             String shiftID,
-                                             String chuyenthu,
-                                             String tuiso,
                                              String routeCode,
                                              CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, "", chuyenthu, tuiso, routeCode);
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode);
         call.enqueue(callback);
     }
 
@@ -494,6 +492,57 @@ public class NetWorkController {
                                         String fromDate, String toDate,
                                         CommonCallback<StatisticPaymentResult> callback) {
         Call<StatisticPaymentResult> call = getAPIBuilder().statisticPayment(postmanId, poCode, phoneNumber, fromDate, toDate);
+        call.enqueue(callback);
+    }
+
+    public static void searchForApproved(String ladingCode,
+                                         String fromDate,
+                                         String toDate,
+                                         String postmanId,
+                                         String routeId,
+                                         String poCode, CommonCallback<RouteResult> callback) {
+        Call<RouteResult> call = getAPIBuilder().searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, poCode);
+        call.enqueue(callback);
+    }
+
+    public static void searchForCancel(String ladingCode,
+                                       String fromDate,
+                                       String toDate,
+                                       String postmanId,
+                                       String routeId,
+                                       String poCode, CommonCallback<RouteResult> callback) {
+        Call<RouteResult> call = getAPIBuilder().searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, poCode);
+        call.enqueue(callback);
+    }
+
+    public static void approvedAgree(String id,
+                                     String ladingCode,
+                                     String postmanId,
+                                     String postmanCode,
+                                     String poCode,
+                                     String routeId,
+                                     String routeCode,
+                                     CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().approvedAgree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void approvedDisagree(String id,
+                                        String ladingCode,
+                                        String postmanId,
+                                        String postmanCode,
+                                        String poCode,
+                                        String routeId,
+                                        String routeCode,
+                                        CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void cancelRoute(Integer id,
+                                   Integer postmanId,
+                                   CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().cancelRoute(id, postmanId);
         call.enqueue(callback);
     }
 }

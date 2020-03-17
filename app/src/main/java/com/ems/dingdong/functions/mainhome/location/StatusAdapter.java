@@ -10,7 +10,6 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 
 import java.util.List;
@@ -39,6 +38,8 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         CustomTextView tvStatusDateStatusTime;
         @BindView(R.id.tv_Description)
         CustomTextView tvDescription;
+        @BindView(R.id.tv_TypeMessage)
+        CustomTextView tvTypeMessage;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -71,6 +72,14 @@ public class StatusAdapter extends RecyclerBaseAdapter {
             } else {
                 tvDescription.setText("");
                 tvDescription.setVisibility(View.GONE);
+            }
+            tvTypeMessage.setText("");
+            if (!TextUtils.isEmpty(item.getActionTypeName())) {
+                tvTypeMessage.setText(item.getActionTypeName());
+                tvTypeMessage.setVisibility(View.VISIBLE);
+            } else {
+                tvTypeMessage.setText("");
+                tvTypeMessage.setVisibility(View.GONE);
             }
             tvStatusDateStatusTime.setText(String.format("%s, %s", item.getStatusDate(), item.getStatusTime()));
         }

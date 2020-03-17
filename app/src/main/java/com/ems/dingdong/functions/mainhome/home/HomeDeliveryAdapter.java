@@ -77,7 +77,7 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                     tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(homeInfo.getTotalQuantityToday()))));
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(homeInfo.getTotalQuantityPast()))));
                 } else if (position == 2) {
-                    setItemClickListener(Constants.DELIVERY_LIST_TYPE_NORMAL_NEW_FEE, Constants.DELIVERY_LIST_TYPE_NORMAL_FEE);
+                    setItemClickListener(Constants.DELIVERY_LIST_TYPE_NORMAL_NEW, Constants.DELIVERY_LIST_TYPE_NORMAL);
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalFeeToday())));
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalFeePast())));
@@ -102,7 +102,7 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalCODAmountPastCOD())));
                 }
                 else if (position == 3) {
-                    setItemClickListener(Constants.DELIVERY_LIST_TYPE_COD_NEW_FEE, Constants.DELIVERY_LIST_TYPE_COD_FEE);
+                    setItemClickListener(Constants.DELIVERY_LIST_TYPE_COD_NEW, Constants.DELIVERY_LIST_TYPE_COD);
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalFeeTodayCOD())));
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalFeePastCOD())));

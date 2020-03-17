@@ -106,6 +106,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout llSigned;
     @BindView(R.id.img_sign)
     ImageView imgSign;
+    @BindView(R.id.tv_total_fee)
+    CustomBoldTextView tvTotalFee;
 
     private String mSign = "";
 
@@ -136,6 +138,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private int mDeliverySuccess = 0;
     private int mDeliveryError = 0;
     private long totalAmount = 0;
+    private long totalFee = 0;
     private String mFile = "";
 
     private UserInfo userInfo;
@@ -201,10 +204,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         for (DeliveryPostman i : mBaoPhatBangke) {
             totalAmount += i.getAmount();
+            totalFee += i.getTotalFee();
         }
 
         tv_quantity.setText(String.format(" %s", mBaoPhatBangke.size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        tvTotalFee.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee)));
 
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
@@ -265,7 +270,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void submit() {
         if (mDeliveryType == 2) {
-            new ConfirmDialog(getViewContext(), mBaoPhatBangke.size(), totalAmount)
+            new ConfirmDialog(getViewContext(), mBaoPhatBangke.size(), totalAmount, totalFee)
                     .setOnCancelListener((ConfirmDialog.OnCancelClickListener) confirmDialog -> {
                         confirmDialog.dismiss();
                     })
@@ -294,6 +299,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         } else {
             if (TextUtils.isEmpty(tv_route.getText())) {
                 Toast.showToast(tv_route.getContext(), "Bạn chưa chọn tuyến");
+                return;
+            }
+            if (TextUtils.isEmpty(tv_postman.getText())) {
+                showErrorToast("Bạn chưa chọn bưu tá");
                 return;
             }
             int postmanId = 0;

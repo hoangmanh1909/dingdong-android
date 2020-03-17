@@ -22,17 +22,16 @@ public class ConfirmDialog extends Dialog {
     @BindView(R.id.total_amount)
     CustomBoldTextView totalAmount;
 
-
     private OnCancelClickListener cancelClickListener;
     private OnOkClickListener okClickListener;
 
-    public ConfirmDialog(Context context, int quantity, long amount) {
+    public ConfirmDialog(Context context, int quantity, long amount, long fee) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         View view = View.inflate(getContext(), R.layout.dialog_confirm, null);
         setContentView(view);
         ButterKnife.bind(this, view);
         totalRecord.setText(String.valueOf(quantity));
-        totalAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(amount)));
+        totalAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(amount + fee)));
     }
 
     @Override

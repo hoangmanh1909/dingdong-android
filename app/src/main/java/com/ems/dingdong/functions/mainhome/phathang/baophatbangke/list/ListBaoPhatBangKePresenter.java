@@ -94,9 +94,9 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String shiftID, String chuyenthu, String tuiso, String routeCode) {
+    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode) {
         mView.showProgress();
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, chuyenthu, tuiso, routeCode, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
                 super.onSuccess(call, response);
@@ -112,16 +112,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         case Constants.DELIVERY_LIST_TYPE_COD:
                         case Constants.DELIVERY_LIST_TYPE_COD_NEW:
                             mView.showListSuccess(getCodList(postmanArrayList));
-                            break;
-
-                        case Constants.DELIVERY_LIST_TYPE_NORMAL_FEE:
-                        case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW_FEE:
-                            mView.showListSuccess(getNormalFeeList(postmanArrayList));
-                            break;
-
-                        case Constants.DELIVERY_LIST_TYPE_COD_FEE:
-                        case Constants.DELIVERY_LIST_TYPE_COD_NEW_FEE:
-                            mView.showListSuccess(getCodFeeList(postmanArrayList));
                             break;
 
                         default:
@@ -331,26 +321,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         List<DeliveryPostman> codList = new ArrayList<>();
         for (DeliveryPostman item : list) {
             if (item.getAmount() != 0) {
-                codList.add(item);
-            }
-        }
-        return codList;
-    }
-
-    private List<DeliveryPostman> getNormalFeeList(List<DeliveryPostman> list) {
-        List<DeliveryPostman> codList = new ArrayList<>();
-        for (DeliveryPostman item : list) {
-            if (item.getTotalFee() != 0 && item.getAmount() == 0) {
-                codList.add(item);
-            }
-        }
-        return codList;
-    }
-
-    private List<DeliveryPostman> getCodFeeList(List<DeliveryPostman> list) {
-        List<DeliveryPostman> codList = new ArrayList<>();
-        for (DeliveryPostman item : list) {
-            if (item.getTotalFee() != 0 && item.getAmount() != 0) {
                 codList.add(item);
             }
         }

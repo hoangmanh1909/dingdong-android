@@ -404,7 +404,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     public void submit() {
         itemsSelected = mAdapter.getItemsSelected();
         if (itemsSelected.size() > 0) {
-            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected))
+            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
                     .setOnCancelListener((ConfirmDialog.OnCancelClickListener) confirmDialog -> {
                         confirmDialog.dismiss();
                     })
