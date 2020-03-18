@@ -129,7 +129,7 @@ public class RouteAdapter extends RecyclerBaseAdapter {
                 } else {
                     tvStatusRoute.setText("Chờ nhận");
                 }
-                if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved))) {
+                if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved)) || tvStatusRoute.getText().equals("Chờ nhận")) {
                     itemView.setOnClickListener(v -> itemClickListenner.onStatusClick(item));
                     tvStatusRoute.setBackgroundResource(R.drawable.bg_status_not);
                 } else {

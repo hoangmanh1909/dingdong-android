@@ -463,6 +463,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             for (DeliveryPostman postman : mList) {
                 if (postman.getMaE().equals(mPresenter.getLadingCode())) {
                     focusedPosition = mList.indexOf(postman);
+                    mPresenter.onTabChange();
                 }
             }
         }
@@ -478,5 +479,4 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //        });
 //        btnConfirmAll.performClick();
     }
-
 }

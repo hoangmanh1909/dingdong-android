@@ -43,7 +43,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     private String ladingCode;
 
-    private ListDeliveryConstract.OnTitleTabsListener titleTabsListener;
+    private ListDeliveryConstract.OnTabsListener titleTabsListener;
 
     private ListDeliveryConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange;
 
@@ -88,7 +88,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return this;
     }
 
-    public ListBaoPhatBangKePresenter setOnTitleChangeListener(ListDeliveryConstract.OnTitleTabsListener listener) {
+    public ListBaoPhatBangKePresenter setOnTitleChangeListener(ListDeliveryConstract.OnTabsListener listener) {
         titleTabsListener = listener;
         return this;
     }
@@ -103,6 +103,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
+
                     switch (mDeliveryListType) {
                         case Constants.DELIVERY_LIST_TYPE_NORMAL:
                         case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
@@ -184,6 +185,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void setTitleTab(int quantity) {
         titleTabsListener.setQuantity(quantity, mType);
+    }
+
+    @Override
+    public void onTabChange() {
+        titleTabsListener.onTabChange(mType);
     }
 
     @Override

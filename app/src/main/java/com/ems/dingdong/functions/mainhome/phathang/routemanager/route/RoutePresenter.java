@@ -14,7 +14,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
 
     private int typeRoute;
 
-    private ListDeliveryConstract.OnTitleTabsListener titleTabsListener;
+    private ListDeliveryConstract.OnTabsListener titleTabsListener;
 
     public RoutePresenter(ContainerView containerView) {
         super(containerView);
@@ -30,7 +30,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         return this;
     }
 
-    public RoutePresenter setTitleTabsListener(ListDeliveryConstract.OnTitleTabsListener titleTabsListener) {
+    public RoutePresenter setTitleTabsListener(ListDeliveryConstract.OnTabsListener titleTabsListener) {
         this.titleTabsListener = titleTabsListener;
         return this;
     }

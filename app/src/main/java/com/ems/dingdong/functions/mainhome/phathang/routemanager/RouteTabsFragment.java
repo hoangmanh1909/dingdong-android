@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter> implements RouteTabsConstract.View, ListDeliveryConstract.OnTitleTabsListener {
+public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter> implements RouteTabsConstract.View, ListDeliveryConstract.OnTabsListener {
 
     @BindView(R.id.tabs)
     PagerSlidingTabStrip tabs;
@@ -82,5 +82,10 @@ public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter
         mAdapter.setTittle(quantity, currentSetTab);
         mAdapter.notifyDataSetChanged();
         tabs.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTabChange(int position) {
+
     }
 }
