@@ -17,9 +17,9 @@ public class ApproveRouteDialog extends Dialog {
     @BindView(R.id.tv_lading_code)
     CustomBoldTextView ladingCode;
     @BindView(R.id.start_postman_content)
-    CustomBoldTextView routeName;
-    @BindView(R.id.start_postman_name_content)
     CustomBoldTextView postmanName;
+    @BindView(R.id.start_postman_name_content)
+    CustomBoldTextView routeName;
 
     private OnOkClickListener okClickListener;
     private OnCancelRouteClickListener cancelClickListener;

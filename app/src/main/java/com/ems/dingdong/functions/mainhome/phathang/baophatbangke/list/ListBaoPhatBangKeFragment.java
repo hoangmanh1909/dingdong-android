@@ -54,6 +54,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
 
 import static android.Manifest.permission.CALL_PHONE;
 
@@ -301,17 +303,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.tv_search:
                 showDialog();
                 break;
-            case R.id.btn_confirm_all:
-                submit();
-                break;
             case R.id.layout_item_pick_all:
                 setAllCheckBox();
                 break;
         }
     }
 
-    public void submit() {
+    public void submit(List<DeliveryPostman> itemSelectedFromOtherTab) {
         final List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
+        commonObjects.addAll(itemSelectedFromOtherTab);
         if (commonObjects.isEmpty()) {
             Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
             return;
@@ -375,7 +375,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
-        recycler.smoothScrollToPosition(getForcusPosition());
+        new Handler().post(() -> recycler.smoothScrollToPosition(getForcusPosition()));
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -420,6 +420,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
             startActivity(intent);
         }
+    }
+
+    public List<DeliveryPostman> getItemSelected() {
+        return mAdapter.getItemsSelected();
     }
 
     @Override

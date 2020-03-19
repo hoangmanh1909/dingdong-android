@@ -9,6 +9,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
@@ -58,5 +59,10 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     @Override
     public void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
         NetWorkController.cancelDivided(request,callback);
+    }
+
+    @Override
+    public void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback) {
+        NetWorkController.changeRouteInsert(requests, callback);
     }
 }

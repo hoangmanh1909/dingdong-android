@@ -12,6 +12,7 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.views.CustomBoldTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     EditText edtSearchAddress;
     @BindView(R.id.img_search)
     ImageView search;
+    @BindView(R.id.tv_title)
+    CustomBoldTextView tvTitle;
 
     private AddressListAdapter addressListAdapter;
     private boolean isBack = false;
@@ -60,9 +63,11 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
         if (mPresenter.getType() == Constants.TYPE_ROUTE) {
             search.setVisibility(View.VISIBLE);
             edtSearchAddress.setVisibility(View.VISIBLE);
+            tvTitle.setText("Chỉ dẫn đường đi");
         } else {
             search.setVisibility(View.GONE);
             edtSearchAddress.setVisibility(View.GONE);
+            tvTitle.setText("Xác minh địa chỉ");
         }
         addressListAdapter = new AddressListAdapter(getContext(), mListObject) {
             @Override

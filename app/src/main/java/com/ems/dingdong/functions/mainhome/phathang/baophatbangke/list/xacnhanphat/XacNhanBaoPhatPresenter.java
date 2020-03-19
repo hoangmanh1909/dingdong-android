@@ -19,6 +19,7 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
@@ -311,6 +312,39 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         }
 
         mInteractor.cancelDivided(requests, new CommonCallback<SimpleResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.showCancelDivided(response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showCancelDivided(message);
+            }
+        });
+    }
+
+    @Override
+    public void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
+        List<ChangeRouteRequest> requests = new ArrayList<>();
+
+        for (DeliveryPostman item : mBaoPhatBangke) {
+            ChangeRouteRequest request = new ChangeRouteRequest();
+            request.setPoCode(postOffice.getCode());
+            request.setLadingCode(item.getMaE());
+            request.setFromRouteId(item.getRouteId());
+            request.setPostmanId(Integer.parseInt(userInfo.getiD()));
+            request.setToRouteId(toRouteId);
+            request.setToPostmanId(toPostmanId);
+            request.setDescription("");
+            request.setSignatureCapture(signCapture);
+            request.setImageDelivery(fileImg);
+            requests.add(request);
+        }
+
+        mInteractor.changeRouteInsert(requests.get(0), new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

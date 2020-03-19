@@ -16,6 +16,7 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
@@ -39,6 +40,8 @@ public interface XacNhanBaoPhatContract {
         void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
 
         void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback);
+
+        void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -80,5 +83,7 @@ public interface XacNhanBaoPhatContract {
         void getPostman(String poCode, int routeId, String routeType);
 
         void cancelDivided(int toRouteId,int toPostmanId,String signCapture,String fileImg);
+
+        void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg);
     }
 }

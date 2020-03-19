@@ -5,6 +5,7 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
@@ -34,6 +35,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -545,4 +547,18 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().cancelRoute(id, postmanId);
         call.enqueue(callback);
     }
+
+
+    public static void changeRouteInsert(ChangeRouteRequest request,
+                                         CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().changeRouteInsert(request);
+        call.enqueue(callback);
+    }
+
+    public static void getRouteLadingDetail(String ladingCode,
+                                         CommonCallback<ChangeRouteResult> callback) {
+        Call<ChangeRouteResult> call = getAPIBuilder().getDetailByLadingCode(ladingCode);
+        call.enqueue(callback);
+    }
+
 }

@@ -1,0 +1,21 @@
+package com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail;
+
+import com.core.base.viper.interfaces.IInteractor;
+import com.core.base.viper.interfaces.IPresenter;
+import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.ChangeRouteResult;
+
+interface DetailRouteChangeConstract {
+    interface Interactor extends IInteractor<Presenter> {
+        void getChangeRouteDetail(String ladingCode, CommonCallback<ChangeRouteResult> callback);
+    }
+
+    interface View extends PresentView<Presenter> {
+        void showViewDetail();
+    }
+
+    interface Presenter extends IPresenter<View, Interactor> {
+        void getChangeRouteDetail();
+    }
+}

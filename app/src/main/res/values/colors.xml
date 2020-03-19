@@ -356,4 +356,5 @@
     <color name="color_background_bd13">#def6ff</color>
     <color name="color_debit_unsuccessful">#ff1100</color>
     <color name="bg_home_yellow">#f6a71b</color>
+    <color name="bg_primary">#58a656</color>
 </resources>

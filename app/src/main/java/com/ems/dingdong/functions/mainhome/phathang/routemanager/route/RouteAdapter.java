@@ -1,8 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.routemanager.route;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +47,16 @@ public class RouteAdapter extends RecyclerBaseAdapter {
         CustomTextView tvStartEndRoute;
         @BindView(R.id.tv_start_end_postman)
         CustomTextView tvStartEndPostman;
-        @BindView(R.id.tv_status_route)
+        @BindView(R.id.tv_status)
         CustomTextView tvStatusRoute;
-        @BindView(R.id.tv_time)
+        @BindView(R.id.tv_date_time)
         CustomTextView tvTime;
+        @BindView(R.id.tv_postman)
+        CustomTextView tvPostman;
+        @BindView(R.id.tv_cancel)
+        CustomTextView tvCancel;
+        @BindView(R.id.tv_approved)
+        CustomTextView tvAproved;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -61,83 +65,62 @@ public class RouteAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(final Object model, int position) {
             RouteResponse item = (RouteResponse) model;
+            itemView.setOnClickListener(v -> itemClickListenner.onLadingCodeClick(item));
             if (!TextUtils.isEmpty(item.getLadingCode())) {
                 tvParcelCode.setText(String.format("%s - %s", mItems.indexOf(item) + 1, item.getLadingCode()));
-                tvParcelCode.setVisibility(View.VISIBLE);
             } else {
                 tvParcelCode.setText("");
-                tvParcelCode.setVisibility(View.GONE);
             }
 
             if (typeRoute == Constants.ROUTE_RECEIVED) {
-                if (!TextUtils.isEmpty(item.getFromPostmanName())) {
-//                    tvStartEndPostman.setText(String.format("Bưu tá chuyển: %s", item.getFromPostmanName()));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        tvStartEndPostman.setText(Html.fromHtml("Bưu tá chuyển: " + "<font color=\"red\">" + item.getFromPostmanName() + "</font>", Html.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        tvStartEndPostman.setText(Html.fromHtml("Bưu tá chuyển: " + "<font color=\"red\">" + item.getFromPostmanName() + "</font>"));
-                    }
-                    tvStartEndPostman.setVisibility(View.VISIBLE);
-                } else {
-                    tvStartEndRoute.setText("");
-                    tvStartEndPostman.setVisibility(View.GONE);
-                }
-
+                tvPostman.setText("Bưu tá chuyển: ");
                 if (!TextUtils.isEmpty(item.getFromRouteName())) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        tvStartEndRoute.setText(Html.fromHtml("Tuyến ban đầu: " + "<font color=\"red\">" + item.getFromRouteName() + "</font>", Html.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        tvStartEndRoute.setText(Html.fromHtml("Tuyến ban đầu: " + "<font color=\"red\">" + item.getFromRouteName() + "</font>"));
-                    }
-                    tvStartEndRoute.setVisibility(View.VISIBLE);
-                } else {
-                    tvStartEndRoute.setText("");
-                    tvStartEndRoute.setVisibility(View.GONE);
+                    tvStartEndRoute.setText(item.getFromRouteName());
                 }
-
+                if (!TextUtils.isEmpty(item.getFromPostmanName())) {
+                    tvStartEndPostman.setText(item.getFromPostmanName());
+                }
             } else {
-                if (!TextUtils.isEmpty(item.getToPostmanName())) {
-//                    tvStartEndPostman.setText(String.format("Bưu tá được chuyển: %s", item.getToPostmanName()));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        tvStartEndPostman.setText(Html.fromHtml("Bưu tá được chuyển: " + "<font color=\"red\">" + item.getToPostmanName() + "</font>", Html.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        tvStartEndPostman.setText(Html.fromHtml("Bưu tá được chuyển: " + "<font color=\"red\">" + item.getToPostmanName() + "</font>"));
-                    }
-                    tvStartEndPostman.setVisibility(View.VISIBLE);
-                } else {
-                    tvStartEndPostman.setText("");
-                    tvStartEndPostman.setVisibility(View.GONE);
-                }
-
+                tvPostman.setText("Bưu tá được chuyển: ");
                 if (!TextUtils.isEmpty(item.getToRouteName())) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        tvStartEndRoute.setText(Html.fromHtml("Tuyến được chuyển: " + "<font color=\"red\">" + item.getToRouteName() + "</font>", Html.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        tvStartEndRoute.setText(Html.fromHtml("Tuyến được chuyển: " + "<font color=\"red\">" + item.getToRouteName() + "</font>"));
-                    }
-                    tvStartEndRoute.setVisibility(View.VISIBLE);
-                } else {
-                    tvStartEndRoute.setText("");
-                    tvStartEndRoute.setVisibility(View.GONE);
+                    tvStartEndRoute.setText(item.getToRouteName());
+                }
+                if (!TextUtils.isEmpty(item.getToPostmanName())) {
+                    tvStartEndPostman.setText(item.getToPostmanName());
                 }
             }
+
 
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusRoute.setVisibility(View.VISIBLE);
                 if (typeRoute == Constants.ROUTE_RECEIVED) {
                     tvStatusRoute.setText(item.getStatusName());
+                    if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved))) {
+                        tvCancel.setVisibility(View.VISIBLE);
+                        tvAproved.setVisibility(View.VISIBLE);
+                        tvCancel.setOnClickListener(v -> itemClickListenner.onCancelClick(item));
+                        tvAproved.setOnClickListener(v -> itemClickListenner.onApproveClick(item));
+                    } else {
+                        tvCancel.setVisibility(View.GONE);
+                        tvAproved.setVisibility(View.GONE);
+                    }
                 } else {
                     tvStatusRoute.setText("Chờ nhận");
-                }
-                if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved)) || tvStatusRoute.getText().equals("Chờ nhận")) {
-                    itemView.setOnClickListener(v -> itemClickListenner.onStatusClick(item));
-                    tvStatusRoute.setBackgroundResource(R.drawable.bg_status_not);
-                } else {
-                    tvStatusRoute.setBackgroundResource(R.drawable.bg_status_done);
+                    if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved))) {
+                        tvCancel.setVisibility(View.VISIBLE);
+                        tvAproved.setVisibility(View.GONE);
+                        tvCancel.setText("Hủy yêu cầu");
+                        tvCancel.setOnClickListener(v -> itemClickListenner.onCancelRequestClick(item));
+                    } else {
+                        tvCancel.setVisibility(View.GONE);
+                        tvAproved.setVisibility(View.GONE);
+                    }
                 }
             } else {
                 tvStatusRoute.setText("");
                 tvStatusRoute.setVisibility(View.GONE);
+                tvCancel.setVisibility(View.GONE);
+                tvAproved.setVisibility(View.GONE);
             }
         }
     }

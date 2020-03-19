@@ -3,6 +3,7 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
@@ -31,6 +32,7 @@ import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -422,5 +424,11 @@ public interface VinattiAPI {
     @POST("api/ChangeRoute/Cancel")
     Call<SimpleResult> cancelRoute(@Field("Id") Integer id,
                                    @Field("PostmanId") Integer postmanId);
+
+    @POST("api/ChangeRoute/Insert")
+    Call<SimpleResult> changeRouteInsert(@Body ChangeRouteRequest taskRequest);
+
+    @GET("api/ChangeRoute/GetDetailByLadingCode")
+    Call<ChangeRouteResult> getDetailByLadingCode(@Query("ladingCode") String ladingCode);
 
 }

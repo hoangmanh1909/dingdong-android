@@ -43,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/grey"
-                android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_weight="4"
                 android:textSize="@dimen/text_size_12sp" />
 
@@ -51,18 +50,17 @@
                 android:id="@+id/tv_TypeMessage"
                 android:layout_width="0dp"
                 android:layout_weight="3"
+                android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/red_light"
+                android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_StatusMessage"
                 android:layout_width="0dp"
                 android:layout_weight="3"
-                android:gravity="right"
+                android:layout_marginLeft="@dimen/dimen_5dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimen_5dp"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>

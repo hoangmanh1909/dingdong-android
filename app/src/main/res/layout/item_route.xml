@@ -16,62 +16,142 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_count"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp"
-                tools:text="10.000"
-                android:visibility="gone" />
+                android:orientation="horizontal"
+                android:background="@color/color_background_bd13"
+                android:weightSum="10">
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_parcel_code"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_date_time"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_14sp" />
+            </LinearLayout>
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_parcel_code"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/text_size_14sp" />
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_start_end_route"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="left"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_total_amount"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_gravity="left"
+                    android:text="0"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+            </LinearLayout>
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_start_end_route"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12sp" />
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="0dp"
+                    android:id="@+id/tv_postman"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:text="Bưu tá chuyển: "
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_start_end_postman"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+            </LinearLayout>
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_start_end_postman"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12sp" />
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content">
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:padding="3dp"
+                        android:id="@+id/tv_status"
+                        android:gravity="center"
+                        android:background="@drawable/bg_status_disapprove"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:text="Chờ nhận"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_status_route"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_5dp"
-                android:padding="10dp"
-                android:background="@drawable/bg_status_not"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_12sp"
-                tools:text="Chưa Xác nhận"/>
+                </LinearLayout>
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4.5"
+                        android:id="@+id/tv_cancel"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:padding="3dp"
+                        android:text="Từ chối"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_status_cancel"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4.5"
+                        android:id="@+id/tv_approved"
+                        android:padding="3dp"
+                        android:text="Chấp nhận"
+                        android:gravity="center"
+                        android:layout_marginLeft="@dimen/dimen_5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:background="@drawable/bg_status_approve"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
     <View
         style="@style/Devider"
-        android:layout_marginTop="@dimen/dimen_5dp" />
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"/>
 
 </LinearLayout>

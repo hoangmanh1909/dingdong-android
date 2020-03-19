@@ -4,6 +4,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
+import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangePresenter;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
 
@@ -61,7 +62,8 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                         super.onResponse(call, response);
                         if (response.body().getErrorCode().equals("00")) {
                             mView.showListSucces(response.body().getRouteResponses());
-                            titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
+                            if (titleTabsListener != null)
+                                titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
                         }
                     }
                 });
@@ -83,7 +85,9 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                         super.onResponse(call, response);
                         if (response.body().getErrorCode().equals("00")) {
                             mView.showListSucces(response.body().getRouteResponses());
-                            titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
+                            if (titleTabsListener != null) {
+                                titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
+                            }
                         }
                     }
                 });
@@ -109,9 +113,9 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onResponse(call, response);
                 mView.hideProgress();
+                mView.showSuccessToast(response.body().getMessage());
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
-                    mView.showSuccessToast(response.body().getMessage());
                 }
             }
         });
@@ -132,9 +136,9 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onResponse(call, response);
                 mView.hideProgress();
+                mView.showSuccessToast(response.body().getMessage());
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
-                    mView.showSuccessToast(response.body().getMessage());
                 }
             }
         });
@@ -168,5 +172,9 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
 
     }
 
+    @Override
+    public void showDetail(String ladingCode) {
+        new DetailRouteChangePresenter(mContainerView).setLadingCode(ladingCode).pushView();
+    }
 
 }

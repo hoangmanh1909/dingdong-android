@@ -54,21 +54,16 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
         tabList = new ArrayList<>();
         tabList.add((ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter(mPresenter.getContainerView())
                 .setLadingCode(mPresenter.getLadingCode())
-                .setDeliveryListType(mPresenter
-                .getDeliveryListType())
+                .setDeliveryListType(mPresenter.getDeliveryListType())
                 .setOnTitleChangeListener(this)
-                .setDeliveryNotSuccessfulChange(new ListDeliveryConstract.OnDeliveryNotSuccessfulChange() {
-                    @Override
-                    public void onChanged() {
-                        tabList.get(1).initSearch();
-                    }
-                })
+                .setDeliveryNotSuccessfulChange(() -> tabList.get(1).initSearch())
                 .setType(Constants.NOT_YET_DELIVERY_TAB).getFragment());
 
         tabList.add((ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter(mPresenter.getContainerView())
                 .setLadingCode(mPresenter.getLadingCode())
                 .setDeliveryListType(mPresenter.getDeliveryListType())
                 .setOnTitleChangeListener(this)
+                .setDeliveryNotSuccessfulChange(() -> tabList.get(0).initSearch())
                 .setType(Constants.NOT_SUCCESSFULLY_DELIVERY_TAB)
                 .getFragment());
 
@@ -85,7 +80,11 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
                 mPresenter.back();
                 break;
             case R.id.img_send:
-                tabList.get(pager.getCurrentItem()).submit();
+                if (pager.getCurrentItem() == 0) {
+                    tabList.get(0).submit(tabList.get(1).getItemSelected());
+                } else {
+                    tabList.get(1).submit(tabList.get(0).getItemSelected());
+                }
                 break;
         }
     }

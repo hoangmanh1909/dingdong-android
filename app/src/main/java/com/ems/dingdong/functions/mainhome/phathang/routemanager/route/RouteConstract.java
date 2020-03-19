@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.routemanager.route;
 
+import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
@@ -33,6 +34,8 @@ public interface RouteConstract {
         void cancel(Integer id, Integer postmanId);
 
         void setTitleTab(int quantity);
+
+        void showDetail(String ladingCode);
     }
 
     interface Interactor extends IInteractor<Presenter> {
@@ -49,7 +52,11 @@ public interface RouteConstract {
     }
 
     interface OnItemClickListenner {
-        void onStatusClick(RouteResponse item);
+        void onCancelRequestClick(RouteResponse item);
+
+        void onCancelClick(RouteResponse item);
+
+        void onApproveClick(RouteResponse item);
 
         void onLadingCodeClick(RouteResponse item);
     }

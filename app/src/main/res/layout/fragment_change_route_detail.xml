@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen_5dp"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/dimen_5dp">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textAllCaps="true"
+                android:text="Chi tiết bưu gửi"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingBottom="@dimen/dimen_5dp">
+
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_parcel_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="abc"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/text_size_14sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_receiver_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="Người nhận: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_receiver_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="SĐT: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="Nội dung: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_mass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="Khối lượng: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_cod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="Số tiền COD: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="Số tiền cước: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+            <View
+                style="@style/Devider"
+                android:layout_marginTop="@dimen/dimen_5dp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_gtgt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="Giá trị gia tăng: "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

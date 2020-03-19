@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.dialog.ApproveRouteDialog;
-import com.ems.dingdong.dialog.CancelRouteDialog;
+import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangePresenter;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
@@ -62,29 +61,29 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
             mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_RECEIVED);
             mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
                 @Override
-                public void onStatusClick(RouteResponse item) {
-                    RouteResponse tempItem = item;
-                    new ApproveRouteDialog(getViewContext(), item.getLadingCode(), item.getFromPostmanName(), item.getFromRouteName())
-                            .setOnOkListener(dialog -> {
-                                mPresenter.approvedAgree(tempItem.getId().toString(),
-                                        tempItem.getLadingCode(), mUserInfo.getiD(),
-                                        mUserInfo.getUserName(), mPostOffice.getCode(),
-                                        tempItem.getToRouteId().toString(), mRouteInfo.getRouteCode());
-                                dialog.dismiss();
-                            })
-                            .setCancelRouteOkListener(cancelRouteDialog -> {
-                                mPresenter.approvedDisagree(tempItem.getId().toString(),
-                                        tempItem.getLadingCode(), mUserInfo.getiD(),
-                                        mUserInfo.getUserName(), mPostOffice.getCode(),
-                                        tempItem.getToRouteId().toString(), mRouteInfo.getRouteCode());
-                                cancelRouteDialog.dismiss();
-                            })
-                            .show();
+                public void onCancelRequestClick(RouteResponse item) {
+                }
+
+                @Override
+                public void onCancelClick(RouteResponse item) {
+                    mPresenter.approvedDisagree(item.getId().toString(),
+                            item.getLadingCode(), mUserInfo.getiD(),
+                            mUserInfo.getUserName(), mPostOffice.getCode(),
+                            item.getToRouteId().toString(), mRouteInfo.getRouteCode());
+                }
+
+                @Override
+                public void onApproveClick(RouteResponse item) {
+                    mPresenter.approvedAgree(item.getId().toString(),
+                            item.getLadingCode(), mUserInfo.getiD(),
+                            mUserInfo.getUserName(), mPostOffice.getCode(),
+                            item.getToRouteId().toString(), mRouteInfo.getRouteCode());
                 }
 
                 @Override
                 public void onLadingCodeClick(RouteResponse item) {
                     //show detail
+                    mPresenter.showDetail(item.getLadingCode());
                 }
             });
             recycler.setAdapter(mAdapter);
@@ -93,19 +92,24 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
         } else {
             mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_DELIVER);
             mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
+
                 @Override
-                public void onStatusClick(RouteResponse item) {
-                    RouteResponse tempItem = item;
-                    new CancelRouteDialog(getViewContext(), item.getLadingCode(), item.getToPostmanName(), item.getToRouteName())
-                            .setOnOkListener(dialog -> {
-                                mPresenter.cancel(tempItem.getId(), tempItem.getFromPostmanId());
-                                dialog.dismiss();
-                            }).show();
+                public void onCancelRequestClick(RouteResponse item) {
+                    mPresenter.cancel(item.getId(), item.getFromPostmanId());
+                }
+
+                @Override
+                public void onCancelClick(RouteResponse item) {
+                }
+
+                @Override
+                public void onApproveClick(RouteResponse item) {
                 }
 
                 @Override
                 public void onLadingCodeClick(RouteResponse item) {
                     //show detail
+                   mPresenter.showDetail(item.getLadingCode());
                 }
             });
             recycler.setAdapter(mAdapter);
