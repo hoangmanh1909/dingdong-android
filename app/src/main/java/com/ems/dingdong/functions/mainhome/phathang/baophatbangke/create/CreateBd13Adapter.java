@@ -171,6 +171,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvNewInstruction;
         @BindView(R.id.tv_new_receiver_address)
         public CustomTextView tvNewReceiverAddress;
+        @BindView(R.id.tv_create_dated)
+        public CustomTextView tvCreateDated;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -190,6 +192,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
 
+            if(!TextUtils.isEmpty(item.getbD13CreatedDate())) {
+                tvCreateDated.setText(String.format("Được giao ngày: %s", item.getbD13CreatedDate()));
+            }
             if (null != item.getDescription()) {
                 tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
             } else

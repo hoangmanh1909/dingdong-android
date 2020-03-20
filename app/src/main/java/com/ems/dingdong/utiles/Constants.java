@@ -71,6 +71,8 @@ public class Constants {
     public static final int DELIVERY_LIST_TYPE_COD_NEW = 300;
     public static final int DELIVERY_LIST_TYPE_NORMAL = 200;
     public static final int DELIVERY_LIST_TYPE_NORMAL_NEW = 400;
+    public static final int DELIVERY_LIST_TYPE_PA = 500;
+    public static final int DELIVERY_LIST_TYPE_PA_NEW = 600;
     public static final String DELIVERY_LIST_TYPE = "DELIVERY_LIST_TYPE";
 
     public static final int NOT_YET_DELIVERY_TAB = 10;

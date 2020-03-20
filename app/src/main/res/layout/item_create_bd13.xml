@@ -149,6 +149,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_create_dated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
 
         </LinearLayout>
     </LinearLayout>

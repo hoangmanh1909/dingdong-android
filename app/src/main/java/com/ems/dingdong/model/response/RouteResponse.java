@@ -31,6 +31,9 @@ public class RouteResponse {
     @SerializedName("StatusName")
     String statusName;
 
+    @SerializedName("StatusDate")
+    String statusDate;
+
     public Integer getId() {
         return id;
     }
@@ -77,5 +80,10 @@ public class RouteResponse {
 
     public String getStatusName() {
         return statusName;
+    }
+
+
+    public String getStatusDate() {
+        return statusDate;
     }
 }

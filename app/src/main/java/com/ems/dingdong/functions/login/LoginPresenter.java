@@ -63,7 +63,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     if ("Y".equals(response.body().getUserInfo().getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
-                        Constants.HEADER_NUMBER = "tel:18002009,";
+                        Constants.HEADER_NUMBER = "tel:18002009";
                     }
                     sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
                     if (!"6".equals(response.body().getUserInfo().getEmpGroupID())) {

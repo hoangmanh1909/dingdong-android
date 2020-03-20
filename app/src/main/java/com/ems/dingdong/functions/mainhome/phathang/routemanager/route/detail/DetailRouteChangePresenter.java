@@ -49,7 +49,7 @@ public class DetailRouteChangePresenter extends Presenter<DetailRouteChangeConst
             @Override
             public void onResponse(Call<ChangeRouteResult> call, Response<ChangeRouteResult> response) {
                 super.onResponse(call, response);
-                mView.showSuccessToast(response.body().getMessage());
+                mView.showViewDetail(response.body().getRouteLadingInfo());
             }
         });
     }

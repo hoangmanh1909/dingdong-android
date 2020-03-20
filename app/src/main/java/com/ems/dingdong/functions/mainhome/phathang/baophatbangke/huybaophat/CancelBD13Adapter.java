@@ -85,13 +85,16 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
     public List<DingDongGetCancelDelivery> getItemsSelected() {
         List<DingDongGetCancelDelivery> commonObjectsSelected = new ArrayList<>();
-        List<DingDongGetCancelDelivery> items = mListFilter;
+        List<DingDongGetCancelDelivery> items = mList;
         for (DingDongGetCancelDelivery item : items) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);
             }
         }
         return commonObjectsSelected;
+    }
+     public void setListFilter(List<DingDongGetCancelDelivery> list) {
+        mListFilter = list;
     }
 
     @NonNull
@@ -132,14 +135,14 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         }
 
         public DingDongGetCancelDelivery getItem(int position) {
-            return mList.get(position);
+            return mListFilter.get(position);
         }
 
         public void bindView(Object model) {
             DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
             tv_code.setText(item.getLadingCode());
             tv_amount.setText(String.format("Số tiền: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
-            tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+            tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
             String status = "";
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {

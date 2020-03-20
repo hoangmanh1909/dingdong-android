@@ -2,9 +2,11 @@ package com.ems.dingdong.functions.mainhome.phathang.routemanager.route;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangePresenter;
+import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
 
@@ -48,6 +50,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
 
     @Override
     public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String poCode) {
+        mView.showProgress();
         mInteractor.searchForApproved(ladingCode, fromDate,
                 toDate, postmanId,
                 routeId, poCode, new CommonCallback<RouteResult>(getViewContext()) {
@@ -55,11 +58,13 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                     protected void onError(Call<RouteResult> call, String message) {
                         super.onError(call, message);
                         mView.showErrorToast(message);
+                        mView.hideProgress();
                     }
 
                     @Override
                     public void onResponse(Call<RouteResult> call, Response<RouteResult> response) {
                         super.onResponse(call, response);
+                        mView.hideProgress();
                         if (response.body().getErrorCode().equals("00")) {
                             mView.showListSucces(response.body().getRouteResponses());
                             if (titleTabsListener != null)
@@ -71,6 +76,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
 
     @Override
     public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String poCode) {
+        mView.showProgress();
         mInteractor.searchForCancel(ladingCode, fromDate,
                 toDate, postmanId,
                 routeId, poCode, new CommonCallback<RouteResult>(getViewContext()) {
@@ -78,11 +84,13 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                     protected void onError(Call<RouteResult> call, String message) {
                         super.onError(call, message);
                         mView.showErrorToast(message);
+                        mView.hideProgress();
                     }
 
                     @Override
                     public void onResponse(Call<RouteResult> call, Response<RouteResult> response) {
                         super.onResponse(call, response);
+                        mView.hideProgress();
                         if (response.body().getErrorCode().equals("00")) {
                             mView.showListSucces(response.body().getRouteResponses());
                             if (titleTabsListener != null) {
@@ -177,4 +185,8 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         new DetailRouteChangePresenter(mContainerView).setLadingCode(ladingCode).pushView();
     }
 
+    @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
 }

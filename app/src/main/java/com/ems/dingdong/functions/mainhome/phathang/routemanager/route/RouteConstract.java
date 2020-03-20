@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -36,6 +37,8 @@ public interface RouteConstract {
         void setTitleTab(int quantity);
 
         void showDetail(String ladingCode);
+
+        void showBarcode(BarCodeCallback barCodeCallback);
     }
 
     interface Interactor extends IInteractor<Presenter> {

@@ -115,6 +115,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             mView.showListSuccess(getCodList(postmanArrayList));
                             break;
 
+                        case Constants.DELIVERY_LIST_TYPE_PA:
+                        case Constants.DELIVERY_LIST_TYPE_PA_NEW:
+                            mView.showListSuccess(getPaList(postmanArrayList));
+                            break;
+
                         default:
                             mView.showListSuccess(postmanArrayList);
                     }
@@ -293,6 +298,12 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.hideProgress();
                 mView.showCallError(message);
             }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.showCallError("Lỗi kết nối đến tổng đài");
+            }
         });
 
     }
@@ -337,6 +348,16 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         List<DeliveryPostman> codList = new ArrayList<>();
         for (DeliveryPostman item : list) {
             if (item.getAmount() == 0) {
+                codList.add(item);
+            }
+        }
+        return codList;
+    }
+
+    private List<DeliveryPostman> getPaList(List<DeliveryPostman> list) {
+        List<DeliveryPostman> codList = new ArrayList<>();
+        for (DeliveryPostman item : list) {
+            if (item.getIsPA().equals("Y")) {
                 codList.add(item);
             }
         }

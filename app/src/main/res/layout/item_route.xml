@@ -36,7 +36,7 @@
                     android:gravity="right"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_5dp"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_14sp" />
             </LinearLayout>
 
@@ -51,16 +51,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:gravity="left"
-                    android:textColor="@color/red_light"
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_14sp" />
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_total_amount"
                     android:layout_width="0dp"
                     android:layout_weight="5"
                     android:layout_gravity="left"
-                    android:text="0"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/red_light"
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_14sp" />
             </LinearLayout>
 
@@ -70,19 +69,11 @@
                 android:orientation="horizontal"
                 android:weightSum="10">
                 <com.ems.dingdong.views.CustomTextView
-                    android:layout_width="0dp"
-                    android:id="@+id/tv_postman"
-                    android:layout_weight="5"
-                    android:layout_height="wrap_content"
-                    android:text="Bưu tá chuyển: "
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/text_size_14sp" />
-                <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_start_end_postman"
                     android:layout_width="0dp"
-                    android:layout_weight="5"
+                    android:layout_weight="10"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/red_light"
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_14sp" />
             </LinearLayout>
 
@@ -94,7 +85,7 @@
                 android:weightSum="10">
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="4"
+                    android:layout_weight="5"
                     android:layout_height="wrap_content">
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
@@ -112,16 +103,14 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:weightSum="10"
+                    android:layout_weight="5"
                     android:layout_height="wrap_content">
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4.5"
+                        android:layout_width="wrap_content"
                         android:id="@+id/tv_cancel"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_5dp"
-                        android:padding="3dp"
+                        android:padding="5dp"
                         android:text="Từ chối"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:gravity="center"
@@ -129,10 +118,9 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_14sp" />
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4.5"
+                        android:layout_width="wrap_content"
                         android:id="@+id/tv_approved"
-                        android:padding="3dp"
+                        android:padding="5dp"
                         android:text="Chấp nhận"
                         android:gravity="center"
                         android:layout_marginLeft="@dimen/dimen_5dp"

@@ -235,7 +235,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 String reasonCode = item.getReasonCode();
                 String solutionCode = item.getSolutionCode();
                 String status = "C18";
-                String amount = item.getAmount();
+                String amount = item.getCollectAmount();
                 String shiftId = item.getShiftId();
                 String signature = Utils.SHA256(ladingCode + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
@@ -299,7 +299,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         deliveryType,
                         item.getSignatureCapture(),
                         note,
-                        item.getAmount(),
+                        item.getCollectAmount(),
                         shiftId,
                         routeCode,
                         postmanID,

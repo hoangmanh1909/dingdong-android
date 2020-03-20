@@ -54,9 +54,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Completable;
-import io.reactivex.disposables.Disposable;
-
 import static android.Manifest.permission.CALL_PHONE;
 
 public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter> implements ListBaoPhatBangKeContract.View {
@@ -279,10 +276,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             if (!TextUtils.isEmpty(mFromDate) && !TextUtils.isEmpty(mToDate)) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode());
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW) {
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_PA_NEW ) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, routeInfo.getRouteCode());
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_COD) {
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_COD ||
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_PA) {
                 String toDate = DateTimeUtils.calculateDay(-10);
                 String fromDate = DateTimeUtils.calculateDay(-1);
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, routeInfo.getRouteCode());
@@ -400,6 +399,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showCallError(String message) {
         showErrorToast(message);
+        if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -417,7 +421,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void showCallSuccess() {
         if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
             Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+            intent.setData(Uri.parse(Constants.HEADER_NUMBER));
             startActivity(intent);
         }
     }

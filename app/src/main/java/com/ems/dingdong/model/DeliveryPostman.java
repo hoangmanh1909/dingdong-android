@@ -97,6 +97,12 @@ public class DeliveryPostman {
     @SerializedName("NewReceiverAddress")
     @Expose
     private PointMyVNPost newReceiverAddress;
+    @SerializedName("BD13CreatedDate")
+    @Expose
+    private String bD13CreatedDate;
+    @SerializedName("IsPA")
+    @Expose
+    private String isPA;
 
     private boolean selected;
 
@@ -342,5 +348,13 @@ public class DeliveryPostman {
 
     public PointMyVNPost getNewReceiverAddress() {
         return newReceiverAddress;
+    }
+
+    public String getbD13CreatedDate() {
+        return bD13CreatedDate;
+    }
+
+    public String getIsPA() {
+        return isPA;
     }
 }

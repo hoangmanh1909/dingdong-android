@@ -13,6 +13,11 @@ public class DingDongGetCancelDelivery {
     @SerializedName("Amount")
     @Expose
     private Integer amount;
+
+    @SerializedName("Fee")
+    @Expose
+    private Integer fee;
+
     @SerializedName("PaymentPayPostStatus")
     @Expose
     private String paymentPayPostStatus;
@@ -56,5 +61,13 @@ public class DingDongGetCancelDelivery {
 
     public void setPaymentPayPostStatus(String paymentPayPostStatus) {
         this.paymentPayPostStatus = paymentPayPostStatus;
+    }
+
+    public Integer getFee() {
+        return fee;
+    }
+
+    public void setFee(Integer fee) {
+        this.fee = fee;
     }
 }

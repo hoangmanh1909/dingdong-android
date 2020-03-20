@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rey.material.widget.RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <com.ems.dingdong.views.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Tìm kiếm nhanh bưu gửi"
+            android:textColor="@color/black">
+
+        </com.ems.dingdong.views.CustomTextView>
+
+        <RelativeLayout
+            android:id="@+id/ll_scan_qr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:background="@drawable/bg_radius_search"
+            android:paddingLeft="@dimen/dimen_5dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:visibility="visible">
+
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/img_capture"
+                android:layout_toRightOf="@+id/img_search"
+                android:inputType="textCapCharacters"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ"
+                app:formShowUnderline="false" />
+
+            <ImageView
+                android:id="@+id/img_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/ic_qr" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:visibility="visible"
@@ -24,5 +76,16 @@
         android:layout_centerVertical="true"
         android:textColor="@color/black"
         android:visibility="gone" />
+        <ImageView
+            android:id="@+id/tv_search"
+            android:layout_width="@dimen/dimen_70dp"
+            android:layout_height="@dimen/dimen_70dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:padding="@dimen/dimen_10dp"
+            android:src="@drawable/ic_choose_calendar" />
+    </RelativeLayout>
 
-</com.rey.material.widget.RelativeLayout>
+</LinearLayout>

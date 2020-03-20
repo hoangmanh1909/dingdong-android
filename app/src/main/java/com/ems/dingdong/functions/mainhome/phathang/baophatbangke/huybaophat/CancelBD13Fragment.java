@@ -167,7 +167,6 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void getCancelDelivery(String fromDate, String toDate, String ladingCode) {
-        mList.clear();
         mPresenter.getCancelDelivery(userInfo.getUserName(), routeInfo.getRouteCode(), fromDate, toDate, ladingCode);
     }
 
@@ -247,6 +246,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     @Override
     public void showListSuccess(ArrayList<DingDongGetCancelDelivery> list) {
+        mList.clear();
         tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
         long totalAmount = 0;
         for (DingDongGetCancelDelivery i : list) {
@@ -254,7 +254,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             totalAmount = totalAmount + i.getAmount();
         }
         tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
-
+        mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
     }
 
