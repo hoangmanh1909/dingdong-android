@@ -94,35 +94,34 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode) {
+    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer deliveryType) {
         mView.showProgress();
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+        if (deliveryType != Constants.ALL_SEARCH_TYPE) {
+            switch (deliveryType) {
+                case Constants.DELIVERY_LIST_TYPE_COD_NEW:
+                case Constants.DELIVERY_LIST_TYPE_COD:
+                    deliveryType = Constants.COD_SEARCH_TYPE;
+                    break;
+                case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
+                case Constants.DELIVERY_LIST_TYPE_NORMAL:
+                    deliveryType = Constants.NORMAL_SEARCH_TYPE;
+                    break;
+                case Constants.DELIVERY_LIST_TYPE_PA_NEW:
+                case Constants.DELIVERY_LIST_TYPE_PA:
+                    deliveryType = Constants.HCC_SEARCH_TYPE;
+                    break;
+                default:
+                    deliveryType = Constants.ALL_SEARCH_TYPE;
+            }
+        }
+        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
-
-                    switch (mDeliveryListType) {
-                        case Constants.DELIVERY_LIST_TYPE_NORMAL:
-                        case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
-                            mView.showListSuccess(getNormalList(postmanArrayList));
-                            break;
-
-                        case Constants.DELIVERY_LIST_TYPE_COD:
-                        case Constants.DELIVERY_LIST_TYPE_COD_NEW:
-                            mView.showListSuccess(getCodList(postmanArrayList));
-                            break;
-
-                        case Constants.DELIVERY_LIST_TYPE_PA:
-                        case Constants.DELIVERY_LIST_TYPE_PA_NEW:
-                            mView.showListSuccess(getPaList(postmanArrayList));
-                            break;
-
-                        default:
-                            mView.showListSuccess(postmanArrayList);
-                    }
+                    mView.showListSuccess(postmanArrayList);
                 } else {
                     mView.showError(response.body().getMessage());
                 }
@@ -333,35 +332,4 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void vietmapSearch(String address) {
         new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
     }
-
-    private List<DeliveryPostman> getCodList(List<DeliveryPostman> list) {
-        List<DeliveryPostman> codList = new ArrayList<>();
-        for (DeliveryPostman item : list) {
-            if (item.getAmount() != 0) {
-                codList.add(item);
-            }
-        }
-        return codList;
-    }
-
-    private List<DeliveryPostman> getNormalList(List<DeliveryPostman> list) {
-        List<DeliveryPostman> codList = new ArrayList<>();
-        for (DeliveryPostman item : list) {
-            if (item.getAmount() == 0) {
-                codList.add(item);
-            }
-        }
-        return codList;
-    }
-
-    private List<DeliveryPostman> getPaList(List<DeliveryPostman> list) {
-        List<DeliveryPostman> codList = new ArrayList<>();
-        for (DeliveryPostman item : list) {
-            if (item.getIsPA().equals("Y")) {
-                codList.add(item);
-            }
-        }
-        return codList;
-    }
-
 }

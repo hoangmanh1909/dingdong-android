@@ -263,6 +263,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
                         hoveringMarker.setLayoutParams(params);
+                        hoveringMarker.setVisibility(View.VISIBLE);
                         mapView.addView(hoveringMarker);
 
 // Initialize, but don't show, a SymbolLayer for the marker icon which will represent a selected location.
@@ -358,7 +359,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         loadedMapStyle.addLayer(new SymbolLayer(DROPPED_MARKER_LAYER_ID,
                 "dropped-marker-source-id").withProperties(
                 iconImage("dropped-icon-image"),
-                visibility(NONE),
+                visibility(VISIBLE),
                 iconAllowOverlap(true),
                 iconIgnorePlacement(true)
         ));

@@ -65,7 +65,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     } else {
                         Constants.HEADER_NUMBER = "tel:18002009";
                     }
-                    sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
+                    boolean isDebit = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
+                    sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
                     if (!"6".equals(response.body().getUserInfo().getEmpGroupID())) {
                         getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
                     }

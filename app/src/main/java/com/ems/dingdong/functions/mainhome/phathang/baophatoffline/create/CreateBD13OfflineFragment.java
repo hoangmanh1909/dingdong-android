@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -23,7 +24,6 @@ import androidx.core.widget.NestedScrollView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.SignCallback;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
@@ -35,7 +35,6 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.RealmUtils;
@@ -59,7 +58,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 
 public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineContract.Presenter>
         implements CreateBD13OfflineContract.View {
@@ -91,7 +89,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     @BindView(R.id.tv_Description)
     FormItemEditText tv_Description;
     @BindView(R.id.tv_collect_amount)
-    FormItemEditText tv_collect_amount;
+    EditText tv_collect_amount;
     @BindView(R.id.edt_parcelcode)
     FormItemEditText edt_parcelcode;
     @BindView(R.id.tv_receiver)
@@ -184,26 +182,22 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         });
 
         tv_collect_amount.addTextChangedListener(new TextWatcher() {
-            private String current = "";
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                tv_collect_amount.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(s.toString()))));
-                if (!s.toString().equals(current)) {
+                if (s.toString().length() <= 20) {
                     tv_collect_amount.removeTextChangedListener(this);
 
                     String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
                     String cleanString = s.toString().replaceAll(replaceable, "");
-                    String formatted = "";
-                    if (!cleanString.isEmpty()) {
-                        formatted = String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(cleanString)));
-                    }
-                    current = formatted;
+                    String formatted = NumberUtils.formatDecimal(cleanString);
                     tv_collect_amount.setText(formatted);
                     tv_collect_amount.setSelection(formatted.length());
                     tv_collect_amount.addTextChangedListener(this);
@@ -278,7 +272,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             }
             commonObject = new CommonObject();
             commonObject.setReceiverName(tv_receiver.getText());
-            commonObject.setCollectAmount(tv_collect_amount.getText().replace(".", ""));
+            commonObject.setCollectAmount(tv_collect_amount.getText().toString().replace(",", ""));
         } else {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(getViewContext(), "Xin vui lòng chọn lý do");

@@ -375,7 +375,9 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             postmanID = userInfo.getiD();
             mobileNumber = userInfo.getMobileNumber();
         }
+
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         if (!postOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
 
@@ -407,7 +409,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, "0", signatureCapture,
-                note, amount, shiftId, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null);
+                note, amount, shiftId, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null, isPaymentPP);
 
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override

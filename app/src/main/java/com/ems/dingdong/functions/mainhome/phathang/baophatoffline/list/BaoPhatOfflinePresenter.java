@@ -227,7 +227,8 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         String mobileNumber = userInfo.getMobileNumber();
         String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
-
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (CommonObject item : commonObjects) {
             if (item.getDeliveryType().equals("1")) {
                 String ladingCode = item.getCode();
@@ -306,7 +307,8 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         signature,
                         item.getImageDelivery(),
                         userInfo.getUserName(),
-                        item.getBatchCode()
+                        item.getBatchCode(),
+                        isPaymentPP
                 );
 
                 mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {

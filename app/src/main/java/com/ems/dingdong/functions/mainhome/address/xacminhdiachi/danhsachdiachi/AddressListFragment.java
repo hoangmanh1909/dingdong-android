@@ -122,6 +122,8 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
     @Override
     public void showError(String message) {
+        mListObject.clear();
+        addressListAdapter.notifyDataSetChanged();
         showErrorToast(message);
     }
 

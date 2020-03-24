@@ -250,7 +250,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         new EditDayDialog(getActivity(), mFromDate, mToDate, (calFrom, calTo) -> {
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode());
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
         }).show();
     }
 
@@ -274,20 +274,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mList.clear();
             int deliveryType = mPresenter.getDeliverType();
             if (!TextUtils.isEmpty(mFromDate) && !TextUtils.isEmpty(mToDate)) {
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode());
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_PA_NEW ) {
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, routeInfo.getRouteCode());
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, routeInfo.getRouteCode(), deliveryType);
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_COD ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_PA) {
                 String toDate = DateTimeUtils.calculateDay(-10);
                 String fromDate = DateTimeUtils.calculateDay(-1);
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, routeInfo.getRouteCode());
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, routeInfo.getRouteCode(), deliveryType);
             } else {
                 String toDate = DateTimeUtils.calculateDay(-10);
-                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, routeInfo.getRouteCode());
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
             }
         }
     }
@@ -389,7 +389,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mList.clear();
         tvAmount.setText(getResources().getString(R.string.default_amount));
-//        tvCount.setText(getResources().getString(R.string.default_quantity));
         mPresenter.setTitleTab(0);
         pickAll.setVisibility(View.GONE);
         mAdapter.notifyDataSetChanged();

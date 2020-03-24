@@ -47,6 +47,7 @@ import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -124,7 +125,8 @@ public interface VinattiAPI {
     Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
                                                         @Field("FromDate") String fromDate,
                                                         @Field("ToDate") String toDate,
-                                                        @Field("RouteCode") String routeCode);
+                                                        @Field("RouteCode") String routeCode,
+                                                        @Field("SearchType") Integer searchType);
 
 
     @FormUrlEncoded
@@ -160,8 +162,8 @@ public interface VinattiAPI {
 
     @FormUrlEncoded
     @POST("api/TrackTrace/Lading")
-    Call<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
-                                          @Field("Signature") String signature
+    Observable<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
+                                                @Field("Signature") String signature
     );
 
     @POST("api/Delivery/PushToPNS")

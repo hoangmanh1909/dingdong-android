@@ -190,17 +190,20 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.ems.dingdong.views.form.FormItemEditText
+                    <EditText
                         android:id="@+id/tv_collect_amount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:textColor="#253854"
+                        android:maxLength="21"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:background="@android:color/transparent"
                         android:textSize="16sp"
                         android:digits="0123456789"
                         android:inputType="number"
-                        app:formHint="Số tiền"
-                        app:formShowUnderline="false" />
+                        android:hint="Số tiền" />
                 </LinearLayout>
 
                 <View

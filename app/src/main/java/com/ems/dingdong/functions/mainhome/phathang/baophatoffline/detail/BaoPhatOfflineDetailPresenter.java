@@ -140,10 +140,11 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         String deliveryType = baoPhat.getDeliveryType();
         String ladingPostmanID = baoPhat.getiD();
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT ,mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null);
+                note, amount, Constants.SHIFT ,mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null, isPaymentPP);
 
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override

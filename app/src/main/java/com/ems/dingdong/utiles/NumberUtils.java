@@ -1,7 +1,11 @@
 package com.ems.dingdong.utiles;
 
+import android.text.TextUtils;
+
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -101,6 +105,17 @@ public class NumberUtils {
         }
 
         return sValueFormat;
+    }
+
+    public static String formatDecimal(String str) {
+        if (!TextUtils.isEmpty(str)) {
+            BigDecimal parsed = new BigDecimal(str);
+            // example pattern VND #,###.00
+            DecimalFormat formatter = new DecimalFormat(NUMBER_FORMAT_2, new DecimalFormatSymbols(Locale.US));
+            formatter.setRoundingMode(RoundingMode.DOWN);
+            return formatter.format(parsed);
+        }
+        return "0";
     }
 
     public static String formatPriceDouble(String price) {

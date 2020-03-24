@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -108,6 +109,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     ImageView imgSign;
     @BindView(R.id.tv_total_fee)
     CustomBoldTextView tvTotalFee;
+    @BindView(R.id.edt_receiver_name)
+    EditText tvReceiverName;
+    @BindView(R.id.edt_GTGT)
+    FormItemEditText tvGTGT;
+    @BindView(R.id.layout_real_receiver_name)
+    LinearLayout linearLayoutName;
 
     private String mSign = "";
 
@@ -188,13 +195,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mDeliveryType = 1;
                     ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                     ll_change_route.setVisibility(LinearLayout.GONE);
+                    linearLayoutName.setVisibility(View.GONE);
                 } else if (checkedId == R.id.rad_success) {
                     mDeliveryType = 2;
                     ll_change_route.setVisibility(LinearLayout.GONE);
                     ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                    if (mBaoPhatBangke.size() == 1)
+                        linearLayoutName.setVisibility(View.VISIBLE);
                 } else {
                     ll_confirm_fail.setVisibility(LinearLayout.GONE);
                     ll_change_route.setVisibility(LinearLayout.VISIBLE);
+                    linearLayoutName.setVisibility(View.GONE);
                     mDeliveryType = 3;
                 }
             }
@@ -205,6 +216,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         for (DeliveryPostman i : mBaoPhatBangke) {
             totalAmount += i.getAmount();
             totalFee += i.getTotalFee();
+        }
+
+        if (mBaoPhatBangke.size() == 1) {
+            tvReceiverName.setText(mBaoPhatBangke.get(0).getReciverName());
+            tvGTGT.setText(mBaoPhatBangke.get(0).getVatCode());
+            linearLayoutName.setVisibility(View.VISIBLE);
+        } else {
+            linearLayoutName.setVisibility(View.GONE);
         }
 
         tv_quantity.setText(String.format(" %s", mBaoPhatBangke.size()));
@@ -276,7 +295,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     })
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
-                        mPresenter.paymentDelivery(mFile, mSign);
+                        mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTGT.getText());
                         confirmDialog.dismiss();
                     })
                     .setWarning("Bạn có chắc chắn muốn ghi nhận phát thành công")

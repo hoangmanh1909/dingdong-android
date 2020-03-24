@@ -76,7 +76,7 @@ public interface XacNhanBaoPhatContract {
 
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String signCapture);
 
-        void paymentDelivery(String deliveryImage, String signCapture);
+        void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName, String newVatCode);
 
         void getRouteByPoCode(String poCode);
 

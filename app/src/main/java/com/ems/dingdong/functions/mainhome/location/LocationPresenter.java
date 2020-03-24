@@ -1,16 +1,14 @@
 package com.ems.dingdong.functions.mainhome.location;
 
-import android.app.Activity;
-
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.callback.BarCodeCallback;
-import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.model.CommonObjectResult;
+import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 
-import retrofit2.Call;
-import retrofit2.Response;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The Location Presenter
@@ -43,30 +41,27 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
     }
 
     @Override
-    public void findLocation(String ladingCode) {
-        mView.showProgress();
-        mInteractor.findLocation(ladingCode, new CommonCallback<CommonObjectResult>((Activity) mContainerView){
-            @Override
-            protected void onSuccess(Call<CommonObjectResult> call, Response<CommonObjectResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if(response.body().getErrorCode().equals("00"))
-                {
-                    mView.showFindLocationSuccess(response.body().getCommonObject());
-                }
-                else
-                {
-                    mView.showErrorToast(response.body().getMessage());
-                    mView.showEmpty();
-                }
-            }
-
-            @Override
-            protected void onError(Call<CommonObjectResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
+    public void findLocation() {
+        mView.fromView()
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .flatMap(ladingCode -> mInteractor.findLocation(ladingCode))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        commonObjectResult -> {
+                            mView.hideProgress();
+                            mView.showSuccessToast(commonObjectResult.getMessage());
+                            if (commonObjectResult.getErrorCode().equals("00")) {
+                                mView.showFindLocationSuccess(commonObjectResult.getCommonObject());
+                            } else {
+                                mView.showErrorToast(commonObjectResult.getMessage());
+                                mView.showEmpty();
+                            }
+                        },
+                        throwable -> {
+                            mView.hideProgress();
+                            mView.showErrorToast(throwable.getMessage());
+                        }
+                );
     }
 }

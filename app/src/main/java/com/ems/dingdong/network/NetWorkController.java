@@ -64,11 +64,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClient;
@@ -80,6 +82,7 @@ public class NetWorkController {
     }
 
     private static volatile VinattiAPI apiBuilder;
+    private static volatile VinattiAPI apiRxBuilder;
     private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
 
 
@@ -117,6 +120,22 @@ public class NetWorkController {
             apiBuilder = retrofit.create(VinattiAPI.class);
         }
         return apiBuilder;
+    }
+
+    private static VinattiAPI getAPIRxBuilder() {
+        if (apiRxBuilder == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient(120, 120))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiRxBuilder = retrofit.create(VinattiAPI.class);
+        }
+        return apiRxBuilder;
     }
 
 
@@ -194,8 +213,9 @@ public class NetWorkController {
                                              String fromDate,
                                              String toDate,
                                              String routeCode,
+                                             Integer searchTpe,
                                              CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode);
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchTpe);
         call.enqueue(callback);
     }
 
@@ -211,10 +231,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void findLocation(String ladingCode, CommonCallback<CommonObjectResult> callback) {
+    public static Observable<CommonObjectResult> findLocation(String ladingCode) {
         String signature = Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<CommonObjectResult> call = getAPIBuilder().findLocation(ladingCode.toUpperCase(), signature);
-        call.enqueue(callback);
+        return getAPIRxBuilder().findLocation(ladingCode.toUpperCase(), signature);
     }
 
     public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {

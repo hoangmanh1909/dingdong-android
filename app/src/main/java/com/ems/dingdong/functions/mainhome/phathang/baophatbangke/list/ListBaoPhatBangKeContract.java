@@ -36,6 +36,7 @@ interface ListBaoPhatBangKeContract {
                                    String fromDate,
                                    String toDate,
                                    String routeCode,
+                                   Integer searchType,
                                    CommonCallback<DeliveryPostmanResponse> callback);
 
         void getReasons(CommonCallback<ReasonResult> commonCallback);
@@ -83,7 +84,8 @@ interface ListBaoPhatBangKeContract {
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String toDate,
-                                   String routeCode
+                                   String routeCode,
+                                   Integer deliveryType
         );
 
         void showDetailView(DeliveryPostman commonObject);

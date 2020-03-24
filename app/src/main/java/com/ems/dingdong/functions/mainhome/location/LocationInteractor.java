@@ -1,9 +1,10 @@
 package com.ems.dingdong.functions.mainhome.location;
 
 import com.core.base.viper.Interactor;
-import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Observable;
 
 /**
  * The Location interactor
@@ -16,7 +17,7 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
     }
 
     @Override
-    public void findLocation(String ladingCode, CommonCallback<CommonObjectResult> callback) {
-        NetWorkController.findLocation(ladingCode, callback);
+    public Observable<CommonObjectResult> findLocation(String ladingCode) {
+        return NetWorkController.findLocation(ladingCode);
     }
 }

@@ -82,5 +82,11 @@ public class Constants {
     public static final int ROUTE_DELIVER = 60;
 
 
+    public static final int NORMAL_SEARCH_TYPE = 2;
+    public static final int COD_SEARCH_TYPE = 1;
+    public static final int ALL_SEARCH_TYPE = 0;
+    public static final int HCC_SEARCH_TYPE = 3;
+
+
 
 }

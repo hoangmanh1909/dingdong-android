@@ -195,18 +195,26 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void paymentDelivery(String deliveryImage, String signCapture) {
+    public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName, String newVatCode) {
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
         String deliveryPOCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
         String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mBaoPhatBangke) {
+            String receiverName;
+            String vatCode;
+            if (mBaoPhatBangke.size() == 1) {
+                receiverName = newReceiverName;
+                vatCode = newVatCode;
+            } else {
+                vatCode = item.getVatCode();
+                receiverName= item.getReciverName();
+            }
             String parcelCode = item.getMaE();
-            String receiverName = item.getReciverName();
-
             String reasonCode = "";
             String solutionCode = "";
             String status = "C14";
@@ -226,7 +234,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     deliveryDate,
                     deliveryTime,
                     receiverName,
-                    "",
+                    vatCode,
                     reasonCode,
                     solutionCode,
                     status,
@@ -241,7 +249,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     signature,
                     deliveryImage,
                     userInfo.getUserName(),
-                    item.getBatchCode()
+                    item.getBatchCode(),
+                    isPaymentPP
             );
 
             mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
