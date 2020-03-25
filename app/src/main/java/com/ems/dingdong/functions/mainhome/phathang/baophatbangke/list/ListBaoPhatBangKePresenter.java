@@ -144,7 +144,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void showConfirmDelivery(List<DeliveryPostman> commonObject) {
-        new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).pushView();
+        new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).setOnTabChangeListener(titleTabsListener).pushView();
     }
 
     @Override
@@ -188,7 +188,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void setTitleTab(int quantity) {
-        titleTabsListener.setQuantity(quantity, mType);
+        titleTabsListener.onQuantityChanged(quantity, mType);
     }
 
     @Override
@@ -200,7 +200,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange() {
         return deliveryNotSuccessfulChange;
     }
-
 
     @Override
     public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String signatureCapture) {

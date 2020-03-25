@@ -111,8 +111,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     CustomBoldTextView tvTotalFee;
     @BindView(R.id.edt_receiver_name)
     EditText tvReceiverName;
-    @BindView(R.id.edt_GTGT)
-    FormItemEditText tvGTGT;
+    @BindView(R.id.edt_GTTT)
+    FormItemEditText tvGTTT;
     @BindView(R.id.layout_real_receiver_name)
     LinearLayout linearLayoutName;
 
@@ -220,7 +220,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         if (mBaoPhatBangke.size() == 1) {
             tvReceiverName.setText(mBaoPhatBangke.get(0).getReciverName());
-            tvGTGT.setText(mBaoPhatBangke.get(0).getVatCode());
+            tvGTTT.setText("");
             linearLayoutName.setVisibility(View.VISIBLE);
         } else {
             linearLayoutName.setVisibility(View.GONE);
@@ -295,7 +295,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     })
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
-                        mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTGT.getText());
+                        mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTTT.getText());
                         confirmDialog.dismiss();
                     })
                     .setWarning("Bạn có chắc chắn muốn ghi nhận phát thành công")
@@ -665,6 +665,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void finishView() {
         mPresenter.back();
+        mPresenter.onTabRefresh();
     }
 
     private void showUISolution() {

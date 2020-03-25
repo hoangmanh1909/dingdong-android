@@ -85,5 +85,7 @@ public interface XacNhanBaoPhatContract {
         void cancelDivided(int toRouteId,int toPostmanId,String signCapture,String fileImg);
 
         void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg);
+
+        void onTabRefresh();
     }
 }

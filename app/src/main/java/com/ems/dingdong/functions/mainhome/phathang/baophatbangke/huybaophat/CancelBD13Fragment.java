@@ -42,8 +42,6 @@ import butterknife.OnClick;
 public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presenter> implements CancelBD13Contract.View {
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.tv_title)
-    CustomTextView tvTitle;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
     @BindView(R.id.tv_count)
@@ -170,15 +168,15 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         mPresenter.getCancelDelivery(userInfo.getUserName(), routeInfo.getRouteCode(), fromDate, toDate, ladingCode);
     }
 
-    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back})
+    @OnClick({R.id.img_capture, R.id.tv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
-                mPresenter.back();
-                break;
-            case R.id.img_send:
-                submit();
-                break;
+//            case R.id.img_back:
+//                mPresenter.back();
+//                break;
+//            case R.id.img_send:
+//                submit();
+//                break;
             case R.id.tv_search:
                 showDialog();
                 break;
@@ -201,7 +199,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         }).show();
     }
 
-    private void submit() {
+    public void submit() {
         final List<DingDongGetCancelDelivery> deliveryPostmamns = mAdapter.getItemsSelected();
         if (deliveryPostmamns.size() > 0) {
             long totalAmount = 0;

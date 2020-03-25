@@ -143,7 +143,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
     @Override
     public void closeAuthorise() {
-        back();
+        getViewContext().finish();
     }
 
     private List<AddressListModel> handleObjectList(Object object) throws JSONException {

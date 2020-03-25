@@ -18,4 +18,12 @@ public interface RouteTabsConstract {
     interface Interactor extends IInteractor<Presenter> {
 
     }
+
+    interface OnTabsListener {
+
+        void setQuantity(int quantity, int currentSetTab);
+
+        void onTabChange(int position);
+    }
+
 }

@@ -2,12 +2,12 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.PostOffice;
@@ -41,9 +41,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     private Calendar calDate;
     private int mHour;
     private int mMinute;
-    RouteInfo routeInfo;
-    UserInfo userInfo;
-    PostOffice postOffice;
+    private RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private ListDeliveryConstract.OnTabsListener titleTabsListener;
 
     public XacNhanBaoPhatPresenter(ContainerView containerView) {
         super(containerView);
@@ -195,7 +196,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName, String newVatCode) {
+    public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName, String newGtttCode) {
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
         String deliveryPOCode = postOffice.getCode();
@@ -206,13 +207,13 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mBaoPhatBangke) {
             String receiverName;
-            String vatCode;
+            String gtttCode;
             if (mBaoPhatBangke.size() == 1) {
                 receiverName = newReceiverName;
-                vatCode = newVatCode;
+                gtttCode = newGtttCode;
             } else {
-                vatCode = item.getVatCode();
-                receiverName= item.getReciverName();
+                gtttCode = item.getVatCode();
+                receiverName = item.getReciverName();
             }
             String parcelCode = item.getMaE();
             String reasonCode = "";
@@ -234,7 +235,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     deliveryDate,
                     deliveryTime,
                     receiverName,
-                    vatCode,
+                    gtttCode,
                     reasonCode,
                     solutionCode,
                     status,
@@ -311,7 +312,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
             request.setLadingCode(item.getMaE());
             request.setFromDeliveryRouteId(item.getRouteId());
-            request.setFromPostmanId(Integer.parseInt(userInfo.getiD())) ;
+            request.setFromPostmanId(Integer.parseInt(userInfo.getiD()));
             request.setToDeliveryRouteId(toRouteId);
             request.setToPostmanId(toPostmanId);
             request.setDescription("");
@@ -369,8 +370,18 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
+    public void onTabRefresh() {
+        titleTabsListener.onDelivered();
+    }
+
+    @Override
     public void start() {
 
+    }
+
+    public XacNhanBaoPhatPresenter setOnTabChangeListener(ListDeliveryConstract.OnTabsListener listener) {
+        titleTabsListener = listener;
+        return this;
     }
 
     @Override

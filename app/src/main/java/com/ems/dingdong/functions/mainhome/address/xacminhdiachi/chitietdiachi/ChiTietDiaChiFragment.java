@@ -73,7 +73,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
-    @BindView(R.id.mapView)
+    @BindView(R.id.mapViewDetail)
     MapView mapView;
 
     //    @BindView(R.id.tv_longitude)
@@ -251,7 +251,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         this.mapboxMap.addOnMapClickListener(this);
         this.mapboxMap.getUiSettings().setAttributionEnabled(false);
         this.mapboxMap.getUiSettings().setLogoEnabled(false);
-        mapboxMap.setStyle(Style.MAPBOX_STREETS,
+        this.mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
@@ -301,7 +301,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
                 .zoom(12)
                 .build();
 
-        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
+        this.mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
     }
 
     private void reverseGeocode(final Point point) {

@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter> implements RouteTabsConstract.View, ListDeliveryConstract.OnTabsListener {
+public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter> implements RouteTabsConstract.View, RouteTabsConstract.OnTabsListener {
 
     @BindView(R.id.tabs)
     PagerSlidingTabStrip tabs;

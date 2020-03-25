@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
+import com.ems.dingdong.functions.mainhome.phathang.routemanager.RouteTabsConstract;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.RouteResult;
@@ -17,7 +18,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
 
     private int typeRoute;
 
-    private ListDeliveryConstract.OnTabsListener titleTabsListener;
+    private RouteTabsConstract.OnTabsListener titleTabsListener;
 
     public RoutePresenter(ContainerView containerView) {
         super(containerView);
@@ -33,7 +34,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         return this;
     }
 
-    public RoutePresenter setTitleTabsListener(ListDeliveryConstract.OnTabsListener titleTabsListener) {
+    public RoutePresenter setTitleTabsListener(RouteTabsConstract.OnTabsListener titleTabsListener) {
         this.titleTabsListener = titleTabsListener;
         return this;
     }

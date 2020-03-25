@@ -28,7 +28,6 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     @Override
     public void onDisplay() {
         super.onDisplay();
-        tabList.get(pager.getCurrentItem()).onDisplay();
     }
 
     @Override
@@ -90,7 +89,7 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     }
 
     @Override
-    public void setQuantity(int quantity, int currentSetTab) {
+    public void onQuantityChanged(int quantity, int currentSetTab) {
         mAdapter.setTittle(quantity, currentSetTab);
         mAdapter.notifyDataSetChanged();
         tabs.notifyDataSetChanged();
@@ -102,5 +101,10 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
             pager.setCurrentItem(0);
         else
             pager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onDelivered() {
+        tabList.get(pager.getCurrentItem()).onDisplay();
     }
 }

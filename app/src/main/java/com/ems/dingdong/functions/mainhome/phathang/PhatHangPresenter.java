@@ -1,9 +1,13 @@
 package com.ems.dingdong.functions.mainhome.phathang;
 
+import android.content.Intent;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
@@ -42,7 +46,7 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showViewCancelBd13() {
-        new CancelBD13Presenter(mContainerView).pushView();
+        getViewContext().startActivity(new Intent(getViewContext(), CancelBD13Activity.class));
     }
 
     @Override

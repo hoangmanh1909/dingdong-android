@@ -266,12 +266,12 @@
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Số GTGT: "
+                        android:text="Số GTTT: "
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
                     <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_GTGT"
+                        android:id="@+id/edt_GTTT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"

@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiActivity;
 import com.ems.dingdong.views.CustomTextView;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
@@ -67,7 +69,7 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
-        
+
     }
 
     @Override
@@ -87,8 +89,13 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                 mPresenter.back();
                 break;
             case R.id.btn_get_location:
-                if (mLocation != null)
-                    mPresenter.getLocationAddress(mLocation.getLongitude(), mLocation.getLatitude());
+                if (mLocation != null) {
+                    Intent intent = new Intent(getViewContext(), ChiTietDiaChiActivity.class);
+                    intent.putExtra("long", mLocation.getLongitude());
+                    intent.putExtra("lad", mLocation.getLatitude());
+//                    mPresenter.getLocationAddress(mLocation.getLongitude(), mLocation.getLatitude());
+                    startActivity(intent);
+                }
                 break;
         }
     }
