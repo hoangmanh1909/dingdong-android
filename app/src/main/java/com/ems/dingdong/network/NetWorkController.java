@@ -5,6 +5,7 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
@@ -35,6 +36,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
@@ -72,6 +74,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 
 import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClient;
 
@@ -158,8 +161,8 @@ public class NetWorkController {
     }
 
     public static void searchDeliveryStatistic(String fromDate, String toDate, String status,
-                                               String postmanId, String shift, String routeCode, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, toDate, status, postmanId, shift, routeCode);
+                                               String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode);
         call.enqueue(callback);
     }
 
@@ -578,6 +581,10 @@ public class NetWorkController {
                                          CommonCallback<ChangeRouteResult> callback) {
         Call<ChangeRouteResult> call = getAPIBuilder().getDetailByLadingCode(ladingCode);
         call.enqueue(callback);
+    }
+
+    public static Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request) {
+        return getAPIRxBuilder().cancelDeliveryStatistic(request);
     }
 
 }

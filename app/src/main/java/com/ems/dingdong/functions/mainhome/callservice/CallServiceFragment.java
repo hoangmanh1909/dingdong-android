@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.core.base.viper.ViewFragment;
+import com.core.utils.PermissionUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
@@ -19,6 +20,8 @@ import com.ems.dingdong.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.Manifest.permission.CALL_PHONE;
 
 /**
  * The CallService Fragment
@@ -70,10 +73,10 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
                     Toast.showToast(getActivity(), "Số điện thoại không hợp lệ.");
                     return;
                 }
-                if (!NetworkUtils.isConnected()) {
-                    Toast.showToast(getActivity(), "Vui lòng kiểm tra lại mạng");
-                    return;
-                }
+//                if (!NetworkUtils.isConnected()) {
+//                    Toast.showToast(getActivity(), "Vui lòng kiểm tra lại mạng");
+//                    return;
+//                }
                 mPresenter.callForward(edtPhone.getText().toString().trim());
                 break;
             case R.id.img_history:
@@ -85,8 +88,19 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + edtPhone.getText().toString().trim()));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER.replace(",", "")));
+
+
         startActivity(intent);
     }
 
+    @Override
+    public void showCallError(String message) {
+        showErrorToast(message);
+        if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse(Constants.HEADER_NUMBER.replace(",", "") + "," + edtPhone.getText()));
+            startActivity(intent);
+        }
+    }
 }

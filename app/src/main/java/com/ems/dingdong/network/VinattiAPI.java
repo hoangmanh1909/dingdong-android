@@ -3,6 +3,7 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
@@ -32,6 +33,7 @@ import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
@@ -76,7 +78,6 @@ public interface VinattiAPI {
                                                          @Field("ToDate") String toDate,
                                                          @Field("Status") String status,
                                                          @Field("PostmanId") String postmanId,
-                                                         @Field("ShiftID") String shift,
                                                          @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
@@ -432,5 +433,8 @@ public interface VinattiAPI {
 
     @GET("api/ChangeRoute/GetDetailByLadingCode")
     Call<ChangeRouteResult> getDetailByLadingCode(@Query("ladingCode") String ladingCode);
+
+    @POST("api/LadingCancelDelivery/Statistic")
+    Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
 
 }

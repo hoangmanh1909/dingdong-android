@@ -16,7 +16,7 @@ interface StatisticContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void searchDeliveryStatistic(String fromDate, String toDate, String status,
-                                     String postmanId, String shift, String routeCode, CommonCallback<CommonObjectListResult> callback);
+                                     String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -26,7 +26,7 @@ interface StatisticContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void search(String fromDate, String status, String shift, String routeCode);
+        void search(String fromDate, String toDate, String status, String routeCode);
 
         String getStatus();
 

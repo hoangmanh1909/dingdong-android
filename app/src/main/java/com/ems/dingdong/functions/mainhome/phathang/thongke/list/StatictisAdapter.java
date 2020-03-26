@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.R;
 
 import java.util.List;
 
@@ -57,17 +57,21 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
         public void bindView(final Object model, int position) {
             CommonObject item = (CommonObject) model;
             tvCount.setText(String.format("Số thứ tự: %s", item.getCount()));
-            tvParcelCode.setText(item.getParcelCode());
+
+            if (!TextUtils.isEmpty(item.getParcelCode())) {
+                tvParcelCode.setText(item.getParcelCode());
+            } else {
+                tvParcelCode.setText("");
+            }
+
             if (!TextUtils.isEmpty(item.getReceiverPhone())) {
                 tvReceiverName.setText(String.format("%s - %s", item.getReciverName(), item.getReceiverPhone()));
             } else {
                 tvReceiverName.setText(String.format("%s", item.getReciverName()));
             }
-            if("".equals(item.getIsPaypost()) || item.getIsPaypost() == null)
-            {
+            if ("".equals(item.getIsPaypost()) || item.getIsPaypost() == null) {
                 tvStatusPaypost.setText("");
-            }
-           else if ("Y".equals(item.getIsPaypost())) {
+            } else if ("Y".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thành công");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
             } /*else if ("E".equals(item.getIsPaypost())) {
@@ -83,10 +87,20 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvStatusPaypost.setText("Gạch nợ thất bại");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.color_debit_unsuccessful));
             }
-
             // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
-            tvDeliveryDate.setText(item.getDeliveryDate());
-            tvStatusName.setText(item.getStatusName());
+
+            if (!TextUtils.isEmpty(item.getStatusName())) {
+                tvStatusName.setText(item.getStatusName());
+            } else {
+                tvStatusName.setText("");
+            }
+
+            if (!TextUtils.isEmpty(item.getDeliveryDate())) {
+                tvDeliveryDate.setText(item.getDeliveryDate());
+            } else {
+                tvDeliveryDate.setText("");
+            }
+
             if (item.getStatus().equals("C14")) {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                 if (!TextUtils.isEmpty(item.getServiceName())) {
@@ -99,10 +113,14 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 }
             }
 
-            if (!TextUtils.isEmpty(item.getCollectAmount())) {
+            if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()) + Long.parseLong(item.getReceiveCollectFee()))));
+            } else if (!TextUtils.isEmpty(item.getCollectAmount())) {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
+            } else if (!TextUtils.isEmpty(item.getReceiveCollectFee())) {
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getReceiveCollectFee()))));
             } else {
-                tvAmount.setText(String.format("%s VNĐ", "0"));
+                tvAmount.setText("0 VNĐ");
             }
         }
     }

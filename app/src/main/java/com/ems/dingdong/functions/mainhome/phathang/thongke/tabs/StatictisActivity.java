@@ -12,8 +12,4 @@ public class StatictisActivity extends DingDongActivity {
         thongKeTabsFragment = (ThongKeTabsFragment) new ThongKeTabsPresenter(this).getFragment();
         return thongKeTabsFragment;
     }
-
-    public void setShift(String shiftName, int position) {
-        thongKeTabsFragment.setShift(shiftName, position);
-    }
 }

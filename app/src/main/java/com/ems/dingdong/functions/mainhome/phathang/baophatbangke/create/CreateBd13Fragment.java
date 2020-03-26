@@ -389,17 +389,17 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @Override
     public void showSuccessMessage(String message) {
+        mList.clear();
+        searchLadingBd13(mFromDate, mToDate, mChuyenThu);
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText(message)
+                    .setConfirmText("OK")
                     .setTitleText(getResources().getString(R.string.notification))
                     .setContentText(message)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            mList.clear();
-                            searchLadingBd13(mFromDate, mToDate, mChuyenThu);
                         }
                     }).show();
         }
