@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -11,6 +12,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic.CancelBD13StatisticFragment;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic.CancelBD13StatisticPresenter;
 import com.ems.dingdong.views.CustomTextView;
+import com.ems.dingdong.views.OnCustomPageChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Presenter> implements CancelBD13TabContract.View {
+public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Presenter>
+        implements CancelBD13TabContract.View, CancelBD13TabContract.OnTabListener {
 
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
@@ -26,6 +29,9 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
     ViewPager pager;
     @BindView(R.id.tabs)
     PagerSlidingTabStrip tabs;
+    @BindView(R.id.img_send)
+    ImageView send;
+
     private List<ViewFragment> tabList;
     private CancelBD13TabAdapter mAdapter;
 
@@ -54,12 +60,29 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
             }
             return;
         }
+        send.setVisibility(View.VISIBLE);
         tvTitle.setText("Hủy báo phát");
         tabList = new ArrayList<>();
-        tabList.add((CancelBD13Fragment) new CancelBD13Presenter(mPresenter.getContainerView()).getFragment());
+        tabList.add((CancelBD13Fragment) new CancelBD13Presenter(mPresenter.getContainerView()).setOnTabListener(this).getFragment());
         tabList.add((CancelBD13StatisticFragment) new CancelBD13StatisticPresenter(mPresenter.getContainerView()).getFragment());
         mAdapter = new CancelBD13TabAdapter(getChildFragmentManager(), getContext(), tabList);
         pager.setAdapter(mAdapter);
+        pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
+            @Override
+            public void onCustomPageSelected(int newPosition) {
+                switch (newPosition) {
+                    case 0:
+                        send.setVisibility(View.VISIBLE);
+                        break;
+
+                    case 1:
+                        send.setVisibility(View.GONE);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("can not find any tab!");
+                }
+            }
+        });
         tabs.setViewPager(pager);
     }
 
@@ -78,4 +101,9 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
         }
     }
 
+    @Override
+    public void onCanceledDelivery() {
+        CancelBD13StatisticFragment fragment = (CancelBD13StatisticFragment) tabList.get(1);
+        fragment.refreshLayout();
+    }
 }

@@ -451,7 +451,7 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void cancelDelivery(List<DingDongCancelDeliveryRequest> request, CommonCallback<SimpleResult> callback) {
+    public static void cancelDelivery(DingDongCancelDeliveryRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
         call.enqueue(callback);
     }

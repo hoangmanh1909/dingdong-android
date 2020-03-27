@@ -20,7 +20,7 @@ public class CancelBD13Interactor extends Interactor<CancelBD13Contract.Presente
     }
 
     @Override
-    public void cancelDelivery(List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback) {
+    public void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback) {
         NetWorkController.cancelDelivery(dingDongGetCancelDeliveryRequestList,callback);
     }
 }

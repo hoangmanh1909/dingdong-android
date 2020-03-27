@@ -325,7 +325,7 @@ public interface VinattiAPI {
             @Field("ToDate") String toDate);
 
     @POST("api/DingDong/CancelDelivery")
-    Call<SimpleResult> cancelDelivery(@Body List<DingDongCancelDeliveryRequest> taskRequest);
+    Call<SimpleResult> cancelDelivery(@Body DingDongCancelDeliveryRequest taskRequest);
 
     @GET("api/Dictionary/GetDeliveryRoute")
     Call<RouteInfoResult> getDeliveryRoute(@Query("poCode") String poCode);

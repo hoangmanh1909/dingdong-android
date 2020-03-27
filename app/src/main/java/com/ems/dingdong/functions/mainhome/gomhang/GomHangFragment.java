@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
@@ -82,7 +83,10 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                             intent.putExtra(Constants.TYPE_GOM_HANG, 2);
                             startActivity(intent);
                         } else if (homeInfo.getId() == 2) {
-                            mPresenter.showXacNhanDiaChiPresenter();
+//                            mPresenter.showXacNhanDiaChiPresenter();
+                            Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
+                            intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                            startActivity(intent);
                         } else if (homeInfo.getId() == 4) {
                             mPresenter.showListHoanTatNhieuTin();
                         } else {

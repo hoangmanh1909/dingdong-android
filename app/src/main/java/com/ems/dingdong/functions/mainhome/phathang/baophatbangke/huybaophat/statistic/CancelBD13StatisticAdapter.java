@@ -1,13 +1,12 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +27,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
 
     private List<CancelStatisticItem> mListFilter;
     private List<CancelStatisticItem> mList;
-    Context mContext;
+    private Context mContext;
 
     public CancelBD13StatisticAdapter(Context context, List<CancelStatisticItem> items, CancelBD13StatisticAdapter.FilterDone filterDone) {
         mListFilter = items;
@@ -49,11 +48,15 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                     List<CancelStatisticItem> filteredList = new ArrayList<>();
                     for (CancelStatisticItem row : mList) {
 
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-//                        if (row.getLadingCode().toLowerCase().contains(charString.toLowerCase())) {
-//                            filteredList.add(row);
-//                        }
+                        if ((row.getLadingCode() != null && row.getLadingCode().toLowerCase().contains(charString.toLowerCase()))
+                                || (row.getLastDateTimeUpdate() != null && row.getLastDateTimeUpdate().toLowerCase().contains(charString.toLowerCase()))
+                                || (row.getReceiverAddress() != null && row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase()))
+                                || (row.getSenderName() != null && row.getSenderName().toLowerCase().contains(charString.toLowerCase()))
+                                || (row.getStatusName() != null && row.getStatusName().toLowerCase().contains(charString.toLowerCase()))
+                                || (row.getReceiverName() != null && row.getReceiverName().toLowerCase().contains(charString.toLowerCase()))
+                        ) {
+                            filteredList.add(row);
+                        }
                     }
 
                     mListFilter = filteredList;
@@ -95,7 +98,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
     @NonNull
     @Override
     public HolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CancelBD13StatisticAdapter.HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cancel_bd13, parent, false));
+        return new CancelBD13StatisticAdapter.HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cancel_statistic, parent, false));
     }
 
     @Override
@@ -110,22 +113,14 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
 
     class HolderView extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.cb_selected)
-        CheckBox cb_selected;
-        @BindView(R.id.tv_code)
-        CustomBoldTextView tv_code;
+        @BindView(R.id.tv_parcel_code)
+        CustomBoldTextView tvParcelCode;
+        @BindView(R.id.tv_delivery_date)
+        CustomTextView tvDeliveryDate;
+        @BindView(R.id.tv_status_name)
+        CustomTextView tvStatusName;
         @BindView(R.id.tv_amount)
-        CustomTextView tv_amount;
-        @BindView(R.id.tv_fee)
-        CustomTextView tvFee;
-        @BindView(R.id.tv_status_paypost)
-        CustomTextView tv_status_paypost;
-        @BindView(R.id.layout_cancel_delivery)
-        LinearLayout layoutDelivery;
-        @BindView(R.id.tv_receiver_name_address)
-        CustomTextView receiverNameAddress;
-        @BindView(R.id.tv_sender_name)
-        CustomTextView senderName;
+        CustomBoldTextView tvAmount;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -137,24 +132,34 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
         }
 
         public void bindView(Object model) {
-//            DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
-//            tv_code.setText(item.getLadingCode());
-//            tv_amount.setText(String.format("Số tiền: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
-//            tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
-//            receiverNameAddress.setText(String.format("Người nhận - Địa chỉ: %s - %s", item.getReceiverName(), item.getReceiverAddress()));
-//            senderName.setText(String.format("Người gửi: %s", item.getSenderName()));
-//            String status = "";
-//            if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
-//                if (item.getPaymentPayPostStatus().equals("Y")) {
-//                    status = "Gạch nợ thành công";
-//                } else {
-//                    status = "Gạch nợ thất bại";
-//                    tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
-//                }
-//            }
-//
-//            tv_status_paypost.setText(status);
-//            cb_selected.setChecked(item.isSelected());
+            CancelStatisticItem item = (CancelStatisticItem) model;
+            if (!TextUtils.isEmpty(item.getLadingCode())) {
+                tvParcelCode.setVisibility(View.VISIBLE);
+                tvParcelCode.setText(item.getLadingCode());
+            } else {
+                tvParcelCode.setVisibility(View.GONE);
+            }
+
+            if (item.getcODAmount() != null) {
+                tvAmount.setVisibility(View.VISIBLE);
+                tvAmount.setText((String.format("%s VNĐ", String.valueOf(item.getcODAmount()))));
+            } else {
+                tvAmount.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(item.getStatusName())) {
+                tvStatusName.setVisibility(View.VISIBLE);
+                tvStatusName.setText(item.getStatusName());
+            } else {
+                tvStatusName.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(item.getLastDateTimeUpdate())) {
+                tvDeliveryDate.setVisibility(View.VISIBLE);
+                tvDeliveryDate.setText(item.getLastDateTimeUpdate());
+            } else {
+                tvDeliveryDate.setVisibility(View.GONE);
+            }
         }
     }
 

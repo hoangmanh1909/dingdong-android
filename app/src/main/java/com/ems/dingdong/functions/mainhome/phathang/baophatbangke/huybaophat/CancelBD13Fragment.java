@@ -23,13 +23,11 @@ import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 
 import java.util.ArrayList;
@@ -201,11 +199,12 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     public void submit() {
         final List<DingDongGetCancelDelivery> deliveryPostmamns = mAdapter.getItemsSelected();
+        if (deliveryPostmamns.size() > 1) {
+            showErrorToast("Bạn đã chọn nhiều hơn một bưu gửi");
+            return;
+        }
         if (deliveryPostmamns.size() > 0) {
-            long totalAmount = 0;
-            for (DingDongGetCancelDelivery i : deliveryPostmamns) {
-                totalAmount = totalAmount + i.getAmount();
-            }
+            long totalAmount = deliveryPostmamns.get(0).getAmount();
             showDialogConfirm(deliveryPostmamns.size(), totalAmount);
         } else {
             Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
@@ -217,27 +216,17 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
             @Override
             public void onResponse(String type, String description) {
-                final List<DingDongGetCancelDelivery> deliveryPostmans = mAdapter.getItemsSelected();
-
-                List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequests = new ArrayList<>();
-
-                for (DingDongGetCancelDelivery i : deliveryPostmans) {
-                    DingDongCancelDeliveryRequest request = new DingDongCancelDeliveryRequest();
-                    request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
-                    request.setAmndPOCode(userInfo.getUnitCode());
-                    request.setLadingCode(i.getLadingCode());
-                    request.setLadingJourneyId(i.getLadingJourneyId());
-                    request.setPaymentPayPostStatus(i.getPaymentPayPostStatus());
-                    request.setAmount(i.getAmount());
-                    request.setCancelDeliveryReasonType(type);
-                    request.setDescription(description);
-                    dingDongGetCancelDeliveryRequests.add(request);
-                }
-
-                String json = NetWorkController.getGson().toJson(dingDongGetCancelDeliveryRequests);
-                Log.d("JSON POST ====>", json);
-
-                mPresenter.cancelDelivery(dingDongGetCancelDeliveryRequests);
+                DingDongGetCancelDelivery item = mAdapter.getItemsSelected().get(0);
+                DingDongCancelDeliveryRequest request = new DingDongCancelDeliveryRequest();
+                request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
+                request.setAmndPOCode(userInfo.getUnitCode());
+                request.setLadingCode(item.getLadingCode());
+                request.setLadingJourneyId(item.getLadingJourneyId());
+                request.setPaymentPayPostStatus(item.getPaymentPayPostStatus());
+                request.setAmount(item.getAmount());
+                request.setCancelDeliveryReasonType(type);
+                request.setDescription(description);
+                mPresenter.cancelDelivery(request);
             }
         }).show();
     }
@@ -257,14 +246,16 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     @Override
-    public void showListEmpty() {
-
+    public void showError(String message) {
+        showErrorToast(message);
+        mPresenter.onCanceled();
     }
 
     @Override
     public void showView(String message) {
-        Toast.showToast(getContext(), message);
         mList.clear();
+        mPresenter.onCanceled();
+        showSuccessToast(message);
         getCancelDelivery(mFromDate, mToDate, "");
     }
 

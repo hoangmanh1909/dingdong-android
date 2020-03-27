@@ -19,7 +19,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.login.LoginActivity;
-import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
@@ -88,7 +88,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent;
         Bundle bundle = new Bundle();
         if (messageBody.contains(Constants.GOM_HANG)) {
-            intent = new Intent(this, XacNhanDiaChiActivity.class);
+            intent = new Intent(this, ListCommonActivity.class);
             intent.putExtra(Constants.TYPE_GOM_HANG, 1);
         } else {
             intent = new Intent(this, ListBaoPhatBangKeActivity.class);

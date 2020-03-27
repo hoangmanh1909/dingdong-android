@@ -2,12 +2,15 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.st
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticContract.View, CancelBD13StatisticContract.Interactor> implements CancelBD13StatisticContract.Presenter {
+public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticContract.View,
+        CancelBD13StatisticContract.Interactor> implements CancelBD13StatisticContract.Presenter {
 
     public CancelBD13StatisticPresenter(ContainerView containerView) {
         super(containerView);
@@ -44,7 +47,6 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
                         listStatistic -> {
                             if (listStatistic.getErrorCode().equals("00")) {
                                 mView.showListSuccess(listStatistic.getStatisticItemList());
-                                mView.showSuccessToast(listStatistic.getMessage());
                             } else {
                                 mView.showError(listStatistic.getMessage());
                             }
@@ -54,5 +56,15 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
                             mView.showError(error.getMessage());
                         }
                 );
+    }
+
+    @Override
+    public ContainerView getContainerView() {
+        return mContainerView;
+    }
+
+    @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 }

@@ -5,8 +5,6 @@ import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.network.NetWorkController;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 
 public class CancelBD13StatisticInteractor extends Interactor<CancelBD13StatisticContract.Presenter> implements CancelBD13StatisticContract.Interactor {

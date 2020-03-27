@@ -16,14 +16,14 @@ import java.util.List;
 public interface CancelBD13Contract {
     interface Interactor extends IInteractor<Presenter> {
         void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> commonCallback);
-        void cancelDelivery(List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback);
+        void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter>
     {
         void showListSuccess(ArrayList<DingDongGetCancelDelivery> list);
 
-        void showListEmpty();
+        void showError(String message);
 
         void showView(String message);
     }
@@ -32,6 +32,7 @@ public interface CancelBD13Contract {
     {
         void showBarcode(BarCodeCallback barCodeCallback);
         void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode);
-        void cancelDelivery(List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequestList);
+        void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList);
+        void onCanceled();
     }
 }

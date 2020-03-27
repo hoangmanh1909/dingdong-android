@@ -1,11 +1,18 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.OnChooseDay;
+import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic.detail.CancelStatisticDetailPresenter;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
@@ -23,6 +30,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13StatisticContract.Presenter>
         implements CancelBD13StatisticContract.View {
@@ -76,15 +84,38 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
         }
         mList = new ArrayList<>();
         calendar = Calendar.getInstance();
+        mFromDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        mToDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mAdapter = new CancelBD13StatisticAdapter(getViewContext(), mList, (count, amount) ->
                 new Handler().postDelayed(() -> {
                     tvCount.setText(String.format("Số lượng: %s", count + ""));
                     tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount)));
-                }, 1000)
-        );
-        Integer fromDate = Integer.parseInt(DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-        Integer toDate = Integer.parseInt(DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-        mPresenter.getCancelDeliveryStatic(postOffice.getCode(), userInfo.getUserName(), routeInfo.getRouteCode(), fromDate, toDate, "");
+                }, 1000)) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(v -> new CancelStatisticDetailPresenter(mPresenter.getContainerView()).setItemDetail(mList.get(position)).pushView());
+            }
+        };
+        recycler.setAdapter(mAdapter);
+        edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s.toString());
+            }
+        });
+        refreshLayout();
     }
 
     @Override
@@ -94,11 +125,59 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
 
     @Override
     public void showListSuccess(List<CancelStatisticItem> resultList) {
-        showSuccessToast("thành công");
+        mList.clear();
+        long totalAmount = 0;
+        if (resultList != null && !resultList.isEmpty()) {
+            for (CancelStatisticItem item : resultList) {
+                totalAmount += (item.getcODAmount() + item.getFee());
+                mList.add(item);
+            }
+        }
+        tvCount.setText(String.format("Số lượng: %s", mList.size() + ""));
+        tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        mAdapter.setListFilter(mList);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showError(String message) {
-        showSuccessToast("thất bại");
+        showSuccessToast(message);
+    }
+
+    public void refreshLayout() {
+        Integer fromDate = Integer.parseInt(mFromDate);
+        Integer toDate = Integer.parseInt(mToDate);
+        mPresenter.getCancelDeliveryStatic(postOffice.getCode(), userInfo.getUserName(), routeInfo.getRouteCode(), fromDate, toDate, "");
+    }
+
+    @OnClick({R.id.img_capture, R.id.tv_search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_capture:
+                scanQr();
+                break;
+            case R.id.tv_search:
+                showDialog();
+                break;
+            default:
+                throw new IllegalArgumentException("cant not find view just have clicked");
+        }
+    }
+
+    public void scanQr() {
+        mPresenter.showBarcode(value -> {
+            edtSearch.setText(value);
+        });
+    }
+
+    private void showDialog() {
+        new EditDayDialog(getActivity(), new OnChooseDay() {
+            @Override
+            public void onChooseDay(Calendar calFrom, Calendar calTo) {
+                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                refreshLayout();
+            }
+        }).show();
     }
 }

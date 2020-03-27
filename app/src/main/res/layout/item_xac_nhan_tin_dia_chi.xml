@@ -86,6 +86,12 @@
                     tools:text="Chưa Xác nhận" />
             </RelativeLayout>
 
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_weight"
+                android:textColor="@color/black"
+                android:text="Khối lượng: "/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
