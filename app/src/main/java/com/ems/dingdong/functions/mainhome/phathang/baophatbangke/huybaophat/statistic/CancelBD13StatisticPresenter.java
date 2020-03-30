@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.st
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabContract;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 
@@ -11,6 +12,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticContract.View,
         CancelBD13StatisticContract.Interactor> implements CancelBD13StatisticContract.Presenter {
+
+    private CancelBD13TabContract.OnTabListener tabListener;
 
     public CancelBD13StatisticPresenter(ContainerView containerView) {
         super(containerView);
@@ -30,6 +33,12 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
     public CancelBD13StatisticContract.View onCreateView() {
         return CancelBD13StatisticFragment.getInstance();
     }
+
+    public CancelBD13StatisticPresenter setOnTabListener(CancelBD13TabContract.OnTabListener listener) {
+        this.tabListener = listener;
+        return this;
+    }
+
 
     @Override
     public void getCancelDeliveryStatic(String poCode, String postmanCode, String routeCode, Integer fromDate, Integer toDate, String statusCode) {
@@ -66,5 +75,10 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
     @Override
     public void showBarcode(BarCodeCallback barCodeCallback) {
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    @Override
+    public void titleChanged(int quantity, int currentSetTab) {
+        tabListener.onQuantityChange(quantity, currentSetTab);
     }
 }

@@ -59,7 +59,6 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (!"6".equals(userInfo.getEmpGroupID())) {
-                homeInfos.add(new HomeInfo(12, R.drawable.ic_location_blue, "Tra cứu bưu gửi"));
                 homeInfos.add(new HomeInfo(7, R.drawable.ic_lap_ban_ke, "Lập bản kê BD13"));
                 homeInfos.add(new HomeInfo(1, R.drawable.ic_bao_phat_ban_ke, "Báo phát bản kê (BD13)"));
                 homeInfos.add(new HomeInfo(8, R.drawable.ic_nhap_bao_phat, "Nhập báo phát offline"));
@@ -74,6 +73,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(13, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển hoàn"));
                 homeInfos.add(new HomeInfo(14, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển tiếp"));
                 homeInfos.add(new HomeInfo(15, R.drawable.ic_thong_ke_bao_phat, "Quản lý chuyển tuyến"));
+                homeInfos.add(new HomeInfo(12, R.drawable.ic_location_blue, "Tra cứu bưu gửi"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }

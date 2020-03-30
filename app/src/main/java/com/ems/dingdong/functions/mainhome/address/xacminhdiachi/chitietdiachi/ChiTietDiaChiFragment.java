@@ -469,7 +469,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
 // Transform the appearance of the button to become the cancel button
         selectLocationButton.setBackgroundColor(
-                ContextCompat.getColor(getContext(), R.color.colorAccent));
+                ContextCompat.getColor(getContext(), R.color.bg_blue_primary));
         selectLocationButton.setText("Hủy chọn");
 //
 // Show the SymbolLayer icon to represent the selected map location

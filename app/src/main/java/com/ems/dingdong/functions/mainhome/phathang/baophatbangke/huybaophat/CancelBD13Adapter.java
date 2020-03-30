@@ -1,6 +1,8 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,7 +95,8 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         }
         return commonObjectsSelected;
     }
-     public void setListFilter(List<DingDongGetCancelDelivery> list) {
+
+    public void setListFilter(List<DingDongGetCancelDelivery> list) {
         mListFilter = list;
     }
 
@@ -144,11 +146,29 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
         public void bindView(Object model) {
             DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
-            tv_code.setText(item.getLadingCode());
-            tv_amount.setText(String.format("Số tiền: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
-            tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
-            receiverNameAddress.setText(String.format("Người nhận - Địa chỉ: %s - %s", item.getReceiverName(), item.getReceiverAddress()));
-            senderName.setText(String.format("Người gửi: %s", item.getSenderName()));
+            if (!TextUtils.isEmpty(item.getLadingCode()))
+                tv_code.setText(item.getLadingCode());
+            if (item.getAmount() != null)
+                tv_amount.setText(String.format("Số tiền: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+            if (item.getFee() != null)
+                tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
+            if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    if (!TextUtils.isEmpty(item.getReceiverAddress())) {
+                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + " - " + item.getReceiverAddress() + "</b>", Html.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + "</b>", Html.FROM_HTML_MODE_COMPACT));
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(item.getReceiverAddress())) {
+                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + " - " + item.getReceiverAddress() + "</b>"));
+                    } else {
+                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + "</b>"));
+                    }
+                }
+            }
+            if (!TextUtils.isEmpty(item.getSenderName()))
+                senderName.setText(String.format("Người gửi: %s", item.getSenderName()));
             String status = "";
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
@@ -160,6 +180,13 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             }
 
             tv_status_paypost.setText(status);
+            cb_selected.setOnCheckedChangeListener((v1, v2) -> {
+                if (v2) {
+                    layoutDelivery.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                } else {
+                    layoutDelivery.setBackgroundColor(mContext.getResources().getColor(R.color.primary));
+                }
+            });
             cb_selected.setChecked(item.isSelected());
         }
     }

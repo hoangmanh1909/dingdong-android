@@ -1,6 +1,9 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -183,16 +186,24 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             return mListFilter.get(position);
         }
 
+        @SuppressLint("SetTextI18n")
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
             tv_code.setText(item.getMaE());
-            tv_receiver.setText("Người nhận: " + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                tv_receiver.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress() + "</b>", Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                tv_receiver.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress() + "</b>"));
+            }
+
+//            tv_receiver.setText("Người nhận: " + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress());
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + item.getSenderMobile() + " - " + item.getSenderAddress());
             tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
 
-            if(!TextUtils.isEmpty(item.getbD13CreatedDate())) {
+            if (!TextUtils.isEmpty(item.getbD13CreatedDate())) {
                 tvCreateDated.setText(String.format("Được giao ngày: %s", item.getbD13CreatedDate()));
             }
             if (null != item.getDescription()) {

@@ -26,7 +26,9 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
     @BindView(R.id.tv_sender_address)
     CustomTextView tvSenderAddress;
     @BindView(R.id.tv_debit_status)
-    CustomTextView tvStatus;
+    CustomTextView tvDebitStatus;
+    @BindView(R.id.tv_cancel_status)
+    CustomTextView tvCancelStatus;
     @BindView(R.id.tv_cod)
     CustomTextView tvCod;
     @BindView(R.id.tv_fee)
@@ -59,7 +61,14 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
             }
 
             if (!TextUtils.isEmpty(item.getStatusName())) {
-                tvStatus.setText(item.getStatusName());
+                tvCancelStatus.setText(item.getStatusName());
+                if (getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
+                    tvCancelStatus.setTextColor(getResources().getColor(R.color.blue));
+                } else if (getString(R.string.approved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
+                    tvCancelStatus.setTextColor(getResources().getColor(R.color.orange));
+                } else {
+                    tvCancelStatus.setTextColor(getResources().getColor(R.color.red_light));
+                }
             }
 
             if (item.getFee() != null) {
@@ -68,6 +77,14 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
 
             if (item.getcODAmount() != null) {
                 tvCod.setText(String.valueOf(item.getcODAmount()));
+            }
+
+            if (item.getPaymentPayPostStatus() != null) {
+                if ("Y".equals(item.getPaymentPayPostStatus())) {
+                    tvDebitStatus.setText("Gạch nợ thành công");
+                } else if ("N".equals(item.getPaymentPayPostStatus())) {
+                    tvDebitStatus.setText("Gạch nợ thất bại");
+                }
             }
         }
     }

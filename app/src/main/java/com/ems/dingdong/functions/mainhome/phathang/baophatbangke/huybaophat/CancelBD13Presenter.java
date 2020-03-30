@@ -104,4 +104,9 @@ public class CancelBD13Presenter extends Presenter<CancelBD13Contract.View, Canc
     public void onCanceled() {
         tabListener.onCanceledDelivery();
     }
+
+    @Override
+    public void titleChanged(int quantity, int currentSetTab) {
+        tabListener.onQuantityChange(quantity, currentSetTab);
+    }
 }

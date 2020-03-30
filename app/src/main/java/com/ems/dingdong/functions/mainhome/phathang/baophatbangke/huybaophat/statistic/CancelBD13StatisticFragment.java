@@ -39,8 +39,6 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
     RecyclerView recycler;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    @BindView(R.id.tv_count)
-    CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
 
@@ -88,7 +86,6 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
         mToDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mAdapter = new CancelBD13StatisticAdapter(getViewContext(), mList, (count, amount) ->
                 new Handler().postDelayed(() -> {
-                    tvCount.setText(String.format("Số lượng: %s", count + ""));
                     tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount)));
                 }, 1000)) {
             @Override
@@ -133,7 +130,7 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
                 mList.add(item);
             }
         }
-        tvCount.setText(String.format("Số lượng: %s", mList.size() + ""));
+        mPresenter.titleChanged(mList.size(), 1);
         tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();

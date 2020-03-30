@@ -392,7 +392,9 @@ public interface VinattiAPI {
                                       @Field("ToDate") String toDate,
                                       @Field("PostmanId") String postmanId,
                                       @Field("RouteId") String routeId,
-                                      @Field("POCode") String poCode);
+                                      @Field("POCode") String poCode,
+                                      @Field("StatusCode") String statusId,
+                                      @Field("ToRouteId") Integer fromRouteId);
 
     @FormUrlEncoded
     @POST("api/ChangeRoute/SearchForApproved")
@@ -401,7 +403,10 @@ public interface VinattiAPI {
                                         @Field("ToDate") String toDate,
                                         @Field("PostmanId") String postmanId,
                                         @Field("RouteId") String routeId,
-                                        @Field("POCode") String poCode);
+                                        @Field("POCode") String poCode,
+                                        @Field("StatusCode") String statusId,
+                                        @Field("FromRouteId") Integer fromRouteId
+    );
 
     @FormUrlEncoded
     @POST("api/ChangeRoute/ApprovedAgree")

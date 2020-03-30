@@ -1,13 +1,15 @@
 package com.ems.dingdong.functions.mainhome.phathang.routemanager.route;
 
+import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.RouteTabsConstract;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
 
@@ -50,15 +52,15 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
     }
 
     @Override
-    public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String poCode) {
+    public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String poCode, String statusCode, Integer fromRouteId) {
         mView.showProgress();
         mInteractor.searchForApproved(ladingCode, fromDate,
                 toDate, postmanId,
-                routeId, poCode, new CommonCallback<RouteResult>(getViewContext()) {
+                routeId, poCode, statusCode, fromRouteId, new CommonCallback<RouteResult>(getViewContext()) {
                     @Override
                     protected void onError(Call<RouteResult> call, String message) {
                         super.onError(call, message);
-                        mView.showErrorToast(message);
+                        mView.showListError(message);
                         mView.hideProgress();
                     }
 
@@ -66,21 +68,24 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                     public void onResponse(Call<RouteResult> call, Response<RouteResult> response) {
                         super.onResponse(call, response);
                         mView.hideProgress();
+                        assert response.body() != null;
                         if (response.body().getErrorCode().equals("00")) {
                             mView.showListSucces(response.body().getRouteResponses());
                             if (titleTabsListener != null)
                                 titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
+                        } else {
+                            mView.showListError(response.body().getMessage());
                         }
                     }
                 });
     }
 
     @Override
-    public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String poCode) {
+    public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String poCode, String statusCode, Integer fromRouteId) {
         mView.showProgress();
         mInteractor.searchForCancel(ladingCode, fromDate,
                 toDate, postmanId,
-                routeId, poCode, new CommonCallback<RouteResult>(getViewContext()) {
+                routeId, poCode, statusCode, fromRouteId, new CommonCallback<RouteResult>(getViewContext()) {
                     @Override
                     protected void onError(Call<RouteResult> call, String message) {
                         super.onError(call, message);
@@ -92,6 +97,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                     public void onResponse(Call<RouteResult> call, Response<RouteResult> response) {
                         super.onResponse(call, response);
                         mView.hideProgress();
+                        assert response.body() != null;
                         if (response.body().getErrorCode().equals("00")) {
                             mView.showListSucces(response.body().getRouteResponses());
                             if (titleTabsListener != null) {
@@ -122,6 +128,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onResponse(call, response);
                 mView.hideProgress();
+                assert response.body() != null;
                 mView.showSuccessToast(response.body().getMessage());
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
@@ -145,6 +152,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onResponse(call, response);
                 mView.hideProgress();
+                assert response.body() != null;
                 mView.showSuccessToast(response.body().getMessage());
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
@@ -168,6 +176,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onResponse(call, response);
                 mView.hideProgress();
+                assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
                     mView.showSuccessToast(response.body().getMessage());
@@ -189,5 +198,22 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
     @Override
     public void showBarcode(BarCodeCallback barCodeCallback) {
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    @Override
+    public void getRouteByPoCode(String poCode) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
+                super.onSuccess(call, response);
+                assert response.body() != null;
+                mView.showRoute(response.body().getRouteInfos());
+            }
+
+            @Override
+            protected void onError(Call<RouteInfoResult> call, String message) {
+                super.onError(call, message);
+            }
+        });
     }
 }

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.dialog.RouteManagerDialog;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,6 +54,10 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     private PostOffice mPostOffice;
     private String mFromDate;
     private String mToDate;
+    private String mladingCode;
+    private Integer mRouteId;
+    private String mStatusId;
+    private List<RouteInfo> mListRoute;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     @Override
@@ -106,7 +111,7 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
             });
             recycler.setAdapter(mAdapter);
 
-            mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode());
+            mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
         } else {
             mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_DELIVER);
             mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
@@ -131,7 +136,7 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
                 }
             });
             recycler.setAdapter(mAdapter);
-            mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode());
+            mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
         }
         initSearchListener();
     }
@@ -160,13 +165,26 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     }
 
     @Override
+    public void showListError(String message) {
+        showErrorToast(message);
+        mList.clear();
+        mAdapter.setListFilter(mList);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void showChangeRouteCommandSucces() {
         showProgress();
         if (mPresenter.getTypeRoute() == Constants.ROUTE_DELIVER) {
-            mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode());
+            mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
         } else {
-            mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode());
+            mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
         }
+    }
+
+    @Override
+    public void showRoute(List<RouteInfo> list) {
+        mListRoute = list;
     }
 
     @OnClick({R.id.ll_scan_qr, R.id.tv_search})
@@ -182,7 +200,7 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     }
 
     private void initUserInfo() {
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -191,6 +209,8 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
             mRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
             mPostOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
         }
+        if (mUserInfo != null)
+            mPresenter.getRouteByPoCode(mUserInfo.getUnitCode());
     }
 
     private void initSearchListener() {
@@ -213,19 +233,22 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), mFromDate, mToDate, (calFrom, calTo) -> {
-            mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        new RouteManagerDialog(getActivity(), mPresenter.getTypeRoute(), mListRoute, mFromDate, mToDate, (calFrom, calTo, ladingCode, statusId, routeId) -> {
+            mFromDate = calFrom;
+            mToDate = calTo;
+            mladingCode = ladingCode;
+            mStatusId = statusId;
+            mRouteId = routeId;
             if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
-                mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode());
+                mPresenter.searchForApproved(mladingCode, mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), statusId, routeId);
             } else
-                mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode());
+                mPresenter.searchForCancel(mladingCode, mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), statusId, routeId);
         }).show();
     }
 
     private void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasReadExternalPermission = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.CAMERA);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
             }

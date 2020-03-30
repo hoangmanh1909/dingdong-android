@@ -5,14 +5,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.CreatedBD13Callback;
-import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
@@ -42,22 +41,20 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     RecyclerView recycler;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    @BindView(R.id.tv_count)
-    CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
 
-    UserInfo userInfo;
-    PostOffice postOffice;
-    RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private RouteInfo routeInfo;
 
-    List<DingDongGetCancelDelivery> mList = new ArrayList<>();
-    CancelBD13Adapter mAdapter;
+    private List<DingDongGetCancelDelivery> mList = new ArrayList<>();
+    private CancelBD13Adapter mAdapter;
     private boolean isLoading = false;
     private Calendar calendar;
 
-    String mFromDate = "";
-    String mToDate = "";
+    private String mFromDate = "";
+    private String mToDate = "";
 
     public static CancelBD13Fragment getInstance() {
         return new CancelBD13Fragment();
@@ -72,7 +69,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     public void initLayout() {
         super.initLayout();
 
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -86,28 +83,18 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-        mAdapter = new CancelBD13Adapter(getActivity(), mList, new CancelBD13Adapter.FilterDone() {
-            @Override
-            public void getCount(int count, long amount) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (isLoading) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
-                        tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
-                    }
-                }, 1000);
-
+        mAdapter = new CancelBD13Adapter(getActivity(), mList, (count, amount) -> new Handler().postDelayed(() -> {
+            while (isLoading) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }) {
+            tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount)));
+        }, 1000)) {
             @Override
-            public void onBindViewHolder(HolderView holder, final int position) {
+            public void onBindViewHolder(@NonNull HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
 //                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
@@ -117,15 +104,10 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 //                        }
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                    if (holder.getItem(position).isSelected()) {
-                        holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
-                    } else {
-                        holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.white));
-                    }
                 });
             }
         };
-        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        recycler.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
 
         calendar = Calendar.getInstance();
@@ -157,9 +139,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     public void scanQr() {
-        mPresenter.showBarcode(value -> {
-            edtSearch.setText(value);
-        });
+        mPresenter.showBarcode(value -> edtSearch.setText(value));
     }
 
     private void getCancelDelivery(String fromDate, String toDate, String ladingCode) {
@@ -187,13 +167,10 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), new OnChooseDay() {
-            @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                getCancelDelivery(mFromDate, mToDate, "");
-            }
+        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+            mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            getCancelDelivery(mFromDate, mToDate, "");
         }).show();
     }
 
@@ -212,35 +189,31 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void showDialogConfirm(long quantity, long totalAmount) {
-        new CreatedBd13Dialog(getActivity(), 1, quantity, totalAmount, new CreatedBD13Callback() {
-
-            @Override
-            public void onResponse(String type, String description) {
-                DingDongGetCancelDelivery item = mAdapter.getItemsSelected().get(0);
-                DingDongCancelDeliveryRequest request = new DingDongCancelDeliveryRequest();
-                request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
-                request.setAmndPOCode(userInfo.getUnitCode());
-                request.setLadingCode(item.getLadingCode());
-                request.setLadingJourneyId(item.getLadingJourneyId());
-                request.setPaymentPayPostStatus(item.getPaymentPayPostStatus());
-                request.setAmount(item.getAmount());
-                request.setCancelDeliveryReasonType(type);
-                request.setDescription(description);
-                mPresenter.cancelDelivery(request);
-            }
+        new CreatedBd13Dialog(getActivity(), 1, quantity, totalAmount, (type, description) -> {
+            DingDongGetCancelDelivery item = mAdapter.getItemsSelected().get(0);
+            DingDongCancelDeliveryRequest request = new DingDongCancelDeliveryRequest();
+            request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
+            request.setAmndPOCode(userInfo.getUnitCode());
+            request.setLadingCode(item.getLadingCode());
+            request.setLadingJourneyId(item.getLadingJourneyId());
+            request.setPaymentPayPostStatus(item.getPaymentPayPostStatus());
+            request.setAmount(item.getAmount());
+            request.setCancelDeliveryReasonType(type);
+            request.setDescription(description);
+            mPresenter.cancelDelivery(request);
         }).show();
     }
 
     @Override
     public void showListSuccess(ArrayList<DingDongGetCancelDelivery> list) {
         mList.clear();
-        tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
         long totalAmount = 0;
         for (DingDongGetCancelDelivery i : list) {
             mList.add(i);
             totalAmount = totalAmount + i.getAmount();
         }
-        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        mPresenter.titleChanged(mList.size(), 0);
+        tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
     }

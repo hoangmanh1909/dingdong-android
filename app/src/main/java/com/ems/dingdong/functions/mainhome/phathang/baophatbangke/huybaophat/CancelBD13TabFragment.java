@@ -64,7 +64,7 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
         tvTitle.setText("Hủy báo phát");
         tabList = new ArrayList<>();
         tabList.add((CancelBD13Fragment) new CancelBD13Presenter(mPresenter.getContainerView()).setOnTabListener(this).getFragment());
-        tabList.add((CancelBD13StatisticFragment) new CancelBD13StatisticPresenter(mPresenter.getContainerView()).getFragment());
+        tabList.add((CancelBD13StatisticFragment) new CancelBD13StatisticPresenter(mPresenter.getContainerView()).setOnTabListener(this).getFragment());
         mAdapter = new CancelBD13TabAdapter(getChildFragmentManager(), getContext(), tabList);
         pager.setAdapter(mAdapter);
         pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
@@ -105,5 +105,12 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
     public void onCanceledDelivery() {
         CancelBD13StatisticFragment fragment = (CancelBD13StatisticFragment) tabList.get(1);
         fragment.refreshLayout();
+    }
+
+    @Override
+    public void onQuantityChange(int quantity, int currentSetTab) {
+        mAdapter.setTittle(quantity, currentSetTab);
+        mAdapter.notifyDataSetChanged();
+        tabs.notifyDataSetChanged();
     }
 }

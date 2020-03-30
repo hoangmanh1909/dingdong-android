@@ -150,6 +150,13 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusName.setVisibility(View.VISIBLE);
                 tvStatusName.setText(item.getStatusName());
+                if (mContext.getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.blue));
+                } else if (mContext.getString(R.string.approved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.orange));
+                } else {
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                }
             } else {
                 tvStatusName.setVisibility(View.GONE);
             }

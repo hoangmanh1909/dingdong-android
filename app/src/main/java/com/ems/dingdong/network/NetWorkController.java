@@ -524,8 +524,11 @@ public class NetWorkController {
                                          String toDate,
                                          String postmanId,
                                          String routeId,
-                                         String poCode, CommonCallback<RouteResult> callback) {
-        Call<RouteResult> call = getAPIBuilder().searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, poCode);
+                                         String poCode,
+                                         String statusCode,
+                                         Integer fromRouteId,
+                                         CommonCallback<RouteResult> callback) {
+        Call<RouteResult> call = getAPIBuilder().searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
         call.enqueue(callback);
     }
 
@@ -534,8 +537,11 @@ public class NetWorkController {
                                        String toDate,
                                        String postmanId,
                                        String routeId,
-                                       String poCode, CommonCallback<RouteResult> callback) {
-        Call<RouteResult> call = getAPIBuilder().searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, poCode);
+                                       String poCode,
+                                       String statusCode,
+                                       Integer fromRouteId,
+                                       CommonCallback<RouteResult> callback) {
+        Call<RouteResult> call = getAPIBuilder().searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
         call.enqueue(callback);
     }
 
@@ -578,7 +584,7 @@ public class NetWorkController {
     }
 
     public static void getRouteLadingDetail(String ladingCode,
-                                         CommonCallback<ChangeRouteResult> callback) {
+                                            CommonCallback<ChangeRouteResult> callback) {
         Call<ChangeRouteResult> call = getAPIBuilder().getDetailByLadingCode(ladingCode);
         call.enqueue(callback);
     }

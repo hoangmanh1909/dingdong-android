@@ -20,6 +20,8 @@ public interface CancelBD13TabContract {
 
     interface OnTabListener {
         void onCanceledDelivery();
+
+        void onQuantityChange(int quantity, int currentSetTab);
     }
 
 }

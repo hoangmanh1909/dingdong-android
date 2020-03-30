@@ -95,4 +95,13 @@
     <string name="total_fee">Tổng cước:</string>
     <string name="lading_code">Số bưu gửi:</string>
 
+    <string name="not_yet_appproved">Chưa phê duyệt</string>
+    <string name="approved">Phê duyệt đồng ý</string>
+    <string name="not_approved">Phê duyệt không đồng ý</string>
+
+    <string name="send_route">Tuyến được chuyển</string>
+    <string name="receive_route">Tuyến ban đầu</string>
+    <string name="search_route_change">Tìm kiếm chuyển tuyến</string>
+
+
 </resources>

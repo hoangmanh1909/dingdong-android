@@ -27,6 +27,9 @@ public class CancelStatisticItem {
     @SerializedName("LastDateTimeUpdate")
     private String lastDateTimeUpdate;
 
+    @SerializedName("PaymentPayPostStatus")
+    private String paymentPayPostStatus;
+
     private boolean isSelected;
 
     public boolean isSelected() {
@@ -67,5 +70,9 @@ public class CancelStatisticItem {
 
     public String getLastDateTimeUpdate() {
         return lastDateTimeUpdate;
+    }
+
+    public String getPaymentPayPostStatus() {
+        return paymentPayPostStatus;
     }
 }

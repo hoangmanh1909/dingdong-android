@@ -34,5 +34,6 @@ public interface CancelBD13Contract {
         void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode);
         void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList);
         void onCanceled();
+        void titleChanged(int quantity, int currentSetTab);
     }
 }

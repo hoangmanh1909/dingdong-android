@@ -16,6 +16,7 @@
     <color name="colorBackgroudGray">#efefef</color>
 
     <color name="white">#ffffff</color>
+    <color name="primary">#f5f6fa</color>
     <color name="sub_title_white">#d6efff</color>
     <color name="white_tranparent_75">#BFffffff</color>
     <color name="white_tranparent_70">#B3ffffff</color>
@@ -357,4 +358,8 @@
     <color name="color_debit_unsuccessful">#ff1100</color>
     <color name="bg_home_yellow">#f6a71b</color>
     <color name="bg_primary">#58a656</color>
+
+    <color name="bg_yellow_primary">#FCAF17</color>
+    <color name="bg_blue_primary">#004689</color>
+    <color name="bg_gray_primary">#939598</color>
 </resources>

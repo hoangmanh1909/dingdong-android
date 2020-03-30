@@ -30,5 +30,7 @@ public interface CancelBD13StatisticContract {
         ContainerView getContainerView();
 
         void showBarcode(BarCodeCallback barCodeCallback);
+
+        void titleChanged(int quantity, int currentSetTab);
     }
 }
