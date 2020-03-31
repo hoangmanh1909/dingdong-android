@@ -6,6 +6,7 @@ import android.view.View;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DetailLadingCode;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -57,18 +58,45 @@ public class DetailRouteChangeFragment extends ViewFragment<DetailRouteChangeCon
             showErrorToast("Không tìm thấy chi tiết");
         } else {
             DetailLadingCode item = items.get(0);
-            tvParcelCode.setText(item.getLaddingCode());
-            tvReceiverName.setText(item.getReceiverName());
-            tvSenderName.setText(item.getSenderName());
-            tvCod.setText(NumberUtils.formatPriceNumber(item.getAmount()));
-            tvDescription.setText(item.getDescription());
-            tvFee.setText(NumberUtils.formatPriceNumber(item.getTotalFee()));
-            tvReceiverPhoneNumber.setText(item.getReceiverMobile());
-            tvReceiverAddress.setText(item.getReceiverAddress());
-            tvSenderPhoneNumber.setText(item.getSenderMobile());
-            tvSenderAddress.setText(item.getSenderAddress());
-            tvWeight.setText(NumberUtils.formatPriceNumber(item.getWeight()) + " g");
-            gtgt.setText(item.getVATCode());
+            if (!TextUtils.isEmpty(item.getLaddingCode()))
+                tvParcelCode.setText(item.getLaddingCode());
+
+            if (!TextUtils.isEmpty(item.getReceiverName()))
+                tvReceiverName.setText(item.getReceiverName());
+
+            if (!TextUtils.isEmpty(item.getSenderName()))
+                tvSenderName.setText(item.getSenderName());
+
+            if (item.getAmount() != null)
+                tvCod.setText(NumberUtils.formatPriceNumber(item.getAmount()));
+
+            if (!TextUtils.isEmpty(item.getDescription()))
+                tvDescription.setText(item.getDescription());
+
+            if (item.getTotalFee() != null)
+                tvFee.setText(NumberUtils.formatPriceNumber(item.getTotalFee()));
+
+            if (!TextUtils.isEmpty(item.getReceiverMobile()))
+                tvReceiverPhoneNumber.setText(item.getReceiverMobile());
+
+            if (!TextUtils.isEmpty(item.getReceiverAddress()))
+                tvReceiverAddress.setText(item.getReceiverAddress());
+
+            if (!TextUtils.isEmpty(item.getSenderMobile()))
+                tvSenderPhoneNumber.setText(item.getSenderMobile());
+
+            if (!TextUtils.isEmpty(item.getSenderAddress()))
+                tvSenderAddress.setText(item.getSenderAddress());
+
+            if (item.getWeight() != null)
+                tvWeight.setText(NumberUtils.formatPriceNumber(item.getWeight()) + " g");
+
+            if (!TextUtils.isEmpty(item.getVATCode()))
+                gtgt.setText(item.getVATCode());
+
+            if (!TextUtils.isEmpty(item.getCreateDate()))
+                tvDateCreatBd13.setText(DateTimeUtils.convertDateToString(DateTimeUtils.convertStringToDate(item.getCreateDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5), DateTimeUtils.SIMPLE_DATE_FORMAT));
+
             if (!TextUtils.isEmpty(item.getbD13CreatedDate())) {
                 tvDateCreatBd13.setText(item.getbD13CreatedDate());
             }

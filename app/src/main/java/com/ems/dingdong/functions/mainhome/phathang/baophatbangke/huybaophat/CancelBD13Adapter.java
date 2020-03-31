@@ -1,8 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,7 +129,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         @BindView(R.id.layout_cancel_delivery)
         LinearLayout layoutDelivery;
         @BindView(R.id.tv_receiver_name_address)
-        CustomTextView receiverNameAddress;
+        CustomBoldTextView receiverNameAddress;
         @BindView(R.id.tv_sender_name)
         CustomTextView senderName;
 
@@ -153,18 +151,10 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             if (item.getFee() != null)
                 tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
             if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    if (!TextUtils.isEmpty(item.getReceiverAddress())) {
-                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + " - " + item.getReceiverAddress() + "</b>", Html.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + "</b>", Html.FROM_HTML_MODE_COMPACT));
-                    }
+                if (!TextUtils.isEmpty(item.getReceiverAddress())) {
+                    receiverNameAddress.setText(String.format("Người nhận: %s - %s", item.getReceiverName(), item.getReceiverAddress()));
                 } else {
-                    if (!TextUtils.isEmpty(item.getReceiverAddress())) {
-                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + " - " + item.getReceiverAddress() + "</b>"));
-                    } else {
-                        receiverNameAddress.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReceiverName() + "</b>"));
-                    }
+                    receiverNameAddress.setText(String.format("Người nhận: %s", item.getReceiverName()));
                 }
             }
             if (!TextUtils.isEmpty(item.getSenderName()))

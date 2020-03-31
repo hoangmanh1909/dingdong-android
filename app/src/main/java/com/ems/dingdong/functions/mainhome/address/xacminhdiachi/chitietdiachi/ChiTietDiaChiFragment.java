@@ -468,8 +468,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         hoveringMarker.setVisibility(View.INVISIBLE);
 
 // Transform the appearance of the button to become the cancel button
-        selectLocationButton.setBackgroundColor(
-                ContextCompat.getColor(getContext(), R.color.bg_blue_primary));
+        selectLocationButton.setBackgroundResource(R.drawable.bg_radius_blue);
         selectLocationButton.setText("Hủy chọn");
 //
 // Show the SymbolLayer icon to represent the selected map location
@@ -490,8 +489,8 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     private void onUnSelectLocation(Style style) {
         // Switch the button appearance back to select a location.
-        selectLocationButton.setBackgroundColor(
-                ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        selectLocationButton.setBackgroundResource(
+                R.drawable.bg_gradient_search);
         selectLocationButton.setText("Chọn vị trí");
 
 // Show the red hovering ImageView marker

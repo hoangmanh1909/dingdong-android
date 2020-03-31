@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -41,6 +42,8 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
     FormItemEditText edtSearch;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
 
     private UserInfo userInfo;
     private PostOffice postOffice;
@@ -113,6 +116,11 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
             }
         });
         refreshLayout();
+        edtSearch.setSelected(true);
+        swipeRefresh.setOnRefreshListener(() -> {
+            swipeRefresh.setRefreshing(true);
+            refreshLayout();
+        });
     }
 
     @Override
@@ -123,6 +131,8 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
     @Override
     public void showListSuccess(List<CancelStatisticItem> resultList) {
         mList.clear();
+        swipeRefresh.setRefreshing(false);
+        hideProgress();
         long totalAmount = 0;
         if (resultList != null && !resultList.isEmpty()) {
             for (CancelStatisticItem item : resultList) {
@@ -139,6 +149,7 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
     @Override
     public void showError(String message) {
         showSuccessToast(message);
+        hideProgress();
     }
 
     public void refreshLayout() {

@@ -2,8 +2,6 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -155,7 +153,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_sender)
         public CustomTextView tv_sender;
         @BindView(R.id.tv_receiver)
-        public CustomTextView tv_receiver;
+        public CustomBoldTextView tv_receiver;
         @BindView(R.id.tv_weight)
         public CustomTextView tv_weight;
         @BindView(R.id.tv_COD)
@@ -191,13 +189,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             DeliveryPostman item = (DeliveryPostman) model;
             tv_code.setText(item.getMaE());
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                tv_receiver.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress() + "</b>", Html.FROM_HTML_MODE_COMPACT));
-            } else {
-                tv_receiver.setText(Html.fromHtml("Người nhận: " + "<b>" + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress() + "</b>"));
-            }
-
-//            tv_receiver.setText("Người nhận: " + item.getReciverName() + " - " + item.getReciverMobile() + " - " + item.getReciverAddress());
+            tv_receiver.setText(String.format("Người nhận: %s - %s - %s", item.getReciverName(), item.getReciverMobile(), item.getReciverAddress()));
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + item.getSenderMobile() + " - " + item.getSenderAddress());
             tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
             tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));

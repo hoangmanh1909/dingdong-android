@@ -37,10 +37,6 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
-    @BindView(R.id.tv_success_count)
-    CustomBoldTextView tvSuccessCount;
-    @BindView(R.id.tv_fail_count)
-    CustomBoldTextView tvFailCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
     private RouteInfo mRouteInfo;
@@ -122,14 +118,10 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
             }
         }
         if (mPresenter.getStatus().equals("C14")) {
-            tvSuccessCount.setText("Tổng số: " + successCount);
-            tvSuccessCount.setVisibility(View.VISIBLE);
-            tvFailCount.setVisibility(View.GONE);
+            mPresenter.setCount(successCount);
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(successAmount)));
         } else {
-            tvFailCount.setText("Tổng số: " + failCount);
-            tvSuccessCount.setVisibility(View.GONE);
-            tvFailCount.setVisibility(View.VISIBLE);
+            mPresenter.setCount(failCount);
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(failAmount)));
         }
 
@@ -141,15 +133,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         mAdapter.clear();
         recycler.setVisibility(View.GONE);
         tvNodata.setVisibility(View.VISIBLE);
-        if (mPresenter.getStatus().equals("C14")) {
-            tvSuccessCount.setText("Tổng số: 0");
-            tvSuccessCount.setVisibility(View.VISIBLE);
-            tvFailCount.setVisibility(View.GONE);
-        } else {
-            tvFailCount.setText("Tổng số: 0");
-            tvSuccessCount.setVisibility(View.GONE);
-            tvFailCount.setVisibility(View.VISIBLE);
-        }
+        mPresenter.setCount(0);
         tvAmount.setText(String.format("%s VNĐ", 0));
     }
 

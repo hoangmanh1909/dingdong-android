@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.response.CancelStatisticItem;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -142,7 +143,10 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
 
             if (item.getcODAmount() != null) {
                 tvAmount.setVisibility(View.VISIBLE);
-                tvAmount.setText((String.format("%s VNĐ", String.valueOf(item.getcODAmount()))));
+                if (item.getFee() != null)
+                    tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getcODAmount() + item.getFee())));
+                else
+                    tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getcODAmount())));
             } else {
                 tvAmount.setVisibility(View.GONE);
             }
@@ -151,11 +155,11 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                 tvStatusName.setVisibility(View.VISIBLE);
                 tvStatusName.setText(item.getStatusName());
                 if (mContext.getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.blue));
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.grey));
                 } else if (mContext.getString(R.string.approved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.orange));
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.blue));
                 } else {
-                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.bg_yellow_primary));
                 }
             } else {
                 tvStatusName.setVisibility(View.GONE);
@@ -167,6 +171,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             } else {
                 tvDeliveryDate.setVisibility(View.GONE);
             }
+
         }
     }
 

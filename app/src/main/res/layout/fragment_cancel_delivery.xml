@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f6fa"
@@ -19,6 +18,7 @@
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
+
         <RelativeLayout
             android:id="@+id/ll_scan_qr"
             android:layout_width="match_parent"
@@ -35,12 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/img_capture"
                 android:layout_toRightOf="@+id/img_search"
+                android:inputType="textCapCharacters"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                android:textAllCaps="true"
-                android:inputType="textCapCharacters"
-                app:formShowUnderline="false"
-                app:formHint="Nhập bưu gửi" />
+                app:formHint="Nhập bưu gửi"
+                app:formShowUnderline="false" />
 
             <ImageView
                 android:id="@+id/img_capture"
@@ -71,18 +71,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/layout_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_5dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            android:layout_marginBottom="@dimen/dimen_5dp">
 
-
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ImageView
             android:id="@+id/tv_search"

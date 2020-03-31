@@ -6,5 +6,5 @@
         android:endColor="@color/bg_yellow_primary"
         android:startColor="@color/bg_yellow_primary"
         android:type="linear" />
-    <corners android:radius="2dp" />
+    <corners android:radius="5dp" />
 </shape>

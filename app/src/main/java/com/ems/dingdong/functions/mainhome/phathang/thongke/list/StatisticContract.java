@@ -31,6 +31,8 @@ interface StatisticContract {
         String getStatus();
 
         void pushViewDetail(String parcelCode);
+
+        void setCount(int count);
     }
 }
 

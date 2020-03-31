@@ -7,11 +7,11 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.history.HistoryPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.OnTabListener;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 
 import retrofit2.Call;
@@ -22,6 +22,8 @@ import retrofit2.Response;
  */
 public class StatisticPresenter extends Presenter<StatisticContract.View, StatisticContract.Interactor>
         implements StatisticContract.Presenter {
+
+    private OnTabListener listener;
 
     private String mStatus;
 
@@ -59,6 +61,7 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
+                assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showListSuccess(response.body().getList());
 
@@ -86,8 +89,21 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
         new HistoryPresenter(mContainerView).setParcelCode(parcelCode).pushView();
     }
 
+    @Override
+    public void setCount(int count) {
+        if ("C14".equals(mStatus))
+            listener.onQuantityChanged(count, 0);
+        else
+            listener.onQuantityChanged(count, 1);
+    }
+
     public StatisticPresenter setType(String status) {
         mStatus = status;
+        return this;
+    }
+
+    public StatisticPresenter setTabListener(OnTabListener listener) {
+        this.listener = listener;
         return this;
     }
 }

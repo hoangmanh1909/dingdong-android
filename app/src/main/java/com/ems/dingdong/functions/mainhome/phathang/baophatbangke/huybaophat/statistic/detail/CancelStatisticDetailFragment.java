@@ -5,6 +5,7 @@ import android.view.View;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.response.CancelStatisticItem;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.mapbox.core.utils.TextUtils;
@@ -63,26 +64,26 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvCancelStatus.setText(item.getStatusName());
                 if (getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvCancelStatus.setTextColor(getResources().getColor(R.color.blue));
+                    tvCancelStatus.setTextColor(getResources().getColor(R.color.grey));
                 } else if (getString(R.string.approved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvCancelStatus.setTextColor(getResources().getColor(R.color.orange));
+                    tvCancelStatus.setTextColor(getResources().getColor(R.color.blue));
                 } else {
-                    tvCancelStatus.setTextColor(getResources().getColor(R.color.red_light));
+                    tvCancelStatus.setTextColor(getResources().getColor(R.color.bg_yellow_primary));
                 }
             }
 
             if (item.getFee() != null) {
-                tvFee.setText(String.valueOf(item.getFee()));
+                tvFee.setText(NumberUtils.formatPriceNumber(item.getFee()));
             }
 
             if (item.getcODAmount() != null) {
-                tvCod.setText(String.valueOf(item.getcODAmount()));
+                tvCod.setText(NumberUtils.formatPriceNumber(item.getcODAmount()));
             }
 
-            if (item.getPaymentPayPostStatus() != null) {
+            if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if ("Y".equals(item.getPaymentPayPostStatus())) {
                     tvDebitStatus.setText("Gạch nợ thành công");
-                } else if ("N".equals(item.getPaymentPayPostStatus())) {
+                } else {
                     tvDebitStatus.setText("Gạch nợ thất bại");
                 }
             }

@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="right"
-                android:textColor="@color/grey"
+                android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_12sp"
                 tools:text="10.000" />
 

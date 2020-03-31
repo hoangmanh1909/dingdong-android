@@ -49,6 +49,7 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
         request.setToDate(toDate);
         request.setStatusCode(statusCode);
         request.setRouteCode(routeCode);
+        mView.showProgress();
         mInteractor.getCancelDeliveryStatic(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

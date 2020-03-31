@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -43,6 +44,8 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     FormItemEditText edtSearch;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
 
     private UserInfo userInfo;
     private PostOffice postOffice;
@@ -135,6 +138,10 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             }
         });
         edtSearch.setSelected(true);
+        swipeRefresh.setOnRefreshListener(() -> {
+            swipeRefresh.setRefreshing(true);
+            getCancelDelivery(mFromDate, mToDate, "");
+        });
 
     }
 
@@ -207,6 +214,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     @Override
     public void showListSuccess(ArrayList<DingDongGetCancelDelivery> list) {
         mList.clear();
+        swipeRefresh.setRefreshing(false);
         long totalAmount = 0;
         for (DingDongGetCancelDelivery i : list) {
             mList.add(i);
@@ -222,6 +230,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     public void showError(String message) {
         showErrorToast(message);
         mPresenter.onCanceled();
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override

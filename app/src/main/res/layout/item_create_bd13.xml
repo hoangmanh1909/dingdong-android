@@ -102,7 +102,7 @@
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_receiver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
