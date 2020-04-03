@@ -85,6 +85,7 @@ public class SharedPref {
             editor.remove(Constants.KEY_MOBILE_NUMBER_SIGN_CODE);
             editor.remove(Constants.KEY_POST_OFFICE);
             editor.remove(Constants.KEY_POST_SHIFT);
+            editor.remove(Constants.KEY_ROUTE_INFO);
 
             editor.commit();
         } catch (Exception ex) {

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -129,7 +130,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         @BindView(R.id.layout_cancel_delivery)
         LinearLayout layoutDelivery;
         @BindView(R.id.tv_receiver_name_address)
-        CustomBoldTextView receiverNameAddress;
+        CustomTextView receiverNameAddress;
         @BindView(R.id.tv_sender_name)
         CustomTextView senderName;
 
@@ -152,9 +153,9 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
             if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
                 if (!TextUtils.isEmpty(item.getReceiverAddress())) {
-                    receiverNameAddress.setText(String.format("Người nhận: %s - %s", item.getReceiverName(), item.getReceiverAddress()));
+                    receiverNameAddress.setText(StringUtils.fromHtml(String.format("Người nhận: " + "<strong>%s - %s</strong>", item.getReceiverName(), item.getReceiverAddress())));
                 } else {
-                    receiverNameAddress.setText(String.format("Người nhận: %s", item.getReceiverName()));
+                    receiverNameAddress.setText(StringUtils.fromHtml(String.format("Người nhận: " + "<strong>%s</strong>", item.getReceiverName())));
                 }
             }
             if (!TextUtils.isEmpty(item.getSenderName()))
@@ -163,6 +164,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
                     status = "Gạch nợ thành công";
+                    tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.grey));
                 } else {
                     status = "Gạch nợ thất bại";
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));

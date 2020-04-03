@@ -138,11 +138,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void showDetailView(DeliveryPostman commonObject) {
-
-    }
-
-    @Override
     public void showConfirmDelivery(List<DeliveryPostman> commonObject) {
         new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).setOnTabChangeListener(titleTabsListener).pushView();
     }
@@ -330,5 +325,10 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void vietmapSearch(String address) {
         new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
+    }
+
+    @Override
+    public void onSearched(String fromDate, String toDate, int currentPosition) {
+        titleTabsListener.onSearchChange(fromDate, toDate, currentPosition);
     }
 }

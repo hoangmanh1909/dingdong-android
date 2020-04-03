@@ -1,8 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.thongke.tabs;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.Html;
 import android.text.Spanned;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +10,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.list.StatisticFragment;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.list.StatisticPresenter;
+import com.ems.dingdong.utiles.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +32,9 @@ public class TabsThongKeAdapter extends FragmentStatePagerAdapter implements OnT
         tabs = new ArrayList<>();
         tabs.add((StatisticFragment) new StatisticPresenter(containerView).setType("C14").setTabListener(this).getFragment());
         tabs.add((StatisticFragment) new StatisticPresenter(containerView).setType("C18").setTabListener(this).getFragment());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mTitleString[0] = Html.fromHtml("Thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            mTitleString[1] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-        } else {
-            mTitleString[0] = Html.fromHtml("Thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
-            mTitleString[1] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
-        }
+        mTitleString[0] = StringUtils.fromHtml("Thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        mTitleString[1] = StringUtils.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+
     }
 
     @Override
@@ -60,17 +55,9 @@ public class TabsThongKeAdapter extends FragmentStatePagerAdapter implements OnT
 
     public void setTittle(int quantity, int positionTab) {
         if (positionTab == 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[positionTab] = Html.fromHtml("Thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            } else {
-                mTitleString[positionTab] = Html.fromHtml("Thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
-            }
+            mTitleString[positionTab] = StringUtils.fromHtml("Thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[positionTab] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            } else {
-                mTitleString[positionTab] = Html.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
-            }
+            mTitleString[positionTab] = StringUtils.fromHtml("Không thành công " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
         }
         notifyDataSetChanged();
     }
@@ -78,5 +65,10 @@ public class TabsThongKeAdapter extends FragmentStatePagerAdapter implements OnT
     @Override
     public void onQuantityChanged(int quantity, int currentSetTab) {
         setTittle(quantity, currentSetTab);
+    }
+
+    @Override
+    public void onSearched(String fromDate, String toDate, int currentTab) {
+        tabs.get(currentTab).search(fromDate, toDate);
     }
 }

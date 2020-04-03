@@ -69,9 +69,9 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
                 holder.itemView.setOnClickListener(v -> mPresenter.pushViewDetail(mList.get(position).getParcelCode()));
             }
         };
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!TextUtils.isEmpty(routeJson)) {
             mRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
@@ -88,6 +88,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
                     mFromDate = fromDate;
                     mToDate = toDate;
                     mPresenter.search(mFromDate, mToDate, mPresenter.getStatus(), mRouteInfo.getRouteCode());
+                    mPresenter.onSearched(mFromDate, mToDate);
                 }).show();
                 break;
         }
@@ -135,6 +136,12 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         tvNodata.setVisibility(View.VISIBLE);
         mPresenter.setCount(0);
         tvAmount.setText(String.format("%s VNĐ", 0));
+    }
+
+    public void search(String fromDate, String toDate) {
+        mFromDate = fromDate;
+        mToDate = toDate;
+        mPresenter.search(mFromDate, mToDate, mPresenter.getStatus(), mRouteInfo.getRouteCode());
     }
 
 }

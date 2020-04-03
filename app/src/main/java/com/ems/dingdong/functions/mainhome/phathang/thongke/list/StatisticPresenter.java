@@ -97,6 +97,15 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             listener.onQuantityChanged(count, 1);
     }
 
+    @Override
+    public void onSearched(String fromDate, String toDate) {
+        if ("C14".equals(mStatus)) {
+            listener.onSearched(fromDate, toDate, 1);
+        } else {
+            listener.onSearched(fromDate, toDate, 0);
+        }
+    }
+
     public StatisticPresenter setType(String status) {
         mStatus = status;
         return this;

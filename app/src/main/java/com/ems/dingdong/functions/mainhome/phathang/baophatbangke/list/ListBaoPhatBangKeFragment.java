@@ -54,6 +54,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
 import static android.Manifest.permission.CALL_PHONE;
 
 public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter> implements ListBaoPhatBangKeContract.View {
@@ -125,11 +126,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
-                    if (TextUtils.isEmpty(edtSearch.getText())) {
-                        showViewDetail(mList.get(position));
-                    } else {
-//                            showViewDetail(mAdapter.getListFilter().get(position));
-                    }
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                 });
@@ -224,10 +220,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         dialog.show();
     }
 
-    private void showViewDetail(DeliveryPostman baoPhatBd) {
-        mPresenter.showDetailView(baoPhatBd);
-    }
-
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
@@ -251,6 +243,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
+            mPresenter.onSearched(mFromDate, mToDate, mPresenter.getType());
         }).show();
     }
 
@@ -277,7 +270,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_PA_NEW ) {
+                    deliveryType == Constants.DELIVERY_LIST_TYPE_PA_NEW) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, routeInfo.getRouteCode(), deliveryType);
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
                     deliveryType == Constants.DELIVERY_LIST_TYPE_COD ||
@@ -290,6 +283,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, mDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
             }
         }
+    }
+
+    public void initSearch(String mFromDate, String mToDate) {
+        this.mFromDate = mFromDate;
+        this.mToDate = mToDate;
+        initSearch();
     }
 
     @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode})

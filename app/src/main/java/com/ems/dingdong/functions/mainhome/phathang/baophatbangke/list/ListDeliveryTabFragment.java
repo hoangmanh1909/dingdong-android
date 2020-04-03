@@ -16,7 +16,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.Presenter> implements ListDeliveryConstract.View, ListDeliveryConstract.OnTabsListener {
+public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.Presenter>
+        implements ListDeliveryConstract.View, ListDeliveryConstract.OnTabsListener {
 
     @BindView(R.id.tabs)
     PagerSlidingTabStrip tabs;
@@ -106,5 +107,14 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     @Override
     public void onDelivered() {
         tabList.get(pager.getCurrentItem()).onDisplay();
+    }
+
+    @Override
+    public void onSearchChange(String fromDate, String toDate, int currentPosition) {
+        if (currentPosition == Constants.NOT_YET_DELIVERY_TAB) {
+            tabList.get(1).initSearch(fromDate, toDate);
+        } else {
+            tabList.get(0).initSearch(fromDate, toDate);
+        }
     }
 }

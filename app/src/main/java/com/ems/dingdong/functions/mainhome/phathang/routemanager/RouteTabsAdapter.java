@@ -1,7 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.routemanager;
 
 import android.content.Context;
-import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -13,6 +12,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.RouteFragment;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.StringUtils;
 
 import java.util.List;
 
@@ -26,31 +26,17 @@ public class RouteTabsAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.tabs = tabs;
         this.mContext = context;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mTitleString[0] = Html.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            mTitleString[1] = Html.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-        } else {
-            mTitleString[0] = Html.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
-            mTitleString[1] = Html.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
-        }
+        mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
     }
+
     public void setTittle(int quantity, int positionTab) {
         if (positionTab == Constants.ROUTE_RECEIVED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[0] = Html.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            } else {
-                mTitleString[0] = Html.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
-            }
+            mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[1] = Html.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            } else {
-                mTitleString[1] = Html.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
-            }
+            mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
         }
     }
-
 
     @Nullable
     @Override

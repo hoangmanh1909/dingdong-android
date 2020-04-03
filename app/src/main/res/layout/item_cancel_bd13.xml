@@ -29,7 +29,7 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_16sp" />
 
-            <com.ems.dingdong.views.CustomBoldTextView
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_receiver_name_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

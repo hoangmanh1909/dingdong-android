@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -153,7 +154,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_sender)
         public CustomTextView tv_sender;
         @BindView(R.id.tv_receiver)
-        public CustomBoldTextView tv_receiver;
+        public CustomTextView tv_receiver;
         @BindView(R.id.tv_weight)
         public CustomTextView tv_weight;
         @BindView(R.id.tv_COD)
@@ -187,13 +188,42 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @SuppressLint("SetTextI18n")
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
-            tv_code.setText(item.getMaE());
+            if (!TextUtils.isEmpty(item.getMaE()))
+                tv_code.setText(item.getMaE());
 
-            tv_receiver.setText(String.format("Người nhận: %s - %s - %s", item.getReciverName(), item.getReciverMobile(), item.getReciverAddress()));
-            tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + item.getSenderMobile() + " - " + item.getSenderAddress());
-            tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
-            tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
-            tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
+            String receiverName = "";
+            String receiverMobile = "";
+            String receiverAddress = "";
+            String senderAddress = "";
+            String senderMobile = "";
+            if (!TextUtils.isEmpty(item.getReciverName())) {
+                receiverName = item.getReciverName();
+            }
+            if (!TextUtils.isEmpty(item.getReciverMobile())) {
+                receiverMobile = item.getReciverMobile();
+            }
+            if (!TextUtils.isEmpty(item.getReciverAddress())) {
+                receiverAddress = item.getReciverAddress();
+            }
+
+            if (!TextUtils.isEmpty(item.getSenderMobile())) {
+                senderMobile = item.getSenderMobile();
+            }
+            if (!TextUtils.isEmpty(item.getSenderAddress())) {
+                senderAddress = item.getSenderAddress();
+            }
+
+            tv_receiver.setText(StringUtils.fromHtml(String.format("Người nhận: <strong>%s - %s - %s</strong>", receiverName, receiverMobile, receiverAddress)));
+            tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + senderMobile + " - " + senderAddress);
+
+            if (item.getWeight() != null)
+                tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
+
+            if (item.getAmount() != null)
+                tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+
+            if (item.getTotalFee() != null)
+                tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
 
             if (!TextUtils.isEmpty(item.getbD13CreatedDate())) {
                 tvCreateDated.setText(String.format("Được giao ngày: %s", item.getbD13CreatedDate()));

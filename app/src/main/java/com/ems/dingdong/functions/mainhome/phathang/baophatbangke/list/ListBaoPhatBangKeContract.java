@@ -88,8 +88,6 @@ interface ListBaoPhatBangKeContract {
                                    Integer deliveryType
         );
 
-        void showDetailView(DeliveryPostman commonObject);
-
         void showConfirmDelivery(List<DeliveryPostman> commonObject);
 
         ListBaoPhatBangKePresenter setType(int type);
@@ -105,6 +103,8 @@ interface ListBaoPhatBangKeContract {
         void setTitleTab(int quantity);
 
         void onTabChange();
+
+        void onSearched(String fromDate, String toDate, int currentPosition);
 
         ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange();
 

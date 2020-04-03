@@ -33,6 +33,8 @@ interface StatisticContract {
         void pushViewDetail(String parcelCode);
 
         void setCount(int count);
+
+        void onSearched(String fromDate, String toDate);
     }
 }
 

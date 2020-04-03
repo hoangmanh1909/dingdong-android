@@ -30,9 +30,12 @@ public interface ListDeliveryConstract {
         void onTabChange(int position);
 
         void onDelivered();
+
+        void onSearchChange(String fromDate, String toDate, int currentPosition);
     }
 
-    interface OnDeliveryNotSuccessfulChange{
+    interface OnDeliveryNotSuccessfulChange {
         void onChanged();
+
     }
 }
