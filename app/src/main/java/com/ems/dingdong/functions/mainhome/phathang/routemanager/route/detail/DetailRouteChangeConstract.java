@@ -11,6 +11,10 @@ import java.util.List;
 
 interface DetailRouteChangeConstract {
     interface Interactor extends IInteractor<Presenter> {
+        /**
+         * Get detail record.
+         * @param ladingCode lading code
+         */
         void getChangeRouteDetail(String ladingCode, CommonCallback<ChangeRouteResult> callback);
     }
 
@@ -19,6 +23,9 @@ interface DetailRouteChangeConstract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        /**
+         * Get detail record.
+         */
         void getChangeRouteDetail();
     }
 }

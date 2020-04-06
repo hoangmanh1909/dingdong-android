@@ -69,10 +69,12 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter<CommonObject, Bao
         @Override
         public void bindView(CommonObject model, int position) {
             tvParcelCode.setText(model.getParcelCode());
-            if ("2".equals(model.getDeliveryType())) {
-                tvDeliveryType.setText(mContext.getResources().getString(R.string.delivery_succesfully));
-            } else {
-                tvDeliveryType.setText(mContext.getResources().getString(R.string.delivery_not_succesfully));
+            if (!TextUtils.isEmpty(model.getDeliveryType())) {
+                if ("2".equals(model.getDeliveryType())) {
+                    tvDeliveryType.setText(mContext.getResources().getString(R.string.delivery_succesfully));
+                } else {
+                    tvDeliveryType.setText(mContext.getResources().getString(R.string.delivery_not_succesfully));
+                }
             }
             if (!TextUtils.isEmpty(model.getCollectAmount()))
                 tvCollectAmount.setText(String.format(mContext.getResources().getString(R.string.amount_of_money)

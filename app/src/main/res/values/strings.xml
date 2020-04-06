@@ -103,5 +103,7 @@
     <string name="receive_route">Tuyến ban đầu</string>
     <string name="search_route_change">Tìm kiếm chuyển tuyến</string>
 
+    <string name="change_address">thay đổi địa chỉ</string>
+    <string name="lead_deliver">chỉ dẫn phát</string>
 
 </resources>

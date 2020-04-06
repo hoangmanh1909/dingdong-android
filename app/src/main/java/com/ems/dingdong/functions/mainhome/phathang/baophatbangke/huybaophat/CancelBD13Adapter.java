@@ -164,7 +164,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
                     status = "Gạch nợ thành công";
-                    tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.grey));
+                    tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                 } else {
                     status = "Gạch nợ thất bại";
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));

@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -119,29 +120,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                 });
 
-//                holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mPresenter.showDetail(mList.get(position), position);
-//                    }
-//                });
-//                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
-//                            @Override
-//                            public void onCallResponse(String phone) {
-//                                mPhone = phone;
-//                                mPresenter.callForward(phone,  mList.get(position).getParcelCode());
-//                            }
-//
-//                            @Override
-//                            public void onUpdateResponse(String phone) {
-//
-//                            }
-//                        }).show();
-//                    }
-//                });
             }
         };
         recycler.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
@@ -158,24 +136,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
             }
         }
     }
-
-//    public void getQuery(String parcelCode) {
-//        if(!parcelCode.isEmpty()) {
-//            CommonObject object = new CommonObject();
-//            object.setCode(parcelCode.toUpperCase().trim());
-//            object.setDeliveryType("2");
-//            if (!checkInList(object)) {
-//                saveLocal(object);
-//                mList.add(object);
-//                mAdapter.addItem(object);
-//                tvCount.setText(String.format(" %s", mList.size()));
-//                if (org.apache.commons.lang3.math.NumberUtils.isDigits(object.getCollectAmount()))
-//                    mAmount += Long.parseLong(object.getCollectAmount());
-//                tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
-//            }
-//        }
-//        edtParcelcode.setText("");
-//    }
 
     public void saveLocal(CommonObject baoPhat) {
         String parcelCode = baoPhat.getParcelCode();
@@ -223,18 +183,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         }
         showAddAll();
     }
-
-  /*  @Override
-    public void showData(CommonObject commonObject) {
-        if (!checkInList(commonObject)) {
-            mList.add(commonObject);
-            mAdapter.addItem(commonObject);
-            tvCount.setText(String.format(" %s", mList.size()));
-            if (org.apache.commons.lang3.math.NumberUtils.isDigits(commonObject.getCollectAmount()))
-                mAmount += Long.parseLong(commonObject.getCollectAmount());
-            tvAmount.setText(String.format(" %s VNĐ", NumberUtils.formatPriceNumber(mAmount)));
-        }
-    }*/
 
     @Override
     public void showCallSuccess() {
@@ -312,31 +260,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         hideProgress();
     }
 
-
-    private boolean checkInList(CommonObject commonObject) {
-        boolean check = false;
-        for (CommonObject item : mList) {
-            if (item.getParcelCode() != null) {
-                if (item.getParcelCode().equals(commonObject.getParcelCode())) {
-                    check = true;
-                    break;
-                }
-            }
-        }
-        return check;
-    }
-
-
-//    public void scanQr() {
-//        mPresenter.showBarcode(new BarCodeCallback() {
-//            @Override
-//            public void scanQrcodeResponse(String value) {
-//                //Toast.showToast(getActivity(), value);
-//                getQuery(value.replace("+", ""));
-//            }
-//        });
-//    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -405,9 +328,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         itemsSelected = mAdapter.getItemsSelected();
         if (itemsSelected.size() > 0) {
             new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
-                    .setOnCancelListener((ConfirmDialog.OnCancelClickListener) confirmDialog -> {
-                        confirmDialog.dismiss();
-                    })
+                    .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
                         mPresenter.offlineDeliver(itemsSelected);
@@ -461,76 +382,8 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
                     .setContentText("Báo phát offline hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        sweetAlertDialog.dismiss();
-                    }).show();
+                    .setConfirmClickListener(Dialog::dismiss).show();
         }
     }
-
-//
-//    private void showOptionSuccessOrFail() {
-//
-//        new BaoPhatBangKeConfirmDialog(getActivity(), new BaoPhatbangKeConfirmCallback() {
-//            @Override
-//            public void onResponse(int deliveryType) {
-//                if (deliveryType == 2) {
-//                    //next view
-//                    for (CommonObject item : mList) {
-//                        item.setDeliveryType("2");
-//                    }
-//                    mPresenter.pushViewConfirmAll(mList);
-//                } else {
-//                    //show dialog
-//                    List<ReasonInfo> list = RealmUtils.getReasons();
-//                    if (list != null && !list.isEmpty()) {
-//                        new BaoPhatOfflineFailDialog(getActivity(), list, new BaoPhatOfflineFailCallback() {
-//                            @Override
-//                            public void onResponse(ReasonInfo reason, SolutionInfo solution, String note, String sign) {
-//                                for (CommonObject commonObject : mList) {
-//                                    commonObject.setDeliveryType("1");
-//                                    commonObject.setNote(note);
-//                                    commonObject.setReasonCode(reason.getCode());
-//                                    commonObject.setReasonName(reason.getName());
-//                                    commonObject.setSolutionCode(solution.getCode());
-//                                    commonObject.setSolutionName(solution.getName());
-//                                    commonObject.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-//                                    String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-//                                    commonObject.setDeliveryTime(time);
-//                                    commonObject.setPaymentChanel(1 + "");
-//                                    commonObject.setSaveLocal(true);
-//
-//                                    if (getActivity().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-//                                        mPresenter.submitToPNS(commonObject);
-//                                    } else {
-//                                        mPresenter.saveLocal(commonObject);
-//                                        if (getActivity() != null) {
-//                                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-//                                                    .setConfirmText("OK")
-//                                                    .setTitleText("Thông báo")
-//                                                    .setContentText("Lưu thành công")
-//                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                                        @Override
-//                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                                                            sweetAlertDialog.dismiss();
-//                                                            mPresenter.back();
-//
-//                                                        }
-//                                                    }).show();
-//                                        }
-//                                    }
-//                                }
-//                                // mPresenter.submitToPNS(mList, reason, solution, note, sign);
-//                            }
-//                        }).show();
-//                    } else {
-//                        Toast.showToast(getActivity(), "Đang lấy dữ liệu");
-//                    }
-//
-//                }
-//            }
-//        }).show();
-//
-//
-//    }
 
 }

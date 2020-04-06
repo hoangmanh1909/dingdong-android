@@ -19,8 +19,14 @@ public interface RouteTabsConstract {
 
     }
 
+    /**
+     * Interface to handle event between 2 tabs.
+     */
     interface OnTabsListener {
 
+        /**
+         * Event set count of title tab
+         */
         void setQuantity(int quantity, int currentSetTab);
 
         void onTabChange(int position);

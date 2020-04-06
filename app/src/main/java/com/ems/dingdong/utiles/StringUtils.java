@@ -61,14 +61,20 @@ public class StringUtils {
         return finalText;
     }
 
-    public static String getLadingCode(String source) {
-        return source.substring(8, 21);
+    public static String getLadingCode(String source, Context context) {
+        if (!TextUtils.isEmpty(source)) {
+            if (source.toLowerCase().contains(context.getString(R.string.change_address).toLowerCase()))
+                return source.substring(9, 22);
+            else if (source.toLowerCase().contains(context.getString(R.string.lead_deliver).toLowerCase()))
+                return source.substring(8, 21);
+        }
+        return "";
     }
 
-    public static Spanned fromHtml(String html){
+    public static Spanned fromHtml(String html) {
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_OPTION_USE_CSS_COLORS);
+            result = Html.fromHtml(html, Html.FROM_HTML_OPTION_USE_CSS_COLORS);
         } else {
             result = Html.fromHtml(html);
         }

@@ -42,9 +42,9 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     private Calendar calDate;
     private int mHour;
     private int mMinute;
-    RouteInfo routeInfo;
-    UserInfo userInfo;
-    PostOffice postOffice;
+    private RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
 
     public BaoPhatOfflinePresenter(ContainerView containerView) {
         super(containerView);
@@ -92,31 +92,6 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 
- /*   @Override
-    public void searchParcelCodeDelivery(String parcelCode) {
-        mView.showProgress();
-        mInteractor.searchParcelCodeDelivery(parcelCode, new CommonCallback<CommonObjectResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<CommonObjectResult> call, Response<CommonObjectResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showData(response.body().getCommonObject());
-
-                } else {
-                    mView.showErrorToast(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<CommonObjectResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
-    }*/
-
     @Override
     public void showDetail(CommonObject commonObject, int position) {
         new BaoPhatOfflineDetailPresenter(mContainerView).setBaoPhat(commonObject).setTypeBaoPhat(Constants.TYPE_BAO_PHAT_THANH_CONG).setPositionRow(position).pushView();
@@ -138,12 +113,12 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        String ladingCode = parcelCode;
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
+                assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showCallSuccess();
                 } else {
@@ -264,6 +239,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
+                        assert response.body() != null: "body is null!!";
                         mView.showSuccess(response.body().getErrorCode(), ladingCode);
                     }
 
@@ -315,6 +291,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
+                        assert response.body() != null;
                         mView.showSuccess(response.body().getErrorCode(), ladingCode);
                     }
 
@@ -327,70 +304,4 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
             }
         }
     }
-//    @Override
-//    public void submitToPNS(final CommonObject commonObject) {
-//        String postmanID = "";
-//        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-//        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-//        if (!userJson.isEmpty()) {
-//            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-//            postmanID = userInfo.getiD();
-//        }
-//        String deliveryPOSCode = "";
-//        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-//        if (!posOfficeJson.isEmpty()) {
-//            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-//            deliveryPOSCode = postOffice.getCode();
-//        }
-//        String ladingCode = commonObject.getParcelCode();
-//        String deliveryPOCode = !TextUtils.isEmpty(deliveryPOSCode) ? deliveryPOSCode : commonObject.getPoCode();
-//        String deliveryDate = commonObject.getDeliveryDate();
-//        String deliveryTime = commonObject.getDeliveryTime();
-//        String deliveryType = commonObject.getDeliveryType();
-//        String receiverName = commonObject.getReciverName();
-//        String reasonCode = commonObject.getReasonCode();
-//        String solutionCode = commonObject.getSolutionCode();
-//        String note = commonObject.getNote();
-//        String signatureCapture = commonObject.getSignatureCapture();
-//        String status = "C18";
-//        String amount = commonObject.getAmount();
-//        if (TextUtils.isEmpty(amount) || amount.equals("0")) {
-//            amount = commonObject.getCollectAmount();
-//        }
-//        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-//        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-//                solutionCode, status, "", deliveryType, signatureCapture, note, amount, commonObject.getiD(), Constants.SHIFT, commonObject.getRouteCode(), signature, commonObject.getImageDelivery());
-//
-//        mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-//            @Override
-//            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-//                super.onSuccess(call, response);
-//                if (response.body().getErrorCode().equals("00")) {
-//                    final String parcelCode = commonObject.getParcelCode();
-//                    Realm realm = Realm.getDefaultInstance();
-//                    realm.executeTransaction(new Realm.Transaction() {
-//                        @Override
-//                        public void execute(Realm realm) {
-//                            RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-//                            result.deleteAllFromRealm();
-//                        }
-//                    });
-//                    mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            back();
-//                        }
-//                    });
-//                } else {
-//                    mView.showErrorToast(response.body().getMessage());
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(Call<SimpleResult> call, String message) {
-//                super.onError(call, message);
-//                mView.showErrorToast(message);
-//            }
-//        });
-//    }
 }

@@ -19,8 +19,14 @@ public interface CancelBD13TabContract {
     }
 
     interface OnTabListener {
+        /**
+         * Event when tab cancel delivery success.
+         */
         void onCanceledDelivery();
 
+        /**
+         * Event when title change.
+         */
         void onQuantityChange(int quantity, int currentSetTab);
     }
 

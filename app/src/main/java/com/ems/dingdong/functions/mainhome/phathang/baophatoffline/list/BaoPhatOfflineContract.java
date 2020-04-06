@@ -19,19 +19,25 @@ import java.util.List;
 interface BaoPhatOfflineContract {
 
     interface Interactor extends IInteractor<Presenter> {
+
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
+        /**
+         * Deliver success.
+         */
         void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
 
+        /**
+         * Deliver not success.
+         */
         void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
-        // void showData(CommonObject commonObject);
 
         void showCallSuccess();
 
@@ -46,9 +52,10 @@ interface BaoPhatOfflineContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        /**
+         * Show barcode scan screen.
+         */
         void showBarcode(BarCodeCallback barCodeCallback);
-
-        // void searchParcelCodeDelivery(String parcelCode);
 
         void showDetail(CommonObject commonObject, int position);
 
@@ -58,10 +65,23 @@ interface BaoPhatOfflineContract {
 
         void saveLocal(CommonObject commonObject);
 
+        /**
+         * get local record.
+         * @param fromDate from created date.
+         * @param toDate to created date
+         */
         void getLocalRecord(String fromDate, String toDate);
 
+        /**
+         * Remove item from local storage.
+         * @param parcelCode lading code.
+         */
         void removeOfflineItem(String parcelCode);
 
+        /**
+         * Offline deliver.
+         * @param commonObjects list chosen.
+         */
         void offlineDeliver(List<CommonObject> commonObjects);
     }
 }

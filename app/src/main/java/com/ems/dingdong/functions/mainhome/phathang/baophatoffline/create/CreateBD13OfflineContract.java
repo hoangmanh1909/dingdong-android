@@ -7,27 +7,47 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.UploadSingleResult;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 
 interface CreateBD13OfflineContract {
     interface Interactor extends IInteractor<Presenter> {
+        /**
+         * Post image to server.
+         *
+         * @param path path file local.
+         */
         void postImage(String path, CommonCallback<UploadSingleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
+        /**
+         * Show image to fragment.
+         */
         void showImage(String file);
+
+        /**
+         * Delete file.
+         */
         void deleteFile();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        /**
+         * * Post image to server.
+         *
+         * @param path path file local.
+         */
         void postImage(String path);
 
-        void payment(PushToPnsRequest baoPhat);
-
-        void submitToPNS(PushToPnsRequest request);
-
+        /**
+         * Save image to local.
+         *
+         * @param request
+         */
         void saveLocal(CommonObject request);
 
+        /**
+         * Show barcode scan screen.
+         */
         void showBarcode(BarCodeCallback barCodeCallback);
     }
 }

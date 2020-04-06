@@ -9,7 +9,6 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.UploadSingleResult;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.utiles.Constants;
 
 import io.realm.Realm;
@@ -17,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class CreateBD13OfflinePresenter extends Presenter<CreateBD13OfflineContract.View, CreateBD13OfflineContract.Interactor>
-        implements CreateBD13OfflineContract.Presenter  {
+        implements CreateBD13OfflineContract.Presenter {
 
     public CreateBD13OfflinePresenter(ContainerView containerView) {
         super(containerView);
@@ -57,16 +56,6 @@ public class CreateBD13OfflinePresenter extends Presenter<CreateBD13OfflineContr
                 mView.deleteFile();
             }
         });
-    }
-
-    @Override
-    public void payment(PushToPnsRequest baoPhat) {
-
-    }
-
-    @Override
-    public void submitToPNS(PushToPnsRequest request) {
-
     }
 
     @Override

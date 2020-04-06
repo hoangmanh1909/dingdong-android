@@ -15,6 +15,15 @@ import java.util.ArrayList;
 interface StatisticContract {
 
     interface Interactor extends IInteractor<Presenter> {
+        /**
+         * Search all general statistic delivery record.
+         * @param fromDate from create date
+         * @param toDate to create date
+         * @param status status of delivery
+         *               "C14" - success, "C18" - not success
+         * @param postmanId from postman id, it can be got from share preference on UserInfo
+         * @param routeCode from route id, it can be got from share preference on RouteInfo
+         */
         void searchDeliveryStatistic(String fromDate, String toDate, String status,
                                      String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback);
     }
@@ -28,12 +37,29 @@ interface StatisticContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void search(String fromDate, String toDate, String status, String routeCode);
 
+        /**
+         * Get status of tabs
+         * @return "C14" - success, "C18" - not succes
+         */
         String getStatus();
 
+        /**
+         * Added detail fragment
+         * @param parcelCode
+         */
         void pushViewDetail(String parcelCode);
 
+        /**
+         * Set count on title tab.
+         * @param count total count
+         */
         void setCount(int count);
 
+        /**
+         *
+         * @param fromDate
+         * @param toDate
+         */
         void onSearched(String fromDate, String toDate);
     }
 }
