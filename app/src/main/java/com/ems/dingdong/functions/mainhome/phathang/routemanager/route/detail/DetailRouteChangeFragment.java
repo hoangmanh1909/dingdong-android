@@ -56,10 +56,13 @@ public class DetailRouteChangeFragment extends ViewFragment<DetailRouteChangeCon
     public void showViewDetail(List<DetailLadingCode> items) {
         if (null == items || items.isEmpty()) {
             showErrorToast("Không tìm thấy chi tiết");
+            tvParcelCode.setVisibility(View.GONE);
         } else {
             DetailLadingCode item = items.get(0);
-            if (!TextUtils.isEmpty(item.getLaddingCode()))
+            if (!TextUtils.isEmpty(item.getLaddingCode())) {
                 tvParcelCode.setText(item.getLaddingCode());
+                tvParcelCode.setVisibility(View.VISIBLE);
+            }
 
             if (!TextUtils.isEmpty(item.getReceiverName()))
                 tvReceiverName.setText(item.getReceiverName());

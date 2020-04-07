@@ -479,8 +479,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void showUIReason() {
         ArrayList<Item> items = new ArrayList<>();
-        for (ReasonInfo item : mListReason) {
-            items.add(new Item(item.getCode(), item.getName()));
+        if (mListReason != null) {
+            for (ReasonInfo item : mListReason) {
+                items.add(new Item(item.getCode(), item.getName()));
+            }
         }
         if (pickerUIReason == null) {
             pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
@@ -553,8 +555,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void showUIRoute() {
         ArrayList<Item> items = new ArrayList<>();
-        for (RouteInfo item : mListRoute) {
-            items.add(new Item(item.getRouteId(), item.getRouteName()));
+        if (mListRoute != null) {
+            for (RouteInfo item : mListRoute) {
+                items.add(new Item(item.getRouteId(), item.getRouteName()));
+            }
         }
         if (pickerUIRoute == null) {
             pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, "Chọn tuyến",
@@ -579,8 +583,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             showErrorToast("Vui lòng chọn tuyến");
         } else {
             ArrayList<Item> items = new ArrayList<>();
-            for (UserInfo item : mListPostman) {
-                items.add(new Item(item.getiD(), item.getFullName()));
+            if (mListPostman != null) {
+                for (UserInfo item : mListPostman) {
+                    items.add(new Item(item.getiD(), item.getFullName()));
+                }
             }
             if (pickerUIPostman == null) {
                 pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, "Chọn bưu tá",
