@@ -77,6 +77,8 @@ public interface XacNhanBaoPhatContract {
         void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback);
 
         void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback);
+
+        void paymentGateway(String mobileNumber, Integer amount, String detail, String retRefNum, String transDetail, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -200,5 +202,7 @@ public interface XacNhanBaoPhatContract {
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
         void onTabRefresh();
+
+        void paymentGateway(String mobileNumber, Integer amount);
     }
 }

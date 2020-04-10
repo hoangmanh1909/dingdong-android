@@ -19,6 +19,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
+import com.ems.dingdong.model.PrepaidResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
@@ -87,6 +88,7 @@ public class NetWorkController {
     private static volatile VinattiAPI apiBuilder;
     private static volatile VinattiAPI apiRxBuilder;
     private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
+    private static volatile VinattiAPI prepaid;
 
 
     public static Gson getGson() {
@@ -108,6 +110,21 @@ public class NetWorkController {
             chiHoBtxhAPI = retrofit.create(ChiHoBtxhAPI.class);
         }
         return chiHoBtxhAPI;
+    }
+
+    private static VinattiAPI getPrepaidAPI() {
+        if (prepaid == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://172.16.150.11:8118/")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient(120, 120))
+                    .build();
+            prepaid = retrofit.create(VinattiAPI.class);
+        }
+        return prepaid;
     }
 
     private static VinattiAPI getAPIBuilder() {
@@ -591,6 +608,27 @@ public class NetWorkController {
 
     public static Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request) {
         return getAPIRxBuilder().cancelDeliveryStatistic(request);
+    }
+
+    public static void getPrepaidInfo(String mobileNumber, CommonCallback<PrepaidResult> callback) {
+        Call<PrepaidResult> call = getPrepaidAPI().getPrepaid(mobileNumber);
+        call.enqueue(callback);
+    }
+
+    public static void registerPrepaidAccount(String name, String id, String mobileNumber, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getPrepaidAPI().registerPrepaidAccount(mobileNumber, name, id);
+        call.enqueue(callback);
+    }
+
+
+    public static void paymentGateway(String mobileNumber, Integer amount, String detail, String retRefNum, String transDetail, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getPrepaidAPI().paymentGateway(mobileNumber, amount, detail, retRefNum, transDetail);
+        call.enqueue(callback);
+    }
+
+    public static void getHistory(String mobileNumber, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getPrepaidAPI().getHistory(mobileNumber);
+        call.enqueue(callback);
     }
 
 }

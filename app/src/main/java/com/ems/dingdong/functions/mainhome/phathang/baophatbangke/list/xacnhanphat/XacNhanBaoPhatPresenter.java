@@ -45,6 +45,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     private UserInfo userInfo;
     private PostOffice postOffice;
     private ListDeliveryConstract.OnTabsListener titleTabsListener;
+    private int tempAmount;
 
     public XacNhanBaoPhatPresenter(ContainerView containerView) {
         super(containerView);
@@ -222,7 +223,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String status = "C14";
             String note = "";
             String amount = Integer.toString(item.getAmount());
-
+            tempAmount = item.getAmount();
             final String paymentChannel = "1";
             String deliveryType = "";
             String ladingPostmanID = Integer.toString(item.getId());
@@ -261,6 +262,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mView.showSuccess(response.body().getErrorCode());
+                    if (response.body() != null && response.body().getErrorCode().equals("00")) {
+                        paymentGateway(userInfo.getMobileNumber(), tempAmount);
+                    }
                 }
 
                 @Override
@@ -374,6 +378,21 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void onTabRefresh() {
         titleTabsListener.onDelivered();
+    }
+
+    @Override
+    public void paymentGateway(String mobileNumber, Integer amount) {
+        mInteractor.paymentGateway(mobileNumber, amount, "phat bd13", "", "", new CommonCallback<SimpleResult>(getViewContext()) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+            }
+        });
     }
 
     @Override

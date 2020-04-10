@@ -39,22 +39,10 @@
     </FrameLayout>
 
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-
-            <fragment
-                android:id="@+id/map"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent" />
-        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -77,8 +65,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_centerVertical="true"
+                android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_toLeftOf="@+id/img_logout"
                 android:layout_toRightOf="@id/img_profile"
@@ -117,7 +105,27 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_sign_out" />
         </RelativeLayout>
-    </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:background="@drawable/bg_radius_white"
+            android:padding="@dimen/dimen_5dp"
+            >
+          <com.ems.dingdong.views.CustomBoldTextView
+              android:id="@+id/tv_prepaid"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true"
+              android:layout_centerVertical="true"
+              android:text="Tài khoản prepaid">
+
+          </com.ems.dingdong.views.CustomBoldTextView>
+        </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

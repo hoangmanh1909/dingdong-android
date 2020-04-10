@@ -65,4 +65,9 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     public void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback) {
         NetWorkController.changeRouteInsert(requests, callback);
     }
+
+    @Override
+    public void paymentGateway(String mobileNumber, Integer amount, String detail, String retRefNum, String transDetail, CommonCallback<SimpleResult> callback) {
+        NetWorkController.paymentGateway(mobileNumber, amount, detail, retRefNum, transDetail, callback);
+    }
 }

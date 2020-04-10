@@ -17,6 +17,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
+import com.ems.dingdong.model.PrepaidResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
@@ -443,5 +444,26 @@ public interface VinattiAPI {
 
     @POST("api/LadingCancelDelivery/Statistic")
     Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
+
+    @GET("Account/GetByMobileNumber")
+    Call<PrepaidResult> getPrepaid(@Query("mobileNumber") String mobileNumber);
+
+    @FormUrlEncoded
+    @POST("Account/AddNew")
+    Call<SimpleResult> registerPrepaidAccount(@Field("MobileNumber") String mobileNumber,
+                                              @Field("Name") String name,
+                                              @Field("PIDNumber") String pIDNumber);
+
+    @FormUrlEncoded
+    @POST("PaymentGateway/Payment")
+    Call<SimpleResult> paymentGateway(@Field("MobileNumber") String mobileNumber,
+                                      @Field("Amount") Integer amount,
+                                      @Field("Detail") String detail,
+                                      @Field("RetRefNum") String retRefNum,
+                                      @Field("TransDetail") String transDetail);
+
+    @GET("PaymentGateway/GetByMobileNumber")
+    Call<SimpleResult> getHistory(@Query("mobileNumber") String mobileNumber);
+
 
 }

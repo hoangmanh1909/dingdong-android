@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.profile;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.profile.prepaid.PrepaidPresenter;
 
 /**
  * The Profile Presenter
@@ -26,5 +27,10 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
     @Override
     public ProfileContract.Interactor onCreateInteractor() {
         return new ProfileInteractor(this);
+    }
+
+    @Override
+    public void showPrepaidView() {
+        new PrepaidPresenter(mContainerView).pushView();
     }
 }

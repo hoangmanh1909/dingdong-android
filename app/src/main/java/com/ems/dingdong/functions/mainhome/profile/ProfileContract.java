@@ -16,6 +16,7 @@ interface ProfileContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void showPrepaidView();
     }
 }
 
