@@ -105,5 +105,9 @@
 
     <string name="change_address">thay đổi địa chỉ</string>
     <string name="lead_deliver">chỉ dẫn phát</string>
+    <string name="smart_code">Smart code:</string>
+    <string name="fee_collected">Cước thu của người nhận</string>
+    <string name="cod_amount">Tiền COD</string>
+    <string name="not_found_current_location">Không tìm thấy vị trí hiện tại</string>
 
 </resources>

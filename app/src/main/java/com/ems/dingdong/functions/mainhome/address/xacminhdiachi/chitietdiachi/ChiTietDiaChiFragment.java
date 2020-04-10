@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -25,6 +26,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
+import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -81,17 +83,17 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 //    @BindView(R.id.tv_latitude)
 //    CustomTextView tv_latitude;
     @BindView(R.id.edt_name)
-    FormItemEditText edt_name;
+    EditText edt_name;
     @BindView(R.id.edt_street)
-    FormItemEditText edt_street;
+    EditText edt_street;
     @BindView(R.id.edt_country)
-    FormItemEditText edt_country;
+    CustomTextView edt_country;
     @BindView(R.id.edt_region)
-    FormItemEditText edt_region;
+    CustomTextView edt_region;
     @BindView(R.id.edt_county)
-    FormItemEditText edt_county;
+    CustomTextView edt_county;
     @BindView(R.id.edt_confidence)
-    FormItemEditText edt_confidence;
+    CustomTextView edt_confidence;
     @BindView(R.id.tv_update)
     CustomMediumTextView tv_update;
     @BindView(R.id.tv_verify)
@@ -204,8 +206,8 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         centerPoint.setLat(mLatLng.getLatitude());
         centerPoint.setLon(mLatLng.getLongitude());
 
-        data.setName(edt_name.getText());
-        data.setStreetName(edt_street.getText());
+        data.setName(edt_name.getText().toString());
+        data.setStreetName(edt_street.getText().toString());
         data.setCenterPoint(centerPoint);
 
         UpdateRequest request = new UpdateRequest();

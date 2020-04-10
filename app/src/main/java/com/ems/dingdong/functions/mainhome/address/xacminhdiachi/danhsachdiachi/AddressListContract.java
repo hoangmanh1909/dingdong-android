@@ -1,5 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi;
 
+import android.location.Location;
+
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
@@ -12,7 +14,7 @@ import java.util.List;
 public interface AddressListContract {
     interface Interactor extends IInteractor<Presenter> {
 
-        void vietmapSearchByAddress(String address, CommonCallback<XacMinhDiaChiResult> callback);
+        void vietmapSearchByAddress(String address, Double longitude, Double latitude, CommonCallback<XacMinhDiaChiResult> callback);
 
         void vietmapSearchByPoint(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback);
     }
@@ -28,7 +30,7 @@ public interface AddressListContract {
 
         void showAddressDetail(AddressListModel addressListModel);
 
-        void vietmapSearch(String address);
+        void vietmapSearch(String address, Location location);
 
         void vietmapSearch();
 

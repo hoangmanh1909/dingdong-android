@@ -85,8 +85,10 @@ public class CommonObject extends RealmObject {
     String routeCode;
     @SerializedName("BatchCode")
     String batchCode;
-
-
+    @SerializedName("Fee")
+    Integer fee;
+    @SerializedName("Value")
+    Integer cod;
 
     @SerializedName("RealReceiverName")
     private String realReceiverName;
@@ -544,5 +546,13 @@ public class CommonObject extends RealmObject {
 
     public String getShiftId() {
         return shiftId;
+    }
+
+    public Integer getFee() {
+        return fee;
+    }
+
+    public Integer getCod() {
+        return cod;
     }
 }

@@ -1,17 +1,16 @@
 package com.ems.dingdong.functions.mainhome.gomhang;
 
 import android.content.Intent;
+import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
-
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
-import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
@@ -62,6 +61,7 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                 homeInfos.add(new HomeInfo(3, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
                 homeInfos.add(new HomeInfo(4, R.drawable.ic_hoan_tat_tin, "Hoàn tất nhiều tin"));
                 homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_manage, "Thống kê"));
+//                homeInfos.add(new HomeInfo(6, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin theo địa chỉ"));
 
                 mList.add(new GroupInfo("Gom hàng", homeInfos));
             }
@@ -89,6 +89,10 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                             startActivity(intent);
                         } else if (homeInfo.getId() == 4) {
                             mPresenter.showListHoanTatNhieuTin();
+                        } else if (homeInfo.getId() == 6) {
+                            Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
+                            intent.putExtra(Constants.TYPE_GOM_HANG, 4);
+                            startActivity(intent);
                         } else {
                             mPresenter.showListStatistic();
                         }

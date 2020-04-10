@@ -103,6 +103,9 @@ public class DeliveryPostman {
     @SerializedName("IsPA")
     @Expose
     private String isPA;
+    @SerializedName("IsItemReturn")
+    @Expose
+    private String isItemReturn;
 
     private boolean selected;
 
@@ -356,5 +359,13 @@ public class DeliveryPostman {
 
     public String getIsPA() {
         return isPA;
+    }
+
+    public String isItemReturn() {
+        return isItemReturn;
+    }
+
+    public void setItemReturn(String itemReturn) {
+        isItemReturn = itemReturn;
     }
 }

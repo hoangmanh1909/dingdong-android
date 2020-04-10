@@ -61,6 +61,10 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
                 tvSenderName.setText(item.getSenderName());
             }
 
+            if (!TextUtils.isEmpty(item.getSenderAddress())) {
+                tvSenderAddress.setText(item.getSenderAddress());
+            }
+
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvCancelStatus.setText(item.getStatusName());
                 if (getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {

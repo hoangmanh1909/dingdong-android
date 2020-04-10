@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi;
 
 import android.app.Activity;
+import android.location.Location;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -29,6 +30,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     private String mAddress;
     private double longitude;
     private double latitude;
+    private Location mCurrentLocation;
 
     public AddressListPresenter(ContainerView containerView) {
         super(containerView);
@@ -65,10 +67,10 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     }
 
     @Override
-    public void vietmapSearch(String address) {
+    public void vietmapSearch(String address, Location location) {
         mView.showProgress();
         mAddress = address;
-        mInteractor.vietmapSearchByAddress(address, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
+        mInteractor.vietmapSearchByAddress(address, location.getLongitude(), location.getLatitude(), new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
                 super.onSuccess(call, response);
@@ -174,6 +176,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                 addressListModel.setLocality(properties.optString("locality"));
                 addressListModel.setRegion(properties.optString("region"));
                 addressListModel.setStreet(properties.optString("street"));
+                addressListModel.setSmartCode(properties.optString("smartcode"));
                 addressListModel.setLongitude(longitude);
                 addressListModel.setLatitude(latitude);
                 listObject.add(addressListModel);

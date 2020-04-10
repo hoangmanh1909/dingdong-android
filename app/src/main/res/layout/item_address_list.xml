@@ -30,6 +30,14 @@
                 android:layout_height="wrap_content"
                 android:text="Địa chỉ"
                 android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_smart_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/smart_code"
+                android:textSize="@dimen/text_size_14sp" />
+
         </LinearLayout>
 
         <ImageView

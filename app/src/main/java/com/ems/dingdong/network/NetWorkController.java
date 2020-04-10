@@ -486,8 +486,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void vietmapSearch(String text, CommonCallback<XacMinhDiaChiResult> callback) {
-        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text);
+    public static void vietmapSearch(String text, Double longitude, Double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
+        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text, longitude, latitude);
         call.enqueue(callback);
     }
 

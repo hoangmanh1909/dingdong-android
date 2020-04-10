@@ -13,6 +13,15 @@ public class AddressListModel {
     public String county;
     public double longitude;
     public double latitude;
+    private String smartCode;
+
+    public String getSmartCode() {
+        return smartCode;
+    }
+
+    public void setSmartCode(String smartCode) {
+        this.smartCode = smartCode;
+    }
 
     public double getLongitude() {
         return longitude;

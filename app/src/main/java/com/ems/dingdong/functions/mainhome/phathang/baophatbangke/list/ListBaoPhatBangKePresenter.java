@@ -197,62 +197,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String signatureCapture) {
-        String postmanID = "";
-        String mobileNumber = "";
-        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            postmanID = userInfo.getiD();
-            mobileNumber = userInfo.getMobileNumber();
-        }
-        String deliveryPOSCode = "";
-        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        if (!posOfficeJson.isEmpty()) {
-            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-            deliveryPOSCode = postOffice.getCode();
-        }
-        for (CommonObject item : commonObjects) {
-            String parcelCode = item.getParcelCode();
-            String deliveryPOCode = !TextUtils.isEmpty(deliveryPOSCode) ? deliveryPOSCode : item.getPoCode();
-            String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
-            String receiverName = item.getReciverName();
-            String reasonCode = reason;
-            String solutionCode = solution;
-            String status = "C18";
-            String ladingPostmanID = item.getiD();
-            String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-            PushToPnsRequest request = new PushToPnsRequest(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                    solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature, item.getImageDelivery());
-            mInteractor.pushToPNSDelivery(request,
-                    new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                        @Override
-                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            super.onSuccess(call, response);
-                            if (response.body().getErrorCode().equals("00")) {
-                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                            } else {
-                                mView.showError(response.body().getMessage());
-                            }
-                        }
-
-                        @Override
-                        protected void onError(Call<SimpleResult> call, String message) {
-                            super.onError(call, message);
-                            mView.showError(message);
-                        }
-                    });
-        }
-    }
-
-    @Override
-    public void nextReceverPerson(List<CommonObject> commonObjects) {
-        new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(commonObjects).pushView();
-    }
-
-    @Override
     public void showBarcode(BarCodeCallback barCodeCallback) {
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }

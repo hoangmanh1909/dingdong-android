@@ -234,12 +234,13 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         shiftId,
                         routeCode,
                         signature,
-                        item.getImageDelivery());
+                        item.getImageDelivery(),
+                        "N");
                 mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
-                        assert response.body() != null: "body is null!!";
+                        assert response.body() != null : "body is null!!";
                         mView.showSuccess(response.body().getErrorCode(), ladingCode);
                     }
 
@@ -284,7 +285,8 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         item.getImageDelivery(),
                         userInfo.getUserName(),
                         item.getBatchCode(),
-                        isPaymentPP
+                        isPaymentPP,
+                        "N"
                 );
 
                 mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {

@@ -177,7 +177,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     shiftId,
                     routeCode,
                     signature,
-                    deliveryImage);
+                    deliveryImage,
+                    item.isItemReturn());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -251,7 +252,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     deliveryImage,
                     userInfo.getUserName(),
                     item.getBatchCode(),
-                    isPaymentPP
+                    isPaymentPP,
+                    item.isItemReturn()
             );
 
             mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {

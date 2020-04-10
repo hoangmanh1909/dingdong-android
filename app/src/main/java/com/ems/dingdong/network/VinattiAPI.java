@@ -371,7 +371,9 @@ public interface VinattiAPI {
                                                               @Field("RouteCode") String routeCode);
 
     @GET("api/VietMap/Search")
-    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
+    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text,
+                                            @Query("longitude") Double longitude,
+                                            @Query("latitude") Double latitude);
 
     @POST("api/VietMap/Route")
     Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);

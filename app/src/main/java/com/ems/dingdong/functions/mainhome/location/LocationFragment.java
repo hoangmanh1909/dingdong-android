@@ -22,6 +22,7 @@ import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
@@ -69,6 +70,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     LinearLayout llSign;
     @BindView(R.id.ll_location)
     LinearLayout llLocation;
+    @BindView(R.id.tv_COD)
+    CustomTextView tvCOD;
+    @BindView(R.id.tv_fee)
+    CustomTextView tvFee;
     private ArrayList<StatusInfo> mList;
     private StatusAdapter mAdapter;
     private PublishSubject<String> subject;
@@ -136,6 +141,12 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         tvSenderAddress.setText(commonObject.getSenderAddress());
         tvReceiverName.setText(commonObject.getReciverName());
         tvReceiverAddress.setText(commonObject.getReceiverAddress());
+        if (commonObject.getFee() != null) {
+            tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getFee())));
+        }
+        if (commonObject.getCod() != null) {
+            tvCOD.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getCod())));
+        }
         if (commonObject.getStatusInfoArrayList() == null || commonObject.getStatusInfoArrayList().isEmpty()) {
             llStatus.setVisibility(View.GONE);
         } else {

@@ -246,19 +246,6 @@ interface ListBaoPhatBangKeContract {
         ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange();
 
         /**
-         * Deliver not success.
-         *
-         * @param commonObjects list record chosen.
-         * @param reason        reason.
-         * @param solution      solution
-         * @param note          note
-         * @param sign          digit signature
-         */
-        void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign);
-
-        void nextReceverPerson(List<CommonObject> commonObjects);
-
-        /**
          * Show barcode scan screen.
          *
          * @param barCodeCallback callback when scan.

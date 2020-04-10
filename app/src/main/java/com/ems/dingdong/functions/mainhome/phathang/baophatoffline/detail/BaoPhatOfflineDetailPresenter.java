@@ -144,62 +144,62 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT ,mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null, isPaymentPP);
+                note, amount, Constants.SHIFT, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature, mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null, isPaymentPP, "N");
 
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        mView.hideProgress();
-                        if ("00".equals(response.body().getErrorCode())) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if ("00".equals(response.body().getErrorCode())) {
 
-                            // xóa local
-                            final String parcelCode = baoPhat.getParcelCode();
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.executeTransaction(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-                                    result.deleteAllFromRealm();
-                                }
-                            });
-                            mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    back();
-                                }
-                            });
-
-                        } else if ("01".equals(response.body().getErrorCode())) {
-                            // xóa local
-                            final String parcelCode = baoPhat.getParcelCode();
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.executeTransaction(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-                                    result.deleteAllFromRealm();
-                                }
-                            });
-                            mView.showAlertDialog(response.body().getMessage(), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    back();
-                                }
-                            });
-                        } else {
-                            mView.showAlertDialog(response.body().getMessage());
+                    // xóa local
+                    final String parcelCode = baoPhat.getParcelCode();
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                            result.deleteAllFromRealm();
                         }
-                    }
+                    });
+                    mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            back();
+                        }
+                    });
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.hideProgress();
-                        mView.showAlertDialog(message);
+                } else if ("01".equals(response.body().getErrorCode())) {
+                    // xóa local
+                    final String parcelCode = baoPhat.getParcelCode();
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                            result.deleteAllFromRealm();
+                        }
+                    });
+                    mView.showAlertDialog(response.body().getMessage(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            back();
+                        }
+                    });
+                } else {
+                    mView.showAlertDialog(response.body().getMessage());
+                }
+            }
 
-                    }
-                });
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showAlertDialog(message);
+
+            }
+        });
     }
 
     @Override
@@ -245,38 +245,38 @@ public class BaoPhatOfflineDetailPresenter extends Presenter<BaoPhatOfflineDetai
         }
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, "", "", signatureCapture, note, amount, mBaoPhatBangke.getiD(), Constants.SHIFT, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery());
+                solutionCode, status, "", "", signatureCapture, note, amount, mBaoPhatBangke.getiD(), Constants.SHIFT, mBaoPhatBangke.getRouteCode(), signature, mBaoPhatBangke.getImageDelivery(), "N");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        if (response.body().getErrorCode().equals("00")) {
-                            final String parcelCode = mBaoPhatBangke.getParcelCode();
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.executeTransaction(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-                                    result.deleteAllFromRealm();
-                                }
-                            });
-                            mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    back();
-                                }
-                            });
-                        } else {
-                            mView.showErrorToast(response.body().getMessage());
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                if (response.body().getErrorCode().equals("00")) {
+                    final String parcelCode = mBaoPhatBangke.getParcelCode();
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+                            result.deleteAllFromRealm();
                         }
-                    }
+                    });
+                    mView.showAlertDialog("Cập nhật giao dịch thành công.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            back();
+                        }
+                    });
+                } else {
+                    mView.showErrorToast(response.body().getMessage());
+                }
+            }
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.showErrorToast(message);
-                    }
-                });
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showErrorToast(message);
+            }
+        });
     }
 
 }

@@ -9,6 +9,9 @@ public class CancelStatisticItem {
     @SerializedName("SenderName")
     private String senderName;
 
+    @SerializedName("SenderAddress")
+    private String senderAddress;
+
     @SerializedName("ReceiverName")
     private String receiverName;
 
@@ -74,5 +77,9 @@ public class CancelStatisticItem {
 
     public String getPaymentPayPostStatus() {
         return paymentPayPostStatus;
+    }
+
+    public String getSenderAddress() {
+        return senderAddress;
     }
 }

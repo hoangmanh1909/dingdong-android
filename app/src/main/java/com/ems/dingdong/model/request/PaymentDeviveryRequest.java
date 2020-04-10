@@ -51,12 +51,14 @@ public class PaymentDeviveryRequest {
     String batchCode;
     @SerializedName("IsPaymentPP")
     boolean isPaymentPP;
+    @SerializedName("IsItemReturn ")
+    String isItemReturn ;
 
     public PaymentDeviveryRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                                   String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode,
                                   String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount,
                                   String shiftID, String routeCode, String ladingPostmanID, String signature, String imageDelivery, String postmanCode,
-                                  String batchCode, boolean isPaymentPP) {
+                                  String batchCode, boolean isPaymentPP, String isItemReturn) {
         this.postmanID = postmanID;
         this.parcelCode = parcelCode;
         this.mobileNumber = mobileNumber;
@@ -81,5 +83,6 @@ public class PaymentDeviveryRequest {
         this.batchCode = batchCode;
         this.postmanCode = postmanCode;
         this.isPaymentPP = isPaymentPP;
+        this.isItemReturn = isItemReturn;
     }
 }
