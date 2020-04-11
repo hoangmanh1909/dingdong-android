@@ -1,14 +1,18 @@
 package com.ems.dingdong.functions.mainhome.profile.prepaid;
 
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.PrepaidValueResponse;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,6 +29,13 @@ public class PrepaidFragment extends ViewFragment<PrepaidContract.Presenter> imp
     CustomMediumTextView register;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+
+    @BindView(R.id.ly_user_info)
+    LinearLayout llUserInfo;
+    @BindView(R.id.ly_empty_user)
+    LinearLayout llEmpty;
+    @BindView(R.id.ll_status)
+    LinearLayout llHistoryStatus;
 
     public static PrepaidFragment getInstance() {
         return new PrepaidFragment();
@@ -50,9 +61,8 @@ public class PrepaidFragment extends ViewFragment<PrepaidContract.Presenter> imp
     @Override
     public void showRegisterView() {
         register.setVisibility(View.VISIBLE);
-        name.setVisibility(View.GONE);
-        phoneNumber.setVisibility(View.GONE);
-        id.setVisibility(View.GONE);
+        llUserInfo.setVisibility(View.GONE);
+        llEmpty.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.tv_verify, R.id.img_back})
@@ -71,12 +81,16 @@ public class PrepaidFragment extends ViewFragment<PrepaidContract.Presenter> imp
     public void showInfo(PrepaidValueResponse value) {
         if (value != null) {
             register.setVisibility(View.GONE);
-            name.setVisibility(View.VISIBLE);
-            phoneNumber.setVisibility(View.VISIBLE);
-            id.setVisibility(View.VISIBLE);
+            llUserInfo.setVisibility(View.VISIBLE);
+            llEmpty.setVisibility(View.GONE);
             name.setText("Tên: " + value.getName());
             id.setText("Số chứng minh thư nhân dân: " + value.getPIDNumber());
             phoneNumber.setText("Số điện thoại: " + value.getMoblieNumber());
         }
+    }
+
+    @Override
+    public void showHistorySucces(List<SimpleResult> result) {
+
     }
 }

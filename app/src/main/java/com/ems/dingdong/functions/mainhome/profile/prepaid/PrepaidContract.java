@@ -8,6 +8,8 @@ import com.ems.dingdong.model.PrepaidResult;
 import com.ems.dingdong.model.PrepaidValueResponse;
 import com.ems.dingdong.model.SimpleResult;
 
+import java.util.List;
+
 
 public interface PrepaidContract {
 
@@ -21,6 +23,8 @@ public interface PrepaidContract {
         void showRegisterView();
 
         void showInfo(PrepaidValueResponse value);
+
+        void showHistorySucces(List<SimpleResult> result);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

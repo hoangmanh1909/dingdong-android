@@ -118,7 +118,7 @@ public class NetWorkController {
                     .setLenient()
                     .create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://172.16.150.11:8118/")
+                    .baseUrl(BuildConfig.API_URL_PREPAID)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(getUnsafeOkHttpClient(120, 120))
                     .build();
