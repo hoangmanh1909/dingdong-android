@@ -15,6 +15,7 @@ import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.HistoryPrepaidResult;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
@@ -626,8 +627,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getHistory(String mobileNumber, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getPrepaidAPI().getHistory(mobileNumber);
+    public static void getHistory(String mobileNumber, CommonCallback<HistoryPrepaidResult> callback) {
+        Call<HistoryPrepaidResult> call = getPrepaidAPI().getHistory(mobileNumber);
         call.enqueue(callback);
     }
 

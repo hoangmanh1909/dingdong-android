@@ -16,6 +16,18 @@ public class SimpleResult implements Parcelable {
     @SerializedName(value = "message", alternate = "Message")
     String message  ="";
 
+    public static final Creator<SimpleResult> CREATOR = new Creator<SimpleResult>() {
+        @Override
+        public SimpleResult createFromParcel(Parcel in) {
+            return new SimpleResult(in);
+        }
+
+        @Override
+        public SimpleResult[] newArray(int size) {
+            return new SimpleResult[size];
+        }
+    };
+
     @Override
     public String toString() {
         return "SimpleResult{" +

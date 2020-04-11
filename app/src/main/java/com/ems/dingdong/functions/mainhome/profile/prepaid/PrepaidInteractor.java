@@ -2,8 +2,8 @@ package com.ems.dingdong.functions.mainhome.profile.prepaid;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.HistoryPrepaidResult;
 import com.ems.dingdong.model.PrepaidResult;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
 
 public class PrepaidInteractor extends Interactor<PrepaidContract.Presenter> implements PrepaidContract.Interactor {
@@ -18,7 +18,7 @@ public class PrepaidInteractor extends Interactor<PrepaidContract.Presenter> imp
     }
 
     @Override
-    public void getHistory(String phoneNumber, CommonCallback<SimpleResult> callback) {
+    public void getHistory(String phoneNumber, CommonCallback<HistoryPrepaidResult> callback) {
         NetWorkController.getHistory(phoneNumber, callback);
     }
 }

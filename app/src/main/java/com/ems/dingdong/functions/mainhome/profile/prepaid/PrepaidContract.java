@@ -4,9 +4,10 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.HistoryPrepaidResponse;
+import com.ems.dingdong.model.HistoryPrepaidResult;
 import com.ems.dingdong.model.PrepaidResult;
 import com.ems.dingdong.model.PrepaidValueResponse;
-import com.ems.dingdong.model.SimpleResult;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface PrepaidContract {
     interface Interactor extends IInteractor<Presenter> {
         void getPrepaidInfo(String phoneNumber, CommonCallback<PrepaidResult> callback);
 
-        void getHistory(String phoneNumber, CommonCallback<SimpleResult> callback);
+        void getHistory(String phoneNumber, CommonCallback<HistoryPrepaidResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -24,7 +25,7 @@ public interface PrepaidContract {
 
         void showInfo(PrepaidValueResponse value);
 
-        void showHistorySucces(List<SimpleResult> result);
+        void showHistorySuccess(List<HistoryPrepaidResponse> result);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

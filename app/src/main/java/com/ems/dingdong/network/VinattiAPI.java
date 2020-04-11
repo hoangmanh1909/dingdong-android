@@ -13,6 +13,7 @@ import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.HistoryPrepaidResult;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
@@ -463,7 +464,7 @@ public interface VinattiAPI {
                                       @Field("TransDetail") String transDetail);
 
     @GET("PaymentGateway/GetByMobileNumber")
-    Call<SimpleResult> getHistory(@Query("mobileNumber") String mobileNumber);
+    Call<HistoryPrepaidResult> getHistory(@Query("mobileNumber") String mobileNumber);
 
 
 }

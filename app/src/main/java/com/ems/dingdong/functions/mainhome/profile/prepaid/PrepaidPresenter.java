@@ -7,6 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.profile.prepaid.register.RegisterPresenter;
 import com.ems.dingdong.model.ChangeRouteResult;
+import com.ems.dingdong.model.HistoryPrepaidResult;
 import com.ems.dingdong.model.PrepaidResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -78,14 +79,14 @@ public class PrepaidPresenter extends Presenter<PrepaidContract.View, PrepaidCon
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-        mInteractor.getHistory(userInfo.getMobileNumber(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.getHistory(userInfo.getMobileNumber(), new CommonCallback<HistoryPrepaidResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<HistoryPrepaidResult> call, Response<HistoryPrepaidResult> response) {
                 super.onSuccess(call, response);
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<HistoryPrepaidResult> call, String message) {
                 super.onError(call, message);
             }
         });
