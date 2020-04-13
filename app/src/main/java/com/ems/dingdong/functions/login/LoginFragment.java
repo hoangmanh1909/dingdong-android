@@ -4,21 +4,21 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import androidx.core.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
+import com.ems.dingdong.BuildConfig;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.RouteOptionCallBack;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.ems.dingdong.BuildConfig;
-import com.ems.dingdong.R;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -27,6 +27,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.List;
 
@@ -66,9 +67,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         mSharedPref = new SharedPref(getActivity());
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev EMS
 
-       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0979765735;A17317CA607CFBACD4C875B31478444420EDFF3E9633746EFE846C83A01E1407");// dev vinatti
-       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
-        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev UAT
+        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0979765735;A17317CA607CFBACD4C875B31478444420EDFF3E9633746EFE846C83A01E1407");// dev vinatti
+        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;31B6565C2D06EDF99DE2B39FB358544F0CA875E725EF28087C0702FDC6827204");// dev UAT
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0948035226;7C8FD391550599BF0BEFC98F0AD8D50642A624411355DB1ED5B211676C32B89D");// dev UAT
         checkPermissionCall();
     }
 
@@ -257,16 +259,13 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 }).show();
     }
 
-    void showDialog(List<RouteInfo> routeInfos){
-        new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
+    void showDialog(List<RouteInfo> routeInfos) {
+        new RouteDialog(getActivity(), routeInfos, new RouteOptionCallBack() {
 
             @Override
-            public void onRouteOptionResponse(Item item) {
-                RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setRouteCode(item.getValue());
-                routeInfo.setRouteName(item.getText());
+            public void onRouteOptionResponse(Item item, RouteInfo itemRouteInfo) {
                 SharedPref sharedPref = new SharedPref(getActivity());
-                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
+                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(itemRouteInfo));
                 if (getActivity() != null) {
                     // showUIShift();
                     Intent intent = new Intent(getActivity(), MainActivity.class);

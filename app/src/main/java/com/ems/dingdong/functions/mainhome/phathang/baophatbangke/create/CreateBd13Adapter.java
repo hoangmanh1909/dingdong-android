@@ -175,6 +175,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvNewReceiverAddress;
         @BindView(R.id.tv_create_dated)
         public CustomTextView tvCreateDated;
+        @BindView(R.id.tv_instruction)
+        public CustomTextView tvInstruction;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -248,10 +250,17 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             }
             if (!TextUtils.isEmpty(item.getNewInstruction())) {
                 tvNewInstruction.setVisibility(View.VISIBLE);
-                tvNewInstruction.setText(String.format("Chỉ dẫn phát: %s", item.getNewInstruction()));
+                tvNewInstruction.setText(String.format("Ghi chú: Note: %s", item.getNewInstruction()));
             } else {
                 tvNewInstruction.setText("");
                 tvNewInstruction.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(item.getNewInstruction())) {
+                tvInstruction.setVisibility(View.VISIBLE);
+                tvInstruction.setText(String.format("Lưu ý: Note: %s", item.getNewInstruction()));
+            } else {
+                tvInstruction.setText("Lưu ý: Note: ");
             }
             if (mTypeBD13 == TypeBD13.LIST_BD13) {
                 img_map.setVisibility(View.VISIBLE);

@@ -73,11 +73,15 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 mListFilter = (ArrayList<DingDongGetCancelDelivery>) filterResults.values;
                 if (mFilterDone != null) {
                     long amount = 0;
+                    long fee = 0;
                     for (DingDongGetCancelDelivery item : mListFilter) {
                         if (!TextUtils.isEmpty(Integer.toString(item.getAmount())))
                             amount += item.getAmount();
+                        if (item.getFee() != null) {
+                            fee += item.getFee();
+                        }
                     }
-                    mFilterDone.getCount(mListFilter.size(), amount);
+                    mFilterDone.getCount(mListFilter.size(), amount + fee);
                 }
                 notifyDataSetChanged();
             }

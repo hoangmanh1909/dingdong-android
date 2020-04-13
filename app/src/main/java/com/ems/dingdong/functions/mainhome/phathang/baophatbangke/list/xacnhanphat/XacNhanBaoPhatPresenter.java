@@ -125,7 +125,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
-                mView.showImage(response.body().getFile());
+                if (response.body() != null) {
+                    mView.showImage(response.body().getFile());
+                }
             }
 
             @Override

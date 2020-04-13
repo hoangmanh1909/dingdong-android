@@ -141,15 +141,16 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                 tvParcelCode.setVisibility(View.GONE);
             }
 
+            Integer cod = 0;
+            Integer fee = 0;
             if (item.getcODAmount() != null) {
-                tvAmount.setVisibility(View.VISIBLE);
-                if (item.getFee() != null)
-                    tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getcODAmount() + item.getFee())));
-                else
-                    tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getcODAmount())));
-            } else {
-                tvAmount.setVisibility(View.GONE);
+                cod = item.getcODAmount();
             }
+            if (item.getFee() != null) {
+                fee = item.getFee();
+            }
+            tvAmount.setVisibility(View.VISIBLE);
+            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(cod + fee)));
 
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusName.setVisibility(View.VISIBLE);

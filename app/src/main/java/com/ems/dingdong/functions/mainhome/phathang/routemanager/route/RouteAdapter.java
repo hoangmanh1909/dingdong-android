@@ -171,7 +171,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                         tvAproved.setOnClickListener(v -> itemClickListenner.onApproveClick(item));
                         tvStatusRoute.setBackgroundResource(R.drawable.bg_status_disapprove);
                     } else if (item.getStatusName().equals(mContext.getString(R.string.agreed))) {
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_done);
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_approve);
                         tvCancel.setVisibility(View.GONE);
                         tvAproved.setVisibility(View.GONE);
                     } else {
@@ -186,7 +186,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                         tvCancel.setText("Hủy yêu cầu");
                         tvCancel.setOnClickListener(v -> itemClickListenner.onCancelRequestClick(item));
                     } else if (item.getStatusName().equals(mContext.getString(R.string.agreed))) {
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_done);
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_approve);
                         tvCancel.setVisibility(View.GONE);
                         tvAproved.setVisibility(View.GONE);
                     } else {
