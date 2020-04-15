@@ -21,8 +21,10 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -42,6 +44,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.stringee.call.StringeeCall;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,6 +53,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -134,7 +138,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
-                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+//                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
+                            StringeeCall stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "0969803622", mPhone);
+//                            HashMap<String, StringeeCall> callHashMap = new HashMap<>();
+//                            callHashMap.put(stringeeCall.getCallId(), stringeeCall);
+                            Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+                            intent.putExtra(Constants.CALL_TYPE, 1);
+//                            intent.putExtra(Constants.CALL_MAP, callHashMap);
+                            intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+                            intent.putExtra(Constants.KEY_CALLEE_NUMBER, mPhone);
+                            startActivity(intent);
                         }
 
                         @Override

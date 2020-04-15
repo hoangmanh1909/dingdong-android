@@ -88,5 +88,18 @@ public class Constants {
     public static final int HCC_SEARCH_TYPE = 3;
 
 
+    public static final String CALL_ID = "call_id";
+
+    public static final String CALL_TYPE = "call_type";
+    public static final int CALL_TYPE_RECEIVING = 0;
+    public static final int CALL_TYPE_CALLING = 1;
+
+
+    public static final String CALL_MAP = "call_map";
+    public static final String ACCESS_CALL_TOKEN = "access_call_token";
+    public static final String KEY_CALLER_NUMBER= "key_caller_number";
+    public static final String KEY_CALLEE_NUMBER= "key_callee_number";
+
+
 
 }

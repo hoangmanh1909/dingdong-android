@@ -13,7 +13,6 @@ import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UserInfo;
@@ -24,6 +23,8 @@ import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.Calendar;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -98,6 +99,31 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
             protected void onError(Call<StatisticPaymentResult> call, String message) {
             }
         });
+    }
+
+    @Override
+    public void getAccessToken() {
+        mInteractor.getAccessToken()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (simpleResult, throwable) -> {
+                            if (simpleResult != null) {
+                                if (simpleResult.getErrorCode().equals("00")) {
+                                    SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+                                    sharedPref.putString(Constants.ACCESS_CALL_TOKEN, simpleResult.getSignCode());
+                                    mView.showSuccessToast("lấy token thành công");
+                                } else {
+                                    if (throwable != null)
+                                        mView.showErrorToast(throwable.getMessage());
+                                    else
+                                        mView.showErrorToast(simpleResult.getMessage());
+                                }
+                            } else if (throwable != null) {
+                                mView.showErrorToast(throwable.getMessage());
+                            }
+                        }
+                );
     }
 
     @Override

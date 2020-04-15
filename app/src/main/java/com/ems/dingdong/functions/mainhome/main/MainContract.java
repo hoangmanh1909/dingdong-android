@@ -9,9 +9,13 @@ import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
+import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
+
+import io.reactivex.Single;
 
 /**
  * The Home Contract
@@ -22,6 +26,8 @@ interface MainContract {
         void getShift(String code, CommonCallback<ShiftResult> callback);
 
         void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<StatisticPaymentResult> callback);
+
+        Single<ActiveResult> getAccessToken();
     }
 
     interface View extends PresentView<Presenter> {
@@ -42,6 +48,8 @@ interface MainContract {
         void showSetting();
 
         void getBalance();
+
+        void getAccessToken();
     }
 }
 

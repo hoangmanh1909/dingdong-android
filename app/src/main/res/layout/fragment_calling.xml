@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    android:orientation="vertical">
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_calling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:text="Calling"
+        android:textColor="@color/bg_blue_primary"
+        android:textSize="@dimen/dimen_40dp" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_calling"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:textColor="@color/bg_blue_primary"
+        android:text="Số điện thoại"
+        android:textSize="@dimen/dimen_40dp" />
+
+    <Chronometer
+        android:id="@+id/tv_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:textColor="@color/bg_blue_primary"
+        android:textSize="@dimen/dimen_40dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_30dp">
+
+        <ImageView
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:id="@+id/iv_call_answer"
+            android:layout_height="@dimen/dimen_100dp"
+            android:background="@drawable/ic_call">
+        </ImageView>
+        <ImageView
+            android:layout_width="@dimen/dimen_100dp"
+            android:id="@+id/iv_call_end"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_height="@dimen/dimen_100dp"
+            android:background="@drawable/ic_call_end">
+        </ImageView>
+        <ImageView
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/dimen_100dp"
+            android:id="@+id/iv_call_cancel"
+            android:layout_height="@dimen/dimen_100dp"
+            android:background="@drawable/ic_call_end_green">
+        </ImageView>
+    </RelativeLayout>
+
+</RelativeLayout>

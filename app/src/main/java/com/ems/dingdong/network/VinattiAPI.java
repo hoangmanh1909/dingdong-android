@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -443,5 +444,8 @@ public interface VinattiAPI {
 
     @POST("api/LadingCancelDelivery/Statistic")
     Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
+
+    @GET("api/MoveCrop/GetAccessTokenAndroid")
+    Single<ActiveResult> getAccessTokenAndroid();
 
 }

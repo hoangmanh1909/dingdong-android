@@ -76,9 +76,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void initLayout() {
         super.initLayout();
-
         updateUserHeader();
         setupAdapter();
+        mPresenter.getAccessToken();
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
