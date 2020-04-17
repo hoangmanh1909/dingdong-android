@@ -353,7 +353,7 @@
                     android:id="@+id/btn_sign"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_gradient_radius_5"
+                    android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"

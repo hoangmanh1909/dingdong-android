@@ -47,7 +47,9 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     CustomTextView tvStatus;
     private SharedPref mSharedPref;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
-            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
+            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -80,10 +82,20 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
             int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasPermission5 = getActivity().checkSelfPermission(Manifest.permission.MODIFY_AUDIO_SETTINGS);
+            int hasPermission6 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE);
+            int hasPermission7 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
+            int hasPermission8 = getActivity().checkSelfPermission(Manifest.permission.INTERNET);
+            int hasPermission9 = getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
                     || hasPermission4 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission5 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission6 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission7 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission8 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission9 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }

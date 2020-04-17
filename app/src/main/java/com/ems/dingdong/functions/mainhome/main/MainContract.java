@@ -32,6 +32,8 @@ interface MainContract {
 
     interface View extends PresentView<Presenter> {
         void updateBalance(StatisticPaymentResponse value);
+
+        void initStringeeClient();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

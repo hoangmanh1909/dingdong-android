@@ -3,7 +3,9 @@ package com.ems.dingdong.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -12,9 +14,11 @@ import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.stringee.StringeeClient;
 import com.stringee.call.StringeeCall;
 import com.stringee.exception.StringeeError;
+import com.stringee.listener.StatusListener;
 import com.stringee.listener.StringeeConnectionListener;
 
 import org.json.JSONObject;
@@ -25,9 +29,8 @@ public class CallService extends Service {
 
     private final IBinder mBinder = new CallBinder();
     private StringeeClient client;
-    private StringeeCall stringeeCall;
+    private StringeeCall mStringeeCall;
     private SharedPref sharedPref;
-    private boolean isConnected = false;
 
     @Nullable
     @Override
@@ -49,55 +52,15 @@ public class CallService extends Service {
             client.setConnectionListener(callConnectionListener);
             Logger.d("chauvp", "init");
         }
-        if (!TextUtils.isEmpty(token) && !isConnected) {
+        if (!TextUtils.isEmpty(token) && !client.isConnected()) {
             client.connect(token);
-            Logger.d("chauvp", "connect" + token);
+            Logger.d("chauvp", "connect " + token);
         }
+
     }
 
-    public void makeCall(String fromPhoneNumber, String toPhoneNumber) {
-        Logger.d("chauvp", "make call, caller: " + fromPhoneNumber + " callee: " + toPhoneNumber);
-        initStringeeClient();
-        stringeeCall = new StringeeCall(getApplicationContext(), client, fromPhoneNumber, toPhoneNumber);
-        stringeeCall.setCallListener(new StringeeCall.StringeeCallListener() {
-            @Override
-            public void onSignalingStateChange(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s, int i, String s1) {
-                Logger.d("chauvp", "onSignalingStateChange" + signalingState.name());
-            }
-
-            @Override
-            public void onError(StringeeCall stringeeCall, int i, String s) {
-                Logger.d("chauvp", "onError" + s);
-
-            }
-
-            @Override
-            public void onHandledOnAnotherDevice(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s) {
-                Logger.d("chauvp", "onHandledOnAnotherDevice" + s + signalingState.name());
-            }
-
-            @Override
-            public void onMediaStateChange(StringeeCall stringeeCall, StringeeCall.MediaState mediaState) {
-                Logger.d("chauvp", "onMediaStateChange" + mediaState.name());
-            }
-
-            @Override
-            public void onLocalStream(StringeeCall stringeeCall) {
-                Logger.d("chauvp", "onLocalStream");
-
-            }
-
-            @Override
-            public void onRemoteStream(StringeeCall stringeeCall) {
-                Logger.d("chauvp", "onRemoteStream");
-            }
-
-            @Override
-            public void onCallInfo(StringeeCall stringeeCall, JSONObject jsonObject) {
-                Logger.d("chauvp", "onCallInfo"+ jsonObject.toString());
-            }
-        });
-        stringeeCall.makeCall();
+    public StringeeCall getmStringeeCall() {
+        return mStringeeCall;
     }
 
     public class CallBinder extends Binder {
@@ -106,29 +69,68 @@ public class CallService extends Service {
         }
     }
 
+    public void registerToken() {
+        String token = FirebaseInstanceId.getInstance().getToken();
+        if (client.isConnected()) {
+            client.registerPushToken(token, new StatusListener() {
+                @Override
+                public void onSuccess() {
+                    Logger.d("chauvp", "registerPushToken: onSuccess");
+                }
+
+                @Override
+                public void onError(StringeeError stringeeError) {
+                    super.onError(stringeeError);
+                    Logger.d("chauvp", "registerPushToken: onError: " + stringeeError.getMessage());
+                }
+            });
+        } else {
+            initStringeeClient();
+        }
+    }
 
     private StringeeConnectionListener callConnectionListener = new StringeeConnectionListener() {
         @Override
         public void onConnectionConnected(StringeeClient stringeeClient, boolean b) {
-            Logger.d("chauvp", "onConnectionConnected");
-            isConnected = true;
+            Logger.d("chauvp", "onConnectionConnected stringee server");
+            client = stringeeClient;
+            registerToken();
+//            Logger.d("chauvp", "onIncomingCall1");
+//            HashMap<String, StringeeCall> callHashMap = new HashMap<>();
+//            callHashMap.put(Constants.CALL_TYPE, mStringeeCall);
+//            Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+//            intent.putExtra(Constants.CALL_TYPE, 0);
+//            intent.putExtra(Constants.CALL_MAP, callHashMap);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
         }
 
         @Override
         public void onConnectionDisconnected(StringeeClient stringeeClient, boolean b) {
             Logger.d("chauvp", "onConnectionDisconnected");
-            isConnected = false;
         }
 
         @Override
         public void onIncomingCall(StringeeCall stringeeCall) {
-            HashMap<String, StringeeCall> callHashMap = new HashMap<>();
-            callHashMap.put(stringeeCall.getCallId(), stringeeCall);
-            Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
-            intent.putExtra(Constants.CALL_ID, stringeeCall.getCallId());
-            intent.putExtra(Constants.CALL_TYPE, 0);
-            intent.putExtra(Constants.CALL_MAP, callHashMap);
-            startActivity(intent);
+            Logger.d("chauvp", "onIncomingCall1");
+            Logger.d("chauvp", "running on: " + Thread.currentThread().getName());
+
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (stringeeCall != null) {
+                    Logger.d("chauvp", "running on: " + Thread.currentThread().getName());
+                    Logger.d("chauvp", "start activity: ");
+                    HashMap<String, StringeeCall> callHashMap = new HashMap<>();
+                    callHashMap.put(Constants.CALL_ID, stringeeCall);
+                    mStringeeCall = stringeeCall;
+                    mStringeeCall.initAnswer(getApplicationContext(), client);
+                    Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+                    intent.putExtra(Constants.CALL_TYPE, 0);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    Logger.d("chauvp", "stringeeCall is null");
+                }
+            });
 
         }
 

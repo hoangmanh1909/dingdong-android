@@ -362,4 +362,5 @@
     <color name="bg_yellow_primary">#FCAF17</color>
     <color name="bg_blue_primary">#004689</color>
     <color name="bg_gray_primary">#939598</color>
+    <color name="bg_red_gradient">#f56358</color>
 </resources>

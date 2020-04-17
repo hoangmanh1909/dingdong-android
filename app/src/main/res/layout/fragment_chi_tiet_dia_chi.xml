@@ -60,7 +60,7 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:layout_weight="0.7"
-        android:background="@drawable/bg_gradient_search"
+        android:background="@drawable/bg_button_fix_call"
         android:text="Chọn vị trí"
         android:textColor="@android:color/white" />
 
@@ -352,7 +352,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_gradient_search"
+                    android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
@@ -370,7 +370,7 @@
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_radius_blue"
+                    android:background="@drawable/bg_button_prmary_blue"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"

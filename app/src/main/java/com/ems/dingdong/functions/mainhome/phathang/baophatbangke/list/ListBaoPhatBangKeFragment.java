@@ -140,7 +140,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             mPhone = phone;
 //                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-                            StringeeCall stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "0969803622", mPhone);
+//                            StringeeCall stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "0969803622", mPhone);
 //                            HashMap<String, StringeeCall> callHashMap = new HashMap<>();
 //                            callHashMap.put(stringeeCall.getCallId(), stringeeCall);
                             Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);

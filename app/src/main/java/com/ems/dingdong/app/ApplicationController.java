@@ -13,8 +13,10 @@ import com.crashlytics.android.Crashlytics;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.services.CallService;
+import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.stringee.StringeeClient;
+import com.stringee.call.StringeeCall;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -31,6 +33,7 @@ public class ApplicationController extends MultiDexApplication {
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
+            Logger.d("chauvp", "onServiceConnected");
             CallService.CallBinder binder = (CallService.CallBinder) service;
             callService = binder.getService();
             mBound = true;
@@ -59,18 +62,27 @@ public class ApplicationController extends MultiDexApplication {
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
-    public void initStringleeClient() {
-        callService.initStringeeClient();
-    }
-
     public StringeeClient getStringleeClient() {
         return callService.getStringeeClient();
     }
 
-    public void makeCall(String fromPhoneNumber, String toPhoneNumber) {
-        callService.makeCall(fromPhoneNumber, toPhoneNumber);
+    public void initStringeeClient() {
+        if (mBound)
+            callService.initStringeeClient();
+        else {
+            Intent intent = new Intent(this, CallService.class);
+            bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
     }
 
+    public StringeeCall getmStringeeCall() {
+        return callService.getmStringeeCall();
+    }
+
+    public void reFreshToken() {
+        Logger.d("chauvp", "registerToken");
+        callService.registerToken();
+    }
 
     public static ApplicationController getInstance() {
         return applicationController;

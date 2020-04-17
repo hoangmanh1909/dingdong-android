@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.main;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -103,6 +104,10 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
 
     @Override
     public void getAccessToken() {
+        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+//        if (!TextUtils.isEmpty(sharedPref.getString(Constants.ACCESS_CALL_TOKEN, ""))) {
+//            return;
+//        }
         mInteractor.getAccessToken()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,9 +115,8 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                         (simpleResult, throwable) -> {
                             if (simpleResult != null) {
                                 if (simpleResult.getErrorCode().equals("00")) {
-                                    SharedPref sharedPref = SharedPref.getInstance(getViewContext());
                                     sharedPref.putString(Constants.ACCESS_CALL_TOKEN, simpleResult.getSignCode());
-                                    mView.showSuccessToast("lấy token thành công");
+                                    mView.initStringeeClient();
                                 } else {
                                     if (throwable != null)
                                         mView.showErrorToast(throwable.getMessage());

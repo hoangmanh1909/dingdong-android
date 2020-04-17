@@ -237,7 +237,7 @@
                     android:id="@+id/tv_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_gradient_search"
+                    android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingStart="@dimen/dimen_40dp"
                     android:paddingTop="@dimen/dimen_10dp"

@@ -18,14 +18,25 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.stringee.StringeeClient;
+import com.stringee.call.StringeeCall;
+import com.stringee.exception.StringeeError;
+import com.stringee.listener.StatusListener;
+import com.stringee.listener.StringeeConnectionListener;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
@@ -35,6 +46,9 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = DingDongFirebaseMessagingService.class.getSimpleName();
     private int numMessages = 0;
     private NotificationUtils notificationUtils;
+    private StringeeClient client;
+    private boolean isConnected = false;
+    private ApplicationController applicationController;
 
   /*   "notification": {
         "click_action": ".fcm.NotificationActivity",
@@ -47,6 +61,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 "title": "DingDong",
     }*/
 
+
     @Override
     public void onNewToken(@NonNull String refreshedToken) {
         super.onNewToken(refreshedToken);
@@ -57,7 +72,25 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
 
         SharedPref sharedPref = new SharedPref(this);
         sharedPref.putString(Constants.KEY_PUSH_NOTIFICATION, token);
+        if (client == null) {
+            client = new StringeeClient(this);
+        }
+
+        client.registerPushToken(token, new StatusListener() {
+            @Override
+            public void onSuccess() {
+                Logger.d("chauvp", "PushToken: onSuccess");
+                applicationController = (ApplicationController) getApplication();
+                applicationController.reFreshToken();
+            }
+
+            @Override
+            public void onError(StringeeError error) {
+                Logger.d("chauvp", "PushToken: onError");
+            }
+        });
     }
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -66,6 +99,11 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            String pushFromStringee = remoteMessage.getData().get("stringeePushNotification");
+            if (pushFromStringee != null) { // Receive push notification from Stringee Server
+                // Connect to Stringee Server here
+
+            }
             sendNotification(remoteMessage.getData().get("message"));
         } else if (notification != null) {
             Map<String, String> data = remoteMessage.getData();

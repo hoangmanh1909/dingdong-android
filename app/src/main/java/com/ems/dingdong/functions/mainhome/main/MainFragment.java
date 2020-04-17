@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
@@ -78,13 +79,14 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-        mPresenter.getAccessToken();
+        if (mPresenter != null)
+            mPresenter.getAccessToken();
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
                 updateUserHeader();
                 if (homeFragment != null) {
-                    HomeV1Fragment v1Fragment = (HomeV1Fragment)homeFragment;
+                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
                     v1Fragment.updateHomeView();
                 }
             } else if (tabId == R.id.action_cart) {
@@ -100,6 +102,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         });
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -118,7 +121,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         });
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
-        getActivity().startService(intent);
+        getViewContext().startService(intent);
         if (!"6".equals(userInfo.getEmpGroupID())) {
             imgCall.setVisibility(View.VISIBLE);
             imgTopSetting.setVisibility(View.VISIBLE);
@@ -128,14 +131,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             imgTopSetting.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.INVISIBLE);
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ViewGroup v = bottomBar.findViewById(R.id.bb_bottom_bar_item_container);
-                    v.removeViewAt(3);
-                    v.removeViewAt(2);
-                    v.removeViewAt(1);
-                }
+            handler.postDelayed(() -> {
+                ViewGroup v = bottomBar.findViewById(R.id.bb_bottom_bar_item_container);
+                v.removeViewAt(3);
+                v.removeViewAt(2);
+                v.removeViewAt(1);
             }, 100);
         }
     }
@@ -234,7 +234,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void updateBalance(StatisticPaymentResponse value) {
         viewTop.setVisibility(View.VISIBLE);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         if (value != null) {
@@ -250,10 +250,16 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
     }
 
+    @Override
+    public void initStringeeClient() {
+        ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
+        applicationController.initStringeeClient();
+    }
+
     @SuppressLint("SetTextI18n")
     private void updateUserHeader() {
         viewTop.setVisibility(View.VISIBLE);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");

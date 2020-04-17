@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:background="@drawable/bg_gradient_calling"
     android:orientation="vertical">
 
     <com.ems.dingdong.views.CustomTextView
@@ -12,8 +12,8 @@
         android:layout_marginTop="@dimen/dimen_20dp"
         android:gravity="center"
         android:text="Calling"
-        android:textColor="@color/bg_blue_primary"
-        android:textSize="@dimen/dimen_40dp" />
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dimen_20dp" />
 
     <com.ems.dingdong.views.CustomTextView
         android:id="@+id/tv_phone_number"
@@ -22,20 +22,95 @@
         android:layout_below="@+id/tv_calling"
         android:layout_marginTop="@dimen/dimen_20dp"
         android:gravity="center"
-        android:textColor="@color/bg_blue_primary"
         android:text="Số điện thoại"
-        android:textSize="@dimen/dimen_40dp" />
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dimen_30dp" />
 
     <Chronometer
         android:id="@+id/tv_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/tv_phone_number"
         android:layout_marginTop="@dimen/dimen_20dp"
         android:gravity="center"
-        android:textColor="@color/bg_blue_primary"
-        android:textSize="@dimen/dimen_40dp" />
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dimen_20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="@dimen/dimen_70dp"
+                    android:background="@drawable/ic_mic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="@dimen/dimen_70dp"
+                    android:background="@drawable/ic_mic" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="@dimen/dimen_70dp"
+                    android:background="@drawable/ic_mic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="@dimen/dimen_70dp"
+                    android:background="@drawable/ic_mic" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,29 +120,30 @@
         android:layout_marginBottom="@dimen/dimen_30dp">
 
         <ImageView
+            android:id="@+id/iv_call_answer"
             android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/dimen_50dp"
-            android:id="@+id/iv_call_answer"
-            android:layout_height="@dimen/dimen_100dp"
-            android:background="@drawable/ic_call">
-        </ImageView>
+            android:src="@drawable/ic_call_hang_green"
+            android:background="@drawable/bg_call_end_selector" />
+
         <ImageView
-            android:layout_width="@dimen/dimen_100dp"
             android:id="@+id/iv_call_end"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_height="@dimen/dimen_100dp"
-            android:background="@drawable/ic_call_end">
-        </ImageView>
-        <ImageView
-            android:layout_marginRight="@dimen/dimen_50dp"
-            android:layout_alignParentRight="true"
             android:layout_width="@dimen/dimen_100dp"
-            android:id="@+id/iv_call_cancel"
             android:layout_height="@dimen/dimen_100dp"
-            android:background="@drawable/ic_call_end_green">
-        </ImageView>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_call_end_selector"
+            android:src="@drawable/ic_call_end_red" />
+
+        <ImageView
+            android:id="@+id/iv_call_cancel"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:background="@drawable/bg_call_end_selector"
+            android:src="@drawable/ic_call_end_red" />
     </RelativeLayout>
 
 </RelativeLayout>
