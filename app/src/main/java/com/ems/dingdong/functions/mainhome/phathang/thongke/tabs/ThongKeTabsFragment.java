@@ -22,11 +22,8 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
     PagerSlidingTabStrip tabs;
     @BindView(R.id.pager)
     ViewPager pager;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    private TabsThongKeAdapter mAdapter;
-    String text1 = "DANH SÁCH BƯU GỬI";
 
+    private TabsThongKeAdapter mAdapter;
     public static ThongKeTabsFragment getInstance() {
         return new ThongKeTabsFragment();
     }
@@ -50,7 +47,6 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
         mAdapter = new TabsThongKeAdapter(getChildFragmentManager(), getContext(), mPresenter.getContainerView());
         pager.setAdapter(mAdapter);
         tabs.setViewPager(pager);
-        tvTitle.setText(text1);
         pager.setOffscreenPageLimit(2);
     }
 

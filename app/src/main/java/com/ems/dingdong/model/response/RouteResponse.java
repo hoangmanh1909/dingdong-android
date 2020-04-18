@@ -33,6 +33,10 @@ public class RouteResponse {
 
     @SerializedName("StatusDate")
     String statusDate;
+    @SerializedName("CODAmount")
+    Integer codAmount;
+    @SerializedName("Fee")
+    Integer fee;
 
     public Integer getId() {
         return id;
@@ -82,6 +86,13 @@ public class RouteResponse {
         return statusName;
     }
 
+    public Integer getCodAmount() {
+        return codAmount;
+    }
+
+    public Integer getFee() {
+        return fee;
+    }
 
     public String getStatusDate() {
         return statusDate;

@@ -15,6 +15,7 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.response.RouteResponse;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -123,7 +124,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
         @BindView(R.id.tv_cancel)
         CustomTextView tvCancel;
         @BindView(R.id.tv_approved)
-        CustomTextView tvAproved;
+        CustomTextView tvApproved;
+        @BindView(R.id.tv_total_amount)
+        CustomTextView tvTotalAmount;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -159,6 +162,15 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                 tvTime.setText(item.getStatusDate());
             }
 
+            long cod = 0;
+            long fee = 0;
+            if (item.getCodAmount() != null) {
+                cod = item.getCodAmount();
+            }
+            if (item.getCodAmount() != null) {
+                fee = item.getFee();
+            }
+            tvTotalAmount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(cod + fee)));
 
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusRoute.setVisibility(View.VISIBLE);
@@ -166,40 +178,40 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                 if (typeRoute == Constants.ROUTE_RECEIVED) {
                     if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved))) {
                         tvCancel.setVisibility(View.VISIBLE);
-                        tvAproved.setVisibility(View.VISIBLE);
+                        tvApproved.setVisibility(View.VISIBLE);
                         tvCancel.setOnClickListener(v -> itemClickListenner.onCancelClick(item));
-                        tvAproved.setOnClickListener(v -> itemClickListenner.onApproveClick(item));
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_disapprove);
+                        tvApproved.setOnClickListener(v -> itemClickListenner.onApproveClick(item));
+                        tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.color_939393));
                     } else if (item.getStatusName().equals(mContext.getString(R.string.agreed))) {
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_approve);
+                        tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
                         tvCancel.setVisibility(View.GONE);
-                        tvAproved.setVisibility(View.GONE);
+                        tvApproved.setVisibility(View.GONE);
                     } else {
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_red);
+                        tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.red_light));
                         tvCancel.setVisibility(View.GONE);
-                        tvAproved.setVisibility(View.GONE);
+                        tvApproved.setVisibility(View.GONE);
                     }
                 } else {
                     if (item.getStatusName().equals(mContext.getString(R.string.not_yet_approved))) {
                         tvCancel.setVisibility(View.VISIBLE);
-                        tvAproved.setVisibility(View.GONE);
-                        tvCancel.setText("Hủy yêu cầu");
+                        tvApproved.setVisibility(View.INVISIBLE);
+                        tvCancel.setText(mContext.getString(R.string.cancel_require));
                         tvCancel.setOnClickListener(v -> itemClickListenner.onCancelRequestClick(item));
                     } else if (item.getStatusName().equals(mContext.getString(R.string.agreed))) {
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_status_approve);
+                        tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
                         tvCancel.setVisibility(View.GONE);
-                        tvAproved.setVisibility(View.GONE);
+                        tvApproved.setVisibility(View.GONE);
                     } else {
-                        tvStatusRoute.setBackgroundResource(R.drawable.bg_red);
+                        tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.red_light));
                         tvCancel.setVisibility(View.GONE);
-                        tvAproved.setVisibility(View.GONE);
+                        tvApproved.setVisibility(View.GONE);
                     }
                 }
             } else {
                 tvStatusRoute.setText("");
                 tvStatusRoute.setVisibility(View.GONE);
                 tvCancel.setVisibility(View.GONE);
-                tvAproved.setVisibility(View.GONE);
+                tvApproved.setVisibility(View.GONE);
             }
         }
     }

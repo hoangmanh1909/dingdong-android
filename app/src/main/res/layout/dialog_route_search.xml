@@ -13,8 +13,8 @@
         android:layout_height="@dimen/size_50dp"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/size_10dp"
-        android:visibility="invisible"
-        android:src="@drawable/ic_cancel" />
+        android:src="@drawable/ic_cancel"
+        android:visibility="invisible" />
 
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
@@ -32,12 +32,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#f5f6fa"
+                android:gravity="center"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
-                android:gravity="center"
-                android:textColor="#555356"
                 android:text="@string/search_route_change"
+                android:textColor="#555356"
                 android:textSize="@dimen/text_size_16sp" />
 
             <LinearLayout
@@ -47,6 +47,42 @@
                 android:orientation="vertical"
                 android:padding="@dimen/size_16dp">
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="3"
+                        android:text="Mã bưu gửi"
+                        android:textColor="#253854"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/tv_lading_code"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:gravity="right"
+                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formDrawablePadding="10dp"
+                        app:formShowUnderline="false" />
+                </LinearLayout>
+
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -110,48 +146,11 @@
                         app:formDrawablePadding="10dp"
                         app:formShowUnderline="false" />
                 </LinearLayout>
-                <View
-                    style="@style/Devider"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
-                        android:layout_weight="3"
-                        android:text="Mã bưu gửi"
-                        android:textColor="#253854"
-                        android:textSize="14sp" />
-
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/tv_lading_code"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:textAllCaps="true"
-                        android:gravity="right"
-                        android:inputType="textCapCharacters"
-                        android:textColor="#253854"
-                        android:textSize="16sp"
-                        app:formDrawablePadding="10dp"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-
 
                 <View
                     style="@style/Devider"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -181,6 +180,7 @@
                         app:formDrawablePadding="10dp"
                         app:formShowUnderline="false" />
                 </LinearLayout>
+
                 <View
                     style="@style/Devider"
                     android:layout_width="match_parent"
@@ -195,8 +195,8 @@
                     android:weightSum="10">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
                         android:id="@+id/tv_route_type"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
                         android:layout_weight="3"
@@ -216,7 +216,6 @@
                         app:formDrawablePadding="10dp"
                         app:formShowUnderline="false" />
                 </LinearLayout>
-
 
 
                 <View

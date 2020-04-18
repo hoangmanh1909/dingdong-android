@@ -109,5 +109,6 @@
     <string name="fee_collected">Cước thu của người nhận</string>
     <string name="cod_amount">Tiền COD</string>
     <string name="not_found_current_location">Không tìm thấy vị trí hiện tại</string>
+    <string name="cancel_require">Hủy yêu cầu</string>
 
 </resources>

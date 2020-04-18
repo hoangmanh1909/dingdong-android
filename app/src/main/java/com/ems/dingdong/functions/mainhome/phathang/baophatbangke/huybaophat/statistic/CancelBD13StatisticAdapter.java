@@ -116,12 +116,20 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
 
         @BindView(R.id.tv_parcel_code)
         CustomBoldTextView tvParcelCode;
-        @BindView(R.id.tv_delivery_date)
+        @BindView(R.id.tv_date_time)
         CustomTextView tvDeliveryDate;
         @BindView(R.id.tv_status_name)
         CustomTextView tvStatusName;
-        @BindView(R.id.tv_amount)
-        CustomBoldTextView tvAmount;
+        @BindView(R.id.tv_debit_status_name)
+        CustomTextView tvDebitStatus;
+        @BindView(R.id.tv_cod)
+        CustomTextView tvCod;
+        @BindView(R.id.tv_fee)
+        CustomTextView tvFee;
+        @BindView(R.id.tv_sender_name)
+        CustomTextView tvSenderName;
+        @BindView(R.id.tv_receiver_name)
+        CustomTextView tvReceiverName;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -149,8 +157,36 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             if (item.getFee() != null) {
                 fee = item.getFee();
             }
-            tvAmount.setVisibility(View.VISIBLE);
-            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(cod + fee)));
+            tvCod.setVisibility(View.VISIBLE);
+            tvFee.setVisibility(View.VISIBLE);
+            tvCod.setText(String.format("Số tiền COD: %s đ", NumberUtils.formatPriceNumber(cod)));
+            tvFee.setText(String.format("Tiền cước: %s VNĐ", NumberUtils.formatPriceNumber(fee)));
+
+            if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
+                if (item.getPaymentPayPostStatus().equals("Y")) {
+                    tvDebitStatus.setText(mContext.getString(R.string.success));
+                    tvDebitStatus.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
+                } else if (item.getPaymentPayPostStatus().equals("A")) {
+                    tvDebitStatus.setText(mContext.getString(R.string.success));
+                    tvDebitStatus.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                }
+            } else {
+                tvDebitStatus.setText("");
+                tvDebitStatus.setVisibility(View.INVISIBLE);
+            }
+
+            if (!TextUtils.isEmpty(item.getSenderName())) {
+                tvSenderName.setText(String.format("Người gửi: %s", item.getSenderName()));
+            } else {
+                tvSenderName.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(item.getReceiverName())) {
+                tvReceiverName.setText(String.format("Người nhận: %s", item.getReceiverName()));
+            } else {
+                tvReceiverName.setVisibility(View.GONE);
+            }
+
 
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusName.setVisibility(View.VISIBLE);
@@ -158,9 +194,9 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                 if (mContext.getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
                     tvStatusName.setTextColor(mContext.getResources().getColor(R.color.grey));
                 } else if (mContext.getString(R.string.approved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.blue));
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
                 } else {
-                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.bg_yellow_primary));
+                    tvStatusName.setTextColor(mContext.getResources().getColor(R.color.red_light));
                 }
             } else {
                 tvStatusName.setVisibility(View.GONE);

@@ -26,7 +26,7 @@ public class RouteTabsAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.tabs = tabs;
         this.mContext = context;
-        mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "Nhận Bưu Gửi "+"(" + 0 + ")" + "</font>");
         mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
     }
 
