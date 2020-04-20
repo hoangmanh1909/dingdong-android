@@ -32,9 +32,9 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
     private List<DingDongGetCancelDelivery> mListFilter;
     private List<DingDongGetCancelDelivery> mList;
-    Context mContext;
+    private Context mContext;
 
-    public CancelBD13Adapter(Context context, List<DingDongGetCancelDelivery> items, CancelBD13Adapter.FilterDone filterDone) {
+    CancelBD13Adapter(Context context, List<DingDongGetCancelDelivery> items, CancelBD13Adapter.FilterDone filterDone) {
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
@@ -138,7 +138,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         @BindView(R.id.tv_sender_name)
         CustomTextView senderName;
 
-        public HolderView(View itemView) {
+        HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

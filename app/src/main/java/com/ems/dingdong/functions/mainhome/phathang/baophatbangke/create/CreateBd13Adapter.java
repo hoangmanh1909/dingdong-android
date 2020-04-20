@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.NumberUtils;
-import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -154,7 +153,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_sender)
         public CustomTextView tv_sender;
         @BindView(R.id.tv_receiver)
-        public CustomTextView tv_receiver;
+        public CustomBoldTextView tv_receiver;
         @BindView(R.id.tv_weight)
         public CustomTextView tv_weight;
         @BindView(R.id.tv_COD)
@@ -215,7 +214,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 senderAddress = item.getSenderAddress();
             }
 
-            tv_receiver.setText(StringUtils.fromHtml(String.format("Người nhận: <strong>%s - %s - %s</strong>", receiverName, receiverMobile, receiverAddress)));
+            tv_receiver.setText(String.format("Người nhận: %s - %s - %s", receiverName, receiverMobile, receiverAddress));
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + senderMobile + " - " + senderAddress);
 
             if (item.getWeight() != null)
@@ -250,17 +249,17 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             }
             if (!TextUtils.isEmpty(item.getNewInstruction())) {
                 tvNewInstruction.setVisibility(View.VISIBLE);
-                tvNewInstruction.setText(String.format("Ghi chú: Note: %s", item.getNewInstruction()));
+                tvNewInstruction.setText(String.format("Chỉ dẫn phát: %s", item.getNewInstruction()));
             } else {
                 tvNewInstruction.setText("");
                 tvNewInstruction.setVisibility(View.GONE);
             }
 
-            if (!TextUtils.isEmpty(item.getNewInstruction())) {
+            if (!TextUtils.isEmpty(item.getInstruction())) {
                 tvInstruction.setVisibility(View.VISIBLE);
-                tvInstruction.setText(String.format("Lưu ý: Note: %s", item.getNewInstruction()));
+                tvInstruction.setText(String.format("Lưu ý(Note): %s", item.getInstruction()));
             } else {
-                tvInstruction.setText("Lưu ý: Note: ");
+                tvInstruction.setText("Lưu ý: ");
             }
             if (mTypeBD13 == TypeBD13.LIST_BD13) {
                 img_map.setVisibility(View.VISIBLE);

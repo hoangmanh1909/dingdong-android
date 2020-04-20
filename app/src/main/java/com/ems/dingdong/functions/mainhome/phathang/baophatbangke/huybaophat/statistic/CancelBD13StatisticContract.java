@@ -32,5 +32,7 @@ public interface CancelBD13StatisticContract {
         void showBarcode(BarCodeCallback barCodeCallback);
 
         void titleChanged(int quantity, int currentSetTab);
+
+        List<CancelStatisticItem> getListFromMap(String ladingCode);
     }
 }

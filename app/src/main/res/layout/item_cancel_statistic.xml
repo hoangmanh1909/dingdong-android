@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_weight="1"
-                android:textColor="@color/bg_blue_primary"
+                android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp"
                 tools:text="10.000" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="left"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/text_size_14sp"
                 android:visibility="visible"

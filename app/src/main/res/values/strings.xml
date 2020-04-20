@@ -33,7 +33,7 @@
     <string name="amount">Số lượng:</string>
     <string name="amount_of_money">Số tiền</string>
     <string name="vietnamese_currency">đ</string>
-    <string name="not_success">gạch nợ thất bại</string>
+    <string name="not_success">Gạch nợ thất bại</string>
     <string name="gach_no_thanh_cong">THỐNG KÊ GẠCH NỢ THÀNH CÔNG</string>
     <string name="gach_no_khong_thanh_cong">THỐNG KÊ GẠCH NỢ KHÔNG THÀNH CÔNG</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiaG9hbmdtYW5oMTkwOSIsImEiOiJjazczMjZhYTUwNGRxM2VxdzBhdWxqZmg0In0.bS71h7OOLd1OobSajeMQ9g</string>
@@ -110,5 +110,7 @@
     <string name="cod_amount">Tiền COD</string>
     <string name="not_found_current_location">Không tìm thấy vị trí hiện tại</string>
     <string name="cancel_require">Hủy yêu cầu</string>
+    <string name="cancel_history">Lịch sử hủy:</string>
+    <string name="cancel_delivery">Hủy báo phát</string>
 
 </resources>

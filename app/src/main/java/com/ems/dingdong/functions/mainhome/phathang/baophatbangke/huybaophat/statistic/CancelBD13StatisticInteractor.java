@@ -9,7 +9,7 @@ import io.reactivex.Observable;
 
 public class CancelBD13StatisticInteractor extends Interactor<CancelBD13StatisticContract.Presenter> implements CancelBD13StatisticContract.Interactor {
 
-    public CancelBD13StatisticInteractor(CancelBD13StatisticContract.Presenter presenter) {
+    CancelBD13StatisticInteractor(CancelBD13StatisticContract.Presenter presenter) {
         super(presenter);
     }
 

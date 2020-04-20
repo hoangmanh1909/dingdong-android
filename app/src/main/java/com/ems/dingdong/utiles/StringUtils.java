@@ -74,9 +74,9 @@ public class StringUtils {
     public static Spanned fromHtml(String html) {
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html, Html.FROM_HTML_OPTION_USE_CSS_COLORS);
+            result = Html.fromHtml(html.replace("&lt;", "<").replace("&gt;", ">"), Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL);
         } else {
-            result = Html.fromHtml(html);
+            result = Html.fromHtml(html.replace("&lt;", "<").replace("&gt;", ">"));
         }
         return result;
     }

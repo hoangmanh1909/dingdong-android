@@ -11,7 +11,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic.detail.CancelStatisticDetailPresenter;
 import com.ems.dingdong.model.PostOffice;
@@ -88,13 +87,11 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
         mFromDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mAdapter = new CancelBD13StatisticAdapter(getViewContext(), mList, (count, amount) ->
-                new Handler().postDelayed(() -> {
-                    tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount)));
-                }, 1000)) {
+                new Handler().postDelayed(() -> tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount))), 1000)) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(v -> new CancelStatisticDetailPresenter(mPresenter.getContainerView()).setItemDetail(mList.get(position)).pushView());
+                holder.itemView.setOnClickListener(v -> new CancelStatisticDetailPresenter(mPresenter.getContainerView()).setItemDetail(mPresenter.getListFromMap(mAdapter.getListFilter().get(position).getLadingCode())).pushView());
             }
         };
         recycler.setAdapter(mAdapter);
@@ -172,20 +169,15 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
         }
     }
 
-    public void scanQr() {
-        mPresenter.showBarcode(value -> {
-            edtSearch.setText(value);
-        });
+    private void scanQr() {
+        mPresenter.showBarcode(value -> edtSearch.setText(value));
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), new OnChooseDay() {
-            @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                refreshLayout();
-            }
+        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+            mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            refreshLayout();
         }).show();
     }
 }

@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
+import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
@@ -123,11 +125,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private int mPaymentType = 1;
 
     private ArrayList<ReasonInfo> mListReason;
-    private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ReasonInfo mReasonInfo;
 
     private ArrayList<SolutionInfo> mListSolution;
-    private ItemBottomSheetPickerUIFragment pickerUISolution;
     private SolutionInfo mSolutionInfo;
 
     private ArrayList<RouteInfo> mListRoute;
@@ -188,26 +188,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
 
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rad_fail) {
-                    mDeliveryType = 1;
-                    ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
-                    ll_change_route.setVisibility(LinearLayout.GONE);
-                    linearLayoutName.setVisibility(View.GONE);
-                } else if (checkedId == R.id.rad_success) {
-                    mDeliveryType = 2;
-                    ll_change_route.setVisibility(LinearLayout.GONE);
-                    ll_confirm_fail.setVisibility(LinearLayout.GONE);
-                    if (mBaoPhatBangke.size() == 1)
-                        linearLayoutName.setVisibility(View.VISIBLE);
-                } else {
-                    ll_confirm_fail.setVisibility(LinearLayout.GONE);
-                    ll_change_route.setVisibility(LinearLayout.VISIBLE);
-                    linearLayoutName.setVisibility(View.GONE);
-                    mDeliveryType = 3;
-                }
+        radio_group.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rad_fail) {
+                mDeliveryType = 1;
+                ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                linearLayoutName.setVisibility(View.GONE);
+            } else if (checkedId == R.id.rad_success) {
+                mDeliveryType = 2;
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                if (mBaoPhatBangke.size() == 1)
+                    linearLayoutName.setVisibility(View.VISIBLE);
+            } else {
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                ll_change_route.setVisibility(LinearLayout.VISIBLE);
+                linearLayoutName.setVisibility(View.GONE);
+                mDeliveryType = 3;
             }
         });
 
@@ -290,9 +287,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void submit() {
         if (mDeliveryType == 2) {
             new ConfirmDialog(getViewContext(), mBaoPhatBangke.size(), totalAmount, totalFee)
-                    .setOnCancelListener((ConfirmDialog.OnCancelClickListener) confirmDialog -> {
-                        confirmDialog.dismiss();
-                    })
+                    .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
                         mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTTT.getText());
@@ -312,7 +307,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
-                    tv_Description.getText().toString(),
+                    tv_Description.getText(),
                     mFile,
                     mSign);
         } else {
@@ -383,7 +378,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         );
     }
 
-    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
+    private boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
                              int quality) {
         if (bitmap == null)
             return false;
@@ -484,26 +479,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 items.add(new Item(item.getCode(), item.getName()));
             }
         }
-        if (pickerUIReason == null) {
-            pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
-                    (item, position) -> {
-                        tv_reason.setText(item.getText());
-                        mReasonInfo = mListReason.get(position);
+        new PickerDialog(getViewContext(), "Chọn lý do", items,
+                item -> {
+                    for (ReasonInfo info : mListReason) {
+                        if (item.getValue().equals(info.getCode())) {
+                            mReasonInfo = info;
+                            break;
+                        }
+                    }
+                    if (mReasonInfo != null) {
+                        tv_reason.setText(mReasonInfo.getName());
                         mListSolution = null;
                         tv_solution.setText("");
                         mReloadSolution = true;
                         loadSolution();
-
-                    }, 0);
-            pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
-        } else {
-            pickerUIReason.setData(items, 0);
-            if (!pickerUIReason.isShow) {
-                pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
-            }
-
-
-        }
+                    }
+                }).show();
     }
 
     private void loadSolution() {
@@ -681,25 +672,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             for (SolutionInfo item : mListSolution) {
                 items.add(new Item(item.getCode(), item.getName()));
             }
-            if (pickerUISolution == null) {
-                pickerUISolution = new ItemBottomSheetPickerUIFragment(items, "Chọn giải pháp",
-                        new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                            @Override
-                            public void onChooseClick(Item item, int position) {
-                                tv_solution.setText(item.getText());
-                                mSolutionInfo = mListSolution.get(position);
-
+            new PickerDialog(getViewContext(), "Chọn giải pháp", items,
+                    item -> {
+                        for (SolutionInfo info : mListSolution) {
+                            if (item.getValue().equals(info.getCode())) {
+                                mSolutionInfo = info;
+                                break;
                             }
-                        }, 0);
-                pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
-            } else {
-                pickerUISolution.setData(items, 0);
-                if (!pickerUISolution.isShow) {
-                    pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
-                }
-
-
-            }
+                        }
+                        if (mSolutionInfo != null) {
+                            tv_solution.setText(mSolutionInfo.getName());
+                        }
+                    }).show();
         }
     }
 }

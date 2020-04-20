@@ -119,11 +119,13 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
-                    mView.showListSuccess(postmanArrayList);
-                } else {
-                    mView.showError(response.body().getMessage());
+                if (response.body() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
+                        mView.showListSuccess(postmanArrayList);
+                    } else {
+                        mView.showError(response.body().getMessage());
+                    }
                 }
             }
 
@@ -154,7 +156,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             @Override
             protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
                 super.onSuccess(call, response);
-                if (response.body().getErrorCode().equals("00")) {
+                if (response.body() != null && response.body().getErrorCode().equals("00")) {
                     mView.getReasonsSuccess(response.body().getReasonInfos());
                 }
             }
@@ -222,10 +224,12 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showCallSuccess();
-                } else {
-                    mView.showCallError(response.body().getMessage());
+                if (response.body() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showCallSuccess();
+                    } else {
+                        mView.showCallError(response.body().getMessage());
+                    }
                 }
             }
 

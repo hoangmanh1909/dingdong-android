@@ -5,6 +5,8 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.model.response.CancelStatisticItem;
 
+import java.util.List;
+
 public interface CancelStatisticDetailContract {
     interface View extends PresentView<Presenter> {
 
@@ -15,6 +17,6 @@ public interface CancelStatisticDetailContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        CancelStatisticItem getItem();
+        List<CancelStatisticItem> getItems();
     }
 }

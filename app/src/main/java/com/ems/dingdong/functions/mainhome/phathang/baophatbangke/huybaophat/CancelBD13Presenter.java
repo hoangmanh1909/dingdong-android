@@ -12,8 +12,6 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -22,7 +20,7 @@ public class CancelBD13Presenter extends Presenter<CancelBD13Contract.View, Canc
 
     private CancelBD13TabContract.OnTabListener tabListener;
 
-    public CancelBD13Presenter(ContainerView containerView) {
+    CancelBD13Presenter(ContainerView containerView) {
         super(containerView);
 
     }
@@ -32,7 +30,7 @@ public class CancelBD13Presenter extends Presenter<CancelBD13Contract.View, Canc
 
     }
 
-    public CancelBD13Presenter setOnTabListener(CancelBD13TabContract.OnTabListener listener) {
+    CancelBD13Presenter setOnTabListener(CancelBD13TabContract.OnTabListener listener) {
         this.tabListener = listener;
         return this;
     }

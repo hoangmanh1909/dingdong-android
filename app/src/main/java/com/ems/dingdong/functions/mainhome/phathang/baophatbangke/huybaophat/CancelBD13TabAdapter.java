@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.core.base.viper.ViewFragment;
-import com.ems.dingdong.utiles.Constants;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class CancelBD13TabAdapter extends FragmentStatePagerAdapter {
     private List<ViewFragment> tabs;
     private CharSequence[] mTitleString = new Spanned[2];
 
-    public CancelBD13TabAdapter(FragmentManager fm, Context context, List<ViewFragment> tabs) {
+    CancelBD13TabAdapter(FragmentManager fm, Context context, List<ViewFragment> tabs) {
         super(fm);
         mContext = context;
         this.tabs = tabs;
@@ -51,7 +50,7 @@ public class CancelBD13TabAdapter extends FragmentStatePagerAdapter {
     }
 
 
-    public void setTittle(int quantity, int positionTab) {
+    void setTittle(int quantity, int positionTab) {
         if (positionTab == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 mTitleString[positionTab] = Html.fromHtml("Hủy báo phát " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);

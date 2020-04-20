@@ -138,17 +138,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
-//                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
-                            ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-//                            StringeeCall stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "0969803622", mPhone);
-//                            HashMap<String, StringeeCall> callHashMap = new HashMap<>();
-//                            callHashMap.put(stringeeCall.getCallId(), stringeeCall);
-                            Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
-                            intent.putExtra(Constants.CALL_TYPE, 1);
-//                            intent.putExtra(Constants.CALL_MAP, callHashMap);
-                            intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
-                            intent.putExtra(Constants.KEY_CALLEE_NUMBER, mPhone);
-                            startActivity(intent);
+                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                         }
 
                         @Override

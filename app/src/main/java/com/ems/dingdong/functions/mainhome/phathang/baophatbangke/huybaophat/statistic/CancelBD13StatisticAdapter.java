@@ -30,7 +30,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
     private List<CancelStatisticItem> mList;
     private Context mContext;
 
-    public CancelBD13StatisticAdapter(Context context, List<CancelStatisticItem> items, CancelBD13StatisticAdapter.FilterDone filterDone) {
+    CancelBD13StatisticAdapter(Context context, List<CancelStatisticItem> items, CancelBD13StatisticAdapter.FilterDone filterDone) {
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
@@ -96,6 +96,10 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
         mListFilter = list;
     }
 
+    public List<CancelStatisticItem> getListFilter() {
+        return mListFilter;
+    }
+
     @NonNull
     @Override
     public HolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -131,7 +135,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
         @BindView(R.id.tv_receiver_name)
         CustomTextView tvReceiverName;
 
-        public HolderView(View itemView) {
+        HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -167,7 +171,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                     tvDebitStatus.setText(mContext.getString(R.string.success));
                     tvDebitStatus.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
                 } else if (item.getPaymentPayPostStatus().equals("A")) {
-                    tvDebitStatus.setText(mContext.getString(R.string.success));
+                    tvDebitStatus.setText(mContext.getString(R.string.not_success));
                     tvDebitStatus.setTextColor(mContext.getResources().getColor(R.color.red_light));
                 }
             } else {

@@ -2,13 +2,19 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.st
 
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
+import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.response.CancelStatisticItem;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.mapbox.core.utils.TextUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,12 +34,12 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
     CustomTextView tvSenderAddress;
     @BindView(R.id.tv_debit_status)
     CustomTextView tvDebitStatus;
-    @BindView(R.id.tv_cancel_status)
-    CustomTextView tvCancelStatus;
     @BindView(R.id.tv_cod)
     CustomTextView tvCod;
     @BindView(R.id.tv_fee)
     CustomTextView tvFee;
+    @BindView(R.id.recycler)
+    RecyclerView recyclerView;
 
     @Override
     protected int getLayoutId() {
@@ -44,7 +50,8 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
     public void initLayout() {
         super.initLayout();
         if (mPresenter != null) {
-            CancelStatisticItem item = mPresenter.getItem();
+            List<CancelStatisticItem> mListStatus = mPresenter.getItems();
+            CancelStatisticItem item = mListStatus.get(0);
             if (!TextUtils.isEmpty(item.getLadingCode())) {
                 tvParcelCode.setText(item.getLadingCode());
             }
@@ -65,34 +72,33 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
                 tvSenderAddress.setText(item.getSenderAddress());
             }
 
-            if (!TextUtils.isEmpty(item.getStatusName())) {
-                tvCancelStatus.setText(item.getStatusName());
-                if (getString(R.string.not_yet_appproved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvCancelStatus.setTextColor(getResources().getColor(R.color.grey));
-                } else if (getString(R.string.approved).toUpperCase().equals(item.getStatusName().toUpperCase())) {
-                    tvCancelStatus.setTextColor(getResources().getColor(R.color.blue));
-                } else {
-                    tvCancelStatus.setTextColor(getResources().getColor(R.color.bg_yellow_primary));
-                }
-            }
-
             if (item.getFee() != null) {
-                tvFee.setText(NumberUtils.formatPriceNumber(item.getFee()));
+                tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getFee())));
+            } else {
+                tvFee.setText("0 đ");
             }
 
             if (item.getcODAmount() != null) {
-                tvCod.setText(NumberUtils.formatPriceNumber(item.getcODAmount()));
+                tvCod.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getcODAmount())));
+            } else {
+                tvCod.setText("0 đ");
             }
 
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if ("Y".equals(item.getPaymentPayPostStatus())) {
-                    tvDebitStatus.setText("Gạch nợ thành công");
+                    tvDebitStatus.setText(getString(R.string.success));
                     tvDebitStatus.setTextColor(getViewContext().getResources().getColor(R.color.colorPrimary));
                 } else {
-                    tvDebitStatus.setText("Gạch nợ thất bại");
+                    tvDebitStatus.setText(getString(R.string.not_success));
                     tvDebitStatus.setTextColor(getViewContext().getResources().getColor(R.color.red_light));
                 }
             }
+
+            CancelStatisticDetailAdapter mAdapter = new CancelStatisticDetailAdapter(getViewContext(), new ArrayList<>());
+            RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView);
+            recyclerView.setAdapter(mAdapter);
+            mAdapter.setListFilter(mListStatus);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -107,12 +113,10 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
 
     @OnClick({R.id.img_back})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.img_back:
-                mPresenter.back();
-                break;
-            default:
-                throw new IllegalArgumentException("cant not find view just have clicked");
+        if (view.getId() == R.id.img_back) {
+            mPresenter.back();
+        } else {
+            throw new IllegalArgumentException("cant not find view just have clicked");
         }
     }
 }

@@ -365,4 +365,5 @@
     <color name="bg_red_gradient">#f56358</color>
     <color name="color_bg_tab_header">#017aff</color>
     <color name="color_text_tab_header">#9b976d</color>
+    <color name="bg_dialog_ui_picker">#f5f6fa</color>
 </resources>

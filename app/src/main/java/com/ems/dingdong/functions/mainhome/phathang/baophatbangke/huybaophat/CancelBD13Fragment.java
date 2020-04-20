@@ -145,7 +145,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     }
 
-    public void scanQr() {
+    private void scanQr() {
         mPresenter.showBarcode(value -> edtSearch.setText(value));
     }
 

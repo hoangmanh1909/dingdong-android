@@ -4,10 +4,12 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.model.response.CancelStatisticItem;
 
+import java.util.List;
+
 public class CancelStatisticDetailPresenter extends Presenter<CancelStatisticDetailContract.View, CancelStatisticDetailContract.Interactor>
         implements CancelStatisticDetailContract.Presenter {
 
-    private CancelStatisticItem itemDetail;
+    private List<CancelStatisticItem> itemsDetail;
 
     public CancelStatisticDetailPresenter(ContainerView containerView) {
         super(containerView);
@@ -28,14 +30,14 @@ public class CancelStatisticDetailPresenter extends Presenter<CancelStatisticDet
         return CancelStatisticDetailFragment.getInstance();
     }
 
-    public CancelStatisticDetailPresenter setItemDetail(CancelStatisticItem itemDetail) {
-        this.itemDetail = itemDetail;
+    public CancelStatisticDetailPresenter setItemDetail(List<CancelStatisticItem> itemDetail) {
+        this.itemsDetail = itemDetail;
         return this;
     }
 
 
     @Override
-    public CancelStatisticItem getItem() {
-        return itemDetail;
+    public List<CancelStatisticItem> getItems() {
+        return itemsDetail;
     }
 }
