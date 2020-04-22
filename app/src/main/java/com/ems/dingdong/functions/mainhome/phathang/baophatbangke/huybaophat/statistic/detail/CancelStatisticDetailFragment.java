@@ -87,7 +87,7 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if ("Y".equals(item.getPaymentPayPostStatus())) {
                     tvDebitStatus.setText(getString(R.string.success));
-                    tvDebitStatus.setTextColor(getViewContext().getResources().getColor(R.color.colorPrimary));
+                    tvDebitStatus.setTextColor(getViewContext().getResources().getColor(R.color.bg_primary));
                 } else {
                     tvDebitStatus.setText(getString(R.string.not_success));
                     tvDebitStatus.setTextColor(getViewContext().getResources().getColor(R.color.red_light));

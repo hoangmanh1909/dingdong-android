@@ -42,6 +42,8 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
         CustomTextView tvStatusPaypost;
         @BindView(R.id.tv_delivery_date)
         CustomTextView tvDeliveryDate;
+        @BindView(R.id.tv_receiver_address)
+        CustomTextView tvReceiverAddress;
         @BindView(R.id.tv_reason)
         CustomTextView tvReason;
         @BindView(R.id.tv_status_name)
@@ -64,16 +66,30 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvParcelCode.setText("");
             }
 
+            String receiverName = "";
+            String receiverPhone = "";
             if (!TextUtils.isEmpty(item.getReceiverPhone())) {
-                tvReceiverName.setText(String.format("%s - %s", item.getReciverName(), item.getReceiverPhone()));
+                receiverPhone = item.getReceiverPhone();
+            }
+            if (!TextUtils.isEmpty(item.getReceiverName())) {
+                receiverName = item.getReceiverName();
+            }
+            if (TextUtils.isEmpty(receiverPhone)) {
+                tvReceiverName.setText(String.format("%s", receiverName));
             } else {
-                tvReceiverName.setText(String.format("%s", item.getReciverName()));
+                tvReceiverName.setText(String.format("%s - %s", receiverName, receiverPhone));
+            }
+
+            if (!TextUtils.isEmpty(item.getReceiverAddress())) {
+                tvReceiverAddress.setText(item.getReceiverAddress());
+            } else {
+                tvReceiverAddress.setText("");
             }
             if ("".equals(item.getIsPaypost()) || item.getIsPaypost() == null) {
                 tvStatusPaypost.setText("");
             } else if ("Y".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thành công");
-                tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
             } /*else if ("E".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thất bại");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
