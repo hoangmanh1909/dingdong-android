@@ -92,11 +92,11 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         super.initLayout();
         checkSelfPermission();
         mList = new ArrayList<>();
-        mAdapter = new StatusAdapter(getActivity(), mList);
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
+        mAdapter = new StatusAdapter(getViewContext(), mList);
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
         edtLadingCode.getEditText().setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
@@ -111,9 +111,9 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasReadExternalPermission = getViewContext().checkSelfPermission(Manifest.permission.CAMERA);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+                ActivityCompat.requestPermissions(getViewContext(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
 
         }
@@ -122,9 +122,9 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if (getActivity() != null) {
-            if (((DingDongActivity) getActivity()).getSupportActionBar() != null) {
-                ((DingDongActivity) getActivity()).getSupportActionBar().show();
+        if (getViewContext() != null) {
+            if (((DingDongActivity) getViewContext()).getSupportActionBar() != null) {
+                ((DingDongActivity) getViewContext()).getSupportActionBar().show();
             }
         }
     }
@@ -167,11 +167,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_capture:
-                mPresenter.showBarcode(new BarCodeCallback() {
-                    @Override
-                    public void scanQrcodeResponse(String value) {
-                        getQuery();
-                    }
+                mPresenter.showBarcode(value -> {
+                    getQuery();
+                    edtLadingCode.setText(value);
+                    subject.onNext(value);
                 });
                 break;
         }

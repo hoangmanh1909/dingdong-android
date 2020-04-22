@@ -33,6 +33,12 @@ public class CancelStatisticItem {
     @SerializedName("PaymentPayPostStatus")
     private String paymentPayPostStatus;
 
+    @SerializedName("CancelReason")
+    private String cancelReason;
+
+    @SerializedName("ReasonTypeName")
+    private String reasonTypeName;
+
     private boolean isSelected;
 
     public boolean isSelected() {
@@ -81,5 +87,13 @@ public class CancelStatisticItem {
 
     public String getSenderAddress() {
         return senderAddress;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public String getReasonTypeName() {
+        return reasonTypeName;
     }
 }

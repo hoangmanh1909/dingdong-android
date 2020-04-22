@@ -98,8 +98,19 @@ public class CancelStatisticDetailAdapter extends RecyclerView.Adapter<CancelSta
             } else {
                 tvCancelStatus.setVisibility(View.GONE);
             }
-            tvReason.setText(mContext.getString(R.string.cancel_reason));
-            tvCause.setText(mContext.getString(R.string.cancel_causal));
+            if (!TextUtils.isEmpty(item.getCancelReason())) {
+                tvReason.setText(String.format(mContext.getString(R.string.cancel_reason) + ": %s", item.getCancelReason()));
+            } else {
+                tvReason.setText(mContext.getString(R.string.cancel_reason));
+                tvReason.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(item.getReasonTypeName())) {
+                tvCause.setText(String.format(mContext.getString(R.string.cancel_causal) + ": %s", item.getReasonTypeName()));
+            } else {
+                tvCause.setText(mContext.getString(R.string.cancel_causal));
+                tvCause.setVisibility(View.GONE);
+            }
         }
     }
 

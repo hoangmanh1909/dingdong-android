@@ -93,6 +93,22 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private PhoneConectDialog mPhoneConectDialog;
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            mAdapter.getFilter().filter(s.toString());
+        }
+    };
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -175,22 +191,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mPresenter.getReasons();
         EventBus.getDefault().register(this);
-        edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mAdapter.getFilter().filter(s.toString());
-            }
-        });
+        edtSearch.getEditText().addTextChangedListener(textWatcher);
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
 
@@ -258,6 +259,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             cbPickAll.setChecked(false);
         if (isReturnedFromXacNhanBaoPhat) {
             isReturnedFromXacNhanBaoPhat = false;
+            edtSearch.getEditText().removeTextChangedListener(textWatcher);
+            edtSearch.setText("");
+            edtSearch.getEditText().addTextChangedListener(textWatcher);
             initSearch();
             if (mPresenter.getNotSuccessfulChange() != null) {
                 mPresenter.getNotSuccessfulChange().onChanged();

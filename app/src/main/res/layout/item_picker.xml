@@ -9,7 +9,7 @@
         android:id="@+id/tv_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         android:padding="@dimen/dimen_5dp"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp" />

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
 import com.ems.dingdong.utiles.NumberUtils;
-import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -134,7 +133,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         @BindView(R.id.layout_cancel_delivery)
         LinearLayout layoutDelivery;
         @BindView(R.id.tv_receiver_name_address)
-        CustomTextView receiverNameAddress;
+        CustomBoldTextView receiverNameAddress;
         @BindView(R.id.tv_sender_name)
         CustomTextView senderName;
 
@@ -152,30 +151,31 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             if (!TextUtils.isEmpty(item.getLadingCode()))
                 tv_code.setText(item.getLadingCode());
             if (item.getAmount() != null)
-                tv_amount.setText(String.format("Số tiền: %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
             if (item.getFee() != null)
-                tvFee.setText(String.format("Cước: %s đ", NumberUtils.formatPriceNumber(item.getFee())));
+                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee())));
             if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
                 if (!TextUtils.isEmpty(item.getReceiverAddress())) {
-                    receiverNameAddress.setText(StringUtils.fromHtml(String.format("Người nhận: " + "<strong>%s - %s</strong>", item.getReceiverName(), item.getReceiverAddress())));
+                    receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s - %s", item.getReceiverName(), item.getReceiverAddress()));
                 } else {
-                    receiverNameAddress.setText(StringUtils.fromHtml(String.format("Người nhận: " + "<strong>%s</strong>", item.getReceiverName())));
+                    receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s", item.getReceiverName()));
                 }
             }
             if (!TextUtils.isEmpty(item.getSenderName()))
-                senderName.setText(String.format("Người gửi: %s", item.getSenderName()));
-            String status = "";
+                senderName.setText(String.format(mContext.getString(R.string.sender_name) + ": %s", item.getSenderName()));
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
-                    status = "Gạch nợ thành công";
+                    tv_status_paypost.setText(String.format(mContext.getString(R.string.success)));
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                } else {
-                    status = "Gạch nợ thất bại";
+                } else if (item.getPaymentPayPostStatus().equals("A")) {
+                    tv_status_paypost.setText(String.format(mContext.getString(R.string.not_success)));
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                } else {
+                    tv_status_paypost.setText("");
+                    tv_status_paypost.setVisibility(View.GONE);
                 }
             }
 
-            tv_status_paypost.setText(status);
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
                     layoutDelivery.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));

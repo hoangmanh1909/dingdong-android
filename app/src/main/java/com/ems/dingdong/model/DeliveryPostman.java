@@ -106,6 +106,9 @@ public class DeliveryPostman {
     @SerializedName("IsItemReturn")
     @Expose
     private String isItemReturn;
+    @SerializedName("OrderNumberInBD13")
+    @Expose
+    private Integer orderNumberInBD13;
 
     private boolean selected;
 
@@ -367,5 +370,9 @@ public class DeliveryPostman {
 
     public void setItemReturn(String itemReturn) {
         isItemReturn = itemReturn;
+    }
+
+    public Integer getOrderNumberInBD13() {
+        return orderNumberInBD13;
     }
 }

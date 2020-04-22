@@ -23,6 +23,8 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class ApplicationController extends MultiDexApplication {
+    private static String TAG = "ApplicationController.class";
+
     static ApplicationController applicationController;
     private CallService callService;
     private boolean mBound = false;
@@ -33,7 +35,7 @@ public class ApplicationController extends MultiDexApplication {
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            Logger.d("chauvp", "onServiceConnected");
+            Logger.d(TAG, "onServiceConnected");
             CallService.CallBinder binder = (CallService.CallBinder) service;
             callService = binder.getService();
             mBound = true;
@@ -59,7 +61,7 @@ public class ApplicationController extends MultiDexApplication {
         Realm.setDefaultConfiguration(config);
         applicationController = this;
         Intent intent = new Intent(this, CallService.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     public StringeeClient getStringleeClient() {
@@ -80,7 +82,7 @@ public class ApplicationController extends MultiDexApplication {
     }
 
     public void reFreshToken() {
-        Logger.d("chauvp", "registerToken");
+        Logger.d(TAG, "registerToken");
         callService.registerToken();
     }
 

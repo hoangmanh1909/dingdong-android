@@ -226,7 +226,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
         }
         mPresenter.titleChanged(mList.size(), 0);
-        tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(totalAmount + totalFee)));
+        tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount + totalFee)));
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
     }

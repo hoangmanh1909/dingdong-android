@@ -14,8 +14,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class ChiTietDiaChiPresenter extends Presenter<ChiTietDiaChiContract.View, ChiTietDiaChiContract.Interactor> implements ChiTietDiaChiContract.Presenter {
-    AddressListModel addressListModel;
-    AddressListContract.OnCloseAuthenAddress mListener;
+    private AddressListModel addressListModel;
+    private AddressListContract.OnCloseAuthenAddress mListener;
 
     public ChiTietDiaChiPresenter(ContainerView containerView) {
         super(containerView);

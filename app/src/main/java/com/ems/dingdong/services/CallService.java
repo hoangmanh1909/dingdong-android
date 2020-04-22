@@ -27,6 +27,8 @@ import java.util.HashMap;
 
 public class CallService extends Service {
 
+    private static String TAG = "CallService.class";
+
     private final IBinder mBinder = new CallBinder();
     private StringeeClient client;
     private StringeeCall mStringeeCall;
@@ -50,11 +52,11 @@ public class CallService extends Service {
         if (client == null) {
             client = new StringeeClient(this);
             client.setConnectionListener(callConnectionListener);
-            Logger.d("chauvp", "init");
+            Logger.d(TAG, "init");
         }
         if (!TextUtils.isEmpty(token) && !client.isConnected()) {
             client.connect(token);
-            Logger.d("chauvp", "connect " + token);
+            Logger.d(TAG, "connect " + token);
         }
 
     }
@@ -75,13 +77,13 @@ public class CallService extends Service {
             client.registerPushToken(token, new StatusListener() {
                 @Override
                 public void onSuccess() {
-                    Logger.d("chauvp", "registerPushToken: onSuccess");
+                    Logger.d(TAG, "registerPushToken: onSuccess");
                 }
 
                 @Override
                 public void onError(StringeeError stringeeError) {
                     super.onError(stringeeError);
-                    Logger.d("chauvp", "registerPushToken: onError: " + stringeeError.getMessage());
+                    Logger.d(TAG, "registerPushToken: onError: " + stringeeError.getMessage());
                 }
             });
         } else {
@@ -92,7 +94,7 @@ public class CallService extends Service {
     private StringeeConnectionListener callConnectionListener = new StringeeConnectionListener() {
         @Override
         public void onConnectionConnected(StringeeClient stringeeClient, boolean b) {
-            Logger.d("chauvp", "onConnectionConnected stringee server");
+            Logger.d(TAG, "onConnectionConnected stringee server");
             client = stringeeClient;
             registerToken();
 //            Logger.d("chauvp", "onIncomingCall1");
@@ -107,18 +109,18 @@ public class CallService extends Service {
 
         @Override
         public void onConnectionDisconnected(StringeeClient stringeeClient, boolean b) {
-            Logger.d("chauvp", "onConnectionDisconnected");
+            Logger.d(TAG, "onConnectionDisconnected");
         }
 
         @Override
         public void onIncomingCall(StringeeCall stringeeCall) {
-            Logger.d("chauvp", "onIncomingCall1");
-            Logger.d("chauvp", "running on: " + Thread.currentThread().getName());
+            Logger.d(TAG, "onIncomingCall1");
+            Logger.d(TAG, "running on: " + Thread.currentThread().getName());
 
             new Handler(Looper.getMainLooper()).post(() -> {
                 if (stringeeCall != null) {
-                    Logger.d("chauvp", "running on: " + Thread.currentThread().getName());
-                    Logger.d("chauvp", "start activity: ");
+                    Logger.d(TAG, "running on: " + Thread.currentThread().getName());
+                    Logger.d(TAG, "start activity: ");
                     HashMap<String, StringeeCall> callHashMap = new HashMap<>();
                     callHashMap.put(Constants.CALL_ID, stringeeCall);
                     mStringeeCall = stringeeCall;
@@ -128,7 +130,7 @@ public class CallService extends Service {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
-                    Logger.d("chauvp", "stringeeCall is null");
+                    Logger.d(TAG, "stringeeCall is null");
                 }
             });
 
@@ -136,22 +138,22 @@ public class CallService extends Service {
 
         @Override
         public void onConnectionError(StringeeClient stringeeClient, StringeeError stringeeError) {
-            Logger.d("chauvp", "onConnectionError" + stringeeError.getMessage());
+            Logger.d(TAG, "onConnectionError" + stringeeError.getMessage());
         }
 
         @Override
         public void onRequestNewToken(StringeeClient stringeeClient) {
-            Logger.d("chauvp", "onRequestNewToken");
+            Logger.d(TAG, "onRequestNewToken");
         }
 
         @Override
         public void onCustomMessage(String s, JSONObject jsonObject) {
-            Logger.d("chauvp", "onCustomMessage");
+            Logger.d(TAG, "onCustomMessage");
         }
 
         @Override
         public void onTopicMessage(String s, JSONObject jsonObject) {
-            Logger.d("chauvp", "onTopicMessage");
+            Logger.d(TAG, "onTopicMessage");
         }
     };
 }

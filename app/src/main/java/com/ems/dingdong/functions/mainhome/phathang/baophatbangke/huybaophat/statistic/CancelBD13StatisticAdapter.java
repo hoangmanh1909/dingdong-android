@@ -163,8 +163,8 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             }
             tvCod.setVisibility(View.VISIBLE);
             tvFee.setVisibility(View.VISIBLE);
-            tvCod.setText(String.format("Số tiền COD: %s đ", NumberUtils.formatPriceNumber(cod)));
-            tvFee.setText(String.format("Tiền cước: %s VNĐ", NumberUtils.formatPriceNumber(fee)));
+            tvCod.setText(String.format(mContext.getString(R.string.cod) + ": %s đ", NumberUtils.formatPriceNumber(cod)));
+            tvFee.setText(String.format(mContext.getString(R.string.fee_money) + ": %s đ", NumberUtils.formatPriceNumber(fee)));
 
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
@@ -180,13 +180,13 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             }
 
             if (!TextUtils.isEmpty(item.getSenderName())) {
-                tvSenderName.setText(String.format("Người gửi: %s", item.getSenderName()));
+                tvSenderName.setText(String.format(mContext.getString(R.string.sender_name) + ": %s", item.getSenderName()));
             } else {
                 tvSenderName.setVisibility(View.GONE);
             }
 
             if (!TextUtils.isEmpty(item.getReceiverName())) {
-                tvReceiverName.setText(String.format("Người nhận: %s", item.getReceiverName()));
+                tvReceiverName.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s", item.getReceiverName()));
             } else {
                 tvReceiverName.setVisibility(View.GONE);
             }

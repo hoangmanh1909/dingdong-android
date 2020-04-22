@@ -112,5 +112,8 @@
     <string name="cancel_require">Hủy yêu cầu</string>
     <string name="cancel_history">Lịch sử hủy:</string>
     <string name="cancel_delivery">Hủy báo phát</string>
-
+    <string name="sender_name">Người gửi</string>
+    <string name="receiver_name">Người nhận</string>
+    <string name="cod">Số tiền COD</string>
+    <string name="fee_money">Tiền cước</string>
 </resources>

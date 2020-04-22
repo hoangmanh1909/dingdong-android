@@ -19,7 +19,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
-import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
@@ -29,14 +28,9 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.stringee.StringeeClient;
-import com.stringee.call.StringeeCall;
 import com.stringee.exception.StringeeError;
 import com.stringee.listener.StatusListener;
-import com.stringee.listener.StringeeConnectionListener;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
@@ -79,14 +73,14 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         client.registerPushToken(token, new StatusListener() {
             @Override
             public void onSuccess() {
-                Logger.d("chauvp", "PushToken: onSuccess");
+//                Logger.d("chauvp", "PushToken: onSuccess");
                 applicationController = (ApplicationController) getApplication();
                 applicationController.reFreshToken();
             }
 
             @Override
             public void onError(StringeeError error) {
-                Logger.d("chauvp", "PushToken: onError");
+//                Logger.d("chauvp", "PushToken: onError");
             }
         });
     }

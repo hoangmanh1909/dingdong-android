@@ -190,7 +190,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
             if (!TextUtils.isEmpty(item.getMaE()))
-                tv_code.setText(item.getMaE());
+                tv_code.setText(String.format("(%s). %s", item.getOrderNumberInBD13(), item.getMaE()));
 
             String receiverName = "";
             String receiverMobile = "";
@@ -233,7 +233,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
             } else
                 tvInfo.setText("Nội dung: ");
-            tvIndex.setText(String.format("%s - ", mListFilter.indexOf(item) + 1));
+            tvIndex.setText(String.format("%s. ", mListFilter.indexOf(item) + 1));
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
@@ -257,10 +257,12 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
             if (!TextUtils.isEmpty(item.getInstruction())) {
                 tvInstruction.setVisibility(View.VISIBLE);
-                tvInstruction.setText(String.format("Lưu ý(Note): %s", item.getInstruction()));
+                tvInstruction.setText(String.format("Ghi chú: %s", item.getInstruction()));
             } else {
-                tvInstruction.setText("Lưu ý: ");
+                tvInstruction.setText("Ghi chú: ");
+                tvInstruction.setVisibility(View.GONE);
             }
+
             if (mTypeBD13 == TypeBD13.LIST_BD13) {
                 img_map.setVisibility(View.VISIBLE);
                 img_ContactPhone.setVisibility(View.VISIBLE);

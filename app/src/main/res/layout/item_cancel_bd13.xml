@@ -29,7 +29,7 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_16sp" />
 
-            <com.ems.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_receiver_name_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,6 @@
                 android:layout_width="match_parent"
                 android:paddingBottom="@dimen/dimen_5dp"
                 android:layout_height="wrap_content"
-                android:text="Trạng thái:"
                 android:textColor="@color/background_blue"
                 android:textSize="@dimen/text_size_14sp" />
         </LinearLayout>

@@ -87,7 +87,7 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
         mFromDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mAdapter = new CancelBD13StatisticAdapter(getViewContext(), mList, (count, amount) ->
-                new Handler().postDelayed(() -> tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount))), 1000)) {
+                new Handler().postDelayed(() -> tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount))), 1000)) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -138,7 +138,7 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
             }
         }
         mPresenter.titleChanged(mList.size(), 1);
-        tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
     }
