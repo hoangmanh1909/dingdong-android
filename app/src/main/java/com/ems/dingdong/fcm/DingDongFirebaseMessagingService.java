@@ -23,7 +23,6 @@ import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -117,49 +116,51 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-        Intent intent;
-        Bundle bundle = new Bundle();
-        if (messageBody.contains(Constants.GOM_HANG)) {
-            intent = new Intent(this, ListCommonActivity.class);
-            intent.putExtra(Constants.TYPE_GOM_HANG, 1);
-        } else {
-            intent = new Intent(this, ListBaoPhatBangKeActivity.class);
-            intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+        if (messageBody != null) {
+            Intent intent;
+            Bundle bundle = new Bundle();
+            if (messageBody.contains(Constants.GOM_HANG)) {
+                intent = new Intent(this, ListCommonActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+            } else {
+                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+            }
+            bundle.putString("message", messageBody);
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+            long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
+            NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setPriority(Notification.PRIORITY_HIGH)
+                            .setWhen(System.currentTimeMillis())
+                            .setSmallIcon(R.drawable.ic_notification)
+                            .setContentTitle("Thông báo")
+                            .setContentText(messageBody)
+                            .setAutoCancel(true)
+                            .setVibrate(vibratePattern)
+                            .setSound(defaultSoundUri)
+                            .setContentIntent(pendingIntent);
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(
+                        getString(R.string.notification_channel_id),
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+                notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
+            }
+            if (notificationManager != null)
+                notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
         }
-        bundle.putString("message", messageBody);
-        intent.putExtras(bundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this)
-                        .setPriority(Notification.PRIORITY_HIGH)
-                        .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setContentTitle("Thông báo")
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setVibrate(vibratePattern)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    getString(R.string.notification_channel_id),
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-            notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
-        }
-        if (notificationManager != null)
-            notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
     }
 
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
