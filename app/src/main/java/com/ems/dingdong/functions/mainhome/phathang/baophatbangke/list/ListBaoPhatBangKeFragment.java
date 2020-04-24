@@ -21,7 +21,6 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
@@ -30,10 +29,13 @@ import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.Leaf;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftInfo;
+import com.ems.dingdong.model.Tree;
+import com.ems.dingdong.model.TreeNote;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -43,8 +45,8 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.stringee.call.StringeeCall;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,7 +55,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -93,6 +94,49 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private PhoneConectDialog mPhoneConectDialog;
+    private String choosenLadingCode = "";
+
+    BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
+        @Override
+        public void onLeftClick(Leaf leaf) {
+            switch (leaf.getId()) {
+                case 2:
+                    call();
+                    break;
+                case 3:
+                    call();
+                    break;
+                case 4:
+                    call();
+                    break;
+                case 5:
+                    call();
+                    break;
+                case 6:
+                    call();
+                    break;
+                case 7:
+                    call();
+                    break;
+                case 9:
+                    mPresenter.callForward(mPhone, choosenLadingCode);
+                    break;
+                case 10:
+                    mPresenter.callForward(mPhone, choosenLadingCode);
+                    break;
+                case 11:
+                    mPresenter.callForward(mPhone, choosenLadingCode);
+                    break;
+            }
+        }
+
+        @Override
+        public void onTreeNodeClick(TreeNote treeNote) {
+            BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(treeNote.getListChild(), treeNote.getName(), listener);
+            fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
+        }
+    };
+
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -154,7 +198,34 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
-                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            List<Tree> leaf1 = new ArrayList<>();
+                            leaf1.add(new Leaf(2, "Gọi tiết kiệm"));
+                            leaf1.add(new Leaf(3, "Gọi chuyển mạch"));
+                            leaf1.add(new Leaf(4, "Gọi bằng sim"));
+
+                            List<Tree> leaf2 = new ArrayList<>();
+                            leaf2.add(new Leaf(5, "Gọi tiết kiệm"));
+                            leaf2.add(new Leaf(6, "Gọi chuyển mạch"));
+                            leaf2.add(new Leaf(7, "Gọi bằng sim"));
+
+                            TreeNote treeNote1 = new TreeNote(1, "Cho người nhận", leaf1);
+                            TreeNote treeNote2 = new TreeNote(8, "Cho người gửi", leaf2);
+                            Leaf leaf3 = new Leaf(9, "Cho bưu cục nhận");
+                            Leaf leaf4 = new Leaf(10, "Cho bưu cục phát");
+                            Leaf leaf5 = new Leaf(11, "Cho tổng đài hỗ trợ");
+
+                            ArrayList<Tree> list = new ArrayList<>();
+                            list.add(treeNote1);
+                            list.add(treeNote2);
+                            list.add(leaf3);
+                            list.add(leaf4);
+                            list.add(leaf5);
+
+                            BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(list, "Gọi điện thoại", listener);
+                            fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
+                            choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                            mPhone = phone;
+//                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                         }
 
                         @Override
@@ -482,6 +553,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
         }
         return focusedPosition;
+    }
+
+    private void call() {
+        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+        intent.putExtra(Constants.CALL_TYPE, 1);
+//                            intent.putExtra(Constants.CALL_MAP, callHashMap);
+        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+        intent.putExtra(Constants.KEY_CALLEE_NUMBER, mPhone);
+        startActivity(intent);
     }
 
     public void setSubmitAll() {

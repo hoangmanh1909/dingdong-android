@@ -366,4 +366,5 @@
     <color name="color_bg_tab_header">#017aff</color>
     <color name="color_text_tab_header">#9b976d</color>
     <color name="bg_dialog_ui_picker">#f5f6fa</color>
+    <color name="bg_color_diapad_button">#f1f1f1</color>
 </resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="@android:integer/config_shortAnimTime" android:exitFadeDuration="@android:integer/config_shortAnimTime">
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/grey" />
+            <size android:width="80dp" android:height="80dp" />
+            <gradient android:angle="270" android:endColor="#917777" android:startColor="#ffffff" />
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/grey" />
+            <size android:width="80dp" android:height="80dp" />
+            <gradient android:angle="270" android:endColor="#917777" android:startColor="#ffffff" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/bg_color_diapad_button" />
+            <size android:width="80dp" android:height="80dp" />
+        </shape>
+    </item>
+</selector>

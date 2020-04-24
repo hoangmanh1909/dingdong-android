@@ -116,4 +116,5 @@
     <string name="receiver_name">Người nhận</string>
     <string name="cod">Số tiền COD</string>
     <string name="fee_money">Tiền cước</string>
+    <string name="call_service">Gọi dịch vụ</string>
 </resources>
