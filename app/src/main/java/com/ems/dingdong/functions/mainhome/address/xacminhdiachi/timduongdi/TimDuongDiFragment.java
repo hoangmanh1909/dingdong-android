@@ -134,18 +134,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         this.mapboxMap = mapboxMap;
         this.mapboxMap.getUiSettings().setAttributionEnabled(false);
         this.mapboxMap.getUiSettings().setLogoEnabled(false);
-        //mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"));
-        mapboxMap.setStyle(Style.MAPBOX_STREETS,
-                new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        enableLocationComponent(style);
-
-                    }
-                });
-
-//        markerViewManager = new MarkerViewManager(mapView, mapboxMap);
-
+        this.mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"), style -> enableLocationComponent(style));
     }
 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
