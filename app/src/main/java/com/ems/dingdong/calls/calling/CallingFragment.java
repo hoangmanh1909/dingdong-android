@@ -59,15 +59,15 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             tvPhoneNumber.setText(mPresenter.getCalleeNumber());
             changeCallLayout(Constants.CALL_TYPE_CALLING);
             ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-            stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "0961979594", mPresenter.getCalleeNumber());
+            stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "VPBX_VP1_100", "VPBX_MVNP_100");
             stringeeCall.setCallListener(callListener);
             stringeeCall.makeCall();
         } else {
             ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-//            stringeeAnswer = applicationController.getmStringeeCall();
-//            stringeeAnswer.setCallListener(callListener);
+            stringeeAnswer = applicationController.getmStringeeCall();
+            stringeeAnswer.setCallListener(callListener);
             changeCallLayout(Constants.CALL_TYPE_RECEIVING);
-//            tvPhoneNumber.setText(stringeeAnswer.getFrom());
+            tvPhoneNumber.setText(stringeeAnswer.getFrom());
         }
     }
 
@@ -119,7 +119,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_foward:
-                if(ivFoward.getSelected()) {
+                if (ivFoward.getSelected()) {
                     ivFoward.setBackgroundColor(getResources().getColor(R.color.bg_color_diapad_button));
                 } else {
                     ivFoward.setBackgroundColor(getResources().getColor(R.color.white));
@@ -128,7 +128,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_hold:
-                if(ivHold.getSelected()) {
+                if (ivHold.getSelected()) {
                     ivHold.setBackgroundColor(getResources().getColor(R.color.bg_color_diapad_button));
                 } else {
                     ivHold.setBackgroundColor(getResources().getColor(R.color.white));

@@ -3,7 +3,7 @@ package com.ems.dingdong.calls.diapad;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 
-public class DiapadPresenter extends Presenter<DiapadConstract.View, DiapadConstract.Interactor> {
+public class DiapadPresenter extends Presenter<DiapadConstract.View, DiapadConstract.Interactor> implements DiapadConstract.Presenter{
 
     public DiapadPresenter(ContainerView containerView) {
         super(containerView);
@@ -23,6 +23,5 @@ public class DiapadPresenter extends Presenter<DiapadConstract.View, DiapadConst
     public DiapadConstract.View onCreateView() {
         return DiapadFragment.getInstance();
     }
-
 
 }

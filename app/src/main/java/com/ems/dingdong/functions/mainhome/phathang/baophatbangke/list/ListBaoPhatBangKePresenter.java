@@ -2,33 +2,27 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
+import android.content.Intent;
+import android.net.Uri;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.Utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -273,6 +267,22 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void vietmapSearch(String address) {
         new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
+    }
+
+    @Override
+    public void callBySimCard(String calleeNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + calleeNumber));
+        getViewContext().startActivity(intent);
+    }
+
+    @Override
+    public void callByWifi(String calleeNumber) {
+        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+        intent.putExtra(Constants.CALL_TYPE, 1);
+        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+        intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);
+        getViewContext().startActivity(intent);
     }
 
     @Override

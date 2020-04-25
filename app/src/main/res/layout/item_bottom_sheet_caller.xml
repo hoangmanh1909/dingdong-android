@@ -15,6 +15,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_12sdp"
         android:gravity="center"
+        android:textSize="@dimen/size_16dp"
+        android:foreground="?attr/selectableItemBackground"
         android:textColor="@color/blue"
         android:id="@+id/tv_call"
         />

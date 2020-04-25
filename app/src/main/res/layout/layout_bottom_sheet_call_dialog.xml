@@ -27,7 +27,7 @@
     <View
         style="@style/Devider" />
 
-    <com.ems.dingdong.views.CustomTextView
+    <com.ems.dingdong.views.CustomBoldTextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
         android:text="Hủy"

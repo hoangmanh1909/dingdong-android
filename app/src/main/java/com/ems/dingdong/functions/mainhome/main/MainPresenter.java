@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.main;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;

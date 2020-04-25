@@ -28,7 +28,7 @@
         android:layout_width="@dimen/dimen_100dp"
         android:layout_height="@dimen/dimen_100dp"
         android:layout_below="@+id/tv_sub_info"
-        android:background="@drawable/bg_call_end_selector"
+        android:background="@drawable/bg_contact_oval"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:gravity="center" />
@@ -97,6 +97,7 @@
             android:layout_gravity="center"
             android:id="@+id/iv_foward"
             android:layout_marginRight="@dimen/dimen_20dp"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_weight="1"
             app:srcImg="@drawable/ic_button_foward"
             app:title="Chuyển tiếp" />
@@ -116,6 +117,7 @@
             android:layout_width="@dimen/dimen_100dp"
             android:layout_height="@dimen/dimen_100dp"
             android:layout_marginLeft="@dimen/dimen_40dp"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_weight="1"
             android:src="@drawable/ic_dialpad" />
 
@@ -124,6 +126,7 @@
             android:layout_width="@dimen/dimen_100dp"
             android:layout_height="@dimen/dimen_100dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_call_end_selector"
             android:src="@drawable/ic_call_end_red" />
 
         <ImageView

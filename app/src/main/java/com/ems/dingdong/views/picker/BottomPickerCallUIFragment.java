@@ -13,6 +13,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.model.Leaf;
 import com.ems.dingdong.model.Tree;
 import com.ems.dingdong.model.TreeNote;
+import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.adapter.BottomPickerAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -29,7 +30,7 @@ public class BottomPickerCallUIFragment extends BottomSheetDialogFragment {
     @BindView(R.id.tv_title)
     CustomTextView title;
     @BindView(R.id.tv_cancel)
-    CustomTextView tvCancel;
+    CustomBoldTextView tvCancel;
 
     private List<Tree> mItems;
     private String mTitle;

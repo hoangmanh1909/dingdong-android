@@ -61,7 +61,7 @@ public class ApplicationController extends MultiDexApplication {
         Realm.setDefaultConfiguration(config);
         applicationController = this;
         Intent intent = new Intent(this, CallService.class);
-//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     public StringeeClient getStringleeClient() {

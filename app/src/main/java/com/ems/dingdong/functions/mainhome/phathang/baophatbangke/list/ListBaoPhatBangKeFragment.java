@@ -23,7 +23,6 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -101,29 +100,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         public void onLeftClick(Leaf leaf) {
             switch (leaf.getId()) {
                 case 2:
-                    call();
-                    break;
+                case 6:
+                case 5:
                 case 3:
-                    call();
+                    mPresenter.callByWifi(mPhone);
                     break;
                 case 4:
-                    call();
-                    break;
-                case 5:
-                    call();
-                    break;
-                case 6:
-                    call();
-                    break;
                 case 7:
-                    call();
+                    mPresenter.callBySimCard(mPhone);
                     break;
                 case 9:
-                    mPresenter.callForward(mPhone, choosenLadingCode);
-                    break;
                 case 10:
-                    mPresenter.callForward(mPhone, choosenLadingCode);
-                    break;
                 case 11:
                     mPresenter.callForward(mPhone, choosenLadingCode);
                     break;
@@ -553,15 +540,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
         }
         return focusedPosition;
-    }
-
-    private void call() {
-        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
-        intent.putExtra(Constants.CALL_TYPE, 1);
-//                            intent.putExtra(Constants.CALL_MAP, callHashMap);
-        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
-        intent.putExtra(Constants.KEY_CALLEE_NUMBER, mPhone);
-        startActivity(intent);
     }
 
     public void setSubmitAll() {

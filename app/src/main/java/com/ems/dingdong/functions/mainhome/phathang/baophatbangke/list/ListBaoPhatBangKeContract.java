@@ -273,6 +273,21 @@ interface ListBaoPhatBangKeContract {
          * @param address receiver address.
          */
         void vietmapSearch(String address);
+
+        /**
+         * Make a call by sim card.
+         *
+         * @param calleeNumber callee number
+         */
+        void callBySimCard(String calleeNumber);
+
+
+        /**
+         * Make a call by wifi.
+         *
+         * @param calleeNumber callee number
+         */
+        void callByWifi(String calleeNumber);
     }
 
 }
