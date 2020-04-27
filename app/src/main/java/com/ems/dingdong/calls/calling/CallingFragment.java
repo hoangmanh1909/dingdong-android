@@ -78,6 +78,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 if (stringeeAnswer != null && mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     stringeeAnswer.answer();
                     changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+                    mPresenter.setCallType(Constants.CALL_TYPE_CALLING);
                 } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
                     mPresenter.openDiapadScreen();
                 }

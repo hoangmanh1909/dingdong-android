@@ -46,10 +46,18 @@ public class PushToPnsRequest {
     @SerializedName("IsItemReturn")
     String isItemReturn;
 
+    @SerializedName("BatchCode")
+    String batchCode;
+    @SerializedName("AmountForBatch")
+    String amountForBatch;
+    @SerializedName("ItemsInBatch")
+    Integer itemsInBatch;
+
     public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
                             String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
                             String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID,
-                            String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn) {
+                            String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn, String batchCode,
+                            Integer itemsInBatch, String amountForBatch) {
         this.postmanID = postmanID;
         this.ladingCode = ladingCode;
         this.deliveryPOCode = deliveryPOCode;
@@ -70,6 +78,9 @@ public class PushToPnsRequest {
         this.signature = signature;
         this.imageDelivery = imageDelivery;
         this.isItemReturn = isItemReturn;
+        this.batchCode = batchCode;
+        this.itemsInBatch = itemsInBatch;
+        this.amountForBatch = amountForBatch;
     }
 
 

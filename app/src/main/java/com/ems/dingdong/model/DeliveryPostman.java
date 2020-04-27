@@ -109,6 +109,12 @@ public class DeliveryPostman {
     @SerializedName("OrderNumberInBD13")
     @Expose
     private Integer orderNumberInBD13;
+    @SerializedName("AmountForBatch")
+    @Expose
+    private String amountForBatch;
+    @SerializedName("ItemsInBatch")
+    @Expose
+    private Integer itemsInBatch;
 
     private boolean selected;
 
@@ -374,5 +380,13 @@ public class DeliveryPostman {
 
     public Integer getOrderNumberInBD13() {
         return orderNumberInBD13;
+    }
+
+    public String getAmountForBatch() {
+        return amountForBatch;
+    }
+
+    public Integer getItemsInBatch() {
+        return itemsInBatch;
     }
 }

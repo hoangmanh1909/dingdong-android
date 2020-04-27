@@ -40,6 +40,10 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         return this;
     }
 
+    @Override
+    public void setCallType(int type) {
+        this.type = type;
+    }
 
     public CallingPresenter setCallerNumber(String callerNumber) {
         this.callerNumber = callerNumber;

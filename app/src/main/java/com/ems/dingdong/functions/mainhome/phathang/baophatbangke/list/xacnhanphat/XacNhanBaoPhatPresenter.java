@@ -180,7 +180,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     routeCode,
                     signature,
                     deliveryImage,
-                    item.isItemReturn());
+                    item.isItemReturn(),
+                    item.getBatchCode(),
+                    item.getItemsInBatch(),
+                    item.getAmountForBatch());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -255,7 +258,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     userInfo.getUserName(),
                     item.getBatchCode(),
                     isPaymentPP,
-                    item.isItemReturn()
+                    item.isItemReturn(),
+                    item.getAmountForBatch(),
+                    item.getItemsInBatch()
             );
 
             mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {

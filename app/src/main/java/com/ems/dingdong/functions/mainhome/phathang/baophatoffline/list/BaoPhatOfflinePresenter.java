@@ -235,7 +235,10 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         routeCode,
                         signature,
                         item.getImageDelivery(),
-                        "N");
+                        "N",
+                        "",
+                        0,
+                        "");
                 mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -286,7 +289,9 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         userInfo.getUserName(),
                         item.getBatchCode(),
                         isPaymentPP,
-                        "N"
+                        "N",
+                        "",
+                        0
                 );
 
                 mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {

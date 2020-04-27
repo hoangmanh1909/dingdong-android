@@ -23,6 +23,7 @@ import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -72,14 +73,14 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         client.registerPushToken(token, new StatusListener() {
             @Override
             public void onSuccess() {
-//                Logger.d("chauvp", "PushToken: onSuccess");
+                Logger.d("chauvp", "PushToken: onSuccess");
                 applicationController = (ApplicationController) getApplication();
                 applicationController.reFreshToken();
             }
 
             @Override
             public void onError(StringeeError error) {
-//                Logger.d("chauvp", "PushToken: onError");
+                Logger.d("chauvp", "PushToken: onError");
             }
         });
     }
