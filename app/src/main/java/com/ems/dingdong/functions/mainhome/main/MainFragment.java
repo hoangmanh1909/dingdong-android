@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -27,7 +29,6 @@ import butterknife.BindView;
  */
 public class MainFragment extends ViewFragment<MainContract.Presenter> implements MainContract.View {
 
-
     @BindView(R.id.bottomBar)
     BottomBar bottomBar;
     @BindView(R.id.tv_balance)
@@ -36,6 +37,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     CustomTextView tvAmountMax;
     @BindView(R.id.view_pager)
     MyViewPager viewPager;
+    @BindView(R.id.img_notification)
+    ImageView img_notification;
+    @BindView(R.id.notification_badge)
+    TextView  notification_badge;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
     private Fragment gomHangFragment;
@@ -97,8 +102,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 if (!TextUtils.isEmpty(userInfo.getBalance())) {
                     tvBalance.setText(String.format("%s VNĐ",  NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
                 }
+                if (!TextUtils.isEmpty(userInfo.getCountNotification())) {
+                    notification_badge.setText(userInfo.getCountNotification());
+                }
             }
         }
+
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getActivity().startService(intent);
 

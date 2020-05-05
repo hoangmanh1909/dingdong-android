@@ -22,7 +22,8 @@ public class UserInfo {
     private String amountMax;
     @SerializedName("Balance")
     private String balance;
-
+    @SerializedName("CountNotification")
+    private String CountNotification;
 
 
     public String getUnitCode() {
@@ -59,5 +60,9 @@ public class UserInfo {
 
     public String getBalance() {
         return balance;
+    }
+
+    public String getCountNotification() {
+        return CountNotification;
     }
 }
