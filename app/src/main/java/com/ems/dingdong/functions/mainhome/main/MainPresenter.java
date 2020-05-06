@@ -3,9 +3,10 @@ package com.ems.dingdong.functions.mainhome.main;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
+import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
-import com.ems.dingdong.functions.mainhome.home.HomePresenter;
+import com.ems.dingdong.notification.NotificationPresenter;
 
 /**
  * The Home Presenter
@@ -50,5 +51,10 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     @Override
     public LocationPresenter getLocationPresenter() {
         return new LocationPresenter(mContainerView);
+    }
+
+    @Override
+    public NotificationPresenter getNotificationPresenter() {
+        return new NotificationPresenter(mContainerView);
     }
 }

@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/_2sdp"
         android:paddingRight="@dimen/_2sdp"
-        android:orientation="vertical"
-        android:background="@color/colorPrimary"
         android:paddingBottom="@dimen/_2sdp">
 
         <RelativeLayout
@@ -20,22 +20,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp">
 
-        <ImageView
-            android:id="@+id/img_logo_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_logo_home" />
+            <ImageView
+                android:id="@+id/img_logo_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_logo_home" />
 
             <FrameLayout
                 style="?attr/actionButtonStyle"
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
                 android:layout_alignParentRight="true"
                 android:background="@color/colorPrimaryDark"
+                android:clipToPadding="false"
                 android:focusable="true">
 
                 <ImageView
@@ -43,30 +42,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_notification1"/>
+                    android:src="@drawable/ic_notification1" />
 
                 <TextView
                     android:id="@+id/notification_badge"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="right|end|top"
-                    android:layout_marginEnd="-5dp"
-                    android:layout_marginRight="-5dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/badge_background"
                     android:gravity="center"
-                    android:padding="3dp"
-                    android:textColor="@android:color/white"
                     android:text="9"
-                    android:textSize="10sp"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
             </FrameLayout>
 
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
+
             <com.ems.dingdong.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,6 +72,7 @@
                 android:text="Hạn mức"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_AmountMax"
                 android:layout_width="match_parent"
@@ -83,10 +82,12 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <com.ems.dingdong.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,17 +95,17 @@
                 android:text="Số tiền đã thu"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_balance"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="right"
                 android:text="VNĐ"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
         </LinearLayout>
-
 
 
     </LinearLayout>

@@ -9,6 +9,8 @@ import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.NotificationInfo;
+import com.ems.dingdong.model.NotificationResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -270,4 +272,9 @@ public interface VinattiAPI {
     @POST("api/Handle/UploadImage")
     Call<UploadSingleResult> postImageSingle(@Part MultipartBody.Part image);
 
+    @GET("PushNotify/GetNotificationByMobile")
+    Call<NotificationResult> getNotifications(@Query("mobileNumber") String mobileNumber);
+
+    @GET("PushNotify/UpdateRead")
+    Call<SimpleResult> updateRead(@Query("mobileNumber") String mobileNumber);
 }

@@ -65,4 +65,8 @@ public class UserInfo {
     public String getCountNotification() {
         return CountNotification;
     }
+
+    public void setCountNotification(String countNotification) {
+        CountNotification = countNotification;
+    }
 }

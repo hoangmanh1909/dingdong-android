@@ -3,6 +3,7 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.NotificationResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ems.dingdong.BuildConfig;
@@ -315,6 +316,16 @@ public class NetWorkController {
         MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
         //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
         Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
+        call.enqueue(callback);
+    }
+
+    public static void getNotifications(String mobileNumber, CommonCallback<NotificationResult> callback) {
+        Call<NotificationResult> call = getAPIBuilder().getNotifications(mobileNumber);
+        call.enqueue(callback);
+    }
+
+    public static void updateRead(String mobileNumber, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().updateRead(mobileNumber);
         call.enqueue(callback);
     }
 }

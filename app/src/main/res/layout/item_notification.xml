@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen_10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/frame_mail"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_40dp"
+                android:src="@drawable/ic_mail" />
+
+            <View
+                android:id="@+id/view_oval"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="-12dp"
+                android:layout_toRightOf="@+id/img"
+                android:background="@drawable/badge_background" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_toRightOf="@+id/frame_mail"
+            android:orientation="vertical">
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_18sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dimen_40dp"
+            android:layout_height="@dimen/dimen_40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_arrow_forward" />
+
+
+    </RelativeLayout>
+
+    <View style="@style/Devider" />
+</LinearLayout>

@@ -352,4 +352,5 @@
     <color name="md_grey_200">#EEEEEE</color>
     <color name="colorBlackTrans50">#80000000</color>
     <color name="colorBlackTrans20">#33000000</color>
+    <color name="color_bg_notifycation">#E6EBEE</color>
 </resources>
