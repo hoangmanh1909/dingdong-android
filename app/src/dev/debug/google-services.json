@@ -1,29 +1,68 @@
 {
   "project_info": {
-    "project_number": "243901930739",
-    "firebase_url": "https://dingdongvnpost.firebaseio.com",
-    "project_id": "dingdongvnpost",
-    "storage_bucket": "dingdongvnpost.appspot.com"
+    "project_number": "853538468534",
+    "firebase_url": "https://dingdong-1524126013190.firebaseio.com",
+    "project_id": "dingdong-1524126013190",
+    "storage_bucket": "dingdong-1524126013190.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:243901930739:android:cc2a2c6db5e2109deceb86",
+        "mobilesdk_app_id": "1:853538468534:android:db19973870b979b9852c17",
+        "android_client_info": {
+          "package_name": "com.ems.dingdong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853538468534-fhh972mn2ct13hd07douqvsnjinfq6pu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ems.dingdong",
+            "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
+          }
+        },
+        {
+          "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs"
+        },
+        {
+          "current_key": "AIzaSyC6DHBatj4ypbxhFNFhu0_fKssg50pX1ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "853538468534-6jlphgj2ro4nresg7dmovousf3mgak7a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vnpost.dingdong"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853538468534:android:3158af509d66e4b9852c17",
         "android_client_info": {
           "package_name": "com.tct.dingdong"
         }
       },
       "oauth_client": [
         {
-          "client_id": "243901930739-f2fu5kqodqemfvgg09kfd32je6hb7gup.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tct.dingdong",
-            "certificate_hash": "044680c2cad370c8745bc14d619ad2fc1663db48"
-          }
-        },
-        {
-          "client_id": "243901930739-0vri35opo2oijsjl88un56rrldin6450.apps.googleusercontent.com",
+          "client_id": "853538468534-5oulj2c7jrgr4gptikfcrmgtqnmvj41k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tct.dingdong",
@@ -31,21 +70,78 @@
           }
         },
         {
-          "client_id": "243901930739-q7101dll589dt19nt363n7bikofmj5fs.apps.googleusercontent.com",
+          "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCeNPvOCutAmzKZEU0qLeWd71D8fCYVGcM"
+          "current_key": "AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs"
+        },
+        {
+          "current_key": "AIzaSyC6DHBatj4ypbxhFNFhu0_fKssg50pX1ig"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "243901930739-q7101dll589dt19nt363n7bikofmj5fs.apps.googleusercontent.com",
+              "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "853538468534-6jlphgj2ro4nresg7dmovousf3mgak7a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vnpost.dingdong"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853538468534:android:eff0bb6706160df3",
+        "android_client_info": {
+          "package_name": "com.vinatti.dingdong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853538468534-evfgb206l92d6g3mi5leaqasea191v09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinatti.dingdong",
+            "certificate_hash": "be76659dbcd7c9e21ec993bf196b44b7ec9fba75"
+          }
+        },
+        {
+          "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs"
+        },
+        {
+          "current_key": "AIzaSyC6DHBatj4ypbxhFNFhu0_fKssg50pX1ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853538468534-9vncit3n19uv13tnigqeddspm64qarq4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "853538468534-6jlphgj2ro4nresg7dmovousf3mgak7a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vnpost.dingdong"
+              }
             }
           ]
         }

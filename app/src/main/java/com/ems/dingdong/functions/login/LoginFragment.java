@@ -11,6 +11,7 @@ import android.view.View;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
@@ -57,7 +58,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0911818968;1F9A05E5847BE8421BC5CF49D211C37E116BBBDB04383ADB096B753D43F2F180");//production
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0385537906;96D5C95013E36E313C6A558B783D26829E0916D6078A14745571660A37A92F4F");//production
        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0888862106;DBC8F3B595A448DAE9279CD6B290982C0BF4DB80F585EA48F3B29F5B210CD285");//production
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev guest
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");// dev vinatti
@@ -106,6 +107,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @OnClick(R.id.login_layout)
     public void onViewClicked() {
+       String  token = FirebaseInstanceId.getInstance().getToken();
         if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
             SharedPref sharedPref = new SharedPref(getActivity());
             String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
