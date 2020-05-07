@@ -214,13 +214,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         for (DeliveryPostman item : mBaoPhatBangke) {
             String receiverName;
             String gtttCode;
-            if (mBaoPhatBangke.size() == 1) {
-                receiverName = newReceiverName;
-                gtttCode = newGtttCode;
-            } else {
-                gtttCode = item.getVatCode();
-                receiverName = item.getReciverName();
-            }
+            receiverName = newReceiverName;
+            gtttCode = newGtttCode;
             String parcelCode = item.getMaE();
             String reasonCode = "";
             String solutionCode = "";

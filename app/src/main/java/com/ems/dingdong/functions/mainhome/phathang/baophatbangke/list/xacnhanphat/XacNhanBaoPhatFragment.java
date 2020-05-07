@@ -218,9 +218,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (mBaoPhatBangke.size() == 1) {
             tvReceiverName.setText(mBaoPhatBangke.get(0).getReciverName());
             tvGTTT.setText("");
-            linearLayoutName.setVisibility(View.VISIBLE);
-        } else {
-            linearLayoutName.setVisibility(View.GONE);
         }
 
         tv_quantity.setText(String.format(" %s", mBaoPhatBangke.size()));

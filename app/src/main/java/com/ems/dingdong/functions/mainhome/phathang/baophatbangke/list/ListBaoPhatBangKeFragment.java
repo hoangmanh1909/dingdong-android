@@ -439,7 +439,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
-        new Handler().post(() -> recycler.smoothScrollToPosition(getForcusPosition()));
+        new Handler().post(() -> {
+            int position = getFocusPosition();
+            if (position != 0)
+                recycler.smoothScrollToPosition(getFocusPosition());
+        });
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -529,7 +533,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter.notifyDataSetChanged();
     }
 
-    private int getForcusPosition() {
+    private int getFocusPosition() {
         int focusedPosition = 0;
         if (!TextUtils.isEmpty(mPresenter.getLadingCode())) {
             for (DeliveryPostman postman : mList) {
