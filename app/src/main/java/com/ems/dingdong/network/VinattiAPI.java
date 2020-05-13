@@ -2,6 +2,7 @@ package com.ems.dingdong.network;
 
 
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.AuthPayPostResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
@@ -447,5 +448,10 @@ public interface VinattiAPI {
 
     @GET("api/MoveCrop/GetAccessTokenAndroid")
     Single<ActiveResult> getAccessTokenAndroid();
+
+    @FormUrlEncoded
+    @POST("api/merchant/auth")
+    Single<AuthPayPostResult> getTokenWallet(@Field("username") String userName,
+                                             @Field("password") String password);
 
 }

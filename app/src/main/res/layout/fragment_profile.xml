@@ -39,28 +39,18 @@
     </FrameLayout>
 
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:background="@color/gray"
         android:orientation="vertical">
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-
-            <fragment
-                android:id="@+id/map"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent" />
-        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
+            android:id="@+id/frame_profile"
             android:layout_marginRight="@dimen/dimen_10dp"
             android:background="@drawable/bg_radius_white"
             android:orientation="horizontal"
@@ -117,7 +107,46 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_sign_out" />
         </RelativeLayout>
-    </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_below="@+id/frame_profile"
+            android:background="@drawable/bg_radius_white"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rl_e_wallet"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/size_50dp"
+                    android:src="@drawable/ic_bank_building_100"
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/ic_bank"
+                    android:layout_centerVertical="true"
+                    android:layout_height="@dimen/size_50dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:textColor="#333333"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/ic_bank"
+                    android:text="Ví Điện Tử"
+                    android:textSize="@dimen/text_size_14sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_forward"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 
 </LinearLayout>

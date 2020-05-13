@@ -4,6 +4,7 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.AuthPayPostResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
@@ -87,6 +88,7 @@ public class NetWorkController {
 
     private static volatile VinattiAPI apiBuilder;
     private static volatile VinattiAPI apiRxBuilder;
+    private static volatile VinattiAPI apiRxEWalletBuilder;
     private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
 
 
@@ -140,6 +142,22 @@ public class NetWorkController {
             apiRxBuilder = retrofit.create(VinattiAPI.class);
         }
         return apiRxBuilder;
+    }
+
+    private static VinattiAPI getAPIEWalletRxBuilder(String token) {
+        if (apiRxEWalletBuilder == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_URL_E_WALLET)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient(120, 120, token))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiRxEWalletBuilder = retrofit.create(VinattiAPI.class);
+        }
+        return apiRxEWalletBuilder;
     }
 
 
@@ -596,5 +614,9 @@ public class NetWorkController {
 
     public static Single<ActiveResult> getAccessTokenAndroid() {
         return getAPIRxBuilder().getAccessTokenAndroid();
+    }
+
+    public static Single<AuthPayPostResult> getTokenWallet(String username, String password) {
+        return getAPIEWalletRxBuilder("").getTokenWallet(username, password);
     }
 }

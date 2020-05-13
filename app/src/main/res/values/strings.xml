@@ -117,4 +117,6 @@
     <string name="cod">Số tiền COD</string>
     <string name="fee_money">Tiền cước</string>
     <string name="call_service">Gọi dịch vụ</string>
+    <string name="not_link_to_e_wallet">Bạn chưa liên kết với ví bưu điện MB</string>
+    <string name="linked_to_e_wallet">Đã liên kết, bạn có thể thực hiện nộp tiền thông qua ví bưu điện MB</string>
 </resources>

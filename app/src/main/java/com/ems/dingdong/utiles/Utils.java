@@ -25,19 +25,21 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.RawContacts;
-import androidx.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.model.response.StatisticDebitDetailResponse;
 import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
 import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 import com.ems.dingdong.network.VinattiAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ems.dingdong.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -127,6 +129,7 @@ public class Utils {
             throw new RuntimeException(ex);
         }
     }
+
     public static String convertNumberToString(String number) {
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal bigDecimal;
@@ -616,11 +619,77 @@ public class Utils {
                     // Request customization: add request headers
                     Request.Builder requestBuilder = original.newBuilder()
                             .addHeader("Authorization", "Basic " + base64EncodedCredentials)
-                            .addHeader("APIKey",BuildConfig.PRIVATE_KEY); // <-- this is the important line
+                            .addHeader("APIKey", BuildConfig.PRIVATE_KEY); // <-- this is the important line
 
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 }
+            });
+            return builder.build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static OkHttpClient getUnsafeOkHttpClient(int readTimeOut, int connectTimeOut, String token) {
+
+        try {
+            // Create a trust manager that does not validate certificate chains
+            final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] chain,
+                        String authType) throws CertificateException {
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[0];
+                }
+
+                @Override
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] chain,
+                        String authType) throws CertificateException {
+                }
+
+            }};
+
+            // Install the all-trusting trust manager
+            final SSLContext tls = SSLContext.getInstance("TLS");
+            tls.init(null, trustAllCerts,
+                    new java.security.SecureRandom());
+            // Create an ssl socket factory with our all-trusting manager
+            final SSLSocketFactory sslSocketFactory = tls
+                    .getSocketFactory();
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+            builder.readTimeout(readTimeOut, TimeUnit.SECONDS)
+                    .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
+                    .sslSocketFactory(sslSocketFactory)
+                    .hostnameVerifier(hostnameVerifier);//org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
+
+            if (BuildConfig.DEBUG) {
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builder.addInterceptor(loggingInterceptor);
+            }
+
+            builder.addInterceptor(chain -> {
+                Request original = chain.request();
+                Request.Builder requestBuilder = original.newBuilder();
+                if (!TextUtils.isEmpty(token)) {
+                    requestBuilder.addHeader("apptoken", token);
+                }
+
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
             });
             return builder.build();
         } catch (Exception e) {
@@ -815,7 +884,7 @@ public class Utils {
         long moneyCod = 0;
         long moneyC = 0;
         long moneyPPA = 0;
-        for (StatisticDeliveryGeneralResponse item: statisticList) {
+        for (StatisticDeliveryGeneralResponse item : statisticList) {
             quantity += Long.parseLong(item.getQuantity());
             moneyCod += Long.parseLong(item.getQuantityCOD());
             moneyC += Long.parseLong(item.getQuantityC());
@@ -833,7 +902,7 @@ public class Utils {
 
     public static ArrayList<StatisticDeliveryDetailResponse> getGeneralDeliveryDetailList(ArrayList<StatisticDeliveryDetailResponse> statisticList) {
         long totalAmount = 0;
-        for(StatisticDeliveryDetailResponse item : statisticList) {
+        for (StatisticDeliveryDetailResponse item : statisticList) {
             totalAmount += Long.parseLong(item.getAmount());
         }
         StatisticDeliveryDetailResponse totalStatistic = new StatisticDeliveryDetailResponse();
@@ -844,7 +913,7 @@ public class Utils {
 
     public static ArrayList<StatisticDebitDetailResponse> getGeneralDebitDetailList(ArrayList<StatisticDebitDetailResponse> statisticList) {
         long totalAmount = 0;
-        for(StatisticDebitDetailResponse item : statisticList) {
+        for (StatisticDebitDetailResponse item : statisticList) {
             totalAmount += Long.parseLong(item.getAmount());
         }
         StatisticDebitDetailResponse totalStatistic = new StatisticDebitDetailResponse();
