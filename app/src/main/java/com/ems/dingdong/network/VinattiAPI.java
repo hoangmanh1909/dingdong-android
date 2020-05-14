@@ -16,6 +16,7 @@ import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
@@ -33,6 +34,7 @@ import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
@@ -454,4 +456,13 @@ public interface VinattiAPI {
     Single<AuthPayPostResult> getTokenWallet(@Field("username") String userName,
                                              @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("pay/link/request")
+    Single<LinkEWalletResult> linkEWallet(@Field("mobile") String mobile,
+                                          @Field("user_id") String userID);
+
+    @FormUrlEncoded
+    @POST("pay/link/confirm")
+    Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Field("request_id") String requestId,
+                                                  @Field("otp") String otp);
 }

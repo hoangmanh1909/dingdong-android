@@ -87,6 +87,8 @@ public class SharedPref {
             editor.remove(Constants.KEY_POST_SHIFT);
             editor.remove(Constants.KEY_ROUTE_INFO);
             editor.remove(Constants.ACCESS_CALL_TOKEN);
+            editor.remove(Constants.KEY_PAYMENT_TOKEN);
+            editor.remove(Constants.KEY_AUTH_TOKEN);
 
             editor.commit();
         } catch (Exception ex) {

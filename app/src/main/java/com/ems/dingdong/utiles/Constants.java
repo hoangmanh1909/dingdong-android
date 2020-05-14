@@ -101,6 +101,7 @@ public class Constants {
     public static final String KEY_CALLEE_NUMBER= "key_callee_number";
 
     public static final String KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN";
+    public static final String KEY_REQUEST_ID = "KEY_REQUEST_ID";
     public static final String KEY_PAYMENT_TOKEN = "KEY_PAYMENT_TOKEN";
 
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_payment_select"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_marginLeft="@dimen/_3sdp"
+    android:layout_marginRight="@dimen/_3sdp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/cb_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_alignParentRight="true"
+            android:clickable="false"
+            android:layout_centerVertical="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dimen_20dp"
+                android:layout_toRightOf="@+id/ic_transfer_money"
+                android:orientation="vertical">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_lading"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COD: "
+                    android:id="@+id/tv_cod"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cước: "
+                    android:id="@+id/tv_fee"
+                    android:textColor="@color/black"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:textSize="@dimen/text_size_14sp" />
+            </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ic_transfer_money"
+            android:layout_width="@dimen/size_60dp"
+            android:layout_height="@dimen/size_60dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_online_money_transfer_100" />
+    </RelativeLayout>
+</LinearLayout>

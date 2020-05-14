@@ -74,6 +74,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(14, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển tiếp"));
                 homeInfos.add(new HomeInfo(15, R.drawable.ic_thong_ke_bao_phat, "Quản lý chuyển tuyến"));
                 homeInfos.add(new HomeInfo(12, R.drawable.ic_location_blue, "Tra cứu bưu gửi"));
+                homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
@@ -122,6 +123,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                         } else if (homeInfo.getId() == 15) {
                             Intent intent = new Intent(getActivity(), RouteTabsActivity.class);
                             startActivity(intent);
+                        } else if (homeInfo.getId() == 16) {
+                            mPresenter.showPayment();
                         }
                     }
                 });

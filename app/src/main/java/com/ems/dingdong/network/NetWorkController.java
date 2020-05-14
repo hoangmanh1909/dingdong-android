@@ -18,6 +18,7 @@ import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
@@ -35,6 +36,7 @@ import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
@@ -56,6 +58,7 @@ import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -145,18 +148,16 @@ public class NetWorkController {
     }
 
     private static VinattiAPI getAPIEWalletRxBuilder(String token) {
-        if (apiRxEWalletBuilder == null) {
-            Gson gson = new GsonBuilder()
-                    .setLenient()
-                    .create();
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.API_URL_E_WALLET)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(getUnsafeOkHttpClient(120, 120, token))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
-            apiRxEWalletBuilder = retrofit.create(VinattiAPI.class);
-        }
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.API_URL_E_WALLET)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(getUnsafeOkHttpClient(120, 120, token))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        apiRxEWalletBuilder = retrofit.create(VinattiAPI.class);
         return apiRxEWalletBuilder;
     }
 
@@ -618,5 +619,13 @@ public class NetWorkController {
 
     public static Single<AuthPayPostResult> getTokenWallet(String username, String password) {
         return getAPIEWalletRxBuilder("").getTokenWallet(username, password);
+    }
+
+    public static Single<LinkEWalletResult> linkEWallet(String mobile, String userAppId, String authToken) {
+        return getAPIEWalletRxBuilder(authToken).linkEWallet(mobile, userAppId);
+    }
+
+    public static Single<VerifyLinkOtpResult> verifyLinkWithOtp(String requestId, String otp, String authToken) {
+        return getAPIEWalletRxBuilder(authToken).verifyLinkWithOtp(requestId, otp);
     }
 }

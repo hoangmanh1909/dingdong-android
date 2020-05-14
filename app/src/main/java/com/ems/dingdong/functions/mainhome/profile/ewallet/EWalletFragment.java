@@ -32,6 +32,11 @@ public class EWalletFragment extends ViewFragment<EWalletContract.Presenter> imp
     @Override
     public void initLayout() {
         super.initLayout();
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
         SharedPref pref = SharedPref.getInstance(getViewContext());
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         if (TextUtils.isEmpty(token)) {
@@ -51,7 +56,6 @@ public class EWalletFragment extends ViewFragment<EWalletContract.Presenter> imp
                 break;
 
             case R.id.btn_link_wallet:
-                //TO DO switch to link fragment
                 mPresenter.showLinkEWalletFragment();
                 break;
         }

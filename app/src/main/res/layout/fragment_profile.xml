@@ -25,6 +25,7 @@
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_centerVertical="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
@@ -102,6 +103,7 @@
             <ImageView
                 android:id="@+id/img_logout"
                 android:layout_width="40dp"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -113,8 +115,10 @@
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_below="@+id/frame_profile"
-            android:background="@drawable/bg_radius_white"
             android:layout_marginRight="@dimen/dimen_10dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@color/white"
+
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -122,12 +126,12 @@
                 android:id="@+id/rl_e_wallet"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="@dimen/size_50dp"
+                    android:layout_width="45dp"
                     android:src="@drawable/ic_bank_building_100"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/ic_bank"
                     android:layout_centerVertical="true"
-                    android:layout_height="@dimen/size_50dp" />
+                    android:layout_height="45dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_centerVertical="true"
