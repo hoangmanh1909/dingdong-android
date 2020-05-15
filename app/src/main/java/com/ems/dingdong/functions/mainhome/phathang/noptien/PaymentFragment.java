@@ -63,11 +63,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             case R.id.tv_payment:
                 SharedPref pref = SharedPref.getInstance(getViewContext());
                 if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
-                    new SweetAlertDialog(getViewContext())
-                            .setTitleText("Thông báo")
-                            .setContentText("Vui lòng liên kết Ví bưu điện MB trước.")
-                            .setCancelText("Thoát")
-                            .setConfirmText("Đồng ý")
+                    new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(getString(R.string.notification))
+                            .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
+                            .setCancelText(getString(R.string.payment_cancel))
+                            .setConfirmText(getString(R.string.payment_confirn))
                             .setCancelClickListener(sweetAlertDialog -> {
                                 mPresenter.back();
                                 sweetAlertDialog.dismiss();
@@ -78,10 +78,10 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                             })
                             .show();
                 } else {
-                    new SweetAlertDialog(getViewContext())
-                            .setTitleText("Thông báo")
-                            .setCancelText("Thoát")
-                            .setConfirmText("Đồng ý")
+                    new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(getString(R.string.notification))
+                            .setCancelText(getString(R.string.payment_cancel))
+                            .setConfirmText(getString(R.string.payment_confirn))
                             .setContentText("Bạn chắc chắn nộp số tiền [Số tiền COD+ cước COD] của [Số lượng bưu gửi].bưu gửi qua ví bưu điện MB?")
                             .setCancelClickListener(sweetAlertDialog -> sweetAlertDialog.dismiss())
                             .setConfirmClickListener(sweetAlertDialog -> sweetAlertDialog.dismiss())

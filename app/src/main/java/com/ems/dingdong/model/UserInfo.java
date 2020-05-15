@@ -24,9 +24,8 @@ public class UserInfo {
     private String balance;
     @SerializedName("IsEms")
     private String isEms;
-
-
-
+    @SerializedName("EWalletPaymentToken")
+    private String eWalletPaymentToken;
 
     public String getUnitCode() {
         return unitCode;
@@ -70,5 +69,9 @@ public class UserInfo {
 
     public String getIsEms() {
         return isEms;
+    }
+
+    public String geteWalletPaymentToken() {
+        return eWalletPaymentToken;
     }
 }

@@ -1,14 +1,13 @@
 package com.ems.dingdong.model;
 
-import com.ems.dingdong.model.response.LinkEWalletResponse;
 import com.google.gson.annotations.SerializedName;
 
-public class LinkEWalletResult extends SimplePaypostResult {
+public class LinkEWalletResult extends SimpleResult {
 
-    @SerializedName("data")
-    LinkEWalletResponse response;
+    @SerializedName("Value")
+    String response;
 
-    public LinkEWalletResponse getResponse() {
+    public String getRequestId() {
         return response;
     }
 }

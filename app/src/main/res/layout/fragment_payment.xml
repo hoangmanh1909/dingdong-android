@@ -20,8 +20,8 @@
                 android:id="@+id/img_back"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:layout_centerVertical="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Nộp tiền"
+                android:text="@string/pay_money"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
@@ -49,7 +49,7 @@
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tìm kiếm nhanh bưu gửi"
+            android:text="@string/find_package_quickly"
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
@@ -74,7 +74,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                app:formHint="Nhập bưu gửi"
+                app:formHint="@string/enter_package"
                 app:formShowUnderline="false" />
 
             <ImageView
@@ -120,7 +120,7 @@
             <com.ems.dingdong.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn tất cả"
+                android:text="@string/pick_all"
                 android:textSize="@dimen/_14sdp" />
         </LinearLayout>
 
@@ -129,18 +129,18 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Tổng tiền"
+            android:text="@string/total_amount"
             android:textSize="@dimen/_14sdp" />
 
         <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_payment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@color/red_light"
             android:padding="@dimen/_10sdp"
-            android:text="Thanh toán"
-            android:id="@+id/tv_payment"
+            android:text="@string/pay"
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp" />
     </RelativeLayout>

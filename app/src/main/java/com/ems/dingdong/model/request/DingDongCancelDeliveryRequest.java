@@ -31,6 +31,12 @@ public class DingDongCancelDeliveryRequest {
     @SerializedName("CancelDeliveryReasonType")
     @Expose
     private String cancelDeliveryReasonType;
+    @SerializedName("BatchCode")
+    @Expose
+    private String batchCode;
+    @SerializedName("IsPaymentBatch")
+    @Expose
+    private String isPaymentBatch;
 
     public String getAmndPOCode() {
         return amndPOCode;
@@ -102,5 +108,21 @@ public class DingDongCancelDeliveryRequest {
 
     public void setCancelDeliveryReasonType(String cancelDeliveryReasonType) {
         this.cancelDeliveryReasonType = cancelDeliveryReasonType;
+    }
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
+
+    public String getIsPaymentBatch() {
+        return isPaymentBatch;
+    }
+
+    public void setIsPaymentBatch(String isPaymentBatch) {
+        this.isPaymentBatch = isPaymentBatch;
     }
 }

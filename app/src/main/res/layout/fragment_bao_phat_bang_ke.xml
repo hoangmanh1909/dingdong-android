@@ -14,7 +14,7 @@
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tìm kiếm nhanh bưu gửi"
+            android:text="@string/find_package_quickly"
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
@@ -39,7 +39,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ"
+                app:formHint="@string/enter_name_phone_number_address"
                 app:formShowUnderline="false" />
 
             <ImageView
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="Số tiền"
+            android:text="@string/amount_of_money"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_14sp" />
     </RelativeLayout>
@@ -96,25 +96,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- <CustomTextView
-             android:id="@+id/btn_confirm_all"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignParentBottom="true"
-             android:layout_centerHorizontal="true"
-             android:layout_marginBottom="@dimen/dimen_10dp"
-             android:layout_marginTop="@dimen/dimen_10dp"
-             android:background="@drawable/bg_confirm_continue"
-             android:drawableLeft="@drawable/ic_done"
-             android:gravity="center"
-             android:paddingBottom="@dimen/dimen_5dp"
-             android:paddingLeft="@dimen/dimen_20dp"
-             android:paddingRight="@dimen/dimen_20dp"
-             android:paddingTop="@dimen/dimen_5dp"
-             android:text="Xác nhận"
-             android:textAllCaps="true"
-             android:textColor="@color/white"
-             android:textSize="@dimen/text_size_18sp" />-->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/layout_swipe_refresh"
             android:layout_width="match_parent"

@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Thông tin vận đơn"
+                android:text="@string/package_info"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp" />
@@ -67,10 +67,11 @@
                 <com.ems.dingdong.views.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Nhập bưu gửi"
+                    android:text="@string/find_package_quickly"
                     android:textColor="@color/black">
 
                 </com.ems.dingdong.views.CustomTextView>
+
                 <RelativeLayout
                     android:id="@+id/ll_scan_qr"
                     android:layout_width="match_parent"
@@ -87,12 +88,12 @@
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@+id/img_capture"
                         android:layout_toRightOf="@+id/img_search"
+                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
-                        android:textAllCaps="true"
-                        android:inputType="textCapCharacters"
-                        app:formShowUnderline="false"
-                        app:formHint="Nhập bưu gửi" />
+                        app:formHint="@string/enter_package"
+                        app:formShowUnderline="false" />
 
                     <ImageView
                         android:id="@+id/img_capture"
@@ -112,7 +113,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
-                android:text="Hình thức báo phát"
+                android:text="@string/type_delivery"
                 android:textColor="@color/n_gray_text"
                 android:textSize="@dimen/text_size_16sp" />
 
@@ -127,8 +128,8 @@
                     android:id="@+id/radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <RadioButton
                         android:id="@+id/rad_success"
@@ -139,17 +140,17 @@
                         android:checked="true"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Thành công" />
+                        android:text="@string/ok" />
 
                     <RadioButton
                         android:id="@+id/rad_fail"
                         style="@style/CustomRadioButtonStyle"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Không thành công" />
+                        android:text="@string/not_ok" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -175,6 +176,7 @@
                     style="@style/Devider"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,7 +188,7 @@
                         android:layout_gravity="left"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Số tiền thu"
+                        android:text="@string/amount_collect"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -194,16 +196,16 @@
                         android:id="@+id/tv_collect_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:digits="0123456789"
                         android:gravity="right"
-                        android:textColor="#253854"
+                        android:hint="@string/amount_of_money"
+                        android:inputType="number"
                         android:maxLength="21"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:background="@android:color/transparent"
-                        android:textSize="16sp"
-                        android:digits="0123456789"
-                        android:inputType="number"
-                        android:hint="Số tiền" />
+                        android:textColor="#253854"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <View
@@ -222,7 +224,7 @@
                         android:layout_gravity="left"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Người nhận"
+                        android:text="@string/receiver_name"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -233,7 +235,7 @@
                         android:gravity="right"
                         android:textColor="#253854"
                         android:textSize="16sp"
-                        app:formHint="Người nhận"
+                        app:formHint="@string/receiver_name"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -259,7 +261,7 @@
                         android:layout_gravity="center"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Lý do"
+                        android:text="@string/cancel_reason"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -272,7 +274,7 @@
                         android:textSize="@dimen/text_size_14sp"
                         app:formAction="@drawable/ic_arrow_down"
                         app:formDrawablePadding="@dimen/dimen_10dp"
-                        app:formHint="Chọn lý do" />
+                        app:formHint="@string/pick_reason" />
 
                 </LinearLayout>
 
@@ -292,7 +294,7 @@
                         android:layout_gravity="center"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Phương án xử lý"
+                        android:text="@string/offline_solution"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -305,7 +307,7 @@
                         android:textSize="@dimen/text_size_14sp"
                         app:formAction="@drawable/ic_arrow_down"
                         app:formDrawablePadding="@dimen/dimen_10dp"
-                        app:formHint="Chọn phương án" />
+                        app:formHint="@string/pick_solutions" />
 
                 </LinearLayout>
 
@@ -325,7 +327,7 @@
                         android:layout_gravity="left"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Ghi chú"
+                        android:text="@string/note"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -336,7 +338,7 @@
                         android:gravity="right"
                         android:textColor="#253854"
                         android:textSize="16sp"
-                        app:formHint="Ghi chú"
+                        app:formHint="@string/note"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -357,7 +359,7 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Ký nhận"
+                    android:text="@string/sign"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18sp" />
@@ -390,7 +392,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
-                android:text="Chụp ảnh"
+                android:text="@string/take_photos"
                 android:textColor="@color/n_gray_text"
                 android:textSize="@dimen/text_size_16sp" />
 

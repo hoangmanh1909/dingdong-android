@@ -6,8 +6,8 @@ import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.functions.login.validation.ValidationPresenter;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.login.validation.ValidationPresenter;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonInfo;
@@ -60,6 +60,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
+                    sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, response.body().getUserInfo().geteWalletPaymentToken());
                     if ("Y".equals(response.body().getUserInfo().getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
@@ -69,9 +70,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
                     if (!"6".equals(response.body().getUserInfo().getEmpGroupID())) {
                         getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
-                    }
-                    else
-                    {
+                    } else {
                         mView.gotoHome();
                     }
                 } else if (response.body().getErrorCode().equals("05")) {

@@ -34,6 +34,13 @@ public class DingDongGetCancelDelivery {
     @SerializedName("SenderAddress")
     @Expose
     private String senderAddress;
+    @SerializedName("BatchCode")
+    @Expose
+    private String batchCode;
+    @SerializedName("IsPaymentBatch")
+    @Expose
+    private String isPaymentBatch;
+
     private boolean selected;
 
     public void setSelected(boolean selected) {
@@ -102,5 +109,13 @@ public class DingDongGetCancelDelivery {
 
     public String getSenderAddress() {
         return senderAddress;
+    }
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public String getIsPaymentBatch() {
+        return isPaymentBatch;
     }
 }

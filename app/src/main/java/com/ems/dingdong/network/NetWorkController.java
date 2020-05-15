@@ -4,7 +4,6 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
-import com.ems.dingdong.model.AuthPayPostResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
@@ -44,6 +43,8 @@ import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.PayLinkConfirm;
+import com.ems.dingdong.model.request.PayLinkRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -58,7 +59,6 @@ import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -91,7 +91,6 @@ public class NetWorkController {
 
     private static volatile VinattiAPI apiBuilder;
     private static volatile VinattiAPI apiRxBuilder;
-    private static volatile VinattiAPI apiRxEWalletBuilder;
     private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
 
 
@@ -146,21 +145,6 @@ public class NetWorkController {
         }
         return apiRxBuilder;
     }
-
-    private static VinattiAPI getAPIEWalletRxBuilder(String token) {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_URL_E_WALLET)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(getUnsafeOkHttpClient(120, 120, token))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        apiRxEWalletBuilder = retrofit.create(VinattiAPI.class);
-        return apiRxEWalletBuilder;
-    }
-
 
     public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
 
@@ -617,15 +601,20 @@ public class NetWorkController {
         return getAPIRxBuilder().getAccessTokenAndroid();
     }
 
-    public static Single<AuthPayPostResult> getTokenWallet(String username, String password) {
-        return getAPIEWalletRxBuilder("").getTokenWallet(username, password);
+    public static Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest) {
+        String signature = Utils.SHA256(payLinkRequest.getPostmanTel()
+                + payLinkRequest.getPostmanCode() + payLinkRequest.getpOCode()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        payLinkRequest.setSignature(signature);
+        return getAPIRxBuilder().linkEWallet(payLinkRequest);
     }
 
-    public static Single<LinkEWalletResult> linkEWallet(String mobile, String userAppId, String authToken) {
-        return getAPIEWalletRxBuilder(authToken).linkEWallet(mobile, userAppId);
-    }
-
-    public static Single<VerifyLinkOtpResult> verifyLinkWithOtp(String requestId, String otp, String authToken) {
-        return getAPIEWalletRxBuilder(authToken).verifyLinkWithOtp(requestId, otp);
+    public static Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
+        String signature = Utils.SHA256(payLinkConfirm.getRequestId()
+                + payLinkConfirm.getOTPCode() + payLinkConfirm.getPostmanTel()
+                + payLinkConfirm.getPostmanCode() + payLinkConfirm.getpOCode()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        payLinkConfirm.setSignature(signature);
+        return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
     }
 }

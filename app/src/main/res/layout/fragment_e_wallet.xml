@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Ví Bưu Điện"
+                android:text="@string/e_wallet_post"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
@@ -76,7 +76,7 @@
                 android:background="@drawable/bg_gradient_radius_5"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:text="Liên kết Ví Bưu Điện"
+                android:text="@string/link_to_e_wallet"
                 android:textColor="@color/black"
                 android:id="@+id/btn_link_wallet"
                 android:textSize="@dimen/_14sdp" />

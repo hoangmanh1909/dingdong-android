@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Liên Kết Ví Bưu Điện"
+                android:text="@string/link_to_e_post_wallet"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
@@ -88,11 +88,14 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_14sdp"
-                        android:text="Số điện thoại đăng kí ví: " />
+                        android:text="@string/phone_number_which_registered_to_e_wallet" />
                     <com.ems.dingdong.views.CustomEditText
                         android:layout_width="match_parent"
                         android:id="@+id/edt_phone_number"
+                        android:enabled="false"
                         android:layout_margin="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:text="0218301923"
                         android:padding="@dimen/_5sdp"
                         android:inputType="phone"
                         android:background="@drawable/bg_border_edittext"
@@ -111,13 +114,16 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="ID người dùng App: " />
+                        android:text="@string/id_user" />
                     <com.ems.dingdong.views.CustomEditText
                         android:layout_width="match_parent"
                         android:id="@+id/id_user"
                         android:layout_margin="@dimen/_10sdp"
+                        android:enabled="false"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
+                        android:text="120391ádadsa823"
+                        android:textColor="@color/black"
                         android:background="@drawable/bg_border_edittext"
                         android:layout_weight="1" />
                 </LinearLayout>
@@ -133,7 +139,7 @@
                 android:background="@drawable/bg_gradient_radius_5"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:text="Kết Nối"
+                android:text="@string/connect"
                 android:textColor="@color/black"
                 android:id="@+id/btn_link_wallet"
                 android:textSize="@dimen/_14sdp" />

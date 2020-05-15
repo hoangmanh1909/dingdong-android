@@ -34,16 +34,6 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
     }
 
     @Override
-    public void getEWalletToken() {
-        mInteractor.
-                getEWalletToken("vnpcod", "vhjgQF2Epv@9pBk!8HAD7eD573Ndg6JJ")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(authPayPostResult -> mView.showSuccessToast(authPayPostResult.getMessage()),
-                        throwable -> mView.showErrorToast(throwable.getMessage()));
-    }
-
-    @Override
     public void moveToEWallet() {
         new EWalletPresenter(mContainerView).pushView();
     }

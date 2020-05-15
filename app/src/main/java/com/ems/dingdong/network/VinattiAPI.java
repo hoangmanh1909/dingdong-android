@@ -2,7 +2,6 @@ package com.ems.dingdong.network;
 
 
 import com.ems.dingdong.model.ActiveResult;
-import com.ems.dingdong.model.AuthPayPostResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
@@ -41,6 +40,8 @@ import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.PayLinkConfirm;
+import com.ems.dingdong.model.request.PayLinkRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -451,18 +452,9 @@ public interface VinattiAPI {
     @GET("api/MoveCrop/GetAccessTokenAndroid")
     Single<ActiveResult> getAccessTokenAndroid();
 
-    @FormUrlEncoded
-    @POST("api/merchant/auth")
-    Single<AuthPayPostResult> getTokenWallet(@Field("username") String userName,
-                                             @Field("password") String password);
+    @POST("api/EWallet/PayLinkRequest")
+    Single<LinkEWalletResult> linkEWallet(@Body PayLinkRequest request);
 
-    @FormUrlEncoded
-    @POST("pay/link/request")
-    Single<LinkEWalletResult> linkEWallet(@Field("mobile") String mobile,
-                                          @Field("user_id") String userID);
-
-    @FormUrlEncoded
-    @POST("pay/link/confirm")
-    Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Field("request_id") String requestId,
-                                                  @Field("otp") String otp);
+    @POST("api/EWallet/PayLinkConfirm")
+    Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body PayLinkConfirm payLinkConfirm);
 }

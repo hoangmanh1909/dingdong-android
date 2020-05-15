@@ -1,14 +1,13 @@
 package com.ems.dingdong.model;
 
-import com.ems.dingdong.model.response.VerifyLinkOtpResponse;
 import com.google.gson.annotations.SerializedName;
 
-public class VerifyLinkOtpResult extends SimplePaypostResult {
+public class VerifyLinkOtpResult extends SimpleResult {
 
-    @SerializedName("data")
-    VerifyLinkOtpResponse response;
+    @SerializedName("Value")
+    String token;
 
-    public VerifyLinkOtpResponse getResponse() {
-        return response;
+    public String getToken() {
+        return token;
     }
 }

@@ -51,7 +51,7 @@ public class PaymentDeviveryRequest {
     String batchCode;
     @SerializedName("IsPaymentPP")
     boolean isPaymentPP;
-    @SerializedName("IsItemReturn ")
+    @SerializedName("IsItemReturn")
     String isItemReturn;
     @SerializedName("AmountForBatch")
     String amountForBatch;

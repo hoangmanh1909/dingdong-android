@@ -96,10 +96,10 @@ android {
         }*/
         pre {
             def API_URL = '"http://103.21.149.238:1235/"'
-            def API_URL_E_WALLET = '"http://115.165.166.206:50080/"'
             def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
+            def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
             buildConfigField("String", "API_URL", API_URL)
-            buildConfigField("String", "API_URL_E_WALLET", API_URL_E_WALLET)
+            buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
             buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDong VNPost"

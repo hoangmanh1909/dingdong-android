@@ -6,6 +6,8 @@ import android.widget.LinearLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomEditText;
@@ -34,8 +36,6 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     @BindView(R.id.id_user)
     CustomEditText edtIdUser;
 
-    SharedPref pref;
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_link_e_wallet;
@@ -48,12 +48,19 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
-        pref = SharedPref.getInstance(getViewContext());
-    }
+        if (mPresenter != null && !TextUtils.isEmpty(mPresenter.getPhoneNumber()) && !TextUtils.isEmpty(mPresenter.getUserIdApp())) {
+            edtPhoneNumber.setText(mPresenter.getPhoneNumber());
+            edtIdUser.setText(mPresenter.getUserIdApp());
+        } else {
+            SharedPref pref = SharedPref.getInstance(getViewContext());
+            String mobileNSignCode = pref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+            edtPhoneNumber.setText(mobileNSignCode.split(";")[0]);
+            String userJson = pref.getString(Constants.KEY_USER_INFO, "");
+            if (!userJson.isEmpty()) {
+                edtIdUser.setText(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
+            }
+        }
 
-    @Override
-    public void showAuthSuccess() {
-        mPresenter.linkEWallet(edtPhoneNumber.getText().toString(), edtIdUser.getText().toString());
     }
 
     @OnClick({R.id.img_back, R.id.btn_link_wallet})
@@ -64,22 +71,9 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                 break;
             case R.id.btn_link_wallet:
                 if (linearLayout.getVisibility() == View.VISIBLE) {
-                    if (TextUtils.isEmpty(edtPhoneNumber.getText())) {
-                        showSuccessToast("Bạn chưa nhập số điện thoại");
-                        return;
-                    }
-
-                    if (TextUtils.isEmpty(edtIdUser.getText())) {
-                        showSuccessToast("Bạn chưa nhập mã người dùng trên ứng dụng Ví Bưu Điện");
-                        return;
-                    }
-                    mPresenter.getEWalletToken();
-
+                    mPresenter.linkEWallet();
                 } else {
-                    if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) {
-                        showSuccessToast("Bạn chưa nhập số điện thoại");
-                        return;
-                    }
+                    SharedPref pref = SharedPref.getInstance(getViewContext());
                     String requestId = pref.getString(Constants.KEY_REQUEST_ID, "");
                     mPresenter.verifyLinkWithOtp(requestId, otpEditText.getText().toString());
                 }
@@ -105,11 +99,6 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                     mPresenter.back();
                     sweetAlertDialog.dismiss();
                 }).show();
-    }
-
-    @Override
-    public void showAuthError(String message) {
-        showErrorToast(message);
     }
 
     @Override

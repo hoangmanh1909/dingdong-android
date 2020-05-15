@@ -14,7 +14,7 @@
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tìm kiếm nhanh bưu gửi"
+            android:text="@string/find_package_quickly"
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
@@ -39,7 +39,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                app:formHint="Nhập bưu gửi"
+                app:formHint="@string/enter_package"
                 app:formShowUnderline="false" />
 
             <ImageView
