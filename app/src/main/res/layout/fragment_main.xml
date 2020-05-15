@@ -38,6 +38,7 @@
                 android:focusable="true">
 
                 <ImageView
+                    android:foreground="?attr/selectableItemBackground"
                     android:id="@+id/img_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

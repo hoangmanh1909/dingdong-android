@@ -63,8 +63,17 @@ public class NotificationFragment extends ViewFragment<NotificationContract.Pres
 
     @Override
     public void OnItemClick(NotificationInfo item) {
-        if (getFragmentManager() != null) {
-            new NotificationDialog(getViewContext(), item).show();
+        if (item.getNavigation() != null) {
+            switch (item.getNavigation()) {
+                case 1:
+                    mPresenter.showCallHistory();
+                    break;
+                case 2:
+                case 0:
+                    mPresenter.showCollectFragment();
+                    break;
+
+            }
         }
     }
 }

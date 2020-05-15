@@ -29,6 +29,11 @@ interface NotificationContract {
         void getNotifications(String mobileNumber);
 
         void updateRead(String mobileNumber);
+
+        void showCallHistory();
+
+        void showCollectFragment();
+
     }
 }
 

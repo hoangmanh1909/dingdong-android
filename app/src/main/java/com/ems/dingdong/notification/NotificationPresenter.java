@@ -1,10 +1,13 @@
 package com.ems.dingdong.notification;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.callservice.history.HistoryCallPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.model.NotificationResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -86,6 +89,18 @@ public class NotificationPresenter extends Presenter<NotificationContract.View, 
                 }
             });
         }
+    }
+
+    @Override
+    public void showCallHistory() {
+        new HistoryCallPresenter(mContainerView).presentView();
+    }
+
+    @Override
+    public void showCollectFragment() {
+        Intent intent = new Intent(getViewContext(), ListCommonActivity.class);
+        intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+        getViewContext().startActivity(intent);
     }
 
     public NotificationPresenter setHaveNewNotify(boolean isNotificationEmpty) {

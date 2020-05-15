@@ -41,6 +41,8 @@ public class NotificationAdapter extends RecyclerBaseAdapter {
         CustomTextView content;
         @BindView(R.id.view_oval)
         View v;
+        @BindView(R.id.tv_date_time)
+        CustomTextView tvDateTime;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -54,6 +56,12 @@ public class NotificationAdapter extends RecyclerBaseAdapter {
                 title.setText(item.getTitle());
             else
                 title.setText("");
+
+            if (!TextUtils.isEmpty(item.getCreateDate()))
+                tvDateTime.setText(item.getCreateDate());
+            else
+                tvDateTime.setText("");
+
             if (!TextUtils.isEmpty(item.getContent()))
                 content.setText(item.getContent());
             else

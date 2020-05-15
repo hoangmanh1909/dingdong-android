@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingTop="@dimen/dimen_10dp">
 
@@ -12,11 +13,11 @@
         android:paddingBottom="@dimen/dimen_10dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true"
             android:id="@+id/frame_mail"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true">
 
             <ImageView
                 android:id="@+id/img"
@@ -34,10 +35,11 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:layout_toLeftOf="@+id/ic_arrow_forward"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_toRightOf="@+id/frame_mail"
             android:orientation="vertical">
@@ -58,15 +60,25 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+
         </LinearLayout>
 
         <ImageView
-            android:layout_width="@dimen/dimen_40dp"
-            android:layout_height="@dimen/dimen_40dp"
+            android:layout_width="@dimen/dimen_30dp"
+            android:layout_height="@dimen/dimen_30dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/dimen_5dp"
+            android:id="@+id/ic_arrow_forward"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_arrow_forward" />
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:src="@drawable/ic_arrow_foward_gray" />
 
 
     </RelativeLayout>
