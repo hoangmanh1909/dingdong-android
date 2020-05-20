@@ -92,7 +92,8 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
             @Override
             protected void onSuccess(Call<StatisticPaymentResult> call, Response<StatisticPaymentResult> response) {
                 mView.hideProgress();
-                mView.updateBalance(response.body().getStatisticPaymentResponses());
+                if (getViewContext() != null)
+                    mView.updateBalance(response.body().getStatisticPaymentResponses());
             }
 
             @Override

@@ -25,6 +25,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
@@ -79,8 +80,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-        if (mPresenter != null)
-            mPresenter.getAccessToken();
+//        if (mPresenter != null)
+//            mPresenter.getAccessToken();
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);

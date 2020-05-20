@@ -73,6 +73,10 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                 if (linearLayout.getVisibility() == View.VISIBLE) {
                     mPresenter.linkEWallet();
                 } else {
+                    if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) {
+                        showErrorToast(getString(R.string.wrong_otp_pattern));
+                        return;
+                    }
                     SharedPref pref = SharedPref.getInstance(getViewContext());
                     String requestId = pref.getString(Constants.KEY_REQUEST_ID, "");
                     mPresenter.verifyLinkWithOtp(requestId, otpEditText.getText().toString());

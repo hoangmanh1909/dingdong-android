@@ -148,4 +148,5 @@
     <string name="connect">Kết Nối</string>
     <string name="phone_number_which_registered_to_e_wallet">Số điện thoại đăng kí ví:</string>
     <string name="link_to_e_post_wallet">Liên Kết Ví Bưu Điện</string>
+    <string name="wrong_otp_pattern">OTP chưa đúng định dạng</string>
 </resources>
