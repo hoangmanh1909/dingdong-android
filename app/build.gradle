@@ -60,7 +60,10 @@ android {
     }
     productFlavors {
         dev {
-            def API_URL = '"http://172.16.132.126:5003/"'
+            //def API_URL = '"http://172.16.132.126:5003/"'
+            //def API_URL = '"http://118.70.72.107:5003/"'
+            def API_URL = '"http://222.255.250.245:50011/"'
+
             def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
             buildConfigField("String", "API_URL", API_URL)
             buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)

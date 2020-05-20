@@ -74,7 +74,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                     new NotificationCompat.Builder(this)
                             .setPriority(Notification.PRIORITY_HIGH)
                             .setWhen(System.currentTimeMillis())
-                            .setSmallIcon(R.drawable.ic_notification)
+                            .setSmallIcon(R.drawable.ic_launcher)
                             .setContentTitle("Thông báo")
                             .setContentText(messageBody)
                             .setAutoCancel(true)
@@ -115,13 +115,13 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 //.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.win))
                 .setContentIntent(pendingIntent)
                 .setContentInfo("Hello")
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                 .setColor(getResources().getColor(R.color.colorAccent))
                 .setLights(Color.RED, 1000, 300)
                 // .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setVibrate(vibratePattern)
                 .setNumber(++numMessages)
-                .setSmallIcon(R.drawable.ic_notification);
+                .setSmallIcon(R.drawable.ic_launcher);
 
         try {
             String picture = data.get(FCM_PARAM);

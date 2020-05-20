@@ -47,8 +47,8 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         //homeInfos.add(new HomeInfo(R.drawable.ic_collect_service, getString(R.string.info_gomhang), "Gom hàng"));
-        homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
-        homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
+        homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm1, "Xác nhận tin"));
+        homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success1, "Hoàn tất tin"));
         mList.add(new GroupInfo("Gom hàng", homeInfos));
         adapter = new HomeGroupAdapter(mList) {
             @Override

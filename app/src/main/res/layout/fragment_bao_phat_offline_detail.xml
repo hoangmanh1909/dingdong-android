@@ -508,6 +508,7 @@
                             android:paddingTop="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
+                            android:clickable="false"
                             app:formAction="@drawable/ic_arrow_down" />
 
 

@@ -60,6 +60,8 @@ public class FormItemTextView extends FormItemText {
         });
     }
 
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.layout_form_item_text_view;
