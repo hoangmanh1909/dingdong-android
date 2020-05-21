@@ -13,13 +13,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 
-import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,21 +161,16 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 tvContactDescription.setText(item.getDescription());
             }
             cbSelected.setChecked(item.isSelected());
-            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        ((CommonObject) model).setSelected(true);
-                    } else {
-                        ((CommonObject) model).setSelected(false);
-                    }
-                }
-            });
+            cbSelected.setOnClickListener(view -> item.setSelected(cbSelected.isChecked()));
             if (!TextUtils.isEmpty(item.getAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd","")))));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd", "")))));
+            } else {
+                tvAmount.setText("");
             }
             if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount().replace("vnd","")))));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount().replace("vnd", "")))));
+            } else {
+                tvAmount.setText("");
             }
             if (!TextUtils.isEmpty(item.getService())) {
                 if (!TextUtils.isEmpty(item.getServiceName().trim())) {
@@ -186,6 +179,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 } else {
                     tvServices.setVisibility(View.GONE);
                 }
+            } else {
+                tvServices.setVisibility(View.GONE);
             }
             tvInfo.setText(String.format("Lần phát: %s", item.getInfo()));
             tvDate.setText(item.getDateSearch());
