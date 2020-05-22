@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,7 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -75,6 +77,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     CheckBox cbPickAll;
     @BindView(R.id.layout_swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.tv_item_selected)
+    CustomTextView tvItemSelected;
+    @BindView(R.id.rl_count_item_selected)
+    RelativeLayout relativeLayout;
 
     private ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
@@ -179,6 +185,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 holder.itemView.setOnClickListener(v -> {
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    int size = getItemSelected().size();
+                    if (size == 0) {
+                        relativeLayout.setVisibility(View.GONE);
+                    } else {
+                        relativeLayout.setVisibility(View.VISIBLE);
+                        tvItemSelected.setText(String.valueOf(size));
+                    }
+
                 });
                 holder.img_ContactPhone.setOnClickListener(v -> {
                     mPhoneConectDialog = new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
@@ -357,7 +371,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         initSearch();
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode})
+    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -370,6 +384,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.layout_item_pick_all:
                 setAllCheckBox();
                 break;
+            case R.id.rl_count_item_selected:
+                for (DeliveryPostman item : mList) {
+                    if (item.isSelected()) {
+                        item.setSelected(false);
+                    }
+                }
+                relativeLayout.setVisibility(View.GONE);
+                mAdapter.notifyDataSetChanged();
+                break;
+
         }
     }
 

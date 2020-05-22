@@ -18,6 +18,7 @@ public class DateTimeUtils {
     public static final String DEFAULT_DATETIME_FORMAT4 = "MM/dd/yyyy HH:mm:ss";
     public static final String DEFAULT_DATETIME_FORMAT2 = "dd-MM-yyyy HH:mm:ss";
     public static final String DEFAULT_DATETIME_FORMAT3 = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATETIME_FORMAT10 = "dd/MM/yyyy HH:mm";
     public static final String SIMPLE_DATE_FORMAT = "dd/MM/yyyy";
     public static final String SIMPLE_DATE_FORMAT1 = "yyyy-MM-dd";
     public static final String SIMPLE_DATE_FORMAT2 = "yyyy/MM/dd";
@@ -350,5 +351,13 @@ public class DateTimeUtils {
         c.setTime(currentTime);
         c.add(Calendar.DATE, distance);
         return DateTimeUtils.convertDateToString(c.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+    }
+
+    public static int compareDate(Date date1, Date date2) {
+        Calendar calendar1 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+        calendar1.setTime(date1);
+        calendar2.setTime(date2);
+        return calendar2.compareTo(calendar1);
     }
 }

@@ -3,7 +3,7 @@ package com.ems.dingdong.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DeliveryPostman {
+public class DeliveryPostman implements Comparable {
     @SerializedName("Count")
     @Expose
     private Integer count;
@@ -388,5 +388,16 @@ public class DeliveryPostman {
 
     public Integer getItemsInBatch() {
         return itemsInBatch;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int compareOrderNumber = ((DeliveryPostman) o).getOrderNumberInBD13();
+        if (orderNumberInBD13 == compareOrderNumber)
+            return 0;
+        else if (orderNumberInBD13 < compareOrderNumber)
+            return -1;
+        else
+            return 1;
     }
 }

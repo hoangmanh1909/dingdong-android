@@ -20,11 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
+import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.PickerDialog;
@@ -117,6 +120,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemEditText tvGTTT;
     @BindView(R.id.layout_real_receiver_name)
     LinearLayout linearLayoutName;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+    XacNhanBaoPhatAdapter adapter;
 
     private String mSign = "";
 
@@ -209,7 +215,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         });
 
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
-
+        adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(v -> {
+                    mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
+                    adapter.notifyDataSetChanged();
+                });
+            }
+        };
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+        recycler.setAdapter(adapter);
         for (DeliveryPostman i : mBaoPhatBangke) {
             totalAmount += i.getAmount();
             totalFee += i.getTotalFee();
@@ -283,7 +300,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void submit() {
         if (mDeliveryType == 2) {
-            new ConfirmDialog(getViewContext(), mBaoPhatBangke.size(), totalAmount, totalFee)
+            List<DeliveryPostman> listSelected = adapter.getItemsSelected();
+            if (listSelected.size() == 0) {
+                showErrorToast("Bạn chưa chọn bưu gửi nào");
+                return;
+            }
+            new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
@@ -376,7 +398,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
-                             int quality) {
+                              int quality) {
         if (bitmap == null)
             return false;
         if (quality > 100) {

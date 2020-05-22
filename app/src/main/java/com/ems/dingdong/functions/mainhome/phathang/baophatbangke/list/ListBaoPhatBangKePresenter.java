@@ -20,10 +20,15 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -116,7 +121,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 if (response.body() != null) {
                     if (response.body().getErrorCode().equals("00")) {
                         ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
-                        mView.showListSuccess(postmanArrayList);
+                        mView.showListSuccess(sortMapDeliveryPostman(groupByDeliveryPostmanMap(postmanArrayList)));
                     } else {
                         mView.showError(response.body().getMessage());
                     }
@@ -288,5 +293,40 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void onSearched(String fromDate, String toDate, int currentPosition) {
         titleTabsListener.onSearchChange(fromDate, toDate, currentPosition);
+    }
+
+    private Map<String, List<DeliveryPostman>> groupByDeliveryPostmanMap(List<DeliveryPostman> listCancelStatistic) {
+        Map<String, List<DeliveryPostman>> listMap = new HashMap<>();
+        for (DeliveryPostman item : listCancelStatistic) {
+            String ladingCode = item.getbD13CreatedDate();
+            if (listMap.containsKey(ladingCode)) {
+                List<DeliveryPostman> list = listMap.get(ladingCode);
+                if (list != null) {
+                    list.add(item);
+                }
+            } else {
+                List<DeliveryPostman> list = new ArrayList<>();
+                list.add(item);
+                listMap.put(ladingCode, list);
+            }
+        }
+        return listMap;
+    }
+
+    private List<DeliveryPostman> sortMapDeliveryPostman(Map<String, List<DeliveryPostman>> map) {
+        List<String> keys = new ArrayList<>(map.keySet());
+        List<DeliveryPostman> resultList = new ArrayList<>();
+        Collections.sort(keys, (s, t1) -> {
+            Date date1 = DateTimeUtils.convertStringToDate(s, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
+            Date date2 = DateTimeUtils.convertStringToDate(t1, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
+            return DateTimeUtils.compareDate(date1, date2);
+        });
+        resultList.clear();
+        for (String key : keys) {
+            List<DeliveryPostman> subList = map.get(key);
+            Collections.sort(subList, DeliveryPostman::compareTo);
+            resultList.addAll(subList);
+        }
+        return resultList;
     }
 }
