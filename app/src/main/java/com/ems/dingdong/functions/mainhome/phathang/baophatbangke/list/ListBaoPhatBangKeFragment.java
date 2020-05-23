@@ -272,6 +272,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         initSearch();
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(true);
+            cbPickAll.setChecked(false);
+            relativeLayout.setVisibility(View.GONE);
             initSearch();
         });
     }
@@ -549,6 +551,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     item.setSelected(false);
                 }
             }
+            relativeLayout.setVisibility(View.GONE);
+            tvItemSelected.setText(String.valueOf(mList.size()));
             cbPickAll.setChecked(false);
         } else {
             for (DeliveryPostman item : mList) {
@@ -556,6 +560,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     item.setSelected(true);
                 }
             }
+            relativeLayout.setVisibility(View.VISIBLE);
+            tvItemSelected.setText(String.valueOf(mList.size()));
             cbPickAll.setChecked(true);
         }
         mAdapter.notifyDataSetChanged();
