@@ -29,6 +29,7 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     @Override
     public void onDisplay() {
         super.onDisplay();
+        notifyDatasetChanged();
     }
 
     @Override
@@ -107,6 +108,11 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     @Override
     public void onDelivered() {
         tabList.get(pager.getCurrentItem()).onDisplay();
+    }
+
+    private void notifyDatasetChanged() {
+        tabList.get(1).notifyDatasetChanged();
+        tabList.get(0).notifyDatasetChanged();
     }
 
     @Override

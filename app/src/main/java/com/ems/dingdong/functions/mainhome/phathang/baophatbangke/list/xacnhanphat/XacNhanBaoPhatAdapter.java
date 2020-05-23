@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -97,11 +98,16 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
                 tvLading.setText("");
             }
 
+            long amount = 0;
+            long fee = 0;
             if (item.getAmount() != null) {
-                tvMonney.setText(String.valueOf(item.getAmount()));
-            } else {
-                tvMonney.setText("");
+                amount = item.getAmount();
             }
+
+            if (item.getTotalFee() != null) {
+                fee = item.getTotalFee();
+            }
+            tvMonney.setText(NumberUtils.formatPriceNumber(amount + fee));
         }
     }
 }

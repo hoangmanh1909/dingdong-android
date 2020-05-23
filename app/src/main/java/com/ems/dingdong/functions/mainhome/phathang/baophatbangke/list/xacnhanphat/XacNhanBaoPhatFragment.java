@@ -204,8 +204,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mDeliveryType = 2;
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
-                if (mBaoPhatBangke.size() == 1)
-                    linearLayoutName.setVisibility(View.VISIBLE);
+                linearLayoutName.setVisibility(View.VISIBLE);
             } else {
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
                 ll_change_route.setVisibility(LinearLayout.VISIBLE);
@@ -221,26 +220,24 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
                     mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
+                    if (getItemsSelected().size() == 1) {
+                        tvReceiverName.setText(getItemsSelected().get(0).getReciverName());
+                        tvGTTT.setText("");
+                    }
                     adapter.notifyDataSetChanged();
+                    updateTotalPackage();
                 });
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(adapter);
-        for (DeliveryPostman i : mBaoPhatBangke) {
-            totalAmount += i.getAmount();
-            totalFee += i.getTotalFee();
-        }
 
-        if (mBaoPhatBangke.size() == 1) {
-            tvReceiverName.setText(mBaoPhatBangke.get(0).getReciverName());
+        if (getItemSelected().size() == 1) {
+            tvReceiverName.setText(getItemSelected().get(0).getReciverName());
             tvGTTT.setText("");
         }
 
-        tv_quantity.setText(String.format(" %s", mBaoPhatBangke.size()));
-        tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
-        tvTotalFee.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee)));
-
+        updateTotalPackage();
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
     }
@@ -300,7 +297,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void submit() {
         if (mDeliveryType == 2) {
-            List<DeliveryPostman> listSelected = adapter.getItemsSelected();
+            List<DeliveryPostman> listSelected = getItemSelected();
             if (listSelected.size() == 0) {
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
@@ -639,7 +636,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showError(String message) {
         mDeliveryError = +1;
         int total = mDeliverySuccess + mDeliveryError;
-        if (total == mBaoPhatBangke.size()) {
+        if (total == getItemSelected().size()) {
             showFinish();
         }
     }
@@ -652,7 +649,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mDeliveryError += 1;
         }
         int total = mDeliverySuccess + mDeliveryError;
-        if (total == mBaoPhatBangke.size()) {
+        if (total == getItemSelected().size()) {
             showFinish();
         }
     }
@@ -682,6 +679,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void finishView() {
         mPresenter.back();
         mPresenter.onTabRefresh();
+    }
+
+    @Override
+    public List<DeliveryPostman> getItemSelected() {
+        return adapter.getItemsSelected();
+    }
+
+    private void updateTotalPackage() {
+        totalAmount = 0;
+        totalFee = 0;
+        for (DeliveryPostman i : getItemSelected()) {
+            totalAmount += i.getAmount();
+            totalFee += i.getTotalFee();
+        }
+        tv_quantity.setText(String.format(" %s", getItemSelected().size()));
+        tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        tvTotalFee.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee)));
     }
 
     private void showUISolution() {

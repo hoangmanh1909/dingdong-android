@@ -142,6 +142,8 @@ public interface XacNhanBaoPhatContract {
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
         void finishView();
+
+        List<DeliveryPostman> getItemSelected();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

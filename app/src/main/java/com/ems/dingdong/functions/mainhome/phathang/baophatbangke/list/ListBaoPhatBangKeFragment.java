@@ -371,6 +371,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         initSearch();
     }
 
+    public void notifyDatasetChanged() {
+        mAdapter.notifyDataSetChanged();
+    }
+
     @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected})
     public void onViewClicked(View view) {
         switch (view.getId()) {

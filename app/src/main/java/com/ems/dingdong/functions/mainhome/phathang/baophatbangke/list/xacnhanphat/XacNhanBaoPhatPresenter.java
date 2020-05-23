@@ -145,7 +145,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
 
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        for (DeliveryPostman item : mView.getItemSelected()) {
 
             String ladingCode = item.getMaE();
             String deliveryPOCode = deliveryPOSCode;
@@ -211,7 +211,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        for (DeliveryPostman item : mView.getItemSelected()) {
             String receiverName;
             String gtttCode;
             receiverName = newReceiverName;
@@ -310,7 +310,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     public void cancelDivided(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
         List<DingDongCancelDividedRequest> requests = new ArrayList<>();
 
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        for (DeliveryPostman item : mView.getItemSelected()) {
             DingDongCancelDividedRequest request = new DingDongCancelDividedRequest();
             request.setAmndPOCode(userInfo.getUnitCode());
             request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
@@ -344,7 +344,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     public void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
         List<ChangeRouteRequest> requests = new ArrayList<>();
 
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        for (DeliveryPostman item : mView.getItemSelected()) {
             ChangeRouteRequest request = new ChangeRouteRequest();
             request.setPoCode(postOffice.getCode());
             request.setLadingCode(item.getMaE());
