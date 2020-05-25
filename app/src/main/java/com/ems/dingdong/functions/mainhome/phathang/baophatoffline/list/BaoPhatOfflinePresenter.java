@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -34,9 +35,6 @@ import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Response;
 
-/**
- * The BaoPhatThanhCong Presenter
- */
 public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.View, BaoPhatOfflineContract.Interactor>
         implements BaoPhatOfflineContract.Presenter {
     private Calendar calDate;
@@ -200,11 +198,11 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
         String mobileNumber = userInfo.getMobileNumber();
-        String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (CommonObject item : commonObjects) {
+            String deliveryDate = item.getDeliveryDate();
+            String deliveryTime = item.getDeliveryTime();
             if (item.getDeliveryType().equals("1")) {
                 String ladingCode = item.getCode();
                 String receiverName = item.getReciverName();
@@ -212,6 +210,8 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 String solutionCode = item.getSolutionCode();
                 String status = "C18";
                 String amount = item.getCollectAmount();
+                if (TextUtils.isEmpty(amount))
+                    amount = "0";
                 String shiftId = item.getShiftId();
                 String signature = Utils.SHA256(ladingCode + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
@@ -263,6 +263,10 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 String note = "";
                 final String paymentChannel = "1";
                 String deliveryType = "2";
+                String amount = item.getCollectAmount();
+                if (TextUtils.isEmpty(amount)) {
+                    amount = "0";
+                }
                 String signature = Utils.SHA256(ladingCode + mobileNumber + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                 PaymentDeviveryRequest request = new PaymentDeviveryRequest(
                         postmanID,
@@ -280,7 +284,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         deliveryType,
                         item.getSignatureCapture(),
                         note,
-                        item.getCollectAmount(),
+                        amount,
                         shiftId,
                         routeCode,
                         postmanID,

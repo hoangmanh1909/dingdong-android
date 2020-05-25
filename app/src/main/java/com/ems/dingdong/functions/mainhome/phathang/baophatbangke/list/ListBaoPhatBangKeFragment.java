@@ -14,7 +14,9 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -40,6 +42,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -100,6 +103,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private PhoneConectDialog mPhoneConectDialog;
     private String choosenLadingCode = "";
+    private int mTotalScrolled = 0;
 
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
@@ -144,6 +148,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         @Override
         public void afterTextChanged(Editable s) {
             mAdapter.getFilter().filter(s.toString());
+        }
+    };
+
+    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            LinearLayoutManager llm = (LinearLayoutManager) recycler.getLayoutManager();
+            mTotalScrolled = llm.findFirstVisibleItemPosition();
         }
     };
 
@@ -247,6 +260,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
+        recycler.addOnScrollListener(scrollListener);
 
         SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -374,7 +388,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void notifyDatasetChanged() {
-        mAdapter.notifyDataSetChanged();
+        if (mAdapter != null)
+            mAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected})
@@ -404,6 +419,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void submit(List<DeliveryPostman> itemSelectedFromOtherTab) {
+        recycler.removeOnScrollListener(scrollListener);
         final List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
         commonObjects.addAll(itemSelectedFromOtherTab);
         if (commonObjects.isEmpty()) {
@@ -472,7 +488,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         new Handler().post(() -> {
             int position = getFocusPosition();
             if (position != 0)
-                recycler.smoothScrollToPosition(getFocusPosition());
+                recycler.scrollToPosition(position);
+            relativeLayout.setVisibility(View.GONE);
+            if (mTotalScrolled != 0) {
+                recycler.scrollToPosition(mTotalScrolled);
+                recycler.addOnScrollListener(scrollListener);
+            }
         });
         swipeRefreshLayout.setRefreshing(false);
     }
