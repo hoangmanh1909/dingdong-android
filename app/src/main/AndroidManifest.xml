@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme"
         tools:overrideLibrary="com.tsongkha.spinnerdatepicker"
         tools:replace="android:icon">
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
         <activity android:name="com.ems.dingdong.functions.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
