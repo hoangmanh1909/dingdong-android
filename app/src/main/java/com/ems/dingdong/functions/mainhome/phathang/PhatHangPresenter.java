@@ -79,6 +79,6 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showPayment() {
-        new PaymentPresenter(mContainerView).pushView();
+        new PaymentPresenter(mContainerView).setPaymentType(Constants.PAYMENT_FROM_DELIVERY).pushView();
     }
 }

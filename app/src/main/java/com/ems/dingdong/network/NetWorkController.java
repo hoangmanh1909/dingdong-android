@@ -45,8 +45,10 @@ import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
+import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
+import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
@@ -617,4 +619,28 @@ public class NetWorkController {
         payLinkConfirm.setSignature(signature);
         return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
     }
+
+    public static Single<SimpleResult> paymentRequest(PaymentRequestModel paymentRequestModel) {
+        String signature = Utils.SHA256(paymentRequestModel.getPostmanCode()
+                + paymentRequestModel.getPoCode()
+                + paymentRequestModel.getRouteCode()
+                + paymentRequestModel.getPaymentToken()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY);
+        paymentRequestModel.setSignature(signature);
+        return getAPIRxBuilder().paymentRequest(paymentRequestModel);
+    }
+
+    public static Single<SimpleResult> paymentConfirm(PaymentConfirmModel paymentConfirmModel) {
+        String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
+                + paymentConfirmModel.getPoCode()
+                + paymentConfirmModel.getRouteCode()
+                + paymentConfirmModel.getTransId()
+                + paymentConfirmModel.getOtpCode()
+                + paymentConfirmModel.getRetRefNumber()
+                + paymentConfirmModel.getPaymentToken()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY);
+        paymentConfirmModel.setSignature(signature);
+        return getAPIRxBuilder().paymentConfirm(paymentConfirmModel);
+    }
+
 }

@@ -7,6 +7,8 @@ import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentContract.Interactor>
         implements PaymentContract.Presenter {
 
+    private int paymentType;
+
     public PaymentPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -14,6 +16,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     @Override
     public void start() {
 
+    }
+
+    public PaymentPresenter setPaymentType(int paymentType) {
+        this.paymentType = paymentType;
+        return this;
     }
 
     @Override

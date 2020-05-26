@@ -97,12 +97,14 @@ public class Constants {
 
     public static final String CALL_MAP = "call_map";
     public static final String ACCESS_CALL_TOKEN = "access_call_token";
-    public static final String KEY_CALLER_NUMBER= "key_caller_number";
-    public static final String KEY_CALLEE_NUMBER= "key_callee_number";
+    public static final String KEY_CALLER_NUMBER = "key_caller_number";
+    public static final String KEY_CALLEE_NUMBER = "key_callee_number";
 
     public static final String KEY_REQUEST_ID = "KEY_REQUEST_ID";
     public static final String KEY_PAYMENT_TOKEN = "KEY_PAYMENT_TOKEN";
 
+    public static final int PAYMENT_FROM_DELIVERY = 10;
+    public static final int PAYMENT_FROM_CONFIRM_DELIVERY = 11;
 
 
 }

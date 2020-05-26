@@ -17,6 +17,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
@@ -44,6 +45,7 @@ import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
+import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
@@ -457,4 +459,11 @@ public interface VinattiAPI {
 
     @POST("api/EWallet/PayLinkConfirm")
     Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body PayLinkConfirm payLinkConfirm);
+
+    @POST("api/EWallet/PaymentRequest")
+    Single<SimpleResult> paymentRequest(@Body PaymentRequestModel paymentRequestModel);
+
+    @POST("api/EWallet/PaymentConfirm")
+    Single<SimpleResult> paymentConfirm(@Body PaymentConfirmModel paymentConfirmModel);
+
 }
