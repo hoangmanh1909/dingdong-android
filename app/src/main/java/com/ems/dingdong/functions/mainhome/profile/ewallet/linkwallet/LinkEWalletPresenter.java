@@ -45,7 +45,7 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
                             if (linkEWalletResult != null &&
                                     linkEWalletResult.getErrorCode().equals("00")) {
                                 if (!TextUtils.isEmpty(linkEWalletResult.getRequestId())) {
-                                    pref.putString(Constants.KEY_REQUEST_ID, linkEWalletResult.getRequestId());
+                                    pref.putString(Constants.KEY_LINK_REQUEST_ID, linkEWalletResult.getRequestId());
                                     mView.showLinkSuccess(linkEWalletResult.getMessage());
                                 } else {
                                     mView.showLinkError("Không liên kết được ví điện tử");

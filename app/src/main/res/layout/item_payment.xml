@@ -2,63 +2,92 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_item_payment_select"
-    android:layout_marginBottom="@dimen/_5sdp"
-    android:layout_marginLeft="@dimen/_3sdp"
-    android:layout_marginRight="@dimen/_3sdp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen_5dp"
+    android:id="@+id/ll_item_payment"
+    android:paddingBottom="@dimen/dimen_5dp">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/layout_itemBD13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
-        <CheckBox
-            android:id="@+id/cb_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_alignParentRight="true"
-            android:clickable="false"
-            android:layout_centerVertical="true" />
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cb_selected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/dimen_20dp"
-                android:layout_toRightOf="@+id/ic_transfer_money"
-                android:orientation="vertical">
+                android:button="@drawable/custom_btn_radio"
+                android:clickable="false"
+                android:paddingRight="@dimen/_5sdp" />
+        </LinearLayout>
 
-                <com.ems.dingdong.views.CustomTextView
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_index"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_lading"
-                    android:paddingTop="@dimen/_5sdp"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_14sp" />
-                <com.ems.dingdong.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="COD: "
-                    android:id="@+id/tv_cod"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
+                    android:textSize="@dimen/text_size_16sp" />
 
-                <com.ems.dingdong.views.CustomTextView
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cước: "
-                    android:id="@+id/tv_fee"
-                    android:textColor="@color/black"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:textSize="@dimen/text_size_14sp" />
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/tv_index"
+                    android:text="COD20180416"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_16sp" />
             </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ic_transfer_money"
-            android:layout_width="@dimen/size_60dp"
-            android:layout_height="@dimen/size_60dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_online_money_transfer_100" />
-    </RelativeLayout>
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_receiver_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_receiver_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_cod_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

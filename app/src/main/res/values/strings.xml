@@ -85,6 +85,7 @@
     <string name="city">Tỉnh/TP</string>
     <string name="detail_address">Địa chỉ chi tiết</string>
     <string name="address_name">Tên địa chỉ</string>
+    <string name="address_receiver_name">Địa chỉ người nhận</string>
     <string name="not_found_any_address">Không tìm thấy địa chỉ nào</string>
     <string name="cancel_causal">Nguyên nhân</string>
     <string name="cancel_reason">Lý do</string>

@@ -10,6 +10,8 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.EWalletDataResult;
+import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
@@ -17,7 +19,6 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
-import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
@@ -43,6 +44,7 @@ import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
+import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PaymentRequestModel;
@@ -461,9 +463,16 @@ public interface VinattiAPI {
     Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body PayLinkConfirm payLinkConfirm);
 
     @POST("api/EWallet/PaymentRequest")
-    Single<SimpleResult> paymentRequest(@Body PaymentRequestModel paymentRequestModel);
+    Single<EWalletRequestResult> requestPayment(@Body PaymentRequestModel paymentRequestModel);
 
     @POST("api/EWallet/PaymentConfirm")
-    Single<SimpleResult> paymentConfirm(@Body PaymentConfirmModel paymentConfirmModel);
+    Single<SimpleResult> confirmPayment(@Body PaymentConfirmModel paymentConfirmModel);
+
+    @GET("api/EWallet/GetDataPayment")
+    Single<EWalletDataResult> getDataPayment(@Query("fromDate") String fromDate,
+                                             @Query("toDate") String toDate,
+                                             @Query("poCode") String poCode,
+                                             @Query("routeCode") String routeCode,
+                                             @Query("postmanCode") String postmanCode);
 
 }

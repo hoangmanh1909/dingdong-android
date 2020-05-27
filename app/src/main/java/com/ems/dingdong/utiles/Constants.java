@@ -100,8 +100,10 @@ public class Constants {
     public static final String KEY_CALLER_NUMBER = "key_caller_number";
     public static final String KEY_CALLEE_NUMBER = "key_callee_number";
 
-    public static final String KEY_REQUEST_ID = "KEY_REQUEST_ID";
+    public static final String KEY_LINK_REQUEST_ID = "KEY_LINK_REQUEST_ID";
     public static final String KEY_PAYMENT_TOKEN = "KEY_PAYMENT_TOKEN";
+    public static final String KEY_PAYMENT_REQUEST_ID = "KEY_PAYMENT_REQUEST_ID";
+    public static final String KEY_RET_REF_NUMBER= "KEY_RET_REF_NUMBER";
 
     public static final int PAYMENT_FROM_DELIVERY = 10;
     public static final int PAYMENT_FROM_CONFIRM_DELIVERY = 11;

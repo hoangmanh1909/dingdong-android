@@ -78,7 +78,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                         return;
                     }
                     SharedPref pref = SharedPref.getInstance(getViewContext());
-                    String requestId = pref.getString(Constants.KEY_REQUEST_ID, "");
+                    String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
                     mPresenter.verifyLinkWithOtp(requestId, otpEditText.getText().toString());
                 }
                 break;

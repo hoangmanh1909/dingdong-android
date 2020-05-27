@@ -17,4 +17,8 @@
         <attr name="tvDigit" format="string" />
         <attr name="tvContent" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="CustomEditTextOtp">
+        <attr name="maxLength" format="string" />
+    </declare-styleable>
 </resources>

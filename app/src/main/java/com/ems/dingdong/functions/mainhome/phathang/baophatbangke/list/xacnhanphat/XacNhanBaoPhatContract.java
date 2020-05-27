@@ -202,7 +202,5 @@ public interface XacNhanBaoPhatContract {
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
         void onTabRefresh();
-
-        void showPayment();
     }
 }

@@ -8,7 +8,6 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.PostOffice;
@@ -377,11 +376,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void onTabRefresh() {
         titleTabsListener.onDelivered();
-    }
-
-    @Override
-    public void showPayment() {
-        new PaymentPresenter(mContainerView).setPaymentType(Constants.PAYMENT_FROM_CONFIRM_DELIVERY).pushView();
     }
 
     @Override

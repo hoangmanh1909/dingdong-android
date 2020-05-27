@@ -123,7 +123,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.recycler)
     RecyclerView recycler;
     XacNhanBaoPhatAdapter adapter;
-    private boolean isBackFromPayment = false;
 
     private String mSign = "";
 
@@ -634,15 +633,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void onDisplay() {
-        super.onDisplay();
-        if (isBackFromPayment) {
-            isBackFromPayment = false;
-            finishView();
-        }
-    }
-
-    @Override
     public void showError(String message) {
         mDeliveryError = +1;
         int total = mDeliverySuccess + mDeliveryError;
@@ -674,21 +664,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         hideProgress();
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText("Có")
-                    .setCancelText("Không")
+                    .setConfirmText("OK")
                     .setTitleText("Thông báo")
-                    .setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "]" +
-                            " thất bại [" + mDeliveryError + "]. Bạn có muốn nộp tiền đã thu qua ví bưu điện MB không?")
+                    .setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismiss();
-                        isBackFromPayment = true;
-                        mPresenter.showPayment();
-                    })
-                    .setCancelClickListener(sweetAlertDialog -> {
-                        sweetAlertDialog.dismiss();
                         finishView();
-                    })
-                    .show();
+
+                    }).show();
         }
     }
 

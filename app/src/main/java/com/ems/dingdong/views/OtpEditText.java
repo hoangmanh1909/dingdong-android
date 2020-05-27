@@ -1,6 +1,7 @@
 package com.ems.dingdong.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.Editable;
@@ -16,7 +17,6 @@ public class OtpEditText extends AppCompatEditText {
     private float mSpace = 24; //24 dp by default, space between the lines
     private float mNumChars = 4;
     private float mLineSpacing = 8; //8dp by default, height of the text from our lines
-    private int mMaxLength = 6;
     private float mLineStroke = 2;
     private Paint mLinesPaint;
     private View.OnClickListener mClickListener;
@@ -36,6 +36,7 @@ public class OtpEditText extends AppCompatEditText {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomEditTextOtp, 0, 0);
         float multi = context.getResources().getDisplayMetrics().density;
         mLineStroke = multi * mLineStroke;
         mLinesPaint = new Paint(getPaint());
@@ -44,8 +45,7 @@ public class OtpEditText extends AppCompatEditText {
         setBackgroundResource(0);
         mSpace = multi * mSpace; //convert to pixels for our density
         mLineSpacing = multi * mLineSpacing; //convert to pixels for our density
-        mNumChars = mMaxLength;
-
+        mNumChars = Float.parseFloat(ta.getString(R.styleable.CustomEditTextOtp_maxLength));
         super.setOnClickListener(v -> {
             // When tapped, move cursor to end of text.
             setSelection(getText().length());

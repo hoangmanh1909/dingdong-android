@@ -8,10 +8,13 @@ public class LadingPaymentInfo {
     String ladingCode;
 
     @SerializedName("CODAmount")
-    String codAmount;
+    Integer codAmount;
 
     @SerializedName("FeeCOD")
-    String feeCod;
+    Integer feeCod;
+
+    @SerializedName("VATFeeCOD")
+    String vatFeeCOD;
 
     public String getLadingCode() {
         return ladingCode;
@@ -21,19 +24,21 @@ public class LadingPaymentInfo {
         this.ladingCode = ladingCode;
     }
 
-    public String getCodAmount() {
+    public Integer  getCodAmount() {
         return codAmount;
     }
 
-    public void setCodAmount(String codAmount) {
+    public void setCodAmount(Integer codAmount) {
         this.codAmount = codAmount;
     }
 
-    public String getFeeCod() {
+    public Integer getFeeCod() {
         return feeCod;
     }
 
-    public void setFeeCod(String feeCod) {
+    public void setFeeCod(Integer feeCod) {
         this.feeCod = feeCod;
     }
+
+
 }
