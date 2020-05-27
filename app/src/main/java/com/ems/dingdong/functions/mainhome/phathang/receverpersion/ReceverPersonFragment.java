@@ -13,6 +13,7 @@ import android.widget.TimePicker;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.UserInfo;
@@ -28,7 +29,6 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
 
 import java.util.Calendar;
 
@@ -46,10 +46,10 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     FormItemTextView tvUserDelivery;
     @BindView(R.id.tv_CollectAmount)
     FormItemTextView tvCollectAmount;
- /*   @BindView(R.id.edt_CollectAmount)
-    FormItemEditText edtCollectAmount;*/
+    /*   @BindView(R.id.edt_CollectAmount)
+       FormItemEditText edtCollectAmount;*/
     @BindView(R.id.edt_ReceiverName)
- FormItemEditText edtReceiverName;
+    FormItemEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
     FormItemEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)
@@ -68,6 +68,8 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     RadioGroup radioGroup;
     @BindView(R.id.ll_pay_ment)
     View llPayMent;
+    @BindView(R.id.tv_total_batch)
+    CustomTextView tvTotalBatch;
 
     private Calendar calDate;
     private int mHour;
@@ -112,10 +114,16 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
+                HolderView holderView = (HolderView) holder;
+                holderView.itemView.setOnClickListener(view ->{
+                    holderView.removeItemAtPosition(position);
+                    tvTotalBatch.setText(String.valueOf(mAdapter.getItemCount()));
+                });
             }
         };
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
         recycler.setAdapter(mAdapter);
+        tvTotalBatch.setText(String.valueOf(mAdapter.getItemCount()));
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -137,14 +145,14 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                         sumAmount += Long.parseLong(item.getReceiveCollectFee());
                 }
                 tvCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount) + " đ");
-               // edtCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount));
+                // edtCollectAmount.setText(NumberUtils.formatPriceNumber(sumAmount));
             } else {
                 llPayMent.setVisibility(View.GONE);
             }
         } else {
             llPayMent.setVisibility(View.GONE);
         }
-       // EditTextUtils.editTextListener(edtCollectAmount.getEditText());
+        // EditTextUtils.editTextListener(edtCollectAmount.getEditText());
     }
 
 
@@ -158,7 +166,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                 submit();
                 break;
             case R.id.tv_deliveryDate:
-                String createDate = mPresenter.getBaoPhatCommon().get(0).getLoadDate();
+                String createDate = mAdapter.getListItem().get(0).getLoadDate();
                 Calendar calendarCreate = Calendar.getInstance();
                 if (TextUtils.isEmpty(createDate)) {
                     createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -208,7 +216,11 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
             return;
         }
-        for (CommonObject item : mPresenter.getBaoPhatCommon()) {
+        if (mAdapter.getListItem().isEmpty()) {
+            showErrorToast("Bạn chưa chọn bưu gửi nào.");
+            return;
+        }
+        for (CommonObject item : mAdapter.getListItem()) {
             item.setRealReceiverName(edtReceiverName.getText());
             item.setCurrentPaymentType(mPaymentType + "");
             item.setUserDelivery(tvUserDelivery.getText());
