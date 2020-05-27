@@ -72,14 +72,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     TextView tvCount;
     @BindView(R.id.tv_amount)
     TextView tvAmount;
-    @BindView(R.id.btn_confirm_all)
-    TextView btnConfirmAll;
+//    @BindView(R.id.btn_confirm_all)
+//    TextView btnConfirmAll;
     @BindView(R.id.img_view)
     ImageView imgView;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mRefresh;
+//    @BindView(R.id.swipe_refresh)
+//    SwipeRefreshLayout mRefresh;
     @BindView(R.id.cb_selected)
     CheckBox cbSelectAll;
 
@@ -98,6 +98,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private boolean isLoading = false;
     private String mChuyenThu = "0";
     private String mTuiSo = "0";
+    private  String mPhone = "";
     private PhoneConectDialog mPhoneConectDialog;
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
@@ -165,6 +166,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         mPhoneConectDialog = new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone(), new PhoneCallback() {
                             @Override
                             public void onCallResponse(String phone) {
+                                mPhone = phone;
                                 mPresenter.callForward(phone, mList.get(position).getCode());
                             }
 
@@ -208,11 +210,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         //initSearch();
-        mRefresh.setOnRefreshListener(() -> {
-                    mRefresh.setRefreshing(true);
-                    refreshSearch();
-                }
-        );
+//        mRefresh.setOnRefreshListener(() -> {
+//                    mRefresh.setRefreshing(true);
+//                    refreshSearch();
+//                }
+//        );
         cbSelectAll.setOnCheckedChangeListener((compoundButton, b) -> {
             for (CommonObject commonObject : mList) {
                 commonObject.setSelected(b);
@@ -300,7 +302,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     }
 
-    @OnClick({R.id.img_view, R.id.btn_confirm_all, R.id.ll_scan_qr, R.id.img_back, R.id.img_send})
+    @OnClick({R.id.img_view, R.id.ll_scan_qr, R.id.img_back, R.id.img_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
@@ -315,9 +317,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             case R.id.img_view:
                 showDialog();
                 break;
-            case R.id.btn_confirm_all:
-                submit();
-                break;
+//            case R.id.btn_confirm_all:
+//                submit();
+//                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -372,7 +374,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
-        mRefresh.setRefreshing(false);
+//        mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
         for (CommonObject item : list) {
@@ -404,7 +406,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showResponseSuccessEmpty() {
-        mRefresh.setRefreshing(false);
+//        mRefresh.setRefreshing(false);
         mList.clear();
         long amount = 0;
         mAdapter.notifyDataSetChanged();
@@ -416,7 +418,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
         startActivity(intent);
     }
 
@@ -428,7 +430,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
-            mRefresh.setRefreshing(false);
+//            mRefresh.setRefreshing(false);
             if (mCountSearch != 0) {
                 Toast.showToast(getActivity(), message);
             }
@@ -464,13 +466,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void setSubmitAll() {
-        btnConfirmAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submit();
-            }
-        });
-        btnConfirmAll.performClick();
+        submit();
+//        btnConfirmAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                submit();
+//            }
+//        });
+//        btnConfirmAll.performClick();
     }
 
 }

@@ -59,7 +59,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
         startActivity(intent);
     }
 

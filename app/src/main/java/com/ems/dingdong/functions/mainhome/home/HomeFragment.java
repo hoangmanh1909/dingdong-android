@@ -69,30 +69,30 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
-            homeInfos.add(new HomeInfo(13, R.drawable.ic_offline1, "Nhập báo phát"));
+            homeInfos.add(new HomeInfo(13, R.drawable.ic_offline, "Nhập báo phát"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
             homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting1, "Cài đặt"));
+            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
             mList.add(new GroupInfo("Người dùng", homeInfos));
         } else {
             //homeInfos.add(new HomeInfo(R.drawable.ic_collect_service, getString(R.string.info_gomhang), "Gom hàng"));
-            homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm1, "Xác nhận tin"));
-            homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success1, "Hoàn tất tin"));
+            homeInfos.add(new HomeInfo(1, R.drawable.ic_collect_service_confirm, "Xác nhận tin"));
+            homeInfos.add(new HomeInfo(2, R.drawable.ic_collect_service_success, "Hoàn tất tin"));
             mList.add(new GroupInfo("Gom hàng", homeInfos));
 
             //  homeInfos.add(new HomeInfo(R.drawable.ic_delivery_service, getString(R.string.info_phathang), "Phát hàng"));
             homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage1, "Báo phát bản kê (BD13)"));
-            homeInfos.add(new HomeInfo(9, R.drawable.ic_add1, "Lập bản kê (BD13)"));
-            homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist1, "Tra cứu bản kê BD13"));
-            homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success1, "Báo phát thành công"));
-            homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no1, "Gạch nợ"));
+            homeInfos.add(new HomeInfo(3, R.drawable.ic_delivery_manage, "Báo phát bản kê (BD13)"));
+            homeInfos.add(new HomeInfo(9, R.drawable.ic_add, "Lập bản kê (BD13)"));
+            homeInfos.add(new HomeInfo(10, R.drawable.ic_playlist, "Tra cứu bản kê BD13"));
+            homeInfos.add(new HomeInfo(4, R.drawable.ic_delivery_service_success, "Báo phát thành công"));
+            homeInfos.add(new HomeInfo(12, R.drawable.ic_gach_no, "Gạch nợ"));
 
           //  mList.add(new GroupInfo("Phát hàng", homeInfos));
-            homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return1, "Báo phát không thành công"));
-            homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_2, "Thống kê báo phát"));
-            homeInfos.add(new HomeInfo(15, R.drawable.ic_offline1, "Nhập báo phát offline"));
-            homeInfos.add(new HomeInfo(14, R.drawable.ic_online1, "Báo phát offline"));
+            homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_service_return, "Báo phát không thành công"));
+            homeInfos.add(new HomeInfo(6, R.drawable.ic_delivery_statistic_1, "Thống kê báo phát"));
+            homeInfos.add(new HomeInfo(15, R.drawable.ic_offline, "Nhập báo phát offline"));
+            homeInfos.add(new HomeInfo(14, R.drawable.ic_online, "Báo phát offline"));
             mList.add(new GroupInfo("Phát hàng", homeInfos));
 
 //            homeInfos = new ArrayList<>();
@@ -103,9 +103,9 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         /*    homeInfos = new ArrayList<>();
             mList.add(new GroupInfo("Call", homeInfos));*/
             homeInfos = new ArrayList<>();
-            homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green1, "Gọi"));
-            homeInfos.add(new HomeInfo(8, R.drawable.ic_user1, "Người dùng"));
-            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting1, "Cài đặt"));
+            homeInfos.add(new HomeInfo(7, R.drawable.ic_call_green, "Gọi"));
+            homeInfos.add(new HomeInfo(8, R.drawable.ic_user, "Người dùng"));
+            homeInfos.add(new HomeInfo(11, R.drawable.ic_setting, "Cài đặt"));
             mList.add(new GroupInfo("Người dùng", homeInfos));
         }
 
