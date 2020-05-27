@@ -3,13 +3,14 @@ package com.ems.dingdong.functions.mainhome.phathang.receverpersion;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.R;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class BaoPhatAdapter extends RecyclerBaseAdapter {
         return new HolderView(inflateView(parent, R.layout.item_bao_phat_common));
     }
 
+    public List<CommonObject> getListItem() {
+        return getItems();
+    }
+
     class HolderView extends BaseViewHolder {
         @BindView(R.id.tv_parcelCode)
         CustomBoldTextView tvParcelCode;
@@ -34,6 +39,8 @@ public class BaoPhatAdapter extends RecyclerBaseAdapter {
         CustomBoldTextView tvSenderName;
         @BindView(R.id.tv_sender_address)
         CustomTextView tvSenderAddress;
+        @BindView(R.id.iv_close)
+        ImageView imageView;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -45,6 +52,11 @@ public class BaoPhatAdapter extends RecyclerBaseAdapter {
             tvParcelCode.setText(item.getParcelCode());
             tvSenderName.setText(item.getSenderName());
             tvSenderAddress.setText(item.getSenderAddress());
+        }
+
+        public void removeItemAtPosition(int position) {
+            mItems.remove(mItems.get(position));
+            notifyDataSetChanged();
         }
     }
 

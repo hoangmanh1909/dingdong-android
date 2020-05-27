@@ -149,7 +149,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.tvCode.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (TextUtils.isEmpty(edtSearch.getText().toString())) {

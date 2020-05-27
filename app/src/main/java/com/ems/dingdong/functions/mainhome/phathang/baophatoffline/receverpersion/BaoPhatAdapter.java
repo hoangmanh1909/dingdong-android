@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersi
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -34,6 +35,8 @@ public class BaoPhatAdapter extends RecyclerBaseAdapter {
         CustomBoldTextView tvSenderName;
         @BindView(R.id.tv_sender_address)
         CustomTextView tvSenderAddress;
+        @BindView(R.id.iv_close)
+        ImageView imageView;
 
         public HolderView(View itemView) {
             super(itemView);
