@@ -1,5 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
+import android.text.TextUtils;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
@@ -20,6 +22,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         implements PaymentContract.Presenter {
 
     private int paymentType;
+    private List<LadingPaymentInfo> ladingPaymentInfoList;
 
     public PaymentPresenter(ContainerView containerView) {
         super(containerView);
@@ -73,7 +76,8 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         PaymentRequestModel requestModel = new PaymentRequestModel();
         SharedPref pref = SharedPref.getInstance(getViewContext());
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
-        List<LadingPaymentInfo> ladingPaymentInfoList = new ArrayList<>();
+        ladingPaymentInfoList = new ArrayList<>();
+        ladingPaymentInfoList.clear();
         for (EWalletDataResponse item : list) {
             LadingPaymentInfo info = new LadingPaymentInfo();
             info.setCodAmount(item.getCodAmount());
@@ -112,6 +116,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                                String routeCode, String postmanCode) {
         PaymentConfirmModel model = new PaymentConfirmModel();
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+        String values = sharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+        String mobileNumber = "";
+        if (!TextUtils.isEmpty(values)) {
+            mobileNumber = values.split(";")[0];
+        }
         String token = sharedPref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         model.setOtpCode(otp);
         model.setPaymentToken(token);
@@ -120,6 +129,8 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         model.setPoCode(poCode);
         model.setRouteCode(routeCode);
         model.setPostmanCode(postmanCode);
+        model.setLadingPaymentInfoList(ladingPaymentInfoList);
+        model.setPostmanTel(mobileNumber);
         mView.showProgress();
         mInteractor.confirmPayment(model)
                 .subscribeOn(Schedulers.io())

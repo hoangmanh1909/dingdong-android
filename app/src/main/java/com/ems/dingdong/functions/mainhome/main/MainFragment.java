@@ -80,8 +80,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-//        if (mPresenter != null)
-//            mPresenter.getAccessToken();
+        if (mPresenter != null)
+            mPresenter.getAccessToken();
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);

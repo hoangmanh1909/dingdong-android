@@ -42,7 +42,6 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -101,6 +100,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mToDate = "";
     private String mPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
+    private boolean isFromNotification = true;
     private PhoneConectDialog mPhoneConectDialog;
     private String choosenLadingCode = "";
     private int mTotalScrolled = 0;
@@ -486,15 +486,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mAdapter.setListFilter(mList);
         mAdapter.notifyDataSetChanged();
         new Handler().post(() -> {
-            int position = getFocusPosition();
-            if (position != 0)
-                recycler.scrollToPosition(position);
-            relativeLayout.setVisibility(View.GONE);
+            if (isFromNotification) {
+                isFromNotification = false;
+                int position = getFocusPosition();
+                if (position != 0)
+                    recycler.scrollToPosition(position);
+            }
             if (mTotalScrolled != 0) {
                 recycler.scrollToPosition(mTotalScrolled);
                 recycler.addOnScrollListener(scrollListener);
             }
         });
+        relativeLayout.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
 

@@ -61,32 +61,32 @@
                     android:textSize="@dimen/text_size_16sp" />
             </LinearLayout>
 
-            <com.ems.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_receiver_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red_light"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_receiver_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red_light"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_cod_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
         </LinearLayout>
     </LinearLayout>

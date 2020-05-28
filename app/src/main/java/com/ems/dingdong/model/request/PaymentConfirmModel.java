@@ -2,6 +2,8 @@ package com.ems.dingdong.model.request;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class PaymentConfirmModel {
 
     @SerializedName("PostmanCode")
@@ -27,6 +29,12 @@ public class PaymentConfirmModel {
 
     @SerializedName("Signature")
     String signature;
+
+    @SerializedName("PostmanTel")
+    String postmanTel;
+
+    @SerializedName("Ladings")
+    List<LadingPaymentInfo> ladingPaymentInfoList;
 
     public void setPostmanCode(String postmanCode) {
         this.postmanCode = postmanCode;
@@ -90,5 +98,17 @@ public class PaymentConfirmModel {
 
     public String getSignature() {
         return signature;
+    }
+
+    public List<LadingPaymentInfo> getLadingPaymentInfoList() {
+        return ladingPaymentInfoList;
+    }
+
+    public void setLadingPaymentInfoList(List<LadingPaymentInfo> ladingPaymentInfoList) {
+        this.ladingPaymentInfoList = ladingPaymentInfoList;
+    }
+
+    public void setPostmanTel(String postmanTel) {
+        this.postmanTel = postmanTel;
     }
 }

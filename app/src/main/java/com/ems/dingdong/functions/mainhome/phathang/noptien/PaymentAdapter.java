@@ -2,15 +2,17 @@ package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.core.base.adapter.RecyclerBaseAdapter;
-import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -21,22 +23,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class PaymentAdapter extends RecyclerBaseAdapter<EWalletDataResponse, PaymentAdapter.ViewHolder> {
+public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderView> implements Filterable {
 
-    public PaymentAdapter(Context context, List<EWalletDataResponse> list) {
-        super(context, list);
+    private List<EWalletDataResponse> mListFilter;
+    private List<EWalletDataResponse> mList;
+    private final PaymentAdapter.FilterDone mFilterDone;
+    private final Context mContext;
+
+    public PaymentAdapter(Context context, List<EWalletDataResponse> list, FilterDone filterDone) {
+        this.mFilterDone = filterDone;
+        mListFilter = list;
+        mList = list;
+        mContext = context;
+    }
+
+    @Override
+    public void onBindViewHolder(PaymentAdapter.HolderView holder, int position) {
+        holder.bindView(mListFilter.get(position), position);
     }
 
     @NonNull
     @Override
-    public PaymentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(inflateView(parent, R.layout.item_payment));
+    public PaymentAdapter.HolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new PaymentAdapter.HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_payment, parent, false));
+    }
+
+    @Override
+    public int getItemCount() {
+        return mListFilter.size();
     }
 
     public List<EWalletDataResponse> getItemsSelected() {
         List<EWalletDataResponse> commonObjectsSelected = new ArrayList<>();
-        List<EWalletDataResponse> items = mItems;
+        List<EWalletDataResponse> items = mListFilter;
         for (EWalletDataResponse item : items) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);
@@ -45,7 +66,63 @@ public class PaymentAdapter extends RecyclerBaseAdapter<EWalletDataResponse, Pay
         return commonObjectsSelected;
     }
 
-    public class ViewHolder extends BaseViewHolder<EWalletDataResponse> {
+    public void setListFilter(List<EWalletDataResponse> list) {
+        mListFilter = list;
+        mList = list;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    mListFilter = mList;
+                } else {
+                    List<EWalletDataResponse> filteredList = new ArrayList<>();
+                    for (EWalletDataResponse row : mList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getLadingCode().toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getFee()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getCodAmount()).toLowerCase().contains(charString.toLowerCase())
+                                || row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    mListFilter = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mListFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mListFilter = (ArrayList<EWalletDataResponse>) filterResults.values;
+                if (mFilterDone != null) {
+                    long amount = 0;
+                    long fee = 0;
+                    for (EWalletDataResponse item : mListFilter) {
+                        if (item.getCodAmount() != null)
+                            amount += item.getCodAmount();
+                        if (item.getFee() != null)
+                            fee += item.getFee();
+                    }
+                    mFilterDone.getCount(mListFilter.size(), amount, fee);
+                }
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public class HolderView extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_code)
         CustomBoldTextView tvLadingCode;
@@ -55,9 +132,8 @@ public class PaymentAdapter extends RecyclerBaseAdapter<EWalletDataResponse, Pay
         CustomTextView tvCod;
         @BindView(R.id.tv_fee)
         CustomTextView tvFee;
-
         @BindView(R.id.tv_receiver_name)
-        CustomTextView tvReceiverName;
+        CustomBoldTextView tvReceiverName;
         @BindView(R.id.tv_receiver_address)
         CustomTextView tvReceiverAddress;
         @BindView(R.id.cb_selected)
@@ -65,11 +141,11 @@ public class PaymentAdapter extends RecyclerBaseAdapter<EWalletDataResponse, Pay
         @BindView(R.id.ll_item_payment)
         LinearLayout linearLayout;
 
-        public ViewHolder(View itemView) {
+        public HolderView(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        @Override
         public void bindView(EWalletDataResponse model, int position) {
             index.setText((position + 1) + " - ");
             if (!TextUtils.isEmpty(model.getLadingCode()))
@@ -108,5 +184,9 @@ public class PaymentAdapter extends RecyclerBaseAdapter<EWalletDataResponse, Pay
                 }
             });
         }
+    }
+
+    public interface FilterDone {
+        void getCount(int count, long amount, long fee);
     }
 }
