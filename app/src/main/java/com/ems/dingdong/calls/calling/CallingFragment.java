@@ -1,5 +1,7 @@
 package com.ems.dingdong.calls.calling;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Chronometer;
@@ -9,10 +11,13 @@ import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Logger;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
 import com.stringee.call.StringeeCall;
+import com.stringee.listener.StatusListener;
 
 import org.json.JSONObject;
 
@@ -20,6 +25,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View {
+
+    public static final String TAG = CallingFragment.class.getName();
+
     @BindView(R.id.iv_call_answer)
     ImageView ivCallAnswer;
     @BindView(R.id.iv_call_cancel)
@@ -38,10 +46,11 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     CustomImageView ivHold;
     @BindView(R.id.iv_mic_off)
     CustomImageView ivMicOff;
+    private boolean isHold = false;
+    private AudioManager audioManager;
 
     private StringeeCall stringeeAnswer;
-    private StringeeCall stringeeCall;
-    private boolean isSpeakerOn;
+    private StringeeCall mStringeeCall;
 
     @Override
     protected int getLayoutId() {
@@ -55,13 +64,18 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     @Override
     public void initLayout() {
         super.initLayout();
+        audioManager = (AudioManager) getViewContext().getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_IN_CALL);
+        audioManager.setMicrophoneMute(false);
         if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
             tvPhoneNumber.setText(mPresenter.getCalleeNumber());
             changeCallLayout(Constants.CALL_TYPE_CALLING);
             ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-            stringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), "VPBX_VP1_100", "VPBX_MVNP_100");
-            stringeeCall.setCallListener(callListener);
-            stringeeCall.makeCall();
+            SharedPref pref = SharedPref.getInstance(getViewContext());
+            String callFrom = pref.getString(Constants.KEY_ID_FROM_CALLING, "");
+            mStringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), callFrom, mPresenter.getCalleeNumber());
+            mStringeeCall.setCallListener(callListener);
+            mStringeeCall.makeCall();
         } else {
             ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
             stringeeAnswer = applicationController.getmStringeeCall();
@@ -76,8 +90,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         switch (view.getId()) {
             case R.id.iv_call_answer:
                 if (stringeeAnswer != null && mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
+                    changeCallLayout(Constants.CALL_TYPE_CALLING);
                     stringeeAnswer.answer();
-                    changeCallLayout(Constants.CALL_TYPE_RECEIVING);
                     mPresenter.setCallType(Constants.CALL_TYPE_CALLING);
                 } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
                     mPresenter.openDiapadScreen();
@@ -85,56 +99,103 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_call_cancel:
+                Log.d(TAG, "iv_speaker clicked");
                 if (stringeeAnswer != null && mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     stringeeAnswer.reject();
                     getViewContext().finish();
-                } else if (stringeeCall != null && mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
-//                    if (stringeeCall.isSpeakerPhoneOn()) {
-//                        ivCallAnswer.setImageResource(R.drawable.ic_button_speaker_green);
-//                    } else {
-//                        ivCallAnswer.setImageResource(R.drawable.ic_button_speaker);
-//                    }
-//                    stringeeCall.setSpeakerphoneOn(!stringeeCall.isSpeakerPhoneOn());
-                }
-                if (isSpeakerOn) {
-                    ivCallCancel.setImageResource(R.drawable.ic_button_speaker_green);
-                    isSpeakerOn = false;
-                } else {
-                    ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
-                    isSpeakerOn = true;
+                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
+                    if (mStringeeCall.isSpeakerPhoneOn()) {
+                        Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOn");
+                        mStringeeCall.setSpeakerphoneOn(false);
+                        ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
+                    } else {
+                        Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOff");
+                        mStringeeCall.setSpeakerphoneOn(true);
+                        ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
+                    }
+                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && stringeeAnswer != null) {
+                    if (stringeeAnswer.isSpeakerPhoneOn()) {
+                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
+                        stringeeAnswer.setSpeakerphoneOn(false);
+                        ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
+                    } else {
+                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
+                        stringeeAnswer.setSpeakerphoneOn(true);
+                        ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
+                    }
                 }
                 break;
 
             case R.id.iv_call_end:
-                if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && stringeeCall != null) {
-                    stringeeCall.hangup();
-                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING && stringeeAnswer != null) {
+                if (mStringeeCall != null) {
+                    mStringeeCall.hangup();
+                } else if (stringeeAnswer != null) {
                     stringeeAnswer.hangup();
                 }
                 getViewContext().finish();
                 break;
 
             case R.id.iv_mic_off:
-                ivMicOff.setSelected(!ivMicOff.getSelected());
-                ivMicOff.setBackgroundImage();
+                if (audioManager.isMicrophoneMute()) {
+                    audioManager.setMicrophoneMute(false);
+                    ivMicOff.setImageResource(R.drawable.ic_mic_off);
+                } else {
+                    audioManager.setMicrophoneMute(true);
+                    ivMicOff.setImageResource(R.drawable.ic_mic_off_green);
+                }
                 break;
 
             case R.id.iv_foward:
-                if (ivFoward.getSelected()) {
-                    ivFoward.setBackgroundColor(getResources().getColor(R.color.bg_color_diapad_button));
-                } else {
-                    ivFoward.setBackgroundColor(getResources().getColor(R.color.white));
-                }
-                ivFoward.setSelected(!ivFoward.getSelected());
                 break;
 
             case R.id.iv_hold:
-                if (ivHold.getSelected()) {
-                    ivHold.setBackgroundColor(getResources().getColor(R.color.bg_color_diapad_button));
-                } else {
-                    ivHold.setBackgroundColor(getResources().getColor(R.color.white));
+                Log.d(TAG, "iv_hold clicked");
+                if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
+                    if (isHold) {
+                        Log.d(TAG, "CALL_TYPE_CALLING isHold on");
+                        ivHold.setImageResource(R.drawable.ic_phone_paused);
+                        mStringeeCall.unHold(new StatusListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "hold success isHold off");
+                                isHold = false;
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOff");
+                        ivHold.setImageResource(R.drawable.ic_phone_paused_green);
+                        mStringeeCall.hold(new StatusListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "hold success isHold on");
+                                isHold = true;
+                            }
+                        });
+                    }
+                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && stringeeAnswer != null) {
+                    if (isHold) {
+                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
+                        ivHold.setImageResource(R.drawable.ic_phone_paused);
+                        stringeeAnswer.unHold(new StatusListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "hold success isHold off");
+                                isHold = false;
+                            }
+                        });
+
+                    } else {
+                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
+                        ivHold.setImageResource(R.drawable.ic_phone_paused_green);
+                        stringeeAnswer.hold(new StatusListener() {
+                            @Override
+                            public void onSuccess() {
+                                isHold = true;
+                                Log.d(TAG, "hold success isHold on");
+                            }
+                        });
+                    }
                 }
-                ivHold.setSelected(!ivHold.getSelected());
                 break;
             default:
                 throw new IllegalArgumentException("Can't not find any event!");
@@ -146,47 +207,57 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private StringeeCall.StringeeCallListener callListener = new StringeeCall.StringeeCallListener() {
         @Override
         public void onSignalingStateChange(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s, int i, String s1) {
-            Logger.d("chauvp", "onSignalingStateChange" + signalingState.name());
+            Logger.d(TAG, "onSignalingStateChange" + signalingState.name());
             tvCalling.setText(signalingState.name());
-        }
-
-        @Override
-        public void onError(StringeeCall stringeeCall, int i, String s) {
-            Logger.d("chauvp", "onError " + s);
-
-        }
-
-        @Override
-        public void onHandledOnAnotherDevice(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s) {
-            Logger.d("chauvp", "onHandledOnAnotherDevice" + s + signalingState.name());
-        }
-
-        @Override
-        public void onMediaStateChange(StringeeCall stringeeCall, StringeeCall.MediaState mediaState) {
-            Logger.d("chauvp", "onMediaStateChange" + mediaState.name());
             new Handler(getViewContext().getMainLooper()).post(() -> {
-                if (mediaState.name().equals("CONNECTED")) {
+                if (signalingState.name().equals("ANSWERED")) {
+                    chronometer.setVisibility(View.VISIBLE);
                     chronometer.start();
-                } else if (mediaState.name().equals("ENDED")) {
+                    tvCalling.setVisibility(View.GONE);
+                    if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
+                        mStringeeCall = stringeeCall;
+                    } else {
+                        stringeeAnswer = stringeeCall;
+                    }
+                } else if (signalingState.name().equals("ENDED")) {
                     getViewContext().finish();
+                    chronometer.setVisibility(View.GONE);
+                    chronometer.stop();
+                    tvCalling.setVisibility(View.VISIBLE);
                 }
             });
         }
 
         @Override
+        public void onError(StringeeCall stringeeCall, int i, String s) {
+            showErrorToast("Có lỗi xảy ra không thể thực hiện cuộc gọi");
+            getViewContext().finish();
+        }
+
+        @Override
+        public void onHandledOnAnotherDevice(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s) {
+            Logger.d(TAG, "onHandledOnAnotherDevice" + s + signalingState.name());
+        }
+
+        @Override
+        public void onMediaStateChange(StringeeCall stringeeCall, StringeeCall.MediaState mediaState) {
+            Logger.d(TAG, "onMediaStateChange" + mediaState.name());
+        }
+
+        @Override
         public void onLocalStream(StringeeCall stringeeCall) {
-            Logger.d("chauvp", "onLocalStream");
+            Logger.d(TAG, "onLocalStream");
 
         }
 
         @Override
         public void onRemoteStream(StringeeCall stringeeCall) {
-            Logger.d("chauvp", "onRemoteStream");
+            Logger.d(TAG, "onRemoteStream");
         }
 
         @Override
         public void onCallInfo(StringeeCall stringeeCall, JSONObject jsonObject) {
-            Logger.d("chauvp", "onCallInfo" + jsonObject.toString());
+            Logger.d(TAG, "onCallInfo" + jsonObject.toString());
         }
     };
 

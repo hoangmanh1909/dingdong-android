@@ -34,6 +34,7 @@ import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
@@ -601,8 +602,8 @@ public class NetWorkController {
         return getAPIRxBuilder().cancelDeliveryStatistic(request);
     }
 
-    public static Single<ActiveResult> getAccessTokenAndroid() {
-        return getAPIRxBuilder().getAccessTokenAndroid();
+    public static Single<TokenMoveCropResult> getAccessTokenAndroid(String mobileNumber) {
+        return getAPIRxBuilder().getAccessTokenAndroid(mobileNumber);
     }
 
     public static Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest) {

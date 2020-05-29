@@ -93,6 +93,7 @@ public class Constants {
     public static final String CALL_TYPE = "call_type";
     public static final int CALL_TYPE_RECEIVING = 0;
     public static final int CALL_TYPE_CALLING = 1;
+    public static final String KEY_ID_FROM_CALLING = "KEY_ID_FROM_CALLING";
 
 
     public static final String CALL_MAP = "call_map";

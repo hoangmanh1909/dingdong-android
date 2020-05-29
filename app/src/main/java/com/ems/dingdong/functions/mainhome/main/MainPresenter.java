@@ -108,14 +108,18 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
 //        if (!TextUtils.isEmpty(sharedPref.getString(Constants.ACCESS_CALL_TOKEN, ""))) {
 //            return;
 //        }
-        mInteractor.getAccessToken()
+        String mobileNumber = sharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "").split(";")[0];
+        mInteractor.getAccessToken(mobileNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (simpleResult, throwable) -> {
                             if (simpleResult != null) {
                                 if (simpleResult.getErrorCode().equals("00")) {
-                                    sharedPref.putString(Constants.ACCESS_CALL_TOKEN, simpleResult.getSignCode());
+                                    sharedPref.putString(Constants.ACCESS_CALL_TOKEN, simpleResult.getResponse().getToken());
+                                    sharedPref.putString(Constants.KEY_ID_FROM_CALLING,
+                                            simpleResult.getResponse().getAccount().getVpbx() + "_"
+                                                    + simpleResult.getResponse().getAccount().getExtension());
                                     mView.initStringeeClient();
                                 } else {
                                     if (throwable != null)

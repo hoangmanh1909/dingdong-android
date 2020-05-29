@@ -45,6 +45,7 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".functions.mainhome.gomhang.listcommon.ListCommonActivity"

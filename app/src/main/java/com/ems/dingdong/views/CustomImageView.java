@@ -46,19 +46,7 @@ public class CustomImageView extends LinearLayout {
         imgView.setBackground(imgSrc);
     }
 
-    public boolean getSelected() {
-        return isItemSelected;
-    }
-
-    public void setSelected(boolean isItemSelected) {
-        this.isItemSelected = isItemSelected;
-    }
-
-    public void setBackgroundImage() {
-        if (isItemSelected) {
-            imgView.setImageResource(R.drawable.ic_mic_off_green);
-        } else {
-            imgView.setImageResource(R.drawable.ic_mic_off);
-        }
+    public void setImageResource(int resource) {
+        imgView.setImageResource(resource);
     }
 }

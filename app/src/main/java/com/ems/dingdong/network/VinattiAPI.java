@@ -32,6 +32,7 @@ import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
@@ -454,7 +455,7 @@ public interface VinattiAPI {
     Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
 
     @GET("api/MoveCrop/GetAccessTokenAndroid")
-    Single<ActiveResult> getAccessTokenAndroid();
+    Single<TokenMoveCropResult> getAccessTokenAndroid(@Query("mobileNUmber") String mobileNUmber);
 
     @POST("api/EWallet/PayLinkRequest")
     Single<LinkEWalletResult> linkEWallet(@Body PayLinkRequest request);

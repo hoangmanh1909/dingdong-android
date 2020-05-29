@@ -12,6 +12,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
+import com.ems.dingdong.model.DingdongNotificationObject;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
@@ -85,21 +88,22 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         });
     }
 
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-            String pushFromStringee = remoteMessage.getData().get("stringeePushNotification");
-            if (pushFromStringee != null) { // Receive push notification from Stringee Server
-                // Connect to Stringee Server here
-
+            if (remoteMessage.getData().get("stringeePushNotification") != null) {
+                DingdongNotificationObject object = NetWorkController.getGson().fromJson(remoteMessage.getData().get("data"), DingdongNotificationObject.class);
+                Log.e(TAG, "content: " + object.getCallId() + object.getCallStatus() + object.getFrom() + object.getSerial());
+                sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + object.getFrom().getNumber());
+            } else if (!TextUtils.isEmpty(remoteMessage.getData().get("message"))) {
+                sendNotification(remoteMessage.getData().get("message"));
+            } else {
+                Log.d(TAG, "call id is null");
             }
-            sendNotification(remoteMessage.getData().get("message"));
         } else if (notification != null) {
+            Log.e(TAG, "Data is null: ");
             Map<String, String> data = remoteMessage.getData();
             sendNotification(notification, data);
         }
@@ -194,6 +198,11 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.notification_channel_id),
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
             notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
         }
 

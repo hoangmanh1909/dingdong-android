@@ -9,10 +9,9 @@ import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
-import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.ShiftResult;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 
 import io.reactivex.Single;
@@ -27,7 +26,7 @@ interface MainContract {
 
         void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<StatisticPaymentResult> callback);
 
-        Single<ActiveResult> getAccessToken();
+        Single<TokenMoveCropResult> getAccessToken(String mobileNumber);
     }
 
     interface View extends PresentView<Presenter> {
