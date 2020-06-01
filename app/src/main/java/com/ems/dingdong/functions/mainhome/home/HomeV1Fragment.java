@@ -103,8 +103,8 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         if (!routeJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
-
-        mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
+        if (mPresenter != null && userInfo != null && routeInfo != null)
+            mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
     }
 
     @Override

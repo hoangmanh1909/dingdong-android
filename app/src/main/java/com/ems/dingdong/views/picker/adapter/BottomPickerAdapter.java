@@ -64,7 +64,7 @@ public class BottomPickerAdapter extends RecyclerView.Adapter<BottomPickerAdapte
                 itemView.setOnClickListener(v -> listener.onTreeNodeClick((TreeNote) model));
             } else if (model instanceof Leaf) {
                 tvReason.setText(((Leaf) model).getName());
-                itemView.setOnClickListener(v -> listener.onLeftClick((Leaf) model));
+                itemView.setOnClickListener(v -> listener.onLeafClick((Leaf) model));
             }
         }
     }

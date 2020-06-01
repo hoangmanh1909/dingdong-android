@@ -28,6 +28,7 @@ import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -65,7 +66,8 @@ import butterknife.OnClick;
 
 import static android.Manifest.permission.CALL_PHONE;
 
-public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter> implements ListBaoPhatBangKeContract.View {
+public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter>
+        implements ListBaoPhatBangKeContract.View {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -99,6 +101,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mFromDate = "";
     private String mToDate = "";
     private String mPhone = "";
+    private String mSenderPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private boolean isFromNotification = true;
     private PhoneConectDialog mPhoneConectDialog;
@@ -107,23 +110,29 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
-        public void onLeftClick(Leaf leaf) {
+        public void onLeafClick(Leaf leaf) {
             switch (leaf.getId()) {
-                case 2:
-                case 6:
-                case 5:
-                case 3:
+                case 4:
+                    if (TextUtils.isEmpty(mSenderPhone)) {
+                        showErrorToast("Không tìm thấy số điện thoại của người gửi");
+                        return;
+                    }
+                    mPresenter.callByWifi(mSenderPhone);
+                    break;
+                case 1:
                     mPresenter.callByWifi(mPhone);
                     break;
-                case 4:
-                case 7:
+                case 3:
                     mPresenter.callBySimCard(mPhone);
                     break;
-                case 9:
-                case 10:
-                case 11:
-                    mPresenter.callForward(mPhone, choosenLadingCode);
+                case 6:
+                    if (TextUtils.isEmpty(mSenderPhone)) {
+                        showErrorToast("Không tìm thấy số điện thoại của người gửi");
+                        return;
+                    }
+                    mPresenter.callBySimCard(mSenderPhone);
                     break;
+
             }
         }
 
@@ -198,6 +207,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 holder.itemView.setOnClickListener(v -> {
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    if (cbPickAll.isChecked() && !holder.getItem(position).isSelected()) {
+                        cbPickAll.setChecked(false);
+                    } else if (isAllSelected()) {
+                        cbPickAll.setChecked(true);
+                    }
                     int size = getItemSelected().size();
                     if (size == 0) {
                         relativeLayout.setVisibility(View.GONE);
@@ -208,38 +222,49 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 });
                 holder.img_ContactPhone.setOnClickListener(v -> {
+                    mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
                     mPhoneConectDialog = new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
-                            List<Tree> leaf1 = new ArrayList<>();
-                            leaf1.add(new Leaf(2, "Gọi tiết kiệm"));
-                            leaf1.add(new Leaf(3, "Gọi chuyển mạch"));
-                            leaf1.add(new Leaf(4, "Gọi bằng sim"));
+                            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+                                @Override
+                                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+                                    dialog.dismiss();
+                                    choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                                    mPresenter.callForward(mPhone, choosenLadingCode);
+                                }
 
-                            List<Tree> leaf2 = new ArrayList<>();
-                            leaf2.add(new Leaf(5, "Gọi tiết kiệm"));
-                            leaf2.add(new Leaf(6, "Gọi chuyển mạch"));
-                            leaf2.add(new Leaf(7, "Gọi bằng sim"));
+                                @Override
+                                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+                                    dialog.dismiss();
+                                    List<Tree> leaf1 = new ArrayList<>();
+                                    leaf1.add(new Leaf(1, "Gọi tiết kiệm"));
+                                    leaf1.add(new Leaf(2, "Gọi chuyển mạch"));
+                                    leaf1.add(new Leaf(3, "Gọi bằng sim"));
 
-                            TreeNote treeNote1 = new TreeNote(1, "Cho người nhận", leaf1);
-                            TreeNote treeNote2 = new TreeNote(8, "Cho người gửi", leaf2);
-                            Leaf leaf3 = new Leaf(9, "Cho bưu cục nhận");
-                            Leaf leaf4 = new Leaf(10, "Cho bưu cục phát");
-                            Leaf leaf5 = new Leaf(11, "Cho tổng đài hỗ trợ");
+                                    List<Tree> leaf2 = new ArrayList<>();
+                                    leaf2.add(new Leaf(4, "Gọi tiết kiệm"));
+                                    leaf2.add(new Leaf(5, "Gọi chuyển mạch"));
+                                    leaf2.add(new Leaf(6, "Gọi bằng sim"));
 
-                            ArrayList<Tree> list = new ArrayList<>();
-                            list.add(treeNote1);
-                            list.add(treeNote2);
-                            list.add(leaf3);
-                            list.add(leaf4);
-                            list.add(leaf5);
-
-                            BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(list, "Gọi điện thoại", listener);
-                            fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
-                            choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
-                            mPhone = phone;
-//                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                                    Leaf leaf = new Leaf(7, "Gọi qua tổng đài");
+                                    Leaf leaf3 = new Leaf(7, "Cho bưu cục nhận");
+                                    Leaf leaf4 = new Leaf(7, "Cho bưu cục phát");
+                                    Leaf leaf5 = new Leaf(7, "Cho tổng đài hỗ trợ");
+                                    Tree tree1 = new TreeNote(7, "Cho người nhận", leaf1);
+                                    Tree tree2 = new TreeNote(7, "Cho người gửi", leaf2);
+                                    List<Tree> listVHT = new ArrayList<>();
+                                    listVHT.add(tree1);
+                                    listVHT.add(tree2);
+                                    listVHT.add(leaf3);
+                                    listVHT.add(leaf4);
+                                    listVHT.add(leaf5);
+                                    listVHT.add(leaf);
+                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(listVHT, "Gọi qua máy lẻ", listener);
+                                    fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
+                                }
+                            }).show();
                         }
 
                         @Override
@@ -589,6 +614,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             cbPickAll.setChecked(true);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    private boolean isAllSelected() {
+        for (DeliveryPostman item : mList) {
+            if (!item.isSelected()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private int getFocusPosition() {

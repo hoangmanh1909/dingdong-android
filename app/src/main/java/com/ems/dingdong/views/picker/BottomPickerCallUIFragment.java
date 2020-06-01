@@ -66,7 +66,7 @@ public class BottomPickerCallUIFragment extends BottomSheetDialogFragment {
 
     public interface ItemClickListener {
 
-        void onLeftClick(Leaf leaf);
+        void onLeafClick(Leaf leaf);
 
         void onTreeNodeClick(TreeNote treeNote);
     }

@@ -95,8 +95,10 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             if (remoteMessage.getData().get("stringeePushNotification") != null) {
                 DingdongNotificationObject object = NetWorkController.getGson().fromJson(remoteMessage.getData().get("data"), DingdongNotificationObject.class);
-                Log.e(TAG, "content: " + object.getCallId() + object.getCallStatus() + object.getFrom() + object.getSerial());
-                sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + object.getFrom().getNumber());
+                Log.e(TAG, "content: " + "callID: " + object.getCallId() + "call status: " + object.getCallStatus() + "call from: " + object.getFrom() + object.getSerial());
+                if ("ringing".equals(object.getCallStatus())) {
+                    sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + object.getFrom().getNumber());
+                }
             } else if (!TextUtils.isEmpty(remoteMessage.getData().get("message"))) {
                 sendNotification(remoteMessage.getData().get("message"));
             } else {

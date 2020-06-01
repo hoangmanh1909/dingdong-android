@@ -115,7 +115,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                 .subscribe(
                         (simpleResult, throwable) -> {
                             if (simpleResult != null) {
-                                if (simpleResult.getErrorCode().equals("00")) {
+                                if (simpleResult.getErrorCode().equals("00") && sharedPref != null && simpleResult.getResponse() != null) {
                                     sharedPref.putString(Constants.ACCESS_CALL_TOKEN, simpleResult.getResponse().getToken());
                                     sharedPref.putString(Constants.KEY_ID_FROM_CALLING,
                                             simpleResult.getResponse().getAccount().getVpbx() + "_"

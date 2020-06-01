@@ -153,6 +153,11 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 //                        }
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    if (cbPickAll.isChecked() && !holder.getItem(position).isSelected()) {
+                        cbPickAll.setChecked(false);
+                    } else if (isAllSelected()) {
+                        cbPickAll.setChecked(true);
+                    }
                 });
                 holder.img_ContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -478,6 +483,15 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             cbPickAll.setChecked(true);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    private boolean isAllSelected() {
+        for (DeliveryPostman item : mList) {
+            if (!item.isSelected()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -3,6 +3,7 @@ package com.ems.dingdong.calls.calling;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
@@ -212,6 +213,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             new Handler(getViewContext().getMainLooper()).post(() -> {
                 if (signalingState.name().equals("ANSWERED")) {
                     chronometer.setVisibility(View.VISIBLE);
+                    chronometer.setBase(SystemClock.elapsedRealtime());
                     chronometer.start();
                     tvCalling.setVisibility(View.GONE);
                     if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {

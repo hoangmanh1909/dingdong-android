@@ -104,29 +104,29 @@
             app:title="Chuyển tiếp" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/rl_call_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dimen_50dp"
-        android:weightSum="3">
+        android:layout_marginBottom="@dimen/dimen_50dp">
 
         <ImageView
             android:id="@+id/iv_call_answer"
             android:layout_width="@dimen/dimen_100dp"
             android:layout_height="@dimen/dimen_100dp"
             android:layout_marginLeft="@dimen/dimen_40dp"
+            android:layout_toLeftOf="@+id/iv_call_end"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_weight="1"
             android:src="@drawable/ic_dialpad" />
 
         <ImageView
             android:id="@+id/iv_call_end"
             android:layout_width="@dimen/dimen_100dp"
             android:layout_height="@dimen/dimen_100dp"
-            android:layout_weight="1"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/bg_call_end_selector"
             android:src="@drawable/ic_call_end_red" />
 
@@ -135,8 +135,9 @@
             android:layout_width="@dimen/dimen_100dp"
             android:layout_height="@dimen/dimen_100dp"
             android:layout_marginRight="@dimen/dimen_40dp"
+            android:layout_toRightOf="@+id/iv_call_end"
             android:layout_weight="1"
             android:src="@drawable/ic_button_speaker" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

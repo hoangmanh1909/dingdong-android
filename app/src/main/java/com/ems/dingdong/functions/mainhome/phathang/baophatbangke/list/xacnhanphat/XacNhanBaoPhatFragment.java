@@ -12,6 +12,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -19,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,6 +60,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -118,11 +122,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     EditText tvReceiverName;
     @BindView(R.id.edt_GTTT)
     FormItemEditText tvGTTT;
+    @BindView(R.id.edt_relationship)
+    CustomTextView edtRelationship;
+    @BindView(R.id.rl_relationship)
+    RelativeLayout rlRelationship;
     @BindView(R.id.layout_real_receiver_name)
     LinearLayout linearLayoutName;
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    XacNhanBaoPhatAdapter adapter;
+    private XacNhanBaoPhatAdapter adapter;
 
     private String mSign = "";
 
@@ -244,7 +252,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route, R.id.tv_postman, R.id.btn_sign,
-            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3})
+            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3, R.id.rl_relationship})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -291,6 +299,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             case R.id.iv_package_3:
                 imgPosition = 3;
                 MediaUltis.captureImage(this);
+                break;
+            case R.id.rl_relationship:
+                PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
+                popup.getMenu().add("Ông hoặc Bà");
+                popup.getMenu().add("Bố hoặc Mẹ");
+                popup.getMenu().add("Bác, Cô, Dì, Thím, Mợ");
+                popup.getMenu().add("Chú, Cậu, Bác");
+                popup.getMenu().add("Bạn bè");
+                popup.getMenu().add("Bảo vệ");
+                popup.getMenu().add("Mối quan hệ khác");
+                popup.setOnMenuItemClickListener(item -> {
+                    edtRelationship.setText(item.getTitle());
+                    return true;
+                });
+                popup.setGravity(Gravity.END);
+                popup.show();
                 break;
         }
     }
@@ -388,9 +412,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         mPresenter.postImage(path_media);
                     }
                 },
-                onError -> {
-                    Logger.e("error save image");
-                }
+                onError -> Logger.e("error save image")
         );
     }
 
@@ -430,11 +452,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         return false;
     }
 
-    public Bitmap processingBitmap(Uri source) {
-        Bitmap bm1 = null;
+    private Bitmap processingBitmap(Uri source) {
+        Bitmap bm1;
         Bitmap newBitmap = null;
         try {
-            bm1 = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(source));
+            bm1 = BitmapFactory.decodeStream(Objects.requireNonNull(getActivity()).getContentResolver().openInputStream(source));
             int SIZE_SCALE = 3;
             bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
 
@@ -445,7 +467,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
