@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.noptien;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -35,6 +36,9 @@ public interface PaymentContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void showBarcode(BarCodeCallback barCodeCallback);
+
         void showLinkWalletFragment();
 
         void getDataPayment(String poCode, String routeCode, String postmanCode, String fromDate, String toDate);

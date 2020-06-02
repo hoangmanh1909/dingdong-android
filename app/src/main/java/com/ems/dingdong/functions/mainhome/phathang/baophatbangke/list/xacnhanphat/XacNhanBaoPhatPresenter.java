@@ -202,7 +202,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName, String newGtttCode) {
+    public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
+                                String newGtttCode, String relationship) {
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
         String deliveryPOCode = postOffice.getCode();
@@ -257,7 +258,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.getAmountForBatch(),
                     item.getItemsInBatch()
             );
-
+            request.setReceiverReference(relationship);
             mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

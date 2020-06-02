@@ -179,7 +179,8 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery success.
          */
-        void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName, String newVatCode);
+        void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
+                             String newVatCode, String relationship);
 
         /**
          * @see Interactor

@@ -72,6 +72,10 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
         notifyDataSetChanged();
     }
 
+    public List<EWalletDataResponse> getListFilter() {
+        return mListFilter;
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -146,6 +150,10 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
             ButterKnife.bind(this, itemView);
         }
 
+        public EWalletDataResponse getItem(int position) {
+            return mListFilter.get(position);
+        }
+
         public void bindView(EWalletDataResponse model, int position) {
             index.setText((position + 1) + " - ");
             if (!TextUtils.isEmpty(model.getLadingCode()))
@@ -172,10 +180,6 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                 tvReceiverAddress.setText(String.format("%s: %s", mContext.getString(R.string.address_receiver_name), model.getReceiverAddress()));
             else
                 tvReceiverAddress.setText("");
-            itemView.setOnClickListener(v -> {
-                model.setSelected(!model.isSelected());
-                checkBox.setChecked(model.isSelected());
-            });
             checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
                 if (b) {
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
@@ -183,6 +187,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 }
             });
+            checkBox.setChecked(model.isSelected());
         }
     }
 

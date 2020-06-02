@@ -105,14 +105,18 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     stringeeAnswer.reject();
                     getViewContext().finish();
                 } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
-                    if (mStringeeCall.isSpeakerPhoneOn()) {
-                        Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOn");
-                        mStringeeCall.setSpeakerphoneOn(false);
-                        ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
-                    } else {
-                        Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOff");
-                        mStringeeCall.setSpeakerphoneOn(true);
-                        ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
+                    try {
+                        if (mStringeeCall.isSpeakerPhoneOn()) {
+                            Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOn");
+                            mStringeeCall.setSpeakerphoneOn(false);
+                            ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
+                        } else {
+                            Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOff");
+                            mStringeeCall.setSpeakerphoneOn(true);
+                            ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && stringeeAnswer != null) {
                     if (stringeeAnswer.isSpeakerPhoneOn()) {

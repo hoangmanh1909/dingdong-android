@@ -192,9 +192,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
+                        android:textColor="@color/bg_primary"
                         android:gravity="left|center"
+                        android:textSize="@dimen/_14sdp"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Thành công" />
+                        android:text="Báo phát thành công" />
 
                     <RadioButton
                         android:id="@+id/rad_fail"
@@ -204,6 +206,8 @@
                         android:layout_marginTop="@dimen/dimen_5dp"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/dimen_5dp"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="@color/black"
                         android:text="Không thành công" />
 
                     <RadioButton
@@ -212,7 +216,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_5dp"
+                        android:textSize="@dimen/_14sdp"
                         android:gravity="left|center"
+                        android:textColor="@color/blue"
                         android:paddingLeft="@dimen/dimen_5dp"
                         android:text="Chuyển tuyến" />
 
@@ -246,12 +252,11 @@
 
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="0dp"
+                        android:id="@+id/tv_receiver_name"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:text="Tên người nhận thực tế: "
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
-
                     <EditText
                         android:id="@+id/edt_receiver_name"
                         android:layout_width="0dp"
@@ -318,8 +323,8 @@
                             android:layout_gravity="center"
                             android:layout_toRightOf="@+id/tv_relationship"
                             android:paddingRight="@dimen/_5sdp"
-                            android:text="Chọn mối quan hệ"
-                            android:textColor="@color/gray"
+                            android:hint="Chọn mối quan hệ"
+                            android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
 
                         <ImageView
@@ -331,6 +336,34 @@
                             android:src="@drawable/ic_arrow_drop_down" />
                     </LinearLayout>
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ll_other_relationship"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mối quan hệ khác: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/edt_other_relationship"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="1000000"
+                        app:formHint="@string/enter_relationship"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                </LinearLayout>
 
 
                 <LinearLayout

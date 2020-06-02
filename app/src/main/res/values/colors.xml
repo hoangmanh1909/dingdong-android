@@ -47,6 +47,7 @@
     <color name="n_gray_hsd">#999999</color>
     <color name="n_green_text">#25928a</color>
     <color name="green">#5025928a</color>
+    <color name="green_text">#00ff00</color>
     <color name="black_30">#66000000</color>
     <color name="umano_dialog_text">#ff5a5a5a</color>
     <color name="umano_divider">#ffc8c8c8</color>

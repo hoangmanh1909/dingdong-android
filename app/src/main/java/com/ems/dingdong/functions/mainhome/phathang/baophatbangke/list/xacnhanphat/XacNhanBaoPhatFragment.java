@@ -46,6 +46,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -124,12 +125,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemEditText tvGTTT;
     @BindView(R.id.edt_relationship)
     CustomTextView edtRelationship;
+    @BindView(R.id.tv_receiver_name)
+    CustomTextView tvRealReceiverName;
     @BindView(R.id.rl_relationship)
     RelativeLayout rlRelationship;
     @BindView(R.id.layout_real_receiver_name)
     LinearLayout linearLayoutName;
+    @BindView(R.id.ll_other_relationship)
+    LinearLayout llOtherRelationship;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.edt_other_relationship)
+    FormItemEditText edtOtherRelationship;
     private XacNhanBaoPhatAdapter adapter;
 
     private String mSign = "";
@@ -188,7 +195,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
-
+        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận thực tế: " + "<font color=\"red\">*</font>"));
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -231,6 +238,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     if (getItemsSelected().size() == 1) {
                         tvReceiverName.setText(getItemsSelected().get(0).getReciverName());
                         tvGTTT.setText("");
+                    } else {
+                        tvReceiverName.setText("");
                     }
                     adapter.notifyDataSetChanged();
                     updateTotalPackage();
@@ -302,14 +311,26 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
             case R.id.rl_relationship:
                 PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
-                popup.getMenu().add("Ông hoặc Bà");
-                popup.getMenu().add("Bố hoặc Mẹ");
-                popup.getMenu().add("Bác, Cô, Dì, Thím, Mợ");
-                popup.getMenu().add("Chú, Cậu, Bác");
-                popup.getMenu().add("Bạn bè");
+                popup.getMenu().add("Ông");
+                popup.getMenu().add("Bà");
+                popup.getMenu().add("Bố");
+                popup.getMenu().add("Mẹ");
+                popup.getMenu().add("Anh");
+                popup.getMenu().add("Chị");
+                popup.getMenu().add("Em");
+                popup.getMenu().add("Vợ");
+                popup.getMenu().add("Chồng");
+                popup.getMenu().add("Con");
+                popup.getMenu().add("Văn thư");
+                popup.getMenu().add("Lao công");
                 popup.getMenu().add("Bảo vệ");
-                popup.getMenu().add("Mối quan hệ khác");
+                popup.getMenu().add("Khác");
                 popup.setOnMenuItemClickListener(item -> {
+                    if (item.getTitle().equals("Khác")) {
+                        llOtherRelationship.setVisibility(View.VISIBLE);
+                    } else {
+                        llOtherRelationship.setVisibility(View.GONE);
+                    }
                     edtRelationship.setText(item.getTitle());
                     return true;
                 });
@@ -326,11 +347,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
             }
+            if (TextUtils.isEmpty(tvReceiverName.getText())) {
+                showErrorToast("Bạn chưa nhập tên người nhận thực tế");
+                return;
+            }
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
-                        mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTTT.getText());
+                        if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                            mPresenter.paymentDelivery(mFile, mSign,
+                                    tvReceiverName.getText().toString(), tvGTTT.getText(),
+                                    edtOtherRelationship.getText());
+                        } else {
+                            mPresenter.paymentDelivery(mFile, mSign,
+                                    tvReceiverName.getText().toString(),
+                                    tvGTTT.getText(), edtRelationship.getText().toString());
+                        }
                         confirmDialog.dismiss();
                     })
                     .setWarning("Bạn có chắc chắn muốn ghi nhận phát thành công")
@@ -543,7 +576,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
         mListReason = reasonInfos;
         if (mListReason != null && mListReason.size() > 0) {
-            mReasonInfo = mListReason.get(0);
+            mReasonInfo = mListReason.get(1);
             tv_reason.setText(mReasonInfo.getName());
             loadSolution();
         }

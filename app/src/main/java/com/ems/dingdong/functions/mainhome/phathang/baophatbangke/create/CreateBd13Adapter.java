@@ -176,6 +176,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvCreateDated;
         @BindView(R.id.tv_instruction)
         public CustomTextView tvInstruction;
+        @BindView(R.id.tv_batch_code)
+        public CustomTextView tvBatchCode;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -212,6 +214,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             }
             if (!TextUtils.isEmpty(item.getSenderAddress())) {
                 senderAddress = item.getSenderAddress();
+            }
+
+            if (!TextUtils.isEmpty(item.getBatchCode())) {
+                tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), item.getBatchCode()));
+            } else {
+                tvBatchCode.setText("");
+                tvBatchCode.setVisibility(View.GONE);
             }
 
             tv_receiver.setText(String.format("Người nhận: %s - %s - %s", receiverName, receiverMobile, receiverAddress));

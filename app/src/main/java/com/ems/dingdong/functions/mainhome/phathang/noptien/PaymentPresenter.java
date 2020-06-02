@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
@@ -21,7 +23,6 @@ import io.reactivex.schedulers.Schedulers;
 public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentContract.Interactor>
         implements PaymentContract.Presenter {
 
-    private int paymentType;
     private List<LadingPaymentInfo> ladingPaymentInfoList;
 
     public PaymentPresenter(ContainerView containerView) {
@@ -33,11 +34,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
     }
 
-    public PaymentPresenter setPaymentType(int paymentType) {
-        this.paymentType = paymentType;
-        return this;
-    }
-
     @Override
     public PaymentContract.Interactor onCreateInteractor() {
         return new PaymentInteractor(this);
@@ -46,6 +42,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     @Override
     public PaymentContract.View onCreateView() {
         return PaymentFragment.getInstance();
+    }
+
+    @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 
     @Override

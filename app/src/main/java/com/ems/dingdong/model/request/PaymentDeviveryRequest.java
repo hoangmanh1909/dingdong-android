@@ -57,6 +57,8 @@ public class PaymentDeviveryRequest {
     String amountForBatch;
     @SerializedName("ItemsInBatch")
     Integer itemsInBatch;
+    @SerializedName("ReceiverReference")
+    String receiverReference;
 
     public PaymentDeviveryRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                                   String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode,
@@ -90,5 +92,9 @@ public class PaymentDeviveryRequest {
         this.isItemReturn = isItemReturn;
         this.amountForBatch = amountForBatch;
         this.itemsInBatch = itemsInBatch;
+    }
+
+    public void setReceiverReference(String receiverReference) {
+        this.receiverReference = receiverReference;
     }
 }

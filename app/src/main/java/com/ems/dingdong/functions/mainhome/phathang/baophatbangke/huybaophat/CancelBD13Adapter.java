@@ -150,19 +150,33 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
             DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
             if (!TextUtils.isEmpty(item.getLadingCode()))
                 tv_code.setText(item.getLadingCode());
+            else
+                tv_code.setText("");
+
             if (item.getAmount() != null)
                 tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+            else
+                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money)));
+
             if (item.getFee() != null)
                 tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee())));
+            else
+                tvFee.setText(String.format(mContext.getString(R.string.fee)));
+
             if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
                 if (!TextUtils.isEmpty(item.getReceiverAddress())) {
                     receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s - %s", item.getReceiverName(), item.getReceiverAddress()));
                 } else {
                     receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s", item.getReceiverName()));
                 }
+            } else {
+                receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name)));
             }
             if (!TextUtils.isEmpty(item.getSenderName()))
                 senderName.setText(String.format(mContext.getString(R.string.sender_name) + ": %s", item.getSenderName()));
+            else
+                senderName.setText(String.format(mContext.getString(R.string.sender_name)));
+
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
                     tv_status_paypost.setText(String.format(mContext.getString(R.string.success)));
@@ -174,6 +188,9 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                     tv_status_paypost.setText("");
                     tv_status_paypost.setVisibility(View.GONE);
                 }
+            } else {
+                tv_status_paypost.setText("");
+                tv_status_paypost.setVisibility(View.GONE);
             }
 
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {

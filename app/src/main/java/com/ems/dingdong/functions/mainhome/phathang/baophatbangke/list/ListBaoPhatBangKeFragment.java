@@ -413,8 +413,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void notifyDatasetChanged() {
-        if (mAdapter != null)
+        if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
+            if (mAdapter.getItemsSelected().size() != 0) {
+                if (mAdapter.getItemsSelected().size() < mAdapter.getListFilter().size())
+                    cbPickAll.setChecked(false);
+                tvItemSelected.setText(String.valueOf(mAdapter.getItemsSelected().size()));
+            } else {
+                relativeLayout.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected})
@@ -439,7 +448,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 relativeLayout.setVisibility(View.GONE);
                 mAdapter.notifyDataSetChanged();
                 break;
-
         }
     }
 

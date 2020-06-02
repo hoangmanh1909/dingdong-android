@@ -126,6 +126,7 @@
     <string name="find_package_quickly">Tìm kiếm nhanh bưu gửi</string>
     <string name="pay">Thanh toán</string>
     <string name="enter_package">Nhập bưu gửi</string>
+    <string name="enter_relationship">Nhập mối quan hệ khác</string>
     <string name="pay_money">Nộp tiền</string>
     <string name="e_wallet">Ví Điện Tử</string>
     <string name="account_info">THÔNG TIN TÀI KHOẢN</string>
@@ -150,4 +151,5 @@
     <string name="phone_number_which_registered_to_e_wallet">Số điện thoại đăng kí ví:</string>
     <string name="link_to_e_post_wallet">Liên Kết Ví Bưu Điện</string>
     <string name="wrong_otp_pattern">OTP chưa đúng định dạng</string>
+    <string name="batch_code">Mã lô</string>
 </resources>

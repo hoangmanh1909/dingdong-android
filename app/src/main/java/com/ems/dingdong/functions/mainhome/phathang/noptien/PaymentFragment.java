@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,8 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     CustomBoldTextView tvAmount;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
+    @BindView(R.id.cb_pick_all)
+    CheckBox cbPickAll;
 
     private PaymentAdapter mAdapter;
     private List<EWalletDataResponse> mList;
@@ -122,13 +125,28 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(count)));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
             tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(amount)));
-        }, 1000));
+        }, 1000)) {
+            @Override
+            public void onBindViewHolder(HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(v -> {
+                    holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    holder.checkBox.setChecked(holder.getItem(position).isSelected());
+                    if (cbPickAll.isChecked() && !holder.getItem(position).isSelected()) {
+                        cbPickAll.setChecked(false);
+                    } else if (isAllSelected()) {
+                        cbPickAll.setChecked(true);
+                    }
+                });
+            }
+        };
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         recycler.setAdapter(mAdapter);
         mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
     }
 
-    @OnClick({R.id.img_send, R.id.img_back, R.id.cb_pick_all, R.id.tv_search})
+    @OnClick({R.id.img_send, R.id.img_back, R.id.cb_pick_all, R.id.tv_search,
+            R.id.layout_item_pick_all, R.id.img_capture})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_send:
@@ -187,6 +205,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             case R.id.tv_search:
                 showDialog();
                 break;
+            case R.id.layout_item_pick_all:
+                setAllCheckBox();
+                break;
+            case R.id.img_capture:
+                mPresenter.showBarcode(value -> edtSearch.setText(value));
         }
     }
 
@@ -256,4 +279,33 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             refreshLayout();
         }).show();
     }
+
+    private void setAllCheckBox() {
+        if (cbPickAll.isChecked()) {
+            for (EWalletDataResponse item : mAdapter.getListFilter()) {
+                if (item.isSelected()) {
+                    item.setSelected(false);
+                }
+            }
+            cbPickAll.setChecked(false);
+        } else {
+            for (EWalletDataResponse item : mAdapter.getListFilter()) {
+                if (!item.isSelected()) {
+                    item.setSelected(true);
+                }
+            }
+            cbPickAll.setChecked(true);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private boolean isAllSelected() {
+        for (EWalletDataResponse item : mAdapter.getListFilter()) {
+            if (!item.isSelected()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
