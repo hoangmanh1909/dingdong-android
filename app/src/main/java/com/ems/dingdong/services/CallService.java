@@ -97,14 +97,6 @@ public class CallService extends Service {
             Logger.d(TAG, "onConnectionConnected stringee server");
             client = stringeeClient;
             registerToken();
-//            Logger.d("chauvp", "onIncomingCall1");
-//            HashMap<String, StringeeCall> callHashMap = new HashMap<>();
-//            callHashMap.put(Constants.CALL_TYPE, mStringeeCall);
-//            Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
-//            intent.putExtra(Constants.CALL_TYPE, 0);
-//            intent.putExtra(Constants.CALL_MAP, callHashMap);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
         }
 
         @Override

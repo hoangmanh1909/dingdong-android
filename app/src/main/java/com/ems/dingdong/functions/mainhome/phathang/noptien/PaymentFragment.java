@@ -117,6 +117,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         fromDate = DateTimeUtils.calculateDay(-100);
         toDate = DateTimeUtils.calculateDay(0);
 
+        cbPickAll.setClickable(false);
         mList = new ArrayList<>();
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setHasFixedSize(true);

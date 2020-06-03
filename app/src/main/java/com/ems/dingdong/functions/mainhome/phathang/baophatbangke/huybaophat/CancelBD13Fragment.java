@@ -215,37 +215,43 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 
     @Override
     public void showListSuccess(ArrayList<DingDongGetCancelDelivery> list) {
-        mList.clear();
-        swipeRefresh.setRefreshing(false);
-        long totalAmount = 0;
-        long totalFee = 0;
-        for (DingDongGetCancelDelivery i : list) {
-            mList.add(i);
-            if (i.getAmount() != null)
-                totalAmount = totalAmount + i.getAmount();
-            if (i.getFee() != null)
-                totalFee = totalFee + i.getFee();
+        if (getViewContext() != null) {
+            mList.clear();
+            swipeRefresh.setRefreshing(false);
+            long totalAmount = 0;
+            long totalFee = 0;
+            for (DingDongGetCancelDelivery i : list) {
+                mList.add(i);
+                if (i.getAmount() != null)
+                    totalAmount = totalAmount + i.getAmount();
+                if (i.getFee() != null)
+                    totalFee = totalFee + i.getFee();
 
+            }
+            mPresenter.titleChanged(mList.size(), 0);
+            tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount + totalFee)));
+            mAdapter.setListFilter(mList);
+            mAdapter.notifyDataSetChanged();
         }
-        mPresenter.titleChanged(mList.size(), 0);
-        tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount + totalFee)));
-        mAdapter.setListFilter(mList);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showError(String message) {
-        showErrorToast(message);
-        mPresenter.onCanceled();
-        swipeRefresh.setRefreshing(false);
+        if (getViewContext() != null) {
+            showErrorToast(message);
+            mPresenter.onCanceled();
+            swipeRefresh.setRefreshing(false);
+        }
     }
 
     @Override
     public void showView(String message) {
-        mList.clear();
-        mPresenter.onCanceled();
-        showSuccessToast(message);
-        getCancelDelivery(mFromDate, mToDate, "");
+        if (getViewContext() != null) {
+            mList.clear();
+            mPresenter.onCanceled();
+            showSuccessToast(message);
+            getCancelDelivery(mFromDate, mToDate, "");
+        }
     }
 
 }

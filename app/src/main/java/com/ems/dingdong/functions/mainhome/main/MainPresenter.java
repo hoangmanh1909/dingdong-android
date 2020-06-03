@@ -19,6 +19,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.Calendar;
@@ -123,12 +124,12 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                                     mView.initStringeeClient();
                                 } else {
                                     if (throwable != null)
-                                        mView.showErrorToast(throwable.getMessage());
+                                        Logger.e(throwable.getMessage());
                                     else
-                                        mView.showErrorToast(simpleResult.getMessage());
+                                        Logger.e(simpleResult.getMessage());
                                 }
                             } else if (throwable != null) {
-                                mView.showErrorToast(throwable.getMessage());
+                                Logger.e(throwable.getMessage());
                             }
                         }
                 );
