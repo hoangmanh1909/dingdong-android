@@ -243,9 +243,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static Observable<CommonObjectResult> findLocation(String ladingCode) {
+    public static Observable<CommonObjectResult> findLocation(String ladingCode, String poCode) {
         String signature = Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
-        return getAPIRxBuilder().findLocation(ladingCode.toUpperCase(), signature);
+        return getAPIRxBuilder().findLocation(ladingCode.toUpperCase(), poCode, signature);
     }
 
     public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {

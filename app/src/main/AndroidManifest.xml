@@ -30,7 +30,8 @@
         android:usesCleartextTraffic="true"
 
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".functions.login.LoginActivity">
+        <activity android:name=".functions.login.LoginActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

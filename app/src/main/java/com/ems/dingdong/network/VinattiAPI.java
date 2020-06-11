@@ -174,6 +174,7 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/TrackTrace/Lading")
     Observable<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
+                                                @Field("POCode") String poCode,
                                                 @Field("Signature") String signature
     );
 

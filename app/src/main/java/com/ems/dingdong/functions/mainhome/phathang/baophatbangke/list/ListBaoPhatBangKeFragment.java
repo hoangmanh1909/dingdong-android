@@ -445,6 +445,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         item.setSelected(false);
                     }
                 }
+                if (cbPickAll.isChecked()) {
+                    cbPickAll.setChecked(false);
+                }
                 relativeLayout.setVisibility(View.GONE);
                 mAdapter.notifyDataSetChanged();
                 break;

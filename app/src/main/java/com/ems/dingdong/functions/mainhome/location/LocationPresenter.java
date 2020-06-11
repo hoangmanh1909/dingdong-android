@@ -1,9 +1,15 @@
 package com.ems.dingdong.functions.mainhome.location;
 
+import android.text.TextUtils;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +21,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class LocationPresenter extends Presenter<LocationContract.View, LocationContract.Interactor>
         implements LocationContract.Presenter {
+
+    private String poCode;
 
     public LocationPresenter(ContainerView containerView) {
         super(containerView);
@@ -28,6 +36,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
     @Override
     public void start() {
         // Start getting data here
+        initPocode();
     }
 
     @Override
@@ -42,9 +51,12 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
 
     @Override
     public void findLocation() {
+        if (TextUtils.isEmpty(poCode)) {
+            initPocode();
+        }
         mView.fromView()
                 .debounce(500, TimeUnit.MILLISECONDS)
-                .flatMap(ladingCode -> mInteractor.findLocation(ladingCode))
+                .flatMap(ladingCode -> mInteractor.findLocation(ladingCode, poCode))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -63,5 +75,13 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                             mView.showErrorToast(throwable.getMessage());
                         }
                 );
+    }
+
+    private void initPocode() {
+        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+        String poCodeString = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!TextUtils.isEmpty(poCodeString)) {
+            poCode = NetWorkController.getGson().fromJson(poCodeString, PostOffice.class).getCode();
+        }
     }
 }

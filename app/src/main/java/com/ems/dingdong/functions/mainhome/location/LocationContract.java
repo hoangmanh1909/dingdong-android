@@ -16,7 +16,7 @@ import io.reactivex.Observable;
 interface LocationContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        Observable<CommonObjectResult> findLocation(String ladingCode);
+        Observable<CommonObjectResult> findLocation(String ladingCode, String poCode);
     }
 
     interface View extends PresentView<Presenter> {

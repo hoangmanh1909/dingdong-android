@@ -17,7 +17,7 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
     }
 
     @Override
-    public Observable<CommonObjectResult> findLocation(String ladingCode) {
-        return NetWorkController.findLocation(ladingCode);
+    public Observable<CommonObjectResult> findLocation(String ladingCode, String poCode) {
+        return NetWorkController.findLocation(ladingCode, poCode);
     }
 }

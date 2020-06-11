@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -46,7 +45,6 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -54,6 +52,7 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.io.File;
@@ -120,13 +119,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_total_fee)
     CustomBoldTextView tvTotalFee;
     @BindView(R.id.edt_receiver_name)
-    EditText tvReceiverName;
+    TextInputEditText tvReceiverName;
     @BindView(R.id.edt_GTTT)
-    FormItemEditText tvGTTT;
+    TextInputEditText tvGTTT;
     @BindView(R.id.edt_relationship)
     CustomTextView edtRelationship;
-    @BindView(R.id.tv_receiver_name)
-    CustomTextView tvRealReceiverName;
     @BindView(R.id.rl_relationship)
     RelativeLayout rlRelationship;
     @BindView(R.id.layout_real_receiver_name)
@@ -136,7 +133,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
-    FormItemEditText edtOtherRelationship;
+    TextInputEditText edtOtherRelationship;
     private XacNhanBaoPhatAdapter adapter;
 
     private String mSign = "";
@@ -195,7 +192,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
-        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận thực tế: " + "<font color=\"red\">*</font>"));
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -351,18 +347,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showErrorToast("Bạn chưa nhập tên người nhận thực tế");
                 return;
             }
+
+            if (TextUtils.isEmpty(edtOtherRelationship.getText()) && edtRelationship.getText().equals("Khác")) {
+                showErrorToast("Bạn chưa nhập mối quan hệ với người nhận");
+                return;
+            }
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mSign,
-                                    tvReceiverName.getText().toString(), tvGTTT.getText(),
-                                    edtOtherRelationship.getText());
+                            mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTTT.getText().toString(), edtOtherRelationship.getText().toString());
                         } else {
-                            mPresenter.paymentDelivery(mFile, mSign,
-                                    tvReceiverName.getText().toString(),
-                                    tvGTTT.getText(), edtRelationship.getText().toString());
+                            mPresenter.paymentDelivery(mFile, mSign, tvReceiverName.getText().toString(), tvGTTT.getText().toString(), edtRelationship.getText().toString());
                         }
                         confirmDialog.dismiss();
                     })
