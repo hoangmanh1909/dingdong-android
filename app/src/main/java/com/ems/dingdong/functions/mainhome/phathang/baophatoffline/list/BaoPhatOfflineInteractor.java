@@ -20,6 +20,7 @@ class BaoPhatOfflineInteractor extends Interactor<BaoPhatOfflineContract.Present
     public void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
         NetWorkController.searchParcelCodeDelivery(parcelCode, callback);
     }
+
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
@@ -32,6 +33,6 @@ class BaoPhatOfflineInteractor extends Interactor<BaoPhatOfflineContract.Present
                                   String reasonCode, String solutionCode, String status, String paymentChannel,
                                   String deliveryType, String sign, String note, String amount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, sign,note, amount,ladingPostmanID, commonCallback);
+                solutionCode, status, paymentChannel, deliveryType, sign, note, amount, ladingPostmanID, "", commonCallback);
     }
 }

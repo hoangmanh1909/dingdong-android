@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.callback.SignCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
@@ -36,9 +37,11 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
+import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
@@ -50,14 +53,15 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -153,6 +157,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     ImageView imgSign;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
+    @BindView(R.id.iv_package_1)
+    SimpleDraweeView iv_package_1;
+    @BindView(R.id.iv_package_2)
+    SimpleDraweeView iv_package_2;
+    @BindView(R.id.iv_package_3)
+    SimpleDraweeView iv_package_3;
 
     private ArrayList<ReasonInfo> mListReason;
     private CommonObject mBaoPhatBangke;
@@ -170,6 +180,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private String mPhone;
     private String mCollectAmount = "";
     private PhoneConectDialog mPhoneConectDialog;
+    private int imgPosition = 0;
+    private String mFile = "";
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -328,7 +340,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_SenderPhone, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime})
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -418,6 +430,62 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
                 break;
+
+            case R.id.iv_package_1:
+                imgPosition = 1;
+                MediaUltis.captureImage(this);
+                break;
+            case R.id.iv_package_2:
+                imgPosition = 2;
+                MediaUltis.captureImage(this);
+                break;
+            case R.id.iv_package_3:
+                imgPosition = 3;
+                MediaUltis.captureImage(this);
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                attemptSendMedia(data.getData().getPath());
+            }
+        }
+    }
+
+    private void attemptSendMedia(String path_media) {
+        Uri picUri = Uri.fromFile(new File(path_media));
+        if (imgPosition == 1)
+            iv_package_1.setImageURI(picUri);
+        else if (imgPosition == 2)
+            iv_package_2.setImageURI(picUri);
+        else
+            iv_package_3.setImageURI(picUri);
+
+        File file = new File(path_media);
+        Bitmap bitmap = BitmapUtils.processingBitmap(picUri, getViewContext());
+        if (bitmap != null) {
+
+            if (BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                // mSignPosition = false;
+                mPresenter.postImage(path);
+                picUri = Uri.fromFile(new File(path));
+                if (imgPosition == 1)
+                    iv_package_1.setImageURI(picUri);
+                else if (imgPosition == 2)
+                    iv_package_2.setImageURI(picUri);
+                else
+                    iv_package_3.setImageURI(picUri);
+                if (file.exists())
+                    file.delete();
+            } else {
+                mPresenter.postImage(path_media);
+            }
+        } else {
+            mPresenter.postImage(path_media);
         }
     }
 
@@ -477,13 +545,13 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         mBaoPhatBangke.getReciverName(),
                         edtCollectAmount.getText());
             } else {*/
-                message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s  VNĐ (số tiền yêu cầu nhờ thu %s  VNĐ) \nBạn có muốn xác nhận không ?",
-                        mBaoPhatBangke.getCode(),
-                        mBaoPhatBangke.getReciverName(),
-                        edtCollectAmount.getText(),
-                        mPresenter.getAmount()// NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount)
-                );
-           // }
+            message = String.format("Bưu gửi %s, người nhận: %s, thực thu %s  VNĐ (số tiền yêu cầu nhờ thu %s  VNĐ) \nBạn có muốn xác nhận không ?",
+                    mBaoPhatBangke.getCode(),
+                    mBaoPhatBangke.getReciverName(),
+                    edtCollectAmount.getText(),
+                    mPresenter.getAmount()// NumberUtils.formatPriceNumber(Long.parseLong(mCollectAmount)
+            );
+            // }
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
@@ -526,6 +594,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
         mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
         mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+        mBaoPhatBangke.setFileNames(mFile);
         if (!TextUtils.isEmpty(mSign)) {
             mBaoPhatBangke.setSignatureCapture(mSign);
         }
@@ -657,6 +726,27 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @Override
     public void showView() {
         mPhoneConectDialog.updateText();
+    }
+
+    @Override
+    public void showImage(String file) {
+        if (mFile.equals("")) {
+            mFile = file;
+        } else {
+            mFile += ";";
+            mFile += file;
+        }
+    }
+
+    @Override
+    public void deleteFile() {
+        mFile = "";
+        if (imgPosition == 1)
+            iv_package_1.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+        else if (imgPosition == 2)
+            iv_package_2.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+        else
+            iv_package_3.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
     }
 
     private void showUIReason() {

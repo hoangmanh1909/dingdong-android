@@ -28,7 +28,7 @@ class BaoPhatKhongThanhCongInteractor extends Interactor<BaoPhatKhongThanhCongCo
                           String solutionCode, String note,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode,
                 deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status,
-                "", "", "", note, "0",ladingPostmanID, commonCallback);
+                "", "", "", note, "0",ladingPostmanID, "", commonCallback);
     }
 
     @Override

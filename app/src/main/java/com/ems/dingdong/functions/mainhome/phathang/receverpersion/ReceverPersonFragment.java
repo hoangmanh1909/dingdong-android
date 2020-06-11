@@ -1,11 +1,16 @@
 package com.ems.dingdong.functions.mainhome.phathang.receverpersion;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -18,8 +23,10 @@ import com.ems.dingdong.base.DingDongActivity;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
@@ -28,9 +35,12 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
+import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +67,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     @BindView(R.id.tv_deliveryTime)
     FormItemTextView tvDeliveryTime;
     @BindView(R.id.btn_confirm)
-    CustomTextView btnConfirm;
+    ImageView btnConfirm;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.rad_cash)
@@ -70,12 +80,22 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     View llPayMent;
     @BindView(R.id.tv_total_batch)
     CustomTextView tvTotalBatch;
+    @BindView(R.id.iv_package_1)
+    SimpleDraweeView iv_package_1;
+    @BindView(R.id.iv_package_2)
+    SimpleDraweeView iv_package_2;
+    @BindView(R.id.iv_package_3)
+    SimpleDraweeView iv_package_3;
+    @BindView(R.id.ll_take_photo)
+    LinearLayout llTakePhoto;
 
     private Calendar calDate;
     private int mHour;
     private int mMinute;
     private BaoPhatAdapter mAdapter;
     private int mPaymentType = 1;
+    private int imgPosition = 0;
+    private String mFile = "";
 
     public static ReceverPersonFragment getInstance() {
         return new ReceverPersonFragment();
@@ -115,9 +135,13 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 HolderView holderView = (HolderView) holder;
-                holderView.itemView.setOnClickListener(view ->{
+                holderView.itemView.setOnClickListener(view -> {
                     holderView.removeItemAtPosition(position);
                     tvTotalBatch.setText(String.valueOf(mAdapter.getItemCount()));
+                    if (mAdapter.getListItem().size() == 1)
+                        llTakePhoto.setVisibility(View.VISIBLE);
+                    else
+                        llTakePhoto.setVisibility(View.GONE);
                 });
             }
         };
@@ -156,7 +180,8 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
     }
 
 
-    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.tv_deliveryDate, R.id.tv_deliveryTime})
+    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.tv_deliveryDate, R.id.tv_deliveryTime,
+            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -208,6 +233,19 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
                 break;
+
+            case R.id.iv_package_1:
+                imgPosition = 1;
+                MediaUltis.captureImage(this);
+                break;
+            case R.id.iv_package_2:
+                imgPosition = 2;
+                MediaUltis.captureImage(this);
+                break;
+            case R.id.iv_package_3:
+                imgPosition = 3;
+                MediaUltis.captureImage(this);
+                break;
         }
     }
 
@@ -225,6 +263,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
             item.setCurrentPaymentType(mPaymentType + "");
             item.setUserDelivery(tvUserDelivery.getText());
             item.setRealReceiverIDNumber(edtReceiverIDNumber.getText());
+            item.setFileNames(mFile);
             item.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
             String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
             item.setDeliveryTime(time);
@@ -246,5 +285,74 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                 ((DingDongActivity) getActivity()).getSupportActionBar().hide();
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                attemptSendMedia(data.getData().getPath());
+            }
+        }
+    }
+
+    private void attemptSendMedia(String path_media) {
+        Uri picUri = Uri.fromFile(new File(path_media));
+        if (imgPosition == 1)
+            iv_package_1.setImageURI(picUri);
+        else if (imgPosition == 2)
+            iv_package_2.setImageURI(picUri);
+        else
+            iv_package_3.setImageURI(picUri);
+
+        File file = new File(path_media);
+        Bitmap bitmap = BitmapUtils.processingBitmap(picUri, getViewContext());
+        if (bitmap != null) {
+
+            if (BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                // mSignPosition = false;
+                mPresenter.postImage(path);
+                picUri = Uri.fromFile(new File(path));
+                if (imgPosition == 1)
+                    iv_package_1.setImageURI(picUri);
+                else if (imgPosition == 2)
+                    iv_package_2.setImageURI(picUri);
+                else
+                    iv_package_3.setImageURI(picUri);
+                if (file.exists())
+                    file.delete();
+            } else {
+                mPresenter.postImage(path_media);
+            }
+        } else {
+            mPresenter.postImage(path_media);
+        }
+    }
+
+    @Override
+    public void showImage(String file) {
+        if (mFile.equals("")) {
+            mFile = file;
+        } else {
+            mFile += ";";
+            mFile += file;
+        }
+    }
+
+    @Override
+    public void deleteFile() {
+        mFile = "";
+        if (imgPosition == 1)
+            iv_package_1.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+        else if (imgPosition == 2)
+            iv_package_2.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+        else
+            iv_package_3.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+    }
+
+    @Override
+    public List<CommonObject> getItemSelected() {
+        return mAdapter.getListItem();
     }
 }

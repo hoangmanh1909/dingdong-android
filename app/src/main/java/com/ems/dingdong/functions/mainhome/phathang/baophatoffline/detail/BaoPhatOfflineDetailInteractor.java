@@ -24,7 +24,7 @@ class BaoPhatOfflineDetailInteractor extends Interactor<BaoPhatOfflineDetailCont
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signature,
-                note,amount, commonCallback);
+                note, amount, "", commonCallback);
     }
 
     @Override
@@ -33,6 +33,6 @@ class BaoPhatOfflineDetailInteractor extends Interactor<BaoPhatOfflineDetailCont
                                   String status, String paymentChannel, String deliveryType, String sign, String note,
                                   String amount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, paymentChannel, deliveryType, sign,note, amount,ladingPostmanID, commonCallback);
+                solutionCode, status, paymentChannel, deliveryType, sign, note, amount, ladingPostmanID, "", commonCallback);
     }
 }

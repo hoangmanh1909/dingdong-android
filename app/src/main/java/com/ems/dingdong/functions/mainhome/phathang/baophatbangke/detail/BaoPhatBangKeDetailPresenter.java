@@ -13,6 +13,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -120,6 +121,25 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
+            }
+        });
+    }
+
+    @Override
+    public void postImage(String path) {
+        mView.showProgress();
+        mInteractor.postImage(path, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
+                super.onSuccess(call, response);
+                mView.showImage(response.body().getFile());
+            }
+
+            @Override
+            protected void onError(Call<UploadSingleResult> call, String message) {
+                super.onError(call, message);
+                mView.showAlertDialog(message);
+                mView.deleteFile();
             }
         });
     }
@@ -280,6 +300,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryDate = mBaoPhatBangke.getDeliveryDate();
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
+        String fileNames = mBaoPhatBangke.getFileNames();
         final String reasonCode = "";
         String solutionCode = "";
         String status = "C14";
@@ -296,7 +317,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 paymentDelivery(signatureCapture);
             } else {
                 mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                        reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, mBaoPhatBangke.getiD(),
+                        reasonCode, solutionCode, status, paymentChannel, deliveryType, "", amount, signatureCapture, mBaoPhatBangke.getiD(), fileNames,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override
                             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -353,6 +374,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
         String receiverIDNumber = mBaoPhatBangke.getReceiverIDNumber();
+        String fileNames = mBaoPhatBangke.getFileNames();
         String reasonCode = "";
         String solutionCode = "";
         String status = "C14";
@@ -366,7 +388,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, fileNames, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

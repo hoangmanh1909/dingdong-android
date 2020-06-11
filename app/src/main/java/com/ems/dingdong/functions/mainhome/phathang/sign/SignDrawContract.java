@@ -28,9 +28,10 @@ interface SignDrawContract {
                            String paymentChannel,
                            String deliveryType,
                            String amount,
+                           String fileNames,
                            String signatureCapture, String ladingPostmanID,CommonCallback<SimpleResult> callback);
 
-    void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String amount, CommonCallback<SimpleResult> commonCallback);
+    void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String amount, String fileNames, CommonCallback<SimpleResult> commonCallback);
   }
 
   interface View extends PresentView<Presenter> {

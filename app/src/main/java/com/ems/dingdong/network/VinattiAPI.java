@@ -153,6 +153,7 @@ public interface VinattiAPI {
                                          @Field("SignatureCapture") String signatureCapture,
                                          @Field("Note") String note,
                                          @Field("CollectAmount") String collectAmount,
+                                         @Field("FileNames ") String fileNames,
                                          @Field("LadingPostmanID") String ladingPostmanID,
                                          @Field("ShiftID") String shiftID,
                                          @Field("Signature") String signature);
@@ -193,6 +194,7 @@ public interface VinattiAPI {
                                        @Field("Note") String note,
                                        @Field("CollectAmount") String collectAmount,
                                        @Field("ShiftID") String shiftID,
+                                       @Field("FileNames") String fileNames,
                                        @Field("Signature") String signature
     );
 
