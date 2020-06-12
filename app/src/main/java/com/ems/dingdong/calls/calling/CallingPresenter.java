@@ -15,6 +15,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     private int type;
     private String callerNumber;
     private String calleeNumber;
+    private long sessionId;
 
     public CallingPresenter(ContainerView containerView) {
         super(containerView);
@@ -60,9 +61,14 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         return new CallingInteractor(this);
     }
 
+    public CallingPresenter setSessionId(long sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
     @Override
     public CallingContract.View onCreateView() {
-        return CallingFragment.getInstance();
+        return CallingFragment1.getInstance();
     }
 
     @Override
@@ -88,6 +94,11 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     @Override
     public String getCalleeNumber() {
         return calleeNumber;
+    }
+
+    @Override
+    public long getSessionId() {
+        return sessionId;
     }
 
     @Override

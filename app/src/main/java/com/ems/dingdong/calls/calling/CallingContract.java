@@ -27,6 +27,8 @@ public interface CallingContract {
 
         String getCalleeNumber();
 
+        long getSessionId();
+
         void openDiapadScreen();
 
     }

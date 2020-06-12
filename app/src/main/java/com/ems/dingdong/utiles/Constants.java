@@ -91,6 +91,7 @@ public class Constants {
     public static final String CALL_ID = "call_id";
 
     public static final String CALL_TYPE = "call_type";
+    public static final String SESSION_ID= "SESSION_ID";
     public static final int CALL_TYPE_RECEIVING = 0;
     public static final int CALL_TYPE_CALLING = 1;
     public static final String KEY_ID_FROM_CALLING = "KEY_ID_FROM_CALLING";

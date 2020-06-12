@@ -80,8 +80,13 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-        if (mPresenter != null)
-            mPresenter.getAccessToken();
+
+//        if (mPresenter != null)
+//            mPresenter.getAccessToken();
+
+        ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
+        applicationController.initPortSipService();
+
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);

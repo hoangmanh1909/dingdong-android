@@ -114,7 +114,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         if (!TextUtils.isEmpty(routeInfoJson)) {
             routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
         }
-        fromDate = DateTimeUtils.calculateDay(-100);
+        fromDate = DateTimeUtils.calculateDay(0);
         toDate = DateTimeUtils.calculateDay(0);
 
         cbPickAll.setClickable(false);

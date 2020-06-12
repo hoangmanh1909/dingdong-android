@@ -192,11 +192,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:gravity="left|center"
-                        android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Báo phát thành công"
                         android:textColor="@color/bg_primary"
-                        android:textSize="@dimen/_14sdp" />
+                        android:gravity="left|center"
+                        android:textSize="@dimen/_14sdp"
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:text="Báo phát thành công" />
 
                     <RadioButton
                         android:id="@+id/rad_fail"
@@ -206,9 +206,9 @@
                         android:layout_marginTop="@dimen/dimen_5dp"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Không thành công"
+                        android:textSize="@dimen/_14sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp" />
+                        android:text="Không thành công" />
 
                     <RadioButton
                         android:id="@+id/rad_change_route"
@@ -216,11 +216,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_5dp"
+                        android:textSize="@dimen/_14sdp"
                         android:gravity="left|center"
-                        android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Chuyển tuyến"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/_14sdp" />
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:text="Chuyển tuyến" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -242,38 +242,55 @@
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingRight="@dimen/dimen_10dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textField"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
-                    android:textColorHint="@color/red_light"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:hint="Tên người nhận thực tế*">
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:id="@+id/tv_receiver_name"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+                    <EditText
                         android:id="@+id/edt_receiver_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
+                </LinearLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textField1"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:hint="Số GTGT">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số GTTT: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
                         android:id="@+id/edt_GTTT"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="1000000"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
-
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/rl_relationship"
@@ -281,7 +298,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
-                    android:background="@drawable/bg_border_edittext"
                     android:orientation="horizontal"
                     android:paddingTop="@dimen/dimen_12dp"
                     android:paddingBottom="@dimen/dimen_12dp">
@@ -290,7 +306,6 @@
                         android:id="@+id/tv_relationship"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_10dp"
                         android:layout_centerVertical="true"
                         android:text="Mối quan hệ với người nhận: "
                         android:textColor="@color/black"
@@ -305,8 +320,10 @@
                             android:id="@+id/edt_relationship"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_toRightOf="@+id/tv_relationship"
+                            android:paddingRight="@dimen/_5sdp"
                             android:hint="Chọn mối quan hệ"
-                            android:paddingRight="@dimen/_2sdp"
                             android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
 
@@ -315,54 +332,64 @@
                             android:layout_height="@dimen/_5sdp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/size_10dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_arrow_drop_down" />
                     </LinearLayout>
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_other_relationship"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/ll_other_relationship"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField3"
-                        android:layout_width="match_parent"
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColorHint="@color/red_light"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:hint="Mối quan hệ khác*">
+                        android:text="Mối quan hệ khác: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edt_other_relationship"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/edt_other_relationship"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="1000000"
+                        app:formHint="@string/enter_relationship"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
 
                 </LinearLayout>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textField2"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_marginTop="@dimen/dimen_8dp"
-                    android:hint="Ghi chú">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
                         android:id="@+id/edt_note"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="1000000"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
-
+                </LinearLayout>
 
             </LinearLayout>
 

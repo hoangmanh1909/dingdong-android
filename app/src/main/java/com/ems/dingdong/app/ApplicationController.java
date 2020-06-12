@@ -13,8 +13,10 @@ import com.crashlytics.android.Crashlytics;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.services.CallService;
+import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.portsip.PortSipSdk;
 import com.stringee.StringeeClient;
 import com.stringee.call.StringeeCall;
 
@@ -27,7 +29,9 @@ public class ApplicationController extends MultiDexApplication {
 
     static ApplicationController applicationController;
     private CallService callService;
+    private PortSipService portSipService;
     private boolean mBound = false;
+    public PortSipSdk portSipSdk;
 
     private ServiceConnection connection = new ServiceConnection() {
 
@@ -36,8 +40,10 @@ public class ApplicationController extends MultiDexApplication {
                                        IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             Logger.d(TAG, "onServiceConnected");
-            CallService.CallBinder binder = (CallService.CallBinder) service;
-            callService = binder.getService();
+//            CallService.CallBinder binder = (CallService.CallBinder) service;
+//            callService = binder.getService();
+            PortSipService.PortSipBinder binder = (PortSipService.PortSipBinder)service;
+            portSipService = binder.getService();
             mBound = true;
         }
 
@@ -60,7 +66,11 @@ public class ApplicationController extends MultiDexApplication {
                 .migration(new DingDongRealm()).build();
         Realm.setDefaultConfiguration(config);
         applicationController = this;
-        Intent intent = new Intent(this, CallService.class);
+        portSipSdk = new PortSipSdk();
+//        Intent intent = new Intent(this, CallService.class);
+//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+        Intent intent = new Intent(this, PortSipService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
@@ -73,6 +83,15 @@ public class ApplicationController extends MultiDexApplication {
             callService.initStringeeClient();
         else {
             Intent intent = new Intent(this, CallService.class);
+            bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    public void initPortSipService() {
+        if (mBound)
+            portSipService.registerToServer();
+        else {
+            Intent intent = new Intent(this, PortSipService.class);
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
     }

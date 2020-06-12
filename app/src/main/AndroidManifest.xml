@@ -272,6 +272,9 @@
         <service android:name=".services.CallService">
 
         </service>
+        <service android:name=".services.PortSipService">
+
+        </service>
 
 
         <!--
