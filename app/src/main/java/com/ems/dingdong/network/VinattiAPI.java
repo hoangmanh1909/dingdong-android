@@ -3,19 +3,20 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
-import com.ems.dingdong.model.NotificationInfo;
 import com.ems.dingdong.model.NotificationResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.SuportTypeResult;
+import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 
@@ -153,7 +154,7 @@ public interface VinattiAPI {
                                          @Field("SignatureCapture") String signatureCapture,
                                          @Field("Note") String note,
                                          @Field("CollectAmount") String collectAmount,
-                                         @Field("FileNames ") String fileNames,
+                                         @Field("FileNames") String fileNames,
                                          @Field("LadingPostmanID") String ladingPostmanID,
                                          @Field("ShiftID") String shiftID,
                                          @Field("Signature") String signature);
@@ -279,4 +280,12 @@ public interface VinattiAPI {
 
     @GET("PushNotify/UpdateRead")
     Call<SimpleResult> updateRead(@Query("mobileNumber") String mobileNumber);
+
+    @GET("api/Dictionary/GetSupportType")
+    Call<SuportTypeResult> getSupportType();
+
+    @POST("api/Delivery/AddSuport")
+    Call<SimpleResult> addSupport(@Body SupportRequest request);
+
+
 }

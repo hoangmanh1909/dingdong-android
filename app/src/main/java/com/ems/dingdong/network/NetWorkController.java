@@ -17,6 +17,8 @@ import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SuportTypeResult;
+import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.utiles.Constants;
@@ -327,6 +329,16 @@ public class NetWorkController {
 
     public static void updateRead(String mobileNumber, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().updateRead(mobileNumber);
+        call.enqueue(callback);
+    }
+
+    public static void getSupportType(CommonCallback<SuportTypeResult> callback) {
+        Call<SuportTypeResult> call = getAPIBuilder().getSupportType();
+        call.enqueue(callback);
+    }
+
+    public static void addSupport(SupportRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().addSupport(request);
         call.enqueue(callback);
     }
 }

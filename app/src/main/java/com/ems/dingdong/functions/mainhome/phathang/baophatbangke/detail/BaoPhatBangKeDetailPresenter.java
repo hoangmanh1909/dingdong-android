@@ -13,6 +13,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -145,6 +146,37 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     }
 
     @Override
+    public void addSupportType(Integer id, String description) {
+        SupportRequest request = new SupportRequest();
+        request.setLadingCode(mBaoPhatBangke.getParcelCode());
+        request.setDescription(description);
+        request.setSupportType(id);
+        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postmanId = "";
+        if (!TextUtils.isEmpty(userJson)) {
+            postmanId = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD();
+        }
+        request.setPostmanId(postmanId);
+        mInteractor.addSupportType(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showError(message);
+            }
+
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onResponse(call, response);
+                if (response.body() != null && response.body().getErrorCode().equals("00")) {
+                    mView.showSuccessMessage(response.body().getMessage());
+                } else
+                    mView.showError(response.message());
+            }
+        });
+    }
+
+    @Override
     public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
     }
@@ -238,8 +270,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        String ladingCode=mBaoPhatBangke.getParcelCode();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String ladingCode = mBaoPhatBangke.getParcelCode();
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

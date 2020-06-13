@@ -7,6 +7,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SuportTypeResult;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -37,5 +38,10 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     @Override
     public void getReasons(CommonCallback<ReasonResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
+    }
+
+    @Override
+    public void getSupportType(CommonCallback<SuportTypeResult> commonCallback) {
+        NetWorkController.getSupportType(commonCallback);
     }
 }

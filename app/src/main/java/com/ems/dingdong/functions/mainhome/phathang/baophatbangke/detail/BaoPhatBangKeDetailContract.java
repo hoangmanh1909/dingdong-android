@@ -11,6 +11,7 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadSingleResult;
 
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ interface BaoPhatBangKeDetailContract {
         void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
         void postImage(String path, CommonCallback<UploadSingleResult> callback);
+
+        void addSupportType(SupportRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -120,6 +123,8 @@ interface BaoPhatBangKeDetailContract {
         void updateMobile(String phone);
 
         void postImage(String path);
+
+        void addSupportType(Integer id, String description);
     }
 }
 

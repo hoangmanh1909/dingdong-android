@@ -6,6 +6,7 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.network.NetWorkController;
 
@@ -70,5 +71,10 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     @Override
     public void postImage(String path, CommonCallback<UploadSingleResult> callback) {
         NetWorkController.postImageSingle(path, callback);
+    }
+
+    @Override
+    public void addSupportType(SupportRequest request, CommonCallback<SimpleResult> callback) {
+        NetWorkController.addSupport(request, callback);
     }
 }

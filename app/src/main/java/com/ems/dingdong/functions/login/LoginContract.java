@@ -9,6 +9,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SuportTypeResult;
 
 /**
  * The Login Contract
@@ -17,11 +18,14 @@ interface LoginContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void login(String mobileNumber, String signCode, CommonCallback<LoginResult> commonCallback);
+
         void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback);
 
         void getSolutions(CommonCallback<SolutionResult> commonCallback);
 
         void getReasons(CommonCallback<ReasonResult> commonCallback);
+
+        void getSupportType(CommonCallback<SuportTypeResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -36,6 +40,8 @@ interface LoginContract {
         void login(String mobileNumber, String signCode);
 
         void gotoValidation();
+
+        void getSupportType();
     }
 }
 

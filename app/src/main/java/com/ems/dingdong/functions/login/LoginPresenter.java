@@ -6,14 +6,15 @@ import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.functions.login.validation.ValidationPresenter;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.login.validation.ValidationPresenter;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SuportTypeResult;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
@@ -57,6 +58,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 if (response.body().getErrorCode().equals("00")) {
                     getSolutions();
                     getReasons();
+                    getSupportType();
                     getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
@@ -81,6 +83,29 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     @Override
     public void gotoValidation() {
         new ValidationPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void getSupportType() {
+        mInteractor.getSupportType(new CommonCallback<SuportTypeResult>((Activity) mContainerView) {
+            @Override
+            protected void onError(Call<SuportTypeResult> call, String message) {
+                super.onError(call, message);
+                mView.showError(message);
+            }
+
+            @Override
+            public void onResponse(Call<SuportTypeResult> call, Response<SuportTypeResult> response) {
+                super.onResponse(call, response);
+
+                if (response.body().getErrorCode().equals("00")) {
+                    SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                    sharedPref.putString(Constants.KEY_SUPPORT_TYPE, NetWorkController.getGson().toJson(response.body().getResponseList()));
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
+        });
     }
 
     private void getPostOfficeByCode(String unitCode, String postmanID) {
@@ -143,6 +168,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
         });
     }
+
     private void getReasons() {
         mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
             @Override

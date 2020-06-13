@@ -71,8 +71,8 @@ public class CommonObject extends RealmObject {
     String Info;
     @SerializedName("Instruction")
     String instruction;
-
-
+    @SerializedName("IsWarring")
+    String isWarring;
     @SerializedName("RealReceiverName")
     private String realReceiverName;
 
@@ -473,5 +473,9 @@ public class CommonObject extends RealmObject {
 
     public String getFileNames() {
         return fileNames;
+    }
+
+    public String getIsWarring() {
+        return isWarring;
     }
 }

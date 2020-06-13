@@ -27,6 +27,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.callback.SignCallback;
+import com.ems.dingdong.dialog.DialogAddSupportType;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -35,6 +36,7 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.SolutionInfo;
+import com.ems.dingdong.model.SupportTypeResponse;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
@@ -54,6 +56,7 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.reflect.TypeToken;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
@@ -62,8 +65,10 @@ import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -182,6 +187,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private PhoneConectDialog mPhoneConectDialog;
     private int imgPosition = 0;
     private String mFile = "";
+    private List<SupportTypeResponse> listSupportType;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -283,6 +289,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             llInfoOrder.setVisibility(View.GONE);
         }
         EditTextUtils.editTextListener(edtCollectAmount.getEditText());
+        SharedPref pref = SharedPref.getInstance(getViewContext());
+        String supportString = pref.getString(Constants.KEY_SUPPORT_TYPE, "");
+        Type type = new TypeToken<List<SupportTypeResponse>>() {
+        }.getType();
+        listSupportType = NetWorkController.getGson().fromJson(supportString, type);
     }
 
     private void setupReciverPerson() {
@@ -340,7 +351,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_SenderPhone, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3})
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3,
+            R.id.iv_question})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -382,6 +394,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             case R.id.tv_reason:
                 showUIReason();
                 break;
+            case R.id.iv_question:
+                new DialogAddSupportType(getViewContext(), listSupportType,
+                        (description, id) -> mPresenter.addSupportType(id, description)).show();
             case R.id.tv_solution:
                 if (mListSolution != null) {
                     showUISolution();

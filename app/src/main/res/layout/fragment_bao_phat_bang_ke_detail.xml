@@ -35,7 +35,13 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp" />
-
+            <ImageView
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/img_send"
+                android:id="@+id/iv_question"
+                android:src="@drawable/ic_question_blue" />
             <ImageView
                 android:id="@+id/img_send"
                 android:layout_width="@dimen/dimen_56dp"
