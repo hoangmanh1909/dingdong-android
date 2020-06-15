@@ -35,7 +35,16 @@
                 android:text="Thông tin vận đơn"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp"  />
+                android:textSize="@dimen/text_size_16sp" />
+
+            <ImageView
+                android:id="@+id/btn_confirm"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_5dp"
+                android:src="@drawable/ic_send_telegram" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -56,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"/>
+                android:layout_marginRight="@dimen/dimen_10dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -173,35 +183,35 @@
                                 app:formShowClear="true" />
 
                         </LinearLayout>
-                       <!-- <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                        <!-- <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal"
+                             android:weightSum="2">
 
-                            <CustomTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="0.8"
-                                android:paddingTop="@dimen/dimen_10dp"
-                                android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Tiền thực thu"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp" />
+                             <CustomTextView
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="center"
+                                 android:layout_weight="0.8"
+                                 android:paddingTop="@dimen/dimen_10dp"
+                                 android:paddingBottom="@dimen/dimen_10dp"
+                                 android:text="Tiền thực thu"
+                                 android:textColor="@color/black"
+                                 android:textSize="@dimen/text_size_14sp" />
 
-                            <FormItemEditText
-                                android:id="@+id/edt_CollectAmount"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.2"
-                                android:paddingTop="@dimen/dimen_5dp"
-                                android:paddingBottom="@dimen/dimen_5dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp"
-                                app:formShowClear="true" />
+                             <FormItemEditText
+                                 android:id="@+id/edt_CollectAmount"
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1.2"
+                                 android:paddingTop="@dimen/dimen_5dp"
+                                 android:paddingBottom="@dimen/dimen_5dp"
+                                 android:textColor="@color/black"
+                                 android:textSize="@dimen/text_size_14sp"
+                                 app:formShowClear="true" />
 
-                        </LinearLayout>-->
+                         </LinearLayout>-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -234,9 +244,9 @@
                                     style="@style/CustomRadioButtonStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:checked="true"
                                     android:gravity="left|center"
                                     android:paddingLeft="@dimen/dimen_5dp"
-                                    android:checked="true"
                                     android:text="Tiền mặt"
                                     android:textColor="@color/blue" />
 
@@ -347,8 +357,6 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
                             app:formAction="@drawable/ic_arrow_down" />
-
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -373,43 +381,66 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:clickable="false"
                             android:paddingTop="@dimen/dimen_5dp"
                             android:paddingBottom="@dimen/dimen_5dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-                            android:clickable="false"
                             app:formAction="@drawable/ic_arrow_down" />
-
-
                     </LinearLayout>
-
                 </LinearLayout>
-
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:padding="@dimen/dimen_10dp">
+                android:background="@color/white"
+                android:id="@+id/ll_take_photo"
+                android:visibility="gone"
+                android:orientation="vertical">
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/btn_confirm"
-                    android:layout_width="wrap_content"
+                <com.ems.dingdong.views.CustomBoldTextView
+                    style="@style/HeaderNews"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_header_common"
+                    android:text="Chụp ảnh"
+                    android:textColor="@color/white" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_package_1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_confirm_continue"
-                    android:drawableLeft="@drawable/ic_arrow_right"
-                    android:drawablePadding="@dimen/dimen_5dp"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_20dp"
-                    android:paddingRight="@dimen/dimen_20dp"
-                    android:text="Tiếp tục"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_18sp" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:scaleType="center"
+                    app:placeholderImage="@drawable/ic_camera_capture"
+                    app:placeholderImageScaleType="centerInside"
+                    app:viewAspectRatio="1" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_package_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:scaleType="center"
+                    app:placeholderImage="@drawable/ic_camera_capture"
+                    app:placeholderImageScaleType="centerInside"
+                    app:viewAspectRatio="1" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_package_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:scaleType="center"
+                    app:placeholderImage="@drawable/ic_camera_capture"
+                    app:placeholderImageScaleType="centerInside"
+                    app:viewAspectRatio="1" />
             </LinearLayout>
         </LinearLayout>
 

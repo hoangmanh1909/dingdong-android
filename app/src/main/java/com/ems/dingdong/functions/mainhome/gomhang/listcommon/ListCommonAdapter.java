@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -44,6 +45,8 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
         CustomTextView tvContactDescription;
         @BindView(R.id.tv_status)
         CustomTextView tvStatus;
+        @BindView(R.id.ll_item_xac_nhan_tin)
+        LinearLayout linearLayout;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -60,6 +63,12 @@ public class ListCommonAdapter extends RecyclerBaseAdapter {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             } else {
                 tvContactDescription.setText(item.getDescription());
+            }
+
+            if (item.getIsWarring().equals("Y")) {
+                linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_xac_nhan_tin));
+            } else {
+                linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
             }
 
 

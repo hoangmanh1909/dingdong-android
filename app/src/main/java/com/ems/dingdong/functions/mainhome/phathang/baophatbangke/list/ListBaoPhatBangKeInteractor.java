@@ -24,7 +24,7 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
 
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchDeliveryPostman(postmanID, fromDate, shiftID,chuyenthu, tuiso, callback);
+        NetWorkController.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso, callback);
     }
 
     @Override
@@ -36,10 +36,10 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     public void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode,
                                   String deliveryDate, String deliveryTime, String receiverName,
                                   String reasonCode, String solutionCode, String status, String paymentChannel,
-                                  String deliveryType, String sign, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback) {
+                                  String deliveryType, String sign, String note, String amount, String ladingPostmanID, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
                 deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel,
-                deliveryType, sign,note, amount,ladingPostmanID, commonCallback);
+                deliveryType, sign, note, amount, ladingPostmanID, "", commonCallback);
     }
 
     @Override
@@ -47,7 +47,7 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
         NetWorkController.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note,collectAmount, commonCallback);
+                note, collectAmount, "", commonCallback);
     }
 
     @Override

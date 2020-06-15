@@ -13,6 +13,8 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.SupportRequest;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -125,6 +127,56 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     }
 
     @Override
+    public void postImage(String path) {
+        mView.showProgress();
+        mInteractor.postImage(path, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
+                super.onSuccess(call, response);
+                mView.showImage(response.body().getFile());
+            }
+
+            @Override
+            protected void onError(Call<UploadSingleResult> call, String message) {
+                super.onError(call, message);
+                mView.showAlertDialog(message);
+                mView.deleteFile();
+            }
+        });
+    }
+
+    @Override
+    public void addSupportType(Integer id, String description) {
+        SupportRequest request = new SupportRequest();
+        request.setLadingCode(mBaoPhatBangke.getParcelCode());
+        request.setDescription(description);
+        request.setSupportType(id);
+        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postmanId = "";
+        if (!TextUtils.isEmpty(userJson)) {
+            postmanId = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD();
+        }
+        request.setPostmanId(postmanId);
+        mInteractor.addSupportType(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showError(message);
+            }
+
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onResponse(call, response);
+                if (response.body() != null && response.body().getErrorCode().equals("00")) {
+                    mView.showSuccessMessage(response.body().getMessage());
+                } else
+                    mView.showError(response.message());
+            }
+        });
+    }
+
+    @Override
     public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
     }
@@ -218,8 +270,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        String ladingCode=mBaoPhatBangke.getParcelCode();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String ladingCode = mBaoPhatBangke.getParcelCode();
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -280,6 +332,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryDate = mBaoPhatBangke.getDeliveryDate();
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
+        String fileNames = mBaoPhatBangke.getFileNames();
         final String reasonCode = "";
         String solutionCode = "";
         String status = "C14";
@@ -296,7 +349,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 paymentDelivery(signatureCapture);
             } else {
                 mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                        reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, mBaoPhatBangke.getiD(),
+                        reasonCode, solutionCode, status, paymentChannel, deliveryType, "", amount, signatureCapture, mBaoPhatBangke.getiD(), fileNames,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override
                             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -353,6 +406,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
         String receiverIDNumber = mBaoPhatBangke.getReceiverIDNumber();
+        String fileNames = mBaoPhatBangke.getFileNames();
         String reasonCode = "";
         String solutionCode = "";
         String status = "C14";
@@ -366,7 +420,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         mInteractor.paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                note, amount, fileNames, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);

@@ -1,28 +1,30 @@
 package com.ems.dingdong.network;
 
 
-import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.model.InquiryAmountResult;
-import com.ems.dingdong.model.NotificationResult;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ems.dingdong.BuildConfig;
+import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.NotificationResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.SuportTypeResult;
+import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 
@@ -167,11 +169,11 @@ public class NetWorkController {
                                          String status,
                                          String paymentChannel,
                                          String deliveryType,
-                                         String signatureCapture, String note, String amount, String ladingPostmanID, CommonCallback<SimpleResult> callback) {
+                                         String signatureCapture, String note, String amount, String ladingPostmanID, String fileNames, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate,
                 deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType,
-                signatureCapture, note, amount, ladingPostmanID, Constants.SHIFT, signature);
+                signatureCapture, note, amount, fileNames, ladingPostmanID, Constants.SHIFT, signature);
         call.enqueue(callback);
     }
 
@@ -210,12 +212,13 @@ public class NetWorkController {
                                        String signatureCapture,
                                        String note,
                                        String collectAmount,
+                                       String fileNames,
                                        CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().paymentDelivery(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, collectAmount, Constants.SHIFT, signature);
+                note, collectAmount, Constants.SHIFT, fileNames, signature);
         call.enqueue(callback);
     }
 
@@ -326,6 +329,16 @@ public class NetWorkController {
 
     public static void updateRead(String mobileNumber, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().updateRead(mobileNumber);
+        call.enqueue(callback);
+    }
+
+    public static void getSupportType(CommonCallback<SuportTypeResult> callback) {
+        Call<SuportTypeResult> call = getAPIBuilder().getSupportType();
+        call.enqueue(callback);
+    }
+
+    public static void addSupport(SupportRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().addSupport(request);
         call.enqueue(callback);
     }
 }
