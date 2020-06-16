@@ -11,10 +11,13 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 
 import java.util.List;
+
+import io.reactivex.Single;
 
 public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.Interactor {
     public XacNhanBaoPhatInteractor(XacNhanBaoPhatContract.Presenter presenter) {
@@ -39,6 +42,16 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback) {
         NetWorkController.paymentDelivery(request, simpleResultCommonCallback);
+    }
+
+    @Override
+    public Single<SimpleResult> paymentDelivery(List<PaypostPaymentRequest> request) {
+        return NetWorkController.checkAmountPayment(request);
+    }
+
+    @Override
+    public Single<SimpleResult> paymentV2(boolean isAutoUpdateCODAmount) {
+        return NetWorkController.paymentV2(isAutoUpdateCODAmount);
     }
 
     @Override

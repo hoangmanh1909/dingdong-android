@@ -18,10 +18,13 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
 
 public interface XacNhanBaoPhatContract {
     interface Interactor extends IInteractor<Presenter> {
@@ -48,6 +51,13 @@ public interface XacNhanBaoPhatContract {
          * delivery success.
          */
         void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
+        /**
+         * delivery success.
+         */
+        Single<SimpleResult> paymentDelivery(List<PaypostPaymentRequest> request);
+
+        Single<SimpleResult> paymentV2(boolean isAutoUpdateCODAmount);
 
         /**
          * delivery not success.
@@ -108,6 +118,7 @@ public interface XacNhanBaoPhatContract {
          */
         void showPostman(ArrayList<UserInfo> userInfos);
 
+        void showPaymentV2Success(String message);
         /**
          * Show image.
          *
@@ -125,6 +136,9 @@ public interface XacNhanBaoPhatContract {
          *
          */
         void showError(String message);
+
+
+        void showCheckAmountPaymentError(String message);
 
         /**
          * Show success code.
@@ -181,6 +195,8 @@ public interface XacNhanBaoPhatContract {
          */
         void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
                              String newVatCode, String relationship);
+
+        void paymentV2(boolean isAutoUpdateCODAmount);
 
         /**
          * @see Interactor

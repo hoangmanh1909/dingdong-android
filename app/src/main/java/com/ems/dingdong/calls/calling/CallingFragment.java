@@ -1,26 +1,30 @@
 package com.ems.dingdong.calls.calling;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.os.Handler;
+import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.calls.CallManager;
+import com.ems.dingdong.calls.Ring;
+import com.ems.dingdong.calls.Session;
+import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
-import com.ems.dingdong.utiles.Logger;
-import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
-import com.stringee.call.StringeeCall;
-import com.stringee.listener.StatusListener;
-
-import org.json.JSONObject;
+import com.portsip.PortSipSdk;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,11 +51,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     CustomImageView ivHold;
     @BindView(R.id.iv_mic_off)
     CustomImageView ivMicOff;
-    private boolean isHold = false;
     private AudioManager audioManager;
-
-    private StringeeCall stringeeAnswer;
-    private StringeeCall mStringeeCall;
+    private PortSipSdk portSipSdk;
+    private Session session;
+    private CallingEvent callingEvent = new CallingEvent();
 
     @Override
     protected int getLayoutId() {
@@ -67,75 +70,68 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         super.initLayout();
         audioManager = (AudioManager) getViewContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_CALL);
-        audioManager.setMicrophoneMute(false);
+//        audioManager.setMicrophoneMute(false);
+        session = CallManager.Instance().getSession();
+        CallManager.Instance().reset();
+        ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
+        portSipSdk = applicationController.portSipSdk;
         if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
             tvPhoneNumber.setText(mPresenter.getCalleeNumber());
             changeCallLayout(Constants.CALL_TYPE_CALLING);
-            ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-            SharedPref pref = SharedPref.getInstance(getViewContext());
-            String callFrom = pref.getString(Constants.KEY_ID_FROM_CALLING, "");
-            mStringeeCall = new StringeeCall(getViewContext(), applicationController.getStringleeClient(), callFrom, mPresenter.getCalleeNumber());
-            mStringeeCall.setCallListener(callListener);
-            mStringeeCall.makeCall();
+            session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
         } else {
-            ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-            stringeeAnswer = applicationController.getmStringeeCall();
-            stringeeAnswer.setCallListener(callListener);
+            tvPhoneNumber.setText(CallManager.Instance().getSession().phoneNumber);
             changeCallLayout(Constants.CALL_TYPE_RECEIVING);
-            tvPhoneNumber.setText(stringeeAnswer.getFrom());
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getViewContext().registerReceiver(callingEvent, new IntentFilter(PortSipService.ACTION_CALL_EVENT));
+    }
+
+    @Override
+    public void onDestroy() {
+        if (callingEvent != null)
+            getViewContext().unregisterReceiver(callingEvent);
+        super.onDestroy();
     }
 
     @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_foward, R.id.iv_mic_off})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_call_answer:
-                if (stringeeAnswer != null && mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
+                if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     changeCallLayout(Constants.CALL_TYPE_CALLING);
-                    stringeeAnswer.answer();
+                    portSipSdk.answerCall(session.sessionID, false);
                     mPresenter.setCallType(Constants.CALL_TYPE_CALLING);
-                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
+                } else {
                     mPresenter.openDiapadScreen();
                 }
                 break;
 
             case R.id.iv_call_cancel:
                 Log.d(TAG, "iv_speaker clicked");
-                if (stringeeAnswer != null && mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
-                    stringeeAnswer.reject();
+                if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
+                    int result = portSipSdk.rejectCall(session.sessionID, 480);
+                    Log.d(TAG, "reject result: " + result);
+                    Ring.getInstance(getViewContext()).stopRingTone();
                     getViewContext().finish();
-                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
-                    try {
-                        if (mStringeeCall.isSpeakerPhoneOn()) {
-                            Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOn");
-                            mStringeeCall.setSpeakerphoneOn(false);
-                            ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
-                        } else {
-                            Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOff");
-                            mStringeeCall.setSpeakerphoneOn(true);
-                            ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && stringeeAnswer != null) {
-                    if (stringeeAnswer.isSpeakerPhoneOn()) {
-                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
-                        stringeeAnswer.setSpeakerphoneOn(false);
+                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
+                    if (audioManager.isSpeakerphoneOn()) {
+                        audioManager.setSpeakerphoneOn(false);
                         ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
                     } else {
-                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
-                        stringeeAnswer.setSpeakerphoneOn(true);
+                        audioManager.setSpeakerphoneOn(true);
                         ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
                     }
                 }
                 break;
 
             case R.id.iv_call_end:
-                if (mStringeeCall != null) {
-                    mStringeeCall.hangup();
-                } else if (stringeeAnswer != null) {
-                    stringeeAnswer.hangup();
+                if (portSipSdk != null) {
+                    portSipSdk.hangUp(session.sessionID);
                 }
                 getViewContext().finish();
                 break;
@@ -154,51 +150,17 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_hold:
-                Log.d(TAG, "iv_hold clicked");
-                if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
-                    if (isHold) {
-                        Log.d(TAG, "CALL_TYPE_CALLING isHold on");
+                if (session.isHold) {
+                    int result = portSipSdk.unHold(session.sessionID);
+                    if (result == 0) {
+                        session.isHold = false;
                         ivHold.setImageResource(R.drawable.ic_phone_paused);
-                        mStringeeCall.unHold(new StatusListener() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d(TAG, "hold success isHold off");
-                                isHold = false;
-                            }
-                        });
-                    } else {
-                        Log.d(TAG, "CALL_TYPE_CALLING SpeakerPhoneOff");
-                        ivHold.setImageResource(R.drawable.ic_phone_paused_green);
-                        mStringeeCall.hold(new StatusListener() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d(TAG, "hold success isHold on");
-                                isHold = true;
-                            }
-                        });
                     }
-                } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && stringeeAnswer != null) {
-                    if (isHold) {
-                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
-                        ivHold.setImageResource(R.drawable.ic_phone_paused);
-                        stringeeAnswer.unHold(new StatusListener() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d(TAG, "hold success isHold off");
-                                isHold = false;
-                            }
-                        });
-
-                    } else {
-                        Log.d(TAG, "CALL_TYPE_RECEIVING SpeakerPhoneOn");
+                } else {
+                    int result = portSipSdk.hold(session.sessionID);
+                    if (result == 0) {
+                        session.isHold = true;
                         ivHold.setImageResource(R.drawable.ic_phone_paused_green);
-                        stringeeAnswer.hold(new StatusListener() {
-                            @Override
-                            public void onSuccess() {
-                                isHold = true;
-                                Log.d(TAG, "hold success isHold on");
-                            }
-                        });
                     }
                 }
                 break;
@@ -207,65 +169,6 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         }
 
     }
-
-
-    private StringeeCall.StringeeCallListener callListener = new StringeeCall.StringeeCallListener() {
-        @Override
-        public void onSignalingStateChange(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s, int i, String s1) {
-            Logger.d(TAG, "onSignalingStateChange" + signalingState.name());
-            tvCalling.setText(signalingState.name());
-            new Handler(getViewContext().getMainLooper()).post(() -> {
-                if (signalingState.name().equals("ANSWERED")) {
-                    chronometer.setVisibility(View.VISIBLE);
-                    chronometer.setBase(SystemClock.elapsedRealtime());
-                    chronometer.start();
-                    tvCalling.setVisibility(View.GONE);
-                    if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING && mStringeeCall != null) {
-                        mStringeeCall = stringeeCall;
-                    } else {
-                        stringeeAnswer = stringeeCall;
-                    }
-                } else if (signalingState.name().equals("ENDED")) {
-                    getViewContext().finish();
-                    chronometer.setVisibility(View.GONE);
-                    chronometer.stop();
-                    tvCalling.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-
-        @Override
-        public void onError(StringeeCall stringeeCall, int i, String s) {
-            showErrorToast("Có lỗi xảy ra không thể thực hiện cuộc gọi");
-            getViewContext().finish();
-        }
-
-        @Override
-        public void onHandledOnAnotherDevice(StringeeCall stringeeCall, StringeeCall.SignalingState signalingState, String s) {
-            Logger.d(TAG, "onHandledOnAnotherDevice" + s + signalingState.name());
-        }
-
-        @Override
-        public void onMediaStateChange(StringeeCall stringeeCall, StringeeCall.MediaState mediaState) {
-            Logger.d(TAG, "onMediaStateChange" + mediaState.name());
-        }
-
-        @Override
-        public void onLocalStream(StringeeCall stringeeCall) {
-            Logger.d(TAG, "onLocalStream");
-
-        }
-
-        @Override
-        public void onRemoteStream(StringeeCall stringeeCall) {
-            Logger.d(TAG, "onRemoteStream");
-        }
-
-        @Override
-        public void onCallInfo(StringeeCall stringeeCall, JSONObject jsonObject) {
-            Logger.d(TAG, "onCallInfo" + jsonObject.toString());
-        }
-    };
 
     private void changeCallLayout(int type) {
         if (type == Constants.CALL_TYPE_CALLING) {
@@ -282,6 +185,57 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivMicOff.setVisibility(View.GONE);
             ivFoward.setVisibility(View.GONE);
             ivHold.setVisibility(View.GONE);
+        }
+    }
+
+    class CallingEvent extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(PortSipService.ACTION_CALL_EVENT)) {
+                switch (intent.getStringExtra(PortSipService.TYPE_ACTION)) {
+                    case PortSipService.CALL_EVENT_RINGING:
+                        tvCalling.setText("Ringing");
+                        break;
+                    case PortSipService.CALL_EVENT_TRYING:
+                        tvCalling.setText("Calling");
+                        break;
+                    case PortSipService.CALL_EVENT_ANSWER:
+                        Ring.getInstance(getViewContext()).stopRingTone();
+                        break;
+                    case PortSipService.CALL_EVENT_FAILURE:
+                        tvCalling.setText("failure");
+                        chronometer.stop();
+                        tvCalling.setVisibility(View.VISIBLE);
+                        break;
+                    case PortSipService.CALL_EVENT_ANSWER_REJECT:
+                        tvCalling.setText("busy");
+                        break;
+                    case PortSipService.CALL_EVENT_END:
+                        tvCalling.setText("call ended");
+                        chronometer.stop();
+                        tvCalling.setVisibility(View.VISIBLE);
+                        chronometer.setVisibility(View.GONE);
+                        changeCallLayout(Constants.CALL_TYPE_CALLING);
+                        Ring.getInstance(getViewContext()).stopRingTone();
+                        break;
+                    case PortSipService.CALL_EVENT_ANSWER_ACCEPT:
+                        tvCalling.setText("accepted");
+                        chronometer.setVisibility(View.VISIBLE);
+                        chronometer.setBase(SystemClock.elapsedRealtime());
+                        chronometer.start();
+                        tvCalling.setVisibility(View.GONE);
+                        break;
+                    case PortSipService.CALL_EVENT_INVITE_CONNECTED:
+                        chronometer.setVisibility(View.VISIBLE);
+                        chronometer.setBase(SystemClock.elapsedRealtime());
+                        chronometer.start();
+                        tvCalling.setVisibility(View.GONE);
+                        Ring.getInstance(getViewContext()).stopRingTone();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("error occurred when get event");
+                }
+            }
         }
     }
 }

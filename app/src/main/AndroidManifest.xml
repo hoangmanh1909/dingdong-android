@@ -269,9 +269,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.CallService">
-
-        </service>
         <service android:name=".services.PortSipService">
 
         </service>

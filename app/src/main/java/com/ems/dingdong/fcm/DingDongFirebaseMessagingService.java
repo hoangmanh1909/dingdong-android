@@ -26,13 +26,8 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPh
 import com.ems.dingdong.model.DingdongNotificationObject;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Logger;
-import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.stringee.StringeeClient;
-import com.stringee.exception.StringeeError;
-import com.stringee.listener.StatusListener;
 
 import java.util.Map;
 
@@ -43,7 +38,6 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = DingDongFirebaseMessagingService.class.getSimpleName();
     private int numMessages = 0;
     private NotificationUtils notificationUtils;
-    private StringeeClient client;
     private boolean isConnected = false;
     private ApplicationController applicationController;
 
@@ -62,30 +56,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String refreshedToken) {
         super.onNewToken(refreshedToken);
-        sendRegistrationToServer(refreshedToken);
-    }
-
-    private void sendRegistrationToServer(String token) {
-
-        SharedPref sharedPref = new SharedPref(this);
-        sharedPref.putString(Constants.KEY_PUSH_NOTIFICATION, token);
-        if (client == null) {
-            client = new StringeeClient(this);
-        }
-
-        client.registerPushToken(token, new StatusListener() {
-            @Override
-            public void onSuccess() {
-                Logger.d("chauvp", "PushToken: onSuccess");
-                applicationController = (ApplicationController) getApplication();
-                applicationController.reFreshToken();
-            }
-
-            @Override
-            public void onError(StringeeError error) {
-                Logger.d("chauvp", "PushToken: onError");
-            }
-        });
+//        sendRegistrationToServer(refreshedToken);
     }
 
     @Override

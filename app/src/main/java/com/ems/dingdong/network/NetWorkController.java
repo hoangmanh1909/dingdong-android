@@ -52,6 +52,7 @@ import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PaymentRequestModel;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
@@ -650,6 +651,14 @@ public class NetWorkController {
                                                            String poCode, String routeCode,
                                                            String postmanCode) {
         return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
+    }
+
+    public static Single<SimpleResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
+        return getAPIRxBuilder().checkAmountPayment(request);
+    }
+
+    public static Single<SimpleResult> paymentV2(boolean isAutoUpdateCODAmount) {
+        return getAPIRxBuilder().paymentv2(isAutoUpdateCODAmount);
     }
 
 }

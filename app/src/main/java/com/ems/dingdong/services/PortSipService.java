@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,17 +14,16 @@ import androidx.annotation.Nullable;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.IncomingCallActivity;
+import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Logger;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.portsip.OnPortSIPEvent;
 import com.portsip.PortSipEnumDefine;
 import com.portsip.PortSipErrorcode;
 import com.portsip.PortSipSdk;
-import com.stringee.call.StringeeCall;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
@@ -159,20 +156,16 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
     @Override
     public void onInviteIncoming(long l, String s, String s1, String s2, String s3, String s4, String s5, boolean b, boolean b1, String s6) {
-        Log.d(TAG, "onInviteIncoming!");
-        Logger.d(TAG, "onIncomingCall1");
-        Logger.d(TAG, "running on: " + Thread.currentThread().getName());
-
-        new Handler(Looper.getMainLooper()).post(() -> {
-            Logger.d(TAG, "running on: " + Thread.currentThread().getName());
-            Logger.d(TAG, "start activity: ");
-            Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
-            intent.putExtra(Constants.CALL_TYPE, 0);
-            intent.putExtra(Constants.SESSION_ID, l);
-            Log.d(TAG, "Sessionid: " + l);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        });
+        Log.d(TAG, "onInviteIncoming!" + s + s1 + s2 + s3);
+        CallManager.Instance().getSession().phoneNumber = s;
+        CallManager.Instance().getSession().displayName = s2;
+        CallManager.Instance().getSession().sessionID = l;
+        Log.d(TAG, "Sessionid: " + l);
+        Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+        intent.putExtra(Constants.CALL_TYPE, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        Ring.getInstance(getApplication()).startRingTone();
     }
 
     @Override

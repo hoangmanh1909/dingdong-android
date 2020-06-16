@@ -20,7 +20,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
-import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -33,6 +33,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -204,6 +207,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
                                 String newGtttCode, String relationship) {
+        List<PaypostPaymentRequest> paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
         String deliveryPOCode = postOffice.getCode();
@@ -222,57 +226,117 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            String amount = Integer.toString(item.getAmount());
 
             final String paymentChannel = "1";
             String deliveryType = "";
-            String ladingPostmanID = Integer.toString(item.getId());
             String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-            String shiftId = Integer.toString(item.getShiftId());
-            PaymentDeviveryRequest request = new PaymentDeviveryRequest(
-                    postmanID,
-                    parcelCode,
-                    mobileNumber,
-                    deliveryPOCode,
-                    deliveryDate,
-                    deliveryTime,
-                    receiverName,
-                    gtttCode,
-                    reasonCode,
-                    solutionCode,
-                    status,
-                    paymentChannel,
-                    deliveryType,
-                    signCapture,
-                    note,
-                    amount,
-                    shiftId,
-                    routeCode,
-                    ladingPostmanID,
-                    signature,
-                    deliveryImage,
-                    userInfo.getUserName(),
-                    item.getBatchCode(),
-                    isPaymentPP,
-                    item.isItemReturn(),
-                    item.getAmountForBatch(),
-                    item.getItemsInBatch()
-            );
-            request.setReceiverReference(relationship);
-            mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode());
-                }
 
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                    mView.showError(message);
-                }
-            });
+            PaypostPaymentRequest request = new PaypostPaymentRequest();
+            request.setPostmanID(postmanID);
+            request.setParcelCode(parcelCode);
+            request.setMobileNumber(mobileNumber);
+            request.setDeliveryPOCode(deliveryPOCode);
+            request.setDeliveryDate(deliveryDate);
+            request.setDeliveryTime(deliveryTime);
+            request.setReceiverName(receiverName);
+            request.setReasonCode(reasonCode);
+            request.setSolutionCode(solutionCode);
+            request.setStatus(status);
+            request.setPaymentChannel(paymentChannel);
+            request.setSignatureCapture(parcelCode);
+            request.setNote(note);
+            request.setCollectAmount(item.getAmount());
+            request.setShiftID(item.getShiftId());
+            request.setRouteCode(routeCode);
+            request.setLadingPostmanID(item.getId());
+            request.setSignature(signature);
+            request.setImageDelivery(deliveryImage);
+            request.setBatchCode(item.getBatchCode());
+            request.setIsItemReturn(item.isItemReturn());
+            request.setItemsInBatch(item.getItemsInBatch());
+            request.setAmountForBatch(item.getAmountForBatch());
+            request.setReceiverReference(relationship);
+            request.setPaymentPP(isPaymentPP);
+            request.setReplaceCode(item.getReplaceCode());
+            request.setRePaymentBatch(item.isRePaymentBatch());
+            request.setLastLadingCode(item.getLastLadingCode());
+            request.setPaymentBatch(item.isPaymentBatch());
+            paymentRequests.add(request);
+//            PaymentDeviveryRequest request = new PaymentDeviveryRequest(
+//                    postmanID,
+//                    parcelCode,
+//                    mobileNumber,
+//                    deliveryPOCode,
+//                    deliveryDate,
+//                    deliveryTime,
+//                    receiverName,
+//                    gtttCode,
+//                    reasonCode,
+//                    solutionCode,
+//                    status,
+//                    paymentChannel,
+//                    deliveryType,
+//                    signCapture,
+//                    note,
+//                    amount,
+//                    shiftId,
+//                    routeCode,
+//                    ladingPostmanID,
+//                    signature,
+//                    deliveryImage,
+//                    userInfo.getUserName(),
+//                    item.getBatchCode(),
+//                    isPaymentPP,
+//                    item.isItemReturn(),
+//                    item.getAmountForBatch(),
+//                    item.getItemsInBatch()
+//            );
+//            request.setReceiverReference(relationship);
+//            mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+//                @Override
+//                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+//                    super.onSuccess(call, response);
+//                    mView.showSuccess(response.body().getErrorCode());
+//                }
+//
+//                @Override
+//                protected void onError(Call<SimpleResult> call, String message) {
+//                    super.onError(call, message);
+//                    mView.showError(message);
+//                }
+//            });
         }
+        mInteractor.paymentDelivery(paymentRequests)
+                .flatMap(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        return mInteractor.paymentV2(true);
+                    } else {
+                        return Single.just(simpleResult);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        simpleResult -> {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                mView.showPaymentV2Success(simpleResult.getMessage());
+                            } else {
+                                mView.showCheckAmountPaymentError(simpleResult.getMessage());
+                            }
+                        },
+                        throwable -> {
+
+                        }
+                );
+    }
+
+    @Override
+    public void paymentV2(boolean isAutoUpdateCODAmount) {
+        mInteractor.paymentV2(isAutoUpdateCODAmount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> mView.showPaymentV2Success(simpleResult.getMessage()),
+                        throwable -> mView.showPaymentV2Success(throwable.getMessage()));
     }
 
     @Override

@@ -49,6 +49,7 @@ import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PaymentRequestModel;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
@@ -476,5 +477,11 @@ public interface VinattiAPI {
                                              @Query("poCode") String poCode,
                                              @Query("routeCode") String routeCode,
                                              @Query("postmanCode") String postmanCode);
+
+    @POST("api/Delivery/CheckAmountPayment")
+    Single<SimpleResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);
+
+    @POST("api/Delivery/Payment_V2")
+    Single<SimpleResult> paymentv2(@Query("isAutoUpdateCODAmount") boolean isAutoUpdateCODAmount);
 
 }

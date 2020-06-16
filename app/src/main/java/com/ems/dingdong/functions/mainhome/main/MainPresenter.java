@@ -19,13 +19,10 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.Calendar;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -101,38 +98,6 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
             protected void onError(Call<StatisticPaymentResult> call, String message) {
             }
         });
-    }
-
-    @Override
-    public void getAccessToken() {
-        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
-//        if (!TextUtils.isEmpty(sharedPref.getString(Constants.ACCESS_CALL_TOKEN, ""))) {
-//            return;
-//        }
-        String mobileNumber = sharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "").split(";")[0];
-        mInteractor.getAccessToken(mobileNumber)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        (simpleResult, throwable) -> {
-                            if (simpleResult != null) {
-                                if (simpleResult.getErrorCode().equals("00") && sharedPref != null && simpleResult.getResponse() != null) {
-                                    sharedPref.putString(Constants.ACCESS_CALL_TOKEN, simpleResult.getResponse().getToken());
-                                    sharedPref.putString(Constants.KEY_ID_FROM_CALLING,
-                                            simpleResult.getResponse().getAccount().getVpbx() + "_"
-                                                    + simpleResult.getResponse().getAccount().getExtension());
-                                    mView.initStringeeClient();
-                                } else {
-                                    if (throwable != null)
-                                        Logger.e(throwable.getMessage());
-                                    else
-                                        Logger.e(simpleResult.getMessage());
-                                }
-                            } else if (throwable != null) {
-                                Logger.e(throwable.getMessage());
-                            }
-                        }
-                );
     }
 
     @Override

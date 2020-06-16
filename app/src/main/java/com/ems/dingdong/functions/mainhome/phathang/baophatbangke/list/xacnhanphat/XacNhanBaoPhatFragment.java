@@ -620,6 +620,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mListPostman = userInfos;
     }
 
+    @Override
+    public void showPaymentV2Success(String message) {
+        new SweetAlertDialog(getViewContext())
+                .setTitleText("Thông báo")
+                .setContentText(message)
+                .setConfirmText("Ok")
+                .setConfirmClickListener(v -> {
+                    v.dismiss();
+                    showFinish();
+                }).show();
+    }
+
     private void showUIRoute() {
         ArrayList<Item> items = new ArrayList<>();
         if (mListRoute != null) {
@@ -699,6 +711,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (total == getItemSelected().size()) {
             showFinish();
         }
+    }
+
+    @Override
+    public void showCheckAmountPaymentError(String message) {
+        new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Thông báo")
+                .setContentText(message + " Bạn có muốn thay đổi số tiền không?")
+                .setCancelText("Không")
+                .setConfirmText("Có")
+                .setCancelClickListener(v -> mPresenter.paymentV2(false))
+                .setConfirmClickListener(v -> mPresenter.paymentV2(true))
+                .show();
     }
 
     @Override

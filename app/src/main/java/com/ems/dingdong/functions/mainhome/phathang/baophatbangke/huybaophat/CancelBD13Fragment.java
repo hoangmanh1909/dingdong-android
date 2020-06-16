@@ -209,6 +209,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             request.setDescription(description);
             request.setIsPaymentBatch(item.getIsPaymentBatch());
             request.setBatchCode(item.getBatchCode());
+            request.setPaymentLadingCode(item.getPaymentLadingCode());
             mPresenter.cancelDelivery(request);
         }).show();
     }

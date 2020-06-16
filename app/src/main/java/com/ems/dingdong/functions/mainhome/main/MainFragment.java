@@ -25,7 +25,6 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
@@ -254,12 +253,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             thirstHeader.setText(getResources().getString(R.string.employee_balance_missing));
         }
         sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-    }
-
-    @Override
-    public void initStringeeClient() {
-        ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
-        applicationController.initStringeeClient();
     }
 
     @SuppressLint("SetTextI18n")

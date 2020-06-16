@@ -115,6 +115,14 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("ItemsInBatch")
     @Expose
     private Integer itemsInBatch;
+    @SerializedName("ReplaceCode")
+    private String replaceCode;
+    @SerializedName("IsPaymentBatch")
+    private boolean isPaymentBatch;
+    @SerializedName("LastLadingCode")
+    private String lastLadingCode;
+    @SerializedName("IsRePaymentBatch")
+    private boolean isRePaymentBatch;
 
     private boolean selected;
 
@@ -388,6 +396,26 @@ public class DeliveryPostman implements Comparable {
 
     public Integer getItemsInBatch() {
         return itemsInBatch;
+    }
+
+    public String getReplaceCode() {
+        return replaceCode;
+    }
+
+    public void setReplaceCode(String replaceCode) {
+        this.replaceCode = replaceCode;
+    }
+
+    public boolean isPaymentBatch() {
+        return isPaymentBatch;
+    }
+
+    public String getLastLadingCode() {
+        return lastLadingCode;
+    }
+
+    public boolean isRePaymentBatch() {
+        return isRePaymentBatch;
     }
 
     @Override

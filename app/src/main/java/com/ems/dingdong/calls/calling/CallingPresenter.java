@@ -3,14 +3,9 @@ package com.ems.dingdong.calls.calling;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.calls.diapad.DiapadPresenter;
-import com.ems.dingdong.utiles.Constants;
-import com.stringee.call.StringeeCall;
-
-import java.util.HashMap;
 
 public class CallingPresenter extends Presenter<CallingContract.View, CallingContract.Interactor> implements CallingContract.Presenter {
 
-    private HashMap<String, StringeeCall> callHashMap;
     private String callId;
     private int type;
     private String callerNumber;
@@ -24,11 +19,6 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     @Override
     public void start() {
 
-    }
-
-    public CallingPresenter setCallHashMap(HashMap<String, StringeeCall> callHashMap) {
-        this.callHashMap = callHashMap;
-        return this;
     }
 
     public CallingPresenter setCallId(String callId) {
@@ -61,19 +51,9 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         return new CallingInteractor(this);
     }
 
-    public CallingPresenter setSessionId(long sessionId) {
-        this.sessionId = sessionId;
-        return this;
-    }
-
     @Override
     public CallingContract.View onCreateView() {
-        return CallingFragment1.getInstance();
-    }
-
-    @Override
-    public StringeeCall getStringeeCall() {
-        return callHashMap.get(Constants.CALL_MAP);
+        return CallingFragment.getInstance();
     }
 
     @Override
@@ -94,11 +74,6 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     @Override
     public String getCalleeNumber() {
         return calleeNumber;
-    }
-
-    @Override
-    public long getSessionId() {
-        return sessionId;
     }
 
     @Override

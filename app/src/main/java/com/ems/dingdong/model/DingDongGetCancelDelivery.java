@@ -40,6 +40,8 @@ public class DingDongGetCancelDelivery {
     @SerializedName("IsPaymentBatch")
     @Expose
     private String isPaymentBatch;
+    @SerializedName("PaymentLadingCode")
+    private String paymentLadingCode;
 
     private boolean selected;
 
@@ -117,5 +119,9 @@ public class DingDongGetCancelDelivery {
 
     public String getIsPaymentBatch() {
         return isPaymentBatch;
+    }
+
+    public String getPaymentLadingCode() {
+        return paymentLadingCode;
     }
 }

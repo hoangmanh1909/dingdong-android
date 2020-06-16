@@ -37,6 +37,8 @@ public class DingDongCancelDeliveryRequest {
     @SerializedName("IsPaymentBatch")
     @Expose
     private String isPaymentBatch;
+    @SerializedName("PaymentLadingCode")
+    private String paymentLadingCode;
 
     public String getAmndPOCode() {
         return amndPOCode;
@@ -124,5 +126,9 @@ public class DingDongCancelDeliveryRequest {
 
     public void setIsPaymentBatch(String isPaymentBatch) {
         this.isPaymentBatch = isPaymentBatch;
+    }
+
+    public void setPaymentLadingCode(String paymentLadingCode) {
+        this.paymentLadingCode = paymentLadingCode;
     }
 }
