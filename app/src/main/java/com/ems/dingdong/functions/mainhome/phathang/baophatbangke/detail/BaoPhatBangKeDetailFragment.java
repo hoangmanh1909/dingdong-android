@@ -168,6 +168,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     SimpleDraweeView iv_package_2;
     @BindView(R.id.iv_package_3)
     SimpleDraweeView iv_package_3;
+    @BindView(R.id.tv_fee)
+    CustomTextView tvFee;
 
     private ArrayList<ReasonInfo> mListReason;
     private CommonObject mBaoPhatBangke;
@@ -222,7 +224,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         tvReciverName.setText(mBaoPhatBangke.getReciverName());
         edtReceiverName.setText(mBaoPhatBangke.getReciverName());
         tvReciverAddress.setText(mBaoPhatBangke.getReciverAddress());
-
+        tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(mBaoPhatBangke.getFee())));
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
             mCollectAmount = mBaoPhatBangke.getAmount();
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));

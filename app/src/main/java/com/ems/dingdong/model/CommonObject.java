@@ -124,6 +124,8 @@ public class CommonObject extends RealmObject {
 
     @SerializedName("Note")
     private String note;
+    @SerializedName("Fee")
+    private Integer fee;
 
     @SerializedName("ServiceName")
     private String serviceName;
@@ -477,5 +479,9 @@ public class CommonObject extends RealmObject {
 
     public String getIsWarring() {
         return isWarring;
+    }
+
+    public Integer getFee() {
+        return fee;
     }
 }
