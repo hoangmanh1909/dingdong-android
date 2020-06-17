@@ -78,9 +78,11 @@ android {
         NAT {
 //            def API_URL = '"http://118.70.72.107:50031/"'
             def API_URL = '"http://118.70.72.107:1235/"'
-            def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
+            def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
+            def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
             buildConfigField("String", "API_URL", API_URL)
             buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
+            buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDongNAT"
         }
