@@ -11,6 +11,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
@@ -43,6 +44,7 @@ import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -653,12 +655,12 @@ public class NetWorkController {
         return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
-    public static Single<SimpleResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
+    public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
         return getAPIRxBuilder().checkAmountPayment(request);
     }
 
-    public static Single<SimpleResult> paymentV2(boolean isAutoUpdateCODAmount) {
-        return getAPIRxBuilder().paymentv2(isAutoUpdateCODAmount);
+    public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
+        return getAPIRxBuilder().paymentV2(request);
     }
 
 }

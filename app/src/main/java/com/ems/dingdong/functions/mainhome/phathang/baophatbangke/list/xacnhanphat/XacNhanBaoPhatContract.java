@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.ReasonInfo;
@@ -17,6 +18,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -55,9 +57,9 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery success.
          */
-        Single<SimpleResult> paymentDelivery(List<PaypostPaymentRequest> request);
+        Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request);
 
-        Single<SimpleResult> paymentV2(boolean isAutoUpdateCODAmount);
+        Single<SimpleResult> paymentV2(DeliveryPaymentV2 request);
 
         /**
          * delivery not success.

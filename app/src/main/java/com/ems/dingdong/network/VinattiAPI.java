@@ -9,6 +9,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
@@ -40,6 +41,7 @@ import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -479,9 +481,9 @@ public interface VinattiAPI {
                                              @Query("postmanCode") String postmanCode);
 
     @POST("api/Delivery/CheckAmountPayment")
-    Single<SimpleResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);
+    Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);
 
     @POST("api/Delivery/Payment_V2")
-    Single<SimpleResult> paymentv2(@Query("isAutoUpdateCODAmount") boolean isAutoUpdateCODAmount);
+    Single<SimpleResult> paymentV2(@Body DeliveryPaymentV2 request);
 
 }

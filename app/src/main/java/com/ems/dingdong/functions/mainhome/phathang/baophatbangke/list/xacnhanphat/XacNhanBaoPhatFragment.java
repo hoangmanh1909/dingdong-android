@@ -628,7 +628,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 .setConfirmText("Ok")
                 .setConfirmClickListener(v -> {
                     v.dismiss();
-                    showFinish();
+                    hideProgress();
+                    finishView();
                 }).show();
     }
 
@@ -720,8 +721,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 .setContentText(message + " Bạn có muốn thay đổi số tiền không?")
                 .setCancelText("Không")
                 .setConfirmText("Có")
-                .setCancelClickListener(v -> mPresenter.paymentV2(false))
-                .setConfirmClickListener(v -> mPresenter.paymentV2(true))
+                .setCancelClickListener(v -> {
+                    mPresenter.paymentV2(false);
+                    v.dismiss();
+                })
+                .setConfirmClickListener(v -> {
+                    mPresenter.paymentV2(true);
+                    v.dismiss();
+                })
                 .show();
     }
 

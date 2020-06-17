@@ -620,7 +620,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     item.setSelected(true);
                 }
             }
-            relativeLayout.setVisibility(View.VISIBLE);
+            if (mList.size() == 0)
+                relativeLayout.setVisibility(View.GONE);
+            else
+                relativeLayout.setVisibility(View.VISIBLE);
             tvItemSelected.setText(String.valueOf(mList.size()));
             cbPickAll.setChecked(true);
         }

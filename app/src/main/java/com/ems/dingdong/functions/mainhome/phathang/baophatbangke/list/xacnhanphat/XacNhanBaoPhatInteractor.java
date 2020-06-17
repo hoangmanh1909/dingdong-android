@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
@@ -10,6 +11,7 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -45,13 +47,13 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public Single<SimpleResult> paymentDelivery(List<PaypostPaymentRequest> request) {
+    public Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request) {
         return NetWorkController.checkAmountPayment(request);
     }
 
     @Override
-    public Single<SimpleResult> paymentV2(boolean isAutoUpdateCODAmount) {
-        return NetWorkController.paymentV2(isAutoUpdateCODAmount);
+    public Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
+        return NetWorkController.paymentV2(request);
     }
 
     @Override
