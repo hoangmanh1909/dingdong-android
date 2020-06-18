@@ -20,6 +20,7 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
+import com.ems.dingdong.calls.diapad.DiapadFragment;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.CustomImageView;
@@ -107,7 +108,13 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     portSipSdk.answerCall(session.sessionID, false);
                     mPresenter.setCallType(Constants.CALL_TYPE_CALLING);
                 } else {
-                    mPresenter.openDiapadScreen();
+                    new DiapadFragment(getViewContext(), number -> {
+                        if (portSipSdk != null && session.sessionID != Session.INVALID_SESSION_ID) {
+                            portSipSdk.hangUp(session.sessionID);
+                        }
+                        tvPhoneNumber.setText(number);
+                        session.sessionID = portSipSdk.call(number, true, false);
+                    }).show();
                 }
                 break;
 

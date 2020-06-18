@@ -16,7 +16,7 @@
     </item>
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/bg_color_diapad_button" />
+            <solid android:color="@color/white" />
             <size android:width="80dp" android:height="80dp" />
         </shape>
     </item>

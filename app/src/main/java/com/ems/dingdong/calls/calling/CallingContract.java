@@ -24,7 +24,5 @@ public interface CallingContract {
 
         String getCalleeNumber();
 
-        void openDiapadScreen();
-
     }
 }

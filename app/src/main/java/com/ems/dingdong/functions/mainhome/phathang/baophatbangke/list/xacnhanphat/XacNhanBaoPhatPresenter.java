@@ -35,7 +35,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -271,30 +270,19 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             paymentRequests.add(request);
         }
         mInteractor.paymentDelivery(paymentRequests)
-                .flatMap(simpleResult -> {
-                    paymentResponses = simpleResult.getPaymentResponses();
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        DeliveryPaymentV2 request = new DeliveryPaymentV2();
-                        request.setAutoUpdateCODAmount(true);
-                        request.setPaymentResponses(paymentResponses);
-                        request.setPaymentRequests(paymentRequests);
-                        return mInteractor.paymentV2(request);
-                    } else {
-                        return Single.just(simpleResult);
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         simpleResult -> {
-                            if (simpleResult.getErrorCode().equals("00")) {
-                                mView.showPaymentV2Success(simpleResult.getMessage());
-                            } else {
+                            paymentResponses = simpleResult.getPaymentResponses();
+                            if (simpleResult.getErrorCode().equals("01")) {
                                 mView.showCheckAmountPaymentError(simpleResult.getMessage());
+                            } else {
+                                mView.showPaymentV2Success(simpleResult.getMessage());
                             }
                         },
                         throwable -> {
-
+                            mView.showPaymentV2Success(throwable.getMessage());
                         }
                 );
     }

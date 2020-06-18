@@ -2,7 +2,7 @@ package com.ems.dingdong.calls.calling;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.calls.diapad.DiapadPresenter;
+import com.ems.dingdong.calls.diapad.DiapadFragment;
 
 public class CallingPresenter extends Presenter<CallingContract.View, CallingContract.Interactor> implements CallingContract.Presenter {
 
@@ -76,8 +76,4 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         return calleeNumber;
     }
 
-    @Override
-    public void openDiapadScreen() {
-        new DiapadPresenter(mContainerView).pushView();
-    }
 }
