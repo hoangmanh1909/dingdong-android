@@ -53,7 +53,6 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.io.File;
@@ -107,12 +106,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemTextView tv_postman;
     @BindView(R.id.btn_sign)
     CustomTextView btn_sign;
-    @BindView(R.id.iv_package_1)
-    SimpleDraweeView iv_package_1;
-    @BindView(R.id.iv_package_2)
-    SimpleDraweeView iv_package_2;
-    @BindView(R.id.iv_package_3)
-    SimpleDraweeView iv_package_3;
     @BindView(R.id.ll_signed)
     LinearLayout llSigned;
     @BindView(R.id.img_sign)
@@ -137,6 +130,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
     FormItemEditText edtOtherRelationship;
+    @BindView(R.id.recycler_image)
+    RecyclerView recyclerViewImage;
+
     private XacNhanBaoPhatAdapter adapter;
 
     private String mSign = "";
@@ -168,6 +164,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private long totalAmount = 0;
     private long totalFee = 0;
     private String mFile = "";
+    private List<Item> listImages;
+    private ImageCaptureAdapter imageAdapter;
 
     private UserInfo userInfo;
 
@@ -257,11 +255,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         updateTotalPackage();
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
+        listImages = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            listImages.add(new Item("", ""));
+        }
+        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages, (position, path) -> {
+            MediaUltis.captureImage(this);
+            imgPosition = position;
+        });
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
+        recyclerViewImage.setAdapter(imageAdapter);
+
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route, R.id.tv_postman, R.id.btn_sign,
-            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3, R.id.rl_relationship})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route, R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -296,18 +304,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         llSigned.setVisibility(View.VISIBLE);
                     }
                 }).show();
-                break;
-            case R.id.iv_package_1:
-                imgPosition = 1;
-                MediaUltis.captureImage(this);
-                break;
-            case R.id.iv_package_2:
-                imgPosition = 2;
-                MediaUltis.captureImage(this);
-                break;
-            case R.id.iv_package_3:
-                imgPosition = 3;
-                MediaUltis.captureImage(this);
                 break;
             case R.id.rl_relationship:
                 PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
@@ -418,14 +414,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private void attemptSendMedia(String path_media) {
-        Uri picUri = Uri.fromFile(new File(path_media));
-        if (imgPosition == 1)
-            iv_package_1.setImageURI(picUri);
-        else if (imgPosition == 2)
-            iv_package_2.setImageURI(picUri);
-        else
-            iv_package_3.setImageURI(picUri);
-
+        imageAdapter.getListFilter().get(imgPosition).setValue(path_media);
+        imageAdapter.notifyDataSetChanged();
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -439,12 +429,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
-                        if (imgPosition == 1)
-                            iv_package_1.setImageURI(picUri);
-                        else if (imgPosition == 2)
-                            iv_package_2.setImageURI(picUri);
-                        else
-                            iv_package_3.setImageURI(picUri);
+                        imageAdapter.getListFilter().get(imgPosition).setValue(path_media);
+                        imageAdapter.notifyDataSetChanged();
                         if (file.exists())
                             file.delete();
                     } else {
@@ -697,12 +683,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void deleteFile() {
         mFile = "";
-        if (imgPosition == 1)
-            iv_package_1.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
-        else if (imgPosition == 2)
-            iv_package_2.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
-        else
-            iv_package_3.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+        imageAdapter.getListFilter().get(imgPosition).setValue("");
+        imageAdapter.notifyDataSetChanged();
     }
 
     @Override

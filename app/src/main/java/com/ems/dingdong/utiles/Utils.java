@@ -1,6 +1,8 @@
 package com.ems.dingdong.utiles;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
@@ -57,6 +59,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -77,6 +80,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by HungNX on 3/24/16.
@@ -852,6 +857,13 @@ public class Utils {
         totalStatistic.setAmount(String.valueOf(totalAmount));
         statisticList.add(totalStatistic);
         return statisticList;
+    }
+
+    public static boolean isIncomingCallRunning(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfo = manager.getRunningTasks(1);
+        ComponentName componentInfo = runningTaskInfo.get(0).topActivity;
+        return componentInfo.getClassName().equals("com.ems.dingdong.calls.IncomingCallActivity");
     }
 
    /* public static String convertToNewMaVung(String phoneNumber,String oldCode,String newCode){

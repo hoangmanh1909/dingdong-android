@@ -192,11 +192,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:textColor="@color/bg_primary"
                         android:gravity="left|center"
-                        android:textSize="@dimen/_14sdp"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Báo phát thành công" />
+                        android:text="Báo phát thành công"
+                        android:textColor="@color/bg_primary"
+                        android:textSize="@dimen/_14sdp" />
 
                     <RadioButton
                         android:id="@+id/rad_fail"
@@ -206,9 +206,9 @@
                         android:layout_marginTop="@dimen/dimen_5dp"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:textSize="@dimen/_14sdp"
+                        android:text="Không thành công"
                         android:textColor="@color/black"
-                        android:text="Không thành công" />
+                        android:textSize="@dimen/_14sdp" />
 
                     <RadioButton
                         android:id="@+id/rad_change_route"
@@ -216,11 +216,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_5dp"
-                        android:textSize="@dimen/_14sdp"
                         android:gravity="left|center"
-                        android:textColor="@color/blue"
                         android:paddingLeft="@dimen/dimen_5dp"
-                        android:text="Chuyển tuyến" />
+                        android:text="Chuyển tuyến"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/_14sdp" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -251,12 +251,13 @@
                     android:weightSum="10">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="0dp"
                         android:id="@+id/tv_receiver_name"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
+
                     <EditText
                         android:id="@+id/edt_receiver_name"
                         android:layout_width="0dp"
@@ -322,8 +323,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_toRightOf="@+id/tv_relationship"
-                            android:paddingRight="@dimen/_5sdp"
                             android:hint="Chọn mối quan hệ"
+                            android:paddingRight="@dimen/_5sdp"
                             android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
 
@@ -338,13 +339,13 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_other_relationship"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ll_other_relationship"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
@@ -359,9 +360,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:text="1000000"
-                        app:formHint="@string/enter_relationship"
                         android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_16sp" />
+                        android:textSize="@dimen/text_size_16sp"
+                        app:formHint="@string/enter_relationship" />
 
                 </LinearLayout>
 
@@ -614,60 +615,86 @@
 
             </LinearLayout>
 
-            <com.ems.dingdong.views.CustomTextView
-                style="@style/HeaderNews"
-                android:layout_width="wrap_content"
-                android:padding="@dimen/dimen_10dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:text="Chụp ảnh"
-                android:textColor="@color/n_gray_text"
-                android:textSize="@dimen/text_size_16sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dimen_10dp"
-                android:paddingRight="@dimen/dimen_10dp">
+                android:layout_height="wrap_content">
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/iv_package_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:scaleType="center"
-                    app:placeholderImage="@drawable/ic_camera_capture"
-                    app:placeholderImageScaleType="centerInside"
-                    app:viewAspectRatio="1" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/iv_package_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:scaleType="center"
-                    app:placeholderImage="@drawable/ic_camera_capture"
-                    app:placeholderImageScaleType="centerInside"
-                    app:viewAspectRatio="1" />
+                    <ImageView
+                        android:id="@+id/iv_camera_plus"
+                        android:layout_width="@dimen/dimen_70dp"
+                        android:layout_height="@dimen/dimen_70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginRight="@dimen/size_10dp"
+                        android:src="@drawable/ic_camera_plus" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/iv_package_3"
-                    android:layout_width="match_parent"
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_camera_plus"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/size_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Chụp ảnh"
+                        android:textColor="@color/n_gray_text"
+                        android:textSize="@dimen/text_size_12sp" />
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_image"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:scaleType="center"
-                    app:placeholderImage="@drawable/ic_camera_capture"
-                    app:placeholderImageScaleType="centerInside"
-                    app:viewAspectRatio="1" />
+                    android:orientation="horizontal"/>
             </LinearLayout>
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@color/white"-->
+            <!--                android:orientation="vertical"-->
+            <!--                android:paddingLeft="@dimen/dimen_10dp"-->
+            <!--                android:paddingRight="@dimen/dimen_10dp">-->
+
+            <!--                <com.facebook.drawee.view.SimpleDraweeView-->
+            <!--                    android:id="@+id/iv_package_1"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center"-->
+            <!--                    android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                    android:background="@drawable/bg_white_radius_bottom_common"-->
+            <!--                    android:scaleType="center"-->
+            <!--                    app:placeholderImage="@drawable/ic_camera_capture"-->
+            <!--                    app:placeholderImageScaleType="centerInside"-->
+            <!--                    app:viewAspectRatio="1" />-->
+
+            <!--                <com.facebook.drawee.view.SimpleDraweeView-->
+            <!--                    android:id="@+id/iv_package_2"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center"-->
+            <!--                    android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                    android:background="@drawable/bg_white_radius_bottom_common"-->
+            <!--                    android:scaleType="center"-->
+            <!--                    app:placeholderImage="@drawable/ic_camera_capture"-->
+            <!--                    app:placeholderImageScaleType="centerInside"-->
+            <!--                    app:viewAspectRatio="1" />-->
+
+<!--                            <com.facebook.drawee.view.SimpleDraweeView-->
+<!--                                android:id="@+id/iv_package_3"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center"-->
+<!--                                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                                android:background="@drawable/bg_white_radius_bottom_common"-->
+<!--                                android:scaleType="center"-->
+<!--                                app:placeholderImage="@drawable/ic_camera_capture"-->
+<!--                                app:placeholderImageScaleType="centerInside"-->
+<!--                                app:viewAspectRatio="1" />-->
+            <!--            </LinearLayout>-->
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -99,6 +99,12 @@
         <item name="android:background">@color/gray</item>
     </style>
 
+    <style name="Devider_Vertical">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+
     <style name="st_white">
         <item name="android:textColor">#ffffff</item>
     </style>

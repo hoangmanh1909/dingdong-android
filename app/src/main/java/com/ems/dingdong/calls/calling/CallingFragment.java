@@ -217,6 +217,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     case PortSipService.CALL_EVENT_ANSWER_REJECT:
                         tvCalling.setText("busy");
                         break;
+                    case PortSipService.CALL_EVENT_INVITE_COMMING:
+                        tvCalling.setText(session.phoneNumber);
+                        changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+                        break;
                     case PortSipService.CALL_EVENT_END:
                         tvCalling.setText("call ended");
                         chronometer.stop();

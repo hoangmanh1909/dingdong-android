@@ -18,6 +18,7 @@ import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.portsip.OnPortSIPEvent;
 import com.portsip.PortSipEnumDefine;
@@ -33,6 +34,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
     public static final String INSTANCE_ID = "instanceid";
     public static final String CALL_EVENT_ANSWER = "CALL_EVENT_ANSWER";
+    public static final String CALL_EVENT_INVITE_COMMING = "CALL_EVENT_INVITE_COMMING";
     public static final String CALL_EVENT_RINGING = "CALL_EVENT_RINGING";
     public static final String CALL_EVENT_FAILURE = "CALL_EVENT_FAILURE";
     public static final String CALL_EVENT_INVITE_CONNECTED = "CALL_EVENT_INVITE_CONNECTED";
@@ -161,10 +163,18 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         CallManager.Instance().getSession().displayName = s2;
         CallManager.Instance().getSession().sessionID = l;
         Log.d(TAG, "Sessionid: " + l);
-        Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
-        intent.putExtra(Constants.CALL_TYPE, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        if (Utils.isIncomingCallRunning(getBaseContext())) {
+            Log.d("chauvp1", "IncomingCallActivity is running");
+            Intent intent = new Intent(ACTION_CALL_EVENT);
+            intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_COMMING);
+            sendBroadcast(intent);
+        } else {
+            Log.d("chauvp1", "IncomingCallActivity is not running");
+            Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+            intent.putExtra(Constants.CALL_TYPE, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
         Ring.getInstance(getApplication()).startRingTone();
     }
 
