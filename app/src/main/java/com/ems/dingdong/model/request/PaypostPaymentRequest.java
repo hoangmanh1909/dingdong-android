@@ -4,67 +4,79 @@ import com.google.gson.annotations.SerializedName;
 
 public class PaypostPaymentRequest {
     @SerializedName("PostmanID")
-    String postmanID;
+    private String postmanID;
     @SerializedName("ParcelCode")
-    String parcelCode;
+    private String parcelCode;
     @SerializedName("MobileNumber")
-    String mobileNumber;
+    private String mobileNumber;
     @SerializedName("DeliveryPOCode")
-    String deliveryPOCode;
+    private String deliveryPOCode;
     @SerializedName("DeliveryDate")
-    String deliveryDate;
+    private String deliveryDate;
     @SerializedName("DeliveryTime")
-    String deliveryTime;
+    private String deliveryTime;
     @SerializedName("ReceiverName")
-    String receiverName;
+    private String receiverName;
     @SerializedName("ReceiverIDNumber")
-    String receiverIDNumber;
+    private String receiverIDNumber;
     @SerializedName("ReasonCode")
-    String reasonCode;
+    private String reasonCode;
     @SerializedName("SolutionCode")
-    String solutionCode;
+    private String solutionCode;
     @SerializedName("Status")
-    String status;
+    private String status;
     @SerializedName("PaymentChannel")
-    String paymentChannel;
+    private String paymentChannel;
     @SerializedName("ShiftID")
-    Integer shiftID;
+    private Integer shiftID;
     @SerializedName("SignatureCapture")
-    String signatureCapture;
+    private String signatureCapture;
     @SerializedName("Note")
-    String note;
+    private String note;
     @SerializedName("CollectAmount")
-    Integer collectAmount;
+    private Integer collectAmount;
     @SerializedName("Signature")
-    String signature;
+    private String signature;
     @SerializedName("RouteCode")
-    String routeCode;
+    private String routeCode;
     @SerializedName("LadingPostmanID")
-    Integer ladingPostmanID;
+    private Integer ladingPostmanID;
     @SerializedName("ImageDelivery")
-    String imageDelivery;
+    private String imageDelivery;
     @SerializedName("PostmanCode")
-    String postmanCode;
+    private String postmanCode;
     @SerializedName("BatchCode")
-    String batchCode;
+    private String batchCode;
     @SerializedName("IsPaymentPP")
-    boolean isPaymentPP;
+    private boolean isPaymentPP;
     @SerializedName("IsItemReturn")
-    String isItemReturn;
+    private String isItemReturn;
     @SerializedName("AmountForBatch")
-    String amountForBatch;
+    private String amountForBatch;
     @SerializedName("ItemsInBatch")
-    Integer itemsInBatch;
+    private Integer itemsInBatch;
     @SerializedName("IsPaymentBatch")
-    boolean isPaymentBatch;
+    private boolean isPaymentBatch;
     @SerializedName("LastLadingCode")
-    String lastLadingCode;
+    private String lastLadingCode;
     @SerializedName("IsRePaymentBatch")
-    boolean isRePaymentBatch;
+    private boolean isRePaymentBatch;
     @SerializedName("ReceiverReference")
-    String receiverReference;
+    private String receiverReference;
     @SerializedName("ReplaceCode")
-    String replaceCode;
+    private String replaceCode;
+    @SerializedName("CustomerCode")
+    private String customerCode;
+    @SerializedName("ReceiverBirthday")
+    private String receiverBirthday;
+    @SerializedName("ReceiverPIDDate")
+    private String receiverPIDDate;
+    @SerializedName("ReceiverPIDWhere")
+    private String receiverPIDWhere;
+    @SerializedName("ReceiverAddressDetail")
+    private String receiverAddressDetail;
+    @SerializedName("AuthenType")
+    private Integer authenType;
 
     public void setPostmanID(String postmanID) {
         this.postmanID = postmanID;
@@ -188,5 +200,29 @@ public class PaypostPaymentRequest {
 
     public void setReplaceCode(String replaceCode) {
         this.replaceCode = replaceCode;
+    }
+
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
+    }
+
+    public void setReceiverBirthday(String receiverBirthday) {
+        this.receiverBirthday = receiverBirthday;
+    }
+
+    public void setReceiverPIDDate(String receiverPIDDate) {
+        this.receiverPIDDate = receiverPIDDate;
+    }
+
+    public void setReceiverPIDWhere(String receiverPIDWhere) {
+        this.receiverPIDWhere = receiverPIDWhere;
+    }
+
+    public void setReceiverAddressDetail(String receiverAddressDetail) {
+        this.receiverAddressDetail = receiverAddressDetail;
+    }
+
+    public void setAuthenType(Integer authenType) {
+        this.authenType = authenType;
     }
 }

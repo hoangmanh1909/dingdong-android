@@ -49,7 +49,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
             Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
-            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -87,6 +87,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission7 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
             int hasPermission8 = getActivity().checkSelfPermission(Manifest.permission.INTERNET);
             int hasPermission9 = getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO);
+            int hasPermission10 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
@@ -96,6 +97,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     || hasPermission7 != PackageManager.PERMISSION_GRANTED
                     || hasPermission8 != PackageManager.PERMISSION_GRANTED
                     || hasPermission9 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission10 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }

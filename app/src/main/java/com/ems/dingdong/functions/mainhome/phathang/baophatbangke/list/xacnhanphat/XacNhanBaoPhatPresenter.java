@@ -10,6 +10,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -190,6 +191,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.getBatchCode(),
                     item.getItemsInBatch(),
                     item.getAmountForBatch());
+            request.setCustomerCode(item.getCustomerCode());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -209,7 +211,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
-                                String newGtttCode, String relationship) {
+                                String newGtttCode, String relationship, InfoVerify infoVerify) {
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
@@ -266,6 +268,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setPaymentBatch(item.isPaymentBatch());
             request.setPostmanCode(postOffice.getCode());
             request.setReceiverIDNumber(gtttCode);
+            request.setCustomerCode(item.getCustomerCode());
+            request.setReceiverPIDWhere(infoVerify.getReceiverPIDWhere());
+            request.setReceiverPIDDate(infoVerify.getReceiverPIDDate());
+            request.setReceiverBirthday(infoVerify.getReceiverBirthday());
+            request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
+            request.setAuthenType(item.getAuthenType());
 
             paymentRequests.add(request);
         }

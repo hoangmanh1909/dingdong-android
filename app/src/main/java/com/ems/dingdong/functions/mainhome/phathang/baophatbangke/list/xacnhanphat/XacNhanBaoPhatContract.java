@@ -7,6 +7,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -196,7 +197,7 @@ public interface XacNhanBaoPhatContract {
          * delivery success.
          */
         void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
-                             String newVatCode, String relationship);
+                             String newVatCode, String relationship, InfoVerify infoVerify);
 
         void paymentV2(boolean isAutoUpdateCODAmount);
 

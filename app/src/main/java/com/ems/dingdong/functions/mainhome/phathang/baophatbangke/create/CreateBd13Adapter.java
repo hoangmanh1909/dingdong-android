@@ -111,6 +111,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                                 || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getCount()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getWeight()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getBatchCode()).toLowerCase().contains(charString.toLowerCase())
                                 || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -191,8 +192,15 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @SuppressLint("SetTextI18n")
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
-            if (!TextUtils.isEmpty(item.getMaE()))
-                tv_code.setText(String.format("(%s). %s", item.getOrderNumberInBD13(), item.getMaE()));
+            if (!TextUtils.isEmpty(item.getMaE())) {
+                if (mTypeBD13 == TypeBD13.LIST_BD13) {
+                    tv_code.setText(String.format("(%s). %s", item.getOrderNumberInBD13(), item.getMaE()));
+                } else {
+                    tv_code.setText(String.format("%s", item.getMaE()));
+                }
+            } else {
+                    tv_code.setText("");
+            }
 
             String receiverName = "";
             String receiverMobile = "";

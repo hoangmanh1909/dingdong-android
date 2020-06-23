@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +37,7 @@ import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
@@ -132,6 +134,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemEditText edtOtherRelationship;
     @BindView(R.id.recycler_image)
     RecyclerView recyclerViewImage;
+    @BindView(R.id.rb_verify_info)
+    CheckBox rbVerifyInfo;
+    @BindView(R.id.ll_verify_info)
+    LinearLayout llVerifyInfo;
+    @BindView(R.id.ll_verify)
+    LinearLayout llVerify;
+    @BindView(R.id.ll_capture_verify)
+    LinearLayout llCaptureVerify;
+    @BindView(R.id.edt_name)
+    FormItemEditText edtName;
+    @BindView(R.id.edt_date_of_birth)
+    FormItemEditText edtDateOfBirth;
+    @BindView(R.id.edt_GTTT_date_accepted)
+    FormItemEditText edtGTTTDateAccepted;
+    @BindView(R.id.edt_GTTT_located_accepted)
+    FormItemEditText edtGTTTLocatedAccepted;
 
     private XacNhanBaoPhatAdapter adapter;
 
@@ -158,7 +176,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private boolean mClickSolution = false;
     private boolean mReloadSolution = false;
-    private int imgPosition = 1;
     private int mDeliverySuccess = 0;
     private int mDeliveryError = 0;
     private long totalAmount = 0;
@@ -239,6 +256,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     } else {
                         tvReceiverName.setText("");
                     }
+                    checkVerify();
                     adapter.notifyDataSetChanged();
                     updateTotalPackage();
                 });
@@ -256,20 +274,24 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
         listImages = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            listImages.add(new Item("", ""));
-        }
-        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages, (position, path) -> {
-            MediaUltis.captureImage(this);
-            imgPosition = position;
-        });
+        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
         recyclerViewImage.setAdapter(imageAdapter);
-
+        rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
+            if (b) {
+                llVerifyInfo.setVisibility(View.VISIBLE);
+                llCaptureVerify.setVisibility(View.VISIBLE);
+            } else {
+                llVerifyInfo.setVisibility(View.GONE);
+                llCaptureVerify.setVisibility(View.GONE);
+            }
+        });
+        checkVerify();
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route, R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
+            R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -304,6 +326,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         llSigned.setVisibility(View.VISIBLE);
                     }
                 }).show();
+                break;
+
+            case R.id.rl_image_capture:
+                MediaUltis.captureImage(this);
                 break;
             case R.id.rl_relationship:
                 PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
@@ -343,6 +369,40 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
             }
+            boolean isCanVerify = canVerify();
+            if (!isCanVerify) {
+                showErrorToast("Có bưu gửi cần xác thực thông tin, yêu cầu báo phát riêng");
+                return;
+            }
+
+            if (llVerifyInfo.getVisibility() == View.VISIBLE) {
+                if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
+                    showErrorToast("Bạn chưa nhập ngày cấp giấy tờ tùy thân");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(edtName.getText())) {
+                    showErrorToast("Bạn chưa nhập thông tin xác thực: Họ và tên");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
+                    showErrorToast("Bạn chưa nhập nơi cấp giấy tờ tùy thân");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
+                    showErrorToast("Bạn chưa nhập ngày tháng năm sinh");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(tvGTTT.getText())) {
+                    showErrorToast("Bạn chưa nhập số giấy tờ tùy thân");
+                    return;
+                }
+
+            }
+
             if (TextUtils.isEmpty(tvReceiverName.getText())) {
                 showErrorToast("Bạn chưa nhập tên người nhận thực tế");
                 return;
@@ -353,18 +413,26 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
+
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
+                        InfoVerify infoVerify = new InfoVerify();
+                        infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
+                        infoVerify.setReceiverAddressDetail(edtName.getText());
+                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText());
+                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText());
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                             mPresenter.paymentDelivery(mFile, mSign,
                                     tvReceiverName.getText().toString(), tvGTTT.getText(),
-                                    edtOtherRelationship.getText());
+                                    edtOtherRelationship.getText(), infoVerify);
                         } else {
                             mPresenter.paymentDelivery(mFile, mSign,
                                     tvReceiverName.getText().toString(),
-                                    tvGTTT.getText(), edtRelationship.getText().toString());
+                                    tvGTTT.getText(),
+                                    edtRelationship.getText().toString(),
+                                    infoVerify);
                         }
                         confirmDialog.dismiss();
                     })
@@ -414,8 +482,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private void attemptSendMedia(String path_media) {
-        imageAdapter.getListFilter().get(imgPosition).setValue(path_media);
-        imageAdapter.notifyDataSetChanged();
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -429,7 +495,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
-                        imageAdapter.getListFilter().get(imgPosition).setValue(path_media);
+                        imageAdapter.getListFilter().add(new Item(path, ""));
                         imageAdapter.notifyDataSetChanged();
                         if (file.exists())
                             file.delete();
@@ -683,7 +749,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void deleteFile() {
         mFile = "";
-        imageAdapter.getListFilter().get(imgPosition).setValue("");
+        imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
         imageAdapter.notifyDataSetChanged();
     }
 
@@ -792,4 +858,102 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }).show();
         }
     }
+
+//    private int isSameGtgt() {
+//        List<DeliveryPostman> list = getItemSelected();
+//        if (list.size() > 1) {
+//            DeliveryPostman firstItem = getItemSelected().get(0);
+//            for (int i = 1; i < list.size(); i++) {
+//                DeliveryPostman mediatorItem = list.get(i);
+//                if (!firstItem.getVatCode().equals(mediatorItem.getVatCode()))
+//                    return 0;
+//            }
+//            if (TextUtils.isEmpty(firstItem.getVatCode())) {
+//                return -1;
+//            }
+//            return 1;
+//        } else if (list.size() == 1) {
+//            DeliveryPostman firstItem = getItemSelected().get(0);
+//            if (TextUtils.isEmpty(firstItem.getVatCode()))
+//                return -1;
+//            else
+//                return 1;
+//        } else return 0;
+//    }
+
+    private int isSameAuthenType() {
+        List<DeliveryPostman> list = getItemSelected();
+        if (list.size() > 1) {
+            DeliveryPostman firstItem = getItemSelected().get(0);
+            boolean isSameAuthenType = true;
+            for (int i = 1; i < list.size(); i++) {
+                DeliveryPostman mediatorItem = list.get(i);
+                if (!firstItem.getAuthenType().equals(mediatorItem.getAuthenType())) {
+                    isSameAuthenType = false;
+                    break;
+                }
+            }
+            if (isSameAuthenType) {
+                return firstItem.getAuthenType();
+            } else return -1;
+        } else if (list.size() == 1) {
+            DeliveryPostman firstItem = getItemSelected().get(0);
+            return firstItem.getAuthenType();
+        } else return -2;
+    }
+
+//    private boolean isSameAddress() {
+//        List<DeliveryPostman> list = getItemSelected();
+//        if (list.size() > 1) {
+//
+//            DeliveryPostman firstItem = getItemSelected().get(0);
+//            for (int i = 1; i < list.size(); i++) {
+//                DeliveryPostman mediatorItem = list.get(i);
+//                if (!firstItem.getReciverAddress().equals(mediatorItem.getReciverAddress()))
+//                    return false;
+//            }
+//            return true;
+//        } else return true;
+//
+//    }
+
+    private void checkVerify() {
+        int authenType = isSameAuthenType();
+        if (authenType == 0) {
+            rbVerifyInfo.setVisibility(View.VISIBLE);
+            llVerify.setVisibility(View.VISIBLE);
+            if (rbVerifyInfo.isChecked()) {
+                llVerifyInfo.setVisibility(View.VISIBLE);
+                llCaptureVerify.setVisibility(View.VISIBLE);
+            }
+            else {
+                llVerifyInfo.setVisibility(View.GONE);
+                llCaptureVerify.setVisibility(View.GONE);
+            }
+        } else if (authenType == 1) {
+            llVerifyInfo.setVisibility(View.VISIBLE);
+            llVerify.setVisibility(View.VISIBLE);
+            rbVerifyInfo.setVisibility(View.GONE);
+            llCaptureVerify.setVisibility(View.GONE);
+        } else if (authenType == 2) {
+            llVerifyInfo.setVisibility(View.GONE);
+            llVerify.setVisibility(View.VISIBLE);
+            rbVerifyInfo.setVisibility(View.GONE);
+            llCaptureVerify.setVisibility(View.VISIBLE);
+        } else if (authenType == 3) {
+            llVerifyInfo.setVisibility(View.VISIBLE);
+            llVerify.setVisibility(View.VISIBLE);
+            rbVerifyInfo.setVisibility(View.GONE);
+            llCaptureVerify.setVisibility(View.VISIBLE);
+        } else if (authenType == -2) {
+            llVerify.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean canVerify() {
+        if (isSameAuthenType() == -1 || isSameAuthenType() == -2)
+            return false;
+        else return true;
+    }
+
 }

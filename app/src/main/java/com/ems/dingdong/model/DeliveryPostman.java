@@ -123,6 +123,10 @@ public class DeliveryPostman implements Comparable {
     private String lastLadingCode;
     @SerializedName("IsRePaymentBatch")
     private boolean isRePaymentBatch;
+    @SerializedName("CustomerCode")
+    private String customerCode;
+    @SerializedName("AuthenType")
+    private Integer authenType;
 
     private boolean selected;
 
@@ -416,6 +420,14 @@ public class DeliveryPostman implements Comparable {
 
     public boolean isRePaymentBatch() {
         return isRePaymentBatch;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public Integer getAuthenType() {
+        return authenType;
     }
 
     @Override

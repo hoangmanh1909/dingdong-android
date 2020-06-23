@@ -93,6 +93,24 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     PostOffice postOffice;
     RouteInfo routeInfo;
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            mAdapter.getFilter().filter(s.toString());
+        }
+    };
+
     public static CreateBd13Fragment getInstance() {
         return new CreateBd13Fragment();
     }
@@ -189,23 +207,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         mToDate = toDay;
         searchLadingBd13(toDay, toDay, "");
 
-        edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mAdapter.getFilter().filter(s.toString());
-            }
-        });
+        edtSearch.getEditText().addTextChangedListener(textWatcher);
         edtSearch.setSelected(true);
     }
 
@@ -395,6 +397,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void showSuccessMessage(String message) {
         mList.clear();
+        edtSearch.getEditText().removeTextChangedListener(textWatcher);
+        edtSearch.setText("");
+        edtSearch.getEditText().addTextChangedListener(textWatcher);
         searchLadingBd13(mFromDate, mToDate, mChuyenThu);
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
@@ -426,6 +431,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             }
             tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
+        mAdapter.setListFilter(list);
         mAdapter.notifyDataSetChanged();
     }
 

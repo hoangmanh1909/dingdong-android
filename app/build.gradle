@@ -31,9 +31,6 @@ android {
         versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        ndk {
-            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "armeabi"
-        }
     }
     signingConfigs {
         debug {
