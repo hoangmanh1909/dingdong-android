@@ -45,6 +45,7 @@ import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -56,11 +57,13 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -134,6 +137,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemEditText edtOtherRelationship;
     @BindView(R.id.recycler_image)
     RecyclerView recyclerViewImage;
+    @BindView(R.id.recycler_image_verify)
+    RecyclerView recyclerViewImageVerify;
     @BindView(R.id.rb_verify_info)
     CheckBox rbVerifyInfo;
     @BindView(R.id.ll_verify_info)
@@ -145,12 +150,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.edt_name)
     FormItemEditText edtName;
     @BindView(R.id.edt_date_of_birth)
-    FormItemEditText edtDateOfBirth;
+    CustomTextView edtDateOfBirth;
     @BindView(R.id.edt_GTTT_date_accepted)
-    FormItemEditText edtGTTTDateAccepted;
+    CustomTextView edtGTTTDateAccepted;
     @BindView(R.id.edt_GTTT_located_accepted)
     FormItemEditText edtGTTTLocatedAccepted;
-
+    @BindView(R.id.edt_user_address)
+    FormItemEditText edtUserAddress;
+    private Calendar calDateOfBirth = Calendar.getInstance();
+    private Calendar calDateAccepted = Calendar.getInstance();
     private XacNhanBaoPhatAdapter adapter;
 
     private String mSign = "";
@@ -181,8 +189,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private long totalAmount = 0;
     private long totalFee = 0;
     private String mFile = "";
+    private String mFileVerify = "";
+    private boolean isCaptureVerify = false;
+    private int authenType = -2;
     private List<Item> listImages;
     private ImageCaptureAdapter imageAdapter;
+    private ImageCaptureAdapter imageVerifyAdapter;
 
     private UserInfo userInfo;
 
@@ -210,7 +222,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
-        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận thực tế: " + "<font color=\"red\">*</font>"));
+        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: " + "<font color=\"red\">*</font>"));
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -230,15 +242,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 linearLayoutName.setVisibility(View.GONE);
+                llVerify.setVisibility(View.GONE);
             } else if (checkedId == R.id.rad_success) {
                 mDeliveryType = 2;
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
                 linearLayoutName.setVisibility(View.VISIBLE);
+                llVerify.setVisibility(View.VISIBLE);
             } else {
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
                 ll_change_route.setVisibility(LinearLayout.VISIBLE);
                 linearLayoutName.setVisibility(View.GONE);
+                llVerify.setVisibility(View.GONE);
                 mDeliveryType = 3;
             }
         });
@@ -275,8 +290,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
         listImages = new ArrayList<>();
         imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages);
+        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), new ArrayList<>());
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
         recyclerViewImage.setAdapter(imageAdapter);
+        recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
         rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
             if (b) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
@@ -291,7 +309,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
-            R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture})
+            R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
+            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -329,7 +348,58 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
 
             case R.id.rl_image_capture:
+                isCaptureVerify = false;
                 MediaUltis.captureImage(this);
+                break;
+            case R.id.rl_image_capture_verify:
+                isCaptureVerify = true;
+                MediaUltis.captureImage(this);
+                break;
+            case R.id.edt_date_of_birth:
+                new SpinnerDatePickerDialogBuilder()
+                        .context(getViewContext())
+                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
+                            calDateOfBirth.set(year, monthOfYear, dayOfMonth);
+                            edtDateOfBirth.setText(DateTimeUtils
+                                    .convertDateToString(calDateOfBirth.getTime(),
+                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
+                        })
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calDateOfBirth.get(Calendar.YEAR),
+                                calDateOfBirth.get(Calendar.MONTH),
+                                calDateOfBirth.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(calDateOfBirth.get(Calendar.YEAR),
+                                calDateOfBirth.get(Calendar.MONTH),
+                                calDateOfBirth.get(Calendar.DAY_OF_MONTH))
+                        .minDate(1979, 0, 1)
+                        .build()
+                        .show();
+                break;
+
+            case R.id.edt_GTTT_date_accepted:
+
+                new SpinnerDatePickerDialogBuilder()
+                        .context(getViewContext())
+                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
+                            calDateAccepted.set(year, monthOfYear, dayOfMonth);
+                            edtGTTTDateAccepted.setText(DateTimeUtils
+                                    .convertDateToString(calDateAccepted.getTime(),
+                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
+                        })
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calDateAccepted.get(Calendar.YEAR),
+                                calDateAccepted.get(Calendar.MONTH),
+                                calDateAccepted.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(calDateAccepted.get(Calendar.YEAR),
+                                calDateAccepted.get(Calendar.MONTH),
+                                calDateAccepted.get(Calendar.DAY_OF_MONTH))
+                        .minDate(1979, 0, 1)
+                        .build()
+                        .show();
                 break;
             case R.id.rl_relationship:
                 PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
@@ -376,28 +446,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
             if (llVerifyInfo.getVisibility() == View.VISIBLE) {
-                if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
-                    showErrorToast("Bạn chưa nhập ngày cấp giấy tờ tùy thân");
+                if (authenType == 1 && !checkInfo()) {
                     return;
-                }
-
-                if (TextUtils.isEmpty(edtName.getText())) {
-                    showErrorToast("Bạn chưa nhập thông tin xác thực: Họ và tên");
+                } else if (authenType == 2 && !checkImage()) {
                     return;
-                }
-
-                if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
-                    showErrorToast("Bạn chưa nhập nơi cấp giấy tờ tùy thân");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
-                    showErrorToast("Bạn chưa nhập ngày tháng năm sinh");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(tvGTTT.getText())) {
-                    showErrorToast("Bạn chưa nhập số giấy tờ tùy thân");
+                } else if ((authenType == 3 || authenType == 0) && (!checkInfo() || !checkImage())) {
                     return;
                 }
 
@@ -420,15 +473,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         showProgress();
                         InfoVerify infoVerify = new InfoVerify();
                         infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
-                        infoVerify.setReceiverAddressDetail(edtName.getText());
-                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText());
-                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText());
+                        infoVerify.setReceiverAddressDetail(edtName.getText() + "-" + edtUserAddress.getText());
+                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
+                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mSign,
+                            mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
                                     tvReceiverName.getText().toString(), tvGTTT.getText(),
                                     edtOtherRelationship.getText(), infoVerify);
                         } else {
-                            mPresenter.paymentDelivery(mFile, mSign,
+                            mPresenter.paymentDelivery(mFile + mFileVerify, mSign,
                                     tvReceiverName.getText().toString(),
                                     tvGTTT.getText(),
                                     edtRelationship.getText().toString(),
@@ -495,8 +548,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
-                        imageAdapter.getListFilter().add(new Item(path, ""));
-                        imageAdapter.notifyDataSetChanged();
+                        if (isCaptureVerify) {
+                            imageVerifyAdapter.getListFilter().add(new Item(path, ""));
+                            imageVerifyAdapter.notifyDataSetChanged();
+                        } else {
+                            imageAdapter.getListFilter().add(new Item(path, ""));
+                            imageAdapter.notifyDataSetChanged();
+                        }
                         if (file.exists())
                             file.delete();
                     } else {
@@ -738,19 +796,34 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showImage(String file) {
-        if (mFile.equals("")) {
-            mFile = file;
+        if (isCaptureVerify) {
+            if (mFileVerify.equals("")) {
+                mFileVerify = file;
+            } else {
+                mFileVerify += ";";
+                mFileVerify += file;
+            }
         } else {
-            mFile += ";";
-            mFile += file;
+            if (mFile.equals("")) {
+                mFile = file;
+            } else {
+                mFile += ";";
+                mFile += file;
+            }
         }
     }
 
     @Override
     public void deleteFile() {
-        mFile = "";
-        imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
-        imageAdapter.notifyDataSetChanged();
+        if (isCaptureVerify) {
+            mFileVerify = "";
+            imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
+            imageVerifyAdapter.notifyDataSetChanged();
+        } else {
+            mFile = "";
+            imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
+            imageAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -763,10 +836,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void showCheckAmountPaymentError(String message) {
+    public void showCheckAmountPaymentError(String message, String amountPP, String amountPNS) {
         new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText("Thông báo")
-                .setContentText(message + " Bạn có muốn thay đổi số tiền không?")
+                .setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP
+                        + "\nTiền trên hệ thông PNS: " + amountPNS
+                        + " \nBạn có muốn thay đổi số tiền không?")
                 .setCancelText("Không")
                 .setConfirmText("Có")
                 .setCancelClickListener(v -> {
@@ -859,29 +934,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
-//    private int isSameGtgt() {
-//        List<DeliveryPostman> list = getItemSelected();
-//        if (list.size() > 1) {
-//            DeliveryPostman firstItem = getItemSelected().get(0);
-//            for (int i = 1; i < list.size(); i++) {
-//                DeliveryPostman mediatorItem = list.get(i);
-//                if (!firstItem.getVatCode().equals(mediatorItem.getVatCode()))
-//                    return 0;
-//            }
-//            if (TextUtils.isEmpty(firstItem.getVatCode())) {
-//                return -1;
-//            }
-//            return 1;
-//        } else if (list.size() == 1) {
-//            DeliveryPostman firstItem = getItemSelected().get(0);
-//            if (TextUtils.isEmpty(firstItem.getVatCode()))
-//                return -1;
-//            else
-//                return 1;
-//        } else return 0;
-//    }
-
-    private int isSameAuthenType() {
+    private int getAuthenType() {
         List<DeliveryPostman> list = getItemSelected();
         if (list.size() > 1) {
             DeliveryPostman firstItem = getItemSelected().get(0);
@@ -902,31 +955,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         } else return -2;
     }
 
-//    private boolean isSameAddress() {
-//        List<DeliveryPostman> list = getItemSelected();
-//        if (list.size() > 1) {
-//
-//            DeliveryPostman firstItem = getItemSelected().get(0);
-//            for (int i = 1; i < list.size(); i++) {
-//                DeliveryPostman mediatorItem = list.get(i);
-//                if (!firstItem.getReciverAddress().equals(mediatorItem.getReciverAddress()))
-//                    return false;
-//            }
-//            return true;
-//        } else return true;
-//
-//    }
-
     private void checkVerify() {
-        int authenType = isSameAuthenType();
+        authenType = getAuthenType();
         if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
             if (rbVerifyInfo.isChecked()) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
                 llCaptureVerify.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 llVerifyInfo.setVisibility(View.GONE);
                 llCaptureVerify.setVisibility(View.GONE);
             }
@@ -951,9 +988,50 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private boolean canVerify() {
-        if (isSameAuthenType() == -1 || isSameAuthenType() == -2)
+        if (getAuthenType() == -1 || getAuthenType() == -2)
             return false;
         else return true;
+    }
+
+    private boolean checkInfo() {
+        if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
+            showErrorToast("Bạn chưa nhập ngày cấp giấy tờ tùy thân");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(edtName.getText())) {
+            showErrorToast("Bạn chưa nhập thông tin xác thực: Họ và tên");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
+            showErrorToast("Bạn chưa nhập nơi cấp giấy tờ tùy thân");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
+            showErrorToast("Bạn chưa nhập ngày tháng năm sinh");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(tvGTTT.getText())) {
+            showErrorToast("Bạn chưa nhập số giấy tờ tùy thân");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(edtUserAddress.getText())) {
+            showErrorToast("Bạn chưa nhập địa chỉ người sử dụng");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkImage() {
+        if (TextUtils.isEmpty(mFileVerify)) {
+            showErrorToast("Bạn chưa chụp ảnh xác thực");
+            return false;
+        }
+        return true;
     }
 
 }

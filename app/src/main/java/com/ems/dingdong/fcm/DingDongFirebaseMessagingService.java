@@ -23,8 +23,6 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
-import com.ems.dingdong.model.DingdongNotificationObject;
-import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -64,16 +62,13 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         if (remoteMessage.getData().size() > 0) {
-            if (remoteMessage.getData().get("stringeePushNotification") != null) {
-                DingdongNotificationObject object = NetWorkController.getGson().fromJson(remoteMessage.getData().get("data"), DingdongNotificationObject.class);
-                Log.e(TAG, "content: " + "callID: " + object.getCallId() + "call status: " + object.getCallStatus() + "call from: " + object.getFrom() + object.getSerial());
-                if ("ringing".equals(object.getCallStatus())) {
-                    sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + object.getFrom().getNumber());
-                }
+            if (!TextUtils.isEmpty(remoteMessage.getData().get("send_from"))) {
+                sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13));
             } else if (!TextUtils.isEmpty(remoteMessage.getData().get("message"))) {
                 sendNotification(remoteMessage.getData().get("message"));
             } else {
                 Log.d(TAG, "call id is null");
+                Log.d(TAG, remoteMessage.getData().toString());
             }
         } else if (notification != null) {
             Log.e(TAG, "Data is null: ");

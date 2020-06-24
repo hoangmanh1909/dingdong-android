@@ -120,7 +120,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         String token = FirebaseInstanceId.getInstance().getToken();
         if (!TextUtils.isEmpty(token)) {
             String pushMessage = "device-os=android;device-uid=" + token + ";allow-call-push=true;allow-message-push=true;app-id=" + APPID;
-            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "portsip-push", pushMessage);
+//            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "portsip-push", pushMessage);
             //new version
             mEngine.addSipMessageHeader(-1, "REGISTER", 1, "x-p-push", pushMessage);
         }

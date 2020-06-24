@@ -28,6 +28,7 @@ import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
@@ -284,7 +285,17 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                         simpleResult -> {
                             paymentResponses = simpleResult.getPaymentResponses();
                             if (simpleResult.getErrorCode().equals("01")) {
-                                mView.showCheckAmountPaymentError(simpleResult.getMessage());
+                                long amountPP = 0;
+                                long amountPNS = 0;
+                                if (paymentResponses != null) {
+                                    for (DeliveryCheckAmountPaymentResponse item : paymentResponses) {
+                                        amountPP += item.getPayPostAmount();
+                                        amountPNS += item.getPNSAmount();
+                                    }
+                                }
+                                mView.showCheckAmountPaymentError(simpleResult.getMessage(),
+                                        NumberUtils.formatPriceNumber(amountPP),
+                                        NumberUtils.formatPriceNumber(amountPNS));
                             } else {
                                 mView.showPaymentV2Success(simpleResult.getMessage());
                             }

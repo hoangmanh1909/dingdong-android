@@ -141,7 +141,7 @@ public interface XacNhanBaoPhatContract {
         void showError(String message);
 
 
-        void showCheckAmountPaymentError(String message);
+        void showCheckAmountPaymentError(String message, String amountPP, String amountPNS);
 
         /**
          * Show success code.
