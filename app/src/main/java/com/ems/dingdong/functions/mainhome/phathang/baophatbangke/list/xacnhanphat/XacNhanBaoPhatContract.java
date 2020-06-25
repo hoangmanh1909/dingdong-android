@@ -197,7 +197,7 @@ public interface XacNhanBaoPhatContract {
          * delivery success.
          */
         void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
-                             String newVatCode, String relationship, InfoVerify infoVerify);
+                             String relationship, InfoVerify infoVerify);
 
         void paymentV2(boolean isAutoUpdateCODAmount);
 

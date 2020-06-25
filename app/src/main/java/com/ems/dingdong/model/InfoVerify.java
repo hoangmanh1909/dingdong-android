@@ -11,6 +11,8 @@ public class InfoVerify {
 
     private Integer authenType;
 
+    private String gtgt;
+
     public void setReceiverBirthday(String receiverBirthday) {
         this.receiverBirthday = receiverBirthday;
     }
@@ -49,5 +51,13 @@ public class InfoVerify {
 
     public Integer getAuthenType() {
         return authenType;
+    }
+
+    public String getGtgt() {
+        return gtgt;
+    }
+
+    public void setGtgt(String gtgt) {
+        this.gtgt = gtgt;
     }
 }

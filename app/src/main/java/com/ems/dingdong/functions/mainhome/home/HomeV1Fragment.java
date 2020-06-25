@@ -89,6 +89,14 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     }
 
     @Override
+    public void onDestroyView() {
+        if (homeViewChangeListerner != null) {
+            getViewContext().unregisterReceiver(homeViewChangeListerner);
+        }
+        super.onDestroyView();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
     }

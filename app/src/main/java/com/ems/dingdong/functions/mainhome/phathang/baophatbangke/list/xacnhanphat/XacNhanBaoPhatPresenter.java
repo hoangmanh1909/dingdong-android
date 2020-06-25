@@ -212,7 +212,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
-                                String newGtttCode, String relationship, InfoVerify infoVerify) {
+                                String relationship, InfoVerify infoVerify) {
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
@@ -224,9 +224,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mView.getItemSelected()) {
             String receiverName;
-            String gtttCode;
             receiverName = newReceiverName;
-            gtttCode = newGtttCode;
             String parcelCode = item.getMaE();
             String reasonCode = "";
             String solutionCode = "";
@@ -268,13 +266,13 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setLastLadingCode(item.getLastLadingCode());
             request.setPaymentBatch(item.isPaymentBatch());
             request.setPostmanCode(postOffice.getCode());
-            request.setReceiverIDNumber(gtttCode);
             request.setCustomerCode(item.getCustomerCode());
             request.setReceiverPIDWhere(infoVerify.getReceiverPIDWhere());
             request.setReceiverPIDDate(infoVerify.getReceiverPIDDate());
             request.setReceiverBirthday(infoVerify.getReceiverBirthday());
             request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
-            request.setAuthenType(item.getAuthenType());
+            request.setAuthenType(infoVerify.getAuthenType());
+            request.setReceiverIDNumber(infoVerify.getGtgt());
 
             paymentRequests.add(request);
         }

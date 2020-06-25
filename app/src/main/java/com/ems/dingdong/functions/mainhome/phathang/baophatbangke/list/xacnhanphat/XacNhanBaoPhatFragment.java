@@ -453,7 +453,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 } else if ((authenType == 3 || authenType == 0) && (!checkInfo() || !checkImage())) {
                     return;
                 }
-
             }
 
             if (TextUtils.isEmpty(tvReceiverName.getText())) {
@@ -472,18 +471,25 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
                         InfoVerify infoVerify = new InfoVerify();
-                        infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
-                        infoVerify.setReceiverAddressDetail(edtName.getText() + "-" + edtUserAddress.getText());
-                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
-                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
+                        if (llVerifyInfo.getVisibility() == View.VISIBLE) {
+                            infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
+                            infoVerify.setReceiverAddressDetail(edtName.getText() + "-" + edtUserAddress.getText());
+                            infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
+                            infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
+                            infoVerify.setGtgt(tvGTTT.getText());
+                            if (authenType == 0)
+                                infoVerify.setAuthenType(3);
+                            else
+                                infoVerify.setAuthenType(authenType);
+                        }
+
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                             mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
-                                    tvReceiverName.getText().toString(), tvGTTT.getText(),
+                                    tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
                         } else {
                             mPresenter.paymentDelivery(mFile + mFileVerify, mSign,
                                     tvReceiverName.getText().toString(),
-                                    tvGTTT.getText(),
                                     edtRelationship.getText().toString(),
                                     infoVerify);
                         }
