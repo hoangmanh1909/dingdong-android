@@ -12,6 +12,7 @@ import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
@@ -76,6 +77,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             case R.id.img_logout:
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
+                getViewContext().sendBroadcast(new Intent(PortSipService.ACTION_LOG_OUT));
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().finishAffinity();

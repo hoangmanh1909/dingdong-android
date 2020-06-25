@@ -273,9 +273,17 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:inputType="textMultiLine"
+                        android:gravity="right"
                         android:textColor="@color/red_light"
                         android:textSize="@dimen/text_size_16sp" />
                 </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp" />
 
                 <RelativeLayout
                     android:id="@+id/rl_relationship"
@@ -323,6 +331,13 @@
                     </LinearLayout>
                 </RelativeLayout>
 
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp" />
                 <LinearLayout
                     android:id="@+id/ll_other_relationship"
                     android:layout_width="wrap_content"
@@ -350,6 +365,45 @@
                         app:formHint="@string/enter_relationship" />
 
                 </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số GTTT: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/edt_GTTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="1000000"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_16sp" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp" />
 
 
                 <LinearLayout
@@ -570,7 +624,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -628,39 +682,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
-                                android:text="Họ và tên:"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_16sp" />
-
-                            <com.ems.dingdong.views.form.FormItemEditText
-                                android:id="@+id/edt_name"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="5"
-                                android:text="1000000"
-                                android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_16sp" />
-                        </LinearLayout>
-
-                        <View
-                            style="@style/Devider"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_8dp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="10">
-
-                            <com.ems.dingdong.views.CustomTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="5"
                                 android:text="Địa chỉ người sử dụng:"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
@@ -671,6 +692,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:text="1000000"
+                                android:gravity="right"
                                 android:textColor="@color/red_light"
                                 android:textSize="@dimen/text_size_16sp" />
                         </LinearLayout>
@@ -705,38 +727,6 @@
                                 android:text="21/6/2016"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
-
-                        </LinearLayout>
-
-                        <View
-                            style="@style/Devider"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_8dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <com.ems.dingdong.views.CustomTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Số GTTT: "
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_16sp" />
-
-                            <com.ems.dingdong.views.form.FormItemEditText
-                                android:id="@+id/edt_GTTT"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="right"
-                                android:text="1000000"
-                                android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_16sp" />
 
                         </LinearLayout>
 

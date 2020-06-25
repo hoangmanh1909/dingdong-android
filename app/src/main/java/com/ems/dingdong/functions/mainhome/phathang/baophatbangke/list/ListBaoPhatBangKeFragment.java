@@ -24,6 +24,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.EditDayDialog;
@@ -120,6 +121,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mPresenter.callByWifi(mSenderPhone);
                     break;
                 case 1:
+                    if (!ApplicationController.getInstance().isPortsipConnected()) {
+                        showErrorToast("Dịch vụ gọi tiết kiệm chưa sẵn sàng, xin vui thử lại sau ít phút");
+                        return;
+                    }
                     mPresenter.callByWifi(mPhone);
                     break;
                 case 3:

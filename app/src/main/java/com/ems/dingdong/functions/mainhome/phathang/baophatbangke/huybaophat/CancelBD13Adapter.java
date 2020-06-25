@@ -181,12 +181,9 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 if (item.getPaymentPayPostStatus().equals("Y")) {
                     tv_status_paypost.setText(String.format(mContext.getString(R.string.success)));
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
-                } else if (item.getPaymentPayPostStatus().equals("A")) {
+                } else {
                     tv_status_paypost.setText(String.format(mContext.getString(R.string.not_success)));
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
-                } else {
-                    tv_status_paypost.setText("");
-                    tv_status_paypost.setVisibility(View.GONE);
                 }
             } else {
                 tv_status_paypost.setText("");

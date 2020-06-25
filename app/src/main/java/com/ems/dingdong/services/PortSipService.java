@@ -1,8 +1,10 @@
 package com.ems.dingdong.services;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
@@ -28,6 +30,11 @@ import com.portsip.PortSipSdk;
 import java.util.Random;
 import java.util.UUID;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class PortSipService extends Service implements OnPortSIPEvent {
 
     private static final String TAG = PortSipService.class.getName();
@@ -43,23 +50,37 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     public static final String CALL_EVENT_END = "CALL_EVENT_END";
     public static final String CALL_EVENT_TRYING = "CALL_EVENT_TRYING";
     public static final String ACTION_CALL_EVENT = "ACTION_CALL_EVENT";
+    public static final String ACTION_LOG_OUT = "ACTION_LOG_OUT";
     public static final String TYPE_ACTION = "TYPE_ACTION";
     private final String APPID = "com.tct.dingdong";
     private PortSipSdk mEngine;
     private ApplicationController applicaton;
     private final IBinder mBinder = new PortSipBinder();
+    private boolean isConnectCallService = false;
+    private Disposable disposable;
+    private BroadcastReceiver logoutEvent = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_LOG_OUT.equals(intent.getAction())) {
+                if (disposable != null) {
+                    disposable.dispose();
+                    disposable = null;
+                }
+            }
+        }
+    };
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        applicaton = (ApplicationController) getApplication();
-        mEngine = applicaton.portSipSdk;
-        registerToServer();
         return mBinder;
     }
 
     public void registerToServer() {
+        applicaton.portSipSdk = new PortSipSdk();
+        mEngine = applicaton.portSipSdk;
         Random rm = new Random();
+        Log.d(TAG, Thread.currentThread().getName());
         int localPort = 5060 + rm.nextInt(60000);
 //        int transType = preferences.getInt(TRANS, 0);
 //        int srtpType = preferences.getInt(SRTP, 0);
@@ -76,63 +97,85 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
         int sipServerPort = Integer.parseInt(serverPort);
         int stunServerPort = Integer.parseInt(stunPort);
-
-        int result = 0;
         mEngine.DeleteCallManager();
         mEngine.CreateCallManager(applicaton);
         mEngine.setOnPortSIPEvent(this);
         String dataPath = getExternalFilesDir(null).getAbsolutePath();
+        Log.d(TAG, "before init");
+        disposable = Observable.fromCallable(() -> {
+                    Log.d(TAG, Thread.currentThread().getName());
+                    return mEngine.initialize(PortSipEnumDefine.ENUM_TRANSPORT_UDP, "0.0.0.0", localPort,
+                            PortSipEnumDefine.ENUM_LOG_LEVEL_DEBUG, dataPath,
+                            8, "PortSIP SDK for Android", 0,
+                            0, dataPath, "", false, null);
+                }
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> {
+                    int result = integer;
+                    Log.d(TAG, Thread.currentThread().getName());
+                    if (result != PortSipErrorcode.ECoreErrorNone) {
+                        Log.d(TAG, "initialize failure ErrorCode = " + result);
+                        mEngine.DeleteCallManager();
+                        return;
+                    }
+                    Log.d(TAG, "before set user");
+                    result = mEngine.setUser(userName, displayName, authName, password,
+                            userDomain, sipServer, sipServerPort, stunServer, stunServerPort, null, 5060);
 
-        result = mEngine.initialize(PortSipEnumDefine.ENUM_TRANSPORT_UDP, "0.0.0.0", localPort,
-                PortSipEnumDefine.ENUM_LOG_LEVEL_DEBUG, dataPath,
-                8, "PortSIP SDK for Android", 0, 0, dataPath, "", false, null);
-        if (result != PortSipErrorcode.ECoreErrorNone) {
-            Log.d(TAG, "initialize failure ErrorCode = " + result);
-            mEngine.DeleteCallManager();
-            return;
-        }
+                    if (result != PortSipErrorcode.ECoreErrorNone) {
+                        Log.d(TAG, "setUser failure ErrorCode = " + result);
+                        mEngine.DeleteCallManager();
+                        return;
+                    }
+                    Log.d(TAG, "before This Is Trial Version");
+                    result = mEngine.setLicenseKey("LicenseKey");
+                    if (result == PortSipErrorcode.ECoreWrongLicenseKey) {
+                        Log.d(TAG, "The wrong license key was detected, please check with sales@portsip.com or support@portsip.com");
+                        return;
+                    } else if (result == PortSipErrorcode.ECoreTrialVersionLicenseKey) {
+                        Log.w("Trial Version", "This trial version SDK just allows short conversation, you can't hearing anything after 2-3 minutes, contact us: sales@portsip.com to buy official version.");
+                        Log.d(TAG, "This Is Trial Version");
+                    }
 
-        result = mEngine.setUser(userName, displayName, authName, password,
-                userDomain, sipServer, sipServerPort, stunServer, stunServerPort, null, 5060);
+                    mEngine.setAudioDevice(PortSipEnumDefine.AudioDevice.SPEAKER_PHONE);
+                    mEngine.setVideoDeviceId(1);
+                    mEngine.setSrtpPolicy(0);
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                    ConfigPreferences(this, preferences, mEngine);
 
-        if (result != PortSipErrorcode.ECoreErrorNone) {
-            Log.d(TAG, "setUser failure ErrorCode = " + result);
-            mEngine.DeleteCallManager();
-            return;
-        }
-
-        result = mEngine.setLicenseKey("LicenseKey");
-        if (result == PortSipErrorcode.ECoreWrongLicenseKey) {
-            Log.d(TAG, "The wrong license key was detected, please check with sales@portsip.com or support@portsip.com");
-            return;
-        } else if (result == PortSipErrorcode.ECoreTrialVersionLicenseKey) {
-            Log.w("Trial Version", "This trial version SDK just allows short conversation, you can't hearing anything after 2-3 minutes, contact us: sales@portsip.com to buy official version.");
-            Log.d(TAG, "This Is Trial Version");
-        }
-
-        mEngine.setAudioDevice(PortSipEnumDefine.AudioDevice.SPEAKER_PHONE);
-        mEngine.setVideoDeviceId(1);
-        mEngine.setSrtpPolicy(0);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        ConfigPreferences(this, preferences, mEngine);
-
-        mEngine.enable3GppTags(false);
-        String token = FirebaseInstanceId.getInstance().getToken();
-        if (!TextUtils.isEmpty(token)) {
-            String pushMessage = "device-os=android;device-uid=" + token + ";allow-call-push=true;allow-message-push=true;app-id=" + APPID;
+                    mEngine.enable3GppTags(false);
+                    String token = FirebaseInstanceId.getInstance().getToken();
+                    if (!TextUtils.isEmpty(token)) {
+                        String pushMessage = "device-os=android;device-uid=" + token + ";allow-call-push=true;allow-message-push=true;app-id=" + APPID;
 //            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "portsip-push", pushMessage);
-            //new version
-            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "x-p-push", pushMessage);
-        }
+                        //new version
+                        mEngine.addSipMessageHeader(-1, "REGISTER", 1, "x-p-push", pushMessage);
+                    }
 
-        mEngine.setInstanceId(getInstanceID());
+                    mEngine.setInstanceId(getInstanceID());
+                    result = mEngine.registerServer(90, 0);
+                    if (result != PortSipErrorcode.ECoreErrorNone) {
+                        Log.d(TAG, "registerServer failure ErrorCode =" + result);
+                        mEngine.unRegisterServer();
+                        mEngine.DeleteCallManager();
+                        isConnectCallService = false;
+                    } else {
+                        isConnectCallService = true;
+                    }
+                }, throwable -> Log.d(TAG, throwable.getMessage()));
+    }
 
-        result = mEngine.registerServer(90, 0);
-        if (result != PortSipErrorcode.ECoreErrorNone) {
-            Log.d(TAG, "registerServer failure ErrorCode =" + result);
-            mEngine.unRegisterServer();
-            mEngine.DeleteCallManager();
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        applicaton = (ApplicationController) getApplication();
+        registerLogoutEvent();
+    }
+
+    private void registerLogoutEvent() {
+        applicaton.registerReceiver(logoutEvent, new IntentFilter(ACTION_LOG_OUT));
     }
 
     private String getInstanceID() {
@@ -144,6 +187,18 @@ public class PortSipService extends Service implements OnPortSIPEvent {
             preferences.edit().putString(INSTANCE_ID, insanceid).commit();
         }
         return insanceid;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (logoutEvent != null) {
+            applicaton.unregisterReceiver(logoutEvent);
+        }
+        super.onDestroy();
+    }
+
+    public boolean isConnectCallService() {
+        return isConnectCallService;
     }
 
     @Override

@@ -82,8 +82,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
 //        if (mPresenter != null)
 //            mPresenter.getAccessToken();
-
-        ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
+        ApplicationController applicationController =
+                (ApplicationController) getViewContext().getApplication();
         applicationController.initPortSipService();
 
         bottomBar.setOnTabSelectListener(tabId -> {
@@ -99,7 +99,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
-                mPresenter.getBalance();
+                if (mPresenter != null)
+                    mPresenter.getBalance();
             } else if (tabId == R.id.action_location) {
                 viewPager.setCurrentItem(3);
                 removeHeader();
@@ -174,27 +175,29 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     }
 
     private Fragment getFragmentItem(int position) {
-        switch (position) {
-            case 0:
-                if (homeFragment == null) {
-                    homeFragment = mPresenter.getHomePresenter().getFragment();
-                }
-                return homeFragment;
-            case 1:
-                if (gomHangFragment == null) {
-                    gomHangFragment = mPresenter.getGomHangPresenter().getFragment();
-                }
-                return gomHangFragment;
-            case 2:
-                if (phatHangFragment == null) {
-                    phatHangFragment = mPresenter.getPhatHangPresenter().getFragment();
-                }
-                return phatHangFragment;
-            case 3:
-                if (locationFragment == null) {
-                    locationFragment = mPresenter.getAddressPresenter().getFragment();
-                }
-                return locationFragment;
+        if (mPresenter != null) {
+            switch (position) {
+                case 0:
+                    if (homeFragment == null) {
+                        homeFragment = mPresenter.getHomePresenter().getFragment();
+                    }
+                    return homeFragment;
+                case 1:
+                    if (gomHangFragment == null) {
+                        gomHangFragment = mPresenter.getGomHangPresenter().getFragment();
+                    }
+                    return gomHangFragment;
+                case 2:
+                    if (phatHangFragment == null) {
+                        phatHangFragment = mPresenter.getPhatHangPresenter().getFragment();
+                    }
+                    return phatHangFragment;
+                case 3:
+                    if (locationFragment == null) {
+                        locationFragment = mPresenter.getAddressPresenter().getFragment();
+                    }
+                    return locationFragment;
+            }
         }
         return new Fragment();
     }

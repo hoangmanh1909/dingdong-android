@@ -7,16 +7,26 @@
     android:paddingBottom="@dimen/dimen_5dp">
 
     <LinearLayout
+        android:id="@+id/layout_cancel_delivery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="10"
         android:orientation="horizontal"
-        android:id="@+id/layout_cancel_delivery">
+        android:weightSum="10">
+
+        <CheckBox
+            android:id="@+id/cb_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_8dp"
+            android:layout_weight="0.5"
+            android:button="@drawable/custom_btn_radio"
+            android:clickable="false" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="9.5"
             android:layout_height="wrap_content"
+            android:layout_weight="9.5"
             android:orientation="vertical">
 
             <com.ems.dingdong.views.CustomBoldTextView
@@ -34,19 +44,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="@dimen/dimen_5dp"
-                android:text="Người nhận - Địa chỉ:"
                 android:paddingBottom="@dimen/dimen_5dp"
+                android:text="Người nhận - Địa chỉ:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sender_name"
                 android:layout_width="match_parent"
-                android:lineSpacingExtra="@dimen/dimen_5dp"
                 android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/dimen_5dp"
+                android:paddingBottom="@dimen/dimen_5dp"
                 android:text="Người gửi:"
                 android:textColor="@color/grey"
-                android:paddingBottom="@dimen/dimen_5dp"
                 android:textSize="@dimen/text_size_14sp" />
 
 
@@ -54,37 +64,27 @@
                 android:id="@+id/tv_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_5dp"
                 android:text="Số tiền COD:"
                 android:textColor="@color/red_light"
-                android:paddingBottom="@dimen/dimen_5dp"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_5dp"
                 android:text="Cước:"
                 android:textColor="@color/red_light"
-                android:paddingBottom="@dimen/dimen_5dp"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_status_paypost"
                 android:layout_width="match_parent"
-                android:paddingBottom="@dimen/dimen_5dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_5dp"
                 android:textColor="@color/background_blue"
                 android:textSize="@dimen/text_size_14sp" />
         </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/cb_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_gravity="center"
-            android:clickable="false"
-            android:layout_margin="@dimen/dimen_8dp"
-            android:button="@drawable/custom_btn_radio" />
     </LinearLayout>
 </LinearLayout>

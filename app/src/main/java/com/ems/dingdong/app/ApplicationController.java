@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -59,18 +60,22 @@ public class ApplicationController extends MultiDexApplication {
                 .migration(new DingDongRealm()).build();
         Realm.setDefaultConfiguration(config);
         applicationController = this;
-        portSipSdk = new PortSipSdk();
         Intent intent = new Intent(this, PortSipService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     public void initPortSipService() {
-        if (mBound)
+        if (mBound) {
+            Log.d(TAG, "1" + Thread.currentThread().getName());
             portSipService.registerToServer();
-        else {
+        } else {
             Intent intent = new Intent(this, PortSipService.class);
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
+    }
+
+    public boolean isPortsipConnected() {
+        return portSipService.isConnectCallService();
     }
 
     public static ApplicationController getInstance() {

@@ -147,8 +147,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout llVerify;
     @BindView(R.id.ll_capture_verify)
     LinearLayout llCaptureVerify;
-    @BindView(R.id.edt_name)
-    FormItemEditText edtName;
     @BindView(R.id.edt_date_of_birth)
     CustomTextView edtDateOfBirth;
     @BindView(R.id.edt_GTTT_date_accepted)
@@ -304,6 +302,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 llCaptureVerify.setVisibility(View.GONE);
             }
         });
+        edtDateOfBirth.setText(DateTimeUtils
+                .convertDateToString(calDateOfBirth.getTime(),
+                        DateTimeUtils.SIMPLE_DATE_FORMAT));
+        edtGTTTDateAccepted.setText(DateTimeUtils
+                .convertDateToString(calDateOfBirth.getTime(),
+                        DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
     }
 
@@ -348,12 +352,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
 
             case R.id.rl_image_capture:
-                isCaptureVerify = false;
-                MediaUltis.captureImage(this);
+                if (imageAdapter.getListFilter().size() < 3) {
+                    isCaptureVerify = false;
+                    MediaUltis.captureImage(this);
+                } else {
+                    showErrorToast("Không được phép chụp quá 3 ảnh");
+                }
                 break;
             case R.id.rl_image_capture_verify:
-                isCaptureVerify = true;
-                MediaUltis.captureImage(this);
+                if (imageVerifyAdapter.getListFilter().size() < 7) {
+                    isCaptureVerify = true;
+                    MediaUltis.captureImage(this);
+                } else {
+                    showErrorToast("Không được phép chụp quá 7 ảnh");
+                }
                 break;
             case R.id.edt_date_of_birth:
                 new SpinnerDatePickerDialogBuilder()
@@ -455,16 +467,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
 
-            if (TextUtils.isEmpty(tvReceiverName.getText())) {
-                showErrorToast("Bạn chưa nhập tên người nhận thực tế");
-                return;
-            }
-
             if (TextUtils.isEmpty(edtOtherRelationship.getText()) && edtRelationship.getText().equals("Khác")) {
                 showErrorToast("Bạn chưa nhập mối quan hệ với người nhận");
                 return;
             }
-
 
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
@@ -473,7 +479,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         InfoVerify infoVerify = new InfoVerify();
                         if (llVerifyInfo.getVisibility() == View.VISIBLE) {
                             infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
-                            infoVerify.setReceiverAddressDetail(edtName.getText() + "-" + edtUserAddress.getText());
+                            infoVerify.setReceiverAddressDetail(edtUserAddress.getText());
                             infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
                             infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
                             infoVerify.setGtgt(tvGTTT.getText());
@@ -484,14 +490,25 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
 
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
-                                    tvReceiverName.getText().toString(),
-                                    edtOtherRelationship.getText(), infoVerify);
+                            if (!TextUtils.isEmpty(mFile))
+                                mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
+                                        tvReceiverName.getText().toString(),
+                                        edtOtherRelationship.getText(), infoVerify);
+                            else
+                                mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
+                                        tvReceiverName.getText().toString(),
+                                        edtOtherRelationship.getText(), infoVerify);
                         } else {
-                            mPresenter.paymentDelivery(mFile + mFileVerify, mSign,
-                                    tvReceiverName.getText().toString(),
-                                    edtRelationship.getText().toString(),
-                                    infoVerify);
+                            if (!TextUtils.isEmpty(mFile))
+                                mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
+                                        tvReceiverName.getText().toString(),
+                                        edtRelationship.getText().toString(),
+                                        infoVerify);
+                            else
+                                mPresenter.paymentDelivery(mFileVerify, mSign,
+                                        tvReceiverName.getText().toString(),
+                                        edtRelationship.getText().toString(),
+                                        infoVerify);
                         }
                         confirmDialog.dismiss();
                     })
@@ -847,7 +864,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 .setTitleText("Thông báo")
                 .setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP
                         + "\nTiền trên hệ thông PNS: " + amountPNS
-                        + " \nBạn có muốn thay đổi số tiền không?")
+                        + " \nBạn có muốn cập nhật theo số tiền trên PayPost không?")
                 .setCancelText("Không")
                 .setConfirmText("Có")
                 .setCancelClickListener(v -> {
@@ -1005,8 +1022,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return false;
         }
 
-        if (TextUtils.isEmpty(edtName.getText())) {
-            showErrorToast("Bạn chưa nhập thông tin xác thực: Họ và tên");
+        if (TextUtils.isEmpty(tvReceiverName.getText())) {
+            showErrorToast("Bạn chưa nhập thông tin xác thực: Tên người nhận");
             return false;
         }
 

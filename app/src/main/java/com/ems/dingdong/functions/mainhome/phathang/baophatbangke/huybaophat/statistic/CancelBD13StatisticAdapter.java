@@ -170,7 +170,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                 if (item.getPaymentPayPostStatus().equals("Y")) {
                     tvDebitStatus.setText(mContext.getString(R.string.success));
                     tvDebitStatus.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
-                } else if (item.getPaymentPayPostStatus().equals("A")) {
+                } else {
                     tvDebitStatus.setText(mContext.getString(R.string.not_success));
                     tvDebitStatus.setTextColor(mContext.getResources().getColor(R.color.red_light));
                 }

@@ -1,19 +1,16 @@
 package com.afollestad.materialcamera.internal;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialcamera.R;
-import com.afollestad.materialcamera.util.ImageUtil;
+import com.bumptech.glide.Glide;
 
 public class StillshotPreviewFragment extends BaseGalleryFragment {
 
@@ -55,7 +52,10 @@ public class StillshotPreviewFragment extends BaseGalleryFragment {
         mRetry.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
 
-        mImageView.setImageURI(Uri.parse(mOutputUri));
+        Glide.with(getActivity())
+                .asBitmap()
+                .load(mOutputUri)
+                .into(mImageView);
     }
 
     @Override
