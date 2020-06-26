@@ -457,7 +457,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
-            if (llVerifyInfo.getVisibility() == View.VISIBLE) {
+            if (llVerifyInfo.getVisibility() == View.VISIBLE || llCaptureVerify.getVisibility() == View.VISIBLE) {
                 if (authenType == 1 && !checkInfo()) {
                     return;
                 } else if (authenType == 2 && !checkImage()) {
@@ -477,7 +477,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
                         InfoVerify infoVerify = new InfoVerify();
-                        if (llVerifyInfo.getVisibility() == View.VISIBLE) {
+                        if (llVerifyInfo.getVisibility() == View.VISIBLE || llCaptureVerify.getVisibility() == View.VISIBLE) {
                             infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
                             infoVerify.setReceiverAddressDetail(edtUserAddress.getText());
                             infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());

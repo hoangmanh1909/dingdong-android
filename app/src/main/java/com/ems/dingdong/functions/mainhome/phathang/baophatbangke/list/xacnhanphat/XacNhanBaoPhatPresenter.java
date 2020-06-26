@@ -273,7 +273,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
             request.setAuthenType(infoVerify.getAuthenType());
             request.setReceiverIDNumber(infoVerify.getGtgt());
-
             paymentRequests.add(request);
         }
         mInteractor.paymentDelivery(paymentRequests)
