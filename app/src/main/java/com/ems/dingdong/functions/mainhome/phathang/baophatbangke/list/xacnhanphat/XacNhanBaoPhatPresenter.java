@@ -265,7 +265,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setRePaymentBatch(item.isRePaymentBatch());
             request.setLastLadingCode(item.getLastLadingCode());
             request.setPaymentBatch(item.isPaymentBatch());
-            request.setPostmanCode(postOffice.getCode());
+            request.setPostmanCode(userInfo.getUserName());
             request.setCustomerCode(item.getCustomerCode());
             request.setReceiverPIDWhere(infoVerify.getReceiverPIDWhere());
             request.setReceiverPIDDate(infoVerify.getReceiverPIDDate());

@@ -12,7 +12,6 @@ import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
@@ -68,7 +67,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         tvTitle.setText(StringUtils.getCharSequence("THÔNG TIN TÀI KHOẢN", String.format("Phiên bản %s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE), getActivity()));
     }
 
-    @OnClick({R.id.img_back, R.id.img_logout, R.id.rl_e_wallet})
+    @OnClick({R.id.img_back, R.id.img_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -77,15 +76,15 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             case R.id.img_logout:
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
-                getViewContext().sendBroadcast(new Intent(PortSipService.ACTION_LOG_OUT));
+//                getViewContext().sendBroadcast(new Intent(PortSipService.ACTION_LOG_OUT));
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().finishAffinity();
                 startActivity(intent);
                 break;
-            case R.id.rl_e_wallet:
-                mPresenter.moveToEWallet();
-                break;
+//            case R.id.rl_e_wallet:
+//                mPresenter.moveToEWallet();
+//                break;
         }
     }
 

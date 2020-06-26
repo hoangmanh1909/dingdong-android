@@ -104,14 +104,20 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                                 || row.getServiceName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getService().toLowerCase().contains(charString.toLowerCase())
                                 || row.getStatus().toLowerCase().contains(charString.toLowerCase())
+                                || row.getBatchCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getVatCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getbD13CreatedDate().toLowerCase().contains(charString.toLowerCase())
+                                || row.getNote().toLowerCase().contains(charString.toLowerCase())
+                                || row.getAmountForBatch().toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getRoute()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getRouteId()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getShiftId()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getCount()).toLowerCase().contains(charString.toLowerCase())
                                 || String.valueOf(row.getWeight()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getBatchCode()).toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getItemsInBatch()).toLowerCase().contains(charString.toLowerCase())
                                 || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -128,7 +134,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 mListFilter = (ArrayList<DeliveryPostman>) filterResults.values;
-                if (mFilterDone != null) {
+                if (mFilterDone != null && mListFilter != null) {
                     long amount = 0;
                     for (DeliveryPostman item : mListFilter) {
                         if (!TextUtils.isEmpty(Integer.toString(item.getAmount())))
