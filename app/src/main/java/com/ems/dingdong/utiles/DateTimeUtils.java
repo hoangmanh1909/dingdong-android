@@ -358,6 +358,6 @@ public class DateTimeUtils {
         Calendar calendar2 = Calendar.getInstance();
         calendar1.setTime(date1);
         calendar2.setTime(date2);
-        return calendar2.compareTo(calendar1);
+        return calendar1.compareTo(calendar2);
     }
 }

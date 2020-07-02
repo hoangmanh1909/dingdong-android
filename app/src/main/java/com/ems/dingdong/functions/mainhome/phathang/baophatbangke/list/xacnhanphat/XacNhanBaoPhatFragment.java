@@ -472,6 +472,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
+            if (TextUtils.isEmpty(tvReceiverName.getText())) {
+                showErrorToast("Bạn chưa nhập tên người nhận thực tế");
+                return;
+            }
+
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {

@@ -33,6 +33,11 @@ public class ActiveFragment extends ViewFragment<ActiveContract.Presenter> imple
         return R.layout.fragment_active;
     }
 
+    @Override
+    public void initLayout() {
+        super.initLayout();
+        SharedPref.getInstance(getViewContext()).clear();
+    }
 
     @OnClick(R.id.done_layout)
     public void onViewClicked() {
