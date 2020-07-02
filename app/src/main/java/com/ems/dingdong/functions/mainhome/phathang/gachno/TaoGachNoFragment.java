@@ -19,20 +19,21 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
-import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utilities;
-import com.rengwuxian.materialedittext.MaterialEditText;
-import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.StringUtils;
+import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -129,9 +130,12 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone, mList.get(position).getParcelCode());
+                            public void onCallResponse(String phone, int callType) {
+                                if (callType == Constants.CALL_SWITCH_BOARD) {
+                                    mPhone = phone;
+                                    mPresenter.callForward(phone, mList.get(position).getParcelCode());
+                                } else
+                                    Utils.call(getViewContext(), phone);
                             }
 
                             @Override
@@ -261,7 +265,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                 scanQr();
                 break;
             case R.id.iv_search:
-               mPresenter.showViewList();
+                mPresenter.showViewList();
                 break;
         }
     }

@@ -32,6 +32,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.RealmUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -155,9 +156,14 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone,  mList.get(position).getParcelCode());
+                            public void onCallResponse(String phone, int callType) {
+                                if (callType == Constants.CALL_SWITCH_BOARD) {
+                                    mPhone = phone;
+                                    mPresenter.callForward(phone,  mList.get(position).getParcelCode());
+                                } else {
+                                    mPhone = phone;
+                                    Utils.call(getViewContext(), phone);
+                                }
                             }
 
                             @Override

@@ -19,6 +19,8 @@ public class Constants {
     public static final int DI_PHAT_KHONG_THANH_CONG = 1;
     public static final String TAG_WAKE_LOCK = "WakeLockDingDong";
     public static final int RELOAD_LIST = 2;
+    public static final int SET_ORDER_AND_ROUTE = 30;
+    public static final int SET_ORDER_AND_ROUTE_DELIVERY_SUCCESS = 40;
     public static final int TYPE_BAO_PHAT_BD13_THANH_CONG = 3;
     public static final int TYPE_BAO_PHAT_BD13_KHONG_THANH_CONG = 4;
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
@@ -41,4 +43,6 @@ public class Constants {
     public static final String REASONINFO_CODE = "code";
     public static final String SOLUTIONINFO_CODE = "code";
     public static String SHIFT = "";
+    public static final int CALL_NORMAL = 1;
+    public static final int CALL_SWITCH_BOARD = 2;
 }

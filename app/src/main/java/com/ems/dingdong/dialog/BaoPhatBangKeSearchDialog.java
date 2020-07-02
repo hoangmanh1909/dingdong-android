@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.core.base.BaseActivity;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BaoPhatbangKeSearchCallback;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +45,8 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
     private String mBag = "0";
     private ItemBottomSheetPickerUIFragment pickerBag;
 
-    public BaoPhatBangKeSearchDialog(Context context, Calendar calendar, BaoPhatbangKeSearchCallback reasonCallback) {
+    public BaoPhatBangKeSearchDialog(Context context, Calendar calendar, String chuyenThu, String tuiSo,
+                                     BaoPhatbangKeSearchCallback reasonCallback) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
@@ -62,7 +63,11 @@ public class BaoPhatBangKeSearchDialog extends Dialog implements com.tsongkha.sp
         items.add(new Item("3", "Ca 3"));
         tvShift.setText(items.get(0).getText());
         mItem = items.get(0);
-        tvBag.setText("Tất cả");
+        if ("0".equals(tuiSo))
+            tvBag.setText("Tất cả");
+        else
+            tvBag.setText(tuiSo);
+        edtChuyenthu.setText(chuyenThu);
         edtChuyenthu.getEditText().setInputType(EditorInfo.TYPE_CLASS_NUMBER);
     }
 

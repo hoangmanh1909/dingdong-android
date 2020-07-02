@@ -34,13 +34,28 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="horizontal">
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_code"
+                <LinearLayout
+                    android:id="@+id/ll_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mã vận đơn"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_14sp" />
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_15dp"
+                        android:layout_height="@dimen/dimen_15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:src="@drawable/ic_barcode" />
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mã vận đơn"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_14sp" />
+                </LinearLayout>
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_date"
@@ -59,46 +74,78 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="@dimen/dimen_15dp"
+                    android:layout_height="@dimen/dimen_15dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_user2" />
+
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_contactName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_toRightOf="@+id/iv_user"
                     android:text="Họ và tên"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_12sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_toRightOf="@+id/ll_code">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_15dp"
+                    android:layout_height="@dimen/dimen_15dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/iv_phone"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_android_devices" />
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_contactPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/tv_contactName"
-                    android:layout_marginTop="@dimen/dimen_5dp"
-                    android:textColor="@color/blue"
                     android:text="Số điện thoại"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_15dp"
+                    android:layout_height="@dimen/dimen_15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_location" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_contact_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity=""
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_12sp" />
-            </RelativeLayout>
-
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_contact_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_contact_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp"
-                android:visibility="gone" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -107,22 +154,28 @@
                     android:layout_toLeftOf="@+id/tv_info"
                     android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="@dimen/dimen_15dp"
+                        android:layout_height="@dimen/dimen_15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:src="@drawable/ic_bag" />
+
                     <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_amount"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_contact_description"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_5dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_12sp"
+                        />
 
                     <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tv_services"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/dimen_5dp"
                         android:background="@drawable/bg_border_phone"
-                        android:padding="@dimen/_5sdp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_14sp" />
                 </LinearLayout>
@@ -133,13 +186,53 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dimen_5dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp">
+
+                <ImageView
+                    android:id="@+id/iv_money"
+                    android:layout_width="@dimen/dimen_15dp"
+                    android:layout_height="@dimen/dimen_15dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_money" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_money"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:id="@+id/tv_cod_ppa"
+                    android:layout_marginRight="@dimen/dimen_5dp"
+                    android:text="COD, PPA"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
             </RelativeLayout>
 
 
         </LinearLayout>
+
+        <View
+            style="@style/DeviderVertical"
+            android:layout_marginLeft="@dimen/dimen_2dp"
+            android:layout_marginRight="@dimen/dimen_2dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -151,16 +244,16 @@
             <ImageView
                 android:id="@+id/iv_status"
                 android:layout_width="wrap_content"
-                android:padding="@dimen/_5sdp"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_star" />
 
             <CheckBox
                 android:id="@+id/cb_selected"
-                android:scaleX="1.8"
-                android:scaleY="1.8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:scaleX="1.8"
+                android:scaleY="1.8" />
         </LinearLayout>
 
     </LinearLayout>

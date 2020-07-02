@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.utiles.Utils;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
@@ -43,9 +44,14 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     public void onViewClicked() {
         mPhoneConectDialog = new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
             @Override
-            public void onCallResponse(String phone) {
-                mPhone = phone;
-                mPresenter.callForward(phone);
+            public void onCallResponse(String phone, int callType) {
+                if (callType == Constants.CALL_SWITCH_BOARD) {
+                    mPhone = phone;
+                    mPresenter.callForward(phone);
+                } else {
+                    mPhone = phone;
+                    Utils.call(getViewContext(), phone);
+                }
             }
 
             @Override
