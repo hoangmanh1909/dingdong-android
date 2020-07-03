@@ -166,9 +166,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         mPhoneConectDialog = new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone(), new PhoneCallback() {
                             @Override
                             public void onCallResponse(String phone, int callType) {
-                                if (callType == Constants.CALL_SWITCH_BOARD)
+                                if (callType == Constants.CALL_SWITCH_BOARD) {
+                                    mPhone = phone;
                                     mPresenter.callForward(phone, mList.get(position).getCode());
-                                else
+                                } else
                                     Utils.call(getViewContext(), phone);
                             }
 
