@@ -495,25 +495,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
 
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            if (!TextUtils.isEmpty(mFile))
-                                mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
-                                        tvReceiverName.getText().toString(),
-                                        edtOtherRelationship.getText(), infoVerify);
-                            else
-                                mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
-                                        tvReceiverName.getText().toString(),
-                                        edtOtherRelationship.getText(), infoVerify);
+                            mPresenter.paymentDelivery(mFile, mFileVerify, mSign,
+                                    tvReceiverName.getText().toString(),
+                                    edtOtherRelationship.getText(), infoVerify);
                         } else {
-                            if (!TextUtils.isEmpty(mFile))
-                                mPresenter.paymentDelivery(mFile + ";" + mFileVerify, mSign,
-                                        tvReceiverName.getText().toString(),
-                                        edtRelationship.getText().toString(),
-                                        infoVerify);
-                            else
-                                mPresenter.paymentDelivery(mFileVerify, mSign,
-                                        tvReceiverName.getText().toString(),
-                                        edtRelationship.getText().toString(),
-                                        infoVerify);
+                            mPresenter.paymentDelivery(mFile, mFileVerify, mSign,
+                                    tvReceiverName.getText().toString(),
+                                    edtRelationship.getText().toString(),
+                                    infoVerify);
                         }
                         confirmDialog.dismiss();
                     })

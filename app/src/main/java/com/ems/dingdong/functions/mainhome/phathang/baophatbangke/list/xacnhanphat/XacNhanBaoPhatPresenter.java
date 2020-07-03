@@ -211,7 +211,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void paymentDelivery(String deliveryImage, String signCapture, String newReceiverName,
+    public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
                                 String relationship, InfoVerify infoVerify) {
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -273,6 +273,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
             request.setAuthenType(infoVerify.getAuthenType());
             request.setReceiverIDNumber(infoVerify.getGtgt());
+            request.setImageAuthen(imageAuthen);
             paymentRequests.add(request);
         }
         mInteractor.paymentDelivery(paymentRequests)

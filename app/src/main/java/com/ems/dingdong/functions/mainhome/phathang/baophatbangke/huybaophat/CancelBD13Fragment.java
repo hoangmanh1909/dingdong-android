@@ -221,18 +221,23 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             swipeRefresh.setRefreshing(false);
             long totalAmount = 0;
             long totalFee = 0;
-            for (DingDongGetCancelDelivery i : list) {
-                mList.add(i);
-                if (i.getAmount() != null)
-                    totalAmount = totalAmount + i.getAmount();
-                if (i.getFee() != null)
-                    totalFee = totalFee + i.getFee();
+            if (mList.isEmpty()) {
+                showErrorToast("Không tìm thấy dữ liệu phù hợp.");
+            } else {
+                for (DingDongGetCancelDelivery i : list) {
+                    mList.add(i);
+                    if (i.getAmount() != null)
+                        totalAmount = totalAmount + i.getAmount();
+                    if (i.getFee() != null)
+                        totalFee = totalFee + i.getFee();
 
+                }
             }
             mPresenter.titleChanged(mList.size(), 0);
             tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount + totalFee)));
             mAdapter.setListFilter(mList);
             mAdapter.notifyDataSetChanged();
+
         }
     }
 

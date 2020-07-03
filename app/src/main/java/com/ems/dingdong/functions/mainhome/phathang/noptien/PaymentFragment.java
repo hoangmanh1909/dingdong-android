@@ -234,6 +234,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
             mAdapter.setListFilter(eWalletDataResponses);
         } else {
+            showErrorToast("Không tìm thấy dữ liệu phù hợp");
             mAdapter.setListFilter(eWalletDataResponses);
             tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), "0"));

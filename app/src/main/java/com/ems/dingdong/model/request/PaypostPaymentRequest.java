@@ -77,6 +77,8 @@ public class PaypostPaymentRequest {
     private String receiverAddressDetail;
     @SerializedName("AuthenType")
     private Integer authenType;
+    @SerializedName("ImageAuthen")
+    private String ImageAuthen;
 
     public void setPostmanID(String postmanID) {
         this.postmanID = postmanID;
@@ -224,5 +226,9 @@ public class PaypostPaymentRequest {
 
     public void setAuthenType(Integer authenType) {
         this.authenType = authenType;
+    }
+
+    public void setImageAuthen(String imageAuthen) {
+        ImageAuthen = imageAuthen;
     }
 }

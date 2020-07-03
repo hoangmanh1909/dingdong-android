@@ -136,6 +136,8 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
                 totalAmount += (item.getcODAmount() + item.getFee());
                 mList.add(item);
             }
+        } else {
+            showErrorToast("Không tìm thấy dữ liệu phù hợp.");
         }
         mPresenter.titleChanged(mList.size(), 1);
         tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
