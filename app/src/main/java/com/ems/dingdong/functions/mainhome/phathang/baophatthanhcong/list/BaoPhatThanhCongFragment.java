@@ -23,6 +23,7 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.utiles.Utils;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.PhoneConectDialog;
@@ -139,9 +140,14 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone,mList.get(position).getParcelCode());
+                            public void onCallResponse(String phone, int callType) {
+                                if (callType == Constants.CALL_SWITCH_BOARD) {
+                                    mPhone = phone;
+                                    mPresenter.callForward(phone, mList.get(position).getParcelCode());
+                                } else {
+                                    mPhone = phone;
+                                    Utils.call(getViewContext(), phone);
+                                }
                             }
 
                             @Override

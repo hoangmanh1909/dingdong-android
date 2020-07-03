@@ -85,8 +85,9 @@ interface ListBaoPhatBangKeContract {
 
         void callForward(String phone,String code);
         void updateMobile(String phone,String code);
-
+        boolean isTheSameRouteAndOrder(List<CommonObject> commonObjectList);
     }
+
 }
 
 

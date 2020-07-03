@@ -31,10 +31,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.network.VinattiAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ems.dingdong.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -124,6 +124,7 @@ public class Utils {
             throw new RuntimeException(ex);
         }
     }
+
     public static String convertNumberToString(String number) {
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal bigDecimal;
@@ -613,7 +614,7 @@ public class Utils {
                     // Request customization: add request headers
                     Request.Builder requestBuilder = original.newBuilder()
                             .addHeader("Authorization", "Basic " + base64EncodedCredentials)
-                            .addHeader("APIKey",BuildConfig.PRIVATE_KEY); // <-- this is the important line
+                            .addHeader("APIKey", BuildConfig.PRIVATE_KEY); // <-- this is the important line
 
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
@@ -803,6 +804,12 @@ public class Utils {
         } catch (Exception e) {
 
         }
+    }
+
+    public static void call(Context context, String phone) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phone));
+        context.startActivity(intent);
     }
 
    /* public static String convertToNewMaVung(String phoneNumber,String oldCode,String newCode){

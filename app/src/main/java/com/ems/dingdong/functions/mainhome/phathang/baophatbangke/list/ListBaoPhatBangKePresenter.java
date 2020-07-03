@@ -320,4 +320,17 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             }
         });
     }
+
+    @Override
+    public boolean isTheSameRouteAndOrder(List<CommonObject> commonObjectList) {
+        CommonObject firstItem = commonObjectList.get(0);
+        for (int i = 1; i < commonObjectList.size(); i++) {
+            if (!firstItem.getOrder().equals(commonObjectList.get(i).getOrder())
+                    || !firstItem.getRoute().equals(commonObjectList.get(i).getRoute())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

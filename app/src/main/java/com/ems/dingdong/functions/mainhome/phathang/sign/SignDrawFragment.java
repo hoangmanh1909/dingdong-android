@@ -8,7 +8,6 @@ import android.util.Base64;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
-import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.ems.dingdong.R;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
@@ -17,10 +16,12 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +42,8 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
     CustomTextView tvRealReceiverName;
     @BindView(R.id.btn_confirm)
     CustomTextView btnConfirm;
+    @BindView(R.id.tv_total_batch)
+    CustomTextView tvTotalBatch;
 
     private boolean isSigned = false;
 
@@ -74,12 +77,13 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             }
         });
         String code = "";
-        for (CommonObject item : mPresenter.getBaoPhatCommon()) {
-            code += item.getCode() + ",";
+        for (int i = 0; i < mPresenter.getBaoPhatCommon().size(); i++) {
+            code += i + 1 + ". " + mPresenter.getBaoPhatCommon().get(i).getCode() + "\n";
         }
         if (!TextUtils.isEmpty(code)) {
             code = code.substring(0, code.length() - 1);
         }
+        tvTotalBatch.setText(String.valueOf(mPresenter.getBaoPhatCommon().size()));
         tvMaE.setText(code);
         tvRealReceiverName.setText(mPresenter.getBaoPhatCommon().get(0).getRealReceiverName().toUpperCase());
 
@@ -170,8 +174,8 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             getActivity().finish();*/
         mPresenter.back();
         mPresenter.back();
-//        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
-//        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, 0));
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
+        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, 0));
     }
 
     class PushDataToMpos {
@@ -184,6 +188,17 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             this.description = description;
             this.orderId = orderId;
         }
+    }
+
+    public boolean isTheSameRouteAndOrder(List<CommonObject> commonObjectList) {
+        CommonObject firstItem = commonObjectList.get(0);
+        for (int i = 1; i < commonObjectList.size(); i++) {
+            if (!firstItem.getOrder().equals(commonObjectList.get(i).getOrder())
+                    || !firstItem.getRoute().equals(commonObjectList.get(i).getRoute())) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

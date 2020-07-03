@@ -40,7 +40,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     CustomTextView tvStatus;
     private SharedPref mSharedPref;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -58,8 +59,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0911818968;49F72B6F3D2F78DDBAB7336AD143F00C7C06F8B2ABBED0FD73BD41C37D73A90D");//production
-        // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0888862106;DBC8F3B595A448DAE9279CD6B290982C0BF4DB80F585EA48F3B29F5B210CD285");//production
+        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0911818968;0E4BAEF09A69CD8C4AEA808DAD85E9B4F8DB96A74E87982E33CF7C1DF34A6F0E");//production
+       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0888862106;DBC8F3B595A448DAE9279CD6B290982C0BF4DB80F585EA48F3B29F5B210CD285");//production
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev guest
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");// dev vinatti
         checkPermissionCall();
@@ -70,9 +71,11 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
             int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
             int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission4 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }

@@ -49,6 +49,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
+import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
@@ -319,11 +320,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
-        if (mHour > 12) {
-            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-        } else {
-            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-        }
+        tvDeliveryTime.setText(String.format("%s:%s ", mHour, mMinute));
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
        /* if (mBaoPhatBangke.getIsCOD() != null) {
             if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
@@ -368,9 +365,14 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getSenderPhone())) {
                     mPhoneConectDialog = new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
-                        public void onCallResponse(String phone) {
-                            mPhone = phone;
-                            mPresenter.callForward(phone);
+                        public void onCallResponse(String phone, int callType) {
+                            if (callType == Constants.CALL_SWITCH_BOARD) {
+                                mPhone = phone;
+                                mPresenter.callForward(phone);
+                            } else {
+                                mPhone = phone;
+                                Utils.call(getViewContext(), phone);
+                            }
                         }
 
                         @Override
@@ -438,11 +440,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mHour = hourOfDay;
                         mMinute = minute;
-                        if (mHour > 12) {
-                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-                        } else {
-                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-                        }
+                        tvDeliveryTime.setText(String.format("%s:%s", mHour, mMinute));
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
@@ -735,6 +733,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void finishView() {
+        BaoPhatCallback mBaoPhatCallback = new BaoPhatCallback(Constants.SET_ORDER_AND_ROUTE);
+        mBaoPhatCallback.setRoute(mBaoPhatBangke.getRoute());
+        mBaoPhatCallback.setOrder(mBaoPhatBangke.getOrder());
+        EventBus.getDefault().post(mBaoPhatCallback);
         EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, mPresenter.getPosition()));
         EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG_DETAIL, mPresenter.getPositionRow()));
         mPresenter.back();

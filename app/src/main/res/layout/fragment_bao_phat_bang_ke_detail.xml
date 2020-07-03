@@ -646,6 +646,7 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:id="@+id/tv_MaE"
                             android:layout_width="0dp"
+                            android:textIsSelectable="true"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:paddingTop="@dimen/dimen_10dp"

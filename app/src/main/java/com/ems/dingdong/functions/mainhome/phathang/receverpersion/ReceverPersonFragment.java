@@ -119,11 +119,8 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
-        if (mHour > 12) {
-            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-        } else {
-            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-        }
+        tvDeliveryTime.setText(String.format("%s:%s ", mHour, mMinute));
+
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
 
 
@@ -224,11 +221,7 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mHour = hourOfDay;
                         mMinute = minute;
-                        if (mHour > 12) {
-                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-                        } else {
-                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-                        }
+                        tvDeliveryTime.setText(String.format("%s:%s", mHour, mMinute));
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
