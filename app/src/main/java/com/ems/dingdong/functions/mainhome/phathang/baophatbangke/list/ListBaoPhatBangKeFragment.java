@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -71,13 +70,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     TextView tvCount;
     @BindView(R.id.tv_amount)
     TextView tvAmount;
-//    @BindView(R.id.btn_confirm_all)
+    //    @BindView(R.id.btn_confirm_all)
 //    TextView btnConfirmAll;
     @BindView(R.id.img_view)
     ImageView imgView;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-//    @BindView(R.id.swipe_refresh)
+    //    @BindView(R.id.swipe_refresh)
 //    SwipeRefreshLayout mRefresh;
     @BindView(R.id.cb_selected)
     CheckBox cbSelectAll;
@@ -97,7 +96,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private boolean isLoading = false;
     private String mChuyenThu = "0";
     private String mTuiSo = "0";
-    private  String mPhone = "";
+    private String mPhone = "";
     private PhoneConectDialog mPhoneConectDialog;
 
     public static ListBaoPhatBangKeFragment getInstance() {
@@ -166,8 +165,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                         mPhoneConectDialog = new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone(), new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone) {
-                                mPresenter.callForward(phone, mList.get(position).getCode());
+                            public void onCallResponse(String phone, int callType) {
+                                if (callType == Constants.CALL_SWITCH_BOARD)
+                                    mPresenter.callForward(phone, mList.get(position).getCode());
+                                else
+                                    Utils.call(getViewContext(), phone);
                             }
 
                             @Override
@@ -187,11 +189,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-        if(!TextUtils.isEmpty(Constants.SHIFT))
-        {
+        if (!TextUtils.isEmpty(Constants.SHIFT)) {
             mShiftID = Constants.SHIFT;
-        }
-        else{
+        } else {
             mShiftID = "1";
         }
         mPresenter.getReasons();

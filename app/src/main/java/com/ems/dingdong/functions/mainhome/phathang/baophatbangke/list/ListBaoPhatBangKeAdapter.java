@@ -144,6 +144,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         CheckBox cbSelected;
         @BindView(R.id.iv_status)
         ImageView ivStatus;
+        @BindView(R.id.iv_phone)
+        ImageView ivPhone;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -165,7 +167,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             }
 
             tvContactAddress.setText(item.getReceiverAddress());
-                tv_chuyenthu_tuiso.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
+            tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             cbSelected.setChecked(item.isSelected());
             cbSelected.setOnClickListener(view -> item.setSelected(cbSelected.isChecked()));
             if (!TextUtils.isEmpty(item.getAmount())) {

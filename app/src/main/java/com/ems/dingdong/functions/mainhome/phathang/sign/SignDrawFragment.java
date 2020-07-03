@@ -174,8 +174,15 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
             getActivity().finish();*/
         mPresenter.back();
         mPresenter.back();
-        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
-        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, 0));
+        BaoPhatCallback callback = new BaoPhatCallback(Constants.SET_ORDER_AND_ROUTE);
+        List<CommonObject> commonObjectList = mPresenter.getBaoPhatCommon();
+        if (isTheSameRouteAndOrder(commonObjectList)) {
+            callback.setOrder(commonObjectList.get(0).getOrder());
+            callback.setRoute(commonObjectList.get(0).getRoute());
+        }
+        EventBus.getDefault().post(callback);
+//        EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG, 0));
+//        EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, 0));
     }
 
     class PushDataToMpos {
