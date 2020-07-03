@@ -8,6 +8,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.callservice.history.HistoryCallPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.model.NotificationResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -100,6 +101,13 @@ public class NotificationPresenter extends Presenter<NotificationContract.View, 
     public void showCollectFragment() {
         Intent intent = new Intent(getViewContext(), ListCommonActivity.class);
         intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+        getViewContext().startActivity(intent);
+    }
+
+    @Override
+    public void showDeliveryFragment() {
+        Intent intent = new Intent(getViewContext(), ListBaoPhatBangKeActivity.class);
+        intent.putExtra(Constants.TYPE_GOM_HANG, 3);
         getViewContext().startActivity(intent);
     }
 

@@ -72,6 +72,9 @@ public class NotificationFragment extends ViewFragment<NotificationContract.Pres
                 case 0:
                     mPresenter.showCollectFragment();
                     break;
+                case 3:
+                    mPresenter.showDeliveryFragment();
+                    break;
 
             }
         }

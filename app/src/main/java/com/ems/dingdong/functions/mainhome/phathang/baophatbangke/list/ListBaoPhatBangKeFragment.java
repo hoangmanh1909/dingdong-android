@@ -115,7 +115,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mPresenter != null) {
             if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 checkSelfPermission();
-                showDialog();
+                //showDialog();
             }
         } else {
             return;
@@ -123,6 +123,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         text1 = "Bản kê đi phát (BD13)";
         CharSequence finalText = StringUtils.getCharSequence(text1, text2, getActivity());
         tvTitle.setText(finalText);
+
 
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
@@ -187,7 +188,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-
+        if(!TextUtils.isEmpty(Constants.SHIFT))
+        {
+            mShiftID = Constants.SHIFT;
+        }
+        else{
+            mShiftID = "1";
+        }
         mPresenter.getReasons();
         EventBus.getDefault().register(this);
         edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
@@ -209,7 +216,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         });
         edtSearch.setSelected(true);
         mDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        //initSearch();
+//        initSearch();
 //        mRefresh.setOnRefreshListener(() -> {
 //                    mRefresh.setRefreshing(true);
 //                    refreshSearch();

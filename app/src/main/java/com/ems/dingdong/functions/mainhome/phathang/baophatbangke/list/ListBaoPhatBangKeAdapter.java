@@ -87,7 +87,9 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getCode().toLowerCase().contains(charString.toLowerCase())) {
+                        if (row.getCode().toLowerCase().contains(charString.toLowerCase()) ||
+                                row.getOrder().toLowerCase().contains(charString.toLowerCase()) ||
+                                row.getRoute().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -142,6 +144,8 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         CheckBox cbSelected;
         @BindView(R.id.iv_status)
         ImageView ivStatus;
+        @BindView(R.id.tv_chuyenthu_tuiso)
+        CustomTextView tv_chuyenthu_tuiso;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -155,22 +159,15 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
             tvContactName.setText(item.getReceiverName() + " - ");
             tvContactPhone.setText(item.getReceiverPhone());
             tvContactAddress.setText(item.getReceiverAddress());
-            if (mType == 3) {
-                tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
-            } else {
-                tvContactDescription.setText(item.getDescription());
-            }
+                tv_chuyenthu_tuiso.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             cbSelected.setChecked(item.isSelected());
             cbSelected.setOnClickListener(view -> item.setSelected(cbSelected.isChecked()));
             if (!TextUtils.isEmpty(item.getAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd", "")))));
-            } else {
-                tvAmount.setText("");
+                int amount = Integer.parseInt(item.getAmount())  + item.getFee();
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(amount)));
             }
             if (!TextUtils.isEmpty(item.getCollectAmount())) {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount().replace("vnd", "")))));
-            } else {
-                tvAmount.setText("");
             }
             if (!TextUtils.isEmpty(item.getService())) {
                 if (!TextUtils.isEmpty(item.getServiceName().trim())) {

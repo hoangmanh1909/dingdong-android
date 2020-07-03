@@ -130,18 +130,18 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                 mCount++;
                 if (mCount == size) {
                     mView.hideProgress();
-                }
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showSuccess();
-                    if (paymentChannel.equals("2")) {
-                        mView.callAppToMpost();
-                    } else {
-                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                        mView.finishView();
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showSuccess();
+                        if (paymentChannel.equals("2")) {
+                            mView.callAppToMpost();
+                        } else {
+                            mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                            mView.finishView();
 
+                        }
+                    } else {
+                        mView.showError(response.body().getMessage());
                     }
-                } else {
-                    mView.showError(response.body().getMessage());
                 }
             }
 

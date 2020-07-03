@@ -34,6 +34,8 @@ interface NotificationContract {
 
         void showCollectFragment();
 
+        void showDeliveryFragment();
+
     }
 }
 
