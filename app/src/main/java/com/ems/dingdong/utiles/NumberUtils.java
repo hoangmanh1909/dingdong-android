@@ -378,6 +378,14 @@ public class NumberUtils {
         }
     }
 
+    public static boolean checkNumber(String mobileNumber) {
+        boolean _tryNumber = isNumber(mobileNumber);
+        if (_tryNumber && mobileNumber.length() >= 3 && mobileNumber.length() <= 20) {
+            return true;
+        } else
+            return false;
+    }
+
     public static boolean checkMobileNumber(String mobileNumber) {
         boolean _tryNumber = isNumber(mobileNumber);
         if (!_tryNumber) {

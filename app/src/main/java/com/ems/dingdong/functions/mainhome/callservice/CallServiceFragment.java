@@ -69,7 +69,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
                     Toast.showToast(getActivity(), "Chưa nhập số để gọi");
                     return;
                 }
-                if (!NumberUtils.checkMobileNumber(edtPhone.getText())) {
+                if (!NumberUtils.checkNumber(edtPhone.getText())) {
                     Toast.showToast(getActivity(), "Số điện thoại không hợp lệ.");
                     return;
                 }
