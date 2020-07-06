@@ -91,7 +91,6 @@
                     android:paddingTop="@dimen/dimen_5dp"
                     android:paddingBottom="@dimen/dimen_5dp"
                     android:text="Thường"
-                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
                 <com.ems.dingdong.views.CustomMediumTextView
@@ -106,7 +105,6 @@
                     android:paddingTop="@dimen/dimen_5dp"
                     android:paddingBottom="@dimen/dimen_5dp"
                     android:text="Tổng đài"
-                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
@@ -122,7 +120,6 @@
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:text="Hủy bỏ"
-                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>

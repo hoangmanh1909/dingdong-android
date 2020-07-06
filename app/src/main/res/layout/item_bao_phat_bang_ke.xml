@@ -170,14 +170,6 @@
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_size_12sp"
                         />
-
-                    <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_services"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_border_phone"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_14sp" />
                 </LinearLayout>
 
                 <com.ems.dingdong.views.CustomTextView
@@ -219,9 +211,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right"
-                    android:id="@+id/tv_cod_ppa"
+                    android:id="@+id/tv_services"
                     android:layout_marginRight="@dimen/dimen_5dp"
-                    android:text="COD, PPA"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
             </RelativeLayout>

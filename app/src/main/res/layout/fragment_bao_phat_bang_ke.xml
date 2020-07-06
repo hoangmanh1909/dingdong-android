@@ -113,30 +113,32 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_10sdp">
+            android:layout_marginRight="@dimen/_5sdp">
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16sp" />
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/cb_selected"
-                android:layout_marginRight="@dimen/dimen_5dp"
-                android:textColor="@color/colorPrimary"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16sp" />
 
             <CheckBox
                 android:id="@+id/cb_selected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Chọn tất cả" />
+                android:scaleX="1.8"
+                android:scaleY="1.8"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
 
     </LinearLayout>
