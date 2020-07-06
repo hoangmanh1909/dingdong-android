@@ -119,8 +119,8 @@
                 android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_7sdp"
+                android:layout_toLeftOf="@+id/cb_selected"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16sp" />
 

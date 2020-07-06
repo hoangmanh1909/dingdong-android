@@ -94,7 +94,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String text1;
     private String text2 = "";
     private boolean isLoading = false;
-    private String mChuyenThu = "0";
+    private String mChuyenThu = "";
     private String mTuiSo = "0";
     private String mPhone = "";
     private PhoneConectDialog mPhoneConectDialog;
