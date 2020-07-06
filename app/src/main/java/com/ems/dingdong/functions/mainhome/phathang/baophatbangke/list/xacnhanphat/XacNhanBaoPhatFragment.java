@@ -458,11 +458,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llCaptureVerify.getVisibility() == View.VISIBLE) {
-                if (authenType == 1 && !checkInfo()) {
+                if (authenType == 1 && !checkInfo(authenType)) {
                     return;
-                } else if (authenType == 2 && !checkImage()) {
+                } else if (authenType == 2 && !checkImage(authenType)) {
                     return;
-                } else if ((authenType == 3 || authenType == 0) && (!checkInfo() || !checkImage())) {
+                } else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
+                    return;
+                } else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
+                    showErrorToast("Bạn phải chụp ảnh xác thực hoặc nhập đủ thông tin xác thực");
                     return;
                 }
             }
@@ -1010,24 +1013,28 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         else return true;
     }
 
-    private boolean checkInfo() {
+    private boolean checkInfo(int authenType) {
         if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
-            showErrorToast("Bạn chưa nhập ngày cấp giấy tờ tùy thân");
+            if (authenType != 0)
+                showErrorToast("Bạn chưa nhập ngày cấp giấy tờ tùy thân");
             return false;
         }
 
         if (TextUtils.isEmpty(tvReceiverName.getText())) {
-            showErrorToast("Bạn chưa nhập thông tin xác thực: Tên người nhận");
+            if (authenType != 0)
+                showErrorToast("Bạn chưa nhập thông tin xác thực: Tên người nhận");
             return false;
         }
 
         if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
-            showErrorToast("Bạn chưa nhập nơi cấp giấy tờ tùy thân");
+            if (authenType != 0)
+                showErrorToast("Bạn chưa nhập nơi cấp giấy tờ tùy thân");
             return false;
         }
 
         if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
-            showErrorToast("Bạn chưa nhập ngày tháng năm sinh");
+            if (authenType != 0)
+                showErrorToast("Bạn chưa nhập ngày tháng năm sinh");
             return false;
         }
 
@@ -1037,15 +1044,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
         if (TextUtils.isEmpty(edtUserAddress.getText())) {
-            showErrorToast("Bạn chưa nhập địa chỉ người sử dụng");
+            if (authenType != 0)
+                showErrorToast("Bạn chưa nhập địa chỉ người sử dụng");
             return false;
         }
         return true;
     }
 
-    private boolean checkImage() {
+    private boolean checkImage(int authenType) {
         if (TextUtils.isEmpty(mFileVerify)) {
-            showErrorToast("Bạn chưa chụp ảnh xác thực");
+            if (authenType != 0)
+                showErrorToast("Bạn chưa chụp ảnh xác thực");
             return false;
         }
         return true;
