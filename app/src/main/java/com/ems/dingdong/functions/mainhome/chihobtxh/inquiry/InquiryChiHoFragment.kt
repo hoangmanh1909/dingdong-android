@@ -118,11 +118,11 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
                             tvAccount.text = item.text
                             bankAccountNumber = mPresenter.getListAccount()?.find { it.bankAccountNumber == item.value }!!
                         }, 0)
-                picker?.show(activity?.supportFragmentManager, picker?.tag)
+                picker?.show(activity!!.supportFragmentManager, picker?.tag)
             } else {
                 picker?.setData(items, 0)
                 if (!picker?.isShow!!) {
-                    picker?.show(activity?.supportFragmentManager, picker?.tag)
+                    picker?.show(activity!!.supportFragmentManager, picker?.tag)
                 }
             }
         } else {

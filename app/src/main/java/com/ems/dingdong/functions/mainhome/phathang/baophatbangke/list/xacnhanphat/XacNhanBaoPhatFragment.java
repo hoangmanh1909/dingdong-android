@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -56,6 +55,7 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.android.material.textfield.TextInputEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
@@ -104,7 +104,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_solution)
     FormItemTextView tv_solution;
     @BindView(R.id.tv_Description)
-    FormItemEditText tv_Description;
+    TextInputEditText tv_Description;
     @BindView(R.id.tv_route)
     FormItemTextView tv_route;
     @BindView(R.id.tv_postman)
@@ -118,9 +118,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_total_fee)
     CustomBoldTextView tvTotalFee;
     @BindView(R.id.edt_receiver_name)
-    EditText tvReceiverName;
+    TextInputEditText tvReceiverName;
     @BindView(R.id.edt_GTTT)
-    FormItemEditText tvGTTT;
+    TextInputEditText tvGTTT;
     @BindView(R.id.edt_relationship)
     CustomTextView edtRelationship;
     @BindView(R.id.tv_receiver_name)
@@ -152,9 +152,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.edt_GTTT_date_accepted)
     CustomTextView edtGTTTDateAccepted;
     @BindView(R.id.edt_GTTT_located_accepted)
-    FormItemEditText edtGTTTLocatedAccepted;
+    TextInputEditText edtGTTTLocatedAccepted;
     @BindView(R.id.edt_user_address)
-    FormItemEditText edtUserAddress;
+    TextInputEditText edtUserAddress;
     private Calendar calDateOfBirth = Calendar.getInstance();
     private Calendar calDateAccepted = Calendar.getInstance();
     private XacNhanBaoPhatAdapter adapter;
@@ -486,11 +486,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         showProgress();
                         InfoVerify infoVerify = new InfoVerify();
                         if (llVerifyInfo.getVisibility() == View.VISIBLE || llCaptureVerify.getVisibility() == View.VISIBLE) {
-                            infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText());
-                            infoVerify.setReceiverAddressDetail(edtUserAddress.getText());
+                            infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
+                            infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
                             infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
                             infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
-                            infoVerify.setGtgt(tvGTTT.getText());
+                            infoVerify.setGtgt(tvGTTT.getText().toString());
                             if (authenType == 0)
                                 infoVerify.setAuthenType(3);
                             else
@@ -523,7 +523,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
-                    tv_Description.getText(),
+                    tv_Description.getText().toString(),
                     mFile,
                     mSign);
         } else {

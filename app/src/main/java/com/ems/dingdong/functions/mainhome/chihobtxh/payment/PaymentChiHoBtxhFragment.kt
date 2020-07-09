@@ -112,11 +112,11 @@ class PaymentChiHoBtxhFragment : ViewFragment<PaymentChiHoBtxhContract.Presenter
                         tvTypeIdReceiver.text = item.text
                         mTypeId = item.value
                     }, 0)
-            pickerTypeId?.show(activity?.supportFragmentManager, pickerTypeId?.tag)
+            pickerTypeId?.show(activity!!.supportFragmentManager, pickerTypeId?.tag)
         } else {
             pickerTypeId?.setData(items, 0)
             if (!pickerTypeId?.isShow!!) {
-                pickerTypeId?.show(activity?.supportFragmentManager, pickerTypeId?.tag)
+                pickerTypeId?.show(activity!!.supportFragmentManager, pickerTypeId?.tag)
             }
         }
     }

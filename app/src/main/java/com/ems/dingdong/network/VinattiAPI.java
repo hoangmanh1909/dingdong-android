@@ -1,6 +1,8 @@
 package com.ems.dingdong.network;
 
 
+import android.view.View;
+
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
@@ -486,4 +488,17 @@ public interface VinattiAPI {
     @POST("api/Delivery/Payment_V2")
     Single<SimpleResult> paymentV2(@Body DeliveryPaymentV2 request);
 
+    @GET("/")
+    Single<SimpleResult> getHistoryCall(@Query("page") Integer page,
+                                        @Query("limit") Integer limit,
+                                        @Query("sort_by") String sort_by,
+                                        @Query("sort_type") String sort_type,
+                                        @Query("state") String state,
+                                        @Query("direction") Integer direction,
+                                        @Query("extension") Integer extension,
+                                        @Query("from_number") String from_number,
+                                        @Query("to_number") String to_number,
+                                        @Query("date_started") String date_started,
+                                        @Query("date_ended") String date_ended
+    );
 }

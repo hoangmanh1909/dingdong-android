@@ -548,7 +548,8 @@ public class Utils {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder builder = chain.request().newBuilder();
-                            builder.addHeader("Authorization", "Bearer " + token);
+                            String base64EncodedCredentials = Base64.encodeToString(token.getBytes(), Base64.NO_WRAP);
+                            builder.addHeader("Authorization", "Basic " + base64EncodedCredentials);
                             return chain.proceed(builder.build());
                         }
 

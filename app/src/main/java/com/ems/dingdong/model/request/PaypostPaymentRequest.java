@@ -79,6 +79,8 @@ public class PaypostPaymentRequest {
     private Integer authenType;
     @SerializedName("ImageAuthen")
     private String ImageAuthen;
+    @SerializedName("VATCode")
+    private String VATCode;
 
     public void setPostmanID(String postmanID) {
         this.postmanID = postmanID;
@@ -230,5 +232,9 @@ public class PaypostPaymentRequest {
 
     public void setImageAuthen(String imageAuthen) {
         ImageAuthen = imageAuthen;
+    }
+
+    public void setVATCode(String VATCode) {
+        this.VATCode = VATCode;
     }
 }

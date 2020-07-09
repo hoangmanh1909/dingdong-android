@@ -267,15 +267,31 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
-                    <EditText
-                        android:id="@+id/edt_receiver_name"
+                    <!--                    <EditText-->
+                    <!--                        android:id="@+id/edt_receiver_name"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_weight="5"-->
+                    <!--                        android:inputType="textMultiLine"-->
+                    <!--                        android:gravity="right"-->
+                    <!--                        android:textColor="@color/red_light"-->
+                    <!--                        android:textSize="@dimen/text_size_16sp" />-->
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:inputType="textMultiLine"
-                        android:gravity="right"
-                        android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_16sp" />
+                        app:endIconMode="clear_text">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_receiver_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
                 <View
@@ -313,9 +329,9 @@
                             android:id="@+id/edt_relationship"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:foreground="?attr/selectableItemBackground"
                             android:layout_gravity="center"
                             android:layout_toRightOf="@+id/tv_relationship"
+                            android:foreground="?attr/selectableItemBackground"
                             android:hint="Chọn mối quan hệ"
                             android:paddingRight="@dimen/_5sdp"
                             android:textColor="@color/red_light"
@@ -338,6 +354,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginRight="@dimen/dimen_10dp" />
+
                 <LinearLayout
                     android:id="@+id/ll_other_relationship"
                     android:layout_width="wrap_content"
@@ -374,7 +391,7 @@
                     android:layout_marginRight="@dimen/dimen_10dp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
@@ -387,14 +404,29 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_GTTT"
-                        android:layout_width="wrap_content"
+<!--                    <com.ems.dingdong.views.form.FormItemEditText-->
+<!--                        android:id="@+id/edt_GTTT"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="right"-->
+<!--                        android:text="1000000"-->
+<!--                        android:textColor="@color/red_light"-->
+<!--                        android:textSize="@dimen/text_size_16sp" />-->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="1000000"
-                        android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_16sp" />
+                        app:endIconMode="clear_text">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_GTTT"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -407,7 +439,7 @@
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
@@ -420,14 +452,29 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_note"
-                        android:layout_width="wrap_content"
+<!--                    <com.ems.dingdong.views.form.FormItemEditText-->
+<!--                        android:id="@+id/edt_note"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="right"-->
+<!--                        android:text="1000000"-->
+<!--                        android:textColor="@color/red_light"-->
+<!--                        android:textSize="@dimen/text_size_16sp" />-->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="1000000"
-                        android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_16sp" />
+                        app:endIconMode="clear_text">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -523,15 +570,30 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/tv_Description"
-                        android:layout_width="wrap_content"
+<!--                    <com.ems.dingdong.views.form.FormItemEditText-->
+<!--                        android:id="@+id/tv_Description"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="right"-->
+<!--                        android:textColor="#253854"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:formHint="Ghi chú"-->
+<!--                        app:formShowUnderline="false" />-->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="16sp"
-                        app:formHint="Ghi chú"
-                        app:formShowUnderline="false" />
+                        app:endIconMode="clear_text">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tv_Description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <View
@@ -686,15 +748,33 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
 
-                            <com.ems.dingdong.views.form.FormItemEditText
-                                android:id="@+id/edt_user_address"
+<!--                            <com.ems.dingdong.views.form.FormItemEditText-->
+<!--                                android:id="@+id/edt_user_address"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="5"-->
+<!--                                android:gravity="right"-->
+<!--                                android:text="1000000"-->
+<!--                                android:textColor="@color/red_light"-->
+<!--                                android:textSize="@dimen/text_size_16sp" />-->
+
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="5"
-                                android:text="1000000"
+                                android:layout_height="wrap_content"
                                 android:gravity="right"
-                                android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_16sp" />
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edt_user_address"
+                                    android:layout_width="match_parent"
+                                    android:gravity="right"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/red_light"
+                                    android:textSize="@dimen/text_size_16sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
 
                         <View
@@ -720,8 +800,8 @@
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/edt_date_of_birth"
                                 android:layout_width="match_parent"
-                                android:foreground="?attr/selectableItemBackground"
                                 android:layout_height="wrap_content"
+                                android:foreground="?attr/selectableItemBackground"
                                 android:gravity="right"
                                 android:padding="@dimen/size_10dp"
                                 android:text="21/6/2016"
@@ -770,10 +850,9 @@
                             android:layout_marginRight="@dimen/dimen_10dp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_8dp"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <com.ems.dingdong.views.CustomTextView
@@ -783,14 +862,30 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
 
-                            <com.ems.dingdong.views.form.FormItemEditText
-                                android:id="@+id/edt_GTTT_located_accepted"
-                                android:layout_width="wrap_content"
+<!--                            <com.ems.dingdong.views.form.FormItemEditText-->
+<!--                                android:id="@+id/edt_GTTT_located_accepted"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:gravity="right"-->
+<!--                                android:text="1000000"-->
+<!--                                android:textColor="@color/red_light"-->
+<!--                                android:textSize="@dimen/text_size_16sp" />-->
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="right"
-                                android:text="1000000"
-                                android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_16sp" />
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edt_GTTT_located_accepted"
+                                    android:layout_width="match_parent"
+                                    android:gravity="right"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/red_light"
+                                    android:textSize="@dimen/text_size_16sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -806,8 +901,8 @@
                             android:id="@+id/rl_image_capture_verify"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:foreground="?attr/selectableItemBackground"
                             android:layout_gravity="center"
+                            android:foreground="?attr/selectableItemBackground"
                             android:gravity="center"
                             android:paddingLeft="@dimen/_5sdp"
                             android:paddingRight="@dimen/_5sdp">
@@ -897,8 +992,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
                     android:paddingLeft="@dimen/_5sdp"
                     android:paddingRight="@dimen/_5sdp">
 

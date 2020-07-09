@@ -193,6 +193,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.getItemsInBatch(),
                     item.getAmountForBatch());
             request.setCustomerCode(item.getCustomerCode());
+            request.setVATCode(item.getVatCode());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -274,6 +275,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setAuthenType(infoVerify.getAuthenType());
             request.setReceiverIDNumber(infoVerify.getGtgt());
             request.setImageAuthen(imageAuthen);
+            request.setVATCode(item.getVatCode());
             paymentRequests.add(request);
         }
         mInteractor.paymentDelivery(paymentRequests)

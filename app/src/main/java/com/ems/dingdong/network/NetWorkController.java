@@ -42,6 +42,7 @@ import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
@@ -99,6 +100,7 @@ public class NetWorkController {
 
     private static volatile VinattiAPI apiBuilder;
     private static volatile VinattiAPI apiRxBuilder;
+    private static volatile VinattiAPI apiHistoryCallBuilder;
     private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
 
 
@@ -152,6 +154,22 @@ public class NetWorkController {
             apiRxBuilder = retrofit.create(VinattiAPI.class);
         }
         return apiRxBuilder;
+    }
+
+    private static VinattiAPI getAPIHistoryCallBuilder() {
+        if (apiHistoryCallBuilder == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api-development.movecrop.com")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient("c2e65e831dcacd530519dd1175e5f805:15022aaed26c667a390333c17c28adad"))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiHistoryCallBuilder = retrofit.create(VinattiAPI.class);
+        }
+        return apiHistoryCallBuilder;
     }
 
     public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
@@ -661,6 +679,13 @@ public class NetWorkController {
 
     public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
         return getAPIRxBuilder().paymentV2(request);
+    }
+
+    public static Single<SimpleResult> getHistoryCall(CallHistoryRequest request) {
+        return getAPIHistoryCallBuilder().getHistoryCall(request.getPage(), request.getLimit(),
+                request.getSortBy(), request.getSortType(), request.getState(),
+                request.getDirection(), request.getExtension(), request.getFromNumber(),
+                request.getToNumber(), request.getDateStarted(), request.getDateEnded());
     }
 
 }

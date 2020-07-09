@@ -14,7 +14,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
@@ -22,9 +21,11 @@ import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
@@ -33,6 +34,8 @@ import com.roughike.bottombar.BottomBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The Home Fragment
@@ -79,7 +82,25 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-
+        CallHistoryRequest request = new CallHistoryRequest();
+        request.setPage(1);
+        request.setLimit(5);
+        request.setSortBy("time_ended");
+        request.setSortType("ASC");
+        request.setState("");
+        request.setDirection(1);
+        request.setExtension(100);
+        request.setFromNumber("0901773838");
+        request.setToNumber("0968997971");
+        request.setDateStarted("1567858627467");
+        request.setDateEnded("1594190547308");
+        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                (simpleResult, throwable) -> {
+                    Log.d("chauvp11", throwable.getMessage());
+                }
+        );
 //        if (mPresenter != null)
 //            mPresenter.getAccessToken();
 //        ApplicationController applicationController =

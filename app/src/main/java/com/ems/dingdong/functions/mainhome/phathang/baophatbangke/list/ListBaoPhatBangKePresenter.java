@@ -120,8 +120,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.hideProgress();
                 if (response.body() != null) {
                     if (response.body().getErrorCode().equals("00")) {
-                        ArrayList<DeliveryPostman> postmanArrayList = response.body().getDeliveryPostmens();
-                        mView.showListSuccess(sortMapDeliveryPostman(groupByDeliveryPostmanMap(postmanArrayList)));
+                        mView.showListSuccess(response.body().getDeliveryPostmens());
                     } else {
                         mView.showError(response.body().getMessage());
                     }
@@ -295,38 +294,38 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         titleTabsListener.onSearchChange(fromDate, toDate, currentPosition);
     }
 
-    private Map<String, List<DeliveryPostman>> groupByDeliveryPostmanMap(List<DeliveryPostman> listCancelStatistic) {
-        Map<String, List<DeliveryPostman>> listMap = new HashMap<>();
-        for (DeliveryPostman item : listCancelStatistic) {
-            String ladingCode = item.getbD13CreatedDate();
-            if (listMap.containsKey(ladingCode)) {
-                List<DeliveryPostman> list = listMap.get(ladingCode);
-                if (list != null) {
-                    list.add(item);
-                }
-            } else {
-                List<DeliveryPostman> list = new ArrayList<>();
-                list.add(item);
-                listMap.put(ladingCode, list);
-            }
-        }
-        return listMap;
-    }
-
-    private List<DeliveryPostman> sortMapDeliveryPostman(Map<String, List<DeliveryPostman>> map) {
-        List<String> keys = new ArrayList<>(map.keySet());
-        List<DeliveryPostman> resultList = new ArrayList<>();
-        Collections.sort(keys, (s, t1) -> {
-            Date date1 = DateTimeUtils.convertStringToDate(s, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
-            Date date2 = DateTimeUtils.convertStringToDate(t1, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
-            return DateTimeUtils.compareDate(date1, date2);
-        });
-        resultList.clear();
-        for (String key : keys) {
-            List<DeliveryPostman> subList = map.get(key);
-            Collections.sort(subList, DeliveryPostman::compareTo);
-            resultList.addAll(subList);
-        }
-        return resultList;
-    }
+//    private Map<String, List<DeliveryPostman>> groupByDeliveryPostmanMap(List<DeliveryPostman> listCancelStatistic) {
+//        Map<String, List<DeliveryPostman>> listMap = new HashMap<>();
+//        for (DeliveryPostman item : listCancelStatistic) {
+//            String ladingCode = item.getbD13CreatedDate();
+//            if (listMap.containsKey(ladingCode)) {
+//                List<DeliveryPostman> list = listMap.get(ladingCode);
+//                if (list != null) {
+//                    list.add(item);
+//                }
+//            } else {
+//                List<DeliveryPostman> list = new ArrayList<>();
+//                list.add(item);
+//                listMap.put(ladingCode, list);
+//            }
+//        }
+//        return listMap;
+//    }
+//
+//    private List<DeliveryPostman> sortMapDeliveryPostman(Map<String, List<DeliveryPostman>> map) {
+//        List<String> keys = new ArrayList<>(map.keySet());
+//        List<DeliveryPostman> resultList = new ArrayList<>();
+//        Collections.sort(keys, (s, t1) -> {
+//            Date date1 = DateTimeUtils.convertStringToDate(s, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
+//            Date date2 = DateTimeUtils.convertStringToDate(t1, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
+//            return DateTimeUtils.compareDate(date1, date2);
+//        });
+//        resultList.clear();
+//        for (String key : keys) {
+//            List<DeliveryPostman> subList = map.get(key);
+//            Collections.sort(subList, DeliveryPostman::compareTo);
+//            resultList.addAll(subList);
+//        }
+//        return resultList;
+//    }
 }

@@ -54,6 +54,8 @@ public class PushToPnsRequest {
     Integer itemsInBatch;
     @SerializedName("CustomerCode")
     private String customerCode;
+    @SerializedName("VATCode")
+    private String VATCode;
 
     public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
                             String receiverName, String reasonCode, String solutionCode, String status, String paymentChannel,
@@ -96,5 +98,9 @@ public class PushToPnsRequest {
 
     public void setCustomerCode(String customerCode) {
         this.customerCode = customerCode;
+    }
+
+    public void setVATCode(String VATCode) {
+        this.VATCode = VATCode;
     }
 }
