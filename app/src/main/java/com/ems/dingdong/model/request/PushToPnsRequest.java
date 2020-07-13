@@ -103,4 +103,8 @@ public class PushToPnsRequest {
     public void setVATCode(String VATCode) {
         this.VATCode = VATCode;
     }
+
+    public void setImageDelivery(String imageDelivery) {
+        this.imageDelivery = imageDelivery;
+    }
 }

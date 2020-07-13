@@ -305,6 +305,10 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static Single<SimpleResult> paymentDelivery(PaymentDeviveryRequest request) {
+        return getAPIRxBuilder().paymentDeliveryObservable(request);
+    }
+
     public static void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().paymentPaypost(request);
         call.enqueue(callback);
@@ -383,6 +387,14 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static Observable<UploadSingleResult> postImageObservable(String filePath) {
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
+        //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
+        return getAPIRxBuilder().postImageObservable(body);
+    }
+
     //Thu ho BTXH
 
     public static void getBankAccountNumber(BankAccountNumberRequest bankAccountNumberRequest, CommonCallback<BankAccountNumberResponse> callback) {
@@ -434,6 +446,10 @@ public class NetWorkController {
     public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
         call.enqueue(callback);
+    }
+
+    public static Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
+        return getAPIRxBuilder().pushToPNSDeliveryObservable(request);
     }
 
     public static void searchStatisticCollect(String postmanID, String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {

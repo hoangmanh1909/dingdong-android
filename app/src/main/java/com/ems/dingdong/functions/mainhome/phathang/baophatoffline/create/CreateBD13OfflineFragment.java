@@ -33,6 +33,7 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.MediaUltis;
@@ -324,12 +325,13 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
-                attemptSendMedia(data.getData().getPath());
+                attemptShowMedia(data.getData().getPath());
+                mFile += data.getData().getPath() + ";";
             }
         }
     }
 
-    private void attemptSendMedia(String path_media) {
+    private void attemptShowMedia(String path_media) {
         Uri picUri = Uri.fromFile(new File(path_media));
         if (imgPosition == 1)
             iv_package_1.setImageURI(picUri);
@@ -337,121 +339,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             iv_package_2.setImageURI(picUri);
         else
             iv_package_3.setImageURI(picUri);
-
-        File file = new File(path_media);
-        Bitmap bitmap = processingBitmap(picUri);
-        if (bitmap != null) {
-
-            if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
-                String path = file.getParent() + File.separator + "Process_" + file.getName();
-                // mSignPosition = false;
-                mPresenter.postImage(path);
-                picUri = Uri.fromFile(new File(path));
-                if (imgPosition == 1)
-                    iv_package_1.setImageURI(picUri);
-                else if (imgPosition == 2)
-                    iv_package_2.setImageURI(picUri);
-                else
-                    iv_package_3.setImageURI(picUri);
-                if (file.exists())
-                    file.delete();
-            } else {
-                mPresenter.postImage(path_media);
-            }
-        } else {
-            mPresenter.postImage(path_media);
-        }
-    }
-
-    private Bitmap processingBitmap(Uri source) {
-        Bitmap bm1 = null;
-        Bitmap newBitmap = null;
-        try {
-            bm1 = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(source));
-            int SIZE_SCALE = 3;
-            bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
-
-            try {
-                newBitmap = rotateImageIfRequired(bm1, source);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return newBitmap;
-    }
-
-    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
-                             int quality) {
-        if (quality > 100) {
-            Log.d("saveImage", "quality cannot be greater that 100");
-            return false;
-        }
-        File file;
-        FileOutputStream out = null;
-        try {
-            switch (format) {
-                case JPEG:
-                    file = new File(filePath, filename);
-                    out = new FileOutputStream(file);
-                    return bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
-                case PNG:
-                default:
-                    file = new File(filePath, filename);
-                    out = new FileOutputStream(file);
-                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
-    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
-
-        if (selectedImage.getScheme().equals("content")) {
-            String[] projection = {MediaStore.Images.ImageColumns.ORIENTATION};
-            Cursor c = getActivity().getContentResolver().query(selectedImage, projection, null, null, null);
-            if (c.moveToFirst()) {
-                final int rotation = c.getInt(0);
-                c.close();
-                return rotateImage(img, rotation);
-            }
-            return img;
-        } else {
-            ExifInterface ei = new ExifInterface(selectedImage.getPath());
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    return rotateImage(img, 90);
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    return rotateImage(img, 180);
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    return rotateImage(img, 270);
-                default:
-                    return img;
-            }
-        }
-    }
-
-    private Bitmap rotateImage(Bitmap img, int degree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
-        return rotatedImg;
     }
 
     private void showUIReason() {

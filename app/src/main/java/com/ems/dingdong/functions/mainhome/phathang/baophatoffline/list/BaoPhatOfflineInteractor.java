@@ -4,9 +4,13 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * The BaoPhatThanhCong interactor
@@ -30,13 +34,17 @@ class BaoPhatOfflineInteractor extends Interactor<BaoPhatOfflineContract.Present
     }
 
     @Override
-    public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(request, callback);
+    public Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
+        return NetWorkController.pushToPNSDelivery(request);
     }
 
     @Override
-    public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.paymentDelivery(request, callback);
+    public Single<SimpleResult> paymentDelivery(PaymentDeviveryRequest request) {
+        return NetWorkController.paymentDelivery(request);
     }
 
+    @Override
+    public Observable<UploadSingleResult> postImageObservable(String path) {
+        return NetWorkController.postImageObservable(path);
+    }
 }

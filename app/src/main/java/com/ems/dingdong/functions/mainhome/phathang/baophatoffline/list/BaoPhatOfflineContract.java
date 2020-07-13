@@ -8,10 +8,14 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * The BaoPhatThanhCong Contract
@@ -29,12 +33,14 @@ interface BaoPhatOfflineContract {
         /**
          * Deliver success.
          */
-        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+        Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request);
 
         /**
          * Deliver not success.
          */
-        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
+        Single<SimpleResult> paymentDelivery(PaymentDeviveryRequest request);
+
+        Observable<UploadSingleResult> postImageObservable(String path);
     }
 
     interface View extends PresentView<Presenter> {
@@ -83,6 +89,7 @@ interface BaoPhatOfflineContract {
          * @param commonObjects list chosen.
          */
         void offlineDeliver(List<CommonObject> commonObjects);
+
     }
 }
 

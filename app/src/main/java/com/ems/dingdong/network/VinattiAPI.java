@@ -186,6 +186,9 @@ public interface VinattiAPI {
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Body PushToPnsRequest request);
 
+    @POST("api/Delivery/PushToPNS")
+    Single<SimpleResult> pushToPNSDeliveryObservable(@Body PushToPnsRequest request);
+
     @FormUrlEncoded
     @POST("api/CallCenter/AddNew")
     Call<SimpleResult> addNewCallCenter(@Field("AmndEmp") String amndEmp,
@@ -205,6 +208,9 @@ public interface VinattiAPI {
 
     @POST("api/Delivery/Payment")
     Call<SimpleResult> paymentDelivery(@Body PaymentDeviveryRequest request);
+
+    @POST("api/Delivery/Payment")
+    Single<SimpleResult> paymentDeliveryObservable(@Body PaymentDeviveryRequest request);
 
     @POST("api/Delivery/PaymentPaypost")
     Call<SimpleResult> paymentPaypost(@Body PaymentPaypostRequest request);
@@ -270,6 +276,10 @@ public interface VinattiAPI {
     @Multipart
     @POST("api/Handle/UploadImage")
     Call<UploadSingleResult> postImageSingle(@Part MultipartBody.Part image);
+
+    @Multipart
+    @POST("api/Handle/UploadImage")
+    Observable<UploadSingleResult> postImageObservable(@Part MultipartBody.Part image);
 
 
     @POST("api/Collect/ConfirmAllOrderPostman")

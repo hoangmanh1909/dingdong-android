@@ -16,6 +16,7 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -26,10 +27,13 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import retrofit2.Call;
@@ -37,20 +41,12 @@ import retrofit2.Response;
 
 public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.View, BaoPhatOfflineContract.Interactor>
         implements BaoPhatOfflineContract.Presenter {
-    private Calendar calDate;
-    private int mHour;
-    private int mMinute;
     private RouteInfo routeInfo;
     private UserInfo userInfo;
     private PostOffice postOffice;
 
     public BaoPhatOfflinePresenter(ContainerView containerView) {
         super(containerView);
-
-        calDate = Calendar.getInstance();
-        mHour = calDate.get(Calendar.HOUR_OF_DAY);
-        mMinute = calDate.get(Calendar.MINUTE);
-
 
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -239,20 +235,33 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         "",
                         0,
                         "");
-                mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        assert response.body() != null : "body is null!!";
-                        mView.showSuccess(response.body().getErrorCode(), ladingCode);
-                    }
-
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.showError(message);
-                    }
-                });
+                List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
+                if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
+                    mView.showProgress();
+                    Observable.fromIterable(images)
+                            .flatMap(image -> mInteractor.postImageObservable(image))
+                            .toList()
+                            .flatMap(uploadSingleResults -> {
+                                StringBuilder file = new StringBuilder();
+                                for (UploadSingleResult result : uploadSingleResults) {
+                                    file.append(result.getFile());
+                                    file.append(";");
+                                }
+                                request.setImageDelivery(file.toString());
+                                return mInteractor.pushToPNSDelivery(request);
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    uploadSingleResults -> mView.showSuccess(uploadSingleResults.getErrorCode(), ladingCode),
+                                    throwable -> mView.showError(throwable.getMessage())
+                            );
+                } else {
+                    mInteractor.pushToPNSDelivery(request).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(simpleResult -> mView.showSuccess(simpleResult.getErrorCode(), ladingCode),
+                                    throwable -> mView.showError(throwable.getMessage()));
+                }
             } else {
                 String ladingCode = item.getCode();
                 String receiverName = item.getReciverName();
@@ -298,20 +307,33 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         0
                 );
 
-                mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        assert response.body() != null;
-                        mView.showSuccess(response.body().getErrorCode(), ladingCode);
-                    }
-
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.showError(message);
-                    }
-                });
+                List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
+                if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
+                    Observable.fromIterable(images)
+                            .flatMap(strings -> mInteractor.postImageObservable(strings))
+                            .toList()
+                            .flatMap(uploadSingleResults -> {
+                                StringBuilder file = new StringBuilder();
+                                for (UploadSingleResult result : uploadSingleResults) {
+                                    file.append(result.getFile());
+                                    file.append(";");
+                                }
+                                request.setImageDelivery(file.toString());
+                                return mInteractor.paymentDelivery(request);
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    observables -> mView.showSuccess(observables.getErrorCode(), ladingCode),
+                                    throwable -> mView.showError(throwable.getMessage())
+                            );
+                } else {
+                    mInteractor.paymentDelivery(request)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(simpleResult -> mView.showSuccess(simpleResult.getErrorCode(), ladingCode),
+                                    throwable -> mView.showError(throwable.getMessage()));
+                }
             }
         }
     }

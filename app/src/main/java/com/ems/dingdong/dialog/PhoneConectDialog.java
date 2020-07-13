@@ -58,7 +58,7 @@ public class PhoneConectDialog extends Dialog {
                     Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
                     return;
                 }
-                if (!NumberUtils.checkMobileNumber(phone)) {
+                if (!NumberUtils.checkNumber(phone)) {
                     Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
                     return;
                 }

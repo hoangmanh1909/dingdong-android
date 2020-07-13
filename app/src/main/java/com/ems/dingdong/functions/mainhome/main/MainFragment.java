@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
@@ -94,18 +95,18 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         request.setToNumber("0968997971");
         request.setDateStarted("1567858627467");
         request.setDateEnded("1594190547308");
-        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                (simpleResult, throwable) -> {
-                    Log.d("chauvp11", throwable.getMessage());
-                }
-        );
+//        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                (simpleResult, throwable) -> {
+//                    Log.d("chauvp11", throwable.getMessage());
+//                }
+//        );
 //        if (mPresenter != null)
 //            mPresenter.getAccessToken();
-//        ApplicationController applicationController =
-//                (ApplicationController) getViewContext().getApplication();
-//        applicationController.initPortSipService();
+        ApplicationController applicationController =
+                (ApplicationController) getViewContext().getApplication();
+        applicationController.initPortSipService();
 
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {

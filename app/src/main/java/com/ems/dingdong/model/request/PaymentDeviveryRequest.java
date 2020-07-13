@@ -97,4 +97,8 @@ public class PaymentDeviveryRequest {
     public void setReceiverReference(String receiverReference) {
         this.receiverReference = receiverReference;
     }
+
+    public void setImageDelivery(String imageDelivery) {
+        this.imageDelivery = imageDelivery;
+    }
 }

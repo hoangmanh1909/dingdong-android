@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
@@ -24,6 +25,7 @@ import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -137,24 +139,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         }
     }
 
-    public void saveLocal(CommonObject baoPhat) {
-        String parcelCode = baoPhat.getParcelCode();
-        Realm realm = Realm.getDefaultInstance();
-        CommonObject result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findFirst();
-        if (result != null) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(baoPhat);
-            realm.commitTransaction();
-            realm.close();
-        } else {
-            realm.beginTransaction();
-            realm.copyToRealm(baoPhat);
-            realm.commitTransaction();
-            realm.close();
-        }
-    }
-
-
     @Override
     public void onDisplay() {
         super.onDisplay();
@@ -209,9 +193,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showSuccess(String code, String parcelCode) {
-        hideProgress();
         if (code.equals("00")) {
-            showProgress();
             for (CommonObject item : mAdapter.getItemsSelected()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     mList.removeIf(itemSent -> itemSent.getParcelCode().equals(parcelCode));
@@ -325,19 +307,23 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     public void submit() {
-        itemsSelected = mAdapter.getItemsSelected();
-        if (itemsSelected.size() > 0) {
-            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
-                    .setOnCancelListener(Dialog::dismiss)
-                    .setOnOkListener(confirmDialog -> {
-                        showProgress();
-                        mPresenter.offlineDeliver(itemsSelected);
-                        confirmDialog.dismiss();
-                    })
-                    .setWarning("Bạn có muốn thực hiện báo phát với:")
-                    .show();
+        if (NetworkUtils.isWifiConnected()) {
+            itemsSelected = mAdapter.getItemsSelected();
+            if (itemsSelected.size() > 0) {
+                new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
+                        .setOnCancelListener(Dialog::dismiss)
+                        .setOnOkListener(confirmDialog -> {
+                            showProgress();
+                            mPresenter.offlineDeliver(itemsSelected);
+                            confirmDialog.dismiss();
+                        })
+                        .setWarning("Bạn có muốn thực hiện báo phát với:")
+                        .show();
+            } else {
+                Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
+            }
         } else {
-            Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
+            showErrorToast("Vui lòng kết nối mạng trước khi báo phát");
         }
     }
 

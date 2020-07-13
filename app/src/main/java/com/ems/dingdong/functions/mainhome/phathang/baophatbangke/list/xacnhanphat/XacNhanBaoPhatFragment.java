@@ -712,8 +712,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
         mListReason = reasonInfos;
         if (mListReason != null && mListReason.size() > 0) {
-            mReasonInfo = mListReason.get(1);
-            tv_reason.setText(mReasonInfo.getName());
+            for (ReasonInfo info : mListReason) {
+                if (info.getID() == 42) {
+                    mReasonInfo = info;
+                    tv_reason.setText(mReasonInfo.getName());
+                    break;
+                }
+            }
             loadSolution();
         }
     }
@@ -722,8 +727,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showSolution(ArrayList<SolutionInfo> solutionInfos) {
         mListSolution = solutionInfos;
         if (mListSolution != null && mListSolution.size() > 0) {
-            mSolutionInfo = mListSolution.get(0);
-            tv_solution.setText(mSolutionInfo.getName());
+            if (mReasonInfo.getID() == 48 || mReasonInfo.getID() == 11) {
+                for (SolutionInfo info : mListSolution) {
+                    if (info.getID() == 8) {
+                        mSolutionInfo = info;
+                        tv_solution.setText(mSolutionInfo.getName());
+                        mClickSolution = false;
+                    } else if (42 == info.getID()) {
+
+                    }
+                }
+            } else if (mReasonInfo.getID() == 42) {
+                changeDefaultSolution();
+            } else {
+                mSolutionInfo = mListSolution.get(0);
+                tv_solution.setText(mSolutionInfo.getName());
+            }
         }
         if (mClickSolution)
             showUISolution();
@@ -1058,6 +1077,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return false;
         }
         return true;
+    }
+
+    private void changeDefaultSolution() {
+        if (!mListSolution.isEmpty()) {
+            for (SolutionInfo info : mListSolution) {
+                if (info.getID() == 1) {
+                    mSolutionInfo = info;
+                    tv_solution.setText(mSolutionInfo.getName());
+                    break;
+                }
+            }
+        }
     }
 
 }
