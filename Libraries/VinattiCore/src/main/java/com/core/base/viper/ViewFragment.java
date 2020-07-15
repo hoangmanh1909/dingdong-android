@@ -77,16 +77,13 @@ public abstract class ViewFragment<P extends IPresenter>
 
   @Override
   public void showProgress() {
-    Log.d("chauvp1", "showProgress");
     if (ContextUtils.isValidContext(getBaseActivity())) {
-      Log.d("chauvp1", "showProgress1");
       getBaseActivity().showProgress();
     }
   }
 
   @Override
   public void hideProgress() {
-    Log.d("chauvp1", "hideProgress");
     if (ContextUtils.isValidContext(getBaseActivity())) {
       getBaseActivity().hideProgress();
     }

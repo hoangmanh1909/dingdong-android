@@ -1,17 +1,10 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -33,7 +26,6 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.MediaUltis;
@@ -50,8 +42,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -122,6 +112,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     private ReasonInfo mReasonInfo;
     private int imgPosition = 1;
     private int mDeliveryType = 2;
+    private boolean isFirstChangeReason = true;
 
     UserInfo userInfo;
     PostOffice postOffice;
@@ -175,6 +166,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_confirm_success.setVisibility(LinearLayout.GONE);
+                loadReasonAndSolution();
             } else if (checkedId == R.id.rad_success) {
                 mDeliveryType = 2;
                 ll_confirm_success.setVisibility(LinearLayout.VISIBLE);
@@ -188,7 +180,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -342,6 +333,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     }
 
     private void showUIReason() {
+        isFirstChangeReason = true;
         ArrayList<Item> items = new ArrayList<>();
         final List<ReasonInfo> list = RealmUtils.getReasons();
         for (ReasonInfo item : list) {
@@ -369,20 +361,25 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             if (!pickerUIReason.isShow) {
                 pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
             }
-
-
         }
     }
 
-
     private void showUISolution() {
-        if (!TextUtils.isEmpty(mReasonCode)) {
+        if (!TextUtils.isEmpty(mReasonCode) && mReasonInfo != null) {
             ArrayList<Item> items = new ArrayList<>();
             final List<SolutionInfo> list = RealmUtils.getSolutionByReason(mReasonCode);
             for (SolutionInfo item : list) {
                 items.add(new Item(item.getCode(), item.getName()));
             }
-            if (pickerUISolution == null) {
+            if ((mReasonInfo.getID() == 48 || mReasonInfo.getID() == 11) && isFirstChangeReason) {
+                isFirstChangeReason = false;
+                for (SolutionInfo info : list) {
+                    if (info.getID() == 8) {
+                        mSolutionInfo = info;
+                        tv_solution.setText(mSolutionInfo.getName());
+                    }
+                }
+            } else if (pickerUISolution == null) {
                 pickerUISolution = new ItemBottomSheetPickerUIFragment(items, "Chọn giải pháp",
                         new ItemBottomSheetPickerUIFragment.PickerUiListener() {
                             @Override
@@ -399,8 +396,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 if (!pickerUISolution.isShow) {
                     pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
                 }
-
-
             }
         } else {
             Toast.showToast(getActivity(), "Bạn chưa chọn lý do");
@@ -426,5 +421,24 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             iv_package_2.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
         else
             iv_package_3.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+    }
+
+    private void loadReasonAndSolution() {
+        final List<ReasonInfo> listReason = RealmUtils.getReasons();
+        for (ReasonInfo item : listReason) {
+            if (item.getID() == 42) {
+                mReasonInfo = item;
+                tv_reason.setText(item.getName());
+                final List<SolutionInfo> listSolution = RealmUtils.getSolutionByReason(item.getCode());
+                for (SolutionInfo solutionInfo : listSolution) {
+                    if (solutionInfo.getID() == 1) {
+                        tv_solution.setText(solutionInfo.getName());
+                        mSolutionInfo = solutionInfo;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
     }
 }

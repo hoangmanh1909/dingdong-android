@@ -26,6 +26,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -239,7 +240,15 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     mView.showProgress();
                     Observable.fromIterable(images)
+                            .subscribeOn(Schedulers.io())
                             .flatMap(image -> mInteractor.postImageObservable(image))
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError(throwable -> {
+                                if (throwable instanceof SocketTimeoutException) {
+                                    mView.showError(throwable.getMessage());
+                                }
+                            })
+                            .observeOn(Schedulers.io())
                             .toList()
                             .flatMap(uploadSingleResults -> {
                                 StringBuilder file = new StringBuilder();
@@ -250,7 +259,6 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                                 request.setImageDelivery(file.toString());
                                 return mInteractor.pushToPNSDelivery(request);
                             })
-                            .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     uploadSingleResults -> mView.showSuccess(uploadSingleResults.getErrorCode(), ladingCode),
@@ -311,6 +319,13 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     Observable.fromIterable(images)
                             .flatMap(strings -> mInteractor.postImageObservable(strings))
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError(throwable -> {
+                                if (throwable instanceof SocketTimeoutException) {
+                                    mView.showError(throwable.getMessage());
+                                }
+                            })
+                            .observeOn(Schedulers.io())
                             .toList()
                             .flatMap(uploadSingleResults -> {
                                 StringBuilder file = new StringBuilder();

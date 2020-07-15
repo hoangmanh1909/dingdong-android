@@ -733,15 +733,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         mSolutionInfo = info;
                         tv_solution.setText(mSolutionInfo.getName());
                         mClickSolution = false;
-                    } else if (42 == info.getID()) {
-
                     }
                 }
             } else if (mReasonInfo.getID() == 42) {
                 changeDefaultSolution();
             } else {
-                mSolutionInfo = mListSolution.get(0);
-                tv_solution.setText(mSolutionInfo.getName());
+                mClickSolution = true;
             }
         }
         if (mClickSolution)

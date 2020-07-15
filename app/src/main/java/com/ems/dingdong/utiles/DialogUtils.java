@@ -138,7 +138,6 @@ public class DialogUtils {
      * @param activity the context is running.
      */
     public static void showProgressDialog(final Activity activity) {
-        android.util.Log.d("chauvp1", "showProgress2");
         if (activity == null)
             return;
 
@@ -150,7 +149,6 @@ public class DialogUtils {
             }
         }
 
-
         Utilities.hideKeyboard(null, activity);
         progress = new ProgressDialog(activity);
         progress.setTitle("");
@@ -158,8 +156,6 @@ public class DialogUtils {
         progress.setOnCancelListener(null);
         progress.setCanceledOnTouchOutside(false);
         progress.show();
-        android.util.Log.d("chauvp1", Thread.currentThread().getName());
-        android.util.Log.d("chauvp1", "showProgress3");
     }
 
     public static boolean isShowing() {
