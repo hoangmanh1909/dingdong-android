@@ -91,35 +91,52 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
-                                || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
-                                || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
-                                || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
-                                || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
-                                || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase())
-                                || row.getPoCode().toLowerCase().contains(charString.toLowerCase())
-                                || row.getAutoCallStatus().toLowerCase().contains(charString.toLowerCase())
-                                || row.getInfo().toLowerCase().contains(charString.toLowerCase())
-                                || row.getRouteCode().toLowerCase().contains(charString.toLowerCase())
-                                || row.getServiceName().toLowerCase().contains(charString.toLowerCase())
-                                || row.getService().toLowerCase().contains(charString.toLowerCase())
-                                || row.getStatus().toLowerCase().contains(charString.toLowerCase())
-                                || row.getBatchCode().toLowerCase().contains(charString.toLowerCase())
-                                || row.getVatCode().toLowerCase().contains(charString.toLowerCase())
-                                || row.getbD13CreatedDate().toLowerCase().contains(charString.toLowerCase())
-                                || row.getNote().toLowerCase().contains(charString.toLowerCase())
-                                || row.getAmountForBatch().toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getRoute()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getRouteId()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getShiftId()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getCount()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getWeight()).toLowerCase().contains(charString.toLowerCase())
-                                || String.valueOf(row.getItemsInBatch()).toLowerCase().contains(charString.toLowerCase())
-                                || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
+                        if (mTypeBD13 == TypeBD13.LIST_BD13) {
+                            if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getPoCode().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getAutoCallStatus().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getInfo().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getRouteCode().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getServiceName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getService().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getStatus().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getBatchCode().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getVatCode().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getbD13CreatedDate().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getNote().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getAmountForBatch().toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getRoute()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getRouteId()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getShiftId()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getCount()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getWeight()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getItemsInBatch()).toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row);
+                            }
+                        } else {
+                            if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getPoCode().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getRouteCode().toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getRouteId()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase())
+                                    || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row);
+                            }
                         }
                     }
 

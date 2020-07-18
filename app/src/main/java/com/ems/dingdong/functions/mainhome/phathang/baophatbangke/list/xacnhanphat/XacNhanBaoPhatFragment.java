@@ -263,7 +263,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
                     mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
-                    if (getItemsSelected().size() == 1) {
+                    if (getItemsSelected().size() == 1 || checkSameAddress()) {
                         tvReceiverName.setText(getItemsSelected().get(0).getReciverName());
                         tvGTTT.setText("");
                     } else {
@@ -278,7 +278,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(adapter);
 
-        if (getItemSelected().size() == 1) {
+        if (getItemSelected().size() == 1 || checkSameAddress()) {
             tvReceiverName.setText(getItemSelected().get(0).getReciverName());
             tvGTTT.setText("");
         }
@@ -356,7 +356,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     isCaptureVerify = false;
                     MediaUltis.captureImage(this);
                 } else {
-                    showErrorToast("Không được phép chụp quá 3 ảnh");
+                    showErrorToast(getViewContext().getString(R.string.do_not_allow_take_over_three_photos));
                 }
                 break;
             case R.id.rl_image_capture_verify:
@@ -364,7 +364,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     isCaptureVerify = true;
                     MediaUltis.captureImage(this);
                 } else {
-                    showErrorToast("Không được phép chụp quá 7 ảnh");
+                    showErrorToast(getString(R.string.do_not_allow_take_over_seven_photos));
                 }
                 break;
             case R.id.edt_date_of_birth:
@@ -415,22 +415,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
             case R.id.rl_relationship:
                 PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
-                popup.getMenu().add("Ông");
-                popup.getMenu().add("Bà");
-                popup.getMenu().add("Bố");
-                popup.getMenu().add("Mẹ");
-                popup.getMenu().add("Anh");
-                popup.getMenu().add("Chị");
-                popup.getMenu().add("Em");
-                popup.getMenu().add("Vợ");
-                popup.getMenu().add("Chồng");
-                popup.getMenu().add("Con");
-                popup.getMenu().add("Văn thư");
-                popup.getMenu().add("Lao công");
-                popup.getMenu().add("Bảo vệ");
-                popup.getMenu().add("Khác");
+                popup.inflate(R.menu.relationship_popup);
                 popup.setOnMenuItemClickListener(item -> {
-                    if (item.getTitle().equals("Khác")) {
+                    if (item.getItemId() == R.id.menu_other) {
                         llOtherRelationship.setVisibility(View.VISIBLE);
                     } else {
                         llOtherRelationship.setVisibility(View.GONE);
@@ -448,12 +435,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (mDeliveryType == 2) {
             List<DeliveryPostman> listSelected = getItemSelected();
             if (listSelected.size() == 0) {
-                showErrorToast("Bạn chưa chọn bưu gửi nào");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_pick_any_package));
                 return;
             }
             boolean isCanVerify = canVerify();
             if (!isCanVerify) {
-                showErrorToast("Có bưu gửi cần xác thực thông tin, yêu cầu báo phát riêng");
+                showErrorToast(getViewContext().getString(R.string.there_is_one_package_needed_to_particular_delivered));
                 return;
             }
 
@@ -465,18 +452,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 } else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
                     return;
                 } else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
-                    showErrorToast("Bạn phải chụp ảnh xác thực hoặc nhập đủ thông tin xác thực");
+                    showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
                     return;
                 }
             }
 
-            if (TextUtils.isEmpty(edtOtherRelationship.getText()) && edtRelationship.getText().equals("Khác")) {
-                showErrorToast("Bạn chưa nhập mối quan hệ với người nhận");
+            if (TextUtils.isEmpty(edtOtherRelationship.getText()) &&
+                    edtRelationship.getText().equals(getViewContext().getString(R.string.other))) {
+                showErrorToast(getViewContext().getString(R.string.you_have_not_entered_reeceiver_relationship));
                 return;
             }
 
             if (TextUtils.isEmpty(tvReceiverName.getText())) {
-                showErrorToast("Bạn chưa nhập tên người nhận thực tế");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_entered_real_receiver_name));
                 return;
             }
 
@@ -509,15 +497,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
                         confirmDialog.dismiss();
                     })
-                    .setWarning("Bạn có chắc chắn muốn ghi nhận phát thành công")
+                    .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
                     .show();
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
-                Toast.showToast(tv_reason.getContext(), "Xin vui lòng chọn lý do");
+                Toast.showToast(tv_reason.getContext(), getViewContext().getString(R.string.please_pick_reason));
                 return;
             }
             if (TextUtils.isEmpty(tv_solution.getText())) {
-                Toast.showToast(tv_solution.getContext(), "Bạn chưa chọn phương án xử lý");
+                Toast.showToast(tv_solution.getContext(), getViewContext().getString(R.string.you_have_not_chosen_solution));
                 return;
             }
             mPresenter.submitToPNS(
@@ -528,11 +516,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mSign);
         } else {
             if (TextUtils.isEmpty(tv_route.getText())) {
-                Toast.showToast(tv_route.getContext(), "Bạn chưa chọn tuyến");
+                Toast.showToast(tv_route.getContext(), getViewContext().getString(R.string.you_have_not_pick_route));
                 return;
             }
             if (TextUtils.isEmpty(tv_postman.getText())) {
-                showErrorToast("Bạn chưa chọn bưu tá");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_picked_postman));
                 return;
             }
             int postmanId = 0;
@@ -787,7 +775,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         }
         if (pickerUIRoute == null) {
-            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, "Chọn tuyến",
+            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, getViewContext().getString(R.string.pick_route),
                     (item, position) -> {
                         tv_route.setText(item.getText());
                         mRouteInfo = mListRoute.get(position);
@@ -806,7 +794,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void showUIPostman() {
         if (null == mListPostman || mListPostman.isEmpty()) {
-            showErrorToast("Vui lòng chọn tuyến");
+            showErrorToast(getViewContext().getString(R.string.please_pick_route));
         } else {
             ArrayList<Item> items = new ArrayList<>();
             if (mListPostman != null) {
@@ -815,7 +803,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             if (pickerUIPostman == null) {
-                pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, "Chọn bưu tá",
+                pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, getViewContext().getString(R.string.pick_postman),
                         (item, position) -> {
                             tv_postman.setText(item.getText());
                             mPostmanInfo = mListPostman.get(position);
@@ -874,12 +862,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void showCheckAmountPaymentError(String message, String amountPP, String amountPNS) {
         new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Thông báo")
+                .setTitleText(getString(R.string.notification))
                 .setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP
                         + "\nTiền trên hệ thông PNS: " + amountPNS
                         + " \nBạn có muốn cập nhật theo số tiền trên PayPost không?")
-                .setCancelText("Không")
-                .setConfirmText("Có")
+                .setCancelText(getString(R.string.no))
+                .setConfirmText(getString(R.string.yes))
                 .setCancelClickListener(v -> {
                     mPresenter.paymentV2(false);
                     v.dismiss();
@@ -915,7 +903,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                     .setConfirmText("OK")
-                    .setTitleText("Thông báo")
+                    .setTitleText(getString(R.string.notification))
                     .setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismiss();
@@ -948,6 +936,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         tvTotalFee.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee)));
     }
 
+    private boolean checkSameAddress() {
+        List<DeliveryPostman> itemSelected = getItemSelected();
+        if (null == itemSelected || 0 == itemSelected.size())
+            return false;
+        DeliveryPostman firstItem = itemSelected.get(0);
+        for (int i = 1; i < itemSelected.size(); i++) {
+            if (!firstItem.getReciverName().equals(itemSelected.get(i).getReciverName())
+                    || !firstItem.getReciverAddress().equals(itemSelected.get(i).getReciverAddress()))
+                return false;
+        }
+        return true;
+    }
+
     private void showUISolution() {
         ArrayList<Item> items = new ArrayList<>();
 
@@ -955,7 +956,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             for (SolutionInfo item : mListSolution) {
                 items.add(new Item(item.getCode(), item.getName()));
             }
-            new PickerDialog(getViewContext(), "Chọn giải pháp", items,
+            new PickerDialog(getViewContext(), getString(R.string.pick_solution)
+                    , items,
                     item -> {
                         for (SolutionInfo info : mListSolution) {
                             if (item.getValue().equals(info.getCode())) {
@@ -1032,36 +1034,36 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private boolean checkInfo(int authenType) {
         if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
             if (authenType != 0)
-                showErrorToast("Bạn chưa nhập ngày cấp giấy tờ tùy thân");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_provided_profile));
             return false;
         }
 
         if (TextUtils.isEmpty(tvReceiverName.getText())) {
             if (authenType != 0)
-                showErrorToast("Bạn chưa nhập thông tin xác thực: Tên người nhận");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_receiver_name));
             return false;
         }
 
         if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
             if (authenType != 0)
-                showErrorToast("Bạn chưa nhập nơi cấp giấy tờ tùy thân");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_the_place_of_profile));
             return false;
         }
 
         if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
             if (authenType != 0)
-                showErrorToast("Bạn chưa nhập ngày tháng năm sinh");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_entered_date_of_birth));
             return false;
         }
 
         if (TextUtils.isEmpty(tvGTTT.getText())) {
-            showErrorToast("Bạn chưa nhập số giấy tờ tùy thân");
+            showErrorToast(getViewContext().getString(R.string.you_have_not_enter_number_of_profile));
             return false;
         }
 
         if (TextUtils.isEmpty(edtUserAddress.getText())) {
             if (authenType != 0)
-                showErrorToast("Bạn chưa nhập địa chỉ người sử dụng");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
             return false;
         }
         return true;
@@ -1070,7 +1072,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private boolean checkImage(int authenType) {
         if (TextUtils.isEmpty(mFileVerify)) {
             if (authenType != 0)
-                showErrorToast("Bạn chưa chụp ảnh xác thực");
+                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
             return false;
         }
         return true;
