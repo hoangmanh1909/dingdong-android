@@ -57,6 +57,17 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
 
     public List<EWalletDataResponse> getItemsSelected() {
         List<EWalletDataResponse> commonObjectsSelected = new ArrayList<>();
+        List<EWalletDataResponse> items = mList;
+        for (EWalletDataResponse item : items) {
+            if (item.isSelected()) {
+                commonObjectsSelected.add(item);
+            }
+        }
+        return commonObjectsSelected;
+    }
+
+    public List<EWalletDataResponse> getItemsFilterSelected() {
+        List<EWalletDataResponse> commonObjectsSelected = new ArrayList<>();
         List<EWalletDataResponse> items = mListFilter;
         for (EWalletDataResponse item : items) {
             if (item.isSelected()) {

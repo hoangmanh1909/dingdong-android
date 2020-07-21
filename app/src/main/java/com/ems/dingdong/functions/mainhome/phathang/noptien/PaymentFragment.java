@@ -126,6 +126,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(count)));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
             tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(amount)));
+            if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
+                    mAdapter.getListFilter().size() == 0)
+                cbPickAll.setChecked(false);
+            else
+                cbPickAll.setChecked(true);
         }, 1000)) {
             @Override
             public void onBindViewHolder(HolderView holder, int position) {

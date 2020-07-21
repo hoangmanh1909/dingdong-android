@@ -50,7 +50,7 @@ public class PhoneNumberUpdateDialog extends Dialog {
                     Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
                     return;
                 }
-                if (!NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
+                if (!NumberUtils.checkNumber(edtPhone.getText().toString())) {
                     Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
                     return;
                 }

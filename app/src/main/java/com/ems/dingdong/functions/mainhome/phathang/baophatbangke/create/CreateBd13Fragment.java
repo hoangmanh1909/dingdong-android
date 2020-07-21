@@ -153,6 +153,11 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                                 e.printStackTrace();
                             }
                         }
+                        if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
+                                mAdapter.getListFilter().size() == 0)
+                            cbPickAll.setChecked(false);
+                        else
+                            cbPickAll.setChecked(true);
                         tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
                         tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
                     }
@@ -180,16 +185,16 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 holder.img_ContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new PhoneConectDialog(getActivity(), mList.get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                        new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
                             public void onCallResponse(String phone) {
                                 mPhone = phone;
-                                mPresenter.callForward(phone, mList.get(position).getMaE());
+                                mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
 
                             @Override
                             public void onUpdateResponse(String phone, DismissDialogCallback callback) {
-                                showConfirmSaveMobile(phone, mList.get(position).getMaE(), callback);
+                                showConfirmSaveMobile(phone, mAdapter.getListFilter().get(position).getMaE(), callback);
                             }
                         }).show();
                     }
@@ -474,14 +479,14 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     private void setAllCheckBox() {
         if (cbPickAll.isChecked()) {
-            for (DeliveryPostman item : mList) {
+            for (DeliveryPostman item : mAdapter.getListFilter()) {
                 if (item.isSelected()) {
                     item.setSelected(false);
                 }
             }
             cbPickAll.setChecked(false);
         } else {
-            for (DeliveryPostman item : mList) {
+            for (DeliveryPostman item : mAdapter.getListFilter()) {
                 if (!item.isSelected()) {
                     item.setSelected(true);
                 }
@@ -492,7 +497,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     private boolean isAllSelected() {
-        for (DeliveryPostman item : mList) {
+        for (DeliveryPostman item : mAdapter.getListFilter()) {
             if (!item.isSelected()) {
                 return false;
             }

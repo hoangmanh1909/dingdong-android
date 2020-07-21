@@ -203,6 +203,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     e.printStackTrace();
                 }
             }
+            if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
+                    mAdapter.getListFilter().size() == 0)
+                cbPickAll.setChecked(false);
+            else
+                cbPickAll.setChecked(true);
             tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
             mPresenter.setTitleTab(count);
         }, 1000)) {
@@ -281,11 +286,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     mPhoneConectDialog.show();
                 });
                 holder.img_map.setOnClickListener(v -> {
-                    if (null != mList.get(position).getNewReceiverAddress()) {
-                        if (!TextUtils.isEmpty(mList.get(position).getNewReceiverAddress().getFullAdress()))
-                            mPresenter.vietmapSearch(mList.get(position).getNewReceiverAddress().getFullAdress());
+                    if (null != mAdapter.getListFilter().get(position).getNewReceiverAddress()) {
+                        if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress()))
+                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress());
                     } else
-                        mPresenter.vietmapSearch(mList.get(position).getReciverAddress());
+                        mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReciverAddress());
                 });
             }
         };
@@ -389,6 +394,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void initSearch() {
+        cbPickAll.setChecked(false);
         swipeRefreshLayout.setRefreshing(true);
         if (!TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mList.clear();
@@ -422,10 +428,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
             if (mAdapter.getItemsSelected().size() != 0) {
-                if (mAdapter.getItemsSelected().size() < mAdapter.getListFilter().size())
+                if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size()
+                        || mAdapter.getListFilter().size() == 0)
                     cbPickAll.setChecked(false);
+                else
+                    cbPickAll.setChecked(true);
                 tvItemSelected.setText(String.valueOf(mAdapter.getItemsSelected().size()));
             } else {
+                tvItemSelected.setText("0");
                 relativeLayout.setVisibility(View.GONE);
             }
         }
@@ -612,32 +622,30 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void setAllCheckBox() {
         if (cbPickAll.isChecked()) {
-            for (DeliveryPostman item : mList) {
+            for (DeliveryPostman item : mAdapter.getListFilter()) {
                 if (item.isSelected()) {
                     item.setSelected(false);
                 }
             }
-            relativeLayout.setVisibility(View.GONE);
-            tvItemSelected.setText(String.valueOf(mList.size()));
             cbPickAll.setChecked(false);
         } else {
-            for (DeliveryPostman item : mList) {
+            for (DeliveryPostman item : mAdapter.getListFilter()) {
                 if (!item.isSelected()) {
                     item.setSelected(true);
                 }
             }
-            if (mList.size() == 0)
-                relativeLayout.setVisibility(View.GONE);
-            else
-                relativeLayout.setVisibility(View.VISIBLE);
-            tvItemSelected.setText(String.valueOf(mList.size()));
             cbPickAll.setChecked(true);
         }
+        if (mAdapter.getItemsSelected().size() == 0)
+            relativeLayout.setVisibility(View.GONE);
+        else
+            relativeLayout.setVisibility(View.VISIBLE);
+        tvItemSelected.setText(String.valueOf(mAdapter.getItemsSelected().size()));
         mAdapter.notifyDataSetChanged();
     }
 
     private boolean isAllSelected() {
-        for (DeliveryPostman item : mList) {
+        for (DeliveryPostman item : mAdapter.getListFilter()) {
             if (!item.isSelected()) {
                 return false;
             }

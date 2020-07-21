@@ -2,7 +2,6 @@ package com.ems.dingdong.views.form;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -13,11 +12,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 
-import com.redmadrobot.inputmask.MaskedTextChangedListener;
-import com.redmadrobot.inputmask.PolyMaskTextChangedListener;
 import com.ems.dingdong.R;
 import com.ems.dingdong.utiles.ViewUtils;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
+import com.redmadrobot.inputmask.PolyMaskTextChangedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,7 @@ public class FormItemEditText extends FormItemText {
 
     @BindView(R.id.item_edittext_devider)
     View mDevider;
+
     @BindView(R.id.ll_edit)
     View llEdit;
 
@@ -168,6 +169,9 @@ public class FormItemEditText extends FormItemText {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     //onTextChanged
+                    if (mTextView != null && s.length() > 0 && (mTextView.getInputType() & InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS) > 0)
+                        if (Character.isLowerCase(s.toString().charAt(s.length() - 1)))
+                            mTextView.setInputType(InputType.TYPE_CLASS_TEXT);
                 }
 
                 @Override
@@ -215,8 +219,8 @@ public class FormItemEditText extends FormItemText {
     public void setHorizontallyScrolling(boolean value) {
         mTextView.setHorizontallyScrolling(value);
     }
-    public void setEnabled(boolean value)
-    {
+
+    public void setEnabled(boolean value) {
         mTextView.setEnabled(value);
     }
 

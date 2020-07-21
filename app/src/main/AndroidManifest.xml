@@ -272,6 +272,11 @@
              </intent-filter>-->
         </activity>
 
+        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode">
+
+        </meta-data>
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" />
