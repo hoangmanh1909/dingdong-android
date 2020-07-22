@@ -398,6 +398,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         swipeRefreshLayout.setRefreshing(true);
         if (!TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mList.clear();
+            mAdapter.notifyDataSetChanged();
             int deliveryType = mPresenter.getDeliverType();
             if (!TextUtils.isEmpty(mFromDate) && !TextUtils.isEmpty(mToDate)) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
@@ -549,6 +550,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 recycler.addOnScrollListener(scrollListener);
             }
         });
+        if (!TextUtils.isEmpty(edtSearch.getText())) {
+            mAdapter.getFilter().filter(edtSearch.getText());
+        }
         relativeLayout.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
