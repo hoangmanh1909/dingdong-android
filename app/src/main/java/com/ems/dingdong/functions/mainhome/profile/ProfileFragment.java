@@ -67,7 +67,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         tvTitle.setText(StringUtils.getCharSequence("THÔNG TIN TÀI KHOẢN", String.format("Phiên bản %s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE), getActivity()));
     }
 
-    @OnClick({R.id.img_back, R.id.img_logout, R.id.rl_e_wallet})
+    @OnClick({R.id.img_back, R.id.img_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -82,9 +82,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 getActivity().finishAffinity();
                 startActivity(intent);
                 break;
-            case R.id.rl_e_wallet:
-                mPresenter.moveToEWallet();
-                break;
+//            case R.id.rl_e_wallet:
+//                mPresenter.moveToEWallet();
+//                break;
         }
     }
 
