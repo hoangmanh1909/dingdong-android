@@ -2,55 +2,40 @@ package com.ems.dingdong.functions.mainhome.phathang.scanner;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.SparseArray;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
-import com.ems.dingdong.utiles.Log;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
+import me.dm7.barcodescanner.zbar.BarcodeFormat;
+import me.dm7.barcodescanner.zbar.Result;
+import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 /**
  * The ScannerCode Fragment
  */
-public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presenter>
-        implements ScannerCodeContract.View {
+public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presenter> implements ScannerCodeContract.View, ZBarScannerView.ResultHandler {
 
     @BindView(R.id.camera_view)
-    SurfaceView cameraView;
+    ZBarScannerView cameraView;
     @BindView(R.id.img_back)
     View imgBack;
-    @BindView(R.id.line)
-    View line;
-    private CameraSource cameraSource;
-    private BarcodeDetector barcodeDetector;
-    private volatile boolean isFirstReturned = false;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
-    private static final int REQUEST_CODE_ASK_PERMISSIONS = 103;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     public static ScannerCodeFragment getInstance() {
         return new ScannerCodeFragment();
     }
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_scanner_code;
@@ -59,154 +44,51 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     @Override
     public void onDisplay() {
         super.onDisplay();
+        cameraView.setFormats(BarcodeFormat.ALL_FORMATS);
+        cameraView.setResultHandler(this); // Register ourselves as a handler for scan results.
+        cameraView.startCamera();          // Start camera on resume
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        cameraView.stopCamera();           // Stop camera on pause
     }
 
     @Override
     public void initLayout() {
         super.initLayout();
+        checkSelfPermission();
         if (((DingDongActivity) getActivity()).getSupportActionBar() != null)
             ((DingDongActivity) getActivity()).getSupportActionBar().hide();
-        imgBack.setOnClickListener(v -> mPresenter.back());
-        checkSelfPermission();
-    }
-
-    private void initCamera() {
-        barcodeDetector = new BarcodeDetector.Builder(getViewContext())
-                .setBarcodeFormats(Barcode.ALL_FORMATS)
-                .build();
-        cameraSource = new CameraSource
-                .Builder(getViewContext(), barcodeDetector)
-                .setRequestedPreviewSize(1024, 768)
-                .setRequestedFps(30.0f)
-                .setAutoFocusEnabled(true)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .build();
-        cameraFocus(cameraSource, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                try {
-                    cameraSource.start(cameraView.getHolder());
-                    setAnimation();
-                } catch (IOException ie) {
-                    Log.e("CAMERA SOURCE", ie.getMessage());
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
-            }
-        });
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
-            }
-
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if (!isFirstReturned && barcodes.size() > 0) {
-                    isFirstReturned = true;
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        mPresenter.getDelegate().scanQrcodeResponse(barcodes.valueAt(0).displayValue);
-                        mPresenter.back();
-                        cameraSource.stop();
-                        barcodeDetector.release();
-                        cameraSource.release();
-                    });
-                }
+            public void onClick(View v) {
+                mPresenter.back();
             }
         });
     }
-
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermission = getViewContext().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
-            } else {
-                initCamera();
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
+
         }
+    }
+    @Override
+    public void handleResult(Result result) {
+        mPresenter.getDelegate().scanQrcodeResponse(result.getContents());
+        mPresenter.back();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_ASK_PERMISSIONS) {
-            if (permissions[0].equals(Manifest.permission.CAMERA)
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initCamera();
-                try {
-                    cameraSource.start(cameraView.getHolder());
-                    setAnimation();
-                } catch (IOException ie) {
-                    Log.e("CAMERA SOURCE", ie.getMessage());
-                }
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS: {
+                cameraView.startCamera();
             }
         }
-    }
-
-    private void setAnimation() {
-        final Animation anim = AnimationUtils.loadAnimation(getViewContext(),
-                R.anim.move);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                line.startAnimation(anim);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        line.startAnimation(anim);
-    }
-
-    private static boolean cameraFocus(@NonNull CameraSource cameraSource, @NonNull String focusMode) {
-        Field[] declaredFields = CameraSource.class.getDeclaredFields();
-
-        for (Field field : declaredFields) {
-            if (field.getType() == Camera.class) {
-                field.setAccessible(true);
-                try {
-                    Camera camera = (Camera) field.get(cameraSource);
-                    if (camera != null) {
-                        Camera.Parameters params = camera.getParameters();
-
-                        if (!params.getSupportedFocusModes().contains(focusMode)) {
-                            return false;
-                        }
-
-                        params.setFocusMode(focusMode);
-                        camera.setParameters(params);
-                        return true;
-                    }
-
-                    return false;
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-            }
-        }
-
-        return false;
     }
 }
