@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
@@ -25,7 +24,6 @@ import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -307,24 +305,24 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     public void submit() {
-        if (NetworkUtils.isWifiConnected()) {
-            itemsSelected = mAdapter.getItemsSelected();
-            if (itemsSelected.size() > 0) {
-                new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
-                        .setOnCancelListener(Dialog::dismiss)
-                        .setOnOkListener(confirmDialog -> {
-                            showProgress();
-                            mPresenter.offlineDeliver(itemsSelected);
-                            confirmDialog.dismiss();
-                        })
-                        .setWarning("Bạn có muốn thực hiện báo phát với:")
-                        .show();
-            } else {
-                Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
-            }
+//        if (NetworkUtils.isConnected()) {
+        itemsSelected = mAdapter.getItemsSelected();
+        if (itemsSelected.size() > 0) {
+            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
+                    .setOnCancelListener(Dialog::dismiss)
+                    .setOnOkListener(confirmDialog -> {
+                        showProgress();
+                        mPresenter.offlineDeliver(itemsSelected);
+                        confirmDialog.dismiss();
+                    })
+                    .setWarning("Bạn có muốn thực hiện báo phát với:")
+                    .show();
         } else {
-            showErrorToast("Vui lòng kết nối mạng trước khi báo phát");
+            Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
         }
+//        } else {
+//            showErrorToast("Vui lòng kết nối mạng trước khi báo phát");
+//        }
     }
 
     private void showDialog() {
