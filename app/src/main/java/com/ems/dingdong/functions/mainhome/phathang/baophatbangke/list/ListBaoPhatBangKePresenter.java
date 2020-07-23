@@ -14,21 +14,14 @@ import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -94,47 +87,52 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer deliveryType) {
-        mView.showProgress();
-        if (deliveryType != Constants.ALL_SEARCH_TYPE) {
-            switch (deliveryType) {
-                case Constants.DELIVERY_LIST_TYPE_COD_NEW:
-                case Constants.DELIVERY_LIST_TYPE_COD:
-                    deliveryType = Constants.COD_SEARCH_TYPE;
-                    break;
-                case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
-                case Constants.DELIVERY_LIST_TYPE_NORMAL:
-                    deliveryType = Constants.NORMAL_SEARCH_TYPE;
-                    break;
-                case Constants.DELIVERY_LIST_TYPE_PA_NEW:
-                case Constants.DELIVERY_LIST_TYPE_PA:
-                    deliveryType = Constants.HCC_SEARCH_TYPE;
-                    break;
-                default:
-                    deliveryType = Constants.ALL_SEARCH_TYPE;
-            }
-        }
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
-            @Override
-            protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body() != null) {
-                    if (response.body().getErrorCode().equals("00")) {
-                        mView.showListSuccess(response.body().getDeliveryPostmens());
-                    } else {
-                        mView.showError(response.body().getMessage());
-                    }
+        if ((getType() == Constants.NOT_YET_DELIVERY_TAB && deliveryNotSuccessfulChange.getCurrentTab() == 0)
+                || (getType() == Constants.NOT_SUCCESSFULLY_DELIVERY_TAB && deliveryNotSuccessfulChange.getCurrentTab() == 1)) {
+            mView.showProgress();
+            if (deliveryType != Constants.ALL_SEARCH_TYPE) {
+                switch (deliveryType) {
+                    case Constants.DELIVERY_LIST_TYPE_COD_NEW:
+                    case Constants.DELIVERY_LIST_TYPE_COD:
+                        deliveryType = Constants.COD_SEARCH_TYPE;
+                        break;
+                    case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
+                    case Constants.DELIVERY_LIST_TYPE_NORMAL:
+                        deliveryType = Constants.NORMAL_SEARCH_TYPE;
+                        break;
+                    case Constants.DELIVERY_LIST_TYPE_PA_NEW:
+                    case Constants.DELIVERY_LIST_TYPE_PA:
+                        deliveryType = Constants.HCC_SEARCH_TYPE;
+                        break;
+                    default:
+                        deliveryType = Constants.ALL_SEARCH_TYPE;
                 }
             }
+            mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+                @Override
+                protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
+                    super.onSuccess(call, response);
+                    mView.hideProgress();
+                    if (response.body() != null) {
+                        if (response.body().getErrorCode().equals("00")) {
+                            mView.showListSuccess(response.body().getDeliveryPostmens());
+                            deliveryNotSuccessfulChange.onChanged(response.body().getDeliveryPostmens());
+                        } else {
+                            mView.showError(response.body().getMessage());
+                            deliveryNotSuccessfulChange.onError(response.body().getMessage());
+                        }
+                    }
+                }
 
-            @Override
-            protected void onError(Call<DeliveryPostmanResponse> call, String message) {
-                super.onError(call, message);
-
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
+                @Override
+                protected void onError(Call<DeliveryPostmanResponse> call, String message) {
+                    super.onError(call, message);
+                    mView.hideProgress();
+                    mView.showError(message);
+                    deliveryNotSuccessfulChange.onError(message);
+                }
+            });
+        }
     }
 
     @Override
@@ -146,24 +144,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public ListBaoPhatBangKePresenter setType(int type) {
         mType = type;
         return this;
-    }
-
-    @Override
-    public void getReasons() {
-        mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
-                super.onSuccess(call, response);
-                if (response.body() != null && response.body().getErrorCode().equals("00")) {
-                    mView.getReasonsSuccess(response.body().getReasonInfos());
-                }
-            }
-
-            @Override
-            protected void onError(Call<ReasonResult> call, String message) {
-                super.onError(call, message);
-            }
-        });
     }
 
     @Override
@@ -293,39 +273,4 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void onSearched(String fromDate, String toDate, int currentPosition) {
         titleTabsListener.onSearchChange(fromDate, toDate, currentPosition);
     }
-
-//    private Map<String, List<DeliveryPostman>> groupByDeliveryPostmanMap(List<DeliveryPostman> listCancelStatistic) {
-//        Map<String, List<DeliveryPostman>> listMap = new HashMap<>();
-//        for (DeliveryPostman item : listCancelStatistic) {
-//            String ladingCode = item.getbD13CreatedDate();
-//            if (listMap.containsKey(ladingCode)) {
-//                List<DeliveryPostman> list = listMap.get(ladingCode);
-//                if (list != null) {
-//                    list.add(item);
-//                }
-//            } else {
-//                List<DeliveryPostman> list = new ArrayList<>();
-//                list.add(item);
-//                listMap.put(ladingCode, list);
-//            }
-//        }
-//        return listMap;
-//    }
-//
-//    private List<DeliveryPostman> sortMapDeliveryPostman(Map<String, List<DeliveryPostman>> map) {
-//        List<String> keys = new ArrayList<>(map.keySet());
-//        List<DeliveryPostman> resultList = new ArrayList<>();
-//        Collections.sort(keys, (s, t1) -> {
-//            Date date1 = DateTimeUtils.convertStringToDate(s, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
-//            Date date2 = DateTimeUtils.convertStringToDate(t1, DateTimeUtils.DEFAULT_DATETIME_FORMAT10);
-//            return DateTimeUtils.compareDate(date1, date2);
-//        });
-//        resultList.clear();
-//        for (String key : keys) {
-//            List<DeliveryPostman> subList = map.get(key);
-//            Collections.sort(subList, DeliveryPostman::compareTo);
-//            resultList.addAll(subList);
-//        }
-//        return resultList;
-//    }
 }

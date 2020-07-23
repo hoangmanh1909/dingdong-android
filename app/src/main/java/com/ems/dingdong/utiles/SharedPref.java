@@ -44,10 +44,12 @@ public class SharedPref {
     }
 
     public SharedPref(Context activity) {
-        this.autoCommit = true;
-        // pref = PreferenceManager.getDefaultSharedPreferences(mActivityBase);
-        pref = activity.getSharedPreferences(Constants.KEY_SHARE_PREFERENCES, Activity.MODE_PRIVATE);
-        editor = pref.edit();
+        if (activity != null) {
+            this.autoCommit = true;
+            // pref = PreferenceManager.getDefaultSharedPreferences(mActivityBase);
+            pref = activity.getSharedPreferences(Constants.KEY_SHARE_PREFERENCES, Activity.MODE_PRIVATE);
+            editor = pref.edit();
+        }
     }
 
     public SharedPref(Context activity, String name) {
@@ -69,11 +71,12 @@ public class SharedPref {
 
     // String----------------------------------------------------------------//
     public void putString(String key, String value) {
-        editor.putString(key, value);
-        if (autoCommit) {
-            commit();
+        if (editor != null) {
+            editor.putString(key, value);
+            if (autoCommit) {
+                commit();
+            }
         }
-
     }
 
     public void clear() {
@@ -106,7 +109,9 @@ public class SharedPref {
     }
 
     public String getString(String key, String defaultValue) {
-        return pref.getString(key, defaultValue);
+        if (pref != null)
+            return pref.getString(key, defaultValue);
+        else return "";
     }
 
     // Int------------------------------------------------------------------//
@@ -118,7 +123,9 @@ public class SharedPref {
     }
 
     public int getInt(String key, int defaultValue) {
-        return pref.getInt(key, defaultValue);
+        if (pref != null)
+            return pref.getInt(key, defaultValue);
+        else return defaultValue;
     }
 
     // Long-----------------------------------------------------------------//
@@ -147,13 +154,17 @@ public class SharedPref {
 
     // Boolean-------------------------------------------------------------//
     public boolean getBoolean(String key, boolean defaultValue) {
-        return pref.getBoolean(key, defaultValue);
+        if (pref != null)
+            return pref.getBoolean(key, defaultValue);
+        return defaultValue;
     }
 
     public void putBoolean(String key, boolean value) {
-        editor.putBoolean(key, value);
-        if (autoCommit) {
-            commit();
+        if (editor != null) {
+            editor.putBoolean(key, value);
+            if (autoCommit) {
+                commit();
+            }
         }
     }
 
@@ -192,7 +203,8 @@ public class SharedPref {
 
     // Commnit-------------------------------------------------------------//
     public void commit() {
-        editor.commit();
+        if (editor != null)
+            editor.commit();
     }
 
     public boolean isAutoCommit() {
@@ -202,29 +214,26 @@ public class SharedPref {
     public void setAutoCommit(boolean autoCommit) {
         this.autoCommit = autoCommit;
     }
+
     // ---------------------------------------------------------------------//
 // List shift
-    public  List<ShiftInfo> getListShift()
-    {
+    public List<ShiftInfo> getListShift() {
         String data = pref.getString(Constants.KEY_POST_SHIFT, "");
-        if(!data.isEmpty())
-        {
-            return NetWorkController.getGson().<ArrayList<ShiftInfo>>fromJson(data, new TypeToken<List<ShiftInfo>>(){}.getType());
-        }
-        else {
+        if (!data.isEmpty()) {
+            return NetWorkController.getGson().<ArrayList<ShiftInfo>>fromJson(data, new TypeToken<List<ShiftInfo>>() {
+            }.getType());
+        } else {
             return new ArrayList<>();
         }
 
     }
 
-    public  List<RouteInfo> getListRoute()
-    {
+    public List<RouteInfo> getListRoute() {
         String data = pref.getString(Constants.KEY_ROUTE_INFO, "");
-        if(!data.isEmpty())
-        {
-            return NetWorkController.getGson().<ArrayList<RouteInfo>>fromJson(data, new TypeToken<List<RouteInfo>>(){}.getType());
-        }
-        else {
+        if (!data.isEmpty()) {
+            return NetWorkController.getGson().<ArrayList<RouteInfo>>fromJson(data, new TypeToken<List<RouteInfo>>() {
+            }.getType());
+        } else {
             return new ArrayList<>();
         }
 

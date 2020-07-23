@@ -134,13 +134,6 @@ interface ListBaoPhatBangKeContract {
         void showCallError(String message);
 
         /**
-         * Save reasons when get successful.
-         *
-         * @param reasonInfos all reasons from server.
-         */
-        void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
-
-        /**
          * Show success message.
          */
         void showSuccessMessage(String message);
@@ -194,11 +187,6 @@ interface ListBaoPhatBangKeContract {
          * @return this presenter
          */
         ListBaoPhatBangKePresenter setType(int type);
-
-        /**
-         * Get all reasons from server.
-         */
-        void getReasons();
 
         /**
          * Get type tab;

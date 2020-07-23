@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.scanner;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,6 +25,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import butterknife.BindView;
 
@@ -79,11 +81,12 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
                 .build();
         cameraSource = new CameraSource
                 .Builder(getViewContext(), barcodeDetector)
-                .setRequestedPreviewSize(1600, 1024)
-                .setRequestedFps(15.0f)
+                .setRequestedPreviewSize(1024, 768)
+                .setRequestedFps(30.0f)
                 .setAutoFocusEnabled(true)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .build();
+        cameraFocus(cameraSource, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -173,5 +176,37 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
             }
         });
         line.startAnimation(anim);
+    }
+
+    private static boolean cameraFocus(@NonNull CameraSource cameraSource, @NonNull String focusMode) {
+        Field[] declaredFields = CameraSource.class.getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            if (field.getType() == Camera.class) {
+                field.setAccessible(true);
+                try {
+                    Camera camera = (Camera) field.get(cameraSource);
+                    if (camera != null) {
+                        Camera.Parameters params = camera.getParameters();
+
+                        if (!params.getSupportedFocusModes().contains(focusMode)) {
+                            return false;
+                        }
+
+                        params.setFocusMode(focusMode);
+                        camera.setParameters(params);
+                        return true;
+                    }
+
+                    return false;
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            }
+        }
+
+        return false;
     }
 }

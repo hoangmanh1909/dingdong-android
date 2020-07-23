@@ -24,22 +24,16 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
-import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.Leaf;
 import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftInfo;
-import com.ems.dingdong.model.Tree;
-import com.ems.dingdong.model.TreeNote;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -50,7 +44,6 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -94,7 +87,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private RouteInfo routeInfo;
     private String mDate;
     private Calendar mCalendar;
-    private ArrayList<ReasonInfo> mListReason;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private int mCountSearch = 0;
@@ -232,12 +224,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 });
                 holder.img_ContactPhone.setOnClickListener(v -> {
-                    mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
+                    try {
+                        mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
+                        choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
                     mPhoneConectDialog = new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                         @Override
                         public void onCallResponse(String phone) {
                             mPhone = phone;
-                            choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
                             mPresenter.callForward(mPhone, choosenLadingCode);
 //                            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 //                                @Override
@@ -312,7 +308,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-        mPresenter.getReasons();
         EventBus.getDefault().register(this);
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         edtSearch.setSelected(true);
@@ -388,9 +383,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             edtSearch.setText("");
             edtSearch.getEditText().addTextChangedListener(textWatcher);
             initSearch();
-            if (mPresenter.getNotSuccessfulChange() != null) {
-                mPresenter.getNotSuccessfulChange().onChanged();
-            }
         }
     }
 
@@ -510,6 +502,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showListSuccess(List<DeliveryPostman> list) {
+        showListSuccessFromTab(list);
+    }
+
+    public void showListSuccessFromTab(List<DeliveryPostman> list) {
         mList.clear();
         if (list == null || list.isEmpty()) {
             pickAll.setVisibility(View.GONE);
@@ -542,6 +538,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         new Handler().post(() -> {
             if (isFromNotification) {
                 isFromNotification = false;
+
                 int position = getFocusPosition();
                 if (position != 0)
                     recycler.scrollToPosition(position);
@@ -560,6 +557,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showError(String message) {
+        showErrorTab(message);
+    }
+
+    public void showErrorTab(String message) {
         if (getViewContext() != null) {
 //            mRefresh.setRefreshing(false);
             if (mCountSearch != 0) {
@@ -583,11 +584,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
             startActivity(intent);
         }
-    }
-
-    @Override
-    public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
-        mListReason = reasonInfos;
     }
 
     @Override

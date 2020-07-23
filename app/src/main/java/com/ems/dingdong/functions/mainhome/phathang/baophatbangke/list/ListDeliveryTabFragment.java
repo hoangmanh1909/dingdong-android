@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.astuetz.PagerSlidingTabStrip;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.Constants;
 
 import java.util.ArrayList;
@@ -57,14 +58,44 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
                 .setLadingCode(mPresenter.getLadingCode())
                 .setDeliveryListType(mPresenter.getDeliveryListType())
                 .setOnTitleChangeListener(this)
-                .setDeliveryNotSuccessfulChange(() -> tabList.get(1).initSearch())
+                .setDeliveryNotSuccessfulChange(new ListDeliveryConstract.OnDeliveryNotSuccessfulChange() {
+                    @Override
+                    public void onChanged(List<DeliveryPostman> list) {
+                        tabList.get(1).showListSuccessFromTab(list);
+                    }
+
+                    @Override
+                    public int getCurrentTab() {
+                        return pager.getCurrentItem();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        tabList.get(1).showErrorTab(message);
+                    }
+                })
                 .setType(Constants.NOT_YET_DELIVERY_TAB).getFragment());
 
         tabList.add((ListBaoPhatBangKeFragment) new ListBaoPhatBangKePresenter(mPresenter.getContainerView())
                 .setLadingCode(mPresenter.getLadingCode())
                 .setDeliveryListType(mPresenter.getDeliveryListType())
                 .setOnTitleChangeListener(this)
-                .setDeliveryNotSuccessfulChange(() -> tabList.get(0).initSearch())
+                .setDeliveryNotSuccessfulChange(new ListDeliveryConstract.OnDeliveryNotSuccessfulChange() {
+                    @Override
+                    public void onChanged(List<DeliveryPostman> list) {
+                        tabList.get(0).showListSuccessFromTab(list);
+                    }
+
+                    @Override
+                    public int getCurrentTab() {
+                        return pager.getCurrentItem();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        tabList.get(0).showErrorTab(message);
+                    }
+                })
                 .setType(Constants.NOT_SUCCESSFULLY_DELIVERY_TAB)
                 .getFragment());
 

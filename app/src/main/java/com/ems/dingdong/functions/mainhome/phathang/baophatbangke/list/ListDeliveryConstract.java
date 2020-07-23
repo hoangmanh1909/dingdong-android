@@ -4,6 +4,9 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.IView;
+import com.ems.dingdong.model.DeliveryPostman;
+
+import java.util.List;
 
 public interface ListDeliveryConstract {
 
@@ -66,7 +69,10 @@ public interface ListDeliveryConstract {
         /**
          * Function event when current tab update data then notify other tab need to refresh data on recycle view.
          */
-        void onChanged();
+        void onChanged(List<DeliveryPostman> list);
 
+        int getCurrentTab();
+
+        void onError(String message);
     }
 }
