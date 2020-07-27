@@ -17,25 +17,27 @@ import java.io.IOException;
 public class BitmapUtils {
 
     public static Bitmap processingBitmap(Uri source, Context context) {
-        Bitmap bm1 = null;
-        Bitmap newBitmap = null;
-        try {
-            bm1 = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(source));
-            int SIZE_SCALE = 3;
-            bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
-
+        if (null != context) {
+            Bitmap bm1 = null;
+            Bitmap newBitmap = null;
             try {
-                newBitmap = rotateImageIfRequired(bm1, source, context);
-            } catch (IOException e) {
+                bm1 = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(source));
+                int SIZE_SCALE = 3;
+                bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
+
+                try {
+                    newBitmap = rotateImageIfRequired(bm1, source, context);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return newBitmap;
+            return newBitmap;
+        } else return null;
     }
 
     private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage, Context context) throws IOException {
@@ -67,11 +69,13 @@ public class BitmapUtils {
     }
 
     public static boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
-                              int quality) {
+                                    int quality) {
         if (quality > 100) {
             Log.d("saveImage", "quality cannot be greater that 100");
             return false;
         }
+        if (null == bitmap)
+            return false;
         File file;
         FileOutputStream out = null;
         try {

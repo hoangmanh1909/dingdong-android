@@ -2,16 +2,10 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +37,7 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.MediaUltis;
@@ -60,12 +55,9 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -117,6 +109,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     ImageView imgSign;
     @BindView(R.id.tv_total_fee)
     CustomBoldTextView tvTotalFee;
+    @BindView(R.id.tv_total)
+    CustomBoldTextView tvTotal;
     @BindView(R.id.edt_receiver_name)
     TextInputEditText tvReceiverName;
     @BindView(R.id.edt_GTTT)
@@ -546,10 +540,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
-            return processingBitmap(uri);
+            return BitmapUtils.processingBitmap(uri, getViewContext());
         }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
-                .map(bitmap -> saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
+                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 isSavedImage -> {
                     if (isSavedImage) {
@@ -571,99 +565,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 },
                 onError -> Logger.e("error save image")
         );
-    }
-
-    private boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
-                              int quality) {
-        if (bitmap == null)
-            return false;
-        if (quality > 100) {
-            Log.d("saveImage", "quality cannot be greater that 100");
-            return false;
-        }
-        File file;
-        FileOutputStream out = null;
-        try {
-            switch (format) {
-                case JPEG:
-                    file = new File(filePath, filename);
-                    out = new FileOutputStream(file);
-                    return bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
-                case PNG:
-                default:
-                    file = new File(filePath, filename);
-                    out = new FileOutputStream(file);
-                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
-    private Bitmap processingBitmap(Uri source) {
-        Bitmap bm1;
-        Bitmap newBitmap = null;
-        try {
-            bm1 = BitmapFactory.decodeStream(Objects.requireNonNull(getActivity()).getContentResolver().openInputStream(source));
-            int SIZE_SCALE = 3;
-            bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
-
-            try {
-                newBitmap = rotateImageIfRequired(bm1, source);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return newBitmap;
-    }
-
-
-    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
-
-        if (selectedImage.getScheme().equals("content")) {
-            String[] projection = {MediaStore.Images.ImageColumns.ORIENTATION};
-            Cursor c = getActivity().getContentResolver().query(selectedImage, projection, null, null, null);
-            if (c.moveToFirst()) {
-                final int rotation = c.getInt(0);
-                c.close();
-                return rotateImage(img, rotation);
-            }
-            return img;
-        } else {
-            ExifInterface ei = new ExifInterface(selectedImage.getPath());
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    return rotateImage(img, 90);
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    return rotateImage(img, 180);
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    return rotateImage(img, 270);
-                default:
-                    return img;
-            }
-        }
-    }
-
-    private Bitmap rotateImage(Bitmap img, int degree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
-        return rotatedImg;
     }
 
     private void showUIReason() {
@@ -698,39 +599,43 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
-        mListReason = reasonInfos;
-        if (mListReason != null && mListReason.size() > 0) {
-            for (ReasonInfo info : mListReason) {
-                if (info.getID() == 42) {
-                    mReasonInfo = info;
-                    tv_reason.setText(mReasonInfo.getName());
-                    break;
+        if (null != getViewContext()) {
+            mListReason = reasonInfos;
+            if (mListReason != null && mListReason.size() > 0) {
+                for (ReasonInfo info : mListReason) {
+                    if (info.getID() == 42) {
+                        mReasonInfo = info;
+                        tv_reason.setText(mReasonInfo.getName());
+                        break;
+                    }
                 }
+                loadSolution();
             }
-            loadSolution();
         }
     }
 
     @Override
     public void showSolution(ArrayList<SolutionInfo> solutionInfos) {
-        mListSolution = solutionInfos;
-        if (mListSolution != null && mListSolution.size() > 0) {
-            if (mReasonInfo.getID() == 48 || mReasonInfo.getID() == 11) {
-                for (SolutionInfo info : mListSolution) {
-                    if (info.getID() == 8) {
-                        mSolutionInfo = info;
-                        tv_solution.setText(mSolutionInfo.getName());
-                        mClickSolution = false;
+        if (null != getViewContext()) {
+            mListSolution = solutionInfos;
+            if (mListSolution != null && mListSolution.size() > 0) {
+                if (mReasonInfo.getID() == 48 || mReasonInfo.getID() == 11) {
+                    for (SolutionInfo info : mListSolution) {
+                        if (info.getID() == 8) {
+                            mSolutionInfo = info;
+                            tv_solution.setText(mSolutionInfo.getName());
+                            mClickSolution = false;
+                        }
                     }
+                } else if (mReasonInfo.getID() == 42) {
+                    changeDefaultSolution();
+                } else {
+                    mClickSolution = true;
                 }
-            } else if (mReasonInfo.getID() == 42) {
-                changeDefaultSolution();
-            } else {
-                mClickSolution = true;
             }
+            if (mClickSolution)
+                showUISolution();
         }
-        if (mClickSolution)
-            showUISolution();
     }
 
     @Override
@@ -756,15 +661,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showPaymentV2Success(String message) {
-        new SweetAlertDialog(getViewContext())
-                .setTitleText("Thông báo")
-                .setContentText(message)
-                .setConfirmText("Ok")
-                .setConfirmClickListener(v -> {
-                    v.dismiss();
-                    hideProgress();
-                    finishView();
-                }).show();
+        if (null != getViewContext()) {
+            new SweetAlertDialog(getViewContext())
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmText("Ok")
+                    .setConfirmClickListener(v -> {
+                        v.dismiss();
+                        hideProgress();
+                        finishView();
+                    }).show();
+        } else showSuccessToast(message);
     }
 
     private void showUIRoute() {
@@ -820,19 +727,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showImage(String file) {
-        if (isCaptureVerify) {
-            if (mFileVerify.equals("")) {
-                mFileVerify = file;
+        if (null != getViewContext()) {
+            if (isCaptureVerify) {
+                if (mFileVerify.equals("")) {
+                    mFileVerify = file;
+                } else {
+                    mFileVerify += ";";
+                    mFileVerify += file;
+                }
             } else {
-                mFileVerify += ";";
-                mFileVerify += file;
-            }
-        } else {
-            if (mFile.equals("")) {
-                mFile = file;
-            } else {
-                mFile += ";";
-                mFile += file;
+                if (mFile.equals("")) {
+                    mFile = file;
+                } else {
+                    mFile += ";";
+                    mFile += file;
+                }
             }
         }
     }
@@ -852,50 +761,58 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void showError(String message) {
-        mDeliveryError = +1;
-        int total = mDeliverySuccess + mDeliveryError;
-        if (total == getItemSelected().size()) {
-            showFinish();
+        if (null != getViewContext()) {
+            mDeliveryError = +1;
+            int total = mDeliverySuccess + mDeliveryError;
+            if (total == getItemSelected().size()) {
+                showFinish();
+            }
         }
     }
 
     @Override
     public void showCheckAmountPaymentError(String message, String amountPP, String amountPNS) {
-        new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText(getString(R.string.notification))
-                .setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP
-                        + "\nTiền trên hệ thông PNS: " + amountPNS
-                        + " \nBạn có muốn cập nhật theo số tiền trên PayPost không?")
-                .setCancelText(getString(R.string.no))
-                .setConfirmText(getString(R.string.yes))
-                .setCancelClickListener(v -> {
-                    mPresenter.paymentV2(false);
-                    v.dismiss();
-                })
-                .setConfirmClickListener(v -> {
-                    mPresenter.paymentV2(true);
-                    v.dismiss();
-                })
-                .show();
+        if (null != getViewContext()) {
+            new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE)
+                    .setTitleText(getString(R.string.notification))
+                    .setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP
+                            + "\nTiền trên hệ thông PNS: " + amountPNS
+                            + " \nBạn có muốn cập nhật theo số tiền trên PayPost không?")
+                    .setCancelText(getString(R.string.no))
+                    .setConfirmText(getString(R.string.yes))
+                    .setCancelClickListener(v -> {
+                        mPresenter.paymentV2(false);
+                        v.dismiss();
+                    })
+                    .setConfirmClickListener(v -> {
+                        mPresenter.paymentV2(true);
+                        v.dismiss();
+                    })
+                    .show();
+        }
     }
 
     @Override
     public void showSuccess(String code) {
-        if (code.equals("00")) {
-            mDeliverySuccess += 1;
-        } else {
-            mDeliveryError += 1;
-        }
-        int total = mDeliverySuccess + mDeliveryError;
-        if (total == getItemSelected().size()) {
-            showFinish();
+        if (null != getViewContext()) {
+            if (code.equals("00")) {
+                mDeliverySuccess += 1;
+            } else {
+                mDeliveryError += 1;
+            }
+            int total = mDeliverySuccess + mDeliveryError;
+            if (total == getItemSelected().size()) {
+                showFinish();
+            }
         }
     }
 
     @Override
     public void showCancelDivided(String message) {
-        Toast.showToast(getActivity(), message);
-        finishView();
+        if (null != getViewContext()) {
+            Toast.showToast(getActivity(), message);
+            finishView();
+        }
     }
 
     private void showFinish() {
@@ -921,7 +838,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public List<DeliveryPostman> getItemSelected() {
-        return adapter.getItemsSelected();
+        if (null != adapter)
+            return adapter.getItemsSelected();
+        else return new ArrayList<>();
     }
 
     private void updateTotalPackage() {
@@ -934,6 +853,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         tvTotalFee.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee)));
+        tvTotal.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee + totalAmount)));
     }
 
     private boolean checkSameAddress() {

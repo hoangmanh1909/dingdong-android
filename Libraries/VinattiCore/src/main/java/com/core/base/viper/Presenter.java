@@ -1,6 +1,8 @@
 package com.core.base.viper;
 
 import android.app.Activity;
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -13,110 +15,145 @@ import com.core.eventbus.EventBusWrapper;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import retrofit2.Call;
+
 /**
  * Base implements for presenters
  * Created by neo on 14/03/2016.
  */
 public abstract class Presenter<V extends IView, I extends IInteractor>
-    implements IPresenter<V, I> {
-  protected ContainerView mContainerView;
-  protected V mView;
-  protected I mInteractor;
+        implements IPresenter<V, I> {
+    protected ContainerView mContainerView;
+    protected V mView;
+    protected I mInteractor;
+    private List<Call> callbackList;
+    private CompositeDisposable disposable;
 
-  @SuppressWarnings("unchecked")
-  public Presenter(ContainerView containerView) {
-    mContainerView = containerView;
-    mInteractor = onCreateInteractor();
-    mView = onCreateView();
-
-    mView.setPresenter(this);
-  }
-
-  public Activity getViewContext() {
-    return mView.getViewContext();
-  }
-
-  @Override
-  public V getView() {
-    return mView;
-  }
-
-  @Override
-  public I getInteractor() {
-    return mInteractor;
-  }
-
-  @Override
-  public Fragment getFragment() {
-    return getView() instanceof Fragment ? (Fragment) getView() : null;
-  }
-
-  @Override
-  public void presentView() {
-    mContainerView.presentView(mView);
-  }
-
-  @Override
-  public void pushView() {
-    mContainerView.pushView(mView);
-  }
-
-  @Override
-  public void replaceView() {
-    mContainerView.replaceView(mView);
-  }
-
-  @Override
-  public void pushChildView(int frameId, FragmentManager childFragmentManager) {
-    if (getFragment() != null) {
-      mContainerView.pushChildView(mView, frameId, childFragmentManager);
+    @SuppressWarnings("unchecked")
+    public Presenter(ContainerView containerView) {
+        mContainerView = containerView;
+        mInteractor = onCreateInteractor();
+        mView = onCreateView();
+        disposable = new CompositeDisposable();
+        callbackList = new ArrayList<>();
+        mView.setPresenter(this);
     }
-  }
 
-  @Override
-  public void loadChildView(int frameId, FragmentManager childFragmentManager) {
-    if (getFragment() != null) {
-      mContainerView.loadChildView(mView, frameId, childFragmentManager);
+    @Override
+    public void cancelAllCallback() {
+        if (null != callbackList && !callbackList.isEmpty()) {
+            for (Call callback : callbackList) {
+                if (callback.isExecuted()) {
+                    callback.cancel();
+                }
+            }
+            callbackList.clear();
+        }
+        if (null != disposable && disposable.size() > 0) {
+            disposable.dispose();
+        }
     }
-  }
 
-  public void addView() {
-    mContainerView.addView(mView);
-  }
+    @Override
+    public void addCallback(Call callback) {
+        callbackList.add(callback);
+    }
 
-  // Event bus
+    @Override
+    public void addDispose(Disposable d) {
+        disposable.add(d);
+    }
 
-  @Override
-  public void registerEventBus() {
-    EventBusWrapper.register(this);
-  }
+    public Activity getViewContext() {
+        return mView.getViewContext();
+    }
 
-  @Override
-  public void unregisterEventBus() {
-    EventBusWrapper.unregister(this);
-  }
+    @Override
+    public V getView() {
+        return mView;
+    }
 
-  @Subscribe(threadMode = ThreadMode.BACKGROUND)
-  public void onMessageEvent(NoneEvent event) {
-    // Default event handler
-  }
+    @Override
+    public I getInteractor() {
+        return mInteractor;
+    }
 
-  public interface NoneEvent {
-    // Default event
-  }
+    @Override
+    public Fragment getFragment() {
+        return getView() instanceof Fragment ? (Fragment) getView() : null;
+    }
 
-  @Override
-  public void back() {
-    mView.getBaseActivity().hideKeyboard();
-    mContainerView.back();
-  }
+    @Override
+    public void presentView() {
+        mContainerView.presentView(mView);
+    }
 
-  @Override
-  public void onFragmentDisplay() {
-  }
+    @Override
+    public void pushView() {
+        mContainerView.pushView(mView);
+    }
 
-  @Override
-  public boolean isViewShowing() {
-    return ((ViewFragment) mView).isShowing();
-  }
+    @Override
+    public void replaceView() {
+        mContainerView.replaceView(mView);
+    }
+
+    @Override
+    public void pushChildView(int frameId, FragmentManager childFragmentManager) {
+        if (getFragment() != null) {
+            mContainerView.pushChildView(mView, frameId, childFragmentManager);
+        }
+    }
+
+    @Override
+    public void loadChildView(int frameId, FragmentManager childFragmentManager) {
+        if (getFragment() != null) {
+            mContainerView.loadChildView(mView, frameId, childFragmentManager);
+        }
+    }
+
+    public void addView() {
+        mContainerView.addView(mView);
+    }
+
+    // Event bus
+
+    @Override
+    public void registerEventBus() {
+        EventBusWrapper.register(this);
+    }
+
+    @Override
+    public void unregisterEventBus() {
+        EventBusWrapper.unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(NoneEvent event) {
+        // Default event handler
+    }
+
+    public interface NoneEvent {
+        // Default event
+    }
+
+    @Override
+    public void back() {
+        mView.getBaseActivity().hideKeyboard();
+        mContainerView.back();
+    }
+
+    @Override
+    public void onFragmentDisplay() {
+    }
+
+    @Override
+    public boolean isViewShowing() {
+        return ((ViewFragment) mView).isShowing();
+    }
 }

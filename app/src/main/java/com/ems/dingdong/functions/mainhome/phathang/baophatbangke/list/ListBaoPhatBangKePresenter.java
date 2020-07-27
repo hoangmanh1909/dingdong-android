@@ -108,30 +108,32 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         deliveryType = Constants.ALL_SEARCH_TYPE;
                 }
             }
-            mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
-                @Override
-                protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
-                    super.onSuccess(call, response);
-                    mView.hideProgress();
-                    if (response.body() != null) {
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.showListSuccess(response.body().getDeliveryPostmens());
-                            deliveryNotSuccessfulChange.onChanged(response.body().getDeliveryPostmens());
-                        } else {
-                            mView.showError(response.body().getMessage());
-                            deliveryNotSuccessfulChange.onError(response.body().getMessage());
-                        }
-                    }
-                }
 
-                @Override
-                protected void onError(Call<DeliveryPostmanResponse> call, String message) {
-                    super.onError(call, message);
-                    mView.hideProgress();
-                    mView.showError(message);
-                    deliveryNotSuccessfulChange.onError(message);
-                }
-            });
+            addCallback(mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode,
+                    deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+                        @Override
+                        protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
+                            super.onSuccess(call, response);
+                            mView.hideProgress();
+                            if (response.body() != null) {
+                                if (response.body().getErrorCode().equals("00")) {
+                                    mView.showListSuccess(response.body().getDeliveryPostmens());
+                                    deliveryNotSuccessfulChange.onChanged(response.body().getDeliveryPostmens());
+                                } else {
+                                    mView.showError(response.body().getMessage());
+                                    deliveryNotSuccessfulChange.onError(response.body().getMessage());
+                                }
+                            }
+                        }
+
+                        @Override
+                        protected void onError(Call<DeliveryPostmanResponse> call, String message) {
+                            super.onError(call, message);
+                            mView.hideProgress();
+                            mView.showError(message);
+                            deliveryNotSuccessfulChange.onError(message);
+                        }
+                    }));
         }
     }
 
@@ -197,7 +199,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        addCallback(mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -223,7 +225,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 super.onFailure(call, error);
                 mView.showCallError("Lỗi kết nối đến tổng đài");
             }
-        });
+        }));
 
     }
 
@@ -231,7 +233,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void updateMobile(String phone, String parcelCode) {
         mView.showProgress();
         String tPhone = phone;
-        mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        addCallback(mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -245,7 +247,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 mView.hideProgress();
                 mView.showErrorToast(message);
             }
-        });
+        }));
     }
 
     @Override

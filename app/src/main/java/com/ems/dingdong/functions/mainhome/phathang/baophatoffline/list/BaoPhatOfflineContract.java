@@ -3,7 +3,6 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
-import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
@@ -12,6 +11,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -45,8 +45,6 @@ interface BaoPhatOfflineContract {
 
     interface View extends PresentView<Presenter> {
 
-        void showCallSuccess();
-
         void showError(String message);
 
         void showErrorFromRealm();
@@ -58,37 +56,30 @@ interface BaoPhatOfflineContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        /**
-         * Show barcode scan screen.
-         */
-        void showBarcode(BarCodeCallback barCodeCallback);
-
-        void showDetail(CommonObject commonObject, int position);
-
-        void pushViewConfirmAll(List<CommonObject> list);
-
-        void callForward(String phone, String parcelCode);
-
-        void saveLocal(CommonObject commonObject);
 
         /**
          * get local record.
+         *
          * @param fromDate from created date.
-         * @param toDate to created date
+         * @param toDate   to created date
          */
         void getLocalRecord(String fromDate, String toDate);
 
         /**
          * Remove item from local storage.
+         *
          * @param parcelCode lading code.
          */
         void removeOfflineItem(String parcelCode);
 
         /**
          * Offline deliver.
+         *
          * @param commonObjects list chosen.
          */
         void offlineDeliver(List<CommonObject> commonObjects);
+
+        List<CommonObject> getOfflineRecord(Date from, Date to);
 
     }
 }

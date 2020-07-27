@@ -207,7 +207,7 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void callForwardCallCenter(String callerNumber, String calleeNumber,
+    public static Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                              String callForwardType, String hotlineNumber,
                                              String ladingCode, CommonCallback<SimpleResult> callback) {
         String type = "1";
@@ -220,6 +220,7 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
                 hotlineNumber, ladingCode, type, signature);
         call.enqueue(callback);
+        return call;
     }
 
     public static void searchOrderPostmanCollect(String orderPostmanID,
@@ -242,7 +243,7 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void searchDeliveryPostman(String postmanID,
+    public static Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
                                              String fromDate,
                                              String toDate,
                                              String routeCode,
@@ -250,6 +251,7 @@ public class NetWorkController {
                                              CommonCallback<DeliveryPostmanResponse> callback) {
         Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchTpe);
         call.enqueue(callback);
+        return call;
     }
 
     public static void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
@@ -364,9 +366,10 @@ public class NetWorkController {
         call.enqueue(commonCallback);
     }
 
-    public static void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+    public static Call<SimpleResult> updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
         Call<SimpleResult> call = getAPIBuilder().updateMobile(code, mobileNumber);
         call.enqueue(commonCallback);
+        return call;
     }
 
     public static void postImage(String filePath, CommonCallback<UploadResult> callback) {

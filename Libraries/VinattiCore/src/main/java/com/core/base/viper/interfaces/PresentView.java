@@ -16,6 +16,7 @@ public interface PresentView<P extends IPresenter> extends IView<P> {
   void showAlertDialog(String message,DialogInterface.OnClickListener onClickListener);
   void showErrorToast(String message);
   void showSuccessToast(String message);
+  void showToastWhenContextIsEmpty(String message);
 
   void onRequestError(String errorCode, String errorMessage);
 

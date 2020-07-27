@@ -2,9 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.widget.CheckBox;
@@ -36,12 +34,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * The BaoPhatThanhCong Fragment
@@ -118,8 +115,12 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 holder.itemView.setOnClickListener(v -> {
                     holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    int size = mAdapter.getItemsSelected().size();
+                    if (size == mList.size())
+                        cbPickAll.setChecked(true);
+                    else
+                        cbPickAll.setChecked(false);
                 });
-
             }
         };
         recycler.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
@@ -140,37 +141,21 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     @Override
     public void onDisplay() {
         super.onDisplay();
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<CommonObject> results;
-        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
-        } else {
-            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
-        }
         mList.clear();
         mAmount = 0;
-        if (results.size() > 0) {
-            for (CommonObject item : results) {
-                CommonObject itemReal = realm.copyFromRealm(item);
-                mList.add(itemReal);
-                tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
-                if (org.apache.commons.lang3.math.NumberUtils.isDigits(itemReal.getCollectAmount()))
-                    mAmount += Long.parseLong(itemReal.getCollectAmount());
-                tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
+        Date from = DateTimeUtils.convertStringToDate(DateTimeUtils.calculateDay(0), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        Date to = DateTimeUtils.convertStringToDate(DateTimeUtils.calculateDay(0), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        mList = mPresenter.getOfflineRecord(from, to);
+        if (mList.size() > 0) {
+            for (CommonObject item : mList) {
+                if (org.apache.commons.lang3.math.NumberUtils.isDigits(item.getCollectAmount()))
+                    mAmount += Long.parseLong(item.getCollectAmount());
             }
             mAdapter.setItems(mList);
-        } else {
-            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
-            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
         }
+        tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
+        tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
         showAddAll();
-    }
-
-    @Override
-    public void showCallSuccess() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
-        startActivity(intent);
     }
 
     @Override
@@ -204,12 +189,14 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 }
                 mPresenter.removeOfflineItem(item.getCode());
             }
-            tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
-            mAmount = getTotalAmount(mList);
-            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
-            showAddAll();
-            mAdapter.setItems(mList);
-            mAdapter.notifyDataSetChanged();
+            if (null != getViewContext()) {
+                tvCount.setText(String.format(getResources().getString(R.string.amount) + " %s", mList.size()));
+                mAmount = getTotalAmount(mList);
+                tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(mAmount)));
+                showAddAll();
+                mAdapter.setItems(mList);
+                mAdapter.notifyDataSetChanged();
+            }
             mDeliverySuccess += 1;
         } else {
             mDeliveryError += 1;
@@ -224,26 +211,30 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     @Override
     public void showListFromSearchDialog(List<CommonObject> list) {
-        showProgress();
-        if (null == list || list.isEmpty()) {
-            Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
-            tvCount.setText(getResources().getString(R.string.default_quantity));
-            tvAmount.setText(getResources().getString(R.string.default_amount));
-            mList.clear();
-        } else {
-            Toast.showToast(getContext(), getResources().getString(R.string.message_found_record_from_local_storage));
-            mList = list;
-            showAddAll();
+        if (null != getViewContext()) {
+            showProgress();
+            if (null == list || list.isEmpty()) {
+                Toast.showToast(getContext(), getResources().getString(R.string.message_not_found_record_from_local_storage));
+                tvCount.setText(getResources().getString(R.string.default_quantity));
+                tvAmount.setText(getResources().getString(R.string.default_amount));
+                mList.clear();
+            } else {
+                Toast.showToast(getContext(), getResources().getString(R.string.message_found_record_from_local_storage));
+                mList = list;
+                showAddAll();
+            }
+            cbPickAll.setChecked(false);
+            mAdapter.setItems(mList);
+            mAdapter.notifyDataSetChanged();
+            hideProgress();
         }
-        mAdapter.setItems(mList);
-        mAdapter.notifyDataSetChanged();
-        hideProgress();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        Toast.showToast(getActivity(), "onDestroy");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -305,7 +296,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     public void submit() {
-//        if (NetworkUtils.isConnected()) {
         itemsSelected = mAdapter.getItemsSelected();
         if (itemsSelected.size() > 0) {
             new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
@@ -320,9 +310,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         } else {
             Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
         }
-//        } else {
-//            showErrorToast("Vui lòng kết nối mạng trước khi báo phát");
-//        }
     }
 
     private void showDialog() {
@@ -361,13 +348,20 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     private void showFinish() {
         hideProgress();
+        StringBuilder builder = new StringBuilder();
+        builder.append("Báo phát offline hoàn tất. Thành công [");
+        builder.append(mDeliverySuccess);
+        builder.append("] thất bại [");
+        builder.append(mDeliveryError);
+        builder.append("]");
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                     .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText("Báo phát offline hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
+                    .setTitleText(getResources().getString(R.string.notification))
+                    .setContentText(builder.toString())
                     .setConfirmClickListener(Dialog::dismiss).show();
+        } else {
+            showToastWhenContextIsEmpty(builder.toString());
         }
     }
-
 }

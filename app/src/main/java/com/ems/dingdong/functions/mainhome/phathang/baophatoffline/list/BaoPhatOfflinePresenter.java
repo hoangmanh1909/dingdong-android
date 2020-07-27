@@ -1,21 +1,14 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
-import com.ems.dingdong.callback.BarCodeCallback;
-import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.detail.BaoPhatOfflineDetailPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
@@ -37,8 +30,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.View, BaoPhatOfflineContract.Interactor>
         implements BaoPhatOfflineContract.Presenter {
@@ -83,96 +74,18 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     }
 
     @Override
-    public void showBarcode(BarCodeCallback barCodeCallback) {
-        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
-    }
-
-    @Override
-    public void showDetail(CommonObject commonObject, int position) {
-        new BaoPhatOfflineDetailPresenter(mContainerView).setBaoPhat(commonObject).setTypeBaoPhat(Constants.TYPE_BAO_PHAT_THANH_CONG).setPositionRow(position).pushView();
-    }
-
-    @Override
-    public void pushViewConfirmAll(List<CommonObject> list) {
-        new ReceverPersonPresenter(mContainerView).setBaoPhat(list).setType(Constants.TYPE_BAO_PHAT_THANH_CONG).pushView();
-    }
-
-    @Override
-    public void callForward(String phone, String parcelCode) {
-        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-        String callerNumber = "";
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            callerNumber = userInfo.getMobileNumber();
-        }
-        String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
-        mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                assert response.body() != null;
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showCallSuccess();
-                } else {
-                    mView.showErrorToast(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
-
-    }
-
-    @Override
-    public void saveLocal(CommonObject baoPhat) {
-        String parcelCode = baoPhat.getParcelCode();
-        Realm realm = Realm.getDefaultInstance();
-        CommonObject result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findFirst();
-        if (result != null) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(baoPhat);
-            realm.commitTransaction();
-        } else {
-            realm.beginTransaction();
-            realm.copyToRealm(baoPhat);
-            realm.commitTransaction();
-        }
-    }
-
-    @Override
     public void getLocalRecord(String fromDate, String toDate) {
-        List<CommonObject> list = new ArrayList<>();
+        List<CommonObject> list;
         Date from = DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5);
         Date to = DateTimeUtils.convertStringToDate(toDate, DateTimeUtils.SIMPLE_DATE_FORMAT5);
 
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<CommonObject> results;
-        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
-        } else {
-            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
-        }
+        list = getOfflineRecord(from, to);
 
-        if (results.size() > 0) {
-            for (CommonObject item : results) {
-                CommonObject itemReal = realm.copyFromRealm(item);
-                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                if (compareDate.compareTo(from) >= 0 && compareDate.compareTo(to) <= 0) {
-                    list.add(itemReal);
-                }
-            }
+        if (list.size() > 0) {
+            mView.showListFromSearchDialog(list);
         } else {
             mView.showErrorFromRealm();
         }
-        mView.showListFromSearchDialog(list);
     }
 
     @Override
@@ -351,5 +264,28 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 }
             }
         }
+    }
+
+    @Override
+    public List<CommonObject> getOfflineRecord(Date from, Date to) {
+        List<CommonObject> list = new ArrayList<>();
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<CommonObject> results;
+        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
+        } else {
+            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
+        }
+
+        if (results.size() > 0) {
+            for (CommonObject item : results) {
+                CommonObject itemReal = realm.copyFromRealm(item);
+                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                if (compareDate.compareTo(from) >= 0 && compareDate.compareTo(to) <= 0) {
+                    list.add(itemReal);
+                }
+            }
+        }
+        return list;
     }
 }

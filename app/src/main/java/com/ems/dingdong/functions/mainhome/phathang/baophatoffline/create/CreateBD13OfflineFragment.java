@@ -1,7 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,10 +13,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
+import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
@@ -37,11 +40,8 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
-import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
-import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,23 +87,16 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     FormItemEditText tv_receiver;
     @BindView(R.id.btn_sign)
     CustomTextView btn_sign;
-    @BindView(R.id.iv_package_1)
-    SimpleDraweeView iv_package_1;
-    @BindView(R.id.iv_package_2)
-    SimpleDraweeView iv_package_2;
-    @BindView(R.id.iv_package_3)
-    SimpleDraweeView iv_package_3;
     @BindView(R.id.ll_signed)
     LinearLayout llSigned;
     @BindView(R.id.img_sign)
     ImageView imgSign;
+    @BindView(R.id.recycler_image_verify)
+    RecyclerView recyclerViewImageVerify;
 
     private Calendar calDate;
     private int mHour;
     private int mMinute;
-
-    private ItemBottomSheetPickerUIFragment pickerUISolution;
-    private ItemBottomSheetPickerUIFragment pickerUIReason;
     private String mReasonCode = "";
     private String mSolutionCode = "";
     private String mFile = "";
@@ -113,11 +106,10 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     private int imgPosition = 1;
     private int mDeliveryType = 2;
     private boolean isFirstChangeReason = true;
-
-    UserInfo userInfo;
-    PostOffice postOffice;
-    RouteInfo routeInfo;
-
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private RouteInfo routeInfo;
+    private ImageCaptureAdapter imageVerifyAdapter;
 
     public static CreateBD13OfflineFragment getInstance() {
         return new CreateBD13OfflineFragment();
@@ -202,10 +194,13 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
 
         });
+        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), new ArrayList<>());
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
+        recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
     }
 
-    @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3, R.id.ll_scan_qr})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign, R.id.tv_reason,
+            R.id.tv_solution, R.id.ll_scan_qr, R.id.rl_image_capture_verify})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -229,17 +224,12 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             case R.id.tv_solution:
                 showUISolution();
                 break;
-            case R.id.iv_package_1:
-                imgPosition = 1;
-                MediaUltis.captureImage(this);
-                break;
-            case R.id.iv_package_2:
-                imgPosition = 2;
-                MediaUltis.captureImage(this);
-                break;
-            case R.id.iv_package_3:
-                imgPosition = 3;
-                MediaUltis.captureImage(this);
+            case R.id.rl_image_capture_verify:
+                if (imageVerifyAdapter.getListFilter().size() < 3) {
+                    MediaUltis.captureImage(this);
+                } else {
+                    showErrorToast(getString(R.string.do_not_allow_take_over_three_photos));
+                }
                 break;
             case R.id.ll_scan_qr:
                 mPresenter.showBarcode(value -> {
@@ -296,18 +286,12 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
                     .setContentText("Lưu thành công")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            mPresenter.back();
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        mPresenter.back();
 
-                        }
                     }).show();
         }
-//            PushToPnsRequest request = new PushToPnsRequest(userInfo.getiD(),lading,userInfo.getUnitCode(),deliveryDate,
-//                    deliveryTime,tv_receiver.getText(),mReasonCode,mSolutionCode,"C18","1","1",
-//                    mSign,tv_Description.getText(),"0",userInfo.getiD(),"",routeInfo.getRouteCode(),"",mFile);
 
     }
 
@@ -323,13 +307,8 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     }
 
     private void attemptShowMedia(String path_media) {
-        Uri picUri = Uri.fromFile(new File(path_media));
-        if (imgPosition == 1)
-            iv_package_1.setImageURI(picUri);
-        else if (imgPosition == 2)
-            iv_package_2.setImageURI(picUri);
-        else
-            iv_package_3.setImageURI(picUri);
+        imageVerifyAdapter.getListFilter().add(new Item(path_media, ""));
+        imageVerifyAdapter.notifyDataSetChanged();
     }
 
     private void showUIReason() {
@@ -339,29 +318,24 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         for (ReasonInfo item : list) {
             items.add(new Item(item.getCode(), item.getName()));
         }
-        if (pickerUIReason == null) {
-            pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            if (!mReasonCode.equals(list.get(position).getCode())) {
-                                tv_reason.setText(item.getText());
-                                mReasonCode = list.get(position).getCode();
-                                mReasonInfo = list.get(position);
-                                tv_solution.setText("");
-                                mSolutionCode = "";
-                                mSolutionInfo = null;
-                                showUISolution();
-                            }
+        new PickerDialog(getViewContext(), "Chọn lý do", items,
+                item -> {
+                    for (ReasonInfo info : list) {
+                        if (item.getValue().equals(info.getCode())) {
+                            mReasonInfo = info;
+                            mReasonCode = info.getCode();
+                            tv_solution.setText("");
+                            mSolutionCode = "";
+                            mSolutionInfo = null;
+                            break;
                         }
-                    }, 0);
-            pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
-        } else {
-            pickerUIReason.setData(items, 0);
-            if (!pickerUIReason.isShow) {
-                pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
-            }
-        }
+                    }
+                    if (mReasonInfo != null) {
+                        tv_reason.setText(mReasonInfo.getName());
+                        tv_solution.setText("");
+                        showUISolution();
+                    }
+                }).show();
     }
 
     private void showUISolution() {
@@ -379,48 +353,28 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                         tv_solution.setText(mSolutionInfo.getName());
                     }
                 }
-            } else if (pickerUISolution == null) {
-                pickerUISolution = new ItemBottomSheetPickerUIFragment(items, "Chọn giải pháp",
-                        new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                            @Override
-                            public void onChooseClick(Item item, int position) {
-                                tv_solution.setText(item.getText());
-                                mSolutionCode = list.get(position).getCode();
-                                mSolutionInfo = list.get(position);
-
-                            }
-                        }, 0);
-                pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
+            } else if (isFirstChangeReason) {
+                isFirstChangeReason = false;
+                SolutionInfo firstInfo = list.get(0);
+                tv_solution.setText(firstInfo.getName());
+                mSolutionCode = firstInfo.getCode();
+                mSolutionInfo = firstInfo;
             } else {
-                pickerUISolution.setData(items, 0);
-                if (!pickerUISolution.isShow) {
-                    pickerUISolution.show(getActivity().getSupportFragmentManager(), pickerUISolution.getTag());
-                }
+                new PickerDialog(getViewContext(), "Chọn giải pháp", items,
+                        item -> {
+                            for (SolutionInfo info : list) {
+                                if (item.getValue().equals(info.getCode())) {
+                                    tv_solution.setText(item.getText());
+                                    mSolutionCode = info.getCode();
+                                    mSolutionInfo = info;
+                                    break;
+                                }
+                            }
+                        }).show();
             }
         } else {
             Toast.showToast(getActivity(), "Bạn chưa chọn lý do");
         }
-    }
-
-    @Override
-    public void showImage(String file) {
-        if (mFile.equals("")) {
-            mFile = file;
-        } else {
-            mFile += ";";
-            mFile += file;
-        }
-    }
-
-    @Override
-    public void deleteFile() {
-        mFile = "";
-        if (imgPosition == 1)
-            iv_package_1.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
-        else if (imgPosition == 2)
-            iv_package_2.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
-        else
-            iv_package_3.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
     }
 
     private void loadReasonAndSolution() {
@@ -428,6 +382,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         for (ReasonInfo item : listReason) {
             if (item.getID() == 42) {
                 mReasonInfo = item;
+                mReasonCode = item.getCode();
                 tv_reason.setText(item.getName());
                 final List<SolutionInfo> listSolution = RealmUtils.getSolutionByReason(item.getCode());
                 for (SolutionInfo solutionInfo : listSolution) {

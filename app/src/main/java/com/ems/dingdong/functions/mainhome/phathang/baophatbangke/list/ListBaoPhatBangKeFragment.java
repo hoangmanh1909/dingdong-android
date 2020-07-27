@@ -478,81 +478,60 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
-    public void showResponseSuccessEmpty() {
-        mList.clear();
-        long amount = 0;
-        mAdapter.notifyDataSetChanged();
-        mPresenter.setTitleTab(mList.size());
-        tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
-        isLoading = false;
-    }
-
-    @Override
-    public void showResponseSuccess(ArrayList<DeliveryPostman> list) {
-        mPresenter.setTitleTab(list.size());
-        long totalAmount = 0;
-        for (DeliveryPostman i : list) {
-            mList.add(i);
-            totalAmount = totalAmount + i.getAmount();
-        }
-        tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
-
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void showListSuccess(List<DeliveryPostman> list) {
         showListSuccessFromTab(list);
     }
 
     public void showListSuccessFromTab(List<DeliveryPostman> list) {
-        mList.clear();
-        if (list == null || list.isEmpty()) {
-            pickAll.setVisibility(View.GONE);
-            tvAmount.setText(getResources().getString(R.string.default_amount));
-            mPresenter.setTitleTab(0);
-            showErrorToast("Không tìm thấy dữ liệu");
-        } else {
-            pickAll.setVisibility(View.VISIBLE);
-            long totalAmount = 0;
-            if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
-                for (DeliveryPostman i : list) {
-                    if (i.getStatus().equals("N")) {
-                        mList.add(i);
-                        totalAmount = totalAmount + i.getAmount();
-                    }
-                }
+        if (getViewContext() != null) {
+            mList.clear();
+            if (list == null || list.isEmpty()) {
+                pickAll.setVisibility(View.GONE);
+                tvAmount.setText(getResources().getString(R.string.default_amount));
+                mPresenter.setTitleTab(0);
+                showErrorToast("Không tìm thấy dữ liệu");
             } else {
-                for (DeliveryPostman i : list) {
-                    if (i.getStatus().equals("Y")) {
-                        mList.add(i);
-                        totalAmount = totalAmount + i.getAmount();
+                pickAll.setVisibility(View.VISIBLE);
+                long totalAmount = 0;
+                if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
+                    for (DeliveryPostman i : list) {
+                        if (i.getStatus().equals("N")) {
+                            mList.add(i);
+                            totalAmount = totalAmount + i.getAmount();
+                        }
+                    }
+                } else {
+                    for (DeliveryPostman i : list) {
+                        if (i.getStatus().equals("Y")) {
+                            mList.add(i);
+                            totalAmount = totalAmount + i.getAmount();
+                        }
                     }
                 }
+                mPresenter.setTitleTab(mList.size());
+                tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
             }
-            mPresenter.setTitleTab(mList.size());
-            tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
-        }
-        mAdapter.setListFilter(mList);
-        mAdapter.notifyDataSetChanged();
-        new Handler().post(() -> {
-            if (isFromNotification) {
-                isFromNotification = false;
+            mAdapter.setListFilter(mList);
+            mAdapter.notifyDataSetChanged();
+            new Handler().post(() -> {
+                if (isFromNotification) {
+                    isFromNotification = false;
 
-                int position = getFocusPosition();
-                if (position != 0)
-                    recycler.scrollToPosition(position);
+                    int position = getFocusPosition();
+                    if (position != 0)
+                        recycler.scrollToPosition(position);
+                }
+                if (mTotalScrolled != 0) {
+                    recycler.scrollToPosition(mTotalScrolled);
+                    recycler.addOnScrollListener(scrollListener);
+                }
+            });
+            if (!TextUtils.isEmpty(edtSearch.getText())) {
+                mAdapter.getFilter().filter(edtSearch.getText());
             }
-            if (mTotalScrolled != 0) {
-                recycler.scrollToPosition(mTotalScrolled);
-                recycler.addOnScrollListener(scrollListener);
-            }
-        });
-        if (!TextUtils.isEmpty(edtSearch.getText())) {
-            mAdapter.getFilter().filter(edtSearch.getText());
+            relativeLayout.setVisibility(View.GONE);
+            swipeRefreshLayout.setRefreshing(false);
         }
-        relativeLayout.setVisibility(View.GONE);
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -578,26 +557,24 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showCallError(String message) {
-        showErrorToast(message);
-        if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
-            startActivity(intent);
+        if (getViewContext() != null) {
+            showErrorToast(message);
+            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
+                startActivity(intent);
+            }
         }
     }
 
     @Override
-    public void showSuccessMessage(String message) {
-        Toast.showToast(getActivity(), message);
-        initSearch();
-    }
-
-    @Override
     public void showCallSuccess() {
-        if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse(Constants.HEADER_NUMBER));
-            startActivity(intent);
+        if (getViewContext() != null) {
+            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+                startActivity(intent);
+            }
         }
     }
 

@@ -18,6 +18,8 @@ import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+
 /**
  * The CommonObject Contract
  */
@@ -46,36 +48,12 @@ interface ListBaoPhatBangKeContract {
          *                   3 - HCC
          * @param callback   Callback retrofit.
          */
-        void searchDeliveryPostman(String postmanID,
-                                   String fromDate,
-                                   String toDate,
-                                   String routeCode,
-                                   Integer searchType,
-                                   CommonCallback<DeliveryPostmanResponse> callback);
-
-        /**
-         * Get all reasons when deliver not successfully.
-         *
-         * @param commonCallback callback retrofit.
-         */
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
-
-
-        /**
-         * Deliver success.
-         *
-         * @param request  all param needed.
-         * @param callback callback retrofit.
-         */
-        void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback);
-
-        /**
-         * Deliver not success.
-         *
-         * @param request  all param needed.
-         * @param callback callback retrofit.
-         */
-        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+        Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
+                                                            String fromDate,
+                                                            String toDate,
+                                                            String routeCode,
+                                                            Integer searchType,
+                                                            CommonCallback<DeliveryPostmanResponse> callback);
 
         /**
          * Call to service center to connect to calleenumber.
@@ -85,7 +63,7 @@ interface ListBaoPhatBangKeContract {
          * @param hotlineNumber hotline.
          * @param ladingCode    lading code.
          */
-        void callForwardCallCenter(String callerNumber, String calleeNumber,
+        Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
@@ -96,19 +74,11 @@ interface ListBaoPhatBangKeContract {
          * @param phone                      new phone number.
          * @param simpleResultCommonCallback callback from retrofit.
          */
-        void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+        Call<SimpleResult> updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
     }
 
     interface View extends PresentView<Presenter> {
-
-        /**
-         * Show response list when get success all record
-         *
-         * @param list returned list from server.
-         * @see Interactor
-         */
-        void showResponseSuccess(ArrayList<DeliveryPostman> list);
 
         /**
          * Show response list when get success all record
@@ -133,14 +103,7 @@ interface ListBaoPhatBangKeContract {
          */
         void showCallError(String message);
 
-        /**
-         * Show success message.
-         */
-        void showSuccessMessage(String message);
-
         void showCallSuccess();
-
-        void showResponseSuccessEmpty();
 
         void showSuccessUpdateMobile(String phone, String message);
     }

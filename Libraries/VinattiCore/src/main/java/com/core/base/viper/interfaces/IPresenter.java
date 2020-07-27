@@ -5,43 +5,52 @@ import android.app.Activity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import io.reactivex.disposables.Disposable;
+import retrofit2.Call;
+
 /**
  * Base Presenter
  * Created by neo on 2/5/2016.
  */
-public interface  IPresenter<V extends IView, I extends IInteractor> {
+public interface IPresenter<V extends IView, I extends IInteractor> {
 
-  void start();
+    void start();
 
-  V getView();
+    void cancelAllCallback();
 
-  I onCreateInteractor();
+    void addCallback(Call callback);
 
-  V onCreateView();
+    void addDispose(Disposable d);
 
-  I getInteractor();
+    V getView();
 
-  Fragment getFragment();
+    I onCreateInteractor();
 
-  void presentView();
+    V onCreateView();
 
-  void pushView();
+    I getInteractor();
 
-  void replaceView();
+    Fragment getFragment();
 
-  void pushChildView(int frameId, FragmentManager childFragmentManager);
+    void presentView();
 
-  void loadChildView(int frameId, FragmentManager childFragmentManager);
+    void pushView();
 
-  Activity getViewContext();
+    void replaceView();
 
-  void registerEventBus();
+    void pushChildView(int frameId, FragmentManager childFragmentManager);
 
-  void unregisterEventBus();
+    void loadChildView(int frameId, FragmentManager childFragmentManager);
 
-  void back();
+    Activity getViewContext();
 
-  void onFragmentDisplay();
+    void registerEventBus();
 
-  boolean isViewShowing();
+    void unregisterEventBus();
+
+    void back();
+
+    void onFragmentDisplay();
+
+    boolean isViewShowing();
 }
