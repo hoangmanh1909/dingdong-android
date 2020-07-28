@@ -94,6 +94,11 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
         return map.get(ladingCode);
     }
 
+    @Override
+    public int getCurrentTab() {
+        return tabListener.getCurrentTab();
+    }
+
     private Map<String, List<CancelStatisticItem>> groupByCancelStatisticMap(List<CancelStatisticItem> listCancelStatistic) {
         Map<String, List<CancelStatisticItem>> listMap = new HashMap<>();
         for (CancelStatisticItem item : listCancelStatistic) {

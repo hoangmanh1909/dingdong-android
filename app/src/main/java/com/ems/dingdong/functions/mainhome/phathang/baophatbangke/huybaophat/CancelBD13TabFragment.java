@@ -113,4 +113,9 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
         mAdapter.notifyDataSetChanged();
         tabs.notifyDataSetChanged();
     }
+
+    @Override
+    public int getCurrentTab() {
+        return pager.getCurrentItem();
+    }
 }

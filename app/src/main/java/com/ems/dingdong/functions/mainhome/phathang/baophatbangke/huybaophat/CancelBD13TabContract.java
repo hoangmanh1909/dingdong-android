@@ -28,6 +28,8 @@ public interface CancelBD13TabContract {
          * Event when title change.
          */
         void onQuantityChange(int quantity, int currentSetTab);
+
+        int getCurrentTab();
     }
 
 }

@@ -83,5 +83,7 @@ public interface CancelBD13Contract {
          * Event set title count.
          */
         void titleChanged(int quantity, int currentSetTab);
+
+        int getCurrentTab();
     }
 }

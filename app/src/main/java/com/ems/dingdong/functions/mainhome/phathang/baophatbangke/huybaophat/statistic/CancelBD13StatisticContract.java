@@ -34,5 +34,7 @@ public interface CancelBD13StatisticContract {
         void titleChanged(int quantity, int currentSetTab);
 
         List<CancelStatisticItem> getListFromMap(String ladingCode);
+
+        int getCurrentTab();
     }
 }

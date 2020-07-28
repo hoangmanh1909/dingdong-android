@@ -136,7 +136,7 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
                 totalAmount += (item.getcODAmount() + item.getFee());
                 mList.add(item);
             }
-        } else {
+        } else if (mPresenter.getCurrentTab() == 1) {
             showErrorToast("Không tìm thấy dữ liệu phù hợp.");
         }
         mPresenter.titleChanged(mList.size(), 1);
