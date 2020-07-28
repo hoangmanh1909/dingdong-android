@@ -234,7 +234,6 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        Toast.showToast(getActivity(), "onDestroy");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

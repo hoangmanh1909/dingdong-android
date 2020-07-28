@@ -346,7 +346,6 @@ public interface VinattiAPI {
     Call<DingDongGetCancelDeliveryResponse> getCancelDelivery(
             @Field("PostmanCode") String postmanCode,
             @Field("RouteCode") String routeCode,
-            @Field("LadingCode") String ladingCode,
             @Field("FromDate") String fromDate,
             @Field("ToDate") String toDate);
 

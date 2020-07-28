@@ -496,7 +496,7 @@ public class NetWorkController {
     }
 
     public static void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> callback) {
-        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, ladingCode, fromDate, toDate);
+        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, fromDate, toDate);
         call.enqueue(callback);
     }
 

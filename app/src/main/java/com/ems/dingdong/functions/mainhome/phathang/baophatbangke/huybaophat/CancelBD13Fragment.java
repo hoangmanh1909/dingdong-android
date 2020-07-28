@@ -221,7 +221,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             swipeRefresh.setRefreshing(false);
             long totalAmount = 0;
             long totalFee = 0;
-            if (mList.isEmpty()) {
+            if (list.isEmpty()) {
                 showErrorToast("Không tìm thấy dữ liệu phù hợp.");
             } else {
                 for (DingDongGetCancelDelivery i : list) {
