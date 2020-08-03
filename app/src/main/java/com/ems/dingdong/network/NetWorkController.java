@@ -164,7 +164,7 @@ public class NetWorkController {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://api-development.movecrop.com")
                     .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(getUnsafeOkHttpClient("c2e65e831dcacd530519dd1175e5f805:15022aaed26c667a390333c17c28adad"))
+                    .client(getUnsafeOkHttpClient("3e058ce3027e6c473a6d47e5f253c480:7409f5b12daff2f0b8df56f6b4faf151"))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
             apiHistoryCallBuilder = retrofit.create(VinattiAPI.class);

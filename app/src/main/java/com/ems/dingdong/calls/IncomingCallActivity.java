@@ -15,7 +15,6 @@ public class IncomingCallActivity extends DingDongActivity {
         String callerNumber = "";
         String calleeNumber = "";
         Intent intent = getIntent();
-        Logger.d("chauvp", "IncomingCallActivity");
         if (intent != null) {
             type = intent.getIntExtra(Constants.CALL_TYPE, 0);
             callerNumber = intent.getStringExtra(Constants.KEY_CALLER_NUMBER);

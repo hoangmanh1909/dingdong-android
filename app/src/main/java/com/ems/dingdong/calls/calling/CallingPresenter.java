@@ -53,8 +53,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
     @Override
     public CallingContract.View onCreateView() {
-//        return CallingFragment.getInstance();
-        return null;
+        return CallingFragment.getInstance();
     }
 
     @Override

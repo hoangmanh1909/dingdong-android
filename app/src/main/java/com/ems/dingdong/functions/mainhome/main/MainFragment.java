@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -33,6 +35,8 @@ import com.roughike.bottombar.BottomBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The Home Fragment
@@ -79,32 +83,19 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-//        CallHistoryRequest request = new CallHistoryRequest();
-//        request.setPage(1);
-//        request.setLimit(5);
-//        request.setSortBy("time_ended");
-//        request.setSortType("ASC");
-//        request.setState("");
-//        request.setDirection(1);
-//        request.setExtension(100);
-//        request.setFromNumber("0901773838");
-//        request.setToNumber("0968997971");
-//        request.setDateStarted("1567858627467");
-//        request.setDateEnded("1594190547308");
+        CallHistoryRequest request = new CallHistoryRequest();
+        request.setTenantID(12);
+        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (simpleResult, throwable) -> {
+                            Log.d("MainFragment.class", throwable.getMessage());
+                        }
+                );
 
-//        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                (simpleResult, throwable) -> {
-//                    Log.d("chauvp11", throwable.getMessage());
-//                }
-//        );
-//        if (mPresenter != null)
-//            mPresenter.getAccessToken();
-
-//        ApplicationController applicationController =
-//                (ApplicationController) getViewContext().getApplication();
-//        applicationController.initPortSipService();
+        ApplicationController applicationController =
+                (ApplicationController) getViewContext().getApplication();
+        applicationController.initPortSipService();
 
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
