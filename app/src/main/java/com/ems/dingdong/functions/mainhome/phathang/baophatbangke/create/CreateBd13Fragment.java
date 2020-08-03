@@ -340,11 +340,15 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     private void submit() {
         final List<DeliveryPostman> deliveryPostmamns = mAdapter.getItemsSelected();
-        long totalAmount = 0;
-        for (DeliveryPostman i : deliveryPostmamns) {
-            totalAmount = totalAmount + i.getAmount();
+        if (!deliveryPostmamns.isEmpty() && deliveryPostmamns.size() > 0) {
+            long totalAmount = 0;
+            for (DeliveryPostman i : deliveryPostmamns) {
+                totalAmount = totalAmount + i.getAmount();
+            }
+            showDialogConfirm(deliveryPostmamns.size(), totalAmount);
+        } else {
+            showErrorToast("Chưa có bưu gửi nào được chọn.");
         }
-        showDialogConfirm(deliveryPostmamns.size(), totalAmount);
     }
 
     private void showUIBag() {

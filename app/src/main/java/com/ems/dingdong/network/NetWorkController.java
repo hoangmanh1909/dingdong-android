@@ -208,8 +208,8 @@ public class NetWorkController {
     }
 
     public static Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
-                                             String callForwardType, String hotlineNumber,
-                                             String ladingCode, CommonCallback<SimpleResult> callback) {
+                                                           String callForwardType, String hotlineNumber,
+                                                           String ladingCode, CommonCallback<SimpleResult> callback) {
         String type = "1";
         if (Constants.HEADER_NUMBER.equals("tel:159")) {
             type = "1";
@@ -244,11 +244,11 @@ public class NetWorkController {
     }
 
     public static Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
-                                             String fromDate,
-                                             String toDate,
-                                             String routeCode,
-                                             Integer searchTpe,
-                                             CommonCallback<DeliveryPostmanResponse> callback) {
+                                                                      String fromDate,
+                                                                      String toDate,
+                                                                      String routeCode,
+                                                                      Integer searchTpe,
+                                                                      CommonCallback<DeliveryPostmanResponse> callback) {
         Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchTpe);
         call.enqueue(callback);
         return call;
@@ -701,10 +701,10 @@ public class NetWorkController {
     }
 
     public static Single<SimpleResult> getHistoryCall(CallHistoryRequest request) {
-        return getAPIHistoryCallBuilder().getHistoryCall(request.getPage(), request.getLimit(),
-                request.getSortBy(), request.getSortType(), request.getState(),
-                request.getDirection(), request.getExtension(), request.getFromNumber(),
-                request.getToNumber(), request.getDateStarted(), request.getDateEnded());
+        return getAPIHistoryCallBuilder().getHistoryCall(
+                request.getTenantID(),
+                request.getCaller(),
+                request.getCallee());
     }
 
 }

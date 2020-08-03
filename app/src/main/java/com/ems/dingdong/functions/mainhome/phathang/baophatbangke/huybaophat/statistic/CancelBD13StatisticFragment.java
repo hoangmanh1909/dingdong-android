@@ -127,28 +127,32 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
 
     @Override
     public void showListSuccess(List<CancelStatisticItem> resultList) {
-        mList.clear();
-        swipeRefresh.setRefreshing(false);
-        hideProgress();
-        long totalAmount = 0;
-        if (resultList != null && !resultList.isEmpty()) {
-            for (CancelStatisticItem item : resultList) {
-                totalAmount += (item.getcODAmount() + item.getFee());
-                mList.add(item);
+        if (null != getViewContext()) {
+            mList.clear();
+            swipeRefresh.setRefreshing(false);
+            hideProgress();
+            long totalAmount = 0;
+            if (resultList != null && !resultList.isEmpty()) {
+                for (CancelStatisticItem item : resultList) {
+                    totalAmount += (item.getcODAmount() + item.getFee());
+                    mList.add(item);
+                }
+            } else if (mPresenter.getCurrentTab() == 1) {
+                showErrorToast("Không tìm thấy dữ liệu phù hợp.");
             }
-        } else if (mPresenter.getCurrentTab() == 1) {
-            showErrorToast("Không tìm thấy dữ liệu phù hợp.");
+            mPresenter.titleChanged(mList.size(), 1);
+            tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+            mAdapter.setListFilter(mList);
+            mAdapter.notifyDataSetChanged();
         }
-        mPresenter.titleChanged(mList.size(), 1);
-        tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
-        mAdapter.setListFilter(mList);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showError(String message) {
-        showSuccessToast(message);
-        hideProgress();
+        if (null != getViewContext()) {
+            showSuccessToast(message);
+            hideProgress();
+        }
     }
 
     public void refreshLayout() {

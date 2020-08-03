@@ -225,58 +225,72 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
     @Override
     public void showListSuccess(List<EWalletDataResponse> eWalletDataResponses) {
-        if (!eWalletDataResponses.isEmpty()) {
-            long cod = 0;
-            long fee = 0;
-            for (EWalletDataResponse item : eWalletDataResponses) {
-                if (item.getCodAmount() != null)
-                    cod += item.getCodAmount();
-                if (item.getFee() != null)
-                    fee += item.getFee();
+        if (null != getViewContext()) {
+            if (!eWalletDataResponses.isEmpty()) {
+                long cod = 0;
+                long fee = 0;
+                for (EWalletDataResponse item : eWalletDataResponses) {
+                    if (item.getCodAmount() != null)
+                        cod += item.getCodAmount();
+                    if (item.getFee() != null)
+                        fee += item.getFee();
+                }
+                tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(eWalletDataResponses.size())));
+                tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
+                tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
+                mAdapter.setListFilter(eWalletDataResponses);
+            } else {
+                showErrorToast("Không tìm thấy dữ liệu phù hợp");
+                mAdapter.setListFilter(eWalletDataResponses);
+                tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
+                tvFee.setText(String.format("%s %s đ", getString(R.string.fee), "0"));
+                tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), "0"));
             }
-            tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(eWalletDataResponses.size())));
-            tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
-            tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
-            mAdapter.setListFilter(eWalletDataResponses);
-        } else {
-            showErrorToast("Không tìm thấy dữ liệu phù hợp");
-            mAdapter.setListFilter(eWalletDataResponses);
-            tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
-            tvFee.setText(String.format("%s %s đ", getString(R.string.fee), "0"));
-            tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), "0"));
         }
     }
 
     @Override
     public void showRequestSuccess(String message, String requestId, String retRefNumber) {
-        OtpDialog otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(otp,
-                requestId, retRefNumber, poCode, routeCode, postmanCode), message);
-        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        otpDialog.show();
+        if (null != getViewContext()) {
+            OtpDialog otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(otp,
+                    requestId, retRefNumber, poCode, routeCode, postmanCode), message);
+            otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            otpDialog.show();
+        } else {
+            showToastWhenContextIsEmpty(message);
+        }
     }
 
     @Override
     public void showConfirmSuccess(String message) {
-        new NotificationDialog(getViewContext())
-                .setConfirmText(getString(R.string.confirm))
-                .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
-                .setConfirmClickListener(sweetAlertDialog -> {
-                    sweetAlertDialog.dismiss();
-                    refreshLayout();
-                })
-                .setContent(message)
-                .show();
+        if (null != getViewContext()) {
+            new NotificationDialog(getViewContext())
+                    .setConfirmText(getString(R.string.confirm))
+                    .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        refreshLayout();
+                    })
+                    .setContent(message)
+                    .show();
+        } else {
+            showToastWhenContextIsEmpty(message);
+        }
     }
 
     @Override
     public void showConfirmError(String message) {
-        new NotificationDialog(getViewContext())
-                .setConfirmText(getString(R.string.confirm))
-                .setConfirmClickListener(Dialog::dismiss)
-                .setImage(NotificationDialog.DialogType.NOTIFICATION_ERROR)
-                .setContent(message)
-                .show();
+        if (null != getViewContext()) {
+            new NotificationDialog(getViewContext())
+                    .setConfirmText(getString(R.string.confirm))
+                    .setConfirmClickListener(Dialog::dismiss)
+                    .setImage(NotificationDialog.DialogType.NOTIFICATION_ERROR)
+                    .setContent(message)
+                    .show();
+        } else {
+            showToastWhenContextIsEmpty(message);
+        }
     }
 
     private void showDialog() {

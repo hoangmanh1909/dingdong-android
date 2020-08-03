@@ -497,17 +497,9 @@ public interface VinattiAPI {
     @POST("api/Delivery/Payment_V2")
     Single<SimpleResult> paymentV2(@Body DeliveryPaymentV2 request);
 
-    @GET("/")
-    Single<SimpleResult> getHistoryCall(@Query("page") Integer page,
-                                        @Query("limit") Integer limit,
-                                        @Query("sort_by") String sort_by,
-                                        @Query("sort_type") String sort_type,
-                                        @Query("state") String state,
-                                        @Query("direction") Integer direction,
-                                        @Query("extension") Integer extension,
-                                        @Query("from_number") String from_number,
-                                        @Query("to_number") String to_number,
-                                        @Query("date_started") String date_started,
-                                        @Query("date_ended") String date_ended
+    @GET("v1/calls/searchcdr")
+    Single<SimpleResult> getHistoryCall(@Query("mc_vpbx_id") Integer tenantID,
+                                        @Query("mc_caller") Integer caller,
+                                        @Query("mc_callee") Integer callee
     );
 }

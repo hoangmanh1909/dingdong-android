@@ -148,28 +148,31 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     @Override
     public void showListSucces(List<RouteResponse> responseList) {
         hideProgress();
-        mList.clear();
-        if (null == responseList || responseList.isEmpty()) {
-            tvNodata.setVisibility(View.VISIBLE);
-            recycler.setVisibility(View.GONE);
+        if (null != getViewContext()) {
+            mList.clear();
+            if (null == responseList || responseList.isEmpty()) {
+                tvNodata.setVisibility(View.VISIBLE);
+                recycler.setVisibility(View.GONE);
 
-        } else {
-            tvNodata.setVisibility(View.GONE);
-            recycler.setVisibility(View.VISIBLE);
-            mList.addAll(responseList);
-//            mAdapter.setListFilter(mList);
-            mAdapter.setListFilter(mList);
-            recycler.setVisibility(View.VISIBLE);
+            } else {
+                tvNodata.setVisibility(View.GONE);
+                recycler.setVisibility(View.VISIBLE);
+                mList.addAll(responseList);
+                mAdapter.setListFilter(mList);
+                recycler.setVisibility(View.VISIBLE);
+            }
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showListError(String message) {
-        showErrorToast(message);
-        mList.clear();
-        mAdapter.setListFilter(mList);
-        mAdapter.notifyDataSetChanged();
+        if (null != getViewContext()) {
+            showErrorToast(message);
+            mList.clear();
+            mAdapter.setListFilter(mList);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
