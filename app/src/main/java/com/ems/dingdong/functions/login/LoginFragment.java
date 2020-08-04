@@ -4,18 +4,14 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import androidx.core.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
-import com.ems.dingdong.callback.RouteOptionCallBack;
-import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
-import com.ems.dingdong.model.Item;
-import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.RouteInfo;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
@@ -27,8 +23,6 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,8 +39,9 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     private SharedPref mSharedPref;
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
-            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG,
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -64,11 +59,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev EMS
-
-       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0979765735;A17317CA607CFBACD4C875B31478444420EDFF3E9633746EFE846C83A01E1407");// dev vinatti
-       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
-        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev UAT
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0911818968;B03684261C101EC3F323BDDAE6247C3FD92278EF78334365CC6ECA729551E70A");//production
+       // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0888862106;DBC8F3B595A448DAE9279CD6B290982C0BF4DB80F585EA48F3B29F5B210CD285");//production
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");//dev guest
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915085986;ECB86B40D283B8749028E035024E2E297905FA59FF09522F0FBE6EFC736DB76B");// dev vinatti
         checkPermissionCall();
     }
 
@@ -77,7 +71,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
             int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
             int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
@@ -116,17 +110,13 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @OnClick(R.id.login_layout)
     public void onViewClicked() {
+       String  token = FirebaseInstanceId.getInstance().getToken();
         if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
             SharedPref sharedPref = new SharedPref(getActivity());
             String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
             if (!userJson.isEmpty()) {
                 UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                 if (userInfo != null) {
-                    if ("Y".equals(userInfo.getIsEms())) {
-                        Constants.HEADER_NUMBER = "tel:159";
-                    } else {
-                        Constants.HEADER_NUMBER = "tel:18002009,";
-                    }
                     gotoHome();
                 }
             }
@@ -170,49 +160,12 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     @Override
     public void gotoHome() {
-        SharedPref sharedPref = new SharedPref(getActivity());
+        if (getActivity() != null) {
+            // showUIShift();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            getActivity().finish();
+            getActivity().startActivity(intent);
 
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-
-        PostOffice postOffice = null;
-        RouteInfo routeInfo = null;
-
-        if (!postOfficeJson.isEmpty()) {
-            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-        }
-
-        if (!routeInfoJson.isEmpty()) {
-            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
-        }
-
-        if(routeInfo != null){
-            if (getActivity() != null) {
-                // showUIShift();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                getActivity().finish();
-                getActivity().startActivity(intent);
-
-            }
-        }
-        else {
-            if (postOffice != null) {
-                List<RouteInfo> routeInfos = postOffice.getRoutes();
-                if (routeInfos.size() > 0) {
-                    if (routeInfos.size() == 1) {
-                        sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos.get(0)));
-                        if (getActivity() != null) {
-                            // showUIShift();
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            getActivity().finish();
-                            getActivity().startActivity(intent);
-
-                        }
-                    } else {
-                        showDialog(routeInfos);
-                    }
-                }
-            }
         }
     }
 
@@ -255,27 +208,5 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                         mPresenter.gotoValidation();
                     }
                 }).show();
-    }
-
-    void showDialog(List<RouteInfo> routeInfos){
-        new RouteDialog(getActivity(),routeInfos, new RouteOptionCallBack() {
-
-            @Override
-            public void onRouteOptionResponse(Item item) {
-                RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setRouteCode(item.getValue());
-                routeInfo.setRouteName(item.getText());
-                SharedPref sharedPref = new SharedPref(getActivity());
-                sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
-                if (getActivity() != null) {
-                    // showUIShift();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    getActivity().finish();
-                    getActivity().startActivity(intent);
-
-                }
-
-            }
-        }).show();
     }
 }
