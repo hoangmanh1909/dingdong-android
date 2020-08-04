@@ -1,49 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f5f6fa"
     android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <include layout="@layout/item_head_bg_common" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_back_shadown" />
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="Hủy báo phát" />
-
-            <ImageView
-                android:id="@+id/img_send"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_5dp"
-                android:src="@drawable/ic_confirm" />
-        </RelativeLayout>
-    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,10 +14,11 @@
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tìm kiếm nhanh bưu gửi"
+            android:text="@string/find_package_quickly"
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
+
         <RelativeLayout
             android:id="@+id/ll_scan_qr"
             android:layout_width="match_parent"
@@ -74,10 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/img_capture"
                 android:layout_toRightOf="@+id/img_search"
+                android:inputType="textCapCharacters"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                app:formShowUnderline="false"
-                app:formHint="Nhập bưu gửi" />
+                app:formHint="@string/enter_package"
+                app:formShowUnderline="false" />
 
             <ImageView
                 android:id="@+id/img_capture"
@@ -97,13 +60,6 @@
         android:padding="@dimen/_5sdp">
 
         <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#38044B"
-            android:textSize="@dimen/text_size_14sp" />
-
-        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,18 +71,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/layout_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_5dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            android:layout_marginBottom="@dimen/dimen_5dp">
 
-
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ImageView
             android:id="@+id/tv_search"

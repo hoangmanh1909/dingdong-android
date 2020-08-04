@@ -2,7 +2,9 @@ package com.ems.dingdong.utiles;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
@@ -57,5 +59,25 @@ public class StringUtils {
             finalText = span1;
         }
         return finalText;
+    }
+
+    public static String getLadingCode(String source, Context context) {
+        if (!TextUtils.isEmpty(source)) {
+            if (source.toLowerCase().contains(context.getString(R.string.change_address).toLowerCase()))
+                return source.substring(9, 22);
+            else if (source.toLowerCase().contains(context.getString(R.string.lead_deliver).toLowerCase()))
+                return source.substring(8, 21);
+        }
+        return "";
+    }
+
+    public static Spanned fromHtml(String html) {
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html.replace("&lt;", "<").replace("&gt;", ">"), Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL);
+        } else {
+            result = Html.fromHtml(html.replace("&lt;", "<").replace("&gt;", ">"));
+        }
+        return result;
     }
 }

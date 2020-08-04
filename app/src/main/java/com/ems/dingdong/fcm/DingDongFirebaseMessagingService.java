@@ -1,6 +1,7 @@
 package com.ems.dingdong.fcm;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,17 +12,20 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import android.util.Log;
 
+import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.login.LoginActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.ems.dingdong.R;
 
 import java.util.Map;
 
@@ -32,6 +36,8 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = DingDongFirebaseMessagingService.class.getSimpleName();
     private int numMessages = 0;
     private NotificationUtils notificationUtils;
+    private boolean isConnected = false;
+    private ApplicationController applicationController;
 
   /*   "notification": {
         "click_action": ".fcm.NotificationActivity",
@@ -44,25 +50,28 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 "title": "DingDong",
     }*/
 
+
     @Override
     public void onNewToken(@NonNull String refreshedToken) {
         super.onNewToken(refreshedToken);
-        sendRegistrationToServer(refreshedToken);
+//        sendRegistrationToServer(refreshedToken);
     }
-    private void sendRegistrationToServer(String token) {
 
-        SharedPref sharedPref=new SharedPref(this);
-        sharedPref.putString(Constants.KEY_PUSH_NOTIFICATION,token);
-    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-            sendNotification(remoteMessage.getData().get("message"));
+            if (!TextUtils.isEmpty(remoteMessage.getData().get("send_from"))) {
+                sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13));
+            } else if (!TextUtils.isEmpty(remoteMessage.getData().get("message"))) {
+                sendNotification(remoteMessage.getData().get("message"));
+            } else {
+                Log.d(TAG, "call id is null");
+                Log.d(TAG, remoteMessage.getData().toString());
+            }
         } else if (notification != null) {
+            Log.e(TAG, "Data is null: ");
             Map<String, String> data = remoteMessage.getData();
             sendNotification(notification, data);
         }
@@ -80,8 +89,18 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            Intent intent = new Intent(this, LoginActivity.class);
+        if (messageBody != null) {
+            Intent intent;
+            Bundle bundle = new Bundle();
+            if (messageBody.contains(Constants.GOM_HANG)) {
+                intent = new Intent(this, ListCommonActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+            } else {
+                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+            }
+            bundle.putString("message", messageBody);
+            intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
@@ -105,6 +124,11 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(
+                        getString(R.string.notification_channel_id),
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
                 notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
             }
             if (notificationManager != null)
@@ -142,6 +166,11 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.notification_channel_id),
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
             notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
         }
 

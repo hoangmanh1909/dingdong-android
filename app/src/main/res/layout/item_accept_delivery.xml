@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/background_progressbar"
+    android:id="@+id/rl_item_count_selected"
+    android:padding="@dimen/_5sdp">
+
+    <ImageView
+        android:id="@+id/iv_pick_status"
+        android:layout_width="@dimen/size_30dp"
+        android:layout_height="@dimen/size_30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/_5sdp"
+        android:src="@drawable/ic_check" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:id="@+id/tv_lading"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toRightOf="@+id/iv_pick_status"
+        android:text="lading code" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_monney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="money" />
+
+</RelativeLayout>

@@ -61,7 +61,7 @@ public class CallServicePresenter extends Presenter<CallServiceContract.View, Ca
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showCallSuccess();
                 } else {
-                    mView.showErrorToast(response.body().getMessage());
+                    mView.showCallError(response.body().getMessage());
                 }
             }
 
@@ -69,7 +69,7 @@ public class CallServicePresenter extends Presenter<CallServiceContract.View, Ca
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showErrorToast(message);
+                mView.showCallError(message);
             }
         });
 

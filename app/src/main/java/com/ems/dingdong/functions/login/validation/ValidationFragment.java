@@ -1,12 +1,14 @@
 package com.ems.dingdong.functions.login.validation;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.R;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.ems.dingdong.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,6 +20,25 @@ public class ValidationFragment extends ViewFragment<ValidationContract.Presente
 
     @BindView(R.id.edtPhone)
     CustomEditText edtPhone;
+
+    private TextWatcher textWatcherListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
+                mPresenter.validationAuthorized(edtPhone.getText().toString());
+            }
+        }
+    };
 
     public static ValidationFragment getInstance() {
         return new ValidationFragment();
@@ -31,8 +52,16 @@ public class ValidationFragment extends ViewFragment<ValidationContract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
+        edtPhone.addTextChangedListener(textWatcherListener);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (edtPhone != null) {
+            edtPhone.removeTextChangedListener(textWatcherListener);
+        }
+    }
 
     @OnClick(R.id.login_layout)
     public void onViewClicked() {

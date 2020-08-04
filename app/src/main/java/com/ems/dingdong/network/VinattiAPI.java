@@ -1,41 +1,59 @@
 package com.ems.dingdong.network;
 
 
+import android.view.View;
+
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CancelDeliveryResult;
+import com.ems.dingdong.model.ChangeRouteResult;
+import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.EWalletDataResult;
+import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
-import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
+import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
-import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.PayLinkConfirm;
+import com.ems.dingdong.model.request.PayLinkRequest;
+import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
+import com.ems.dingdong.model.request.PaymentRequestModel;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
@@ -45,6 +63,8 @@ import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -70,9 +90,9 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryStatistic")
     Call<CommonObjectListResult> searchDeliveryStatistic(@Field("FromDate") String fromDate,
+                                                         @Field("ToDate") String toDate,
                                                          @Field("Status") String status,
                                                          @Field("PostmanId") String postmanId,
-                                                         @Field("ShiftID") String shift,
                                                          @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
@@ -121,11 +141,8 @@ public interface VinattiAPI {
     Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
                                                         @Field("FromDate") String fromDate,
                                                         @Field("ToDate") String toDate,
-                                                        @Field("ShiftID") String shiftID,
-                                                        @Field("Status") String status,
-                                                        @Field("ChThu") String chuyenthu,
-                                                        @Field("TuiSo") String tuiso,
-                                                        @Field("RouteCode") String routeCode);
+                                                        @Field("RouteCode") String routeCode,
+                                                        @Field("SearchType") Integer searchType);
 
 
     @FormUrlEncoded
@@ -161,12 +178,16 @@ public interface VinattiAPI {
 
     @FormUrlEncoded
     @POST("api/TrackTrace/Lading")
-    Call<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
-                                          @Field("Signature") String signature
+    Observable<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
+                                                @Field("POCode") String poCode,
+                                                @Field("Signature") String signature
     );
 
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Body PushToPnsRequest request);
+
+    @POST("api/Delivery/PushToPNS")
+    Single<SimpleResult> pushToPNSDeliveryObservable(@Body PushToPnsRequest request);
 
     @FormUrlEncoded
     @POST("api/CallCenter/AddNew")
@@ -187,6 +208,9 @@ public interface VinattiAPI {
 
     @POST("api/Delivery/Payment")
     Call<SimpleResult> paymentDelivery(@Body PaymentDeviveryRequest request);
+
+    @POST("api/Delivery/Payment")
+    Single<SimpleResult> paymentDeliveryObservable(@Body PaymentDeviveryRequest request);
 
     @POST("api/Delivery/PaymentPaypost")
     Call<SimpleResult> paymentPaypost(@Body PaymentPaypostRequest request);
@@ -253,6 +277,10 @@ public interface VinattiAPI {
     @POST("api/Handle/UploadImage")
     Call<UploadSingleResult> postImageSingle(@Part MultipartBody.Part image);
 
+    @Multipart
+    @POST("api/Handle/UploadImage")
+    Observable<UploadSingleResult> postImageObservable(@Part MultipartBody.Part image);
+
 
     @POST("api/Collect/ConfirmAllOrderPostman")
     Call<ConfirmAllOrderPostmanResult> confirmAllOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
@@ -318,12 +346,11 @@ public interface VinattiAPI {
     Call<DingDongGetCancelDeliveryResponse> getCancelDelivery(
             @Field("PostmanCode") String postmanCode,
             @Field("RouteCode") String routeCode,
-            @Field("LadingCode") String ladingCode,
             @Field("FromDate") String fromDate,
             @Field("ToDate") String toDate);
 
     @POST("api/DingDong/CancelDelivery")
-    Call<SimpleResult> cancelDelivery(@Body List<DingDongCancelDeliveryRequest> taskRequest);
+    Call<SimpleResult> cancelDelivery(@Body DingDongCancelDeliveryRequest taskRequest);
 
     @GET("api/Dictionary/GetDeliveryRoute")
     Call<RouteInfoResult> getDeliveryRoute(@Query("poCode") String poCode);
@@ -361,17 +388,118 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Statistic/LadingStatusDetail")
     Call<StatisticDeliveryDetailResult> getLadingStatusDetail(@Field("Type") int type,
-                                             @Field("ServiceCode") String serviceCode,
-                                             @Field("PostmanId") String postmanID,
-                                             @Field("FromDate") String fromDate,
-                                             @Field("ToDate") String toDate,
-                                             @Field("LadingType") int ladingType,
-                                             @Field("RouteCode") String routeCode);
+                                                              @Field("ServiceCode") String serviceCode,
+                                                              @Field("PostmanId") String postmanID,
+                                                              @Field("FromDate") String fromDate,
+                                                              @Field("ToDate") String toDate,
+                                                              @Field("LadingType") int ladingType,
+                                                              @Field("RouteCode") String routeCode);
 
     @GET("api/VietMap/Search")
-    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text);
+    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text,
+                                            @Query("longitude") Double longitude,
+                                            @Query("latitude") Double latitude);
 
     @POST("api/VietMap/Route")
     Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
 
+    @FormUrlEncoded
+    @POST("api/Statistic/Payment")
+    Call<StatisticPaymentResult> statisticPayment(@Field("PostmanId") String postmanID,
+                                                  @Field("POCode") String poCode,
+                                                  @Field("PostmanMobileNumber") String phoneNumber,
+                                                  @Field("FromDate") String fromDate,
+                                                  @Field("ToDate") String toDate);
+
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/SearchForCancel")
+    Call<RouteResult> searchForCancel(@Field("LadingCode") String ladingCode,
+                                      @Field("FromDate") String fromDate,
+                                      @Field("ToDate") String toDate,
+                                      @Field("PostmanId") String postmanId,
+                                      @Field("RouteId") String routeId,
+                                      @Field("POCode") String poCode,
+                                      @Field("StatusCode") String statusId,
+                                      @Field("ToRouteId") Integer fromRouteId);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/SearchForApproved")
+    Call<RouteResult> searchForApproved(@Field("LadingCode") String ladingCode,
+                                        @Field("FromDate") String fromDate,
+                                        @Field("ToDate") String toDate,
+                                        @Field("PostmanId") String postmanId,
+                                        @Field("RouteId") String routeId,
+                                        @Field("POCode") String poCode,
+                                        @Field("StatusCode") String statusId,
+                                        @Field("FromRouteId") Integer fromRouteId
+    );
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/ApprovedAgree")
+    Call<SimpleResult> approvedAgree(@Field("Id") String id,
+                                     @Field("LadingCode") String ladingCode,
+                                     @Field("PostmanId") String postmanId,
+                                     @Field("PostmanCode") String postmanCode,
+                                     @Field("POCode") String poCode,
+                                     @Field("RouteId") String routeId,
+                                     @Field("RouteCode") String routeCode);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/ApprovedDisagree")
+    Call<SimpleResult> approvedDisagree(@Field("Id") String id,
+                                        @Field("LadingCode") String ladingCode,
+                                        @Field("PostmanId") String postmanId,
+                                        @Field("PostmanCode") String postmanCode,
+                                        @Field("POCode") String poCode,
+                                        @Field("RouteId") String routeId,
+                                        @Field("RouteCode") String routeCode);
+
+    @FormUrlEncoded
+    @POST("api/ChangeRoute/Cancel")
+    Call<SimpleResult> cancelRoute(@Field("Id") Integer id,
+                                   @Field("PostmanId") Integer postmanId);
+
+    @POST("api/ChangeRoute/Insert")
+    Call<SimpleResult> changeRouteInsert(@Body ChangeRouteRequest taskRequest);
+
+    @GET("api/ChangeRoute/GetDetailByLadingCode")
+    Call<ChangeRouteResult> getDetailByLadingCode(@Query("ladingCode") String ladingCode);
+
+    @POST("api/LadingCancelDelivery/Statistic")
+    Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
+
+    @GET("api/MoveCrop/GetAccessTokenAndroid")
+    Single<TokenMoveCropResult> getAccessTokenAndroid(@Query("mobileNUmber") String mobileNUmber);
+
+    @POST("api/EWallet/PayLinkRequest")
+    Single<LinkEWalletResult> linkEWallet(@Body PayLinkRequest request);
+
+    @POST("api/EWallet/PayLinkConfirm")
+    Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body PayLinkConfirm payLinkConfirm);
+
+    @POST("api/EWallet/PaymentRequest")
+    Single<EWalletRequestResult> requestPayment(@Body PaymentRequestModel paymentRequestModel);
+
+    @POST("api/EWallet/PaymentConfirm")
+    Single<SimpleResult> confirmPayment(@Body PaymentConfirmModel paymentConfirmModel);
+
+    @GET("api/EWallet/GetDataPayment")
+    Single<EWalletDataResult> getDataPayment(@Query("fromDate") String fromDate,
+                                             @Query("toDate") String toDate,
+                                             @Query("poCode") String poCode,
+                                             @Query("routeCode") String routeCode,
+                                             @Query("postmanCode") String postmanCode);
+
+    @POST("api/Delivery/CheckAmountPayment")
+    Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);
+
+    @POST("api/Delivery/Payment_V2")
+    Single<SimpleResult> paymentV2(@Body DeliveryPaymentV2 request);
+
+    @GET("v1/calls/searchcdr")
+    Single<SimpleResult> getHistoryCall(@Query("mc_vpbx_id") Integer tenantID,
+                                        @Query("mc_caller") Integer caller,
+                                        @Query("mc_callee") Integer callee
+    );
 }

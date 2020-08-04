@@ -149,7 +149,6 @@ public class DialogUtils {
             }
         }
 
-
         Utilities.hideKeyboard(null, activity);
         progress = new ProgressDialog(activity);
         progress.setTitle("");

@@ -3,17 +3,19 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
-import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import io.realm.RealmResults;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * The BaoPhatThanhCong Contract
@@ -21,44 +23,64 @@ import io.realm.RealmResults;
 interface BaoPhatOfflineContract {
 
     interface Interactor extends IInteractor<Presenter> {
+
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
+
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
-        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+        /**
+         * Deliver success.
+         */
+        Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request);
+
+        /**
+         * Deliver not success.
+         */
+        Single<SimpleResult> paymentDelivery(PaymentDeviveryRequest request);
+
+        Observable<UploadSingleResult> postImageObservable(String path);
     }
 
     interface View extends PresentView<Presenter> {
-       // void showData(CommonObject commonObject);
-
-        void showCallSuccess();
 
         void showError(String message);
 
-        void showSuccess(String code);
+        void showErrorFromRealm();
+
+        void showSuccess(String code, String parcelCode);
 
         void showListFromSearchDialog(List<CommonObject> list);
 
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void showBarcode(BarCodeCallback barCodeCallback);
 
-       // void searchParcelCodeDelivery(String parcelCode);
-
-        void showDetail(CommonObject commonObject, int position);
-
-        void pushViewConfirmAll(List<CommonObject> list);
-        void callForward(String phone, String parcelCode);
-
-        void saveLocal(CommonObject commonObject);
-
+        /**
+         * get local record.
+         *
+         * @param fromDate from created date.
+         * @param toDate   to created date
+         */
         void getLocalRecord(String fromDate, String toDate);
 
+        /**
+         * Remove item from local storage.
+         *
+         * @param parcelCode lading code.
+         */
         void removeOfflineItem(String parcelCode);
 
-        void submitToPNS(List<CommonObject> commonObjects);
+        /**
+         * Offline deliver.
+         *
+         * @param commonObjects list chosen.
+         */
+        void offlineDeliver(List<CommonObject> commonObjects);
+
+        List<CommonObject> getOfflineRecord(Date from, Date to);
+
     }
 }
 

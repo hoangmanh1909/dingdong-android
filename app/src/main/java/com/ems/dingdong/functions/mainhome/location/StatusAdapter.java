@@ -10,7 +10,6 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         return new HolderView(inflateView(parent, R.layout.item_status));
     }
 
-
     class HolderView extends BaseViewHolder {
 
         @BindView(R.id.tv_POCode_POName)
@@ -38,10 +36,10 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         CustomTextView tvStatusMessage;
         @BindView(R.id.tv_StatusDate_StatusTime)
         CustomTextView tvStatusDateStatusTime;
-        @BindView(R.id.tv_reason)
-        CustomTextView tvReason;
-        @BindView(R.id.tv_StatusCode)
-        CustomMediumTextView tvStatusCode;
+        @BindView(R.id.tv_Description)
+        CustomTextView tvDescription;
+        @BindView(R.id.tv_TypeMessage)
+        CustomTextView tvTypeMessage;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -50,26 +48,40 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(final Object model, int position) {
             StatusInfo item = (StatusInfo) model;
-            tvPOCodePOName.setText(String.format("%s - %s", item.getPOCode(), item.getPOName()));
+            if (!TextUtils.isEmpty(item.getPOName())) {
+                tvPOCodePOName.setText(String.format("%s - %s", item.getPOCode(), item.getPOName()));
+                tvPOCodePOName.setVisibility(View.VISIBLE);
+            } else {
+                tvPOCodePOName.setVisibility(View.GONE);
+            }
             if (!TextUtils.isEmpty(item.getStatusMessage())) {
                 tvStatusMessage.setText(item.getStatusMessage());
                 tvStatusMessage.setVisibility(View.VISIBLE);
             } else {
-                tvStatusMessage.setVisibility(View.GONE);
-            }
-            if (item.getStatusTime() == null) {
-                item.setStatusTime("");
+                tvStatusMessage.setVisibility(View.INVISIBLE);
             }
             if (item.getStatusDate() == null) {
                 item.setStatusDate("");
             }
-            tvStatusDateStatusTime.setText(String.format("%s %s", item.getStatusDate(), item.getStatusTime()));
-            if (item.getStatusCode().equals("C14")) {
-                tvStatusCode.setText("Thành công");
-            } else {
-                tvStatusCode.setText("Không thành công");
+            if (item.getStatusTime() == null) {
+                item.setStatusTime("");
             }
-            tvReason.setText(item.getReasonCode());
+            if (!TextUtils.isEmpty(item.getDescription())) {
+                tvDescription.setText(item.getDescription());
+                tvDescription.setVisibility(View.VISIBLE);
+            } else {
+                tvDescription.setText("");
+                tvDescription.setVisibility(View.GONE);
+            }
+            tvTypeMessage.setText("");
+            if (!TextUtils.isEmpty(item.getActionTypeName())) {
+                tvTypeMessage.setText(item.getActionTypeName());
+                tvTypeMessage.setVisibility(View.VISIBLE);
+            } else {
+                tvTypeMessage.setText("");
+                tvTypeMessage.setVisibility(View.GONE);
+            }
+            tvStatusDateStatusTime.setText(String.format("%s, %s", item.getStatusDate(), item.getStatusTime()));
         }
     }
 }

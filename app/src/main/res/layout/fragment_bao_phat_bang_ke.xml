@@ -1,49 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <include layout="@layout/item_head_bg_common" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_back_shadown" />
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="Bản kê đi phát (BD13)" />
-
-            <ImageView
-                android:id="@+id/img_send"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_5dp"
-                android:src="@drawable/ic_confirm" />
-        </RelativeLayout>
-    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +14,7 @@
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tìm kiếm nhanh bưu gửi"
+            android:text="@string/find_package_quickly"
             android:textColor="@color/black">
 
         </com.ems.dingdong.views.CustomTextView>
@@ -75,9 +35,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/img_capture"
                 android:layout_toRightOf="@+id/img_search"
+                android:inputType="textCapCharacters"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
-                app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ"
+                app:formHint="@string/enter_name_phone_number_address"
                 app:formShowUnderline="false" />
 
             <ImageView
@@ -98,22 +60,13 @@
         android:padding="@dimen/_5sdp">
 
         <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Số lượng"
-            android:textColor="#38044B"
-            android:textSize="@dimen/text_size_14sp" />
-
-        <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:text="@string/amount_of_money"
             android:textColor="@color/colorPrimary"
-            android:text="Số tiền"
             android:textSize="@dimen/text_size_14sp" />
     </RelativeLayout>
 
@@ -127,8 +80,8 @@
             android:id="@+id/cb_pick_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:button="@drawable/custom_btn_radio" />
+            android:button="@drawable/custom_btn_radio"
+            android:clickable="false" />
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:layout_width="wrap_content"
@@ -143,38 +96,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- <CustomTextView
-             android:id="@+id/btn_confirm_all"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignParentBottom="true"
-             android:layout_centerHorizontal="true"
-             android:layout_marginBottom="@dimen/dimen_10dp"
-             android:layout_marginTop="@dimen/dimen_10dp"
-             android:background="@drawable/bg_confirm_continue"
-             android:drawableLeft="@drawable/ic_done"
-             android:gravity="center"
-             android:paddingBottom="@dimen/dimen_5dp"
-             android:paddingLeft="@dimen/dimen_20dp"
-             android:paddingRight="@dimen/dimen_20dp"
-             android:paddingTop="@dimen/dimen_5dp"
-             android:text="Xác nhận"
-             android:textAllCaps="true"
-             android:textColor="@color/white"
-             android:textSize="@dimen/text_size_18sp" />-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/layout_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_5dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            android:layout_marginBottom="@dimen/dimen_5dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ImageView
             android:id="@+id/tv_search"
@@ -184,8 +122,62 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:background="?attr/selectableItemBackground"
             android:padding="@dimen/dimen_10dp"
             android:src="@drawable/ic_choose_calendar" />
+
+        <RelativeLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/size_20dp"
+            android:id="@+id/rl_count_item_selected"
+            android:visibility="gone"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@drawable/bg_count_package_selected">
+
+            <ImageView
+                android:id="@+id/ic_check"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_check" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_item_selected"
+                android:layout_width="@dimen/size_20dp"
+                android:layout_height="@dimen/size_20dp"
+                android:layout_marginLeft="-20dp"
+                android:layout_toRightOf="@+id/ic_check"
+                android:background="@drawable/bg_count_number"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ic_check"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="Bỏ chọn"
+                android:textSize="@dimen/_6sdp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/tv_additional_barcode"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/dimen_10dp"
+            android:src="@drawable/ic_shortcut_icons8_barcode_scanner_64" />
+
     </RelativeLayout>
 
 

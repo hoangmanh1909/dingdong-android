@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListContract;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
@@ -25,5 +26,9 @@ public class ChiTietDiaChiContract {
         void vietmapVerify(String id, String userId, String layer);
 
         void vietmapUpdate(UpdateRequest request);
+
+        ChiTietDiaChiPresenter setOnCloseListener(AddressListContract.OnCloseAuthenAddress listener);
+
+        void backToXacMinhDiaChi();
     }
 }

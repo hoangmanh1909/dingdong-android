@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
@@ -49,8 +50,8 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
             }
 
             @Override
-            public void onUpdateResponse(String phone) {
-                showConfirmSaveMobile(phone);
+            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                showConfirmSaveMobile(phone, callback);
             }
         });
         mPhoneConectDialog.show();
@@ -79,10 +80,10 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @Override
     public void showView() {
-        mPhoneConectDialog.updateText();
+        mPhoneConectDialog.updateText("");
     }
 
-    private void showConfirmSaveMobile(final String phone) {
+    private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -93,7 +94,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         mPresenter.updateMobile(phone);
                         sweetAlertDialog.dismiss();
-
+                        callback.dismissDialog();
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {

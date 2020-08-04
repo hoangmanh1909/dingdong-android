@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_grand_father"
+        android:title="@string/grand_father" />
+    <item
+        android:id="@+id/menu_grand_mother"
+        android:title="@string/grand_mother" />
+    <item
+        android:id="@+id/menu_father"
+        android:title="@string/father" />
+    <item
+        android:id="@+id/menu_mother"
+        android:title="@string/mother" />
+    <item
+        android:id="@+id/menu_brother"
+        android:title="@string/brother" />
+    <item
+        android:id="@+id/menu_brother1"
+        android:title="@string/brother1" />
+    <item
+        android:id="@+id/menu_sister"
+        android:title="@string/sister" />
+    <item
+        android:id="@+id/menu_wife"
+        android:title="@string/wife" />
+    <item
+        android:id="@+id/menu_husband"
+        android:title="@string/husband" />
+    <item
+        android:id="@+id/menu_child"
+        android:title="@string/child" />
+    <item
+        android:id="@+id/menu_archival"
+        android:title="@string/archival" />
+    <item
+        android:id="@+id/menu_labor"
+        android:title="@string/labor" />
+    <item
+        android:id="@+id/menu_bodyguard"
+        android:title="@string/bodyguard" />
+    <item
+        android:id="@+id/menu_other"
+        android:title="@string/other" />
+</menu>

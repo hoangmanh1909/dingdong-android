@@ -12,7 +12,12 @@ import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
+import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
@@ -39,6 +44,7 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     @Override
     public void onDisplay() {
         super.onDisplay();
+        cameraView.setFormats(BarcodeFormat.ALL_FORMATS);
         cameraView.setResultHandler(this); // Register ourselves as a handler for scan results.
         cameraView.startCamera();          // Start camera on resume
     }

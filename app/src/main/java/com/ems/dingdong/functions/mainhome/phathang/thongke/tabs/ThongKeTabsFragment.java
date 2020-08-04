@@ -22,13 +22,8 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
     PagerSlidingTabStrip tabs;
     @BindView(R.id.pager)
     ViewPager pager;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    private TabsThongKeAdapter mAdapter;
-    String text2Tab1 = "Ca 1";
-    String text2Tab2 = "Ca 1";
-    String text1 = "DANH SÁCH BƯU GỬI";
 
+    private TabsThongKeAdapter mAdapter;
     public static ThongKeTabsFragment getInstance() {
         return new ThongKeTabsFragment();
     }
@@ -52,22 +47,6 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
         mAdapter = new TabsThongKeAdapter(getChildFragmentManager(), getContext(), mPresenter.getContainerView());
         pager.setAdapter(mAdapter);
         tabs.setViewPager(pager);
-        CharSequence finalText = StringUtils.getCharSequence(text1, text2Tab1, getActivity());
-        tvTitle.setText(finalText);
-        pager.setOnPageChangeListener(new OnCustomPageChangeListener() {
-
-            @Override
-            public void onCustomPageSelected(int newPosition) {
-                //StatisticFragment fragmentToShow = (StatisticFragment) mAdapter.getItem(newPosition);
-                if (newPosition == 1) {
-                    CharSequence finalText = StringUtils.getCharSequence(text1, text2Tab2, getActivity());
-                    tvTitle.setText(finalText);
-                } else {
-                    CharSequence finalText = StringUtils.getCharSequence(text1, text2Tab1, getActivity());
-                    tvTitle.setText(finalText);
-                }
-            }
-        });
         pager.setOffscreenPageLimit(2);
     }
 
@@ -80,16 +59,5 @@ public class ThongKeTabsFragment extends ViewFragment<ThongKeTabsContract.Presen
         }
     }
 
-    public void setShift(String shiftName, int position) {
-        if (position == 0) {
-            text2Tab1 = shiftName;
-            CharSequence finalText = StringUtils.getCharSequence(text1, text2Tab1, getActivity());
-            tvTitle.setText(finalText);
-        } else {
-            text2Tab2 = shiftName;
-            CharSequence finalText = StringUtils.getCharSequence(text1, text2Tab2, getActivity());
-            tvTitle.setText(finalText);
-        }
-    }
 }
 

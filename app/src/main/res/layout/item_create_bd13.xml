@@ -22,13 +22,6 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/_5sdp"
-                android:src="@drawable/ic_star" />
-
             <CheckBox
                 android:id="@+id/cb_selected"
                 android:button="@drawable/custom_btn_radio"
@@ -96,6 +89,27 @@
             </RelativeLayout>
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_batch_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_new_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_new_receiver_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_receiver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,6 +128,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
@@ -142,6 +163,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_create_dated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

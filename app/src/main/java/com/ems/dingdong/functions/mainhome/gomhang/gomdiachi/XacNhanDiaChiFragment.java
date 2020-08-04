@@ -218,7 +218,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         ArrayList<CommonObject> listG = new ArrayList<>();
         for(CommonObject item: list)
         {
-            CommonObject itemExists = Iterables.tryFind(mList,
+            CommonObject itemExists = Iterables.tryFind(listG,
                     input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
                             && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
             ).orNull();
@@ -226,10 +226,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 item.addOrderPostmanID(item.getOrderPostmanID());
                 item.addCode(item.getCode());
                 item.weightS += Integer.parseInt(item.getWeigh());
-                if("P0".equals(item.getStatusCode()))
-                {
-                    item.setSelected(true);
-                }
+//                if("P0".equals(item.getStatusCode()))
+//                {
+//                    item.setSelected(true);
+//                }
                 listG.add(item);
 
             } else {

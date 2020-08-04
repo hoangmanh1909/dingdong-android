@@ -4,13 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -41,6 +42,18 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         setListener();
     }
 
+    public EditDayDialog(Context context, String fromDateString, String toDateString, OnChooseDay delegate) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.delegate = delegate;
+        Date fromDate = DateTimeUtils.convertStringToDate(fromDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        Date toDate = DateTimeUtils.convertStringToDate(toDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        calFrom.setTime(fromDate);
+        calTo.setTime(toDate);
+        tvDateStart.setText(TimeUtils.convertDateToString(fromDate, TimeUtils.DATE_FORMAT_5));
+        tvDateEnd.setText(TimeUtils.convertDateToString(toDate, TimeUtils.DATE_FORMAT_5));
+        setListener();
+    }
+
 
     private void setListener() {
         btnBack.setOnClickListener(this);
@@ -52,7 +65,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     @Override
     public void onClick(View v) {
         Calendar maxStart = Calendar.getInstance();
-      //  maxStart.add(Calendar.DATE,-1);
+        //  maxStart.add(Calendar.DATE,-1);
         Calendar maxToStart = Calendar.getInstance();
         switch (v.getId()) {
 

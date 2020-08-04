@@ -11,4 +11,5 @@ class ProfileInteractor extends Interactor<ProfileContract.Presenter>
     ProfileInteractor(ProfileContract.Presenter presenter) {
         super(presenter);
     }
+
 }

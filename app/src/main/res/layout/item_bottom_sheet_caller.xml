@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:orientation="vertical">
+
+    <View
+        style="@style/Devider"
+        android:layout_marginTop="@dimen/dimen_5dp" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp"
+        android:gravity="center"
+        android:textSize="@dimen/size_16dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:textColor="@color/blue"
+        android:id="@+id/tv_call"
+        />
+</LinearLayout>

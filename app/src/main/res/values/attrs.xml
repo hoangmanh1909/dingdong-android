@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RedButton">
+        <attr name="isred" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomImageView">
+        <attr name="srcImg" format="reference" />
+        <attr name="title" format="string" />
+        <attr name="widthImg" format="integer" />
+        <attr name="heightImg" format="integer" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="titleColor" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomDigitView">
+        <attr name="tvDigit" format="string" />
+        <attr name="tvContent" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomEditTextOtp">
+        <attr name="maxLength" format="string" />
+    </declare-styleable>
+</resources>

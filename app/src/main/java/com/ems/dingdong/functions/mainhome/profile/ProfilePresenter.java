@@ -2,6 +2,10 @@ package com.ems.dingdong.functions.mainhome.profile;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The Profile Presenter
@@ -23,8 +27,14 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
         // Start getting data here
     }
 
+
     @Override
     public ProfileContract.Interactor onCreateInteractor() {
         return new ProfileInteractor(this);
+    }
+
+    @Override
+    public void moveToEWallet() {
+        new EWalletPresenter(mContainerView).pushView();
     }
 }

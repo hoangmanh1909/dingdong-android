@@ -1,12 +1,6 @@
 package com.ems.dingdong.functions.mainhome.main;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -20,6 +14,7 @@ public class MainActivity extends DingDongActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
     }
 

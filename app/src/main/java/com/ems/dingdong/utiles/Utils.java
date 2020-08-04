@@ -1,6 +1,8 @@
 package com.ems.dingdong.utiles;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
@@ -25,19 +27,20 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.RawContacts;
-import androidx.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.model.response.StatisticDebitDetailResponse;
 import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
 import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 import com.ems.dingdong.network.VinattiAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ems.dingdong.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,6 +59,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -76,6 +80,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by HungNX on 3/24/16.
@@ -127,6 +133,7 @@ public class Utils {
             throw new RuntimeException(ex);
         }
     }
+
     public static String convertNumberToString(String number) {
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal bigDecimal;
@@ -541,7 +548,8 @@ public class Utils {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder builder = chain.request().newBuilder();
-                            builder.addHeader("Authorization", "Bearer " + token);
+                            String base64EncodedCredentials = Base64.encodeToString(token.getBytes(), Base64.NO_WRAP);
+                            builder.addHeader("Authorization", "Basic " + base64EncodedCredentials);
                             return chain.proceed(builder.build());
                         }
 
@@ -616,7 +624,7 @@ public class Utils {
                     // Request customization: add request headers
                     Request.Builder requestBuilder = original.newBuilder()
                             .addHeader("Authorization", "Basic " + base64EncodedCredentials)
-                            .addHeader("APIKey",BuildConfig.PRIVATE_KEY); // <-- this is the important line
+                            .addHeader("APIKey", BuildConfig.PRIVATE_KEY); // <-- this is the important line
 
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
@@ -628,7 +636,6 @@ public class Utils {
         }
 
     }
-
 
     public static boolean isSDCardMounted() {
         boolean isMounted = false;
@@ -815,7 +822,7 @@ public class Utils {
         long moneyCod = 0;
         long moneyC = 0;
         long moneyPPA = 0;
-        for (StatisticDeliveryGeneralResponse item: statisticList) {
+        for (StatisticDeliveryGeneralResponse item : statisticList) {
             quantity += Long.parseLong(item.getQuantity());
             moneyCod += Long.parseLong(item.getQuantityCOD());
             moneyC += Long.parseLong(item.getQuantityC());
@@ -833,7 +840,7 @@ public class Utils {
 
     public static ArrayList<StatisticDeliveryDetailResponse> getGeneralDeliveryDetailList(ArrayList<StatisticDeliveryDetailResponse> statisticList) {
         long totalAmount = 0;
-        for(StatisticDeliveryDetailResponse item : statisticList) {
+        for (StatisticDeliveryDetailResponse item : statisticList) {
             totalAmount += Long.parseLong(item.getAmount());
         }
         StatisticDeliveryDetailResponse totalStatistic = new StatisticDeliveryDetailResponse();
@@ -844,13 +851,20 @@ public class Utils {
 
     public static ArrayList<StatisticDebitDetailResponse> getGeneralDebitDetailList(ArrayList<StatisticDebitDetailResponse> statisticList) {
         long totalAmount = 0;
-        for(StatisticDebitDetailResponse item : statisticList) {
+        for (StatisticDebitDetailResponse item : statisticList) {
             totalAmount += Long.parseLong(item.getAmount());
         }
         StatisticDebitDetailResponse totalStatistic = new StatisticDebitDetailResponse();
         totalStatistic.setAmount(String.valueOf(totalAmount));
         statisticList.add(totalStatistic);
         return statisticList;
+    }
+
+    public static boolean isIncomingCallRunning(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfo = manager.getRunningTasks(1);
+        ComponentName componentInfo = runningTaskInfo.get(0).topActivity;
+        return componentInfo.getClassName().equals("com.ems.dingdong.calls.IncomingCallActivity");
     }
 
    /* public static String convertToNewMaVung(String phoneNumber,String oldCode,String newCode){

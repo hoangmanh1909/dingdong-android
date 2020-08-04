@@ -13,9 +13,8 @@ import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftResult;
-import com.ems.dingdong.model.StatisticDebitGeneralResult;
+import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -75,24 +74,28 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     public void getBalance() {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         UserInfo userInfo = null;
-        RouteInfo routeInfo = null;
+        PostOffice postOffice = null;
         String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!posOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+        }
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-        mInteractor.getBalance(userInfo.getiD(), fromDate, toDate, routeInfo.getRouteCode(), new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+
+        mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate, new CommonCallback<StatisticPaymentResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
+            protected void onSuccess(Call<StatisticPaymentResult> call, Response<StatisticPaymentResult> response) {
                 mView.hideProgress();
-                mView.updateBalance(response.body().getStatisticDebitGeneralResponses());
+                if (getViewContext() != null)
+                    mView.updateBalance(response.body().getStatisticPaymentResponses());
             }
 
             @Override
-            protected void onError(Call<StatisticDebitGeneralResult> call, String message) {
+            protected void onError(Call<StatisticPaymentResult> call, String message) {
             }
         });
     }

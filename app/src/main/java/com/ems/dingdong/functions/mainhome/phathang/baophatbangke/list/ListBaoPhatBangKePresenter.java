@@ -2,52 +2,58 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
+import android.content.Intent;
+import android.net.Uri;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
-import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.XacMinhDiaChiResult;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.Utils;
 
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-/**
- * The CommonObject Presenter
- */
 public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContract.View, ListBaoPhatBangKeContract.Interactor>
         implements ListBaoPhatBangKeContract.Presenter {
 
     private int mPos;
 
+    private int mDeliveryListType;
+
+    private String ladingCode;
+
+    private ListDeliveryConstract.OnTabsListener titleTabsListener;
+
+    private ListDeliveryConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange;
+
     public ListBaoPhatBangKePresenter(ContainerView containerView) {
         super(containerView);
     }
 
-    int mType;
+    private int mType;
 
+    public ListBaoPhatBangKePresenter setLadingCode(String ladingCode) {
+        this.ladingCode = ladingCode;
+        return this;
+    }
+
+    public ListBaoPhatBangKePresenter setDeliveryNotSuccessfulChange(ListDeliveryConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange) {
+        this.deliveryNotSuccessfulChange = deliveryNotSuccessfulChange;
+        return this;
+    }
 
     @Override
     public ListBaoPhatBangKeContract.View onCreateView() {
@@ -63,109 +69,77 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public ListBaoPhatBangKeContract.Interactor onCreateInteractor() {
         return new ListBaoPhatBangKeInteractor(this);
     }
-/*
-    @Override
-    public void searchStatisticCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
-        mView.showProgress();
-        mInteractor.searchStatisticCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getList());
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
-
-    }*/
-
-//    @Override
-//    public void searchDeliveryPostman(String postmanID, String fromDate, String shiftID, String chuyenthu, String tuiso) {
-//        mView.showProgress();
-//        mInteractor.searchDeliveryPostman(postmanID, fromDate, shiftID, chuyenthu, tuiso, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-//            @Override
-//            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-//                super.onSuccess(call, response);
-//                mView.hideProgress();
-//                if (response.body().getErrorCode().equals("00")) {
-//                    mView.showResponseSuccess(response.body().getList());
-//                } else {
-//                    mView.showError(response.body().getMessage());
-//                    mView.showResponseSuccessEmpty();
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(Call<CommonObjectListResult> call, String message) {
-//                super.onError(call, message);
-//                mView.hideProgress();
-//                mView.showError(message);
-//            }
-//        });
-//    }
-
-//    @Override
-//    public void showDetailView(CommonObject commonObject) {
-//        if (mType == 1) {
-//            new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
-//        } else if (mType == 2) {
-//            new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
-//        } else if (mType == 3) {
-//            new BaoPhatBangKeDetailPresenter(mContainerView)
-//                    .setBaoPhatBangKe(commonObject)
-//                    .setPositionTab(mPos)
-//                    .pushView();
-//        }
-//    }
 
     public ListBaoPhatBangKePresenter setTypeTab(int position) {
         mPos = position;
         return this;
     }
 
-    @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String shiftID, String chuyenthu, String tuiso, String routeCode) {
-        mView.showProgress();
-        mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, chuyenthu, tuiso, routeCode, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
-            @Override
-            protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(response.body().getDeliveryPostmens());
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
+    public ListBaoPhatBangKePresenter setDeliveryListType(int deliveryListType) {
+        mDeliveryListType = deliveryListType;
+        return this;
+    }
 
-            @Override
-            protected void onError(Call<DeliveryPostmanResponse> call, String message) {
-                super.onError(call, message);
-
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
+    public ListBaoPhatBangKePresenter setOnTitleChangeListener(ListDeliveryConstract.OnTabsListener listener) {
+        titleTabsListener = listener;
+        return this;
     }
 
     @Override
-    public void showDetailView(DeliveryPostman commonObject) {
+    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer deliveryType) {
+        if ((getType() == Constants.NOT_YET_DELIVERY_TAB && deliveryNotSuccessfulChange.getCurrentTab() == 0)
+                || (getType() == Constants.NOT_SUCCESSFULLY_DELIVERY_TAB && deliveryNotSuccessfulChange.getCurrentTab() == 1)) {
+            mView.showProgress();
+            if (deliveryType != Constants.ALL_SEARCH_TYPE) {
+                switch (deliveryType) {
+                    case Constants.DELIVERY_LIST_TYPE_COD_NEW:
+                    case Constants.DELIVERY_LIST_TYPE_COD:
+                        deliveryType = Constants.COD_SEARCH_TYPE;
+                        break;
+                    case Constants.DELIVERY_LIST_TYPE_NORMAL_NEW:
+                    case Constants.DELIVERY_LIST_TYPE_NORMAL:
+                        deliveryType = Constants.NORMAL_SEARCH_TYPE;
+                        break;
+                    case Constants.DELIVERY_LIST_TYPE_PA_NEW:
+                    case Constants.DELIVERY_LIST_TYPE_PA:
+                        deliveryType = Constants.HCC_SEARCH_TYPE;
+                        break;
+                    default:
+                        deliveryType = Constants.ALL_SEARCH_TYPE;
+                }
+            }
 
+            addCallback(mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode,
+                    deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+                        @Override
+                        protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
+                            super.onSuccess(call, response);
+                            mView.hideProgress();
+                            if (response.body() != null) {
+                                if (response.body().getErrorCode().equals("00")) {
+                                    mView.showListSuccess(response.body().getDeliveryPostmens());
+                                    deliveryNotSuccessfulChange.onChanged(response.body().getDeliveryPostmens());
+                                } else {
+                                    mView.showError(response.body().getMessage());
+                                    deliveryNotSuccessfulChange.onError(response.body().getMessage());
+                                }
+                            }
+                        }
+
+                        @Override
+                        protected void onError(Call<DeliveryPostmanResponse> call, String message) {
+                            super.onError(call, message);
+                            mView.hideProgress();
+                            mView.showError(message);
+                            deliveryNotSuccessfulChange.onError(message);
+                        }
+                    }));
+        }
     }
 
     @Override
     public void showConfirmDelivery(List<DeliveryPostman> commonObject) {
-        new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).pushView();
+        new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).setOnTabChangeListener(titleTabsListener).pushView();
     }
 
     @Override
@@ -175,137 +149,33 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void getReasons() {
-        mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
-                super.onSuccess(call, response);
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.getReasonsSuccess(response.body().getReasonInfos());
-                }
-            }
-
-            @Override
-            protected void onError(Call<ReasonResult> call, String message) {
-                super.onError(call, message);
-            }
-        });
-    }
-
-    @Override
     public int getType() {
         return mType;
     }
 
-
     @Override
-    public void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String signatureCapture) {
-        String postmanID = "";
-        String mobileNumber = "";
-        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            postmanID = userInfo.getiD();
-            mobileNumber = userInfo.getMobileNumber();
-        }
-        String deliveryPOSCode = "";
-        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        if (!posOfficeJson.isEmpty()) {
-            PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-            deliveryPOSCode = postOffice.getCode();
-        }
-        for (CommonObject item : commonObjects) {
-            String parcelCode = item.getParcelCode();
-            String deliveryPOCode = !TextUtils.isEmpty(deliveryPOSCode) ? deliveryPOSCode : item.getPoCode();
-            String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-            String deliveryTime = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT6);
-            String receiverName = item.getReciverName();
-            String reasonCode = reason;
-            String solutionCode = solution;
-            String status = "C18";
-            String ladingPostmanID = item.getiD();
-        /*    if (item.getService().equals("12")) {
-                status = "C14";*/
-        /*        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-                PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
-                        parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
-                        status, "", "", signatureCapture,
-                        note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
-                mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
-                            @Override
-                            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                super.onSuccess(call, response);
-                                if (response.body().getErrorCode().equals("00")) {
-                                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                } else {
-                                    mView.showError(response.body().getMessage());
-                                }
-                            }
-
-                            @Override
-                            protected void onError(Call<SimpleResult> call, String message) {
-                                super.onError(call, message);
-                                mView.showError(message);
-                            }
-                        }
-                );*/
-            /*     } else {*/
-        /*        if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
-                    status = "C14";
-                    String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-                    PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
-                            parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, item.getReceiverIDNumber(), reasonCode, solutionCode,
-                            status, "", "", signatureCapture,
-                            note, item.getAmount(), Constants.SHIFT, item.getRouteCode(), ladingPostmanID, signature, item.getImageDelivery());
-                    mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Context) mContainerView) {
-                                @Override
-                                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                    super.onSuccess(call, response);
-                                    if (response.body().getErrorCode().equals("00")) {
-                                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                    } else {
-                                        mView.showError(response.body().getMessage());
-                                    }
-                                }
-
-                                @Override
-                                protected void onError(Call<SimpleResult> call, String message) {
-                                    super.onError(call, message);
-                                    mView.showError(message);
-                                }
-                            }
-                    );
-                } else {*/
-            String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-            PushToPnsRequest request = new PushToPnsRequest(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                    solutionCode, status, "", "", signatureCapture, note, item.getAmount(), item.getiD(), Constants.SHIFT, item.getRouteCode(), signature, item.getImageDelivery());
-            mInteractor.pushToPNSDelivery(request,
-                    new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                        @Override
-                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            super.onSuccess(call, response);
-                            if (response.body().getErrorCode().equals("00")) {
-                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                            } else {
-                                mView.showError(response.body().getMessage());
-                            }
-                        }
-
-                        @Override
-                        protected void onError(Call<SimpleResult> call, String message) {
-                            super.onError(call, message);
-                            mView.showError(message);
-                        }
-                    });
-            // }
-            // }
-        }
+    public String getLadingCode() {
+        return ladingCode;
     }
 
     @Override
-    public void nextReceverPerson(List<CommonObject> commonObjects) {
-        new ReceverPersonPresenter(mContainerView).setBaoPhatBangKe(commonObjects).pushView();
+    public int getDeliverType() {
+        return mDeliveryListType;
+    }
+
+    @Override
+    public void setTitleTab(int quantity) {
+        titleTabsListener.onQuantityChanged(quantity, mType);
+    }
+
+    @Override
+    public void onTabChange() {
+        titleTabsListener.onTabChange(mType);
+    }
+
+    @Override
+    public ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange() {
+        return deliveryNotSuccessfulChange;
     }
 
     @Override
@@ -329,15 +199,17 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        addCallback(mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showCallSuccess();
-                } else {
-                    mView.showError(response.body().getMessage());
+                if (response.body() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showCallSuccess();
+                    } else {
+                        mView.showCallError(response.body().getMessage());
+                    }
                 }
             }
 
@@ -345,58 +217,62 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showError(message);
+                mView.showCallError(message);
             }
-        });
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.showCallError("Lỗi kết nối đến tổng đài");
+            }
+        }));
 
     }
 
     @Override
     public void updateMobile(String phone, String parcelCode) {
         mView.showProgress();
-        mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String tPhone = phone;
+        addCallback(mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
+                mView.showSuccessUpdateMobile(tPhone, response.body().getMessage());
             }
 
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
+                mView.showErrorToast(message);
             }
-        });
+        }));
     }
 
     @Override
     public void vietmapSearch(String address) {
-//        address = "cầu Long biên, Hà Nội";
-        mInteractor.vietmapSearch(address, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
-                super.onSuccess(call, response);
-
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showAddressList(response.body().getResponseLocation());
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<XacMinhDiaChiResult> call, String message) {
-                super.onError(call, message);
-
-                mView.showError(message);
-            }
-        });
+        new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
     }
 
     @Override
-    public void showAddressList(Object object) {
-        new AddressListPresenter(mContainerView).setObject(object,2).pushView();
+    public void callBySimCard(String calleeNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + calleeNumber));
+        getViewContext().startActivity(intent);
     }
 
+    @Override
+    public void callByWifi(String calleeNumber) {
+        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+        intent.putExtra(Constants.CALL_TYPE, 1);
+        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+        intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);
+        getViewContext().startActivity(intent);
+    }
 
+    @Override
+    public void onSearched(String fromDate, String toDate, int currentPosition) {
+        titleTabsListener.onSearchChange(fromDate, toDate, currentPosition);
+    }
 }

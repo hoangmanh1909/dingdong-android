@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="Lập bảng kê (BD13)" />
+                android:text="Báo phát offline" />
 
             <ImageView
                 android:id="@+id/img_send"

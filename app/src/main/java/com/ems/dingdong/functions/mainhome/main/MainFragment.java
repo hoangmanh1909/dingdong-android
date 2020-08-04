@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,13 +15,16 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
+import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
-import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
+import com.ems.dingdong.model.request.CallHistoryRequest;
+import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -31,6 +35,8 @@ import com.roughike.bottombar.BottomBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The Home Fragment
@@ -75,19 +81,37 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void initLayout() {
         super.initLayout();
-
         updateUserHeader();
         setupAdapter();
+        CallHistoryRequest request = new CallHistoryRequest();
+        request.setTenantID(12);
+        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (simpleResult, throwable) -> {
+                            Log.d("MainFragment.class", throwable.getMessage());
+                        }
+                );
+
+        ApplicationController applicationController =
+                (ApplicationController) getViewContext().getApplication();
+        applicationController.initPortSipService();
+
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
                 updateUserHeader();
+                if (homeFragment != null) {
+                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
+                    v1Fragment.updateHomeView();
+                }
             } else if (tabId == R.id.action_cart) {
                 viewPager.setCurrentItem(1);
                 removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
-                mPresenter.getBalance();
+                if (mPresenter != null)
+                    mPresenter.getBalance();
             } else if (tabId == R.id.action_location) {
                 viewPager.setCurrentItem(3);
                 removeHeader();
@@ -95,6 +119,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         });
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -113,7 +138,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         });
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
-        getActivity().startService(intent);
+        getViewContext().startService(intent);
         if (!"6".equals(userInfo.getEmpGroupID())) {
             imgCall.setVisibility(View.VISIBLE);
             imgTopSetting.setVisibility(View.VISIBLE);
@@ -123,14 +148,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             imgTopSetting.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.INVISIBLE);
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ViewGroup v = bottomBar.findViewById(R.id.bb_bottom_bar_item_container);
-                    v.removeViewAt(3);
-                    v.removeViewAt(2);
-                    v.removeViewAt(1);
-                }
+            handler.postDelayed(() -> {
+                ViewGroup v = bottomBar.findViewById(R.id.bb_bottom_bar_item_container);
+                v.removeViewAt(3);
+                v.removeViewAt(2);
+                v.removeViewAt(1);
             }, 100);
         }
     }
@@ -164,27 +186,29 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     }
 
     private Fragment getFragmentItem(int position) {
-        switch (position) {
-            case 0:
-                if (homeFragment == null) {
-                    homeFragment = mPresenter.getHomePresenter().getFragment();
-                }
-                return homeFragment;
-            case 1:
-                if (gomHangFragment == null) {
-                    gomHangFragment = mPresenter.getGomHangPresenter().getFragment();
-                }
-                return gomHangFragment;
-            case 2:
-                if (phatHangFragment == null) {
-                    phatHangFragment = mPresenter.getPhatHangPresenter().getFragment();
-                }
-                return phatHangFragment;
-            case 3:
-                if (locationFragment == null) {
-                    locationFragment = mPresenter.getAddressPresenter().getFragment();
-                }
-                return locationFragment;
+        if (mPresenter != null) {
+            switch (position) {
+                case 0:
+                    if (homeFragment == null) {
+                        homeFragment = mPresenter.getHomePresenter().getFragment();
+                    }
+                    return homeFragment;
+                case 1:
+                    if (gomHangFragment == null) {
+                        gomHangFragment = mPresenter.getGomHangPresenter().getFragment();
+                    }
+                    return gomHangFragment;
+                case 2:
+                    if (phatHangFragment == null) {
+                        phatHangFragment = mPresenter.getPhatHangPresenter().getFragment();
+                    }
+                    return phatHangFragment;
+                case 3:
+                    if (locationFragment == null) {
+                        locationFragment = mPresenter.getAddressPresenter().getFragment();
+                    }
+                    return locationFragment;
+            }
         }
         return new Fragment();
     }
@@ -220,39 +244,35 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             case 2:
                 mPresenter.getBalance();
                 break;
-
             default:
                 removeHeader();
-                break;
-
         }
-        updateUserHeader();
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void updateBalance(StatisticDebitGeneralResponse value) {
+    public void updateBalance(StatisticPaymentResponse value) {
         viewTop.setVisibility(View.VISIBLE);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
         if (value != null) {
-            userInfo.setBalance(String.valueOf(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount())));
-            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()) + Long.parseLong(value.getSuccessAmount()))));
-            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
-            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
+            userInfo.setBalance(String.valueOf(Long.parseLong(value.getCollectAmount())));
+            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getCollectAmount()))));
+            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getPaymentAmount()))));
+            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getDebitAmount()))));
         } else {
             firstHeader.setText(getResources().getString(R.string.employee_balance));
             secondHeader.setText(getResources().getString(R.string.employee_balance_success));
             thirstHeader.setText(getResources().getString(R.string.employee_balance_missing));
         }
+        sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
     }
 
     @SuppressLint("SetTextI18n")
     private void updateUserHeader() {
         viewTop.setVisibility(View.VISIBLE);
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");

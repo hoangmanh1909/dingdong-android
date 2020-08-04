@@ -1,0 +1,124 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TableLayout
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:showDividers="beginning|middle|end">
+
+        <TableRow
+            style="@style/keyboard_row"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:weightSum="3">
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:id="@+id/btn_one"
+                android:gravity="center"
+                app:tvContent=""
+                app:tvDigit="1" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:id="@+id/btn_two"
+                android:gravity="center"
+                app:tvContent="ABC"
+                app:tvDigit="2" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_three"
+                app:tvContent="DEF"
+                app:tvDigit="3" />
+        </TableRow>
+
+        <TableRow
+            style="@style/keyboard_row"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:weightSum="3">
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:id="@+id/btn_four"
+                android:gravity="center"
+                app:tvContent="GHI"
+                app:tvDigit="4" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:id="@+id/btn_five"
+                android:gravity="center"
+                app:tvContent="JKL"
+                app:tvDigit="5" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_six"
+                app:tvContent="MNO"
+                app:tvDigit="6" />
+        </TableRow>
+
+        <TableRow
+            style="@style/keyboard_row"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:weightSum="3">
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_seven"
+                app:tvContent="PQRS"
+                app:tvDigit="7" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_eight"
+                app:tvContent="TUV"
+                app:tvDigit="8" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_nine"
+                app:tvContent="WXYZ"
+                app:tvDigit="9" />
+        </TableRow>
+
+        <TableRow
+            style="@style/keyboard_row"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:weightSum="3">
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                app:tvContent=""
+                android:id="@+id/btn_star"
+                app:tvDigit="*" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_zero"
+                app:tvContent="+"
+                app:tvDigit="0" />
+
+            <com.ems.dingdong.views.CustomDiapadButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/btn_hashtag"
+                app:tvContent=""
+                app:tvDigit="#" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

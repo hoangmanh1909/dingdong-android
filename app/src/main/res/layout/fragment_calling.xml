@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ems.dingdong.views.CustomBoldTextView
+        android:id="@+id/tv_info"
+        android:layout_marginTop="@dimen/size_50dp"
+        android:layout_width="match_parent"
+        android:text="Gọi qua ứng dụng"
+        android:textSize="@dimen/size_20dp"
+        android:gravity="center"
+        android:layout_height="wrap_content" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_sub_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cuộc gọi sử dụng wifi hoặc gói dữ liệu của bạn"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_below="@+id/tv_info" />
+
+    <ImageView
+        android:id="@+id/iv_address"
+        android:layout_width="@dimen/dimen_100dp"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_below="@+id/tv_sub_info"
+        android:background="@drawable/bg_contact_oval"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_40dp"
+        android:gravity="center" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_address"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:gravity="center"
+        android:text="Số điện thoại"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_30dp" />
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_calling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_phone_number"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:text="Calling"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dimen_20dp" />
+
+    <Chronometer
+        android:id="@+id/tv_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_phone_number"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dimen_20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rl_call_action"
+        android:layout_marginBottom="@dimen/dimen_30dp"
+        android:weightSum="3">
+
+        <com.ems.dingdong.views.CustomImageView
+            android:layout_width="@dimen/dimen_70dp"
+            android:id="@+id/iv_mic_off"
+            android:layout_height="@dimen/dimen_70dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_weight="1"
+            app:srcImg="@drawable/ic_mic_off"
+            app:title="Tắt âm" />
+
+        <com.ems.dingdong.views.CustomImageView
+            android:layout_width="@dimen/dimen_70dp"
+            android:layout_height="@dimen/dimen_70dp"
+            android:id="@+id/iv_hold"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcImg="@drawable/ic_phone_paused"
+            app:title="Giữ" />
+
+        <com.ems.dingdong.views.CustomImageView
+            android:layout_width="@dimen/dimen_70dp"
+            android:layout_height="@dimen/dimen_70dp"
+            android:layout_gravity="center"
+            android:id="@+id/iv_foward"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight="1"
+            app:srcImg="@drawable/ic_button_foward"
+            app:title="Chuyển tiếp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_call_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_50dp">
+
+        <ImageView
+            android:id="@+id/iv_call_answer"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
+            android:layout_marginLeft="@dimen/dimen_40dp"
+            android:layout_toLeftOf="@+id/iv_call_end"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_dialpad" />
+
+        <ImageView
+            android:id="@+id/iv_call_end"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_call_end_selector"
+            android:src="@drawable/ic_call_end_red" />
+
+        <ImageView
+            android:id="@+id/iv_call_cancel"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
+            android:layout_marginRight="@dimen/dimen_40dp"
+            android:layout_toRightOf="@+id/iv_call_end"
+            android:layout_weight="1"
+            android:src="@drawable/ic_button_speaker" />
+    </RelativeLayout>
+
+</RelativeLayout>

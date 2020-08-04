@@ -1,19 +1,20 @@
 package com.ems.dingdong.functions.mainhome.home;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.statistic.ListStatisticPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.listbd13.ListBd13Presenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.listbd13.ListBd13Presenter;
-import com.ems.dingdong.model.CommonObjectListResult;
-import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.HomeCollectInfoResult;
+import com.ems.dingdong.utiles.Constants;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -74,19 +75,16 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     }
 
     @Override
-    public void getHomeView(String postmanCode,String routeCode) {
+    public void getHomeView(String postmanCode, String routeCode) {
         mView.showProgress();
-        mInteractor.getHomeView(postmanCode,routeCode, new CommonCallback<HomeCollectInfoResult>((Activity) mContainerView) {
+        mInteractor.getHomeView(postmanCode, routeCode, new CommonCallback<HomeCollectInfoResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<HomeCollectInfoResult> call, Response<HomeCollectInfoResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                if(response.body().getErrorCode().equals("00"))
-                {
+                if (response.body().getErrorCode().equals("00")) {
                     mView.showObjectSuccess(response.body());
-                }
-                else
-                {
+                } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showObjectEmpty();
                 }
@@ -99,5 +97,12 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 mView.showErrorToast(message);
             }
         });
+    }
+
+    @Override
+    public void showListBd13(int typeListDelivery) {
+        Intent intent = new Intent(getViewContext(), ListBaoPhatBangKeActivity.class);
+        intent.putExtra(Constants.DELIVERY_LIST_TYPE, typeListDelivery);
+        getViewContext().startActivity(intent);
     }
 }

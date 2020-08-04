@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeAdapter;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -24,9 +23,11 @@ import butterknife.ButterKnife;
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.HolderView> {
 
     List<AddressListModel> addressListModelList;
+    Context mContext;
 
     public AddressListAdapter(Context context, List<AddressListModel> addressListModelList) {
         this.addressListModelList = addressListModelList;
+        mContext = context;
     }
 
     @Override
@@ -51,6 +52,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         CustomBoldTextView tv_name;
         @BindView(R.id.tv_address)
         CustomTextView tv_address;
+        @BindView(R.id.tv_smart_code)
+        CustomTextView tvSmartCode;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -59,7 +62,12 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
         public void bindView(Object model, int position) {
             AddressListModel item = (AddressListModel) model;
-            tv_name.setText(item.getName());
+            if (!TextUtils.isEmpty(item.getSmartCode())) {
+                tvSmartCode.setText(String.format(mContext.getString(R.string.smart_code) + " %s", item.getSmartCode()));
+            }
+            if (!TextUtils.isEmpty(item.getName()))
+                tv_name.setText(item.getName());
+
             tv_address.setText(Float.toString(item.getConfidence()) + "km - " + item.getLabel());
         }
     }

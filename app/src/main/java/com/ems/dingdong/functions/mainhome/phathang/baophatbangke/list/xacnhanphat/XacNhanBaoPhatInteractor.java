@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
@@ -9,11 +10,16 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 
 import java.util.List;
+
+import io.reactivex.Single;
 
 public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.Interactor {
     public XacNhanBaoPhatInteractor(XacNhanBaoPhatContract.Presenter presenter) {
@@ -41,6 +47,16 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
+    public Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request) {
+        return NetWorkController.checkAmountPayment(request);
+    }
+
+    @Override
+    public Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
+        return NetWorkController.paymentV2(request);
+    }
+
+    @Override
     public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         NetWorkController.pushToPNSDelivery(request, callback);
     }
@@ -58,5 +74,10 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     @Override
     public void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
         NetWorkController.cancelDivided(request,callback);
+    }
+
+    @Override
+    public void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback) {
+        NetWorkController.changeRouteInsert(requests, callback);
     }
 }

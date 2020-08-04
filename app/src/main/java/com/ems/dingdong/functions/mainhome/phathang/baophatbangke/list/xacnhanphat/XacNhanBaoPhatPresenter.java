@@ -2,14 +2,15 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -19,11 +20,15 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
-import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 
@@ -32,6 +37,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -40,9 +47,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     private Calendar calDate;
     private int mHour;
     private int mMinute;
-    RouteInfo routeInfo;
-    UserInfo userInfo;
-    PostOffice postOffice;
+    private RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private ListDeliveryConstract.OnTabsListener titleTabsListener;
+    private List<DeliveryCheckAmountPaymentResponse> paymentResponses;
+    private List<PaypostPaymentRequest> paymentRequests;
 
     public XacNhanBaoPhatPresenter(ContainerView containerView) {
         super(containerView);
@@ -123,7 +133,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
-                mView.showImage(response.body().getFile());
+                if (response.body() != null) {
+                    mView.showImage(response.body().getFile());
+                }
             }
 
             @Override
@@ -141,7 +153,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
 
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        for (DeliveryPostman item : mView.getItemSelected()) {
 
             String ladingCode = item.getMaE();
             String deliveryPOCode = deliveryPOSCode;
@@ -175,7 +187,13 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     shiftId,
                     routeCode,
                     signature,
-                    deliveryImage);
+                    deliveryImage,
+                    item.isItemReturn(),
+                    item.getBatchCode(),
+                    item.getItemsInBatch(),
+                    item.getAmountForBatch());
+            request.setCustomerCode(item.getCustomerCode());
+            request.setVATCode(item.getVatCode());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -194,69 +212,111 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void paymentDelivery(String deliveryImage, String signCapture) {
+    public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
+                                String relationship, InfoVerify infoVerify) {
+        paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
         String deliveryPOCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
         String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
-
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
+        for (DeliveryPostman item : mView.getItemSelected()) {
+            String receiverName;
+            receiverName = newReceiverName;
             String parcelCode = item.getMaE();
-            String receiverName = item.getReciverName();
-
             String reasonCode = "";
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            String amount = Integer.toString(item.getAmount());
 
             final String paymentChannel = "1";
             String deliveryType = "";
-            String ladingPostmanID = Integer.toString(item.getId());
             String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-            String shiftId = Integer.toString(item.getShiftId());
-            PaymentDeviveryRequest request = new PaymentDeviveryRequest(
-                    postmanID,
-                    parcelCode,
-                    mobileNumber,
-                    deliveryPOCode,
-                    deliveryDate,
-                    deliveryTime,
-                    receiverName,
-                    "",
-                    reasonCode,
-                    solutionCode,
-                    status,
-                    paymentChannel,
-                    deliveryType,
-                    signCapture,
-                    note,
-                    amount,
-                    shiftId,
-                    routeCode,
-                    ladingPostmanID,
-                    signature,
-                    deliveryImage,
-                    userInfo.getUserName(),
-                    item.getBatchCode()
-            );
 
-            mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode());
-                }
-
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                    mView.showError(message);
-                }
-            });
+            PaypostPaymentRequest request = new PaypostPaymentRequest();
+            request.setPostmanID(postmanID);
+            request.setParcelCode(parcelCode);
+            request.setMobileNumber(mobileNumber);
+            request.setDeliveryPOCode(deliveryPOCode);
+            request.setDeliveryDate(deliveryDate);
+            request.setDeliveryTime(deliveryTime);
+            request.setReceiverName(receiverName);
+            request.setReasonCode(reasonCode);
+            request.setSolutionCode(solutionCode);
+            request.setStatus(status);
+            request.setPaymentChannel(paymentChannel);
+            request.setSignatureCapture(signCapture);
+            request.setNote(note);
+            request.setCollectAmount(item.getAmount());
+            request.setShiftID(item.getShiftId());
+            request.setRouteCode(routeCode);
+            request.setLadingPostmanID(item.getId());
+            request.setSignature(signature);
+            request.setImageDelivery(deliveryImage);
+            request.setBatchCode(item.getBatchCode());
+            request.setIsItemReturn(item.isItemReturn());
+            request.setItemsInBatch(item.getItemsInBatch());
+            request.setAmountForBatch(item.getAmountForBatch());
+            request.setReceiverReference(relationship);
+            request.setPaymentPP(isPaymentPP);
+            request.setReplaceCode(item.getReplaceCode());
+            request.setRePaymentBatch(item.isRePaymentBatch());
+            request.setLastLadingCode(item.getLastLadingCode());
+            request.setPaymentBatch(item.isPaymentBatch());
+            request.setPostmanCode(userInfo.getUserName());
+            request.setCustomerCode(item.getCustomerCode());
+            request.setReceiverPIDWhere(infoVerify.getReceiverPIDWhere());
+            request.setReceiverPIDDate(infoVerify.getReceiverPIDDate());
+            request.setReceiverBirthday(infoVerify.getReceiverBirthday());
+            request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
+            request.setAuthenType(infoVerify.getAuthenType());
+            request.setReceiverIDNumber(infoVerify.getGtgt());
+            request.setImageAuthen(imageAuthen);
+            request.setVATCode(item.getVatCode());
+            paymentRequests.add(request);
         }
+        mInteractor.paymentDelivery(paymentRequests)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        simpleResult -> {
+                            paymentResponses = simpleResult.getPaymentResponses();
+                            if (simpleResult.getErrorCode().equals("01")) {
+                                long amountPP = 0;
+                                long amountPNS = 0;
+                                if (paymentResponses != null) {
+                                    for (DeliveryCheckAmountPaymentResponse item : paymentResponses) {
+                                        amountPP += item.getPayPostAmount();
+                                        amountPNS += item.getPNSAmount();
+                                    }
+                                }
+                                mView.showCheckAmountPaymentError(simpleResult.getMessage(),
+                                        NumberUtils.formatPriceNumber(amountPP),
+                                        NumberUtils.formatPriceNumber(amountPNS));
+                            } else {
+                                mView.showPaymentV2Success(simpleResult.getMessage());
+                            }
+                        },
+                        throwable -> {
+                            mView.showPaymentV2Success(throwable.getMessage());
+                        }
+                );
+    }
+
+    @Override
+    public void paymentV2(boolean isAutoUpdateCODAmount) {
+        DeliveryPaymentV2 request = new DeliveryPaymentV2();
+        request.setAutoUpdateCODAmount(isAutoUpdateCODAmount);
+        request.setPaymentResponses(paymentResponses);
+        request.setPaymentRequests(paymentRequests);
+        mInteractor.paymentV2(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> mView.showPaymentV2Success(simpleResult.getMessage()),
+                        throwable -> mView.showPaymentV2Success(throwable.getMessage()));
     }
 
     @Override
@@ -295,13 +355,13 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     public void cancelDivided(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
         List<DingDongCancelDividedRequest> requests = new ArrayList<>();
 
-        for (DeliveryPostman item : mBaoPhatBangke) {
+        for (DeliveryPostman item : mView.getItemSelected()) {
             DingDongCancelDividedRequest request = new DingDongCancelDividedRequest();
             request.setAmndPOCode(userInfo.getUnitCode());
             request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
             request.setLadingCode(item.getMaE());
             request.setFromDeliveryRouteId(item.getRouteId());
-            request.setFromPostmanId(Integer.parseInt(userInfo.getiD())) ;
+            request.setFromPostmanId(Integer.parseInt(userInfo.getiD()));
             request.setToDeliveryRouteId(toRouteId);
             request.setToPostmanId(toPostmanId);
             request.setDescription("");
@@ -326,8 +386,51 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
+    public void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
+        List<ChangeRouteRequest> requests = new ArrayList<>();
+
+        for (DeliveryPostman item : mView.getItemSelected()) {
+            ChangeRouteRequest request = new ChangeRouteRequest();
+            request.setPoCode(postOffice.getCode());
+            request.setLadingCode(item.getMaE());
+            request.setFromRouteId(item.getRouteId());
+            request.setPostmanId(Integer.parseInt(userInfo.getiD()));
+            request.setToRouteId(toRouteId);
+            request.setToPostmanId(toPostmanId);
+            request.setDescription("");
+            request.setSignatureCapture(signCapture);
+            request.setImageDelivery(fileImg);
+            requests.add(request);
+        }
+
+        mInteractor.changeRouteInsert(requests.get(0), new CommonCallback<SimpleResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.showCancelDivided(response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showCancelDivided(message);
+            }
+        });
+    }
+
+    @Override
+    public void onTabRefresh() {
+        titleTabsListener.onDelivered();
+    }
+
+    @Override
     public void start() {
 
+    }
+
+    public XacNhanBaoPhatPresenter setOnTabChangeListener(ListDeliveryConstract.OnTabsListener listener) {
+        titleTabsListener = listener;
+        return this;
     }
 
     @Override

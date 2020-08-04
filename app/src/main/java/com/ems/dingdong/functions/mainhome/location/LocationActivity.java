@@ -70,7 +70,7 @@ public class LocationActivity extends DingDongActivity {
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
                 searchView.clearFocus();
-                mFragment.getQuery(query);
+                mFragment.getQuery();
                 // mAdapter.getFilter().filter(query);
                 return false;
             }

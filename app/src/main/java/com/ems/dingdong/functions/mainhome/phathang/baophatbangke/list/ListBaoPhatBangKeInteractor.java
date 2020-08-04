@@ -3,13 +3,11 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
-import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
-import com.ems.dingdong.model.XacMinhDiaChiResult;
-import com.ems.dingdong.model.request.PaymentDeviveryRequest;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
+
+import retrofit2.Call;
 
 /**
  * The CommonObject interactor
@@ -27,39 +25,19 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     }
 
     @Override
-    public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String shiftID, String chuyenthu, String tuiso, String routeCode, CommonCallback<DeliveryPostmanResponse> callback) {
-        NetWorkController.searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, chuyenthu, tuiso, routeCode, callback);
+    public Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer searchType, CommonCallback<DeliveryPostmanResponse> callback) {
+        return NetWorkController.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchType, callback);
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasons(commonCallback);
-    }
-
-
-    @Override
-    public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.paymentDelivery(request, callback);
-    }
-
-    @Override
-    public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(request, callback);
-    }
-
-    @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+    public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, callback);
     }
 
     @Override
-    public void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
-        NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
+    public Call<SimpleResult> updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
+        return NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
     }
 
-    @Override
-    public void vietmapSearch(String address, CommonCallback<XacMinhDiaChiResult> callback) {
-        NetWorkController.vietmapSearch(address, callback);
-    }
 }

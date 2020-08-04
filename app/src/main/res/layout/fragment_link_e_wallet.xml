@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_gradient_top">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/link_to_e_post_wallet"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_not_connected_to_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/size_30dp"
+            android:orientation="vertical">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/tv_info_link"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <com.ems.dingdong.views.OtpEditText
+                android:id="@+id/et_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:digits="1234567890"
+                android:visibility="gone"
+                android:inputType="number"
+                android:maxLength="6"
+                app:maxLength="6"
+                android:textIsSelectable="false"
+                android:textSize="40sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_from_info"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:text="@string/phone_number_which_registered_to_e_wallet" />
+                    <com.ems.dingdong.views.CustomEditText
+                        android:layout_width="match_parent"
+                        android:id="@+id/edt_phone_number"
+                        android:enabled="false"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:text="0218301923"
+                        android:padding="@dimen/_5sdp"
+                        android:inputType="phone"
+                        android:background="@drawable/bg_border_edittext"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="match_parent"
+                        android:textSize="@dimen/_14sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/id_user" />
+                    <com.ems.dingdong.views.CustomEditText
+                        android:layout_width="match_parent"
+                        android:id="@+id/id_user"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:enabled="false"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="120391ádadsa823"
+                        android:textColor="@color/black"
+                        android:background="@drawable/bg_border_edittext"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/dimen_30dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:background="@drawable/bg_gradient_radius_5"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/connect"
+                android:textColor="@color/black"
+                android:id="@+id/btn_link_wallet"
+                android:textSize="@dimen/_14sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

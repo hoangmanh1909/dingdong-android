@@ -227,7 +227,9 @@
    public *;
 }
 
+-dontwarn org.webrtc.**
 -keep class org.webrtc.** { *; }
+-keep class com.stringee.** { *; }
 -keep public class org.webrtc.** { *; }
 
 # Jackson refers to these but they're unavailable/unused in typical runtimes

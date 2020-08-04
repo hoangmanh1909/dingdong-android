@@ -1,21 +1,17 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi;
 
-import android.annotation.SuppressLint;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.core.base.viper.ViewFragment;
@@ -30,9 +26,6 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.views.form.FormItemEditText;
-import com.mapbox.android.core.location.LocationEngine;
-import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
@@ -42,7 +35,6 @@ import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.core.exceptions.ServicesException;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -81,25 +73,21 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
-    @BindView(R.id.mapView)
+    @BindView(R.id.mapViewDetail)
     MapView mapView;
 
-    //    @BindView(R.id.tv_longitude)
-//    CustomTextView tv_longitude;
-//    @BindView(R.id.tv_latitude)
-//    CustomTextView tv_latitude;
     @BindView(R.id.edt_name)
-    FormItemEditText edt_name;
+    EditText edt_name;
     @BindView(R.id.edt_street)
-    FormItemEditText edt_street;
+    EditText edt_street;
     @BindView(R.id.edt_country)
-    FormItemEditText edt_country;
+    CustomTextView edt_country;
     @BindView(R.id.edt_region)
-    FormItemEditText edt_region;
+    CustomTextView edt_region;
     @BindView(R.id.edt_county)
-    FormItemEditText edt_county;
+    CustomTextView edt_county;
     @BindView(R.id.edt_confidence)
-    FormItemEditText edt_confidence;
+    CustomTextView edt_confidence;
     @BindView(R.id.tv_update)
     CustomMediumTextView tv_update;
     @BindView(R.id.tv_verify)
@@ -107,17 +95,16 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     @BindView(R.id.select_location_button)
     Button selectLocationButton;
 
+    private UserInfo userInfo;
+    private AddressListModel addressListModel;
 
-    UserInfo userInfo;
-    AddressListModel addressListModel;
-
-    public MapboxMap mapboxMap;
+    private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
     private Location mLocation;
     private ImageView hoveringMarker;
     private Layer droppedMarkerLayer;
 
-    LatLng mLatLng;
+    private LatLng mLatLng;
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
 
     public static ChiTietDiaChiFragment getInstance() {
@@ -153,36 +140,25 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
             return false;
         });
 
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
 
         addressListModel = mPresenter.getAddressListModel();
-
-//        tv_longitude.setText(Double.toString(addressListModel.getLongitude()));
-//        tv_latitude.setText(Double.toString(addressListModel.getLatitude()));
-
-        edt_confidence.setText(Float.toString(addressListModel.getConfidence()));
+        edt_confidence.setText(addressListModel.getLocality());
         edt_country.setText(addressListModel.getCountry());
         edt_county.setText(addressListModel.getCounty());
         edt_name.setText(addressListModel.getName());
         edt_street.setText(addressListModel.getStreet());
         edt_region.setText(addressListModel.getRegion());
 
-//        edt_confidence.setEnabled(false);
-//        edt_country.setEnabled(false);
-//        edt_name.setEnabled(false);
-//        edt_street.setEnabled(false);
-//        edt_region.setEnabled(false);
-//        edt_county.setEnabled(false);
-
         mLatLng = new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude());
 
     }
 
-    @OnClick({R.id.img_back, R.id.tv_verify, R.id.tv_update})
+    @OnClick({R.id.img_back, R.id.tv_verify, R.id.tv_update, R.id.img_cancel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -193,6 +169,10 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
                 break;
             case R.id.tv_update:
                 update();
+                break;
+            case R.id.img_cancel:
+                mPresenter.back();
+                mPresenter.backToXacMinhDiaChi();
                 break;
         }
     }
@@ -209,8 +189,8 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         centerPoint.setLat(mLatLng.getLatitude());
         centerPoint.setLon(mLatLng.getLongitude());
 
-        data.setName(edt_name.getText());
-        data.setStreetName(edt_street.getText());
+        data.setName(edt_name.getText().toString());
+        data.setStreetName(edt_street.getText().toString());
         data.setCenterPoint(centerPoint);
 
         UpdateRequest request = new UpdateRequest();
@@ -230,11 +210,9 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
                     .setConfirmText("OK")
                     .setTitleText(getResources().getString(R.string.notification))
                     .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                        }
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        mPresenter.back();
                     }).show();
         }
     }
@@ -253,96 +231,35 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         this.mapboxMap.addOnMapClickListener(this);
-
-        mapboxMap.setStyle(Style.MAPBOX_STREETS,
-                new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        enableLocationComponent(style);
-
-                        hoveringMarker = new ImageView(getContext());
-                        hoveringMarker.setImageResource(R.drawable.mapbox_marker_icon_default);
-                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
-                        hoveringMarker.setLayoutParams(params);
-                        mapView.addView(hoveringMarker);
-
-// Initialize, but don't show, a SymbolLayer for the marker icon which will represent a selected location.
-                        initDroppedMarker(style);
-
-// Button for user to drop marker or to pick marker back up.
-                        selectLocationButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (hoveringMarker.getVisibility() == View.VISIBLE) {
-
-// Use the map target's coordinates to make a reverse geocoding search
-                                    final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
-                                    mLatLng = mapboxMap.getCameraPosition().target;
-// Hide the hovering red hovering ImageView marker
-                                    hoveringMarker.setVisibility(View.INVISIBLE);
-
-// Transform the appearance of the button to become the cancel button
-                                    selectLocationButton.setBackgroundColor(
-                                            ContextCompat.getColor(getContext(), R.color.colorAccent));
-                                    selectLocationButton.setText("Hủy chọn");
+        this.mapboxMap.getUiSettings().setAttributionEnabled(false);
+        this.mapboxMap.getUiSettings().setLogoEnabled(false);
+        this.mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"), style -> {
+            enableLocationComponent(style);
 //
-// Show the SymbolLayer icon to represent the selected map location
-                                    if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
-                                        GeoJsonSource source = style.getSourceAs("dropped-marker-source-id");
-                                        if (source != null) {
-                                            source.setGeoJson(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
-                                        }
-                                        droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
-                                        if (droppedMarkerLayer != null) {
-                                            droppedMarkerLayer.setProperties(visibility(VISIBLE));
-                                        }
-                                    }
-
-// Use the map camera target's coordinates to make a reverse geocoding search
-                                    reverseGeocode(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
-
-                                } else {
-
-// Switch the button appearance back to select a location.
-                                    selectLocationButton.setBackgroundColor(
-                                            ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                                    selectLocationButton.setText("Chọn vị trí");
-
-// Show the red hovering ImageView marker
-                                    hoveringMarker.setVisibility(View.VISIBLE);
-
-// Hide the selected location SymbolLayer
-                                    droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
-                                    if (droppedMarkerLayer != null) {
-                                        droppedMarkerLayer.setProperties(visibility(NONE));
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
-
-
-//        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude())));
-
-//        markerViewManager = new MarkerViewManager(mapView, mapboxMap);
-//
-//        View customView = LayoutInflater.from(getContext()).inflate(
-//                R.layout.marker_view_bubble, null);
-//        customView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        markerView = new MarkerView(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude()), customView);
-//        markerViewManager.addMarker(markerView);
-//
-//        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude())));
-//
+            hoveringMarker = new ImageView(getContext());
+            hoveringMarker.setImageResource(R.drawable.mapbox_marker_icon_default);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+            hoveringMarker.setLayoutParams(params);
+            hoveringMarker.setVisibility(View.VISIBLE);
+            mapView.addView(hoveringMarker);
+            initDroppedMarker(style);
+            onSelectLocation(style);
+            selectLocationButton.setOnClickListener(view -> {
+                if (hoveringMarker.getVisibility() == View.VISIBLE) {
+                    onSelectLocation(style);
+                } else {
+                    onUnSelectLocation(style);
+                }
+            });
+        });
         CameraPosition position = new CameraPosition.Builder()
                 .target(new LatLng(addressListModel.getLatitude(), addressListModel.getLongitude()))
                 .zoom(12)
                 .build();
 
-        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
+        this.mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10);
     }
 
     private void reverseGeocode(final Point point) {
@@ -355,28 +272,19 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
             client.enqueueCall(new Callback<GeocodingResponse>() {
                 @Override
-                public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+                public void onResponse(@NonNull Call<GeocodingResponse> call, @NonNull Response<GeocodingResponse> response) {
 
                     if (response.body() != null) {
                         List<CarmenFeature> results = response.body().features();
                         if (results.size() > 0) {
                             CarmenFeature feature = results.get(0);
 
-// If the geocoder returns a result, we take the first in the list and show a Toast with the place name.
-                            mapboxMap.getStyle(new Style.OnStyleLoaded() {
-                                @Override
-                                public void onStyleLoaded(@NonNull Style style) {
-                                    if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
-//                                        Toast.makeText(MainActivity.this,
-//                                                String.format(getString(R.string.location_picker_place_name_result),
-//                                                        feature.placeName()), Toast.LENGTH_SHORT).show();
-                                    }
+                            mapboxMap.getStyle(style -> {
+                                if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
                                 }
                             });
 
                         } else {
-//                            Toast.makeText(LocationPickerActivity.this,
-//                                    getString(R.string.location_picker_dropped_marker_snippet_no_results), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -400,7 +308,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
         loadedMapStyle.addLayer(new SymbolLayer(DROPPED_MARKER_LAYER_ID,
                 "dropped-marker-source-id").withProperties(
                 iconImage("dropped-icon-image"),
-                visibility(NONE),
+                visibility(VISIBLE),
                 iconAllowOverlap(true),
                 iconIgnorePlacement(true)
         ));
@@ -408,9 +316,9 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
+        if (PermissionsManager.areLocationPermissionsGranted(getViewContext())) {
 
-            LocationComponentOptions locationComponentOptions = LocationComponentOptions.builder(getContext())
+            LocationComponentOptions locationComponentOptions = LocationComponentOptions.builder(getViewContext())
                     // .layerAbove("simple-tiles")
                     .backgroundDrawable(R.drawable.ic_gps)
                     //.foregroundDrawable(R.drawable.)
@@ -421,7 +329,7 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
 
             // Set the LocationComponent activation options
             LocationComponentActivationOptions locationComponentActivationOptions =
-                    LocationComponentActivationOptions.builder(getContext(), loadedMapStyle)
+                    LocationComponentActivationOptions.builder(getViewContext(), loadedMapStyle)
                             .useDefaultLocationEngine(false)
                             .locationComponentOptions(locationComponentOptions)
                             .build();
@@ -499,5 +407,36 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    private void onSelectLocation(Style style) {
+        final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
+        mLatLng = mapboxMap.getCameraPosition().target;
+        hoveringMarker.setVisibility(View.INVISIBLE);
+        selectLocationButton.setBackgroundResource(R.drawable.bg_radius_blue);
+        selectLocationButton.setText("Hủy chọn");
+        if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
+            GeoJsonSource source = style.getSourceAs("dropped-marker-source-id");
+            if (source != null) {
+                source.setGeoJson(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
+            }
+            droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
+            if (droppedMarkerLayer != null) {
+                droppedMarkerLayer.setProperties(visibility(VISIBLE));
+            }
+        }
+
+        reverseGeocode(Point.fromLngLat(mapTargetLatLng.getLongitude(), mapTargetLatLng.getLatitude()));
+    }
+
+    private void onUnSelectLocation(Style style) {
+        selectLocationButton.setBackgroundResource(
+                R.drawable.bg_gradient_search);
+        selectLocationButton.setText("Chọn vị trí");
+        hoveringMarker.setVisibility(View.VISIBLE);
+        droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
+        if (droppedMarkerLayer != null) {
+            droppedMarkerLayer.setProperties(visibility(NONE));
+        }
     }
 }

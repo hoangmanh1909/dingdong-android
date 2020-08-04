@@ -113,6 +113,10 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         @BindView(R.id.recycler)
         RecyclerView recycler;
 
+        @BindView(R.id.tv_weight)
+        CustomTextView tvWeight;
+
+
         ParcelAdapter adapter;
 
         public HolderView(View itemView) {
@@ -124,7 +128,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             CommonObject item = (CommonObject) model;
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
-            tvParcelCode.setText(String.format("Số lượng bưu gửi: %s Gram", item.getListParcelCode().size()));
+            tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
+            tvWeight.setText(String.format("Khối lượng: %s Gram", item.weightS + ""));
             cbSelected.setVisibility(View.GONE);
             if (mType == 1) {
                 cbSelected.setVisibility(View.VISIBLE);

@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.text.TextUtils;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,19 +34,26 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     RecyclerView recycler_delivery;
     @BindView(R.id.recycler_delivery_cod)
     RecyclerView recycler_delivery_cod;
+    @BindView(R.id.recycler_delivery_hcc)
+    RecyclerView recycler_delivery_hcc;
 
     private HomeCollectAdapter homeCollectAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
     private HomeDeliveryAdapter homeDeliveryCODAdapter;
+    private HomeDeliveryAdapter homeDeliveryPAAdapter;
+
     private ArrayList<HomeCollectInfo> mListCollect = new ArrayList<>();
     private ArrayList<HomeCollectInfo> mListDelivery = new ArrayList<>();
     private ArrayList<HomeCollectInfo> mListDeliveryCOD = new ArrayList<>();
+    private ArrayList<HomeCollectInfo> mListDeliveryPA = new ArrayList<>();
+
     private UserInfo userInfo;
     private RouteInfo routeInfo;
 
     public static final String ACTION_HOME_VIEW_CHANGE = "action_home_view_change";
 
     private HomeViewChangeListerner homeViewChangeListerner;
+
     public static HomeV1Fragment getInstance() {
         return new HomeV1Fragment();
     }
@@ -60,8 +66,6 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     @Override
     public void initLayout() {
         super.initLayout();
-
-        updateHomeView();
         homeViewChangeListerner = new HomeViewChangeListerner();
         getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
         homeCollectAdapter = new HomeCollectAdapter(getContext(), mListCollect);
@@ -70,14 +74,26 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         recycler_collect.setAdapter(homeCollectAdapter);
 
         homeDeliveryAdapter = new HomeDeliveryAdapter(getContext(), mListDelivery);
-
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
         recycler_delivery.setAdapter(homeDeliveryAdapter);
 
         homeDeliveryCODAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryCOD);
-
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_cod);
         recycler_delivery_cod.setAdapter(homeDeliveryCODAdapter);
+
+        homeDeliveryPAAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryPA);
+        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_hcc);
+        recycler_delivery_hcc.setAdapter(homeDeliveryPAAdapter);
+
+        updateHomeView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (homeViewChangeListerner != null) {
+            getViewContext().unregisterReceiver(homeViewChangeListerner);
+        }
+        super.onDestroyView();
     }
 
     @Override
@@ -85,7 +101,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         super.onResume();
     }
 
-    private void updateHomeView() {
+    public void updateHomeView() {
         SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -95,8 +111,8 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         if (!routeJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
-
-        mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
+        if (mPresenter != null && userInfo != null && routeInfo != null)
+            mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
     }
 
     @Override
@@ -106,6 +122,8 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         mListDelivery.clear();
         mListDeliveryCOD.clear();
         mListCollect.clear();
+        mListDeliveryPA.clear();
+
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             if (i == 0) {
@@ -172,6 +190,26 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         }
         homeDeliveryCODAdapter.clear();
         homeDeliveryCODAdapter.addItems(mListDeliveryCOD);
+
+        for (int i = 0; i < 3; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(3);
+            if (i == 0) {
+                homeCollectInfo.setTotalQuantityToday(getResources().getString(R.string.new_delivery));
+                homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
+                homeCollectInfo.setTotalQuantityTodayPA((resInfo.getTotalQuantityTodayPA()));
+                homeCollectInfo.setTotalQuantityPastPA(resInfo.getTotalQuantityPastPA());
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
+                homeCollectInfo.setTotalFeeTodayPA(resInfo.getTotalFeeTodayPA());
+                homeCollectInfo.setTotalFeePastPA(resInfo.getTotalFeePastPA());
+            }
+            mListDeliveryPA.add(homeCollectInfo);
+        }
+        homeDeliveryPAAdapter.clear();
+        homeDeliveryPAAdapter.addItems(mListDeliveryPA);
     }
 
     @Override

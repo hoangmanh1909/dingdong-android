@@ -2,23 +2,21 @@ package com.ems.dingdong.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.core.base.BaseActivity;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.CreatebangKeSearchCallback;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
-import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
-import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-import com.ems.dingdong.R;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,8 +39,9 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
     FormItemEditText tv_chuyenthu;
 
 
-    Calendar calFromCreate;
-    Calendar calToCreate;
+    private Calendar calFromCreate;
+    private Calendar calToCreate;
+    private Calendar calToday;
     private ItemBottomSheetPickerUIFragment pickerUIShift;
 
     ArrayList<Item> items = new ArrayList<>();
@@ -58,7 +57,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         this.mDelegate = reasonCallback;
         this.calFromCreate = calFromDate;
         this.calToCreate = calToDate;
-
+        calToday = Calendar.getInstance();
         View view = View.inflate(getContext(), R.layout.dialog_lap_bang_ke_search, null);
         setContentView(view);
         ButterKnife.bind(this, view);
@@ -100,6 +99,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                         .showTitle(true)
                         .showDaySpinner(true)
                         .defaultDate(calFromCreate.get(Calendar.YEAR), calFromCreate.get(Calendar.MONTH), calFromCreate.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(calToday.get(Calendar.YEAR), calToday.get(Calendar.MONTH), calToday.get(Calendar.DAY_OF_MONTH))
                         .minDate(1979, 0, 1)
                         .build()
                         .show();
@@ -112,6 +112,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                         .spinnerTheme(R.style.DatePickerSpinner)
                         .showTitle(true)
                         .showDaySpinner(true)
+                        .maxDate(calToday.get(Calendar.YEAR), calToday.get(Calendar.MONTH), calToday.get(Calendar.DAY_OF_MONTH))
                         .defaultDate(calToCreate.get(Calendar.YEAR), calToCreate.get(Calendar.MONTH), calToCreate.get(Calendar.DAY_OF_MONTH))
                         .minDate(1979, 0, 1)
                         .build()
@@ -172,13 +173,20 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+        calFromCreate.set(year, monthOfYear, dayOfMonth);
         if (typeDate != 0) {
             calToCreate.set(year, monthOfYear, dayOfMonth);
-            tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+            if (calToCreate.before(calFromCreate)) {
+                calFromCreate.setTime(calToCreate.getTime());
+            }
         } else {
             calFromCreate.set(year, monthOfYear, dayOfMonth);
-            tv_from_date.setText(TimeUtils.convertDateToString(calFromCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+            if (calFromCreate.after(calToCreate)) {
+                calToCreate.setTime(calFromCreate.getTime());
+            }
         }
+        tv_from_date.setText(TimeUtils.convertDateToString(calFromCreate.getTime(), TimeUtils.DATE_FORMAT_5));
+        tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
     }
 
     private void showUIShift() {

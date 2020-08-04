@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,21 +12,15 @@ import androidx.annotation.NonNull;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.dialog.ReasonDialog;
-import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiActivity;
 import com.ems.dingdong.views.CustomTextView;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
-import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
@@ -72,11 +67,18 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
     }
 
     @Override
+    public void onDisplay() {
+        super.onDisplay();
+
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // This contains the MapView in XML and needs to be called after the access token is configured.
 
         mapView.onCreate(savedInstanceState);
+
         mapView.getMapAsync(this);
     }
 
@@ -87,35 +89,23 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                 mPresenter.back();
                 break;
             case R.id.btn_get_location:
-                if (mLocation != null)
-                    mPresenter.getLocationAddress(mLocation.getLongitude(), mLocation.getLatitude());
+                if (mLocation != null) {
+                    Intent intent = new Intent(getViewContext(), ChiTietDiaChiActivity.class);
+                    intent.putExtra("long", mLocation.getLongitude());
+                    intent.putExtra("lad", mLocation.getLatitude());
+//                    mPresenter.getLocationAddress(mLocation.getLongitude(), mLocation.getLatitude());
+                    startActivity(intent);
+                }
                 break;
         }
     }
 
     @Override
-    public void showListSuccess(Object object) {
-        mPresenter.showAddressList(object);
-    }
-
-    @Override
-    public void showError(String mes) {
-        Toast.makeText(getContext(), mes, Toast.LENGTH_LONG);
-    }
-
-    @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-
-        //mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"));
-        mapboxMap.setStyle(Style.MAPBOX_STREETS,
-                new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        enableLocationComponent(style);
-                    }
-                });
-
+        this.mapboxMap.getUiSettings().setAttributionEnabled(false);
+        this.mapboxMap.getUiSettings().setLogoEnabled(false);
+        this.mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"), style -> enableLocationComponent(style));
     }
 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {

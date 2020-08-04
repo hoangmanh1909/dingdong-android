@@ -5,14 +5,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.CreatedBD13Callback;
-import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
@@ -23,13 +23,11 @@ import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 
 import java.util.ArrayList;
@@ -42,26 +40,24 @@ import butterknife.OnClick;
 public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presenter> implements CancelBD13Contract.View {
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.tv_title)
-    CustomTextView tvTitle;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    @BindView(R.id.tv_count)
-    CustomBoldTextView tvCount;
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
 
-    UserInfo userInfo;
-    PostOffice postOffice;
-    RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private RouteInfo routeInfo;
 
-    List<DingDongGetCancelDelivery> mList = new ArrayList<>();
-    CancelBD13Adapter mAdapter;
+    private List<DingDongGetCancelDelivery> mList = new ArrayList<>();
+    private CancelBD13Adapter mAdapter;
     private boolean isLoading = false;
     private Calendar calendar;
 
-    String mFromDate = "";
-    String mToDate = "";
+    private String mFromDate = "";
+    private String mToDate = "";
 
     public static CancelBD13Fragment getInstance() {
         return new CancelBD13Fragment();
@@ -76,7 +72,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     public void initLayout() {
         super.initLayout();
 
-        SharedPref sharedPref = new SharedPref(getActivity());
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -90,28 +86,18 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-        mAdapter = new CancelBD13Adapter(getActivity(), mList, new CancelBD13Adapter.FilterDone() {
-            @Override
-            public void getCount(int count, long amount) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (isLoading) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
-                        tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
-                    }
-                }, 1000);
-
+        mAdapter = new CancelBD13Adapter(getActivity(), mList, (count, amount) -> new Handler().postDelayed(() -> {
+            while (isLoading) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }) {
+            tvAmount.setText(String.format("Tổng tiền: %s đ", NumberUtils.formatPriceNumber(amount)));
+        }, 1000)) {
             @Override
-            public void onBindViewHolder(HolderView holder, final int position) {
+            public void onBindViewHolder(@NonNull HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
 //                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
@@ -121,15 +107,10 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
 //                        }
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                    if (holder.getItem(position).isSelected()) {
-                        holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.color_background_bd13));
-                    } else {
-                        holder.layoutDelivery.setBackgroundColor(getResources().getColor(R.color.white));
-                    }
                 });
             }
         };
-        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        recycler.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
 
         calendar = Calendar.getInstance();
@@ -157,29 +138,30 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             }
         });
         edtSearch.setSelected(true);
+        swipeRefresh.setOnRefreshListener(() -> {
+            swipeRefresh.setRefreshing(true);
+            getCancelDelivery(mFromDate, mToDate, "");
+        });
 
     }
 
-    public void scanQr() {
-        mPresenter.showBarcode(value -> {
-            edtSearch.setText(value);
-        });
+    private void scanQr() {
+        mPresenter.showBarcode(value -> edtSearch.setText(value));
     }
 
     private void getCancelDelivery(String fromDate, String toDate, String ladingCode) {
-        mList.clear();
         mPresenter.getCancelDelivery(userInfo.getUserName(), routeInfo.getRouteCode(), fromDate, toDate, ladingCode);
     }
 
-    @OnClick({R.id.img_send, R.id.img_capture, R.id.tv_search, R.id.img_back})
+    @OnClick({R.id.img_capture, R.id.tv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
-                mPresenter.back();
-                break;
-            case R.id.img_send:
-                submit();
-                break;
+//            case R.id.img_back:
+//                mPresenter.back();
+//                break;
+//            case R.id.img_send:
+//                submit();
+//                break;
             case R.id.tv_search:
                 showDialog();
                 break;
@@ -192,23 +174,21 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), new OnChooseDay() {
-            @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
-                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                getCancelDelivery(mFromDate, mToDate, "");
-            }
+        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+            mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            getCancelDelivery(mFromDate, mToDate, "");
         }).show();
     }
 
-    private void submit() {
+    public void submit() {
         final List<DingDongGetCancelDelivery> deliveryPostmamns = mAdapter.getItemsSelected();
+        if (deliveryPostmamns.size() > 1) {
+            showErrorToast("Bạn đã chọn nhiều hơn một bưu gửi");
+            return;
+        }
         if (deliveryPostmamns.size() > 0) {
-            long totalAmount = 0;
-            for (DingDongGetCancelDelivery i : deliveryPostmamns) {
-                totalAmount = totalAmount + i.getAmount();
-            }
+            long totalAmount = deliveryPostmamns.get(0).getAmount();
             showDialogConfirm(deliveryPostmamns.size(), totalAmount);
         } else {
             Toast.showToast(getContext(), "Không có bản ghi nào được chọn");
@@ -216,58 +196,69 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void showDialogConfirm(long quantity, long totalAmount) {
-        new CreatedBd13Dialog(getActivity(), 1, quantity, totalAmount, new CreatedBD13Callback() {
-
-            @Override
-            public void onResponse(String type, String description) {
-                final List<DingDongGetCancelDelivery> deliveryPostmans = mAdapter.getItemsSelected();
-
-                List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequests = new ArrayList<>();
-
-                for (DingDongGetCancelDelivery i : deliveryPostmans) {
-                    DingDongCancelDeliveryRequest request = new DingDongCancelDeliveryRequest();
-                    request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
-                    request.setAmndPOCode(userInfo.getUnitCode());
-                    request.setLadingCode(i.getLadingCode());
-                    request.setLadingJourneyId(i.getLadingJourneyId());
-                    request.setPaymentPayPostStatus(i.getPaymentPayPostStatus());
-                    request.setAmount(i.getAmount());
-                    request.setCancelDeliveryReasonType(type);
-                    request.setDescription(description);
-                    dingDongGetCancelDeliveryRequests.add(request);
-                }
-
-                String json = NetWorkController.getGson().toJson(dingDongGetCancelDeliveryRequests);
-                Log.d("JSON POST ====>", json);
-
-                mPresenter.cancelDelivery(dingDongGetCancelDeliveryRequests);
-            }
+        new CreatedBd13Dialog(getActivity(), 1, quantity, totalAmount, (type, description) -> {
+            DingDongGetCancelDelivery item = mAdapter.getItemsSelected().get(0);
+            DingDongCancelDeliveryRequest request = new DingDongCancelDeliveryRequest();
+            request.setAmndEmp(Integer.parseInt(userInfo.getiD()));
+            request.setAmndPOCode(userInfo.getUnitCode());
+            request.setLadingCode(item.getLadingCode());
+            request.setLadingJourneyId(item.getLadingJourneyId());
+            request.setPaymentPayPostStatus(item.getPaymentPayPostStatus());
+            request.setAmount(item.getAmount());
+            request.setCancelDeliveryReasonType(type);
+            request.setDescription(description);
+            request.setIsPaymentBatch(item.getIsPaymentBatch());
+            request.setBatchCode(item.getBatchCode());
+            request.setPaymentLadingCode(item.getPaymentLadingCode());
+            mPresenter.cancelDelivery(request);
         }).show();
     }
 
     @Override
     public void showListSuccess(ArrayList<DingDongGetCancelDelivery> list) {
-        tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
-        long totalAmount = 0;
-        for (DingDongGetCancelDelivery i : list) {
-            mList.add(i);
-            totalAmount = totalAmount + i.getAmount();
-        }
-        tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
+        if (getViewContext() != null) {
+            mList.clear();
+            swipeRefresh.setRefreshing(false);
+            long totalAmount = 0;
+            long totalFee = 0;
+            if (list.isEmpty()) {
+                if (mPresenter.getCurrentTab() == 0)
+                    showErrorToast("Không tìm thấy dữ liệu phù hợp.");
+            } else {
+                for (DingDongGetCancelDelivery i : list) {
+                    mList.add(i);
+                    if (i.getAmount() != null)
+                        totalAmount = totalAmount + i.getAmount();
+                    if (i.getFee() != null)
+                        totalFee = totalFee + i.getFee();
 
-        mAdapter.notifyDataSetChanged();
+                }
+            }
+            mPresenter.titleChanged(mList.size(), 0);
+            tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount + totalFee)));
+            mAdapter.setListFilter(mList);
+            mAdapter.notifyDataSetChanged();
+
+        }
     }
 
     @Override
-    public void showListEmpty() {
-
+    public void showError(String message) {
+        if (getViewContext() != null) {
+            showErrorToast(message);
+            mPresenter.onCanceled();
+            swipeRefresh.setRefreshing(false);
+        }
     }
 
     @Override
     public void showView(String message) {
-        Toast.showToast(getContext(), message);
-        mList.clear();
-        getCancelDelivery(mFromDate, mToDate, "");
+        if (getViewContext() != null) {
+            mList.clear();
+            mPresenter.onCanceled();
+            showSuccessToast(message);
+            getCancelDelivery(mFromDate, mToDate, "");
+        }
     }
 
 }

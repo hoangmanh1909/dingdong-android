@@ -5,19 +5,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.core.base.viper.ViewFragment;
+import com.core.utils.PermissionUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.rengwuxian.materialedittext.MaterialEditText;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.Manifest.permission.CALL_PHONE;
 
 /**
  * The CallService Fragment
@@ -27,7 +31,7 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CALL_PHONE};
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 99;
     @BindView(R.id.edt_phone)
-    MaterialEditText edtPhone;
+    FormItemEditText edtPhone;
 
     public static CallServiceFragment getInstance() {
         return new CallServiceFragment();
@@ -65,10 +69,14 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
                     Toast.showToast(getActivity(), "Chưa nhập số để gọi");
                     return;
                 }
-                if (!NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
+                if (!NumberUtils.checkNumber(edtPhone.getText())) {
                     Toast.showToast(getActivity(), "Số điện thoại không hợp lệ.");
                     return;
                 }
+//                if (!NetworkUtils.isConnected()) {
+//                    Toast.showToast(getActivity(), "Vui lòng kiểm tra lại mạng");
+//                    return;
+//                }
                 mPresenter.callForward(edtPhone.getText().toString().trim());
                 break;
             case R.id.img_history:
@@ -80,8 +88,19 @@ public class CallServiceFragment extends ViewFragment<CallServiceContract.Presen
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER.replace(",", "")));
+
+
         startActivity(intent);
     }
 
+    @Override
+    public void showCallError(String message) {
+        showErrorToast(message);
+        if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse(Constants.HEADER_NUMBER.replace(",", "") + "," + edtPhone.getText()));
+            startActivity(intent);
+        }
+    }
 }

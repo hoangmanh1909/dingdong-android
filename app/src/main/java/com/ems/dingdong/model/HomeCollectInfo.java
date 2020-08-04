@@ -94,6 +94,23 @@ public class HomeCollectInfo {
     @SerializedName("TotalWeightCollect")
     @Expose
     private Integer totalWeightCollect;
+
+    @SerializedName("TotalQuantityPastPA")
+    @Expose
+    private Integer totalQuantityPastPA;
+
+    @SerializedName("TotalFeeTodayPA")
+    @Expose
+    private Integer totalFeeTodayPA;
+
+    @SerializedName("TotalFeePastPA")
+    @Expose
+    private Integer totalFeePastPA;
+
+    @SerializedName("TotalQuantityTodayPA")
+    @Expose
+    private Integer totalQuantityTodayPA;
+
     private String labelCollect;
     private int Type;
 
@@ -351,5 +368,37 @@ public class HomeCollectInfo {
 
     public void setTotalWeightCollect(Integer totalWeightCollect) {
         this.totalWeightCollect = totalWeightCollect;
+    }
+
+    public Integer getTotalQuantityPastPA() {
+        return totalQuantityPastPA;
+    }
+
+    public void setTotalQuantityPastPA(Integer totalQuantityPastPA) {
+        this.totalQuantityPastPA = totalQuantityPastPA;
+    }
+
+    public Integer getTotalFeeTodayPA() {
+        return totalFeeTodayPA;
+    }
+
+    public void setTotalFeeTodayPA(Integer totalFeeTodayPA) {
+        this.totalFeeTodayPA = totalFeeTodayPA;
+    }
+
+    public Integer getTotalFeePastPA() {
+        return totalFeePastPA;
+    }
+
+    public void setTotalFeePastPA(Integer totalFeePastPA) {
+        this.totalFeePastPA = totalFeePastPA;
+    }
+
+    public Integer getTotalQuantityTodayPA() {
+        return totalQuantityTodayPA;
+    }
+
+    public void setTotalQuantityTodayPA(Integer totalQuantityTodayPA) {
+        this.totalQuantityTodayPA = totalQuantityTodayPA;
     }
 }

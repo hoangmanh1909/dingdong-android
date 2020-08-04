@@ -100,10 +100,7 @@ public class SettingFragment extends ViewFragment<SettingContract.Presenter> imp
     }
 
     void showDialog(List<RouteInfo> routeInfos) {
-        new RouteDialog(getActivity(), routeInfos, item -> {
-            RouteInfo routeInfo = new RouteInfo();
-            routeInfo.setRouteCode(item.getValue());
-            routeInfo.setRouteName(item.getText());
+        new RouteDialog(getActivity(), routeInfos, (item, routeInfo) -> {
             SharedPref sharedPref = new SharedPref(getActivity());
             sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
             tv_route.setText(routeInfo.getRouteName());

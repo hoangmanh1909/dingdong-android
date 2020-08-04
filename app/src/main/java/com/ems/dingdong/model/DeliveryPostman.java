@@ -3,7 +3,7 @@ package com.ems.dingdong.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DeliveryPostman {
+public class DeliveryPostman implements Comparable {
     @SerializedName("Count")
     @Expose
     private Integer count;
@@ -94,6 +94,39 @@ public class DeliveryPostman {
     @SerializedName("Description")
     @Expose
     private String description;
+    @SerializedName("NewReceiverAddress")
+    @Expose
+    private PointMyVNPost newReceiverAddress;
+    @SerializedName("BD13CreatedDate")
+    @Expose
+    private String bD13CreatedDate;
+    @SerializedName("IsPA")
+    @Expose
+    private String isPA;
+    @SerializedName("IsItemReturn")
+    @Expose
+    private String isItemReturn;
+    @SerializedName("OrderNumberInBD13")
+    @Expose
+    private Integer orderNumberInBD13;
+    @SerializedName("AmountForBatch")
+    @Expose
+    private String amountForBatch;
+    @SerializedName("ItemsInBatch")
+    @Expose
+    private Integer itemsInBatch;
+    @SerializedName("ReplaceCode")
+    private String replaceCode;
+    @SerializedName("IsPaymentBatch")
+    private boolean isPaymentBatch;
+    @SerializedName("LastLadingCode")
+    private String lastLadingCode;
+    @SerializedName("IsRePaymentBatch")
+    private boolean isRePaymentBatch;
+    @SerializedName("CustomerCode")
+    private String customerCode;
+    @SerializedName("AuthenType")
+    private Integer authenType;
 
     private boolean selected;
 
@@ -335,5 +368,76 @@ public class DeliveryPostman {
 
     public String getDescription() {
         return description;
+    }
+
+    public PointMyVNPost getNewReceiverAddress() {
+        return newReceiverAddress;
+    }
+
+    public String getbD13CreatedDate() {
+        return bD13CreatedDate;
+    }
+
+    public String getIsPA() {
+        return isPA;
+    }
+
+    public String isItemReturn() {
+        return isItemReturn;
+    }
+
+    public void setItemReturn(String itemReturn) {
+        isItemReturn = itemReturn;
+    }
+
+    public Integer getOrderNumberInBD13() {
+        return orderNumberInBD13;
+    }
+
+    public String getAmountForBatch() {
+        return amountForBatch;
+    }
+
+    public Integer getItemsInBatch() {
+        return itemsInBatch;
+    }
+
+    public String getReplaceCode() {
+        return replaceCode;
+    }
+
+    public void setReplaceCode(String replaceCode) {
+        this.replaceCode = replaceCode;
+    }
+
+    public boolean isPaymentBatch() {
+        return isPaymentBatch;
+    }
+
+    public String getLastLadingCode() {
+        return lastLadingCode;
+    }
+
+    public boolean isRePaymentBatch() {
+        return isRePaymentBatch;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public Integer getAuthenType() {
+        return authenType;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int compareOrderNumber = ((DeliveryPostman) o).getOrderNumberInBD13();
+        if (orderNumberInBD13 == compareOrderNumber)
+            return 0;
+        else if (orderNumberInBD13 < compareOrderNumber)
+            return -1;
+        else
+            return 1;
     }
 }

@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="Lập bảng kê (BD13)" />
+                android:textColor="@color/white"
+                android:text="@string/create_bd13" />
 
             <ImageView
                 android:id="@+id/img_send"
@@ -113,7 +114,7 @@
             <com.ems.dingdong.views.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Tìm kiếm nhanh bưu gửi"
+                android:text="@string/find_package_quickly"
                 android:textColor="@color/black">
 
             </com.ems.dingdong.views.CustomTextView>
@@ -135,8 +136,10 @@
                     android:layout_toRightOf="@+id/img_search"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp"
+                    android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     app:formShowUnderline="false"
-                    app:formHint="Nhập bưu gửi, tên, sđt, địa chỉ" />
+                    app:formHint="@string/enter_name_phone_number_address" />
 
                 <ImageView
                     android:id="@+id/img_capture"

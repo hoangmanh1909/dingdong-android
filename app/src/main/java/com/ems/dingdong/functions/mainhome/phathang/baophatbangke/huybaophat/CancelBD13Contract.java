@@ -11,27 +11,79 @@ import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface CancelBD13Contract {
     interface Interactor extends IInteractor<Presenter> {
+        /**
+         * Get cancel delivery record.
+         *
+         * @param postmanCode postman code from UserInfo
+         * @param routeCode   route code from RouteInfo
+         * @param fromDate    from date.
+         * @param toDate      to date
+         * @param ladingCode  lading code.
+         */
         void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> commonCallback);
-        void cancelDelivery(List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback);
+
+        /**
+         * cancel deliver.
+         *
+         * @param dingDongGetCancelDeliveryRequestList list cancel delivery chosen.
+         */
+        void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback);
     }
 
-    interface View extends PresentView<Presenter>
-    {
+    interface View extends PresentView<Presenter> {
+        /**
+         * Show list cancel delivery.
+         */
         void showListSuccess(ArrayList<DingDongGetCancelDelivery> list);
 
-        void showListEmpty();
+        /**
+         * Show error message from server.
+         */
+        void showError(String message);
 
+        /**
+         * Show response message from server.
+         */
         void showView(String message);
     }
 
-    interface Presenter extends IPresenter<View,Interactor>
-    {
+    interface Presenter extends IPresenter<View, Interactor> {
+        /**
+         * Show barcode scan screen.
+         */
         void showBarcode(BarCodeCallback barCodeCallback);
+
+        /**
+         * Get cancel delivery record.
+         *
+         * @param postmanCode postman code from UserInfo
+         * @param routeCode   route code from RouteInfo
+         * @param fromDate    from date.
+         * @param toDate      to date
+         * @param ladingCode  lading code.
+         */
         void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode);
-        void cancelDelivery(List<DingDongCancelDeliveryRequest> dingDongGetCancelDeliveryRequestList);
+
+        /**
+         * cancel deliver.
+         *
+         * @param dingDongGetCancelDeliveryRequestList list cancel delivery chosen.
+         */
+        void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList);
+
+        /**
+         * Event refresh nearby tab.
+         */
+        void onCanceled();
+
+        /**
+         * Event set title count.
+         */
+        void titleChanged(int quantity, int currentSetTab);
+
+        int getCurrentTab();
     }
 }

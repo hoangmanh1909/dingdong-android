@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/tools"
     android:background="#f5f6fa"
-    android:orientation="vertical">
+    android:weightSum="10"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    app:ignore="NamespaceTypo">
 
     <FrameLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <include layout="@layout/item_head_bg_common" />
-
+        android:layout_weight="0.8"
+        android:background="@drawable/bg_gradient_top"
+        android:layout_height="0dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -36,31 +37,38 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
+            <ImageView
+                android:id="@+id/img_cancel"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_cancel" />
         </RelativeLayout>
     </FrameLayout>
 
     <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/mapView"
+        android:id="@+id/mapViewDetail"
+        android:layout_weight="3.5"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_250dp"
-        android:layout_above="@+id/btn_get_location"
-        android:layout_below="@+id/header"
+        android:layout_height="0dp"
         mapbox:mapbox_cameraZoom="15" />
 
     <Button
         android:id="@+id/select_location_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:background="@color/colorPrimary"
+        android:layout_weight="0.7"
+        android:background="@drawable/bg_button_fix_call"
         android:text="Chọn vị trí"
         android:textColor="@android:color/white" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
+        android:layout_weight="5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
 
         <!--    <com.ems.dingdong.views.CustomTextView-->
         <!--        style="@style/HeaderNews"-->
@@ -155,18 +163,19 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Tên địa chỉ"
+                    android:text="@string/address_name"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.ems.dingdong.views.form.FormItemEditText
+                <EditText
                     android:id="@+id/edt_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:gravity="right"
+                    android:inputType="textMultiLine"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Tên địa chỉ"
-                    app:formShowUnderline="false" />
+                    app:formShowUnderline="false"
+                    app:hint="@string/address_name" />
             </LinearLayout>
 
             <View
@@ -185,17 +194,18 @@
                     android:layout_gravity="left"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Địa chỉ chi tiết"
+                    android:text="@string/detail_address"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.ems.dingdong.views.form.FormItemEditText
+                <EditText
                     android:id="@+id/edt_street"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Địa chỉ chi tiết"
+                    app:hint="@string/detail_address"
+                    android:inputType="textMultiLine"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -213,19 +223,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:text="Quốc gia"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.ems.dingdong.views.form.FormItemEditText
+                <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/edt_country"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Quốc gia"
+                    app:hint="Quốc gia"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -243,19 +255,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Tỉnh/TP"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:text="@string/city"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.ems.dingdong.views.form.FormItemEditText
+                <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/edt_region"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Tỉnh/TP"
+                    app:hint="@string/city"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -273,19 +287,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Quận/Huyện"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:text="@string/district"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.ems.dingdong.views.form.FormItemEditText
+                <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/edt_county"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Quận/Huyện"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:inputType="textMultiLine"
+                    app:hint="@string/district"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -298,19 +315,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Bán kính (km)"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:text="@string/town"
                     android:textSize="@dimen/text_size_14sp" />
 
-                <com.ems.dingdong.views.form.FormItemEditText
+                <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/edt_confidence"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:textColor="#253854"
                     android:textSize="16sp"
-                    app:formHint="Bán kính"
+                    app:hint="@string/town"
                     app:formShowUnderline="false" />
             </LinearLayout>
 
@@ -333,7 +352,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_gradient_search"
+                    android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
@@ -351,7 +370,7 @@
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_gradient_color"
+                    android:background="@drawable/bg_button_prmary_blue"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"

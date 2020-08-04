@@ -1,25 +1,19 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
-import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongGetCancelDelivery;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -37,9 +31,9 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
     private List<DingDongGetCancelDelivery> mListFilter;
     private List<DingDongGetCancelDelivery> mList;
-    Context mContext;
+    private Context mContext;
 
-    public CancelBD13Adapter(Context context, List<DingDongGetCancelDelivery> items, CancelBD13Adapter.FilterDone filterDone) {
+    CancelBD13Adapter(Context context, List<DingDongGetCancelDelivery> items, CancelBD13Adapter.FilterDone filterDone) {
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
@@ -78,11 +72,15 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 mListFilter = (ArrayList<DingDongGetCancelDelivery>) filterResults.values;
                 if (mFilterDone != null) {
                     long amount = 0;
+                    long fee = 0;
                     for (DingDongGetCancelDelivery item : mListFilter) {
                         if (!TextUtils.isEmpty(Integer.toString(item.getAmount())))
                             amount += item.getAmount();
+                        if (item.getFee() != null) {
+                            fee += item.getFee();
+                        }
                     }
-                    mFilterDone.getCount(mListFilter.size(), amount);
+                    mFilterDone.getCount(mListFilter.size(), amount + fee);
                 }
                 notifyDataSetChanged();
             }
@@ -91,13 +89,17 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 
     public List<DingDongGetCancelDelivery> getItemsSelected() {
         List<DingDongGetCancelDelivery> commonObjectsSelected = new ArrayList<>();
-        List<DingDongGetCancelDelivery> items = mListFilter;
+        List<DingDongGetCancelDelivery> items = mList;
         for (DingDongGetCancelDelivery item : items) {
             if (item.isSelected()) {
                 commonObjectsSelected.add(item);
             }
         }
         return commonObjectsSelected;
+    }
+
+    public void setListFilter(List<DingDongGetCancelDelivery> list) {
+        mListFilter = list;
     }
 
     @NonNull
@@ -124,36 +126,77 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
         CustomBoldTextView tv_code;
         @BindView(R.id.tv_amount)
         CustomTextView tv_amount;
+        @BindView(R.id.tv_fee)
+        CustomTextView tvFee;
         @BindView(R.id.tv_status_paypost)
         CustomTextView tv_status_paypost;
         @BindView(R.id.layout_cancel_delivery)
-        RelativeLayout layoutDelivery;
+        LinearLayout layoutDelivery;
+        @BindView(R.id.tv_receiver_name_address)
+        CustomBoldTextView receiverNameAddress;
+        @BindView(R.id.tv_sender_name)
+        CustomTextView senderName;
 
-
-        public HolderView(View itemView) {
+        HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         public DingDongGetCancelDelivery getItem(int position) {
-            return mList.get(position);
+            return mListFilter.get(position);
         }
 
         public void bindView(Object model) {
             DingDongGetCancelDelivery item = (DingDongGetCancelDelivery) model;
-            tv_code.setText(item.getLadingCode());
-            tv_amount.setText("Số tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
-            String status = "";
+            if (!TextUtils.isEmpty(item.getLadingCode()))
+                tv_code.setText(item.getLadingCode());
+            else
+                tv_code.setText("");
+
+            if (item.getAmount() != null)
+                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+            else
+                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money)));
+
+            if (item.getFee() != null)
+                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee())));
+            else
+                tvFee.setText(String.format(mContext.getString(R.string.fee)));
+
+            if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
+                if (!TextUtils.isEmpty(item.getReceiverAddress())) {
+                    receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s - %s", item.getReceiverName(), item.getReceiverAddress()));
+                } else {
+                    receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name) + ": %s", item.getReceiverName()));
+                }
+            } else {
+                receiverNameAddress.setText(String.format(mContext.getString(R.string.receiver_name)));
+            }
+            if (!TextUtils.isEmpty(item.getSenderName()))
+                senderName.setText(String.format(mContext.getString(R.string.sender_name) + ": %s", item.getSenderName()));
+            else
+                senderName.setText(String.format(mContext.getString(R.string.sender_name)));
+
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
-                    status = "Gạch nợ thành công";
+                    tv_status_paypost.setText(String.format(mContext.getString(R.string.success)));
+                    tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
                 } else {
-                    status = "Gạch nợ thất bại";
+                    tv_status_paypost.setText(String.format(mContext.getString(R.string.not_success)));
                     tv_status_paypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
                 }
+            } else {
+                tv_status_paypost.setText("");
+                tv_status_paypost.setVisibility(View.GONE);
             }
 
-            tv_status_paypost.setText(status);
+            cb_selected.setOnCheckedChangeListener((v1, v2) -> {
+                if (v2) {
+                    layoutDelivery.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                } else {
+                    layoutDelivery.setBackgroundColor(mContext.getResources().getColor(R.color.primary));
+                }
+            });
             cb_selected.setChecked(item.isSelected());
         }
     }

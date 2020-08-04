@@ -1,35 +1,65 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiFragment;
 import com.ems.dingdong.model.AddressListModel;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.views.CustomBoldTextView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.Context.LOCATION_SERVICE;
+
 public class AddressListFragment extends ViewFragment<AddressListContract.Presenter>
         implements AddressListContract.View {
 
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.edt_search_address)
+    EditText edtSearchAddress;
+    @BindView(R.id.img_search)
+    ImageView search;
+    @BindView(R.id.tv_title)
+    CustomBoldTextView tvTitle;
 
     private AddressListAdapter addressListAdapter;
+    private boolean isBack = false;
+    private String mAddress;
+    private LocationManager mLocationManager;
+    private Location mLocation;
 
-    ArrayList<AddressListModel> mListObject = new ArrayList<>();
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (isBack && mLocation != null) {
+            isBack = false;
+            initData(mLocation);
+        }
+    }
+
+    private List<AddressListModel> mListObject = new ArrayList<>();
 
     public static AddressListFragment getInstance() {
         return new AddressListFragment();
@@ -43,76 +73,111 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
-
-        addressListAdapter = new AddressListAdapter(getContext(), mListObject){
+        if (mPresenter != null)
+            checkSelfPermission();
+        else
+            return;
+        edtSearchAddress.setSelected(true);
+        if (mPresenter.getType() == Constants.TYPE_ROUTE) {
+            search.setVisibility(View.VISIBLE);
+            edtSearchAddress.setVisibility(View.VISIBLE);
+            tvTitle.setText("Chỉ dẫn đường đi");
+        } else {
+            search.setVisibility(View.GONE);
+            edtSearchAddress.setVisibility(View.GONE);
+            tvTitle.setText("Xác minh địa chỉ");
+        }
+        addressListAdapter = new AddressListAdapter(getContext(), mListObject) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mPresenter.showAddressDetail(mListObject.get(position));
-                    }
+                holder.itemView.setOnClickListener(v -> {
+                    mPresenter.showAddressDetail(mListObject.get(position));
+                    isBack = true;
                 });
             }
         };
-
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         recycler.setAdapter(addressListAdapter);
+        mLocation = getLastKnownLocation();
+        initData(mLocation);
 
-        initData();
     }
 
-    private void initData() {
-        try {
-            Object object = mPresenter.getObject();
-            Gson gson = new Gson();
-            String json = gson.toJson(object);
-            JSONObject jsonObject = new JSONObject(json);
-            JSONObject data = jsonObject.getJSONObject("data");
-
-            JSONArray features = data.getJSONArray("features");
-
-            if(features.length() > 0) {
-                for (int i = 0; i < features.length(); i++) {
-                    JSONObject item = features.getJSONObject(i);
-                    JSONObject geometry = item.getJSONObject("geometry");
-                    JSONObject properties = item.getJSONObject("properties");
-                    JSONArray coordinates = geometry.getJSONArray("coordinates");
-                    double longitude = coordinates.getDouble(0);
-                    double latitude = coordinates.getDouble(1);
-
-                    AddressListModel addressListModel = new AddressListModel();
-                    addressListModel.setName(properties.optString("name"));
-                    addressListModel.setConfidence(Float.parseFloat(properties.optString("confidence")));
-                    addressListModel.setCountry(properties.optString("country"));
-                    addressListModel.setCounty(properties.optString("county"));
-                    addressListModel.setId(properties.optString("id"));
-                    addressListModel.setLabel(properties.optString("label"));
-                    addressListModel.setLayer(properties.optString("layer"));
-                    addressListModel.setLocality(properties.optString("locality"));
-                    addressListModel.setRegion(properties.optString("region"));
-                    addressListModel.setStreet(properties.optString("street"));
-                    addressListModel.setLongitude(longitude);
-                    addressListModel.setLatitude(latitude);
-                    mListObject.add(addressListModel);
-                }
-
-                addressListAdapter.notifyDataSetChanged();
+    private Location getLastKnownLocation() {
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
             }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private void initData(Location location) {
+        if (location != null) {
+            mListObject.clear();
+            mAddress = mPresenter.getAddress();
+            edtSearchAddress.setText(mAddress);
+            if (mPresenter.getType() == Constants.TYPE_ROUTE) {
+                mPresenter.vietmapSearch(mAddress, location);
+            } else {
+                mPresenter.vietmapSearch();
+            }
+        } else {
+            showErrorToast(getString(R.string.not_found_current_location));
         }
     }
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.img_back, R.id.img_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
+            case R.id.img_search:
+                mAddress = edtSearchAddress.getText().toString();
+                mPresenter.vietmapSearch(mAddress, mLocation);
+                break;
+        }
+    }
+
+    @Override
+    public void showAddressList(List<AddressListModel> listAddress) {
+        if (listAddress.isEmpty()) {
+            showSuccessToast(getString(R.string.not_found_any_address));
+        }
+        mListObject.clear();
+        mListObject.addAll(listAddress);
+        addressListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError(String message) {
+        mListObject.clear();
+        addressListAdapter.notifyDataSetChanged();
+        showErrorToast(message);
+    }
+
+    private void checkSelfPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermissionLocation = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasReadExternalPermissionLocation != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+
+            int hasReadExternalPermission = Objects.requireNonNull(getActivity()).checkSelfPermission(ACCESS_COARSE_LOCATION);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_COARSE_LOCATION}, REQUEST_CODE_ASK_PERMISSIONS);
+            }
         }
     }
 }

@@ -30,6 +30,8 @@ interface PhatHangContract {
         void showLocation();
 
         void showStatisticForward();
+
+        void showPayment();
     }
 }
 

@@ -20,6 +20,7 @@ interface CallServiceContract {
     interface View extends PresentView<Presenter> {
         void showCallSuccess();
 
+        void showCallError(String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

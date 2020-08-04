@@ -5,13 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -19,22 +12,29 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
-import com.ems.dingdong.callback.BarCodeCallback;
-import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.eventbus.BaoPhatCallback;
-import com.ems.dingdong.utiles.Utilities;
-import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.DismissDialogCallback;
+import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.utiles.Utilities;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.ems.dingdong.views.form.FormItemEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -141,7 +141,7 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                             }
 
                             @Override
-                            public void onUpdateResponse(String phone) {
+                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
 
                             }
                         }).show();

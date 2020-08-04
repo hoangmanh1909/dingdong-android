@@ -5,20 +5,27 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CancelDeliveryResult;
+import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.EWalletDataResult;
+import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.HistoryCallResult;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
+import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
+import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -27,16 +34,28 @@ import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
+import com.ems.dingdong.model.request.CallHistoryRequest;
+import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
+import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.PayLinkConfirm;
+import com.ems.dingdong.model.request.PayLinkRequest;
+import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
+import com.ems.dingdong.model.request.PaymentRequestModel;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
@@ -60,12 +79,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 
 import static com.ems.dingdong.utiles.Utils.getUnsafeOkHttpClient;
 
@@ -76,6 +99,8 @@ public class NetWorkController {
     }
 
     private static volatile VinattiAPI apiBuilder;
+    private static volatile VinattiAPI apiRxBuilder;
+    private static volatile VinattiAPI apiHistoryCallBuilder;
     private static volatile ChiHoBtxhAPI chiHoBtxhAPI;
 
 
@@ -115,6 +140,37 @@ public class NetWorkController {
         return apiBuilder;
     }
 
+    private static VinattiAPI getAPIRxBuilder() {
+        if (apiRxBuilder == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient(120, 120))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiRxBuilder = retrofit.create(VinattiAPI.class);
+        }
+        return apiRxBuilder;
+    }
+
+    private static VinattiAPI getAPIHistoryCallBuilder() {
+        if (apiHistoryCallBuilder == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api-development.movecrop.com")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient("3e058ce3027e6c473a6d47e5f253c480:7409f5b12daff2f0b8df56f6b4faf151"))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiHistoryCallBuilder = retrofit.create(VinattiAPI.class);
+        }
+        return apiHistoryCallBuilder;
+    }
 
     public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
 
@@ -134,9 +190,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void searchDeliveryStatistic(String fromDate, String status,
-                                               String postmanId, String shift, String routeCode, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, status, postmanId, shift, routeCode);
+    public static void searchDeliveryStatistic(String fromDate, String toDate, String status,
+                                               String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode);
         call.enqueue(callback);
     }
 
@@ -151,9 +207,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void callForwardCallCenter(String callerNumber, String calleeNumber,
-                                             String callForwardType, String hotlineNumber,
-                                             String ladingCode, CommonCallback<SimpleResult> callback) {
+    public static Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
+                                                           String callForwardType, String hotlineNumber,
+                                                           String ladingCode, CommonCallback<SimpleResult> callback) {
         String type = "1";
         if (Constants.HEADER_NUMBER.equals("tel:159")) {
             type = "1";
@@ -164,6 +220,7 @@ public class NetWorkController {
         Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
                 hotlineNumber, ladingCode, type, signature);
         call.enqueue(callback);
+        return call;
     }
 
     public static void searchOrderPostmanCollect(String orderPostmanID,
@@ -186,16 +243,15 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void searchDeliveryPostman(String postmanID,
-                                             String fromDate,
-                                             String toDate,
-                                             String shiftID,
-                                             String chuyenthu,
-                                             String tuiso,
-                                             String routeCode,
-                                             CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, shiftID, "", chuyenthu, tuiso, routeCode);
+    public static Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
+                                                                      String fromDate,
+                                                                      String toDate,
+                                                                      String routeCode,
+                                                                      Integer searchTpe,
+                                                                      CommonCallback<DeliveryPostmanResponse> callback) {
+        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchTpe);
         call.enqueue(callback);
+        return call;
     }
 
     public static void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
@@ -210,10 +266,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void findLocation(String ladingCode, CommonCallback<CommonObjectResult> callback) {
+    public static Observable<CommonObjectResult> findLocation(String ladingCode, String poCode) {
         String signature = Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<CommonObjectResult> call = getAPIBuilder().findLocation(ladingCode.toUpperCase(), signature);
-        call.enqueue(callback);
+        return getAPIRxBuilder().findLocation(ladingCode.toUpperCase(), poCode, signature);
     }
 
     public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {
@@ -250,6 +305,10 @@ public class NetWorkController {
     public static void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().paymentDelivery(request);
         call.enqueue(callback);
+    }
+
+    public static Single<SimpleResult> paymentDelivery(PaymentDeviveryRequest request) {
+        return getAPIRxBuilder().paymentDeliveryObservable(request);
     }
 
     public static void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback) {
@@ -307,9 +366,10 @@ public class NetWorkController {
         call.enqueue(commonCallback);
     }
 
-    public static void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+    public static Call<SimpleResult> updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
         Call<SimpleResult> call = getAPIBuilder().updateMobile(code, mobileNumber);
         call.enqueue(commonCallback);
+        return call;
     }
 
     public static void postImage(String filePath, CommonCallback<UploadResult> callback) {
@@ -328,6 +388,14 @@ public class NetWorkController {
         //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
         Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
         call.enqueue(callback);
+    }
+
+    public static Observable<UploadSingleResult> postImageObservable(String filePath) {
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
+        //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
+        return getAPIRxBuilder().postImageObservable(body);
     }
 
     //Thu ho BTXH
@@ -383,6 +451,10 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
+        return getAPIRxBuilder().pushToPNSDeliveryObservable(request);
+    }
+
     public static void searchStatisticCollect(String postmanID, String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {
         Call<StatisticCollectResult> call = getAPIBuilder().searchStatisticCollect(postmanID, fromDate, toDate);
         call.enqueue(callback);
@@ -424,11 +496,11 @@ public class NetWorkController {
     }
 
     public static void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> callback) {
-        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, ladingCode, fromDate, toDate);
+        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, fromDate, toDate);
         call.enqueue(callback);
     }
 
-    public static void cancelDelivery(List<DingDongCancelDeliveryRequest> request, CommonCallback<SimpleResult> callback) {
+    public static void cancelDelivery(DingDongCancelDeliveryRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
         call.enqueue(callback);
     }
@@ -463,8 +535,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void vietmapSearch(String text, CommonCallback<XacMinhDiaChiResult> callback) {
-        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text);
+    public static void vietmapSearch(String text, Double longitude, Double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
+        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text, longitude, latitude);
         call.enqueue(callback);
     }
 
@@ -488,4 +560,151 @@ public class NetWorkController {
                 serviceCode, postmanID, fromDate, toDate, ladingType, routeCode);
         call.enqueue(callback);
     }
+
+    public static void statisticPayment(String postmanId, String poCode, String phoneNumber,
+                                        String fromDate, String toDate,
+                                        CommonCallback<StatisticPaymentResult> callback) {
+        Call<StatisticPaymentResult> call = getAPIBuilder().statisticPayment(postmanId, poCode, phoneNumber, fromDate, toDate);
+        call.enqueue(callback);
+    }
+
+    public static void searchForApproved(String ladingCode,
+                                         String fromDate,
+                                         String toDate,
+                                         String postmanId,
+                                         String routeId,
+                                         String poCode,
+                                         String statusCode,
+                                         Integer fromRouteId,
+                                         CommonCallback<RouteResult> callback) {
+        Call<RouteResult> call = getAPIBuilder().searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
+        call.enqueue(callback);
+    }
+
+    public static void searchForCancel(String ladingCode,
+                                       String fromDate,
+                                       String toDate,
+                                       String postmanId,
+                                       String routeId,
+                                       String poCode,
+                                       String statusCode,
+                                       Integer fromRouteId,
+                                       CommonCallback<RouteResult> callback) {
+        Call<RouteResult> call = getAPIBuilder().searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
+        call.enqueue(callback);
+    }
+
+    public static void approvedAgree(String id,
+                                     String ladingCode,
+                                     String postmanId,
+                                     String postmanCode,
+                                     String poCode,
+                                     String routeId,
+                                     String routeCode,
+                                     CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().approvedAgree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void approvedDisagree(String id,
+                                        String ladingCode,
+                                        String postmanId,
+                                        String postmanCode,
+                                        String poCode,
+                                        String routeId,
+                                        String routeCode,
+                                        CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
+        call.enqueue(callback);
+    }
+
+    public static void cancelRoute(Integer id,
+                                   Integer postmanId,
+                                   CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().cancelRoute(id, postmanId);
+        call.enqueue(callback);
+    }
+
+
+    public static void changeRouteInsert(ChangeRouteRequest request,
+                                         CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().changeRouteInsert(request);
+        call.enqueue(callback);
+    }
+
+    public static void getRouteLadingDetail(String ladingCode,
+                                            CommonCallback<ChangeRouteResult> callback) {
+        Call<ChangeRouteResult> call = getAPIBuilder().getDetailByLadingCode(ladingCode);
+        call.enqueue(callback);
+    }
+
+    public static Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request) {
+        return getAPIRxBuilder().cancelDeliveryStatistic(request);
+    }
+
+    public static Single<TokenMoveCropResult> getAccessTokenAndroid(String mobileNumber) {
+        return getAPIRxBuilder().getAccessTokenAndroid(mobileNumber);
+    }
+
+    public static Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest) {
+        String signature = Utils.SHA256(payLinkRequest.getPostmanTel()
+                + payLinkRequest.getPostmanCode() + payLinkRequest.getpOCode()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        payLinkRequest.setSignature(signature);
+        return getAPIRxBuilder().linkEWallet(payLinkRequest);
+    }
+
+    public static Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
+        String signature = Utils.SHA256(payLinkConfirm.getRequestId()
+                + payLinkConfirm.getOTPCode() + payLinkConfirm.getPostmanTel()
+                + payLinkConfirm.getPostmanCode() + payLinkConfirm.getpOCode()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        payLinkConfirm.setSignature(signature);
+        return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
+    }
+
+    public static Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+        String signature = Utils.SHA256(paymentRequestModel.getPostmanCode()
+                + paymentRequestModel.getPoCode()
+                + paymentRequestModel.getRouteCode()
+                + paymentRequestModel.getPaymentToken()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        paymentRequestModel.setSignature(signature);
+        return getAPIRxBuilder().requestPayment(paymentRequestModel);
+    }
+
+    public static Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
+        String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
+                + paymentConfirmModel.getPoCode()
+                + paymentConfirmModel.getRouteCode()
+                + paymentConfirmModel.getTransId()
+                + paymentConfirmModel.getOtpCode()
+                + paymentConfirmModel.getRetRefNumber()
+                + paymentConfirmModel.getPaymentToken()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        paymentConfirmModel.setSignature(signature);
+        return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
+    }
+
+    public static Single<EWalletDataResult> getDataPayment(String fromDate, String toDate,
+                                                           String poCode, String routeCode,
+                                                           String postmanCode) {
+        return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
+    }
+
+    public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
+        return getAPIRxBuilder().checkAmountPayment(request);
+    }
+
+    public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
+        return getAPIRxBuilder().paymentV2(request);
+    }
+
+    public static Single<SimpleResult> getHistoryCall(CallHistoryRequest request) {
+        return getAPIHistoryCallBuilder().getHistoryCall(
+                request.getTenantID(),
+                request.getCaller(),
+                request.getCallee());
+    }
+
 }

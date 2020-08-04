@@ -9,14 +9,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingTop="@dimen/dimen_5dp"
             android:paddingBottom="@dimen/dimen_5dp">
 
@@ -29,52 +27,67 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_StatusMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp" />
-
-            <com.ems.dingdong.views.CustomMediumTextView
-                android:id="@+id/tv_StatusCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingTop="@dimen/dimen_5dp"
+            android:weightSum="10"
             android:paddingBottom="@dimen/dimen_5dp">
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_StatusDate_StatusTime"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:gravity="right"
+                android:textColor="@color/grey"
+                android:layout_weight="10"
+                android:textSize="@dimen/text_size_12sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:weightSum="10">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_TypeMessage"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp" />
 
             <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_reason"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:gravity="right"
-                android:textColor="@color/colorPrimary"
+                android:id="@+id/tv_StatusMessage"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_12sp" />
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dimen_5dp">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_Description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_12sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <View
