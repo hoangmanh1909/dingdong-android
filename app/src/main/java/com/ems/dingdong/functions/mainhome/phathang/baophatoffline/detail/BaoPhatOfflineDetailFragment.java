@@ -389,9 +389,9 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
                 submit();
                 break;
             case R.id.btn_sign:
-                new SignDialog(getActivity(), new SignCallback() {
+                new SignDialog(mBaoPhat.getCode(), edtRealReceiverName.getText().toString(), getActivity(), new SignCallback() {
                     @Override
-                    public void onResponse(String sign, Bitmap bitmap) {
+                    public void onResponse(String name, String sign, Bitmap bitmap) {
                         mSign = sign;
                         imgSign.setImageBitmap(bitmap);
                         if (bitmap != null) {

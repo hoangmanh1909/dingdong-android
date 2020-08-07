@@ -21,12 +21,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:text="Khách hàng ký xác nhận"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+
                 <LinearLayout
                     android:id="@+id/layout_date_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/size_16dp">
+                    android:paddingLeft="@dimen/size_16dp"
+                    android:paddingRight="@dimen/size_16dp">
 
 
                     <LinearLayout
@@ -37,40 +49,30 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <RelativeLayout
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/lbl_receiver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Người nhận ký và ghi rõ họ tên vào ô phía dưới" />
+
+                        <com.ems.dingdong.views.CustomEditText
+                            android:id="@+id/edt_real_ReceiverName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <com.ems.dingdong.views.CustomTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:paddingTop="@dimen/dimen_10dp"
-                                android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="Khách hàng ký xác nhận"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp" />
-
-                            <ImageView
-                                android:id="@+id/btn_clear_sign"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:background="@color/blue"
-                                android:src="@drawable/ic_rotate_right" />
-                        </RelativeLayout>
+                            android:layout_toRightOf="@+id/lbl_receiver"
+                            android:hint="Tên người nhận"
+                            android:textSize="@dimen/text_size_18sp" />
 
 
                         <com.github.gcacace.signaturepad.views.SignaturePad
                             android:id="@+id/signature_pad"
                             android:layout_width="match_parent"
-                            app:penMinWidth="@dimen/dimen_1dp"
-                            app:penMaxWidth="@dimen/dimen_1dp"
-                            android:layout_height="@dimen/_150sdp"
+                            android:layout_height="@dimen/_180sdp"
                             android:background="@color/text_color_total_theme3"
-                            app:penColor="@android:color/black" />
+                            app:penColor="@android:color/black"
+                            app:penMaxWidth="@dimen/dimen_1dp"
+                            app:penMinWidth="@dimen/dimen_1dp" />
                     </LinearLayout>
 
 
@@ -97,7 +99,23 @@
                         android:paddingRight="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_5dp"
                         android:text="Cập nhật"
-                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@drawable/bg_confirm"
+                        android:drawableLeft="@drawable/ic_rotate_right"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_5dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_5dp"
+                        android:text="Ký lại"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -114,8 +132,7 @@
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingRight="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Hủy bỏ"
-                        android:textAllCaps="true"
+                        android:text="Hủy"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>

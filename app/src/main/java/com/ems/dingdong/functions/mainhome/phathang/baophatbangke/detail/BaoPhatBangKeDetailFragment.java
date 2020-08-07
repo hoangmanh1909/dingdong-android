@@ -384,10 +384,13 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 }
                 break;
             case R.id.btn_sign:
-                new SignDialog(getActivity(), new SignCallback() {
+                String name = edtReceiverName.getText().toString();
+                String code = tvMaE.getText().toString();
+                new SignDialog(code,name, getActivity(), new SignCallback() {
                     @Override
-                    public void onResponse(String sign, Bitmap bitmap) {
+                    public void onResponse(String name, String sign, Bitmap bitmap) {
                         mSign = sign;
+                        edtReceiverName.setText(name);
                         imgSign.setImageBitmap(bitmap);
                         if (bitmap != null) {
                             llSigned.setVisibility(View.VISIBLE);

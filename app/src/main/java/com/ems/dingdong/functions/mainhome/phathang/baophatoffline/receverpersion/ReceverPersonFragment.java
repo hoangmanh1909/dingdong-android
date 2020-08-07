@@ -241,10 +241,11 @@ public class ReceverPersonFragment extends ViewFragment<ReceverPersonContract.Pr
                 timePickerDialog.show();
                 break;
             case R.id.btn_sign:
-                new SignDialog(getActivity(), new SignCallback() {
+                new SignDialog(mPresenter.getBaoPhatCommon().get(0).getCode(), edtRealReceiverName.getText(), getActivity(), new SignCallback() {
                     @Override
-                    public void onResponse(String sign, Bitmap bitmap) {
+                    public void onResponse(String realName, String sign, Bitmap bitmap) {
                         mSign = sign;
+                        edtRealReceiverName.setText(realName);
                         imgSign.setImageBitmap(bitmap);
                         if (bitmap != null) {
                             llSigned.setVisibility(View.VISIBLE);
