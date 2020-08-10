@@ -268,7 +268,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 

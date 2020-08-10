@@ -421,7 +421,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER + mPhone));
+        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
         startActivity(intent);
     }
 

@@ -220,10 +220,10 @@
 
         </LinearLayout>
 
-        <View
-            style="@style/DeviderVertical"
-            android:layout_marginLeft="@dimen/dimen_2dp"
-            android:layout_marginRight="@dimen/dimen_2dp" />
+<!--        <View-->
+<!--            style="@style/DeviderVertical"-->
+<!--            android:layout_marginLeft="@dimen/dimen_2dp"-->
+<!--            android:layout_marginRight="@dimen/dimen_2dp" />-->
 
         <LinearLayout
             android:layout_width="0dp"
