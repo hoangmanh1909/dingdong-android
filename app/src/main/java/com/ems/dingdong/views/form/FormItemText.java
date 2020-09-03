@@ -53,6 +53,10 @@ public abstract class FormItemText extends FormItem {
     mTextView.setText(text);
   }
 
+  public void setEnable(boolean enable){
+    mTextView.setEnabled(enable);
+  }
+
   protected final void initTouchListener(final OnFocusChangeListener listener) {
     mTextView.setOnFocusChangeListener(new OnFocusChangeListener() {
       @Override

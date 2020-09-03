@@ -60,7 +60,9 @@ public class FormItemTextView extends FormItemText {
         });
     }
 
-
+    public void setEnable(boolean enable){
+        mTextView.setEnabled(enable);
+    }
 
     @Override
     protected int getLayoutId() {

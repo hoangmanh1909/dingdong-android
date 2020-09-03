@@ -45,27 +45,27 @@ public class HistoryCallAdapter extends RecyclerBaseAdapter {
             tvReceiverPhone.setText(String.format("Số gọi đi: %s", item.getReceiverPhone()));
             tvCreatedDate.setText(String.format("Ngày gọi: %s", item.getCreatedDate()));
             if (!TextUtils.isEmpty(item.getCallTime())) {
-                int totalSeconds = Integer.parseInt(item.getCallTime());
-                int hours = totalSeconds / 3600;
-                int minutes = (totalSeconds % 3600) / 60;
-                int seconds = (totalSeconds % 3600) % 60;
-                String hourString = "";
-                if (hours < 10)
-                    hourString = "0" + hours;
-                else
-                    hourString = hours + "";
-                String minuteString = "";
-                if (minutes < 10)
-                    minuteString = "0" + minutes;
-                else
-                    minuteString = minutes + "";
-                String secondsString = "";
-                if (seconds < 10)
-                    secondsString = "0" + seconds;
-                else
-                    secondsString = seconds + "";
+//                int totalSeconds = Integer.parseInt(item.getCallTime());
+//                int hours = totalSeconds / 3600;
+//                int minutes = (totalSeconds % 3600) / 60;
+//                int seconds = (totalSeconds % 3600) % 60;
+//                String hourString = "";
+//                if (hours < 10)
+//                    hourString = "0" + hours;
+//                else
+//                    hourString = hours + "";
+//                String minuteString = "";
+//                if (minutes < 10)
+//                    minuteString = "0" + minutes;
+//                else
+//                    minuteString = minutes + "";
+//                String secondsString = "";
+//                if (seconds < 10)
+//                    secondsString = "0" + seconds;
+//                else
+//                    secondsString = seconds + "";
 
-                tvCallTime.setText(String.format("Thời gian gọi: %s:%s:%s", hourString, minuteString, secondsString));
+                tvCallTime.setText("Thời gian gọi:" + item.getCallTime());
             } else {
                 tvCallTime.setText(String.format("Thời gian gọi: %s", "00:00"));
             }
