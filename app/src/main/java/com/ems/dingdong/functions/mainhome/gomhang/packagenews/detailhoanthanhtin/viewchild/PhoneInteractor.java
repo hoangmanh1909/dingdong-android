@@ -22,7 +22,7 @@ class PhoneInteractor extends Interactor<PhoneContract.Presenter>
     }
 
     @Override
-    public void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.updateMobile(code, mobileNumber, commonCallback);
+    public void updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.updateMobile(code,type, mobileNumber, commonCallback);
     }
 }

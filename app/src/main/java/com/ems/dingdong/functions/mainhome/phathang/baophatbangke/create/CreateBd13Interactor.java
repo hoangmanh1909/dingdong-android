@@ -35,7 +35,7 @@ class CreateBd13Interactor extends Interactor<CreateBd13Contract.Presenter>
     }
 
     @Override
-    public void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
-        NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
+    public void updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
+        NetWorkController.updateMobile(code,type, phone, simpleResultCommonCallback);
     }
 }

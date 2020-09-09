@@ -15,7 +15,7 @@ interface PhoneContract {
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
-        void updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
+        void updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -23,7 +23,7 @@ interface PhoneContract {
 
         void showError(String message);
 
-        void showView();
+        void showView(String phone, String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

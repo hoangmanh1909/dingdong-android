@@ -233,7 +233,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void updateMobile(String phone, String parcelCode) {
         mView.showProgress();
         String tPhone = phone;
-        addCallback(mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        addCallback(mInteractor.updateMobile(parcelCode,"1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

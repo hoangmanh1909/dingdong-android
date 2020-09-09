@@ -36,8 +36,8 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     }
 
     @Override
-    public Call<SimpleResult> updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
-        return NetWorkController.updateMobile(code, phone, simpleResultCommonCallback);
+    public Call<SimpleResult> updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
+        return NetWorkController.updateMobile(code,type, phone, simpleResultCommonCallback);
     }
 
 }

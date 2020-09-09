@@ -35,7 +35,7 @@ interface BaoPhatBangKeDetailContract {
 
         void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);
 
-        void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+        void updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
         void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback);
 

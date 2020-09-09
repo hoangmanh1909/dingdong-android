@@ -90,12 +90,12 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
     @Override
     public void updateMobile(String phone) {
         mView.showProgress();
-        mInteractor.updateMobile(mCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.updateMobile(mCode,"2", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                mView.showView();
+                mView.showView(phone, response.body().getMessage());
             }
 
             @Override

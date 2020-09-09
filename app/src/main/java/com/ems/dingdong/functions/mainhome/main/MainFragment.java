@@ -83,19 +83,19 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
-        CallHistoryRequest request = new CallHistoryRequest();
-        request.setTenantID(12);
-        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        (simpleResult, throwable) -> {
-                            Log.d("MainFragment.class", throwable.getMessage());
-                        }
-                );
-
-        ApplicationController applicationController =
-                (ApplicationController) getViewContext().getApplication();
-        applicationController.initPortSipService();
+//        CallHistoryRequest request = new CallHistoryRequest();
+//        request.setTenantID(12);
+//        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                        (simpleResult, throwable) -> {
+//                            Log.d("MainFragment.class", throwable.getMessage());
+//                        }
+//                );
+//
+//        ApplicationController applicationController =
+//                (ApplicationController) getViewContext().getApplication();
+//        applicationController.initPortSipService();
 
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {

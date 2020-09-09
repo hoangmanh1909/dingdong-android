@@ -136,7 +136,7 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
     @Override
     public void updateMobile(String phone,String parcelCode) {
         mView.showProgress();
-        mInteractor.updateMobile(parcelCode, phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.updateMobile(parcelCode,"1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

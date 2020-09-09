@@ -74,7 +74,7 @@ interface ListBaoPhatBangKeContract {
          * @param phone                      new phone number.
          * @param simpleResultCommonCallback callback from retrofit.
          */
-        Call<SimpleResult> updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+        Call<SimpleResult> updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
     }
 

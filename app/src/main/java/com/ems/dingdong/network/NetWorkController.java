@@ -366,8 +366,8 @@ public class NetWorkController {
         call.enqueue(commonCallback);
     }
 
-    public static Call<SimpleResult> updateMobile(String code, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        Call<SimpleResult> call = getAPIBuilder().updateMobile(code, mobileNumber);
+    public static Call<SimpleResult> updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        Call<SimpleResult> call = getAPIBuilder().updateMobile(code,type, mobileNumber);
         call.enqueue(commonCallback);
         return call;
     }

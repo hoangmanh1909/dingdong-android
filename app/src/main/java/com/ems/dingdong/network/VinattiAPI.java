@@ -267,6 +267,7 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Delivery/UpdateMobile")
     Call<SimpleResult> updateMobile(@Field("Code") String code,
+                                    @Field("Type") String type,
                                     @Field("MobileNumber") String mobileNumber);
 
     @Multipart

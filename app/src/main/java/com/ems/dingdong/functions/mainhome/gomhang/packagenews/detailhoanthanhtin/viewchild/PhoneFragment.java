@@ -60,7 +60,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
         startActivity(intent);
     }
 
@@ -79,8 +79,11 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     }
 
     @Override
-    public void showView() {
-        mPhoneConectDialog.updateText("");
+    public void showView(String phone,String mes) {
+        showSuccessToast(mes);
+        if (mPhoneConectDialog != null) {
+            mPhoneConectDialog.updateText(phone);
+        }
     }
 
     private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {
