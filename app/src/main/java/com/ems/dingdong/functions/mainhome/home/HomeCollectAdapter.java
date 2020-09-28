@@ -6,6 +6,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
@@ -29,6 +32,11 @@ public class HomeCollectAdapter extends RecyclerBaseAdapter {
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int itemType) {
         return new HolderView(inflateView(parent, R.layout.item_home_collect));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
     }
 
     class HolderView extends BaseViewHolder {

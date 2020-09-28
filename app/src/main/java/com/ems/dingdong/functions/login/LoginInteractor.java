@@ -7,6 +7,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -20,8 +21,8 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public void login(String mobileNumber, String signCode, CommonCallback<LoginResult> commonCallback) {
-        NetWorkController.loginAuthorized(mobileNumber, signCode, commonCallback);
+    public void login(String mobileNumber, String signCode,String version,String appCode, CommonCallback<LoginResult> commonCallback) {
+        NetWorkController.loginAuthorized(mobileNumber, signCode,version,appCode, commonCallback);
     }
 
     @Override
@@ -37,5 +38,10 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     @Override
     public void getReasons(CommonCallback<ReasonResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
+    }
+
+    @Override
+    public void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
+        NetWorkController.getVersion(code,data,signature,callback);
     }
 }

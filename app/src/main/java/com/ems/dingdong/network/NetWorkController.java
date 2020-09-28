@@ -65,6 +65,7 @@ import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.IdentifyCationResponse;
+import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
@@ -184,9 +185,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void loginAuthorized(String mobileNumber, String signCode, CommonCallback<LoginResult> callback) {
+    public static void loginAuthorized(String mobileNumber, String signCode,String version,String appCode, CommonCallback<LoginResult> callback) {
         String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode, signature);
+        Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode,version,appCode, signature);
         call.enqueue(callback);
     }
 
@@ -346,6 +347,11 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
+        Call<ResponseObject> call = getAPIBuilder().Bussiness(code, data, signature);
+        call.enqueue(callback);
+    }
+
     public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                                   String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason);
@@ -366,8 +372,8 @@ public class NetWorkController {
         call.enqueue(commonCallback);
     }
 
-    public static Call<SimpleResult> updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        Call<SimpleResult> call = getAPIBuilder().updateMobile(code,type, mobileNumber);
+    public static Call<SimpleResult> updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        Call<SimpleResult> call = getAPIBuilder().updateMobile(code, type, mobileNumber);
         call.enqueue(commonCallback);
         return call;
     }

@@ -59,6 +59,7 @@ import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
+import com.ems.dingdong.model.response.ResponseObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,8 @@ public interface VinattiAPI {
     @POST("api/Authorized/Login")
     Call<LoginResult> loginAuthorized(@Field("MobileNumber") String mobileNumber,
                                       @Field("SignCode") String signCode,
+                                      @Field("AppVersion") String version,
+                                      @Field("AppCode") String appCode,
                                       @Field("Signature") String signature
     );
 
@@ -235,6 +238,12 @@ public interface VinattiAPI {
 
     @GET("api/Dictionary/GetReasons")
     Call<ReasonResult> getReasons();
+
+    @FormUrlEncoded
+    @POST("api/DingDong/Bussiness")
+    Call<ResponseObject> Bussiness(@Field("Code") String code,
+                                   @Field("Data") String data,
+                                   @Field("Signature") String signature);
 
     @GET("api/Dictionary/GetPickUpReasons")
     Call<ReasonResult> getReasonsHoanTat();

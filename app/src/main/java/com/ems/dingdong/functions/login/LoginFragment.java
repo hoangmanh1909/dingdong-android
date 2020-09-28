@@ -1,12 +1,16 @@
 package com.ems.dingdong.functions.login;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.DialogTitle;
 import androidx.core.app.ActivityCompat;
 
 import com.core.base.viper.ViewFragment;
@@ -73,7 +77,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;31B6565C2D06EDF99DE2B39FB358544F0CA875E725EF28087C0702FDC6827204");// dev UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0948035226;7C8FD391550599BF0BEFC98F0AD8D50642A624411355DB1ED5B211676C32B89D");// dev UAT
         checkPermissionCall();
+
+        mPresenter.getVersion();
     }
+
 
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -184,6 +191,27 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     }
 
     @Override
+    public void showVersion(String version, String urlDownload) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+        builder1.setMessage("Đã có phiên bản mới, vui lòng cập nhật ứng dụng trước khi sử dụng.");
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                "Cập nhật ứng dụng",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent viewIntent =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse(urlDownload));
+                        startActivity(viewIntent);
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    @Override
     public void gotoHome() {
         SharedPref sharedPref = new SharedPref(getActivity());
 
@@ -201,7 +229,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
 
-        if(routeInfo != null){
+        if (routeInfo != null) {
             if (getActivity() != null) {
                 // showUIShift();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -209,8 +237,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 getActivity().startActivity(intent);
 
             }
-        }
-        else {
+        } else {
             if (postOffice != null) {
                 List<RouteInfo> routeInfos = postOffice.getRoutes();
                 if (routeInfos.size() > 0) {

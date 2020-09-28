@@ -3,9 +3,12 @@ package com.ems.dingdong.functions.login;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.login.validation.ValidationPresenter;
 import com.ems.dingdong.model.LoginResult;
@@ -14,9 +17,15 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -49,7 +58,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void login(String mobileNumber, String signCode) {
-        mInteractor.login(mobileNumber, signCode, new CommonCallback<LoginResult>((Activity) mContainerView) {
+        mInteractor.login(mobileNumber, signCode,BuildConfig.VERSION_NAME,"DD_ANDROID", new CommonCallback<LoginResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<LoginResult> call, Response<LoginResult> response) {
                 super.onSuccess(call, response);
@@ -95,6 +104,46 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     @Override
     public void gotoValidation() {
         new ValidationPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void getVersion() {
+        mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION","","", new CommonCallback<ResponseObject>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    // go to home
+                    Gson g = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().getData());
+                        String version = jsonObject.getString("Version");
+                        String urlDowload = jsonObject.getString("UrlDownload");
+
+                        String versionApp = BuildConfig.VERSION_NAME;
+
+                        if(!version.equals(versionApp))
+                        {
+                            mView.showVersion(version,urlDowload);
+                        }
+
+                    }catch (JSONException err){
+                        Log.d("Error", err.toString());
+                        mView.showError("Lỗi xử lý dữ liệu");
+                    }
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
+
+            @Override
+            protected void onError(Call<ResponseObject> call, String message) {
+                mView.hideProgress();
+                super.onError(call, message);
+                mView.showError(message);
+            }
+        });
     }
 
     private void getPostOfficeByCode(String unitCode, String postmanID) {
