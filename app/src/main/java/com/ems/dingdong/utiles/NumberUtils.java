@@ -369,24 +369,24 @@ public class NumberUtils {
                 }
 
                 if (mobileNumber.length() == 10) {
-                    if (isInArray(_operator2, operatorCode9y)
-                            || isInArray(_operator3, operatorCode9yy)
-                            || isInArray(_operator2, operatorCode10)
-                            || isInArray(_operator3, operatorCode10)
-
-                            ) {
+//                    if (isInArray(_operator2, operatorCode9y)
+//                            || isInArray(_operator3, operatorCode9yy)
+//                            || isInArray(_operator2, operatorCode10)
+//                            || isInArray(_operator3, operatorCode10)
+//
+//                            ) {
                         return true;
-                    } else {
-                        return false;
-                    }
+//                    } else {
+//                        return false;
+//                    }
                 } else if (mobileNumber.length() == 11) {
-                    if (isInArray(_operator3, operatorCode1yy)
-                            || isInArray(_operator3, operatorCode10)
-                            ) {
+//                    if (isInArray(_operator3, operatorCode1yy)
+//                            || isInArray(_operator3, operatorCode10)
+//                            ) {
                         return true;
-                    } else {
-                        return false;
-                    }
+//                    } else {
+//                        return false;
+//                    }
                 } else {
                     return false;
                 }

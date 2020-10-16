@@ -110,6 +110,8 @@ public class SignDrawFragment extends ViewFragment<SignDrawContract.Presenter> i
                     // if (!TextUtils.isEmpty(base64)) {
                     if (TextUtils.isEmpty(base64)) {
                         base64 = "";
+                        Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
+                        return;
                     }
                     if (!TextUtils.isEmpty(mPresenter.getBaoPhatCommon().get(0).getIsCOD())) {
                         if (mPresenter.getBaoPhatCommon().get(0).getIsCOD().toUpperCase().equals("Y")) {

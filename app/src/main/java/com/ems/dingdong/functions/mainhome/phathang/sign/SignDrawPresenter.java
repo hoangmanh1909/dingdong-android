@@ -182,7 +182,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String deliveryDate = item.getDeliveryDate();
             String deliveryTime = item.getDeliveryTime();
             String receiverName = item.getRealReceiverName();
-            String receiverIDNumber = item.getReceiverIDNumber();
+            String receiverIDNumber = item.getRealReceiverIDNumber();
             String fileNames = item.getFileNames();
             String reasonCode = "";
             String solutionCode = "";

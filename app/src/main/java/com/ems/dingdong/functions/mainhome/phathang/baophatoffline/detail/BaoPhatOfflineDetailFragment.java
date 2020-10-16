@@ -406,49 +406,49 @@ public class BaoPhatOfflineDetailFragment extends ViewFragment<BaoPhatOfflineDet
             case R.id.tv_solution:
                 showUISolution();
                 break;
-            case R.id.tv_deliveryDate:
-                String createDate = mBaoPhat.getLoadDate();
-                Calendar calendarCreate = Calendar.getInstance();
-                if (TextUtils.isEmpty(createDate)) {
-                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                    calendarCreate.set(Calendar.DATE, -1);
-                } else {
-                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
-                }
-                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
-                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
-                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
-                    calendarCreate.set(Calendar.DATE, -1);
-                }
-                new SpinnerDatePickerDialogBuilder()
-                        .context(getActivity())
-                        .callback(this)
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
-                        .build()
-                        .show();
-                break;
-            case R.id.tv_deliveryTime:
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mHour = hourOfDay;
-                        mMinute = minute;
-                        if (mHour > 12) {
-                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-                        } else {
-                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-                        }
-                    }
-                }, mHour, mMinute, true);
-                timePickerDialog.show();
-                break;
+//            case R.id.tv_deliveryDate:
+//                String createDate = mBaoPhat.getLoadDate();
+//                Calendar calendarCreate = Calendar.getInstance();
+//                if (TextUtils.isEmpty(createDate)) {
+//                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+//                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+//                    calendarCreate.set(Calendar.DATE, -1);
+//                } else {
+//                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
+//                }
+//                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
+//                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
+//                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
+//                    calendarCreate.set(Calendar.DATE, -1);
+//                }
+//                new SpinnerDatePickerDialogBuilder()
+//                        .context(getActivity())
+//                        .callback(this)
+//                        .spinnerTheme(R.style.DatePickerSpinner)
+//                        .showTitle(true)
+//                        .showDaySpinner(true)
+//                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
+//                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
+//                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
+//                        .build()
+//                        .show();
+//                break;
+//            case R.id.tv_deliveryTime:
+//                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
+//                        android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
+//                    @Override
+//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                        mHour = hourOfDay;
+//                        mMinute = minute;
+//                        if (mHour > 12) {
+//                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
+//                        } else {
+//                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
+//                        }
+//                    }
+//                }, mHour, mMinute, true);
+//                timePickerDialog.show();
+//                break;
         }
     }
 
