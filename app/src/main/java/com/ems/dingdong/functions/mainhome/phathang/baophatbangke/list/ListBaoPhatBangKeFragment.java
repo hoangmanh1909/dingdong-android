@@ -41,6 +41,7 @@ import com.ems.dingdong.model.Tree;
 import com.ems.dingdong.model.TreeNote;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -145,6 +146,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
         }
     };
+
+    /*private void startSipService(Intent intent){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getActivity().startForegroundService(intent);
+        }else{
+            getActivity().startService(intent);
+        }
+    }*/
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -257,7 +266,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     leaf1.add(new Leaf(2, "Gọi chuyển mạch"));
                                     leaf1.add(new Leaf(3, "Gọi bằng sim"));
 
-                                    List<Tree> leaf2 = new ArrayList<>();
+                                    /**
+                                     * follow Ms Hanh
+                                     */
+
+                                    /*List<Tree> leaf2 = new ArrayList<>();
                                     leaf2.add(new Leaf(4, "Gọi tiết kiệm"));
                                     leaf2.add(new Leaf(5, "Gọi chuyển mạch"));
                                     leaf2.add(new Leaf(6, "Gọi bằng sim"));
@@ -275,7 +288,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     listVHT.add(leaf4);
                                     listVHT.add(leaf5);
                                     listVHT.add(leaf);
-                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(listVHT, "Gọi qua máy lẻ", listener);
+                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(listVHT, "Gọi qua máy lẻ", listener);*/
+                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(leaf1, "Gọi qua máy lẻ", listener);
                                     fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
                                 }
                             }).show();

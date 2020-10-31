@@ -42,6 +42,11 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
+    public void postImageAvatar(String path, CommonCallback<UploadSingleResult> callback) {
+        NetWorkController.postImageAvatar(path, callback);
+    }
+
+    @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback) {
         NetWorkController.paymentDelivery(request, simpleResultCommonCallback);
     }

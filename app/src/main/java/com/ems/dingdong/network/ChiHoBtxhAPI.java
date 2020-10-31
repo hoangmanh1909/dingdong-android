@@ -13,6 +13,7 @@ import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -39,4 +40,10 @@ public interface ChiHoBtxhAPI {
     Call<SeaBankHistoryPaymentResponse> getHistoryPaymentSeaBank(@Query("MobileNumber") String mobileNumber,
                                                                  @Query("FromDate") String fromDate,
                                                                  @Query("ToDate") String toDate);
+
+    //
+    /*@POST("")
+    Call<> postInfoCall(@Field("numberCaller") String numberCaller,
+                        @Field("numberCallee") String numberCallee);*/
+
 }

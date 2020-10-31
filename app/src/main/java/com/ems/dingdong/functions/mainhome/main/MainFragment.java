@@ -83,6 +83,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         updateUserHeader();
         setupAdapter();
+
+        ApplicationController.getInstance().initPortSipService();
+
+
 //        CallHistoryRequest request = new CallHistoryRequest();
 //        request.setTenantID(12);
 //        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
@@ -137,10 +141,18 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             }
         });
 
+        /**
+         * follow Hanh
+         */
+        imgCall.setVisibility(View.INVISIBLE);
+
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getViewContext().startService(intent);
         if (!"6".equals(userInfo.getEmpGroupID())) {
-            imgCall.setVisibility(View.VISIBLE);
+            /**
+             * follow Hanh
+             */
+            //imgCall.setVisibility(View.VISIBLE);
             imgTopSetting.setVisibility(View.VISIBLE);
             viewTop.setVisibility(View.VISIBLE);
         } else {

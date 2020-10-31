@@ -178,6 +178,7 @@ repositories {
 }
 
 dependencies {
+    implementation files('src\\libs\\portsipvoipsdk.jar')
     configurations {
         all*.exclude group: 'com.android.support', module: 'support-v13'
     }

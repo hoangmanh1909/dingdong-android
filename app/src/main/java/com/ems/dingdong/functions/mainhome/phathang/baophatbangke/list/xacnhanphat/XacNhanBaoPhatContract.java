@@ -50,6 +50,9 @@ public interface XacNhanBaoPhatContract {
          */
         void postImage(String path, CommonCallback<UploadSingleResult> callback);
 
+        ///
+        void postImageAvatar(String path, CommonCallback<UploadSingleResult> callback);
+
         /**
          * delivery success.
          */
@@ -187,6 +190,7 @@ public interface XacNhanBaoPhatContract {
          * @param path file path.
          */
         void postImage(String path);
+
 
         /**
          * delivery not success.

@@ -13,6 +13,7 @@ public class Session {
     public boolean bEarlyMedia;
     public boolean isMicOff = true;
     public boolean isSpeakerOff = true;
+    public String lineName;
     public CALL_STATE_FLAG state;
 
     public boolean IsIdle()

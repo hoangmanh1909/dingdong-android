@@ -129,6 +129,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
     FormItemEditText edtOtherRelationship;
+    ///
+    /*@BindView(R.id.rl_image_capture_verify_avatar)
+    RelativeLayout rlImageCaptureVerifyAvatar;*/
+    @BindView(R.id.recycler_image_verify_avatar)
+    RecyclerView recyclerImageVerifyAvatar;
     @BindView(R.id.recycler_image)
     RecyclerView recyclerViewImage;
     @BindView(R.id.recycler_image_verify)
@@ -182,9 +187,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private long totalFee = 0;
     private String mFile = "";
     private String mFileVerify = "";
+    private String mFileVerifyAvatar = "";
     private boolean isCaptureVerify = false;
+    private boolean isCaptureVerifyAvatar = false;
     private int authenType = -2;
     private List<Item> listImages;
+    private List<Item> listImages_avatar;
+    private ImageCaptureAdapter imageVerifyAdapterAvatar;
     private ImageCaptureAdapter imageAdapter;
     private ImageCaptureAdapter imageVerifyAdapter;
 
@@ -281,10 +290,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
         listImages = new ArrayList<>();
+        listImages_avatar = new ArrayList<>();//
+        imageVerifyAdapterAvatar = new ImageCaptureAdapter(getViewContext(), listImages_avatar);//
         imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages);
         imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), new ArrayList<>());
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);//
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
+        recyclerImageVerifyAvatar.setAdapter(imageVerifyAdapterAvatar);//
         recyclerViewImage.setAdapter(imageAdapter);
         recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
         rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
@@ -308,7 +321,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
-            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify})
+            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_verify_avatar})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -344,6 +357,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                 }).show();
                 break;
+            ///file_avatar.jpg
+            //
+            //file_selfie_avatar.jpg
+            case R.id.rl_image_capture_verify_avatar:
+                if (imageVerifyAdapterAvatar.getListFilter().size() < 2) {
+                    isCaptureVerifyAvatar = true;
+                    MediaUltis.captureImage(this);
+                } else {
+                    showErrorToast(getString(R.string.do_not_allow_take_over_one_photos));
+                }
+                break;
 
             case R.id.rl_image_capture:
                 if (imageAdapter.getListFilter().size() < 3) {
@@ -353,9 +377,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     showErrorToast(getViewContext().getString(R.string.do_not_allow_take_over_three_photos));
                 }
                 break;
+
             case R.id.rl_image_capture_verify:
                 if (imageVerifyAdapter.getListFilter().size() < 7) {
-                    isCaptureVerify = true;
+                    isCaptureVerify = false;
                     MediaUltis.captureImage(this);
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_seven_photos));
@@ -550,6 +575,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
+                        if (isCaptureVerifyAvatar){
+                            imageVerifyAdapterAvatar.getListFilter().add(new Item(path, ""));
+                            imageVerifyAdapterAvatar.notifyDataSetChanged();
+                        }
                         if (isCaptureVerify) {
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
                             imageVerifyAdapter.notifyDataSetChanged();
@@ -728,7 +757,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void showImage(String file) {
         if (null != getViewContext()) {
-            if (isCaptureVerify) {
+            if (isCaptureVerifyAvatar){
+                if (mFileVerifyAvatar.equals("")){
+                    mFileVerifyAvatar = file;
+                }else {
+                    mFileVerifyAvatar += ";";
+                    mFileVerifyAvatar += file;
+                }
+            }
+            else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
                 } else {

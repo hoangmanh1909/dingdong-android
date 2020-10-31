@@ -147,6 +147,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         });
     }
 
+
     @Override
     public void submitToPNS(String reason, String solution, String note, String deliveryImage, String signCapture) {
         String postmanID = userInfo.getiD();

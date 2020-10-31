@@ -8,9 +8,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.DialogTitle;
 import androidx.core.app.ActivityCompat;
 
 import com.core.base.viper.ViewFragment;
@@ -25,7 +25,10 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.VinattiAPI;
+import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
@@ -42,6 +45,7 @@ import butterknife.OnClick;
  * The Login Fragment
  */
 public class LoginFragment extends ViewFragment<LoginContract.Presenter> implements LoginContract.View {
+
 
     @BindView(R.id.tv_version)
     CustomTextView tvVersion;
@@ -76,9 +80,14 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;31B6565C2D06EDF99DE2B39FB358544F0CA875E725EF28087C0702FDC6827204");// dev UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0948035226;7C8FD391550599BF0BEFC98F0AD8D50642A624411355DB1ED5B211676C32B89D");// dev UAT
+
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;2F262E57DC9ED1EF7BC07C10AD72096213FC9DAF8B6990EFF17F03FF110A4BDC");// dev vinatti
+
         checkPermissionCall();
 
         mPresenter.getVersion();
+
+
     }
 
 
@@ -111,6 +120,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         }
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -122,18 +133,19 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     public void onDisplay() {
         super.onDisplay();
         String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+        Log.d("1212", "a: "+values);
         if (!TextUtils.isEmpty(values)) {
             String mobileNumber = values.split(";")[0];
             if (!TextUtils.isEmpty(mobileNumber)) {
                 tvPhone.setText(mobileNumber);
                 tvPhone.setVisibility(View.VISIBLE);
                 tvStatus.setText("Truy cập để tiếp tục sử dụng");
+
             } else {
                 tvPhone.setVisibility(View.GONE);
                 tvStatus.setText("Xác thực ứng dụng lần đầu sử dụng");
             }
         }
-
     }
 
     @OnClick(R.id.login_layout)
@@ -217,6 +229,14 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            //Toast.makeText(getContext(), " getFullName  "+ userInfo.getFullName() + " getExtensionUserName "+ userInfo.getExtensionUserName(), Toast.LENGTH_LONG).show();
+
+        }
+
 
         PostOffice postOffice = null;
         RouteInfo routeInfo = null;

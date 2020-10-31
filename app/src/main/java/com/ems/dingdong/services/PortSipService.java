@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -19,7 +20,10 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.Ring;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.portsip.OnPortSIPEvent;
@@ -39,6 +43,8 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
     private static final String TAG = PortSipService.class.getName();
 
+    public static final String ACTION_SIP_REGIEST = "PortSip.AndroidSample.Test.REGIEST";
+
     public static final String INSTANCE_ID = "instanceid";
     public static final String CALL_EVENT_ANSWER = "CALL_EVENT_ANSWER";
     public static final String CALL_EVENT_INVITE_COMMING = "CALL_EVENT_INVITE_COMMING";
@@ -53,6 +59,31 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     public static final String ACTION_LOG_OUT = "ACTION_LOG_OUT";
     public static final String TYPE_ACTION = "TYPE_ACTION";
     private final String APPID = "com.tct.dingdong";
+
+    ///
+    public static final String ACTION_PUSH_MESSAGE = "PortSip.AndroidSample.Test.PushMessageIncoming";
+    public static final String ACTION_PUSH_TOKEN = "PortSip.AndroidSample.Test.PushToken";
+    public static final String ACTION_SIP_UNREGIEST = "PortSip.AndroidSample.Test.UNREGIEST";
+    public static final String ACTION_SIP_REINIT = "PortSip.AndroidSample.Test.TrnsType";
+    public static final String EXTRA_PUSHTOKEN = "token";
+    private String pushToken;
+
+    //private UserInfo userInfo;
+    ///
+    ///
+    public static final String USER_NAME = "USER_NAME";
+    public static final String PASSWORD = "PASSWORD";
+    public static final String DISPLAY_NAME = "DISPLAY_NAME";
+    public static final String AUTH_NAME = "AUTH_NAME";
+    public static final String USER_DOMAIN = "USER_DOMAIN";
+    public static final String SIP_SERVER = "SIP_SERVER";
+    public static final String SERVER_PORT = "SERVER_PORT";
+    public static final String STUN_SERVER = "STUN_SERVER";
+    public static final String STUN_PORT = "STUN_PORT";
+
+    private SharedPreferences preferences;
+
+
     private PortSipSdk mEngine;
     private ApplicationController applicaton;
     private final IBinder mBinder = new PortSipBinder();
@@ -84,19 +115,66 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         int localPort = 5060 + rm.nextInt(60000);
 //        int transType = preferences.getInt(TRANS, 0);
 //        int srtpType = preferences.getInt(SRTP, 0);
-        String userName = "101";
-        String password = "vnp2020";
-        String displayName = "100";
-        String authName = "101";
-        String userDomain = "app01.vht.com.vn";
 
-        String sipServer = "portsip.vht.com.vn";
+
+/*
+        String userName = "1000001963170164";
+        String password = "Abcd1234";
+        String displayName = "1000001963170164";
+        String authName = "";
+        String userDomain = "vnpost-shipper.vht.com.vn";
+
+        String sipServer = "sip.vht.com.vn";
         String serverPort = "5060";
         String stunServer = "";
         String stunPort = "3478";
 
         int sipServerPort = Integer.parseInt(serverPort);
-        int stunServerPort = Integer.parseInt(stunPort);
+        int stunServerPort = Integer.parseInt(stunPort);*/
+
+        /*SharedPref sharedPref = new SharedPref(this);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        ///
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);*/
+        //Toast.makeText(getContext(), " getExtensionUserName: "+ userInfos.getExtensionUserName()+"\n getExtensionDomain "+ userInfos.getExtensionDomain()+"\n getFullName "+userInfos.getFullName(), Toast.LENGTH_LONG).show();
+
+
+
+            /*UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            String userName = userInfo.getExtensionUserName();
+            String password = userInfo.getExtensionPassword();
+            String displayName = userInfo.getExtensionUserName();
+            String authName = userInfo.getExtensionStunServer();
+            String userDomain = userInfo.getExtensionDomain();
+            String sipServer = userInfo.getExtensionServer();
+            String serverPort = userInfo.getExtensionServerPort();
+            String stunServer = userInfo.getExtensionStunServer();
+            String stunPort = userInfo.getExtensionStunServerPort();
+
+            int sipServerPort = Integer.parseInt(serverPort);
+            int stunServerPort = Integer.parseInt(stunPort);*/
+
+
+
+
+
+        /*preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //Random rm = new Random();
+        //int srtpType = preferences.getInt(SRTP, 0);
+        String userName = preferences.getString(USER_NAME, "");
+        String password = preferences.getString(PASSWORD, "");
+        String displayName = preferences.getString(DISPLAY_NAME, "");
+        String authName = preferences.getString(AUTH_NAME, "");
+        String userDomain = preferences.getString(USER_DOMAIN, "");
+
+        String sipServer = preferences.getString(SIP_SERVER, "");
+        String serverPort = preferences.getString(SERVER_PORT, "");
+        String stunServer = preferences.getString(STUN_SERVER, "");
+        String stunPort = preferences.getString(STUN_PORT, "");
+
+        int sipServerPort = Integer.parseInt(serverPort);
+        int stunServerPort = Integer.parseInt(stunPort);*/
+
         mEngine.DeleteCallManager();
         mEngine.CreateCallManager(applicaton);
         mEngine.setOnPortSIPEvent(this);
@@ -120,6 +198,36 @@ public class PortSipService extends Service implements OnPortSIPEvent {
                         mEngine.DeleteCallManager();
                         return;
                     }
+
+                    SharedPref sharedPref = new SharedPref(this);
+                    String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+
+                        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                        //Toast.makeText(getContext(), " getFullName  "+ userInfo.getFullName() + " getExtensionUserName "+ userInfo.getExtensionUserName(), Toast.LENGTH_LONG).show();
+                        /*String userName = preferences.getString(USER_NAME, "");
+                        String password = preferences.getString(PASSWORD, "");
+                        String displayName = preferences.getString(DISPLAY_NAME, "");
+                        String authName = preferences.getString(AUTH_NAME, "");
+                        String userDomain = preferences.getString(USER_DOMAIN, "");
+
+                        String sipServer = preferences.getString(SIP_SERVER, "");
+                        String serverPort = preferences.getString(SERVER_PORT, "");
+                        String stunServer = preferences.getString(STUN_SERVER, "");
+                        String stunPort = preferences.getString(STUN_PORT, "");*/
+
+                    String userName = userInfo.getExtensionUserName();
+                    String password = userInfo.getExtensionPassword();
+                    String displayName = userInfo.getExtensionUserName();
+                    String authName = userInfo.getExtensionStunServer();
+                    String userDomain = userInfo.getExtensionDomain();
+                    String sipServer = userInfo.getExtensionServer();
+                    String serverPort = userInfo.getExtensionServerPort();
+                    String stunServer = userInfo.getExtensionStunServer();
+                    String stunPort = userInfo.getExtensionStunServerPort();
+                    int sipServerPort = Integer.parseInt(serverPort);
+                    int stunServerPort = Integer.parseInt(stunPort);
+
+
                     Log.d(TAG, "before set user");
                     result = mEngine.setUser(userName, displayName, authName, password,
                             userDomain, sipServer, sipServerPort, stunServer, stunServerPort, null, 5060);
@@ -167,6 +275,12 @@ public class PortSipService extends Service implements OnPortSIPEvent {
                 }, throwable -> Log.d(TAG, throwable.getMessage()));
     }
 
+    /*public void userInfo(final Object model){
+        UserInfo item = (UserInfo) model;
+        String userName = item.getExtensionUserName();
+        Log.d("12121", "b: "+ userName);
+    }*/
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -179,7 +293,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     }
 
     private String getInstanceID() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         String insanceid = preferences.getString(INSTANCE_ID, "");
         if (TextUtils.isEmpty(insanceid)) {
@@ -201,14 +315,67 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         return isConnectCallService;
     }
 
+    ///
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        int result = super.onStartCommand(intent, flags, startId);
+        if (intent != null) {
+            if (ACTION_PUSH_MESSAGE.equals(intent.getAction())||ACTION_SIP_REGIEST.equals(intent.getAction())){
+                CallManager.Instance().online = true;
+                if(CallManager.Instance().regist){
+                    mEngine.refreshRegistration(0);
+                }else {
+                    registerToServer();
+                }
+            } else if (ACTION_SIP_UNREGIEST.equals(intent.getAction())) {
+                CallManager.Instance().online = false;
+                unregisterToServer();
+            }else if (ACTION_SIP_REINIT.equals(intent.getAction())) {
+                CallManager.Instance().hangupAllCalls(mEngine);
+                //initialSDK();
+            }else if (ACTION_PUSH_TOKEN.equals(intent.getAction())) {
+                pushToken = intent.getStringExtra(EXTRA_PUSHTOKEN);
+
+                refreshPushToken();
+            }
+
+        }
+        return result;
+    }
+
+    ///
+    public void unregisterToServer() {
+
+        mEngine.unRegisterServer();
+        CallManager.Instance().regist = false;
+    }
+
+    private void refreshPushToken(){
+        if (!TextUtils.isEmpty(pushToken))
+        {
+            String pushMessage = "device-os=android;device-uid=" + pushToken + ";allow-call-push=true;allow-message-push=true;app-id=" + APPID;
+            //old version
+            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "portsip-push", pushMessage);
+            //new version
+            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "x-p-push", pushMessage);
+
+            mEngine.refreshRegistration(0);
+
+        }
+    }
+
     @Override
     public void onRegisterSuccess(String s, int i, String s1) {
         Log.d(TAG, "onRegisterSuccess!");
+        Log.d("portsip1", "onRegisterSuccess");
     }
 
     @Override
     public void onRegisterFailure(String s, int i, String s1) {
         Log.d(TAG, "onRegisterFailure!");
+        Log.d("portsip1", "onRegisterFailure");
     }
 
     @Override
@@ -234,27 +401,31 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     @Override
     public void onInviteTrying(long l) {
         Log.d(TAG, "onInviteTrying!");
+        Log.d("portsip1", " onInviteTrying: "+" sessionID: " + l);
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_TRYING);
         sendBroadcast(intent);
     }
 
     @Override
-    public void onInviteSessionProgress(long l, String s, String s1, boolean b, boolean b1, boolean b2, String s2) {
+    public void onInviteSessionProgress(long sessionId, String audioCodecNames, String videoCodecNames, boolean existsEarlyMedia, boolean existsAudio, boolean existsVideo, String sipMessage) {
         Log.d(TAG, "onInviteSessionProgress!");
+        Log.d("portsip1", " onInviteSessionProgress: "+" sessionId: "+ sessionId + " audioCodecNames: "+audioCodecNames);
     }
 
     @Override
-    public void onInviteRinging(long l, String s, int i, String s1) {
+    public void onInviteRinging(long sessionId, String statusText, int statusCode, String sipMessage) {
         Log.d(TAG, "onInviteRinging!");
+        Log.d("portsip1", " onInviteRinging: "+" sessionId: "+ sessionId+" statusText: "+" statusCode: "+ statusCode+" sipMessage: "+sipMessage);
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_RINGING);
         sendBroadcast(intent);
     }
 
     @Override
-    public void onInviteAnswered(long l, String s, String s1, String s2, String s3, String s4, String s5, boolean b, boolean b1, String s6) {
+    public void onInviteAnswered(long sessionId, String callerDisplayName, String caller, String calleeDisplayName, String callee, String audioCodecNames, String videoCodecNames, boolean existsAudio, boolean existsVideo, String sipMessage) {
         Log.d(TAG, "onInviteAnswered!");
+        Log.d("portsip1", " onInviteAnswered: "+ " sessionId: "+sessionId+" callerDisplayName: "+callerDisplayName+" caller: "+caller+" calleeDisplayName: "+calleeDisplayName+" callee: "+callee+" audioCodecNames: "+audioCodecNames+" videoCodecNames: "+videoCodecNames+" existsAudio: "+existsAudio+" existsVideo: "+" sipMessage: "+sipMessage);
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_ANSWER);
         sendBroadcast(intent);
@@ -274,11 +445,19 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     }
 
     @Override
-    public void onInviteConnected(long l) {
+    public void onInviteConnected(long sessionId) {
         Log.d(TAG, "onInviteConnected!");
+        Log.d("portsip1", " onInviteConnected: "+" sessionId: "+sessionId);
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_CONNECTED);
         sendBroadcast(intent);
+
+        //
+        if(applicaton.portSipSdk.getAudioDevices().contains(PortSipEnumDefine.AudioDevice.BLUETOOTH)){
+            applicaton.portSipSdk.setAudioDevice(PortSipEnumDefine.AudioDevice.BLUETOOTH);
+        }else {
+            CallManager.Instance().setSpeakerOn(applicaton.portSipSdk, CallManager.Instance().isSpeakerOn());
+        }
     }
 
     @Override
@@ -287,8 +466,9 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     }
 
     @Override
-    public void onInviteClosed(long l) {
+    public void onInviteClosed(long sessionId) {
         Log.d(TAG, "onInviteClosed!");
+        Log.d("portsip1", " onInviteClosed: "+" sessionId: "+sessionId);
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
         sendBroadcast(intent);

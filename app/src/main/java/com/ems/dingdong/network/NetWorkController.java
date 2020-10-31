@@ -396,6 +396,14 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void postImageAvatar(String filePath, CommonCallback<UploadSingleResult> callback){
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image_avatar", "file_selfie_avatar.jpg", reqFile);
+        Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
+        call.enqueue(callback);
+    }
+
     public static Observable<UploadSingleResult> postImageObservable(String filePath) {
         File file = new File(filePath);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);

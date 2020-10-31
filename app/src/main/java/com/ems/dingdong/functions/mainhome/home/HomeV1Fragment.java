@@ -86,6 +86,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         recycler_delivery_hcc.setAdapter(homeDeliveryPAAdapter);
 
         updateHomeView();
+
     }
 
     @Override
