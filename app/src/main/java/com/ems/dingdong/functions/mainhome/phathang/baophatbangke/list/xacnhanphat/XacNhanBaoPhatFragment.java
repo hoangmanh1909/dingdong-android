@@ -130,8 +130,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.edt_other_relationship)
     FormItemEditText edtOtherRelationship;
     ///
-    /*@BindView(R.id.rl_image_capture_verify_avatar)
-    RelativeLayout rlImageCaptureVerifyAvatar;*/
+    /*@BindView(R.id.rl_image_capture_avatar)
+    RelativeLayout rlImageCaptureAvatar;*/
     @BindView(R.id.recycler_image_verify_avatar)
     RecyclerView recyclerImageVerifyAvatar;
     @BindView(R.id.recycler_image)
@@ -187,13 +187,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private long totalFee = 0;
     private String mFile = "";
     private String mFileVerify = "";
-    private String mFileVerifyAvatar = "";
+    private String mFileAvatar = "";
+    private boolean isCapture = false;
     private boolean isCaptureVerify = false;
-    private boolean isCaptureVerifyAvatar = false;
+    private boolean isCaptureAvatar = false;
     private int authenType = -2;
     private List<Item> listImages;
-    private List<Item> listImages_avatar;
-    private ImageCaptureAdapter imageVerifyAdapterAvatar;
+    private List<Item> listImagesAvatar;//
+    private List<Item> listImageVerify;
+    private ImageCaptureAdapter imageAvatarAdapter;
     private ImageCaptureAdapter imageAdapter;
     private ImageCaptureAdapter imageVerifyAdapter;
 
@@ -289,15 +291,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         updateTotalPackage();
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
+        listImagesAvatar = new ArrayList<>();//
         listImages = new ArrayList<>();
-        listImages_avatar = new ArrayList<>();//
-        imageVerifyAdapterAvatar = new ImageCaptureAdapter(getViewContext(), listImages_avatar);//
+        listImageVerify = new ArrayList<>();
+        imageAvatarAdapter = new ImageCaptureAdapter(getViewContext(), listImagesAvatar);
         imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages);
-        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), new ArrayList<>());
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);//
+        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), listImageVerify);
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
-        recyclerImageVerifyAvatar.setAdapter(imageVerifyAdapterAvatar);//
+        recyclerImageVerifyAvatar.setAdapter(imageAvatarAdapter);//
         recyclerViewImage.setAdapter(imageAdapter);
         recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
         rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
@@ -321,7 +324,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
-            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_verify_avatar})
+            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -360,9 +363,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             ///file_avatar.jpg
             //
             //file_selfie_avatar.jpg
-            case R.id.rl_image_capture_verify_avatar:
-                if (imageVerifyAdapterAvatar.getListFilter().size() < 2) {
-                    isCaptureVerifyAvatar = true;
+            case R.id.rl_image_capture_avatar:
+                if (imageAvatarAdapter.getListFilter().size() < 2) {
+                    isCaptureAvatar = true;
+                    isCaptureVerify = false;
+                    isCapture = false;
                     MediaUltis.captureImage(this);
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_one_photos));
@@ -371,7 +376,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             case R.id.rl_image_capture:
                 if (imageAdapter.getListFilter().size() < 3) {
+                    isCapture = true;
                     isCaptureVerify = false;
+                    isCaptureAvatar = false;
                     MediaUltis.captureImage(this);
                 } else {
                     showErrorToast(getViewContext().getString(R.string.do_not_allow_take_over_three_photos));
@@ -380,7 +387,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             case R.id.rl_image_capture_verify:
                 if (imageVerifyAdapter.getListFilter().size() < 7) {
-                    isCaptureVerify = false;
+                    isCaptureVerify = true;
+                    isCaptureAvatar = false;
+                    isCapture = false;
                     MediaUltis.captureImage(this);
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_seven_photos));
@@ -575,14 +584,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
-                        if (isCaptureVerifyAvatar){
-                            imageVerifyAdapterAvatar.getListFilter().add(new Item(path, ""));
-                            imageVerifyAdapterAvatar.notifyDataSetChanged();
+                        if (isCaptureAvatar){
+                            imageAvatarAdapter.getListFilter().add(new Item(path, ""));
+                            imageAvatarAdapter.notifyDataSetChanged();
                         }
                         if (isCaptureVerify) {
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
                             imageVerifyAdapter.notifyDataSetChanged();
-                        } else {
+                        }
+                        if (isCapture) {
                             imageAdapter.getListFilter().add(new Item(path, ""));
                             imageAdapter.notifyDataSetChanged();
                         }
@@ -757,22 +767,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void showImage(String file) {
         if (null != getViewContext()) {
-            if (isCaptureVerifyAvatar){
-                if (mFileVerifyAvatar.equals("")){
-                    mFileVerifyAvatar = file;
+            if (isCaptureAvatar){
+                if (mFileAvatar.equals("")){
+                    mFileAvatar = file;
                 }else {
-                    mFileVerifyAvatar += ";";
-                    mFileVerifyAvatar += file;
+                    mFileAvatar += ";";
+                    mFileAvatar += file;
                 }
-            }
-            else if (isCaptureVerify) {
+            } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
                 } else {
                     mFileVerify += ";";
                     mFileVerify += file;
                 }
-            } else {
+            } else if (isCapture) {
                 if (mFile.equals("")) {
                     mFile = file;
                 } else {
@@ -789,6 +798,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mFileVerify = "";
             imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
             imageVerifyAdapter.notifyDataSetChanged();
+        } else if (isCaptureAvatar){
+            mFileAvatar = "";
+            imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() -1);
+            imageAvatarAdapter.notifyDataSetChanged();
         } else {
             mFile = "";
             imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
