@@ -364,7 +364,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             //
             //file_selfie_avatar.jpg
             case R.id.rl_image_capture_avatar:
-                if (imageAvatarAdapter.getListFilter().size() < 2) {
+                if (imageAvatarAdapter.getListFilter().size() < 1) {
                     isCaptureAvatar = true;
                     isCaptureVerify = false;
                     isCapture = false;
