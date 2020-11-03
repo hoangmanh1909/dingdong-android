@@ -68,18 +68,6 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     public static final String EXTRA_PUSHTOKEN = "token";
     private String pushToken;
 
-    //private UserInfo userInfo;
-    ///
-    ///
-    public static final String USER_NAME = "USER_NAME";
-    public static final String PASSWORD = "PASSWORD";
-    public static final String DISPLAY_NAME = "DISPLAY_NAME";
-    public static final String AUTH_NAME = "AUTH_NAME";
-    public static final String USER_DOMAIN = "USER_DOMAIN";
-    public static final String SIP_SERVER = "SIP_SERVER";
-    public static final String SERVER_PORT = "SERVER_PORT";
-    public static final String STUN_SERVER = "STUN_SERVER";
-    public static final String STUN_PORT = "STUN_PORT";
 
     private SharedPreferences preferences;
 
@@ -123,7 +111,6 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         String displayName = "1000001963170164";
         String authName = "";
         String userDomain = "vnpost-shipper.vht.com.vn";
-
         String sipServer = "sip.vht.com.vn";
         String serverPort = "5060";
         String stunServer = "";
@@ -132,48 +119,6 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         int sipServerPort = Integer.parseInt(serverPort);
         int stunServerPort = Integer.parseInt(stunPort);*/
 
-        /*SharedPref sharedPref = new SharedPref(this);
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        ///
-        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);*/
-        //Toast.makeText(getContext(), " getExtensionUserName: "+ userInfos.getExtensionUserName()+"\n getExtensionDomain "+ userInfos.getExtensionDomain()+"\n getFullName "+userInfos.getFullName(), Toast.LENGTH_LONG).show();
-
-
-
-            /*UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            String userName = userInfo.getExtensionUserName();
-            String password = userInfo.getExtensionPassword();
-            String displayName = userInfo.getExtensionUserName();
-            String authName = userInfo.getExtensionStunServer();
-            String userDomain = userInfo.getExtensionDomain();
-            String sipServer = userInfo.getExtensionServer();
-            String serverPort = userInfo.getExtensionServerPort();
-            String stunServer = userInfo.getExtensionStunServer();
-            String stunPort = userInfo.getExtensionStunServerPort();
-
-            int sipServerPort = Integer.parseInt(serverPort);
-            int stunServerPort = Integer.parseInt(stunPort);*/
-
-
-
-
-
-        /*preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //Random rm = new Random();
-        //int srtpType = preferences.getInt(SRTP, 0);
-        String userName = preferences.getString(USER_NAME, "");
-        String password = preferences.getString(PASSWORD, "");
-        String displayName = preferences.getString(DISPLAY_NAME, "");
-        String authName = preferences.getString(AUTH_NAME, "");
-        String userDomain = preferences.getString(USER_DOMAIN, "");
-
-        String sipServer = preferences.getString(SIP_SERVER, "");
-        String serverPort = preferences.getString(SERVER_PORT, "");
-        String stunServer = preferences.getString(STUN_SERVER, "");
-        String stunPort = preferences.getString(STUN_PORT, "");
-
-        int sipServerPort = Integer.parseInt(serverPort);
-        int stunServerPort = Integer.parseInt(stunPort);*/
 
         mEngine.DeleteCallManager();
         mEngine.CreateCallManager(applicaton);
@@ -201,19 +146,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
                     SharedPref sharedPref = new SharedPref(this);
                     String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-
-                        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                        //Toast.makeText(getContext(), " getFullName  "+ userInfo.getFullName() + " getExtensionUserName "+ userInfo.getExtensionUserName(), Toast.LENGTH_LONG).show();
-                        /*String userName = preferences.getString(USER_NAME, "");
-                        String password = preferences.getString(PASSWORD, "");
-                        String displayName = preferences.getString(DISPLAY_NAME, "");
-                        String authName = preferences.getString(AUTH_NAME, "");
-                        String userDomain = preferences.getString(USER_DOMAIN, "");
-
-                        String sipServer = preferences.getString(SIP_SERVER, "");
-                        String serverPort = preferences.getString(SERVER_PORT, "");
-                        String stunServer = preferences.getString(STUN_SERVER, "");
-                        String stunPort = preferences.getString(STUN_PORT, "");*/
+                    UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
 
                     String userName = userInfo.getExtensionUserName();
                     String password = userInfo.getExtensionPassword();

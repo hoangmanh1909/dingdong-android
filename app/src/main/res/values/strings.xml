@@ -188,6 +188,6 @@
     <string name="you_have_not_entered_reeceiver_relationship">Bạn chưa nhập mối quan hệ với người nhận</string>
     <string name="you_have_not_entered_real_receiver_name">Bạn chưa nhập tên người nhận thực tế</string>
     <string name="do_not_allow_take_over_three_photos">Không được phép chụp quá 3 ảnh</string>
-    <string name="do_not_allow_take_over_seven_photos">Không được phép chụp quá 7 ảnh</string>
+    <string name="do_not_allow_take_over_six_photos">Không được phép chụp quá 6 ảnh</string>
     <string name="do_not_allow_take_over_one_photos">Không được phép chụp quá 1 ảnh</string>
 </resources>

@@ -12,6 +12,7 @@ public class Constants {
     public static final String KEY_POST_SHIFT = "KEY_POST_SHIFT";
     public static final String KEY_ROUTE_INFO = "KEY_ROUTE_INFO";
     public static final String KEY_USER_INFO = "user_info";
+    public static final String KEY_UPLOAD_IMAGE = "upload_image";
     public static final String TYPE_GOM_HANG = "type_gom_hang";
     public static final String GOM_HANG = "gom hàng";
     public static final String HOTLINE_CALL_SHOW = "02836229988";

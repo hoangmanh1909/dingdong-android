@@ -69,6 +69,7 @@ import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -394,8 +395,10 @@ public class NetWorkController {
         //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
         Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
         call.enqueue(callback);
+        Log.d("123123", "Post Image: "+ callback);//
     }
 
+    ///
     public static void postImageAvatar(String filePath, CommonCallback<UploadSingleResult> callback){
         File file = new File(filePath);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);

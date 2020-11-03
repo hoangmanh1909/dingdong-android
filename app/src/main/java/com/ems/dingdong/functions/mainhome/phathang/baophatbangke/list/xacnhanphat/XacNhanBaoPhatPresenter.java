@@ -28,6 +28,7 @@ import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
@@ -53,6 +54,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     private ListDeliveryConstract.OnTabsListener titleTabsListener;
     private List<DeliveryCheckAmountPaymentResponse> paymentResponses;
     private List<PaypostPaymentRequest> paymentRequests;
+    private UploadSingleResult uploadSingleResult;
 
     public XacNhanBaoPhatPresenter(ContainerView containerView) {
         super(containerView);
@@ -135,6 +137,31 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
+                    Log.d("123123", "getName: "+ response.body().getFile());
+                }
+            }
+
+            @Override
+            protected void onError(Call<UploadSingleResult> call, String message) {
+                super.onError(call, message);
+                mView.showAlertDialog(message);
+                mView.deleteFile();
+            }
+        });
+    }
+
+    ///
+    @Override
+    public void postImageAvatar(String pathAvatar) {
+        mView.showProgress();
+        mInteractor.postImageAvatar(pathAvatar, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
+                super.onSuccess(call, response);
+                if (response.body() != null){
+                    mView.showImage(response.body().getFile());
+
+                    Log.d("123123", "getNameAvatar: "+ response.body().getFile());
                 }
             }
 

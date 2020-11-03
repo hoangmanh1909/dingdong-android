@@ -41,10 +41,10 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
         NetWorkController.postImageSingle(path, callback);
     }
 
-    /*@Override
-    public void postImageAvatar(String path, CommonCallback<UploadSingleResult> callback) {
-        NetWorkController.postImageAvatar(path, callback);
-    }*/
+    @Override
+    public void postImageAvatar(String pathAvatar, CommonCallback<UploadSingleResult> callback) {
+        NetWorkController.postImageAvatar(pathAvatar, callback);
+    }
 
     @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback) {

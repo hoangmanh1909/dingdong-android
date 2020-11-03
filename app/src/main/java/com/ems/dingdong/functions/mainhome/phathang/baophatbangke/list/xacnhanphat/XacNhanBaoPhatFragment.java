@@ -35,11 +35,13 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
+import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -55,6 +57,7 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -161,7 +164,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private String mSign = "";
 
     private List<DeliveryPostman> mBaoPhatBangke;
-    private int mDeliveryType = 2;
+    private int mDeliveryType = 3;
     private int mPaymentType = 1;
 
     private ArrayList<ReasonInfo> mListReason;
@@ -200,6 +203,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private ImageCaptureAdapter imageVerifyAdapter;
 
     private UserInfo userInfo;
+    private UploadSingleResult uploadSingleResult;
 
     public static XacNhanBaoPhatFragment getInstance() {
         return new XacNhanBaoPhatFragment();
@@ -319,6 +323,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 .convertDateToString(calDateOfBirth.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
+
+        //getFileName();
     }
 
 
@@ -392,7 +398,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     isCapture = false;
                     MediaUltis.captureImage(this);
                 } else {
-                    showErrorToast(getString(R.string.do_not_allow_take_over_seven_photos));
+                    showErrorToast(getString(R.string.do_not_allow_take_over_six_photos));
                 }
                 break;
             case R.id.edt_date_of_birth:
@@ -514,14 +520,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
 
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mFileVerify, mSign,
+                            /**
+                             * nhớ mở lại comment
+                             */
+                            /*mPresenter.paymentDelivery(mFile+";"+mFileVerify+";"+mFileAvatar, mFileVerify, mSign,
                                     tvReceiverName.getText().toString(),
-                                    edtOtherRelationship.getText(), infoVerify);
+                                    edtOtherRelationship.getText(), infoVerify);*/
+                            Log.d("123123", "paymentDelivery: " + mFile+";"+mFileVerify+";"+mFileAvatar);
                         } else {
-                            mPresenter.paymentDelivery(mFile, mFileVerify, mSign,
+                            /**
+                             * nhớ mở lại comment
+                             */
+                            /*mPresenter.paymentDelivery(mFile+";"+mFileVerify+";"+mFileAvatar, mFileVerify, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
-                                    infoVerify);
+                                    infoVerify);*/
+                            Log.d("123123", "paymentDelivery: " + mFile+";"+mFileVerify+";"+mFileAvatar);
                         }
                         confirmDialog.dismiss();
                     })
@@ -536,12 +550,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Toast.showToast(tv_solution.getContext(), getViewContext().getString(R.string.you_have_not_chosen_solution));
                 return;
             }
-            mPresenter.submitToPNS(
+            /**
+             * nhớ mở lại comment
+             */
+            /*mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
                     tv_Description.getText().toString(),
-                    mFile,
-                    mSign);
+                    mFile+";"+mFileVerify+";"+mFileAvatar,
+                    mSign);*/
+            Log.d("123123", "paymentDelivery: " + mFile+";"+mFileVerify+";"+mFileAvatar);
         } else {
             if (TextUtils.isEmpty(tv_route.getText())) {
                 Toast.showToast(tv_route.getContext(), getViewContext().getString(R.string.you_have_not_pick_route));
@@ -555,7 +573,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (mPostmanInfo != null) {
                 postmanId = Integer.parseInt(mPostmanInfo.getiD());
             }
-            mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
+            ///mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
+            Log.d("123123", "cancelDivided: " + mFile);
 //            mPresenter.changeRouteInsert(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
         }
     }
@@ -566,6 +585,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
                 attemptSendMedia(data.getData().getPath());
+
+                attemptSendMediaAvatar(data.getData().getPath());
             }
         }
     }
@@ -584,22 +605,90 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
-                        if (isCaptureAvatar){
+
+                        /*if (isCaptureAvatar){
                             imageAvatarAdapter.getListFilter().add(new Item(path, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
-                        }
+
+                            //mPresenter.postImage(path);
+                            showSuccessToast(path);
+
+
+
+                        }*/
+
                         if (isCaptureVerify) {
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
                             imageVerifyAdapter.notifyDataSetChanged();
+                            //showSuccessToast(path);
+                            Log.d("123123", "path: "+ path);
                         }
                         if (isCapture) {
                             imageAdapter.getListFilter().add(new Item(path, ""));
                             imageAdapter.notifyDataSetChanged();
+                            Log.d("123123", "path: "+ path);
+                            //showSuccessToast(path);
+                            /*SharedPref sharedPref = new SharedPref(getActivity());
+                            sharedPref.putString(Constants.KEY_UPLOAD_IMAGE, NetWorkController.getGson().toJson(uploadSingleResult.getFile()));
+
+                            String uploadImageJson = sharedPref.getString(Constants.KEY_UPLOAD_IMAGE, "");
+                            uploadSingleResult = NetWorkController.getGson().fromJson(uploadImageJson, UploadSingleResult.class);
+                            String getFile =  uploadSingleResult.getFile();
+                            showSuccessToast(getFile);
+                            Log.d("123123", "getFile: "+ getFile);*/
                         }
                         if (file.exists())
                             file.delete();
                     } else {
                         mPresenter.postImage(path_media);
+                    }
+                },
+                onError -> Logger.e("error save image")
+        );
+    }
+
+    public void getFileName(){
+        SharedPref sharedPref = new SharedPref(getContext());
+        String uploadImageJson = sharedPref.getString(Constants.KEY_UPLOAD_IMAGE, "");
+
+        UploadSingleResult uploadSingleResult = NetWorkController.getGson().fromJson(uploadImageJson, UploadSingleResult.class);
+        uploadSingleResult.getFile();
+        showSuccessToast(uploadSingleResult.getFile());
+        Log.d("123123", "getFile: "+ uploadSingleResult.getFile());
+    }
+
+    ///
+    private void attemptSendMediaAvatar(String path_media) {
+        File file = new File(path_media);
+        Observable.fromCallable(() -> {
+            Uri uri = Uri.fromFile(new File(path_media));
+            return BitmapUtils.processingBitmap(uri, getViewContext());
+        }).subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.io())
+                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                isSavedImage -> {
+                    if (isSavedImage) {
+                        String pathAvatar = file.getParent() + File.separator + "Process_" + file.getName();
+                        // mSignPosition = false;
+                        //mPresenter.postImage(path);
+                        //mPresenter.postImageAvatar(pathAvatar);
+
+                        if (isCaptureAvatar){
+                            mPresenter.postImageAvatar(pathAvatar);
+                            imageAvatarAdapter.getListFilter().add(new Item(pathAvatar, ""));
+                            imageAvatarAdapter.notifyDataSetChanged();
+
+                            //showSuccessToast(pathAvatar);
+                            Log.d("123123", "path: "+ pathAvatar);
+
+                            //showSuccessToast(pathAvatar);
+
+                        }
+                        if (file.exists())
+                            file.delete();
+                    } else {
+                        mPresenter.postImageAvatar(path_media);
                     }
                 },
                 onError -> Logger.e("error save image")
@@ -770,23 +859,29 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (isCaptureAvatar){
                 if (mFileAvatar.equals("")){
                     mFileAvatar = file;
-                }else {
+                    Log.d("123123", "post: "+file);
+                }/*else {
                     mFileAvatar += ";";
                     mFileAvatar += file;
-                }
+                    Log.d("123123", "post: "+file);
+                }*/
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
+                    Log.d("123123", "post: "+file);
                 } else {
                     mFileVerify += ";";
                     mFileVerify += file;
+                    Log.d("123123", "post: "+file);
                 }
             } else if (isCapture) {
                 if (mFile.equals("")) {
                     mFile = file;
+                    Log.d("123123", "post: "+file);
                 } else {
                     mFile += ";";
                     mFile += file;
+                    Log.d("123123", "post: "+file);
                 }
             }
         }
@@ -794,18 +889,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void deleteFile() {
-        if (isCaptureVerify) {
-            mFileVerify = "";
-            imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
-            imageVerifyAdapter.notifyDataSetChanged();
-        } else if (isCaptureAvatar){
-            mFileAvatar = "";
-            imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() -1);
-            imageAvatarAdapter.notifyDataSetChanged();
-        } else {
-            mFile = "";
-            imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
-            imageAdapter.notifyDataSetChanged();
+        try {
+            if (isCaptureVerify) {
+                mFileVerify = "";
+                imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
+                imageVerifyAdapter.notifyDataSetChanged();
+            } else if (isCaptureAvatar){
+                mFileAvatar = "";
+                imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() - 1);
+                imageAvatarAdapter.notifyDataSetChanged();
+            } else if (isCapture){
+                mFile = "";
+                imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
+                imageAdapter.notifyDataSetChanged();
+            }
+        }catch (Error error){
+            showError("Vui long chup lai");
+
         }
     }
 
