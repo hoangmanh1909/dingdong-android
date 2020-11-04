@@ -188,6 +188,14 @@
     <string name="you_have_not_entered_reeceiver_relationship">Bạn chưa nhập mối quan hệ với người nhận</string>
     <string name="you_have_not_entered_real_receiver_name">Bạn chưa nhập tên người nhận thực tế</string>
     <string name="do_not_allow_take_over_three_photos">Không được phép chụp quá 3 ảnh</string>
-    <string name="do_not_allow_take_over_six_photos">Không được phép chụp quá 6 ảnh</string>
+    <string name="do_not_allow_take_over_two_photos">Không được phép chụp quá 2 ảnh</string>
     <string name="do_not_allow_take_over_one_photos">Không được phép chụp quá 1 ảnh</string>
+    <string name="do_not_allow_take_over_four_photos">Không được phép chụp quá 4 ảnh</string>
+
+    <!---->
+    <string name="permgrouplab_microphone">Microphone</string>
+    <string name="permlab_recordAudio">record audio</string>
+    <string name="permdesc_recordAudio">Allows the app to record audio with the microphone. This permission allows the app to record audio at any time without your confirmation.</string>
+
+
 </resources>

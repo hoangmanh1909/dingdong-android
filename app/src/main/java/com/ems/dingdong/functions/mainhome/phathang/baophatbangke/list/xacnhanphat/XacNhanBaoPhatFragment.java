@@ -141,8 +141,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recyclerViewImage;
     @BindView(R.id.recycler_image_verify)
     RecyclerView recyclerViewImageVerify;
+    @BindView(R.id.recycler_image_other)
+    RecyclerView recyclerImageOther;
     @BindView(R.id.rb_verify_info)
     CheckBox rbVerifyInfo;
+    @BindView(R.id.rb_verify_Image)
+    CheckBox rbVerifyImage;
+    @BindView(R.id.ll_verify_image)
+    LinearLayout llVerifyImage;
     @BindView(R.id.ll_verify_info)
     LinearLayout llVerifyInfo;
     @BindView(R.id.ll_verify)
@@ -191,16 +197,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private String mFile = "";
     private String mFileVerify = "";
     private String mFileAvatar = "";
+    private String mFileOther = "";
     private boolean isCapture = false;
     private boolean isCaptureVerify = false;
     private boolean isCaptureAvatar = false;
+    private boolean isCaptureOther = false;
     private int authenType = -2;
     private List<Item> listImages;
     private List<Item> listImagesAvatar;//
     private List<Item> listImageVerify;
+    private List<Item> listImageOther;
     private ImageCaptureAdapter imageAvatarAdapter;
     private ImageCaptureAdapter imageAdapter;
     private ImageCaptureAdapter imageVerifyAdapter;
+    private ImageCaptureAdapter imageOtherAdapter;
 
     private UserInfo userInfo;
     private UploadSingleResult uploadSingleResult;
@@ -298,24 +308,38 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         listImagesAvatar = new ArrayList<>();//
         listImages = new ArrayList<>();
         listImageVerify = new ArrayList<>();
+        listImageOther = new ArrayList<>();
         imageAvatarAdapter = new ImageCaptureAdapter(getViewContext(), listImagesAvatar);
         imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages);
         imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), listImageVerify);
+        imageOtherAdapter = new ImageCaptureAdapter(getViewContext(), listImageOther);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageOther);
         recyclerImageVerifyAvatar.setAdapter(imageAvatarAdapter);//
         recyclerViewImage.setAdapter(imageAdapter);
         recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
+        recyclerImageOther.setAdapter(imageOtherAdapter);
+
         rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
             if (b) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
-                llCaptureVerify.setVisibility(View.VISIBLE);
+                //llCaptureVerify.setVisibility(View.VISIBLE);
             } else {
                 llVerifyInfo.setVisibility(View.GONE);
-                llCaptureVerify.setVisibility(View.GONE);
+                //llCaptureVerify.setVisibility(View.GONE);
             }
         });
+
+        rbVerifyImage.setOnCheckedChangeListener((v, b) -> {
+            if (b){
+                llVerifyImage.setVisibility(View.VISIBLE);
+            }else {
+                llVerifyImage.setVisibility(View.GONE);
+            }
+        });
+
         edtDateOfBirth.setText(DateTimeUtils
                 .convertDateToString(calDateOfBirth.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
@@ -330,7 +354,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
-            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar})
+            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -374,17 +398,31 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     isCaptureAvatar = true;
                     isCaptureVerify = false;
                     isCapture = false;
+                    isCaptureOther = false;
                     MediaUltis.captureImage(this);
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_one_photos));
                 }
                 break;
 
+            case R.id.rl_image_other:
+                if (imageOtherAdapter.getListFilter().size() < 4){
+                    isCaptureAvatar = false;
+                    isCaptureVerify = false;
+                    isCapture = false;
+                    isCaptureOther = true;
+                    MediaUltis.captureImage(this);
+                }else {
+                    showErrorToast(getString(R.string.do_not_allow_take_over_four_photos));
+                }
+                break;
+
             case R.id.rl_image_capture:
                 if (imageAdapter.getListFilter().size() < 3) {
-                    isCapture = true;
-                    isCaptureVerify = false;
                     isCaptureAvatar = false;
+                    isCaptureVerify = false;
+                    isCapture = true;
+                    isCaptureOther = false;
                     MediaUltis.captureImage(this);
                 } else {
                     showErrorToast(getViewContext().getString(R.string.do_not_allow_take_over_three_photos));
@@ -392,13 +430,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
 
             case R.id.rl_image_capture_verify:
-                if (imageVerifyAdapter.getListFilter().size() < 7) {
-                    isCaptureVerify = true;
+                if (imageVerifyAdapter.getListFilter().size() < 2) {
                     isCaptureAvatar = false;
+                    isCaptureVerify = true;
                     isCapture = false;
+                    isCaptureOther = false;
                     MediaUltis.captureImage(this);
                 } else {
-                    showErrorToast(getString(R.string.do_not_allow_take_over_six_photos));
+                    showErrorToast(getString(R.string.do_not_allow_take_over_two_photos));
                 }
                 break;
             case R.id.edt_date_of_birth:
@@ -478,7 +517,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
-            if (llVerifyInfo.getVisibility() == View.VISIBLE || llCaptureVerify.getVisibility() == View.VISIBLE) {
+            if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
                     return;
                 } else if (authenType == 2 && !checkImage(authenType)) {
@@ -506,8 +545,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
-                        InfoVerify infoVerify = new InfoVerify();
-                        if (llVerifyInfo.getVisibility() == View.VISIBLE || llCaptureVerify.getVisibility() == View.VISIBLE) {
+                        InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
+                        if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                             infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
                             infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
                             infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
@@ -612,15 +651,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
                             //mPresenter.postImage(path);
                             showSuccessToast(path);
-
-
-
                         }*/
 
                         if (isCaptureVerify) {
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
                             imageVerifyAdapter.notifyDataSetChanged();
                             //showSuccessToast(path);
+                            Log.d("123123", "path: "+ path);
+                        }
+                        if (isCaptureOther){
+                            imageOtherAdapter.getListFilter().add(new Item(path, ""));
+                            imageOtherAdapter.notifyDataSetChanged();
                             Log.d("123123", "path: "+ path);
                         }
                         if (isCapture) {
@@ -902,6 +943,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mFile = "";
                 imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
                 imageAdapter.notifyDataSetChanged();
+            } else if (isCaptureOther){
+                mFileOther = "";
+                imageOtherAdapter.getListFilter().remove(imageOtherAdapter.getListFilter().size() - 1);
+                imageOtherAdapter.notifyDataSetChanged();
             }
         }catch (Error error){
             showError("Vui long chup lai");
@@ -1067,29 +1112,35 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         authenType = getAuthenType();
         if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
+            rbVerifyImage.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
             if (rbVerifyInfo.isChecked()) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
-                llCaptureVerify.setVisibility(View.VISIBLE);
+                //llCaptureVerify.setVisibility(View.VISIBLE);
+                llVerifyImage.setVisibility(View.VISIBLE);//add
             } else {
                 llVerifyInfo.setVisibility(View.GONE);
-                llCaptureVerify.setVisibility(View.GONE);
+                //llCaptureVerify.setVisibility(View.GONE);
+                llVerifyImage.setVisibility(View.GONE);//add
             }
         } else if (authenType == 1) {
             llVerifyInfo.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
             rbVerifyInfo.setVisibility(View.GONE);
-            llCaptureVerify.setVisibility(View.GONE);
+            //llCaptureVerify.setVisibility(View.GONE);
+            llVerifyImage.setVisibility(View.GONE);
         } else if (authenType == 2) {
             llVerifyInfo.setVisibility(View.GONE);
             llVerify.setVisibility(View.VISIBLE);
             rbVerifyInfo.setVisibility(View.GONE);
-            llCaptureVerify.setVisibility(View.VISIBLE);
+            //llCaptureVerify.setVisibility(View.VISIBLE);
+            llVerifyImage.setVisibility(View.VISIBLE);
         } else if (authenType == 3) {
             llVerifyInfo.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
             rbVerifyInfo.setVisibility(View.GONE);
-            llCaptureVerify.setVisibility(View.VISIBLE);
+            //llCaptureVerify.setVisibility(View.VISIBLE);
+            llVerifyImage.setVisibility(View.VISIBLE);
         } else if (authenType == -2) {
             llVerify.setVisibility(View.GONE);
         }

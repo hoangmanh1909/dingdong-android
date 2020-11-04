@@ -20,6 +20,7 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.Ring;
+import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -312,12 +313,24 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     }
 
     @Override
-    public void onInviteIncoming(long l, String s, String s1, String s2, String s3, String s4, String s5, boolean b, boolean b1, String s6) {
-        Log.d(TAG, "onInviteIncoming!" + s + s1 + s2 + s3);
-        CallManager.Instance().getSession().phoneNumber = s;
-        CallManager.Instance().getSession().displayName = s2;
-        CallManager.Instance().getSession().sessionID = l;
-        Log.d(TAG, "Sessionid: " + l);
+    public void onInviteIncoming(long sessionId, String callerDisplayName, String caller, String calleeDisplayName, String callee, String audioCodecNames, String videoCodecNames, boolean existsAudio, boolean existsVideo, String sipMessage) {
+        Log.d(TAG, "onInviteIncoming!" + callerDisplayName + caller + calleeDisplayName + callee);
+        CallManager.Instance().getSession().phoneNumber = callerDisplayName;
+        CallManager.Instance().getSession().displayName = calleeDisplayName;
+        CallManager.Instance().getSession().sessionID = sessionId;
+        Log.d(TAG, "Sessionid: " + sessionId);
+
+        if (CallManager.Instance().findIncomingCall() != null){
+            applicaton.portSipSdk.rejectCall(sessionId, 486);//busy
+            return;
+        }
+        Session session = CallManager.Instance().findIdleSession();
+        session.state = Session.CALL_STATE_FLAG.INCOMING;
+        session.hasVideo = existsVideo;
+        session.sessionID = sessionId;
+        session.remote = caller;
+        session.displayName = callerDisplayName;
+
         if (Utils.isIncomingCallRunning(getBaseContext())) {
             Intent intent = new Intent(ACTION_CALL_EVENT);
             intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_COMMING);
@@ -344,6 +357,12 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     public void onInviteSessionProgress(long sessionId, String audioCodecNames, String videoCodecNames, boolean existsEarlyMedia, boolean existsAudio, boolean existsVideo, String sipMessage) {
         Log.d(TAG, "onInviteSessionProgress!");
         Log.d("portsip1", " onInviteSessionProgress: "+" sessionId: "+ sessionId + " audioCodecNames: "+audioCodecNames);
+
+        /*Session session = CallManager.Instance().findSessionBySessionID(sessionId);
+        if (session != null){
+            session.bEarlyMedia = existsEarlyMedia;
+        }*/
+
     }
 
     @Override
@@ -362,6 +381,9 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_ANSWER);
         sendBroadcast(intent);
+
+        ///
+        Ring.getInstance(this).stopRingBackTone();
     }
 
     @Override
