@@ -1,8 +1,10 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -10,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -122,6 +125,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     CustomTextView edtRelationship;
     @BindView(R.id.tv_receiver_name)
     CustomTextView tvRealReceiverName;
+    @BindView(R.id.tv_address_user)
+    CustomTextView tvAddressUser;
+    @BindView(R.id.tv_providers)
+    CustomTextView tvProviders;
     @BindView(R.id.rl_relationship)
     RelativeLayout rlRelationship;
     @BindView(R.id.layout_real_receiver_name)
@@ -170,7 +177,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private String mSign = "";
 
     private List<DeliveryPostman> mBaoPhatBangke;
-    private int mDeliveryType = 3;
+    private int mDeliveryType = 2;
     private int mPaymentType = 1;
 
     private ArrayList<ReasonInfo> mListReason;
@@ -202,7 +209,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private boolean isCaptureVerify = false;
     private boolean isCaptureAvatar = false;
     private boolean isCaptureOther = false;
-    private int authenType = -2;
+    //private int authenType = -2;
+    private int authenType;
     private List<Item> listImages;
     private List<Item> listImagesAvatar;//
     private List<Item> listImageVerify;
@@ -240,6 +248,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return false;
         });
         tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: " + "<font color=\"red\">*</font>"));
+        tvAddressUser.setText(StringUtils.fromHtml("Địa chỉ người sử dụng: " + "<font color=\"red\">*</font>"));
+        tvProviders.setText(StringUtils.fromHtml("Nơi cấp: " + "<font color=\"red\">*</font>"));
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -322,7 +332,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
         recyclerImageOther.setAdapter(imageOtherAdapter);
 
-        rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
+        /*rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
             if (b) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
                 //llCaptureVerify.setVisibility(View.VISIBLE);
@@ -338,7 +348,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }else {
                 llVerifyImage.setVisibility(View.GONE);
             }
-        });
+        });*/
+
+        verifyInfo();
+        verifyImage();
 
         edtDateOfBirth.setText(DateTimeUtils
                 .convertDateToString(calDateOfBirth.getTime(),
@@ -519,6 +532,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
+
                     return;
                 } else if (authenType == 2 && !checkImage(authenType)) {
                     return;
@@ -562,19 +576,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             /**
                              * nhớ mở lại comment
                              */
-                            /*mPresenter.paymentDelivery(mFile+";"+mFileVerify+";"+mFileAvatar, mFileVerify, mSign,
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
-                                    edtOtherRelationship.getText(), infoVerify);*/
-                            Log.d("123123", "paymentDelivery: " + mFile+";"+mFileVerify+";"+mFileAvatar);
+                                    edtOtherRelationship.getText(), infoVerify);
+                            Log.d("123123", "paymentDelivery: " + "gói hàng: "+mFile+";"+"ảnh xác thực 2 mặt: "+mFileVerify+";"+"ảnh avatar: "+mFileAvatar+";"+"ảnh other: "+mFileOther);
+
                         } else {
                             /**
                              * nhớ mở lại comment
                              */
-                            /*mPresenter.paymentDelivery(mFile+";"+mFileVerify+";"+mFileAvatar, mFileVerify, mSign,
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
-                                    infoVerify);*/
-                            Log.d("123123", "paymentDelivery: " + mFile+";"+mFileVerify+";"+mFileAvatar);
+                                    infoVerify);
+                            Log.d("123123", "paymentDelivery: " + "gói hàng: "+mFile+";"+"ảnh xác thực 2 mặt: "+mFileVerify+";"+"ảnh avatar: "+mFileAvatar+";"+"ảnh other: "+mFileOther);
+
                         }
                         confirmDialog.dismiss();
                     })
@@ -592,14 +608,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             /**
              * nhớ mở lại comment
              */
-            /*mPresenter.submitToPNS(
+            mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
                     tv_Description.getText().toString(),
-                    mFile+";"+mFileVerify+";"+mFileAvatar,
-                    mSign);*/
-            Log.d("123123", "paymentDelivery: " + mFile+";"+mFileVerify+";"+mFileAvatar);
-        } else {
+                    mFile,
+                    mFileAvatar+";"+mFileVerify+";"+mFileOther,
+                    mSign);
+            Log.d("1231234", "paymentDelivery: " + "gói hàng: "+mFile+";"+"ảnh xác thực 2 mặt: "+mFileVerify+";"+"ảnh avatar: "+mFileAvatar+";"+"ảnh other: "+mFileOther);
+        } else if (mDeliveryType == 3){
+            /**
+             * mDeliveryType = 3 -> chuyển tuyến
+             */
+
             if (TextUtils.isEmpty(tv_route.getText())) {
                 Toast.showToast(tv_route.getContext(), getViewContext().getString(R.string.you_have_not_pick_route));
                 return;
@@ -612,10 +633,33 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (mPostmanInfo != null) {
                 postmanId = Integer.parseInt(mPostmanInfo.getiD());
             }
-            ///mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
+            mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
+            ///mPresenter.cancelDivided(Integer.parseInt(mCurrentRouteInfo.getRouteId()), postmanId, mSign, mFile);
             Log.d("123123", "cancelDivided: " + mFile);
 //            mPresenter.changeRouteInsert(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
         }
+    }
+
+    private void verifyInfo(){
+        rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
+            if (b) {
+                llVerifyInfo.setVisibility(View.VISIBLE);
+                //llCaptureVerify.setVisibility(View.VISIBLE);
+            } else {
+                llVerifyInfo.setVisibility(View.GONE);
+                //llCaptureVerify.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void verifyImage(){
+        rbVerifyImage.setOnCheckedChangeListener((v, b) -> {
+            if (b){
+                llVerifyImage.setVisibility(View.VISIBLE);
+            }else {
+                llVerifyImage.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -668,15 +712,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             imageAdapter.getListFilter().add(new Item(path, ""));
                             imageAdapter.notifyDataSetChanged();
                             Log.d("123123", "path: "+ path);
-                            //showSuccessToast(path);
-                            /*SharedPref sharedPref = new SharedPref(getActivity());
-                            sharedPref.putString(Constants.KEY_UPLOAD_IMAGE, NetWorkController.getGson().toJson(uploadSingleResult.getFile()));
-
-                            String uploadImageJson = sharedPref.getString(Constants.KEY_UPLOAD_IMAGE, "");
-                            uploadSingleResult = NetWorkController.getGson().fromJson(uploadImageJson, UploadSingleResult.class);
-                            String getFile =  uploadSingleResult.getFile();
-                            showSuccessToast(getFile);
-                            Log.d("123123", "getFile: "+ getFile);*/
                         }
                         if (file.exists())
                             file.delete();
@@ -722,9 +757,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
                             //showSuccessToast(pathAvatar);
                             Log.d("123123", "path: "+ pathAvatar);
-
-                            //showSuccessToast(pathAvatar);
-
                         }
                         if (file.exists())
                             file.delete();
@@ -898,14 +930,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file) {
         if (null != getViewContext()) {
             if (isCaptureAvatar){
-                if (mFileAvatar.equals("")){
-                    mFileAvatar = file;
-                    Log.d("123123", "post: "+file);
-                }/*else {
-                    mFileAvatar += ";";
-                    mFileAvatar += file;
-                    Log.d("123123", "post: "+file);
-                }*/
+                mFileAvatar = file;
+                Log.d("123123", "post: "+file);
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
@@ -922,6 +948,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 } else {
                     mFile += ";";
                     mFile += file;
+                    Log.d("123123", "post: "+file);
+                }
+            }
+            else if (isCaptureOther){
+                if (mFileOther.equals("")){
+                    mFileOther = file;
+                    Log.d("123123", "post: "+file);
+                }else {
+                    mFileOther += ";";
+                    mFileOther += file;
                     Log.d("123123", "post: "+file);
                 }
             }
@@ -1100,16 +1136,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             if (isSameAuthenType) {
+                Log.d("123123", "getAuthenType: "+ firstItem.getAuthenType());
                 return firstItem.getAuthenType();
             } else return -1;
         } else if (list.size() == 1) {
             DeliveryPostman firstItem = getItemSelected().get(0);
+            Log.d("123123", "getAuthenType: "+ firstItem.getAuthenType());
             return firstItem.getAuthenType();
         } else return -2;
     }
 
     private void checkVerify() {
         authenType = getAuthenType();
+        Log.d("1231234", "authenType: " + authenType);
         if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
@@ -1126,20 +1165,33 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         } else if (authenType == 1) {
             llVerifyInfo.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
-            rbVerifyInfo.setVisibility(View.GONE);
+            rbVerifyInfo.setVisibility(View.VISIBLE);
+            rbVerifyImage.setVisibility(View.VISIBLE);
+            rbVerifyInfo.setChecked(true);
+            verifyInfo();
+            verifyImage();
             //llCaptureVerify.setVisibility(View.GONE);
             llVerifyImage.setVisibility(View.GONE);
         } else if (authenType == 2) {
             llVerifyInfo.setVisibility(View.GONE);
             llVerify.setVisibility(View.VISIBLE);
-            rbVerifyInfo.setVisibility(View.GONE);
+            rbVerifyInfo.setVisibility(View.VISIBLE);
+            rbVerifyImage.setVisibility(View.VISIBLE);
+            rbVerifyImage.setChecked(true);
+            verifyInfo();
+            verifyImage();
             //llCaptureVerify.setVisibility(View.VISIBLE);
             llVerifyImage.setVisibility(View.VISIBLE);
         } else if (authenType == 3) {
             llVerifyInfo.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
-            rbVerifyInfo.setVisibility(View.GONE);
+            rbVerifyInfo.setVisibility(View.VISIBLE);
+            rbVerifyImage.setVisibility(View.VISIBLE);
             //llCaptureVerify.setVisibility(View.VISIBLE);
+            rbVerifyInfo.setChecked(true);
+            rbVerifyImage.setChecked(true);
+            verifyInfo();
+            verifyImage();
             llVerifyImage.setVisibility(View.VISIBLE);
         } else if (authenType == -2) {
             llVerify.setVisibility(View.GONE);
@@ -1167,7 +1219,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
             if (authenType != 0)
-                showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_the_place_of_profile));
+                //showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_the_place_of_profile));
+                showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
             return false;
         }
 
@@ -1184,7 +1237,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         if (TextUtils.isEmpty(edtUserAddress.getText())) {
             if (authenType != 0)
-                showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
+                //showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
+                showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
             return false;
         }
         return true;

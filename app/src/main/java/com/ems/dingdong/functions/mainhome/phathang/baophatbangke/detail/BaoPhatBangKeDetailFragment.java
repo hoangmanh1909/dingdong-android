@@ -576,6 +576,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             mBaoPhatBangke.setSignatureCapture(mSign);
         }
         mBaoPhatBangke.setImageDelivery(mFile);
+
         String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         mBaoPhatBangke.setDeliveryTime(time);
         if (("0".equals(collectAmount) || "0".equals(mCollectAmount)) && "Y".equals(mBaoPhatBangke.getIsCOD())) {

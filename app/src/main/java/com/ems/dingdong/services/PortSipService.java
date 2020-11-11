@@ -618,43 +618,8 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
     public static void ConfigPreferences(Context context, SharedPreferences preferences, PortSipSdk sdk) {
         sdk.clearAudioCodec();
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_G722);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_PCMA);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_PCMU);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_G729);
-
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_GSM);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_ILBC);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_AMR);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_AMRWB);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_SPEEX);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_SPEEXWB);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_ISACWB);
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_ISACSWB);
-
-        sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_OPUS);
-
-        sdk.clearVideoCodec();
-        sdk.addVideoCodec(PortSipEnumDefine.ENUM_VIDEOCODEC_H264);
-        sdk.addVideoCodec(PortSipEnumDefine.ENUM_VIDEOCODEC_VP8);
-        sdk.addVideoCodec(PortSipEnumDefine.ENUM_VIDEOCODEC_VP9);
-        sdk.enableAEC(true);
-        sdk.enableAGC(true);
-        sdk.enableCNG(true);
-        sdk.enableVAD(true);
-        sdk.enableANS(false);
-
-        boolean foward = true;
-        boolean fowardBusy = true;
-        String fowardto = preferences.getString(context.getString(R.string.batch_code), null);
-        if (foward && !TextUtils.isEmpty(fowardto)) {
-            sdk.enableCallForward(fowardBusy, fowardto);
+        if (preferences.getBoolean(context.getString(R.string.MEDIA_PCMA), true)) {
+            sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_PCMA);
         }
-
-        sdk.enableReliableProvisional(false);
-
-        int width = 352;
-        int height = 288;
-        sdk.setVideoResolution(width, height);
     }
 }

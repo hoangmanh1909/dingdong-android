@@ -98,6 +98,7 @@ public class CommonObject extends RealmObject {
     private String userDelivery;
     private String paymentChanel;
     private String imageDelivery;
+    private String imageAuthen;///
     private boolean selected;
     private boolean local;
     //endregion
@@ -542,6 +543,13 @@ public class CommonObject extends RealmObject {
 
     public void setImageDelivery(String imageDelivery) {
         this.imageDelivery = imageDelivery;
+    }
+    ///
+    public String getImageAuthen() {
+        return imageAuthen;
+    }
+    public void setImageAuthen(String imageAuthen) {
+        this.imageAuthen = imageAuthen;
     }
 
     public String getShiftId() {

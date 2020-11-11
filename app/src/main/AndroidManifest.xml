@@ -26,21 +26,31 @@
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <eat-comment />
     <!-- Used for permissions that are associated with accessing
          microphone audio from the device. Note that phone calls also capture audio
          but are in a separate (more visible) permission group. -->
     <permission-group android:name="android.permission-group.MICROPHONE"
         android:icon="@drawable/perm_group_microphone"
         android:label="@string/permgrouplab_microphone"
+        android:description="@string/permgroupdesc_microphone"
         android:priority="600" />
+
+    <!-- Allows an application to record audio.
+         <p>Protection level: dangerous
+    -->
     <permission android:name="android.permission.RECORD_AUDIO"
         android:permissionGroup="android.permission-group.MICROPHONE"
         android:label="@string/permlab_recordAudio"
         android:description="@string/permdesc_recordAudio"
         android:protectionLevel="dangerous"/>
+
+    <!-- ====================================================================== -->
+    <!-- Permissions for accessing the device camera                            -->
+    <!-- ====================================================================== -->
+    <eat-comment />
 
     <application
         android:name=".app.ApplicationController"

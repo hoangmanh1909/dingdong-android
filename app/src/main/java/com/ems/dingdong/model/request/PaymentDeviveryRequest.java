@@ -44,7 +44,9 @@ public class PaymentDeviveryRequest {
     @SerializedName("Signature")
     String signature;
     @SerializedName("ImageDelivery")
-    String imageDelivery;
+    String imageDelivery;/*
+    @SerializedName("ImageAuthen")
+    String imageAuthen;*/
     @SerializedName("PostmanCode")
     String postmanCode;
     @SerializedName("BatchCode")
@@ -86,6 +88,7 @@ public class PaymentDeviveryRequest {
         this.ladingPostmanID = ladingPostmanID;
         this.signature = signature;
         this.imageDelivery = imageDelivery;
+        //this.imageAuthen = imageAuthen;
         this.batchCode = batchCode;
         this.postmanCode = postmanCode;
         this.isPaymentPP = isPaymentPP;
@@ -101,4 +104,8 @@ public class PaymentDeviveryRequest {
     public void setImageDelivery(String imageDelivery) {
         this.imageDelivery = imageDelivery;
     }
+
+    /*public void setImageAuthen(String imageAuthen) {
+        this.imageAuthen = imageAuthen;
+    }*/
 }

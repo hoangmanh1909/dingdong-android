@@ -85,6 +85,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_hcc);
         recycler_delivery_hcc.setAdapter(homeDeliveryPAAdapter);
 
+
         updateHomeView();
 
     }
@@ -125,6 +126,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         mListCollect.clear();
         mListDeliveryPA.clear();
 
+        /**
+         * Gom hàng
+         */
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             if (i == 0) {
@@ -147,7 +151,11 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         }
         homeCollectAdapter.clear();
         homeCollectAdapter.addItems(mListCollect);
+        homeCollectAdapter.notifyDataSetChanged();
 
+        /**
+         * Phát hàng (thường)
+         */
         for (int i = 0; i < 3; i++) {
             homeCollectInfo = new HomeCollectInfo();
             homeCollectInfo.setType(1);
@@ -167,7 +175,11 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         }
         homeDeliveryAdapter.clear();
         homeDeliveryAdapter.addItems(mListDelivery);
+        homeDeliveryAdapter.notifyDataSetChanged();
 
+        /**
+         * Phát hàng (COD)
+         */
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             homeCollectInfo.setType(2);
@@ -191,7 +203,11 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         }
         homeDeliveryCODAdapter.clear();
         homeDeliveryCODAdapter.addItems(mListDeliveryCOD);
+        homeDeliveryCODAdapter.notifyDataSetChanged();
 
+        /**
+         * Phát hàng (HCC)
+         */
         for (int i = 0; i < 3; i++) {
             homeCollectInfo = new HomeCollectInfo();
             homeCollectInfo.setType(3);
@@ -211,6 +227,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         }
         homeDeliveryPAAdapter.clear();
         homeDeliveryPAAdapter.addItems(mListDeliveryPA);
+        homeDeliveryPAAdapter.notifyDataSetChanged();
     }
 
     @Override

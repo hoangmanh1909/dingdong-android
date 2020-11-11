@@ -237,4 +237,8 @@ public class PaypostPaymentRequest {
     public void setVATCode(String VATCode) {
         this.VATCode = VATCode;
     }
+
+    public String getIsItemReturn() {
+        return isItemReturn;
+    }
 }

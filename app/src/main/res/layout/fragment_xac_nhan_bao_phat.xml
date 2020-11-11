@@ -767,6 +767,7 @@
                             android:weightSum="10">
 
                             <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_address_user"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
@@ -882,6 +883,7 @@
                             android:orientation="horizontal">
 
                             <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_providers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Nơi cấp: "
@@ -951,7 +953,7 @@
                     <LinearLayout
                         android:id="@+id/ll_verify_image"
                         android:orientation="vertical"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -990,7 +992,7 @@
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/size_10dp"
                                     android:paddingBottom="@dimen/dimen_10dp"
-                                    android:text="Ảnh chân dung KH"
+                                    android:text="Ảnh chân\ndung KH"
                                     android:textColor="@color/n_gray_text"
                                     android:textSize="@dimen/text_size_12sp" />
                             </RelativeLayout>
@@ -1038,7 +1040,7 @@
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/size_10dp"
                                     android:paddingBottom="@dimen/dimen_10dp"
-                                    android:text="Ảnh GTTT (2 mặt)"
+                                    android:text="Ảnh GTTT\n(2 mặt)"
                                     android:textColor="@color/n_gray_text"
                                     android:textSize="@dimen/text_size_12sp" />
                             </RelativeLayout>

@@ -137,20 +137,20 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
-                    Log.d("123123", "getName: "+ response.body().getFile());
+                    Log.d("123123", "Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
+                Log.d("123123", "Fail image: => "+ message);
                 mView.showAlertDialog(message);
                 mView.deleteFile();
             }
         });
     }
 
-    ///
     @Override
     public void postImageAvatar(String pathAvatar) {
         mView.showProgress();
@@ -161,13 +161,14 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 if (response.body() != null){
                     mView.showImage(response.body().getFile());
 
-                    Log.d("123123", "getNameAvatar: "+ response.body().getFile());
+                    Log.d("123123", "Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
+                Log.d("123123", "Fail image: => "+ message);
                 mView.showAlertDialog(message);
                 mView.deleteFile();
             }
@@ -176,7 +177,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
 
     @Override
-    public void submitToPNS(String reason, String solution, String note, String deliveryImage, String signCapture) {
+    public void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture) {
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();

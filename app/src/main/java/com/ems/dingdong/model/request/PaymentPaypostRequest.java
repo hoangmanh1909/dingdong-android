@@ -41,8 +41,14 @@ public class PaymentPaypostRequest {
     String routeCode;
     @SerializedName("Signature")
     String signature;
+    /*@SerializedName("ImageDelivery")
+    String imageDelivery;
+    @SerializedName("ImageAuthen")
+    String imageAuthen;*/
 
-    public PaymentPaypostRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount, String shiftID, String routeCode, String signature) {
+    public PaymentPaypostRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate, String deliveryTime,
+                                 String receiverName, String receiverIDNumber, String reasonCode, String solutionCode, String status, String paymentChannel,
+                                 String deliveryType, String signatureCapture, String note, String collectAmount, String shiftID, String routeCode, String signature) {
         this.postmanID = postmanID;
         this.parcelCode = parcelCode;
         this.mobileNumber = mobileNumber;
@@ -62,5 +68,7 @@ public class PaymentPaypostRequest {
         this.shiftID = shiftID;
         this.routeCode = routeCode;
         this.signature = signature;
+        /*this.imageDelivery = imageDelivery;
+        this.imageAuthen = imageAuthen;*/
     }
 }

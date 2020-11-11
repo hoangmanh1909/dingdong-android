@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -204,6 +205,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvInstruction;
         @BindView(R.id.tv_batch_code)
         public CustomTextView tvBatchCode;
+        @BindView(R.id.tv_refund_postage)
+        public CustomTextView tvRefundPostage;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -267,6 +270,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
             if (item.getTotalFee() != null)
                 tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
+
+            tvRefundPostage.setVisibility(View.GONE);
+            if (item.getIsItemReturn().equals("Y")){
+                tvRefundPostage.setText("Bưu gửi phát hoàn");
+                tvRefundPostage.setVisibility(View.VISIBLE);
+            }
+            Log.d("123123", "Bưu gửi: "+item.getIsItemReturn());
 
             if (!TextUtils.isEmpty(item.getbD13CreatedDate())) {
                 tvCreateDated.setText(String.format("Được giao ngày: %s", item.getbD13CreatedDate()));

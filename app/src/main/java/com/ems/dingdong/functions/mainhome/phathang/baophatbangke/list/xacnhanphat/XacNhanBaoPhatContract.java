@@ -51,8 +51,6 @@ public interface XacNhanBaoPhatContract {
         void postImage(String path, CommonCallback<UploadSingleResult> callback);
 
         ///
-        //void postImageAvatar(String path, CommonCallback<UploadSingleResult> callback);
-
         void postImageAvatar(String pathAvatar, CommonCallback<UploadSingleResult> callback);
 
         /**
@@ -200,7 +198,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery not success.
          */
-        void submitToPNS(String reason, String solution, String note, String deliveryImage, String signCapture);
+        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture);
 
         /**
          * delivery success.

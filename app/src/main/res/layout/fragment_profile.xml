@@ -106,7 +106,9 @@
                 android:src="@drawable/ic_sign_out" />
         </RelativeLayout>
 
+        <!--Tạm thời android:visibility="gone" vì chưa cần-->
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_e_wallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

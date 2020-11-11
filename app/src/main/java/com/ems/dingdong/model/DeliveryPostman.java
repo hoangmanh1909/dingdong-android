@@ -430,6 +430,10 @@ public class DeliveryPostman implements Comparable {
         return authenType;
     }
 
+    public String getIsItemReturn() {
+        return isItemReturn;
+    }
+
     @Override
     public int compareTo(Object o) {
         int compareOrderNumber = ((DeliveryPostman) o).getOrderNumberInBD13();

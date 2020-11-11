@@ -75,7 +75,8 @@ public class DialogUtils {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(msg);
-        builder.setPositiveButton(R.string.ok, null);
+        //builder.setPositiveButton(R.string.ok, null);
+        builder.setPositiveButton(R.string.not_ok, null);
         builder.create().show();
     }
 
