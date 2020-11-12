@@ -579,7 +579,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
-                            Log.d("123123", "paymentDelivery: " + "gói hàng: "+mFile+";"+"ảnh xác thực 2 mặt: "+mFileVerify+";"+"ảnh avatar: "+mFileAvatar+";"+"ảnh other: "+mFileOther);
+                            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
 
                         } else {
                             /**
@@ -589,7 +589,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
                                     infoVerify);
-                            Log.d("123123", "paymentDelivery: " + "gói hàng: "+mFile+";"+"ảnh xác thực 2 mặt: "+mFileVerify+";"+"ảnh avatar: "+mFileAvatar+";"+"ảnh other: "+mFileOther);
+                            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
 
                         }
                         confirmDialog.dismiss();
@@ -615,7 +615,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mFile,
                     mFileAvatar+";"+mFileVerify+";"+mFileOther,
                     mSign);
-            Log.d("1231234", "paymentDelivery: " + "gói hàng: "+mFile+";"+"ảnh xác thực 2 mặt: "+mFileVerify+";"+"ảnh avatar: "+mFileAvatar+";"+"ảnh other: "+mFileOther);
+            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
         } else if (mDeliveryType == 3){
             /**
              * mDeliveryType = 3 -> chuyển tuyến
@@ -930,8 +930,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file) {
         if (null != getViewContext()) {
             if (isCaptureAvatar){
-                mFileAvatar = file;
-                Log.d("123123", "post: "+file);
+                /*if (mFileAvatar.equals("")) {
+                    mFileAvatar = file;
+                    Log.d("123123", "post: "+file);
+                }*/
+                if (mFileAvatar.equals("")) {
+                    mFileAvatar = file;
+                    Log.d("123123", "post: "+file);
+                } else {
+                    mFileAvatar += ";";
+                    mFileAvatar += file;
+                    Log.d("123123", "post: "+file);
+                }
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;

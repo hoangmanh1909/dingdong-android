@@ -137,15 +137,15 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
-                    Log.d("123123", "Success: => "+"getName: "+ response.body().getFile());
+                    Log.d("123123", "showImage Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
-                Log.d("123123", "Fail image: => "+ message);
-                mView.showAlertDialog(message);
+                Log.d("123123", "showImage Fail image: => "+ message);
+                mView.showAlertDialog("Không kết nối được với hệ thống");
                 mView.deleteFile();
             }
         });
@@ -161,15 +161,15 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 if (response.body() != null){
                     mView.showImage(response.body().getFile());
 
-                    Log.d("123123", "Success: => "+"getName: "+ response.body().getFile());
+                    Log.d("123123", "postImageAvatar Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
-                Log.d("123123", "Fail image: => "+ message);
-                mView.showAlertDialog(message);
+                Log.d("123123", "postImageAvatar Fail image: => "+ message);
+                mView.showAlertDialog("Không kết nối được với hệ thống");
                 mView.deleteFile();
             }
         });
@@ -322,7 +322,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                         amountPNS += item.getPNSAmount();
                                     }
                                 }
-                                mView.showCheckAmountPaymentError(simpleResult.getMessage(),
+                                mView.showCheckAmountPaymentError(
+                                        simpleResult.getMessage(),
                                         NumberUtils.formatPriceNumber(amountPP),
                                         NumberUtils.formatPriceNumber(amountPNS));
                             } else {

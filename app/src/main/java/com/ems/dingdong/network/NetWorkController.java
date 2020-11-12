@@ -711,6 +711,7 @@ public class NetWorkController {
 
     public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
         return getAPIRxBuilder().checkAmountPayment(request);
+
     }
 
     public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {

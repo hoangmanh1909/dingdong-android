@@ -89,6 +89,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     mView.hideProgress();
                     mView.showError(response.body().getMessage());
                     gotoValidation();
+                    Log.d("123123", "login: "+ response.body().getMessage());
                 }
             }
 
@@ -134,6 +135,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     }
                 } else {
                     mView.showError(response.body().getMessage());
+                    Log.d("123123", "getVersion: "+ response.body().getMessage());
                 }
             }
 
@@ -160,6 +162,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     mView.gotoHome();
                 } else {
                     mView.showError(response.body().getMessage());
+                    Log.d("123123", "getPostOfficeByCode: "+ response.body().getMessage());
                 }
             }
 
@@ -195,6 +198,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     }
                 } else {
                     mView.showError(response.body().getMessage());
+                    Log.d("123123", "getSolutions: "+ response.body().getMessage());
                 }
             }
 
@@ -230,6 +234,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     }
                 } else {
                     mView.showError(response.body().getMessage());
+                    Log.d("123123", "getReasons: "+ response.body().getMessage());
                 }
             }
 
