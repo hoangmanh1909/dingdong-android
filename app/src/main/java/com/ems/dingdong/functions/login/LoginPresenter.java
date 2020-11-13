@@ -123,10 +123,12 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                         String urlDowload = jsonObject.getString("UrlDownload");
 
                         String versionApp = BuildConfig.VERSION_NAME;
+                        Log.d("123123", "versionApp: "+ versionApp + "  version: "+ version);
 
                         if(!version.equals(versionApp))
                         {
                             mView.showVersion(version,urlDowload);
+                            Log.d("123123", "!version.equals(versionApp): "+ versionApp);
                         }
 
                     }catch (JSONException err){
