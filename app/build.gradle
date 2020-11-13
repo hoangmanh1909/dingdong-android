@@ -27,7 +27,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 12
+        versionCode 13
         versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -53,9 +53,9 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
             signingConfig signingConfigs.release
         }
     }
