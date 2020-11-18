@@ -113,7 +113,7 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tổng tiền COD"
+                            android:text="Tiền COD"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16sp" />
 
@@ -137,7 +137,7 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tổng cước"
+                            android:text="Tiền cước"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16sp" />
 
@@ -161,9 +161,10 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tổng tiền"
+                            android:text="Tổng tiền phải thu"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_16sp" />
+                            android:textStyle="bold"
+                            android:textSize="@dimen/text_size_21sp" />
 
                         <com.ems.dingdong.views.CustomBoldTextView
                             android:id="@+id/tv_total"
@@ -173,7 +174,8 @@
                             android:gravity="center"
                             android:text="1000000"
                             android:textColor="@color/red_light"
-                            android:textSize="@dimen/text_size_16sp" />
+                            android:textStyle="bold"
+                            android:textSize="@dimen/text_size_21sp" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -186,7 +188,9 @@
                 android:background="@color/white" />
 
 
+            <!--Hình thức báo phát-->
             <com.ems.dingdong.views.CustomTextView
+                android:visibility="gone"
                 style="@style/HeaderNews"
                 android:layout_width="wrap_content"
                 android:padding="@dimen/dimen_10dp"
@@ -197,13 +201,14 @@
                 android:textSize="@dimen/text_size_16sp" />
 
             <LinearLayout
+                android:layout_marginTop="10dp"
+                android:weightSum="3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_55sdp"
                 android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen_10dp">
+                android:orientation="horizontal">
 
-                <RadioGroup
+                <!--<RadioGroup
                     android:id="@+id/radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -220,7 +225,8 @@
                         android:paddingLeft="@dimen/dimen_5dp"
                         android:text="Báo phát thành công"
                         android:textColor="@color/bg_primary"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
                     <RadioButton
                         android:id="@+id/rad_fail"
@@ -232,7 +238,8 @@
                         android:paddingLeft="@dimen/dimen_5dp"
                         android:text="Không thành công"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
                     <RadioButton
                         android:id="@+id/rad_change_route"
@@ -244,9 +251,48 @@
                         android:paddingLeft="@dimen/dimen_5dp"
                         android:text="Chuyển tuyến"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
-                </RadioGroup>
+                </RadioGroup>-->
+
+
+                <!---->
+                <TextView
+                    android:id="@+id/rad_success"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@drawable/bg_form_success"
+                    android:text="THÀNH CÔNG"
+                    android:gravity="center"
+                    android:textColor="@color/color_yellow"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_15sdp"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/rad_fail"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@color/color_rad_fail"
+                    android:text="KHÔNG THÀNH CÔNG"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_15sdp"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/rad_change_route"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@color/color_rad_change_route"
+                    android:text="CHUYỂN TUYẾN"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_15sdp"
+                    android:layout_height="match_parent"/>
+
+
             </LinearLayout>
 
             <View

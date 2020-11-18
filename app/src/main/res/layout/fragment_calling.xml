@@ -54,6 +54,17 @@
         android:text="Calling"
         android:textColor="@color/gray"
         android:textSize="@dimen/dimen_20dp" />
+    <com.ems.dingdong.views.CustomTextView
+        android:visibility="invisible"
+        android:id="@+id/tv_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_calling"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:text="Answer"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dimen_20dp" />
 
     <Chronometer
         android:id="@+id/tv_time"

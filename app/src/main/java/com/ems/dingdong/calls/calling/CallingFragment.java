@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,6 +21,7 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
+import com.ems.dingdong.calls.answer.PortMessageReceiver;
 import com.ems.dingdong.calls.diapad.DiapadFragment;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
@@ -30,7 +32,7 @@ import com.portsip.PortSipSdk;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View {
+public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View, PortMessageReceiver.BroadcastListener {
 
     public static final String TAG = CallingFragment.class.getName();
 
@@ -56,6 +58,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private PortSipSdk portSipSdk;
     private Session session;
     private CallingEvent callingEvent = new CallingEvent();
+    long mSessionId;
+    //Session currentLine;
 
     @Override
     protected int getLayoutId() {
@@ -72,17 +76,23 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         audioManager = (AudioManager) getViewContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_CALL);
 //        audioManager.setMicrophoneMute(false);
-        session = CallManager.Instance().getSession();
+        ///session = CallManager.Instance().getSession();
+        session = CallManager.Instance().getCurrentSession();
         CallManager.Instance().reset();
         ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
         portSipSdk = applicationController.portSipSdk;
         if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
             tvPhoneNumber.setText(mPresenter.getCalleeNumber());
-            changeCallLayout(Constants.CALL_TYPE_CALLING);
-            session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
+            ///changeCallLayout(Constants.CALL_TYPE_CALLING);
+            try {
+                session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
+            }catch (NullPointerException nullPointerException){}
+            ///session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
         } else {
-            tvPhoneNumber.setText(CallManager.Instance().getSession().phoneNumber);
-            changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+            try {
+                //tvPhoneNumber.setText(CallManager.Instance().getSession().phoneNumber);
+                ///changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+            }catch (NullPointerException nullPointerException){}
         }
     }
 
@@ -99,12 +109,21 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         super.onDestroy();
     }
 
+
+
     @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_foward, R.id.iv_mic_off})
     public void onViewClicked(View view) {
+
+        try {
+            Session currentLine = CallManager.Instance().getCurrentSession();
+            Log.d("123123", "currentLine.sessionID 1: "+currentLine.sessionID);
+        }catch (NullPointerException nullPointerException){}
+
+
         switch (view.getId()) {
             case R.id.iv_call_answer:
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
-                    changeCallLayout(Constants.CALL_TYPE_CALLING);
+                    ///changeCallLayout(Constants.CALL_TYPE_CALLING);
                     portSipSdk.answerCall(session.sessionID, false);
                     mPresenter.setCallType(Constants.CALL_TYPE_CALLING);
                 } else {
@@ -137,9 +156,52 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_call_end:
+                Session currentLine = CallManager.Instance().getCurrentSession();
+                Ring.getInstance(getActivity()).stop();
                 if (portSipSdk != null) {
-                    portSipSdk.hangUp(session.sessionID);
+                    try {
+                        ///portSipSdk.hangUp(session1.sessionID);
+                        portSipSdk.hangUp(currentLine.sessionID);
+                        portSipSdk.rejectCall(currentLine.sessionID, 486);
+                        Log.d("123123", "session1.sessionID: "+session.sessionID);
+                    }catch (NullPointerException nullPointerException){}
                 }
+                getViewContext().finish();
+
+                ///
+                /*switch (currentLine.state) {
+                    case INCOMING:
+                        portSipSdk.rejectCall(currentLine.sessionID, 486);
+                        Log.d("123123", "currentLine.sessionID: "+ currentLine.sessionID);
+                        break;
+                    case CONNECTED:
+                    case TRYING:
+                        portSipSdk.hangUp(currentLine.sessionID);
+                        Log.d("123123", "currentLine.sessionID: "+ currentLine.sessionID);
+                        break;
+                }*/
+                /*try {
+                    Session currentLine = CallManager.Instance().getCurrentSession();
+                    Log.d("123123", "currentLine: "+ currentLine.sessionID);
+                    Log.d("123123", "currentLine.sessionID: "+ currentLine.sessionID);
+                    Log.d("123123", "currentLine.state: "+ currentLine.state);
+
+                    switch (currentLine.state) {
+                        case INCOMING:
+                            portSipSdk.rejectCall(currentLine.sessionID, 486);
+                            Log.d("123123", "currentLine.sessionID INCOMING: "+ currentLine.sessionID);
+                            break;
+                        case CONNECTED:
+                        case TRYING:
+                            portSipSdk.hangUp(currentLine.sessionID);
+                            Log.d("123123", "currentLine.sessionID TRYING: "+ currentLine.sessionID);
+                            break;
+                    }
+                    currentLine.reset();
+                }catch (NullPointerException nullPointerException){}*/
+
+
+                currentLine.reset();
                 getViewContext().finish();
                 break;
 
@@ -177,7 +239,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
     }
 
-    private void changeCallLayout(int type) {
+/*    private void changeCallLayout(int type) {
         if (type == Constants.CALL_TYPE_CALLING) {
             ivCallAnswer.setImageResource(R.drawable.ic_dialpad);
             ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
@@ -192,6 +254,39 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivMicOff.setVisibility(View.GONE);
             ivFoward.setVisibility(View.GONE);
             ivHold.setVisibility(View.GONE);
+        }
+    }*/
+
+    @Override
+    public void onBroadcastReceiver(Intent intent) {
+        String action = intent.getAction();
+        if (PortSipService.CALL_CHANGE_ACTION.equals(action))
+        {
+            long sessionId = intent.getLongExtra(PortSipService.EXTRA_CALL_SEESIONID, Session.INVALID_SESSION_ID);
+            String status = intent.getStringExtra(PortSipService.EXTRA_CALL_DESCRIPTION);
+            Session session = CallManager.Instance().findSessionBySessionID(sessionId);
+            if (session != null)
+            {
+                switch (session.state)
+                {
+                    case INCOMING:
+                        break;
+                    case TRYING:
+                        break;
+                    case CONNECTED:
+                    case FAILED:
+                    case CLOSED:
+                        Session anOthersession = CallManager.Instance().findIncomingCall();
+                        if(anOthersession==null) {
+                            getActivity().finish();
+                        }else{
+                            //setVideoAnswerVisibility(anOthersession);
+                            mSessionId = anOthersession.sessionID;
+                        }
+                        break;
+
+                }
+            }
         }
     }
 
@@ -218,15 +313,15 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         tvCalling.setText("busy");
                         break;
                     case PortSipService.CALL_EVENT_INVITE_COMMING:
-                        tvCalling.setText(session.phoneNumber);
-                        changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+                        //tvCalling.setText(session.phoneNumber);
+                        ///changeCallLayout(Constants.CALL_TYPE_RECEIVING);
                         break;
                     case PortSipService.CALL_EVENT_END:
                         tvCalling.setText("call ended");
                         chronometer.stop();
                         tvCalling.setVisibility(View.VISIBLE);
                         chronometer.setVisibility(View.GONE);
-                        changeCallLayout(Constants.CALL_TYPE_CALLING);
+                        ///changeCallLayout(Constants.CALL_TYPE_CALLING);
                         Ring.getInstance(getViewContext()).stopRingTone();
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_ACCEPT:

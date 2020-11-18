@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.system.ErrnoException;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -272,9 +273,13 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
 
             tvRefundPostage.setVisibility(View.GONE);
-            if (item.getIsItemReturn().equals("Y")){
-                tvRefundPostage.setText("Bưu gửi phát hoàn");
-                tvRefundPostage.setVisibility(View.VISIBLE);
+            try {
+                if (item.getIsItemReturn().equals("Y")){
+                    tvRefundPostage.setText("Bưu gửi phát hoàn");
+                    tvRefundPostage.setVisibility(View.VISIBLE);
+                }
+            }catch (NullPointerException nullPointerException){
+
             }
             Log.d("123123", "Bưu gửi: "+item.getIsItemReturn());
 

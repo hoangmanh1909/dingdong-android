@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".calls.answer.AnswerActivity">
+
+
+    <ImageView
+        android:id="@+id/btn_hangup"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:src="@drawable/ic_call_end_red"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/answer_video"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="video"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/btn_answer"
+        app:layout_constraintStart_toEndOf="@+id/btn_hangup"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <ImageView
+        android:id="@+id/btn_answer"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:src="@drawable/ic_call_end_green"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <TextView
+        android:id="@+id/tv_phone_call"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:textColor="#000000"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/btn_answer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="Cuộc gọi đến"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/tv_phone_call"
+        app:layout_constraintEnd_toEndOf="@+id/tv_phone_call"
+        app:layout_constraintStart_toStartOf="@+id/tv_phone_call" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

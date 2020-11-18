@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="preferExternal"
-    package="com.ems.dingdong">
+    package="com.ems.dingdong"
+    android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -11,44 +11,43 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--    <uses-permission android:name="android.permission.READ_CALL_LOG" />-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.READ_CALL_LOG" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <!--tools:overrideLibrary="com.tsongkha.spinnerdatepicker"-->
-    <!--for audio access-->
+    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- tools:overrideLibrary="com.tsongkha.spinnerdatepicker" -->
+    <!-- for audio access -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <eat-comment />
-    <!-- Used for permissions that are associated with accessing
+    <!--
+ Used for permissions that are associated with accessing
          microphone audio from the device. Note that phone calls also capture audio
-         but are in a separate (more visible) permission group. -->
-    <permission-group android:name="android.permission-group.MICROPHONE"
+         but are in a separate (more visible) permission group.
+    -->
+    <permission-group
+        android:name="android.permission-group.MICROPHONE"
+        android:description="@string/permgroupdesc_microphone"
         android:icon="@drawable/perm_group_microphone"
         android:label="@string/permgrouplab_microphone"
-        android:description="@string/permgroupdesc_microphone"
         android:priority="600" />
-
-    <!-- Allows an application to record audio.
+    <!--
+ Allows an application to record audio.
          <p>Protection level: dangerous
     -->
-    <permission android:name="android.permission.RECORD_AUDIO"
-        android:permissionGroup="android.permission-group.MICROPHONE"
-        android:label="@string/permlab_recordAudio"
+    <permission
+        android:name="android.permission.RECORD_AUDIO"
         android:description="@string/permdesc_recordAudio"
-        android:protectionLevel="dangerous"/>
-
-    <!-- ====================================================================== -->
-    <!-- Permissions for accessing the device camera                            -->
+        android:label="@string/permlab_recordAudio"
+        android:permissionGroup="android.permission-group.MICROPHONE"
+        android:protectionLevel="dangerous" /> <!-- ====================================================================== -->
+    <!-- Permissions for accessing the device camera -->
     <!-- ====================================================================== -->
     <eat-comment />
 
@@ -61,6 +60,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
+        <activity android:name=".calls.answer.AnswerActivity"></activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -89,7 +90,7 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".functions.mainhome.gomhang.listcommon.ListCommonActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -100,6 +101,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name=".fcm.GomHangActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -110,8 +112,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".calls.IncomingCallActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -119,7 +120,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".functions.mainhome.chihobtxh.BtxhActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -127,7 +128,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".functions.mainhome.chihobtxh.menu.ChiHoBtxhActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -135,7 +136,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".functions.mainhome.chihobtxh.menu.ThongKeBtxhActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -143,7 +144,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -172,6 +173,7 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name=".fcm.NotificationActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -209,7 +211,6 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Activity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -219,7 +220,6 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiActivity"
             android:exported="false"
@@ -233,8 +233,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
-            android:screenOrientation="portrait" />
-        <!--android:theme="@style/AppTheme_Actionbar"-->
+            android:screenOrientation="portrait" /> <!-- android:theme="@style/AppTheme_Actionbar" -->
         <activity
             android:name=".functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -243,13 +242,16 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait">
-            <!-- <meta-data
+
+            <!--
+             <meta-data
                  android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
 
              <intent-filter>
                  <action android:name="android.intent.action.SEARCH" />
-             </intent-filter>-->
+             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".functions.mainhome.phathang.baophatoffline.BaoPhatOfflineActivity"
@@ -259,13 +261,16 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait">
-            <!-- <meta-data
+
+            <!--
+             <meta-data
                  android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
 
              <intent-filter>
                  <action android:name="android.intent.action.SEARCH" />
-             </intent-filter>-->
+             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".functions.mainhome.phathang.gachno.TaoGachNoActivity"
@@ -275,15 +280,17 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait">
-            <!-- <meta-data
+
+            <!--
+             <meta-data
                  android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
 
              <intent-filter>
                  <action android:name="android.intent.action.SEARCH" />
-             </intent-filter>-->
-        </activity>
-        <!--android:theme="@style/AppTheme_Actionbar"-->
+             </intent-filter>
+            -->
+        </activity> <!-- android:theme="@style/AppTheme_Actionbar" -->
         <activity
             android:name=".functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -293,34 +300,31 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
-            <!-- <meta-data
+
+            <!--
+             <meta-data
                  android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
 
              <intent-filter>
                  <action android:name="android.intent.action.SEARCH" />
-             </intent-filter>-->
+             </intent-filter>
+            -->
         </activity>
 
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode">
-
-        </meta-data>
-
-
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode"></meta-data>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" />
 
-        <service android:name="com.ems.dingdong.fcm.DingDongFirebaseMessagingService">
+        <service android:name=".fcm.DingDongFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.PortSipService">
-
-        </service>
-
-
+        <service android:name=".services.PortSipService"></service>
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more.
@@ -335,26 +339,25 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
-        <!--  <receiver android:name="com.ems.dingdong.calls.CallReceiver">
+        <!--
+  <receiver android:name="com.ems.dingdong.calls.CallReceiver">
               <intent-filter>
                   <action android:name="android.intent.action.PHONE_STATE" />
               </intent-filter>
               <intent-filter>
                   <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
               </intent-filter>
-          </receiver>-->
+          </receiver>
+        -->
         <service
-            android:name="com.ems.dingdong.location.CheckLocationService"
+            android:name=".location.CheckLocationService"
             android:exported="false" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="0cce76e3c35418e2833d7caeb11a76a15fc38dd0" />
 
-        <activity android:name="com.ems.dingdong.fcm.NotificationActivity"></activity>
-
-        <!-- Register library Activities -->
+        <activity android:name=".fcm.NotificationActivity" /> <!-- Register library Activities -->
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity"
             android:theme="@style/MaterialCamera.CaptureActivity" />
@@ -365,6 +368,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/notification_channel_id" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

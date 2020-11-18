@@ -254,8 +254,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 updateUserHeader();
                 break;
             case 2:
-                if (mPresenter != null){
+                try {
                     mPresenter.getBalance();
+                }catch (NullPointerException nullPointerException){
+
                 }
                 break;
             default:

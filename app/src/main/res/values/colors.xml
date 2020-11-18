@@ -370,4 +370,11 @@
     <color name="bg_color_diapad_button">#f1f1f1</color>
     <color name="green_border">#00b5ae</color>
     <color name="black_alpha">#90000000</color>
+
+    //
+    <color name="color_rad_success">#27BF04</color>
+    <color name="color_rad_fail">#F80B0B</color>
+    <color name="color_rad_change_route">#145CED</color>
+    <color name="color_yellow">#FFE600</color>
+
 </resources>

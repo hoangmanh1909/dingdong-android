@@ -137,7 +137,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     }
                 } else {
                     mView.showError(response.body().getMessage());
-                    Log.d("123123", "getVersion: "+ response.body().getMessage());
+                    Log.d("123123", "showError getVersion: "+ response.body().getMessage());
                 }
             }
 

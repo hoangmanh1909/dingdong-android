@@ -28,6 +28,7 @@ public class ApplicationController extends MultiDexApplication {
     private PortSipService portSipService;
     private boolean mBound = false;
     public PortSipSdk portSipSdk;
+    public boolean mConference= false;
 
     private ServiceConnection connection = new ServiceConnection() {
 

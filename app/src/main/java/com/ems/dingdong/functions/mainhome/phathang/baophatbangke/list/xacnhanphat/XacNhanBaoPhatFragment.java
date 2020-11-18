@@ -1,10 +1,8 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -12,12 +10,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +56,6 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -85,14 +80,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     CustomBoldTextView tv_quantity;
     @BindView(R.id.tv_total_amount)
     CustomBoldTextView tv_total_amount;
-    @BindView(R.id.radio_group)
-    RadioGroup radio_group;
+    /*@BindView(R.id.radio_group)
+    RadioGroup radio_group;*/
     @BindView(R.id.rad_success)
-    RadioButton rad_success;
+    TextView rad_success;
     @BindView(R.id.rad_change_route)
-    RadioButton rad_change_route;
+    TextView rad_change_route;
     @BindView(R.id.rad_fail)
-    RadioButton rad_fail;
+    TextView rad_fail;
     @BindView(R.id.ll_confirm_fail)
     LinearLayout ll_confirm_fail;
     @BindView(R.id.ll_change_route)
@@ -263,7 +258,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
 
-        radio_group.setOnCheckedChangeListener((group, checkedId) -> {
+        /*radio_group.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rad_fail) {
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
@@ -283,7 +278,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 llVerify.setVisibility(View.GONE);
                 mDeliveryType = 3;
             }
-        });
+        });*/
 
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
@@ -364,12 +359,52 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         //getFileName();
     }
 
-
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
-            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other})
+            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
+            R.id.rad_success, R.id.rad_fail, R.id.rad_change_route})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rad_success:
+                mDeliveryType = 2;
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                linearLayoutName.setVisibility(View.VISIBLE);
+                llVerify.setVisibility(View.VISIBLE);
+                rad_success.setBackgroundResource(R.drawable.bg_form_success);
+                rad_fail.setBackgroundResource(R.color.color_rad_fail);
+                rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_success.setTextColor(getResources().getColor(R.color.color_yellow));
+                rad_fail.setTextColor(getResources().getColor(R.color.white));
+                rad_change_route.setTextColor(getResources().getColor(R.color.white));
+
+                break;
+            case R.id.rad_fail:
+                mDeliveryType = 1;
+                ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                linearLayoutName.setVisibility(View.GONE);
+                llVerify.setVisibility(View.GONE);
+                rad_success.setBackgroundResource(R.color.color_rad_success);
+                rad_fail.setBackgroundResource(R.drawable.bg_form_fail);
+                rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_success.setTextColor(getResources().getColor(R.color.white));
+                rad_fail.setTextColor(getResources().getColor(R.color.color_yellow));
+                rad_change_route.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.rad_change_route:
+                mDeliveryType = 3;
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                ll_change_route.setVisibility(LinearLayout.VISIBLE);
+                linearLayoutName.setVisibility(View.GONE);
+                llVerify.setVisibility(View.GONE);
+                rad_fail.setBackgroundResource(R.color.color_rad_fail);
+                rad_success.setBackgroundResource(R.color.color_rad_success);
+                rad_change_route.setBackgroundResource(R.drawable.bg_form_change_route);
+                rad_success.setTextColor(getResources().getColor(R.color.white));
+                rad_fail.setTextColor(getResources().getColor(R.color.white));
+                rad_change_route.setTextColor(getResources().getColor(R.color.color_yellow));
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
