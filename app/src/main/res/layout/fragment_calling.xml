@@ -40,7 +40,7 @@
         android:layout_below="@+id/iv_address"
         android:layout_marginTop="@dimen/dimen_10dp"
         android:gravity="center"
-        android:text="Số điện thoại"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/dimen_30dp" />
 

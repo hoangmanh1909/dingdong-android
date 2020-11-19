@@ -31,11 +31,6 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         return this;
     }
 
-    @Override
-    public void setCallType(int type) {
-        this.type = type;
-    }
-
     public CallingPresenter setCallerNumber(String callerNumber) {
         this.callerNumber = callerNumber;
         return this;
@@ -43,6 +38,11 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
     public CallingPresenter setCalleeNumber(String calleeNumber) {
         this.calleeNumber = calleeNumber;
+        return this;
+    }
+
+    public CallingPresenter setSessionId(Long sessionId){
+        this.sessionId = sessionId;
         return this;
     }
 
@@ -54,6 +54,11 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     @Override
     public CallingContract.View onCreateView() {
         return CallingFragment.getInstance();
+    }
+
+    @Override
+    public void setCallType(int type) {
+        this.type = type;
     }
 
     @Override
@@ -74,6 +79,11 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     @Override
     public String getCalleeNumber() {
         return calleeNumber;
+    }
+
+    @Override
+    public Long getSessionId() {
+        return sessionId;
     }
 
 }

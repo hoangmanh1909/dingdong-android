@@ -24,5 +24,7 @@ public interface CallingContract {
 
         String getCalleeNumber();
 
+        Long getSessionId();
+
     }
 }
