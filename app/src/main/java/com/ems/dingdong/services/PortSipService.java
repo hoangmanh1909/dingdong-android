@@ -2,6 +2,7 @@ package com.ems.dingdong.services;
 
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -235,6 +236,17 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         super.onCreate();
         applicaton = (ApplicationController) getApplication();
         registerLogoutEvent();
+
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelID, getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+            channel.enableLights(true);
+            NotificationChannel callChannel = new NotificationChannel(callChannelID, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(channel);
+            mNotificationManager.createNotificationChannel(callChannel);
+        }
+
+
     }
 
     private void registerLogoutEvent() {
@@ -360,10 +372,10 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         if(isForeground()){
             startActivity(activityIntent);
         }else{
-            try {
+            /*try {
                 showPendingCallNotification(this, callerDisplayName, caller, activityIntent);
-            }catch (NullPointerException nullPointerException){};
-            //showPendingCallNotification(this, callerDisplayName, caller, activityIntent);
+            }catch (NullPointerException nullPointerException){}*/
+            showPendingCallNotification(this, callerDisplayName, caller, activityIntent);
         }
         Intent broadIntent = new Intent(CALL_CHANGE_ACTION);
         String description = session.lineName + " onInviteIncoming";
@@ -424,17 +436,17 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, callChannelID)
-                .setSmallIcon(R.drawable.mapbox_logo_icon)
+                .setSmallIcon(R.drawable.ic_logo_ding_dong)
                 .setContentTitle(contenTitle)
                 .setContentText(contenText)
                 .setAutoCancel(true)
                 .setShowWhen(true)
                 .setContentIntent(contentIntent)
                 .setFullScreenIntent(contentIntent, true);
-        try {
+        /*try {
             mNotificationManager.notify(PENDINGCALL_NOTIFICATION, builder.build());
-        }catch (NullPointerException nullPointerException){};
-        //mNotificationManager.notify(PENDINGCALL_NOTIFICATION, builder.build());
+        }catch (NullPointerException nullPointerException){};*/
+        mNotificationManager.notify(PENDINGCALL_NOTIFICATION, builder.build());
     }
 
     public void sendPortSipMessage(String message, Intent broadIntent) {
