@@ -707,7 +707,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (resultCode == getActivity().RESULT_OK) {
                 attemptSendMedia(data.getData().getPath());
 
-                attemptSendMediaAvatar(data.getData().getPath());
+                //attemptSendMediaAvatar(data.getData().getPath());
             }
         }
     }
@@ -724,16 +724,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isSavedImage -> {
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
+                        String pathAvatar = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
+                        //mPresenter.postImageAvatar(pathAvatar);
 
-                        /*if (isCaptureAvatar){
-                            imageAvatarAdapter.getListFilter().add(new Item(path, ""));
+                        if (isCaptureAvatar){
+                            mPresenter.postImageAvatar(pathAvatar);
+                            imageAvatarAdapter.getListFilter().add(new Item(pathAvatar, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
-
-                            //mPresenter.postImage(path);
-                            showSuccessToast(path);
-                        }*/
+                        }
 
                         if (isCaptureVerify) {
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
@@ -761,18 +761,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         );
     }
 
-    public void getFileName(){
-        SharedPref sharedPref = new SharedPref(getContext());
-        String uploadImageJson = sharedPref.getString(Constants.KEY_UPLOAD_IMAGE, "");
-
-        UploadSingleResult uploadSingleResult = NetWorkController.getGson().fromJson(uploadImageJson, UploadSingleResult.class);
-        uploadSingleResult.getFile();
-        showSuccessToast(uploadSingleResult.getFile());
-        Log.d("123123", "getFile: "+ uploadSingleResult.getFile());
-    }
 
     ///
-    private void attemptSendMediaAvatar(String path_media) {
+    /*private void attemptSendMediaAvatar(String path_media) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -804,7 +795,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 },
                 onError -> Logger.e("error save image")
         );
-    }
+    }*/
 
     private void showUIReason() {
         ArrayList<Item> items = new ArrayList<>();
@@ -968,45 +959,35 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file) {
         if (null != getViewContext()) {
             if (isCaptureAvatar){
-                /*if (mFileAvatar.equals("")) {
-                    mFileAvatar = file;
-                    Log.d("123123", "post: "+file);
-                }*/
-                if (mFileAvatar.equals("")) {
-                    mFileAvatar = file;
-                    Log.d("123123", "post: "+file);
-                } else {
-                    mFileAvatar += ";";
-                    mFileAvatar += file;
-                    Log.d("123123", "post: "+file);
-                }
+                mFileAvatar = file;
+                //Log.d("123123", "post: "+file);
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
-                    Log.d("123123", "post: "+file);
+                    //Log.d("123123", "post: "+file);
                 } else {
                     mFileVerify += ";";
                     mFileVerify += file;
-                    Log.d("123123", "post: "+file);
+                    //Log.d("123123", "post: "+file);
                 }
             } else if (isCapture) {
                 if (mFile.equals("")) {
                     mFile = file;
-                    Log.d("123123", "post: "+file);
+                    //Log.d("123123", "post: "+file);
                 } else {
                     mFile += ";";
                     mFile += file;
-                    Log.d("123123", "post: "+file);
+                    //Log.d("123123", "post: "+file);
                 }
             }
             else if (isCaptureOther){
                 if (mFileOther.equals("")){
                     mFileOther = file;
-                    Log.d("123123", "post: "+file);
+                    //Log.d("123123", "post: "+file);
                 }else {
                     mFileOther += ";";
                     mFileOther += file;
-                    Log.d("123123", "post: "+file);
+                    //Log.d("123123", "post: "+file);
                 }
             }
         }
@@ -1020,9 +1001,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
                 imageVerifyAdapter.notifyDataSetChanged();
             } else if (isCaptureAvatar){
-                mFileAvatar = "";
-                imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() - 1);
-                imageAvatarAdapter.notifyDataSetChanged();
+                try {
+                    mFileAvatar = "";
+                    imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() - 1);
+                    imageAvatarAdapter.notifyDataSetChanged();
+                }catch (Exception exception){}
             } else if (isCapture){
                 mFile = "";
                 imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
@@ -1033,7 +1016,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 imageOtherAdapter.notifyDataSetChanged();
             }
         }catch (Error error){
-            showError("Vui long chup lai");
+            showError("Vui lòng chụp lại");
 
         }
     }

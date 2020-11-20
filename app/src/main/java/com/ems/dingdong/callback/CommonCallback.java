@@ -94,7 +94,10 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
         } else if (error instanceof ParseException) {
             this.onError(call, "Parse error");
         } else {
-            this.onError(call, "Lỗi kết nối hệ thống");
+            try {
+                this.onError(call, "Lỗi kết nối hệ thống");
+            }catch (Exception exception){}
+
         }
     }
 }

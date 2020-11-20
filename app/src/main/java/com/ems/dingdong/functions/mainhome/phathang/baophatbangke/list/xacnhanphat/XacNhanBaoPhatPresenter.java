@@ -137,16 +137,18 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
-                    Log.d("123123", "showImage Success: => "+"getName: "+ response.body().getFile());
+                    Log.d("123123", "postImage Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
-                Log.d("123123", "showImage Fail image: => "+ message);
-                mView.showAlertDialog("Không kết nối được với hệ thống");
-                mView.deleteFile();
+                try {
+                    Log.d("123123", "showImage Fail image: => "+ message);
+                    mView.showAlertDialog("Không kết nối được với hệ thống");
+                    mView.deleteFile();
+                }catch (Exception exception){}
             }
         });
     }

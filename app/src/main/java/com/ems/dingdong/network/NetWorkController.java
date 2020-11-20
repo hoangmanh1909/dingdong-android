@@ -392,9 +392,12 @@ public class NetWorkController {
         File file = new File(filePath);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
+        ///MultipartBody.Part bodyAvatar = MultipartBody.Part.createFormData("avatar", "file_selfie_avatar.jpg", reqFile);///
         //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
         Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
+        ///Call<UploadSingleResult> callAvatar = getAPIBuilder().postImageSingle(bodyAvatar);///
         call.enqueue(callback);
+        ///callAvatar.enqueue(callback);///
         Log.d("123123", "Post Image: "+ callback);//
     }
 
@@ -402,8 +405,8 @@ public class NetWorkController {
     public static void postImageAvatar(String filePath, CommonCallback<UploadSingleResult> callback){
         File file = new File(filePath);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image_avatar", "file_selfie_avatar.jpg", reqFile);
-        Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(body);
+        MultipartBody.Part bodyAvatar = MultipartBody.Part.createFormData("image_avatar", "file_selfie_avatar.jpg", reqFile);
+        Call<UploadSingleResult> call = getAPIBuilder().postImageSingle(bodyAvatar);
         call.enqueue(callback);
     }
 
