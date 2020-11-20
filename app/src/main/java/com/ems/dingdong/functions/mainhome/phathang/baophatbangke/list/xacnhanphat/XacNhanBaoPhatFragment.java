@@ -585,10 +585,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
-            if (TextUtils.isEmpty(tvReceiverName.getText())) {
+            /**
+             * nghiệp vụ mới tên người nhận có thể không có cũng được
+             */
+            /*if (TextUtils.isEmpty(tvReceiverName.getText())) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_real_receiver_name));
                 return;
-            }
+            }*/
 
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)

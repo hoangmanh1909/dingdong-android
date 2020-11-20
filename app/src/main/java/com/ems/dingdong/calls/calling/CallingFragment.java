@@ -208,6 +208,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivFoward.setVisibility(View.VISIBLE);
             ivHold.setVisibility(View.VISIBLE);
         } else {
+            tvPhoneNumber.setText(session.displayName);///
             ivCallAnswer.setImageResource(R.drawable.ic_call_hang_green);
             ivCallCancel.setImageResource(R.drawable.ic_call_end_red);
             ivCallEnd.setVisibility(View.INVISIBLE);
