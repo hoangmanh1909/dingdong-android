@@ -124,12 +124,13 @@
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
         </LinearLayout>
+
         <com.ems.dingdong.views.MyViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
 
     </LinearLayout>
     <!-- app:bb_activeTabColor="#5f3075"

@@ -60,7 +60,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".calls.answer.AnswerActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

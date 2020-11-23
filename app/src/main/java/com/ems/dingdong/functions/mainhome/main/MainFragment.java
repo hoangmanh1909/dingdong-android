@@ -114,6 +114,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
+                removeHeader();
                 if (mPresenter != null)
                     mPresenter.getBalance();
             } else if (tabId == R.id.action_location) {

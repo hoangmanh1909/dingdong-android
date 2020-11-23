@@ -11,14 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
+import com.ems.dingdong.calls.PortMessageReceiver;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.calls.diapad.DiapadFragment;
@@ -27,11 +25,10 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
 import com.portsip.PortSipSdk;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View {
+public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View, PortMessageReceiver.BroadcastListener {
 
     public static final String TAG = CallingFragment.class.getName();
 
@@ -134,8 +131,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             case R.id.iv_call_cancel:
                 Log.d(TAG, "iv_speaker clicked");
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
-                    int result = portSipSdk.rejectCall(session.sessionID, 480);
-                    Log.d(TAG, "reject result: " + result);
+                    portSipSdk.rejectCall(session.sessionID, 486);
+                    portSipSdk.hangUp(session.sessionID);
                     Ring.getInstance(getViewContext()).stopRingTone();
                     currentLine.reset();
                     getViewContext().finish();
@@ -215,6 +212,36 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivMicOff.setVisibility(View.GONE);
             ivFoward.setVisibility(View.GONE);
             ivHold.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onBroadcastReceiver(Intent intent) {
+        String action = intent.getAction();
+        if (PortSipService.CALL_CHANGE_ACTION.equals(action))
+        {
+            long sessionId = intent.getLongExtra(PortSipService.EXTRA_CALL_SEESIONID, Session.INVALID_SESSION_ID);
+            Session session = CallManager.Instance().findSessionBySessionID(sessionId);
+            if (session != null)
+            {
+                switch (session.state)
+                {
+                    case INCOMING:
+                        break;
+                    case TRYING:
+                        break;
+                    case CONNECTED:
+                    case FAILED:
+                    case CLOSED:
+                        Session anOthersession = CallManager.Instance().findIncomingCall();
+                        if(anOthersession==null) {
+                            getActivity().finish();
+                        }/*else{
+                            sessionId = anOthersession.sessionID;
+                        }*/
+                        break;
+                }
+            }
         }
     }
 

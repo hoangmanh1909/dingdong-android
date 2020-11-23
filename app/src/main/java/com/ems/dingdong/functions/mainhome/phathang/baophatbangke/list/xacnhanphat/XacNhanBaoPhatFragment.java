@@ -377,7 +377,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_success.setTextColor(getResources().getColor(R.color.color_yellow));
                 rad_fail.setTextColor(getResources().getColor(R.color.white));
                 rad_change_route.setTextColor(getResources().getColor(R.color.white));
-
                 break;
             case R.id.rad_fail:
                 mDeliveryType = 1;
@@ -611,18 +610,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
 
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            /**
-                             * nhớ mở lại comment
-                             */
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
                             Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
 
                         } else {
-                            /**
-                             * nhớ mở lại comment
-                             */
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
@@ -643,9 +636,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Toast.showToast(tv_solution.getContext(), getViewContext().getString(R.string.you_have_not_chosen_solution));
                 return;
             }
-            /**
-             * nhớ mở lại comment
-             */
             mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
@@ -960,34 +950,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (null != getViewContext()) {
             if (isCaptureAvatar){
                 mFileAvatar = file;
-                //Log.d("123123", "post: "+file);
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
-                    //Log.d("123123", "post: "+file);
                 } else {
                     mFileVerify += ";";
                     mFileVerify += file;
-                    //Log.d("123123", "post: "+file);
                 }
             } else if (isCapture) {
                 if (mFile.equals("")) {
                     mFile = file;
-                    //Log.d("123123", "post: "+file);
                 } else {
                     mFile += ";";
                     mFile += file;
-                    //Log.d("123123", "post: "+file);
                 }
             }
             else if (isCaptureOther){
                 if (mFileOther.equals("")){
                     mFileOther = file;
-                    //Log.d("123123", "post: "+file);
                 }else {
                     mFileOther += ";";
                     mFileOther += file;
-                    //Log.d("123123", "post: "+file);
                 }
             }
         }
@@ -1180,7 +1163,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void checkVerify() {
         authenType = getAuthenType();
         Log.d("1231234", "authenType: " + authenType);
-        if (authenType == 0) {
+          if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
