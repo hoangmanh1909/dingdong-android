@@ -25,7 +25,6 @@ public class IncomingCallActivity extends DingDongActivity {
             callerNumber = intent.getStringExtra(Constants.KEY_CALLER_NUMBER);
             calleeNumber = intent.getStringExtra(Constants.KEY_CALLEE_NUMBER);
             sessionId = intent.getLongExtra(PortSipService.EXTRA_CALL_SEESIONID, 10);
-            Log.d("ps111", " callerNumber: "+ callerNumber+" calleeNumber: "+calleeNumber);
 
         }
         return (ViewFragment) new CallingPresenter(this)

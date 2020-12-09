@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,21 +30,24 @@ import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
-import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
+import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
+import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
+import com.ems.dingdong.functions.mainhome.profile.CustomProvider;
+import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Leaf;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ShiftInfo;
-import com.ems.dingdong.model.Tree;
 import com.ems.dingdong.model.TreeNote;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -107,6 +111,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private PhoneConectDialog mPhoneConectDialog;
     private String choosenLadingCode = "";
     private int mTotalScrolled = 0;
+    String provider = "CTEL";
+    String phoneReceiver = "";
+
 
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
@@ -238,70 +245,106 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
 
                 });
-                holder.img_ContactPhone.setOnClickListener(v -> {
+
+                //Button ...
+                holder.img_ContactPhone_extend.setOnClickListener(v -> {
                     try {
                         mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
                         choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                        EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
                     mPhoneConectDialog = new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                         @Override
-                        public void onCallResponse(String phone) {
+                        public void onCallSenderResponse(String phone) {
                             mPhone = phone;
 //                            mPresenter.callForward(mPhone, choosenLadingCode);
-                            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
-                                @Override
-                                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
-                                    dialog.dismiss();
-                                    choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
-                                    mPresenter.callForward(mPhone, choosenLadingCode);
-                                }
+                            EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+                            EventBus.getDefault().postSticky(new CustomToNumber(mPhone));
+                            //mPresenter.callForward(mPhone, choosenLadingCode);
+                            callProvidertoSender();
 
-                                @Override
-                                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
-                                    dialog.dismiss();
-                                    List<Tree> leaf1 = new ArrayList<>();
-                                    leaf1.add(new Leaf(1, "Gọi tiết kiệm"));
-                                    leaf1.add(new Leaf(2, "Gọi chuyển mạch"));
-                                    leaf1.add(new Leaf(3, "Gọi bằng sim"));
-
-                                    /**
-                                     * follow Ms Hanh
-                                     */
-
-                                    /*List<Tree> leaf2 = new ArrayList<>();
-                                    leaf2.add(new Leaf(4, "Gọi tiết kiệm"));
-                                    leaf2.add(new Leaf(5, "Gọi chuyển mạch"));
-                                    leaf2.add(new Leaf(6, "Gọi bằng sim"));
-
-                                    Leaf leaf = new Leaf(7, "Gọi qua tổng đài");
-                                    Leaf leaf3 = new Leaf(7, "Cho bưu cục nhận");
-                                    Leaf leaf4 = new Leaf(7, "Cho bưu cục phát");
-                                    Leaf leaf5 = new Leaf(7, "Cho tổng đài hỗ trợ");
-                                    Tree tree1 = new TreeNote(7, "Cho người nhận", leaf1);
-                                    Tree tree2 = new TreeNote(7, "Cho người gửi", leaf2);
-                                    List<Tree> listVHT = new ArrayList<>();
-                                    listVHT.add(tree1);
-                                    listVHT.add(tree2);
-                                    listVHT.add(leaf3);
-                                    listVHT.add(leaf4);
-                                    listVHT.add(leaf5);
-                                    listVHT.add(leaf);
-                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(listVHT, "Gọi qua máy lẻ", listener);*/
-                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(leaf1, "Gọi qua máy lẻ", listener);
-                                    fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
-                                }
-                            }).show();
+//                            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+//                                @Override
+//                                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+//                                    dialog.dismiss();
+//                                    choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+//                                    mPresenter.callForward(mPhone, choosenLadingCode);
+//
+//                                }
+//
+//                                @Override
+//                                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+//                                    dialog.dismiss();
+//                                    List<Tree> leaf1 = new ArrayList<>();
+//                                    leaf1.add(new Leaf(1, "Gọi tiết kiệm"));
+//                                    //leaf1.add(new Leaf(2, "Gọi chuyển mạch"));
+//                                    leaf1.add(new Leaf(3, "Gọi bằng sim"));
+//
+//                                    /**
+//                                     * follow Ms Hanh
+//                                     */
+//
+//                                    /*List<Tree> leaf2 = new ArrayList<>();
+//                                    leaf2.add(new Leaf(4, "Gọi tiết kiệm"));
+//                                    leaf2.add(new Leaf(5, "Gọi chuyển mạch"));
+//                                    leaf2.add(new Leaf(6, "Gọi bằng sim"));
+//
+//                                    Leaf leaf = new Leaf(7, "Gọi qua tổng đài");
+//                                    Leaf leaf3 = new Leaf(7, "Cho bưu cục nhận");
+//                                    Leaf leaf4 = new Leaf(7, "Cho bưu cục phát");
+//                                    Leaf leaf5 = new Leaf(7, "Cho tổng đài hỗ trợ");
+//                                    Tree tree1 = new TreeNote(7, "Cho người nhận", leaf1);
+//                                    Tree tree2 = new TreeNote(7, "Cho người gửi", leaf2);
+//                                    List<Tree> listVHT = new ArrayList<>();
+//                                    listVHT.add(tree1);
+//                                    listVHT.add(tree2);
+//                                    listVHT.add(leaf3);
+//                                    listVHT.add(leaf4);
+//                                    listVHT.add(leaf5);
+//                                    listVHT.add(leaf);
+//                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(listVHT, "Gọi qua máy lẻ", listener);*/
+//                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(leaf1, "Gọi qua máy lẻ", listener);
+//                                    fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
+//                                }
+//                            }).show();
                         }
 
                         @Override
-                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
-                            showConfirmSaveMobile(phone, mAdapter.getListFilter().get(position).getMaE(), callback);
+                        public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
+                            showConfirmSaveMobileReceiver(phone, mAdapter.getListFilter().get(position).getMaE(), callback);
+                        }
+
+                        @Override
+                        public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+                            showConfirmSaveMobileSender(phone, mAdapter.getListFilter().get(position).getMaE(), callback);
+                        }
+
+                        @Override
+                        public void onCallCSKH(String phone) {
+                            callProvidertoCSKH();
                         }
                     });
                     mPhoneConectDialog.show();
                 });
+
+                //Bấm call gọi luôn cho người nhận
+                holder.img_contact_phone.setOnClickListener(v -> {
+                    try {
+                        phoneReceiver = mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", "");
+                        mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
+                        choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                        //EventBus.getDefault().postSticky(new CustomItem(mSenderPhone));
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+
+                    callProvidertoReceiver();
+
+                });
+
+
                 holder.img_map.setOnClickListener(v -> {
                     if (null != mAdapter.getListFilter().get(position).getNewReceiverAddress()) {
                         if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress()))
@@ -344,8 +387,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         });
     }
 
-    private void showConfirmSaveMobile(final String phone, String parcelCode, DismissDialogCallback callback) {
-        SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+    private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
+        /*SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
                 .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
@@ -362,7 +405,75 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     sweetAlertDialog.dismiss();
                 });
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        dialog.show();*/
+
+        mPresenter.updateMobile(phone, parcelCode);
+        initSearch();
+
+        if (provider.equals("CTEL")){
+            //Gọi luôn cho người nhận với CTEL
+            if (TextUtils.isEmpty(phone)){
+                showErrorToast("Không tìm thấy số điện thoại của người nhận");
+                return;
+            }
+            EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+            EventBus.getDefault().postSticky(new CustomToNumber(phone));
+            mPresenter.callForward(phone, choosenLadingCode);
+
+        } else if (provider.equals("VHT")){
+            //Gọi luôn cho người nhận với VHT
+            if (TextUtils.isEmpty(phone)){
+                showErrorToast("Không tìm thấy số điện thoại của người nhận");
+                return;
+            } else if (!ApplicationController.getInstance().isPortsipConnected()) {
+                showErrorToast("Dịch vụ gọi tiết kiệm chưa sẵn sàng, xin vui thử lại sau ít phút");
+                return;
+            } else {
+                mPresenter.callByWifi(phone);
+
+                EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+                EventBus.getDefault().postSticky(new CustomToNumber(phone));
+            }
+
+        } else {
+            showErrorToast("Gọi thất bại");
+        }
+
+    }
+
+    private void showConfirmSaveMobileSender(final String phoneSender, String parcelCode, DismissDialogCallback callback) {
+        mPresenter.updateMobileSender(phoneSender, parcelCode);
+        initSearch();
+
+        if (provider.equals("CTEL")){
+            //Gọi luôn cho người nhận với CTEL
+            if (TextUtils.isEmpty(phoneSender)){
+                showErrorToast("Không tìm thấy số điện thoại của người nhận");
+                return;
+            }
+            EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+            EventBus.getDefault().postSticky(new CustomToNumber(phoneSender));
+            mPresenter.callForward(phoneSender, choosenLadingCode);
+
+        } else if (provider.equals("VHT")){
+            //Gọi luôn cho người nhận với VHT
+            if (TextUtils.isEmpty(phoneSender)){
+                showErrorToast("Không tìm thấy số điện thoại của người nhận");
+                return;
+            } else if (!ApplicationController.getInstance().isPortsipConnected()) {
+                showErrorToast("Dịch vụ gọi tiết kiệm chưa sẵn sàng, xin vui thử lại sau ít phút");
+                return;
+            } else {
+                mPresenter.callByWifi(phoneSender);
+
+                EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+                EventBus.getDefault().postSticky(new CustomToNumber(phoneSender));
+            }
+
+        } else {
+            showErrorToast("Gọi thất bại");
+        }
+
     }
 
     protected void checkSelfPermission() {
@@ -380,6 +491,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         showSuccessToast(message);
         if (mPhoneConectDialog != null) {
             mPhoneConectDialog.updateText(phone);
+        }
+    }
+
+    @Override
+    public void showSuccessUpdateMobileSender(String phoneSender, String message) {
+        showSuccessToast(message);
+        if (mPhoneConectDialog != null) {
+            mPhoneConectDialog.updateTextPhoneSender(phoneSender);
         }
     }
 
@@ -578,7 +697,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showCallError(String message) {
         if (getViewContext() != null) {
-            showErrorToast(message);
+            //showErrorToast(message);
             if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
@@ -672,5 +791,104 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //            }
 //        });
 //        btnConfirmAll.performClick();
+    }
+
+    private void callProvidertoReceiver(){
+        if (provider.equals("CTEL")){
+            //Gọi luôn cho người nhận với CTEL
+            if (TextUtils.isEmpty(phoneReceiver)){
+                showErrorToast("Không tìm thấy số điện thoại của người nhận");
+                return;
+            }
+            EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+            EventBus.getDefault().postSticky(new CustomToNumber(phoneReceiver));
+            mPresenter.callForward(phoneReceiver, choosenLadingCode);
+        } else if (provider.equals("VHT")){
+            //Gọi luôn cho người nhận với VHT
+            if (TextUtils.isEmpty(phoneReceiver)){
+                showErrorToast("Không tìm thấy số điện thoại của người nhận");
+                return;
+            } else if (!ApplicationController.getInstance().isPortsipConnected()) {
+                showErrorToast("Dịch vụ gọi tiết kiệm chưa sẵn sàng, xin vui thử lại sau ít phút");
+                return;
+            } else {
+                mPresenter.callByWifi(phoneReceiver);
+
+                EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+                EventBus.getDefault().postSticky(new CustomToNumber(phoneReceiver));
+            }
+
+        } else {
+            showErrorToast("Gọi thất bại");
+        }
+    }
+
+    private void callProvidertoSender(){
+        if (provider.equals("CTEL")){
+            //Gọi luôn cho người nhận với CTEL
+            if (TextUtils.isEmpty(mSenderPhone)){
+                showErrorToast("Không tìm thấy số điện thoại của người gửi");
+                return;
+            }
+            EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+            EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
+            mPresenter.callForward(mSenderPhone, choosenLadingCode);
+
+        } else if (provider.equals("VHT")){
+            //Gọi luôn cho người nhận với VHT
+            if (TextUtils.isEmpty(mSenderPhone)){
+                showErrorToast("Không tìm thấy số điện thoại của người gửi");
+                return;
+            } else if (!ApplicationController.getInstance().isPortsipConnected()) {
+                showErrorToast("Dịch vụ gọi tiết kiệm chưa sẵn sàng, xin vui thử lại sau ít phút");
+                return;
+            } else {
+                mPresenter.callByWifi(mSenderPhone);
+
+                EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
+                EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
+            }
+
+        } else {
+            showErrorToast("Gọi thất bại");
+        }
+    }
+
+    private void callProvidertoCSKH(){
+        //Tạm thời xử lý gọi qua sim vì VHT và CTEL chưa gọi dc 1900545481
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + "1900545481"));
+        //getViewContext().startActivity(intent);
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    00);
+        } else {
+            try {
+                startActivity(intent);
+            } catch(SecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true)
+    public void onEventCallProvider(CustomProvider customItem) {
+        provider = customItem.getMessage();
     }
 }

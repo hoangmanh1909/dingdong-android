@@ -76,6 +76,8 @@ interface ListBaoPhatBangKeContract {
          */
         Call<SimpleResult> updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
+        Call<SimpleResult> updateMobileSender(String code,String type, String phoneSender, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -106,6 +108,7 @@ interface ListBaoPhatBangKeContract {
         void showCallSuccess();
 
         void showSuccessUpdateMobile(String phone, String message);
+        void showSuccessUpdateMobileSender(String phoneSender, String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -217,6 +220,8 @@ interface ListBaoPhatBangKeContract {
          * Update callee mobile number.
          */
         void updateMobile(String phone, String parcelCode);
+
+        void updateMobileSender(String phoneSender, String parcelCode);
 
         /**
          * Direction on vietmap.

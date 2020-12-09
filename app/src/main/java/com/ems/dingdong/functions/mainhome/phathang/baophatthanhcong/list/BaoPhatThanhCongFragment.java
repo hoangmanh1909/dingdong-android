@@ -133,15 +133,26 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                 ((HolderView) holder).imgContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                        new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""),
+                                new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone) {
+                            public void onCallSenderResponse(String phone) {
                                 mPhone = phone;
                                 mPresenter.callForward(phone, mList.get(position).getParcelCode());
                             }
 
                             @Override
-                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                            public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
+
+                            }
+
+                            @Override
+                            public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+
+                            }
+
+                            @Override
+                            public void onCallCSKH(String phone) {
 
                             }
                         }).show();

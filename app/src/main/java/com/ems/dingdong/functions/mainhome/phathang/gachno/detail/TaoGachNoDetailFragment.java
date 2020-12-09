@@ -282,13 +282,23 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getSenderPhone())) {
                     new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
-                        public void onCallResponse(String phone) {
+                        public void onCallSenderResponse(String phone) {
                             mPhone = phone;
                             mPresenter.callForward(phone);
                         }
 
                         @Override
-                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                        public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
+
+                        }
+
+                        @Override
+                        public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+
+                        }
+
+                        @Override
+                        public void onCallCSKH(String phone) {
 
                         }
                     }).show();

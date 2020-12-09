@@ -1,22 +1,40 @@
 package com.ems.dingdong.functions.mainhome.profile;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.CallProviderDialog;
+import com.ems.dingdong.dialog.PhoneDecisionDialog;
+import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.login.LoginActivity;
+import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryTabFragment;
+import com.ems.dingdong.model.CallProvider;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomMediumTextView;
+import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +58,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
+    private PhoneDecisionDialog.OnClickListener callback;
+
+
     public static ProfileFragment getInstance() {
         return new ProfileFragment();
     }
@@ -52,6 +73,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     @Override
     public void initLayout() {
         super.initLayout();
+
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
@@ -65,10 +87,12 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             tvPoname.setText(String.format("%s %s", postOffice.getCode(), postOffice.getName()));
         }
         tvTitle.setText(StringUtils.getCharSequence("THÔNG TIN TÀI KHOẢN", String.format("Phiên bản %s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE), getActivity()));
+
     }
 
     @OnClick({R.id.img_back, R.id.img_logout, R.id.rl_e_wallet})
     public void onViewClicked(View view) {
+
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();

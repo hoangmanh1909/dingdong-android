@@ -353,6 +353,11 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
+        Call<ResponseObject> call = getAPIBuilder().Bussiness(code, data, signature);
+        call.enqueue(callback);
+    }
+
     public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                                   String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason);
@@ -398,7 +403,6 @@ public class NetWorkController {
         ///Call<UploadSingleResult> callAvatar = getAPIBuilder().postImageSingle(bodyAvatar);///
         call.enqueue(callback);
         ///callAvatar.enqueue(callback);///
-        Log.d("123123", "Post Image: "+ callback);//
     }
 
     ///

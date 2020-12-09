@@ -251,6 +251,27 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
+    public void updateMobileSender(String phoneSender, String parcelCode) {
+        mView.showProgress();
+        String tPhoneSender = phoneSender;
+        addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView){
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showSuccessUpdateMobileSender(tPhoneSender, response.body().getMessage());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showErrorToast(message);
+            }
+        }));
+    }
+
+    @Override
     public void vietmapSearch(String address) {
         new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
     }

@@ -44,14 +44,24 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     public void onViewClicked() {
         mPhoneConectDialog = new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
             @Override
-            public void onCallResponse(String phone) {
+            public void onCallSenderResponse(String phone) {
                 mPhone = phone;
                 mPresenter.callForward(phone);
             }
 
             @Override
-            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+            public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
                 showConfirmSaveMobile(phone, callback);
+            }
+
+            @Override
+            public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+
+            }
+
+            @Override
+            public void onCallCSKH(String phone) {
+
             }
         });
         mPhoneConectDialog.show();

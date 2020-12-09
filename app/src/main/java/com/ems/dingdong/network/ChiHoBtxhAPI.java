@@ -1,6 +1,7 @@
 package com.ems.dingdong.network;
 
 
+import com.ems.dingdong.model.CallHistoryVHT;
 import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
@@ -26,6 +27,8 @@ public interface ChiHoBtxhAPI {
 
     @POST("api/SeaBank/GetBankAccountNumber")
     Call<BankAccountNumberResponse> getBankAccountNumber(@Body BankAccountNumberRequest bankAccountNumberRequest);
+
+
 
     @POST("api/SeaBank/Inquiry")
     Call<SeaBankInquiryResponse> seaBankInquiry(@Body SeaBankInquiryRequest seaBankInquiryRequest);

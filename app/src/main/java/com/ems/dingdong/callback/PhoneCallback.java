@@ -1,6 +1,8 @@
 package com.ems.dingdong.callback;
 
 public interface PhoneCallback {
-    void onCallResponse(String phone);
-    void onUpdateResponse(String phone, DismissDialogCallback callback);
+    void onCallSenderResponse(String phone);
+    void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback);
+    void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback);
+    void onCallCSKH(String phone);
 }

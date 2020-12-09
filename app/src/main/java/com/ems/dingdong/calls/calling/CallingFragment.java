@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -20,11 +21,22 @@ import com.ems.dingdong.calls.PortMessageReceiver;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.calls.diapad.DiapadFragment;
+import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
 import com.portsip.PortSipSdk;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -55,6 +67,12 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private Session session;
     private CallingEvent callingEvent = new CallingEvent();
     long mSessionId;
+    String xSessionIdPostmanOut = "";
+    UserInfo userInfo;
+    PostOffice postOffice;
+    RouteInfo routeInfo;
+    private TypeBD13 mTypeBD13;
+    String ladingCode = "";
 
     @Override
     protected int getLayoutId() {
@@ -68,6 +86,22 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     @Override
     public void initLayout() {
         super.initLayout();
+
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
         audioManager = (AudioManager) getViewContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_CALL);
 //        audioManager.setMicrophoneMute(false);
@@ -131,11 +165,13 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             case R.id.iv_call_cancel:
                 Log.d(TAG, "iv_speaker clicked");
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
+                    createHistoryVHTIn();
                     portSipSdk.rejectCall(session.sessionID, 486);
                     portSipSdk.hangUp(session.sessionID);
                     Ring.getInstance(getViewContext()).stopRingTone();
                     currentLine.reset();
-                    getViewContext().finish();
+                    ///getViewContext().finish();
+                    finishCall();
                 } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
                     if (audioManager.isSpeakerphoneOn()) {
                         audioManager.setSpeakerphoneOn(false);
@@ -151,15 +187,16 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 Ring.getInstance(getActivity()).stop();
                 if (portSipSdk != null) {
                     try {
+                        createHistoryVHTIn();
                         portSipSdk.hangUp(currentLine.sessionID);
                         portSipSdk.rejectCall(currentLine.sessionID, 486);
-                        Log.d("123123", "session1.sessionID: " + session.sessionID);
                     } catch (NullPointerException nullPointerException) {
                     }
                 }
 
                 currentLine.reset();
-                getViewContext().finish();
+                ///getViewContext().finish();
+                finishCall();
                 break;
 
             case R.id.iv_mic_off:
@@ -202,7 +239,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
             ivCallEnd.setVisibility(View.VISIBLE);
             ivMicOff.setVisibility(View.VISIBLE);
-            ivFoward.setVisibility(View.VISIBLE);
+            ivFoward.setVisibility(View.GONE);//VISIBLE
             ivHold.setVisibility(View.VISIBLE);
         } else {
             tvPhoneNumber.setText(session.displayName);///
@@ -235,10 +272,17 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     case CLOSED:
                         Session anOthersession = CallManager.Instance().findIncomingCall();
                         if(anOthersession==null) {
-                            getActivity().finish();
+                            ///getActivity().finish();
+                            finishCall();
                         }/*else{
                             sessionId = anOthersession.sessionID;
                         }*/
+                        break;
+                    case INVITESESSION_PROGRESS:
+                        Session anOthersession1 = CallManager.Instance().findIncomingCall();
+                        if (anOthersession1 != null){
+
+                        }
                         break;
                 }
             }
@@ -264,7 +308,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         tvCalling.setText("failure");
                         chronometer.stop();
                         tvCalling.setVisibility(View.VISIBLE);
-                        getActivity().finish();
+                        ///getActivity().finish();
+                        finishCall();
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_REJECT:
                         tvCalling.setText("busy");
@@ -272,6 +317,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     case PortSipService.CALL_EVENT_INVITE_COMMING:
                         //tvCalling.setText(session.phoneNumber);
                         changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+                        createHistoryVHTIn();
                         break;
                     case PortSipService.CALL_EVENT_END:
                         tvCalling.setText("call ended");
@@ -280,7 +326,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         chronometer.setVisibility(View.GONE);
                         changeCallLayout(Constants.CALL_TYPE_CALLING);
                         Ring.getInstance(getViewContext()).stopRingTone();
-                        getActivity().finish();
+                        ///getActivity().finish();
+                        createHistoryVHTIn();
+                        finishCall();
+
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_ACCEPT:
                         tvCalling.setText("accepted");
@@ -296,10 +345,54 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         tvCalling.setVisibility(View.GONE);
                         Ring.getInstance(getViewContext()).stopRingTone();
                         break;
+                    case PortSipService.CALL_EVENT_SESSION_PROGRESS:
+                        createHistoryVHTOut();
+                        break;
                     default:
                         throw new IllegalArgumentException("error occurred when get event");
                 }
             }
         }
     }
+
+    private void finishCall(){
+        getActivity().finish();
+        xSessionIdPostmanOut = "";
+        ladingCode = "";
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true)
+    public void onEvent(CustomItem customItem){
+        xSessionIdPostmanOut = customItem.getMessage();
+    }
+
+
+
+    private void createHistoryVHTOut(){
+        mPresenter.createCallHistoryVHTOut();
+
+    }
+
+    public void createHistoryVHTIn(){
+
+        mPresenter.createCallHistoryVHTIn();
+    }
+
+    public enum TypeBD13 {
+        CREATE_BD13,
+        LIST_BD13
+    }
+
 }

@@ -137,7 +137,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
-                    Log.d("123123", "postImage Success: => "+"getName: "+ response.body().getFile());
+                    //Log.d("123123", "postImage Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
@@ -145,7 +145,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
                 try {
-                    Log.d("123123", "showImage Fail image: => "+ message);
+                    //Log.d("123123", "showImage Fail image: => "+ message);
                     mView.showAlertDialog("Không kết nối được với hệ thống");
                     mView.deleteFile();
                 }catch (Exception exception){}
@@ -162,15 +162,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null){
                     mView.showImage(response.body().getFile());
-
-                    Log.d("123123", "postImageAvatar Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
-                Log.d("123123", "postImageAvatar Fail image: => "+ message);
                 mView.showAlertDialog("Không kết nối được với hệ thống");
                 mView.deleteFile();
             }
@@ -242,6 +239,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         }
     }
 
+    //nghiệp vụ mới k cần tên người nhận cũng báo phát dc (CHƯA SỬA)
     @Override
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
                                 String relationship, InfoVerify infoVerify) {

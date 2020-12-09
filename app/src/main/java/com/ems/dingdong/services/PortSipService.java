@@ -19,9 +19,10 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
@@ -29,29 +30,36 @@ import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.NetWorkReceiver;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
+import com.ems.dingdong.calls.calling.CallingContract;
+import com.ems.dingdong.calls.calling.CallingFragment;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
+import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.portsip.OnPortSIPEvent;
 import com.portsip.PortSipEnumDefine;
 import com.portsip.PortSipErrorcode;
 import com.portsip.PortSipSdk;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class PortSipService extends Service implements OnPortSIPEvent {
+public class PortSipService extends Service implements OnPortSIPEvent, NetWorkReceiver.NetWorkListener {
 
     private static final String TAG = PortSipService.class.getName();
 
@@ -67,6 +75,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     public static final String CALL_EVENT_ANSWER_ACCEPT = "CALL_EVENT_ANSWER_ACCEPT";
     public static final String CALL_EVENT_END = "CALL_EVENT_END";
     public static final String CALL_EVENT_TRYING = "CALL_EVENT_TRYING";
+    public static final String CALL_EVENT_SESSION_PROGRESS = "CALL_EVENT_SESSION_PROGRESS";
     public static final String ACTION_CALL_EVENT = "ACTION_CALL_EVENT";
     public static final String ACTION_LOG_OUT = "ACTION_LOG_OUT";
     public static final String TYPE_ACTION = "TYPE_ACTION";
@@ -81,6 +90,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     private String channelID = "PortSipService";
     private NotificationManager mNotificationManager;
     public static final String EXTRA_CALL_SEESIONID = "SessionID";
+    public static final String SIP_MESSAGE = "SIP_MESSAGE";
     public static final String EXTRA_PHONE_CALLER = "Caller";
     private static final int SERVICE_NOTIFICATION  = 31414;
     public  static final int PENDINGCALL_NOTIFICATION= SERVICE_NOTIFICATION+1;
@@ -92,6 +102,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     public static final String EXTRA_REGISTER_STATE = "RegisterStatus";
     protected PowerManager.WakeLock mCpuLock;
     private NetWorkReceiver mNetWorkReceiver;
+    String callerNumberCustomer ="";
 
     private SharedPreferences preferences;
     private PortSipSdk mEngine;
@@ -182,6 +193,9 @@ public class PortSipService extends Service implements OnPortSIPEvent {
                     String stunPort = userInfo.getExtensionStunServerPort();
                     int sipServerPort = Integer.parseInt(serverPort);
                     int stunServerPort = Integer.parseInt(stunPort);
+
+                    String poProvinceCode = userInfo.getPOProvinceCode();
+                    String poDistricCode = userInfo.getPODistrictCode();
 
 
                     Log.d(TAG, "before set user");
@@ -426,6 +440,10 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         CallManager.Instance().getSession().displayName = calleeDisplayName;
         CallManager.Instance().getSession().sessionID = sessionId;*/
 
+        Intent intent = new Intent(ACTION_CALL_EVENT);
+        intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
+        sendBroadcast(intent);
+
 
         if(CallManager.Instance().findIncomingCall()!=null){
             applicaton.portSipSdk.rejectCall(sessionId,486);//busy
@@ -442,6 +460,10 @@ public class PortSipService extends Service implements OnPortSIPEvent {
         activityIntent.putExtra(EXTRA_CALL_SEESIONID,sessionId);
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+        callerNumberCustomer = sipMessage.substring(168, 178);
+        String xSessionIdCustomerIn = sipMessage.substring(1087, 1105);
+        EventBus.getDefault().postSticky(new CustomCallerInAndSessonIdIn(callerNumberCustomer, xSessionIdCustomerIn));
+
         if(isForeground()){
             startActivity(activityIntent);
         }else{
@@ -456,8 +478,25 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
         ///sendPortSipMessage(description, broadIntent);
 
+        /*String str = sipMessage;
+        str = str.replaceAll("[^0-9{17,18},-\\.]", ",");
+        String[] item = str.split(",");
+
+// duyet cac phan tu, neu la so thi in ra
+        for (int i = 0; i < item.length; i++) {
+            try {
+                Double.parseDouble(item[i]);
+                System.out.println(item[i]);
+                Log.d("123123", "onInviteIncoming " + "number:"+ item[i]);
+            } catch (NumberFormatException e) {
+            }
+        }*/
+
+        //Toast.makeText(applicaton, ""+item, Toast.LENGTH_LONG).show();
         Ring.getInstance(this).startRingTone();
-        Log.d("123123", "onInviteIncoming " + "sessionId: "+ sessionId);
+        Log.d("123123", "onInviteIncoming " + "sipMessage:"+ sipMessage);
+        Log.d("123123", "onInviteIncoming " + "callerNumberCustomer:"+ callerNumberCustomer);
+        Log.d("123123", "onInviteIncoming " + "xSessionIdIn:"+ xSessionIdCustomerIn.trim());
 
     }
 
@@ -555,18 +594,49 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     @Override
     public void onInviteSessionProgress(long sessionId, String audioCodecNames, String videoCodecNames, boolean existsEarlyMedia, boolean existsAudio, boolean existsVideo, String sipMessage) {
         Log.d(TAG, "onInviteSessionProgress!");
-        Log.d("123123", " onInviteSessionProgress: "+" sessionId: "+ sessionId + " audioCodecNames: "+audioCodecNames);
+        Log.d("123123", " onInviteSessionProgress: "+ " sipMessage "+ sipMessage);
+        Intent intent = new Intent(ACTION_CALL_EVENT);
+        intent.putExtra(TYPE_ACTION, CALL_EVENT_SESSION_PROGRESS);
+        sendBroadcast(intent);
+
+
+        String xSessionIdPostmanOut = sipMessage.substring(445, 463);
+
+        Log.d("123123", " xSessionIdPostmanOut:"+ xSessionIdPostmanOut);
+        //Toast.makeText(applicaton, ""+xSessionId, Toast.LENGTH_LONG).show();
+
 
         Session session = CallManager.Instance().findSessionBySessionID(sessionId);
         if (session != null){
+            session.state = Session.CALL_STATE_FLAG.INVITESESSION_PROGRESS;
             session.bEarlyMedia = existsEarlyMedia;
+
+            Intent broadIntent = new Intent(CALL_CHANGE_ACTION);
+            broadIntent.putExtra(EXTRA_CALL_SEESIONID, sipMessage);
+            //String description = session.lineName + " OnInviteClosed";
+            String description = "Cuộc gọi nhỡ: "+ callerNumberCustomer;
+            broadIntent.putExtra(EXTRA_CALL_DESCRIPTION, description);
+
+            ///sendPortSipMessage(description, broadIntent);
+
+            EventBus.getDefault().postSticky(new CustomItem(xSessionIdPostmanOut));
+
+            //get header
+            /*Header[] headers = response.getAllHeaders();
+            private HashMap<String, String> convertHeadersToHashMap(Header[] headers) {
+                HashMap<String, String> result = new HashMap<String, String>(headers.length);
+                for (Header header : headers) {
+                    result.put(header.getName(), header.getValue());
+                }
+                return result;
+            }*/
+
         }
     }
 
     @Override
     public void onInviteRinging(long sessionId, String statusText, int statusCode, String sipMessage) {
-        Log.d(TAG, "onInviteRinging!");
-        Log.d("123123", " onInviteRinging: "+" sessionId: "+ sessionId+" statusText: "+" statusCode: "+ statusCode+" sipMessage: "+sipMessage);
+        /*Log.d(TAG, "onInviteRinging!");
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_RINGING);
         sendBroadcast(intent);
@@ -575,8 +645,14 @@ public class PortSipService extends Service implements OnPortSIPEvent {
 
         if (session != null && !session.bEarlyMedia) {
             Ring.getInstance(this).startRingBackTone();
+        }*/
+        Session session = CallManager.Instance().findSessionBySessionID(sessionId);
+
+        if (session != null && !session.bEarlyMedia) {
+            Ring.getInstance(this).startRingBackTone();
         }
-        Log.d("123123", "onInviteRinging " + "sessionId: "+ sessionId);
+
+        Log.d("123123", " onInviteRinging: "+" sessionId: "+ sessionId+" statusText: "+statusText+" statusCode: "+ statusCode+" sipMessage: "+sipMessage);
     }
 
     @Override
@@ -607,7 +683,7 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     }
 
     @Override
-    public void onInviteFailure(long sessionId, String s, int i, String s1) {
+    public void onInviteFailure(long sessionId, String reason, int code, String sipMessage) {
         Log.d("123123", "onInviteFailure");
         Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_FAILURE);
@@ -623,14 +699,14 @@ public class PortSipService extends Service implements OnPortSIPEvent {
             Intent broadIntent = new Intent(CALL_CHANGE_ACTION);
             broadIntent.putExtra(EXTRA_CALL_SEESIONID, sessionId);
             //String description = session.lineName + " onInviteFailure";
-            String description = "Cuộc gọi nhỡ: "+ session.displayName;
+            /*String description = "Cuộc gọi nhỡ: "+ session.displayName;
             broadIntent.putExtra(EXTRA_CALL_DESCRIPTION, description);
 
-            sendPortSipMessage(description, broadIntent);
+            sendPortSipMessage(description, broadIntent);*/
         }
 
         Ring.getInstance(this).stopRingBackTone();
-        Log.d("123123", "onInviteFailure " + "sessionId: "+ sessionId);
+        Log.d("123123", "onInviteFailure " + "sessionId: "+ sessionId+" reason "+reason+" code "+code+" sipMessage "+sipMessage);
     }
 
     @Override
@@ -714,13 +790,14 @@ public class PortSipService extends Service implements OnPortSIPEvent {
             Intent broadIntent = new Intent(CALL_CHANGE_ACTION);
             broadIntent.putExtra(EXTRA_CALL_SEESIONID, sessionId);
             //String description = session.lineName + " OnInviteClosed";
-            String description = "Cuộc gọi nhỡ: "+ session.displayName;
+            String description = "Cuộc gọi nhỡ: "+ callerNumberCustomer;
             broadIntent.putExtra(EXTRA_CALL_DESCRIPTION, description);
 
             sendPortSipMessage(description, broadIntent);
         }
         Ring.getInstance(this).stopRingTone();
         mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
+
     }
 
     @Override
@@ -934,6 +1011,19 @@ public class PortSipService extends Service implements OnPortSIPEvent {
     @Override
     public void onVideoRawCallback(long l, int i, int i1, int i2, byte[] bytes, int i3) {
         Log.d(TAG, "onVideoRawCallback!");
+    }
+
+    @Override
+    public void onNetworkChange(int netMobile) {
+        if(netMobile==-1){
+            //invaluable
+        }else{
+            if(CallManager.Instance().online) {
+                applicaton.portSipSdk.refreshRegistration(0);
+            }else{
+                //
+            }
+        }
     }
 
     public class PortSipBinder extends Binder {

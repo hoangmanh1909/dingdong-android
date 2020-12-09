@@ -7,8 +7,13 @@ import android.view.View;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,6 +23,7 @@ public class PhoneConectDialog extends Dialog {
     private final PhoneCallback mDelegate;
     private String phone;
     private Context mContext;
+    private String numberSender;
 
     public PhoneConectDialog(Context context, String phone, PhoneCallback reasonCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -34,7 +40,7 @@ public class PhoneConectDialog extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_phone_updating, R.id.tv_phone_calling, R.id.tv_phone_messing})
+    @OnClick({R.id.tv_phone_updating, R.id.tv_phone_calling, R.id.tv_phone_messing, R.id.tv_call_CSKH, R.id.tv_phone_update_sender})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_phone_updating:
@@ -52,6 +58,8 @@ public class PhoneConectDialog extends Dialog {
 //                }
 //                mDelegate.onUpdateResponse(phone);
                 break;
+
+                //call receiver
             case R.id.tv_phone_calling:
 
                 if (TextUtils.isEmpty(phone)) {
@@ -63,9 +71,20 @@ public class PhoneConectDialog extends Dialog {
                     return;
                 }
                 if (mDelegate != null) {
-                    mDelegate.onCallResponse(phone);
+                    mDelegate.onCallSenderResponse(phone);
                     dismiss();
                 }
+                break;
+
+            case R.id.tv_call_CSKH:
+                if (mDelegate != null) {
+                    mDelegate.onCallCSKH("1900545481");
+                    dismiss();
+                }
+                break;
+
+            case R.id.tv_phone_update_sender:
+                new PhoneNumberUpdateSenderDialog(getContext(), numberSender, mDelegate).show();
                 break;
         }
     }
@@ -73,4 +92,26 @@ public class PhoneConectDialog extends Dialog {
     public void updateText(String phone) {
         this.phone = phone;
     }
+
+    public void updateTextPhoneSender(String phoneSender) {
+        this.numberSender = phoneSender;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true)
+    public void onEventPhoneSender(CustomNumberSender customNumberSender){
+        numberSender = customNumberSender.getMessage();
+    }
+
 }

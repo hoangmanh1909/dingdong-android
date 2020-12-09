@@ -54,7 +54,8 @@ public class PhoneNumberUpdateDialog extends Dialog {
                     Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
                     return;
                 }
-                mDelegate.onUpdateResponse(edtPhone.getText().toString(), dismissCallback);
+                mDelegate.onUpdateNumberReceiverResponse(edtPhone.getText().toString(), dismissCallback);
+                dismiss();
                 break;
 
             case R.id.tv_close:

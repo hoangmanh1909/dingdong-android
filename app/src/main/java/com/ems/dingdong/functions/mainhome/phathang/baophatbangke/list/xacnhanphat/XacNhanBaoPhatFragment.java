@@ -242,7 +242,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
-        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: " + "<font color=\"red\">*</font>"));
+        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: "));
         tvAddressUser.setText(StringUtils.fromHtml("Địa chỉ người sử dụng: " + "<font color=\"red\">*</font>"));
         tvProviders.setText(StringUtils.fromHtml("Nơi cấp: " + "<font color=\"red\">*</font>"));
         SharedPref sharedPref = new SharedPref(getActivity());
@@ -609,19 +609,29 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 infoVerify.setAuthenType(authenType);
                         }
 
+                        //nghiệp vụ mới k cần tên người nhận cũng báo phát dc
+                        /*if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                                    edtOtherRelationship.getText(), infoVerify);
+                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
+
+                        } else {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                                    edtRelationship.getText().toString(),
+                                    infoVerify);
+                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
+
+                        }*/
+
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
-                            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
                         } else {
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
                                     infoVerify);
-                            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
                         }
                         confirmDialog.dismiss();
                     })
@@ -643,7 +653,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mFile,
                     mFileAvatar+";"+mFileVerify+";"+mFileOther,
                     mSign);
-            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
         } else if (mDeliveryType == 3){
             /**
              * mDeliveryType = 3 -> chuyển tuyến
@@ -663,7 +672,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
             mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
             ///mPresenter.cancelDivided(Integer.parseInt(mCurrentRouteInfo.getRouteId()), postmanId, mSign, mFile);
-            Log.d("123123", "cancelDivided: " + mFile);
 //            mPresenter.changeRouteInsert(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
         }
     }
@@ -714,32 +722,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isSavedImage -> {
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
-                        String pathAvatar = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         mPresenter.postImage(path);
                         //mPresenter.postImageAvatar(pathAvatar);
 
                         if (isCaptureAvatar){
-                            mPresenter.postImageAvatar(pathAvatar);
-                            imageAvatarAdapter.getListFilter().add(new Item(pathAvatar, ""));
+                            mPresenter.postImageAvatar(path);
+                            imageAvatarAdapter.getListFilter().add(new Item(path, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
                         }
 
                         if (isCaptureVerify) {
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
                             imageVerifyAdapter.notifyDataSetChanged();
-                            //showSuccessToast(path);
-                            Log.d("123123", "path: "+ path);
                         }
                         if (isCaptureOther){
                             imageOtherAdapter.getListFilter().add(new Item(path, ""));
                             imageOtherAdapter.notifyDataSetChanged();
-                            Log.d("123123", "path: "+ path);
                         }
                         if (isCapture) {
                             imageAdapter.getListFilter().add(new Item(path, ""));
                             imageAdapter.notifyDataSetChanged();
-                            Log.d("123123", "path: "+ path);
                         }
                         if (file.exists())
                             file.delete();
@@ -750,42 +753,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 onError -> Logger.e("error save image")
         );
     }
-
-
-    ///
-    /*private void attemptSendMediaAvatar(String path_media) {
-        File file = new File(path_media);
-        Observable.fromCallable(() -> {
-            Uri uri = Uri.fromFile(new File(path_media));
-            return BitmapUtils.processingBitmap(uri, getViewContext());
-        }).subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                isSavedImage -> {
-                    if (isSavedImage) {
-                        String pathAvatar = file.getParent() + File.separator + "Process_" + file.getName();
-                        // mSignPosition = false;
-                        //mPresenter.postImage(path);
-                        //mPresenter.postImageAvatar(pathAvatar);
-
-                        if (isCaptureAvatar){
-                            mPresenter.postImageAvatar(pathAvatar);
-                            imageAvatarAdapter.getListFilter().add(new Item(pathAvatar, ""));
-                            imageAvatarAdapter.notifyDataSetChanged();
-
-                            //showSuccessToast(pathAvatar);
-                            Log.d("123123", "path: "+ pathAvatar);
-                        }
-                        if (file.exists())
-                            file.delete();
-                    } else {
-                        mPresenter.postImageAvatar(path_media);
-                    }
-                },
-                onError -> Logger.e("error save image")
-        );
-    }*/
 
     private void showUIReason() {
         ArrayList<Item> items = new ArrayList<>();
@@ -1150,19 +1117,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             if (isSameAuthenType) {
-                Log.d("123123", "getAuthenType: "+ firstItem.getAuthenType());
                 return firstItem.getAuthenType();
             } else return -1;
         } else if (list.size() == 1) {
             DeliveryPostman firstItem = getItemSelected().get(0);
-            Log.d("123123", "getAuthenType: "+ firstItem.getAuthenType());
             return firstItem.getAuthenType();
         } else return -2;
     }
 
     private void checkVerify() {
         authenType = getAuthenType();
-        Log.d("1231234", "authenType: " + authenType);
           if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);

@@ -1,10 +1,9 @@
 package com.ems.dingdong.network;
 
 
-import android.view.View;
-
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CallHistoryVHT;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -256,6 +255,9 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/CreateBD13")
     Call<SimpleResult> addNewBD13(@Body Bd13Create taskRequest);
+
+    @POST("api/DingDong/Bussiness")
+    Call<SimpleResult> createCallHistoryVHT(@Body CallHistoryVHT taskRequest);
 
     @FormUrlEncoded
     @POST("api/BD13/Search")

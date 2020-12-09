@@ -11,6 +11,8 @@ public class Constants {
     public static final String KEY_POST_OFFICE = "OBJECT_POST_OFFICE";
     public static final String KEY_POST_SHIFT = "KEY_POST_SHIFT";
     public static final String KEY_ROUTE_INFO = "KEY_ROUTE_INFO";
+    public static final String KEY_CALL_PROVIDER = "KEY_CALL_PROVIDER";
+    public static final String KEY_CALL_PROVIDER_HOME = "KEY_CALL_PROVIDER_HOME";
     public static final String KEY_USER_INFO = "user_info";
     public static final String KEY_UPLOAD_IMAGE = "upload_image";
     public static final String TYPE_GOM_HANG = "type_gom_hang";
@@ -95,6 +97,8 @@ public class Constants {
     public static final String SESSION_ID= "SESSION_ID";
     public static final int CALL_TYPE_RECEIVING = 0;
     public static final int CALL_TYPE_CALLING = 1;
+    public static final int CALL_TYPE_HISTORY_POSTMAN_OUT = 2;
+    public static final int CALL_TYPE_HISTORY_CUSTOMER_IN = 3;
     public static final String KEY_ID_FROM_CALLING = "KEY_ID_FROM_CALLING";
 
 
@@ -111,7 +115,8 @@ public class Constants {
     public static final int PAYMENT_FROM_DELIVERY = 10;
     public static final int PAYMENT_FROM_CONFIRM_DELIVERY = 11;
 
-
+    public static final String KEY_PROVIDER = "KEY_PROVIDER";
+    public static final String ACTION_PROVIDER = "ACTION_PROVIDER";
 
 
 }

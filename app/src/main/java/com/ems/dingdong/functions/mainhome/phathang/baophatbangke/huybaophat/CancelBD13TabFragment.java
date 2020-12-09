@@ -62,7 +62,7 @@ public class CancelBD13TabFragment extends ViewFragment<CancelBD13TabContract.Pr
         }
         send.setVisibility(View.VISIBLE);
         tvTitle.setText(getString(R.string.cancel_delivery));
-        tabList = new ArrayList<>();
+        tabList   = new ArrayList<>();
         tabList.add((CancelBD13Fragment) new CancelBD13Presenter(mPresenter.getContainerView()).setOnTabListener(this).getFragment());
         tabList.add((CancelBD13StatisticFragment) new CancelBD13StatisticPresenter(mPresenter.getContainerView()).setOnTabListener(this).getFragment());
         mAdapter = new CancelBD13TabAdapter(getChildFragmentManager(), getContext(), tabList);

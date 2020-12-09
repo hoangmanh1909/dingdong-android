@@ -6,6 +6,7 @@ public class Session {
     public String remote;
     public String displayName;
     public String phoneNumber;
+    public String sipMessage;
 
     public boolean hasVideo;
     public boolean isHold = false;
@@ -27,6 +28,7 @@ public class Session {
         hasVideo = false;
         sessionID = INVALID_SESSION_ID;
         state = CALL_STATE_FLAG.CLOSED;
+        sipMessage = String.valueOf(CALL_STATE_FLAG.INVITESESSION_PROGRESS);
     }
 
     public void reset()
@@ -38,6 +40,7 @@ public class Session {
         bEarlyMedia = false;
         isMicOff = false;
         isHold = false;
+        sipMessage = null;
     }
 
     public enum CALL_STATE_FLAG
@@ -47,6 +50,8 @@ public class Session {
         CONNECTED,
         FAILED,
         CLOSED,
+        INVITESESSION_PROGRESS
+
     }
 
 }
