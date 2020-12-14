@@ -503,7 +503,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void showListSuccessFromTab(List<DeliveryPostman> list) {
-        if (getViewContext() != null) {
+         if (getViewContext() != null) {
             mList.clear();
             if (list == null || list.isEmpty()) {
                 pickAll.setVisibility(View.GONE);

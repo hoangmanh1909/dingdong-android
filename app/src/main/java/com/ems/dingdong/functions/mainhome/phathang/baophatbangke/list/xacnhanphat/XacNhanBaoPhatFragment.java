@@ -669,7 +669,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (resultCode == getActivity().RESULT_OK) {
                 attemptSendMedia(data.getData().getPath());
 
-                attemptSendMediaAvatar(data.getData().getPath());
+                //attemptSendMediaAvatar(data.getData().getPath());
             }
         }
     }
@@ -687,31 +687,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
-                        mPresenter.postImage(path);
-
-                        /*if (isCaptureAvatar){
+                        if (isCaptureAvatar){
+                            mPresenter.postImageAvatar(path);
                             imageAvatarAdapter.getListFilter().add(new Item(path, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
 
-                            //mPresenter.postImage(path);
-                            showSuccessToast(path);
-                        }*/
-
-                        if (isCaptureVerify) {
-                            imageVerifyAdapter.getListFilter().add(new Item(path, ""));
-                            imageVerifyAdapter.notifyDataSetChanged();
-                            //showSuccessToast(path);
-                            Log.d("123123", "path: "+ path);
                         }
-                        if (isCaptureOther){
-                            imageOtherAdapter.getListFilter().add(new Item(path, ""));
-                            imageOtherAdapter.notifyDataSetChanged();
-                            Log.d("123123", "path: "+ path);
-                        }
-                        if (isCapture) {
-                            imageAdapter.getListFilter().add(new Item(path, ""));
-                            imageAdapter.notifyDataSetChanged();
-                            Log.d("123123", "path: "+ path);
+                        else {
+                            mPresenter.postImage(path);
+                            if (isCaptureVerify) {
+                                imageVerifyAdapter.getListFilter().add(new Item(path, ""));
+                                imageVerifyAdapter.notifyDataSetChanged();
+                                //showSuccessToast(path);
+                            }
+                            if (isCaptureOther) {
+                                imageOtherAdapter.getListFilter().add(new Item(path, ""));
+                                imageOtherAdapter.notifyDataSetChanged();
+                            }
+                            if (isCapture) {
+                                imageAdapter.getListFilter().add(new Item(path, ""));
+                                imageAdapter.notifyDataSetChanged();
+                            }
                         }
                         if (file.exists())
                             file.delete();
@@ -730,7 +726,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         UploadSingleResult uploadSingleResult = NetWorkController.getGson().fromJson(uploadImageJson, UploadSingleResult.class);
         uploadSingleResult.getFile();
         showSuccessToast(uploadSingleResult.getFile());
-        Log.d("123123", "getFile: "+ uploadSingleResult.getFile());
     }
 
     ///
@@ -756,7 +751,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             imageAvatarAdapter.notifyDataSetChanged();
 
                             //showSuccessToast(pathAvatar);
-                            Log.d("123123", "path: "+ pathAvatar);
+                            //Log.d("123123", "path: "+ pathAvatar);
                         }
                         if (file.exists())
                             file.delete();
@@ -930,45 +925,33 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file) {
         if (null != getViewContext()) {
             if (isCaptureAvatar){
-                /*if (mFileAvatar.equals("")) {
-                    mFileAvatar = file;
-                    Log.d("123123", "post: "+file);
-                }*/
                 if (mFileAvatar.equals("")) {
                     mFileAvatar = file;
-                    Log.d("123123", "post: "+file);
                 } else {
                     mFileAvatar += ";";
                     mFileAvatar += file;
-                    Log.d("123123", "post: "+file);
                 }
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
-                    Log.d("123123", "post: "+file);
                 } else {
                     mFileVerify += ";";
                     mFileVerify += file;
-                    Log.d("123123", "post: "+file);
                 }
             } else if (isCapture) {
                 if (mFile.equals("")) {
                     mFile = file;
-                    Log.d("123123", "post: "+file);
                 } else {
                     mFile += ";";
                     mFile += file;
-                    Log.d("123123", "post: "+file);
                 }
             }
             else if (isCaptureOther){
                 if (mFileOther.equals("")){
                     mFileOther = file;
-                    Log.d("123123", "post: "+file);
                 }else {
                     mFileOther += ";";
                     mFileOther += file;
-                    Log.d("123123", "post: "+file);
                 }
             }
         }

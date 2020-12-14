@@ -75,7 +75,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;7DDA9DD34359510C54AF8AAEFC27AE75440CD03BF26B8BC8028DF72DF0DC6C5A");//dev EMS
+        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;569F320FECEDBBB50D295B4AB1F5375A62892ABB44F42AEB65A59CF05DE7AC47");//dev EMS
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;31B6565C2D06EDF99DE2B39FB358544F0CA875E725EF28087C0702FDC6827204");// dev UAT
@@ -85,7 +85,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
         checkPermissionCall();
 
-        mPresenter.getVersion();
+        //mPresenter.getVersion();
 
 
     }

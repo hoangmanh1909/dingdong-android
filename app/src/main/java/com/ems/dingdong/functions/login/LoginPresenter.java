@@ -109,6 +109,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void getVersion() {
+
         mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION","","", new CommonCallback<ResponseObject>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
@@ -123,21 +124,17 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                         String urlDowload = jsonObject.getString("UrlDownload");
 
                         String versionApp = BuildConfig.VERSION_NAME;
-                        Log.d("123123", "versionApp: "+ versionApp + "  version: "+ version);
 
                         if(!version.equals(versionApp))
                         {
                             mView.showVersion(version,urlDowload);
-                            Log.d("123123", "!version.equals(versionApp): "+ versionApp);
                         }
 
                     }catch (JSONException err){
-                        Log.d("Error", err.toString());
                         mView.showError("Lỗi xử lý dữ liệu");
                     }
                 } else {
                     mView.showError(response.body().getMessage());
-                    Log.d("123123", "getVersion: "+ response.body().getMessage());
                 }
             }
 
