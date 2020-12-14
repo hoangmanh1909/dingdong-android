@@ -155,7 +155,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     }
 
     private void showDialog() {
-        if (mPresenter.getType() == 1 || mPresenter.getType() == 2) {
+        if (mPresenter.getType() == 1 || mPresenter.getType() == 2 || mPresenter.getType() == 4) {//mPresenter.getType() == 1 || mPresenter.getType() == 2
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
                 public void onChooseDay(Calendar calFrom, Calendar calTo) {
@@ -164,6 +164,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     if (mPresenter.getType() == 1) {
                         mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
                     } else if (mPresenter.getType() == 2) {
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                    } else if (mPresenter.getType() == 4){
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                    } else {
                         mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
                     }
                 }
@@ -179,6 +183,11 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
             }
             if (mPresenter.getType() == 2) {
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+            }
+            if (mPresenter.getType() == 4){
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+            } else {
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
             }
         }

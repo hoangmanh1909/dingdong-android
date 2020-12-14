@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -115,6 +116,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
         @BindView(R.id.tv_weight)
         CustomTextView tvWeight;
+        @BindView(R.id.linear_layout)
+        LinearLayout linearLayout;
 
 
         ParcelAdapter adapter;
@@ -150,6 +153,14 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         }
                     }
                 });
+                cbSelected.setOnCheckedChangeListener((v1, v2) -> {
+                    if (v2) {
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                    } else {
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    }
+                });
+
                 if ("P0".equals(item.getStatusCode())) {
                     cbSelected.setVisibility(View.VISIBLE);
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
@@ -193,7 +204,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
             }
-            if (mType == 1 || mType == 2) {
+            if (mType == 1 || mType == 4) {//mType == 1 || mType == 2
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
                 if (parcelCodeSearch.equals("")) {
                     filteredList = item.getListParcelCode();
@@ -232,7 +243,24 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     @Override
                     public void onBindViewHolder(BaseViewHolder holder, final int position) {
                         super.onBindViewHolder(holder, position);
-                        ((HolderView) holder).cbSelected.setVisibility(View.GONE);
+                        ((HolderView) holder).cbSelectedParcel.setVisibility(View.GONE);
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //Toast.makeText(mContext, "click", Toast.LENGTH_SHORT).show();
+                                if (((HolderView) holder).cbSelectedParcel.isChecked()){
+                                    ((HolderView) holder).cbSelectedParcel.setChecked(false);
+                                } else {
+                                    ((HolderView) holder).cbSelectedParcel.setChecked(true);
+                                }
+                            }
+                        });
+
+                        ((HolderView) holder).imgRemoveAddress.setOnClickListener(v -> {
+                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
+                            holder.itemView.setVisibility(View.GONE);
+                        });
                     }
                 };
                 RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);

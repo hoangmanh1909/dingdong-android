@@ -8,6 +8,7 @@
     android:paddingBottom="@dimen/dimen_5dp">
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -67,7 +68,7 @@
                     android:text="Số lượng bưu gửi: "
                     android:textColor="@color/tx_blue_link"
                     android:textSize="@dimen/text_size_12sp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:visibility="visible" />
 
                 <com.ems.dingdong.views.CustomTextView
