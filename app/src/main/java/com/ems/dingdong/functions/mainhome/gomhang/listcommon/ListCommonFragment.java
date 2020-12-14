@@ -20,6 +20,7 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomEditText;
+import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
@@ -63,7 +64,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @BindView(R.id.img_confirm)
     ImageView imgConfirm;
     @BindView(R.id.edt_search)
-    CustomEditText edtSearch;
+    FormItemEditText edtSearch;
     private ListCommonAdapter mAdapter;
     private UserInfo mUserInfo;
     private String mDate;
@@ -216,7 +217,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_view, R.id.img_confirm})
+    @OnClick({R.id.img_back, R.id.img_view, R.id.img_confirm, R.id.ll_scan_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -227,6 +228,11 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 break;
             case R.id.img_confirm:
                 confirmAll();
+                break;
+            case R.id.ll_scan_qr:
+                mPresenter.showBarcode(value -> {
+                    edtSearch.setText(value);
+                });
                 break;
         }
     }

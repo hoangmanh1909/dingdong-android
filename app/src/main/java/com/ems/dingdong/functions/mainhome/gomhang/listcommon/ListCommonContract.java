@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -56,6 +57,8 @@ interface ListCommonContract {
         int getType();
 
         void confirmAllOrderPostman(ArrayList<CommonObject> list);
+
+        void showBarcode(BarCodeCallback barCodeCallback);
     }
 }
 
