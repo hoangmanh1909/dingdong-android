@@ -90,6 +90,7 @@
                         android:layout_marginLeft="10dp"
                         android:src="@drawable/ic_call" />
 
+                    <!--icon_extend_menu-->
                     <ImageView
                         android:id="@+id/img_ContactPhone_extend"
                         android:layout_width="@dimen/_27sdp"

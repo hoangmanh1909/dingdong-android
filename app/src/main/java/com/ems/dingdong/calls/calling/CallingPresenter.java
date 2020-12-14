@@ -139,7 +139,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         //Lịch sử gọi đi
         //if (type == Constants.CALL_TYPE_HISTORY_POSTMAN_OUT) {
             CallHistoryVHT = new CallHistoryVHT(ladingCode, userInfo.getPOProvinceCode(), userInfo.getPODistrictCode(), userInfo.getUnitCode(), userInfo.getUserName(), routeInfo.getRouteCode(), userInfo.getMobileNumber(), toNumber, "", xSessionIdPostmanOut);
-            //Log.d("123123", "ladingCode: " + ladingCode + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + userInfo.getMobileNumber() + " toNumber: " + toNumber + " xSessionId: " + xSessionIdPostmanOut);
+            Log.d("123123", "ladingCodes: " + ladingCode + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + userInfo.getMobileNumber() + " toNumber: " + toNumber + " xSessionIdPostmanOut:" + xSessionIdPostmanOut);
 
             Gson gson = new Gson();
             String json = gson.toJson(CallHistoryVHT);
@@ -181,8 +181,8 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
 
-        CallHistoryVHT = new CallHistoryVHT("", "", "", "", userInfo.getUserName(), "", numberCustomer, userInfo.getMobileNumber(), "", xSessionIdIn);
-        //Log.d("123123", "ladingCode: " + "" + " province: " + "" + " district: " + "" + " po code: " + "" + " id postman: " + userInfo.getUserName() + " route code: " + "" + " sdt ng gọi: " + numberCustomer + " toNumber: " + userInfo.getMobileNumber() + " xSessionId: " + xSessionIdIn);
+        CallHistoryVHT = new CallHistoryVHT("", userInfo.getPOProvinceCode(), userInfo.getPODistrictCode(), userInfo.getUnitCode(), userInfo.getUserName(), routeInfo.getRouteCode(), numberCustomer, userInfo.getMobileNumber(), "", xSessionIdIn);
+        Log.d("123123", "ladingCode: " + "" + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + numberCustomer + " toNumber: " + userInfo.getMobileNumber() + " xSessionIdIn: " + xSessionIdIn);
 
         Gson gsons = new Gson();
         String jsons = gsons.toJson(CallHistoryVHT);

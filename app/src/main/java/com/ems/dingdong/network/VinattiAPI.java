@@ -146,6 +146,18 @@ public interface VinattiAPI {
                                                         @Field("RouteCode") String routeCode,
                                                         @Field("SearchType") Integer searchType);
 
+   /* @FormUrlEncoded
+    @POST("api/Delivery/DeliveryPostman")
+    Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
+                                                        @Field("FromDate") String fromDate,
+                                                        @Field("ToDate") String toDate,
+                                                        @Field("ShiftID") String shiftID,
+                                                        @Field("Status") String status,
+                                                        @Field("ChThu") String chThu,
+                                                        @Field("TuiSo") String tuiSo,
+                                                        @Field("RouteCode") String routeCode,
+                                                        @Field("SearchType") Integer searchType);
+*/
 
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")

@@ -130,7 +130,8 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                                    String deliveryType, String amount, String signatureCapture, String ladingPostmanID, String routeCode, String imageDelivery) {
         final int size = mBaoPhatCommon.size();
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+        //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được //, receiverName
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, reasonCode,
                 solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode, signature, imageDelivery, "N", "", 0, "");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override

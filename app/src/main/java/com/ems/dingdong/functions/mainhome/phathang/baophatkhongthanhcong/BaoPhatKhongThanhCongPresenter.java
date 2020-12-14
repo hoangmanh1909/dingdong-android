@@ -71,7 +71,8 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
                           String deliveryTime, String receiverName, String status, final String reasonCode, String solutionCode, String note, String ladingPostmanID, String routeCode) {
         mView.showProgress();
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+        //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được //, receiverName
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, reasonCode,
                 solutionCode, status, "", "", "", "", "0", ladingPostmanID, Constants.SHIFT, routeCode, signature, "", "N", "", 0, "");
         mInteractor.pushToPNS(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override

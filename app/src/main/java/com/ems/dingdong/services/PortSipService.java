@@ -103,6 +103,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
     protected PowerManager.WakeLock mCpuLock;
     private NetWorkReceiver mNetWorkReceiver;
     String callerNumberCustomer ="";
+    CallingFragment callingFragment;
 
     private SharedPreferences preferences;
     private PortSipSdk mEngine;
@@ -196,6 +197,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
 
                     String poProvinceCode = userInfo.getPOProvinceCode();
                     String poDistricCode = userInfo.getPODistrictCode();
+                    Log.d("123123", "userInfo.getExtensionUserName(): "+userInfo.getExtensionUserName());
 
 
                     Log.d(TAG, "before set user");
@@ -440,9 +442,9 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         CallManager.Instance().getSession().displayName = calleeDisplayName;
         CallManager.Instance().getSession().sessionID = sessionId;*/
 
-        Intent intent = new Intent(ACTION_CALL_EVENT);
-        intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
-        sendBroadcast(intent);
+        /*Intent intent = new Intent(ACTION_CALL_EVENT);
+        intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_COMMING);
+        sendBroadcast(intent);*/
 
 
         if(CallManager.Instance().findIncomingCall()!=null){
@@ -461,7 +463,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         callerNumberCustomer = sipMessage.substring(168, 178);
-        String xSessionIdCustomerIn = sipMessage.substring(1087, 1105);
+        String xSessionIdCustomerIn = mEngine.getSipMessageHeaderValue(sipMessage, "X-Session-Id");
+        Log.d("123123", "xSessionIdCustomerIn:"+xSessionIdCustomerIn);
         EventBus.getDefault().postSticky(new CustomCallerInAndSessonIdIn(callerNumberCustomer, xSessionIdCustomerIn));
 
         if(isForeground()){
@@ -600,7 +603,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         sendBroadcast(intent);
 
 
-        String xSessionIdPostmanOut = sipMessage.substring(445, 463);
+        //String xSessionIdPostmanOut = sipMessage.substring(446, 464);
+        String xSessionIdPostmanOut = mEngine.getSipMessageHeaderValue(sipMessage, "X-Session-Id");
 
         Log.d("123123", " xSessionIdPostmanOut:"+ xSessionIdPostmanOut);
         //Toast.makeText(applicaton, ""+xSessionId, Toast.LENGTH_LONG).show();

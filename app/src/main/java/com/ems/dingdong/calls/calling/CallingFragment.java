@@ -147,6 +147,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
         switch (view.getId()) {
             case R.id.iv_call_answer:
+                //createHistoryVHTIn();
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     changeCallLayout(Constants.CALL_TYPE_CALLING);
                     portSipSdk.answerCall(session.sessionID, false);
@@ -163,9 +164,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_call_cancel:
+                createHistoryVHTIn();
                 Log.d(TAG, "iv_speaker clicked");
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
-                    createHistoryVHTIn();
+                    //createHistoryVHTIn();
                     portSipSdk.rejectCall(session.sessionID, 486);
                     portSipSdk.hangUp(session.sessionID);
                     Ring.getInstance(getViewContext()).stopRingTone();
@@ -187,7 +189,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 Ring.getInstance(getActivity()).stop();
                 if (portSipSdk != null) {
                     try {
-                        createHistoryVHTIn();
+                        //createHistoryVHTIn();
                         portSipSdk.hangUp(currentLine.sessionID);
                         portSipSdk.rejectCall(currentLine.sessionID, 486);
                     } catch (NullPointerException nullPointerException) {

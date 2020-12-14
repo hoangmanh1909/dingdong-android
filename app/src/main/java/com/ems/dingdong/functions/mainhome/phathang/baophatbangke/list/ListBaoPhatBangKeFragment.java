@@ -388,7 +388,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
-        /*SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+        SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
                 .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
@@ -405,7 +405,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     sweetAlertDialog.dismiss();
                 });
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();*/
+        dialog.show();
 
         mPresenter.updateMobile(phone, parcelCode);
         initSearch();

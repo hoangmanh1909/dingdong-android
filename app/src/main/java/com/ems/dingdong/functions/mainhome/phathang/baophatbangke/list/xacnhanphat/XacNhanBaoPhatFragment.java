@@ -610,21 +610,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
 
                         //nghiệp vụ mới k cần tên người nhận cũng báo phát dc
-                        /*if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
-                                    edtOtherRelationship.getText(), infoVerify);
-                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
-                        } else {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
-                                    edtRelationship.getText().toString(),
-                                    infoVerify);
-                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
-                        }*/
-
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                                    edtOtherRelationship.getText(), infoVerify);
+                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
+
+                        } else {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                                    edtRelationship.getText().toString(),
+                                    infoVerify);
+                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
+
+                        }
+
+                        /*if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
                         } else {
@@ -632,7 +632,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
                                     infoVerify);
-                        }
+                        }*/
                         confirmDialog.dismiss();
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
@@ -1189,11 +1189,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return false;
         }
 
-        if (TextUtils.isEmpty(tvReceiverName.getText())) {
+        /*if (TextUtils.isEmpty(tvReceiverName.getText())) {
             if (authenType != 0)
                 showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_receiver_name));
             return false;
-        }
+        }*/
 
         if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
             if (authenType != 0)
