@@ -45,6 +45,8 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
             tvCode.setText(item.getParcelCode());
 
+            cbSelectedParcel.setChecked(true);
+
         }
     }
 }

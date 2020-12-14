@@ -29,7 +29,7 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
 
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new HolderView(inflateView(parent, R.layout.item_parcel));
+        return new HolderView(inflateView(parent, R.layout.item_parcel_list_common));
     }
 
     public class HolderView extends BaseViewHolder {
