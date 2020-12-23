@@ -15,6 +15,8 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -53,6 +55,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     CustomTextView tvOrderNumber;
     private String mUser;
     private int mType;
+    private List<CommonObject> mList;
 
     public static XacNhanTinDetailFragment getInstance() {
         return new XacNhanTinDetailFragment();
@@ -124,9 +127,11 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
             btnConfirm.setEnabled(false);
             btnReject.setEnabled(false);
         }
+
         tvAssignDateTime.setText(commonObject.getAssignDateTime());
         tvAssignFullName.setText(commonObject.getAssignFullName());
         tvContactAddress.setText(commonObject.getReceiverAddress());
+        //tvContactAddress.setText(mList.get(0).getReceiverAddress());
         tvContactName.setText(commonObject.getReceiverName());
         tvContactPhone.setText(commonObject.getReceiverPhone());
         tvDescription.setText(commonObject.getDescription());

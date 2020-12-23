@@ -293,6 +293,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     } else {
                         tvReceiverName.setText("");
                     }
+
                     checkVerify();
                     adapter.notifyDataSetChanged();
                     updateTotalPackage();
@@ -345,6 +346,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         });*/
 
+
+
         verifyInfo();
         verifyImage();
 
@@ -356,7 +359,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
 
-        //getFileName();
+
+
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
@@ -453,14 +457,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
 
             case R.id.rl_image_other:
-                if (imageOtherAdapter.getListFilter().size() < 4){
+                if (imageOtherAdapter.getListFilter().size() < 5){
                     isCaptureAvatar = false;
                     isCaptureVerify = false;
                     isCapture = false;
                     isCaptureOther = true;
                     MediaUltis.captureImage(this);
                 }else {
-                    showErrorToast(getString(R.string.do_not_allow_take_over_four_photos));
+                    showErrorToast(getString(R.string.do_not_allow_take_over_five_photos));
                 }
                 break;
 
@@ -505,7 +509,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         .maxDate(calDateOfBirth.get(Calendar.YEAR),
                                 calDateOfBirth.get(Calendar.MONTH),
                                 calDateOfBirth.get(Calendar.DAY_OF_MONTH))
-                        .minDate(1979, 0, 1)
+                        .minDate(1600, 0, 1)
                         .build()
                         .show();
                 break;
@@ -529,7 +533,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         .maxDate(calDateAccepted.get(Calendar.YEAR),
                                 calDateAccepted.get(Calendar.MONTH),
                                 calDateAccepted.get(Calendar.DAY_OF_MONTH))
-                        .minDate(1979, 0, 1)
+                        .minDate(1600, 0, 1)
                         .build()
                         .show();
                 break;
@@ -609,14 +613,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 infoVerify.setAuthenType(authenType);
                         }
 
-                        //nghiệp vụ mới k cần tên người nhận cũng báo phát dc
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign, tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
                             //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
 
                         } else {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign, tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
                                     infoVerify);
                             //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
@@ -710,7 +713,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
-    private void attemptSendMedia(String path_media) {
+    private void attemptSendMedia(String path_media)         {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -1223,7 +1226,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private boolean checkImage(int authenType) {
-        if (TextUtils.isEmpty(mFileVerify)) {
+        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
             if (authenType != 0)
                 showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
             return false;

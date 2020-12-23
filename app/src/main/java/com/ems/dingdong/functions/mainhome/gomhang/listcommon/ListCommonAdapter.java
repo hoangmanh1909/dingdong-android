@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +22,11 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeAdapter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
     List<CommonObject> mList;
     Context mContext;
     String parcelCodeSearch = "";
+    //CommonObject itemAtPosition;
+    int actualPosition;
+    private CommonObject currentItem;
     public ListCommonAdapter(Context context, int type, List<CommonObject> items) {
         mType = type;
         mContext = context;
@@ -50,6 +57,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
     @Override
     public void onBindViewHolder(@NonNull HolderView holder, int position) {
         holder.bindView(mListFilter.get(position));
+
     }
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,9 +93,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                                 checkCode = true;
                             }
                         }
-                        if(checkCode)
+                        if(checkCode){
                             filteredList.add(row);
-
+                        }
                     }
 
                     mListFilter = filteredList;
@@ -100,6 +108,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mListFilter = (ArrayList<CommonObject>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -130,6 +139,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         public HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
         }
 
         public void bindView(Object model) {
@@ -261,6 +271,8 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     tvParcelCode.setVisibility(View.GONE);
                 }
             }
+
+            currentItem = (CommonObject) model;
         }
 
         private void binParcelCode(List<ParcelCodeInfo> listParcelCode) {

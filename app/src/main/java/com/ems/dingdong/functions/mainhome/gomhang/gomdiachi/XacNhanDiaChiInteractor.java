@@ -29,5 +29,15 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
         // NetWorkController.searchDeliveryPostman(postmanID, fromDate, route, order,callback);
     }
 
+    @Override
+    public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
+        NetWorkController.confirmAllOrderPostman(request, callback);
+    }
+
+    @Override
+    public void confirmParcelCode(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
+        NetWorkController.confirmAllOrderPostman(request, callback);
+    }
+
 
 }

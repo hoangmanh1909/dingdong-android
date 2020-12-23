@@ -56,6 +56,8 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.sip.cmc.SipCmc;
+import com.sip.cmc.callback.RegistrationCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -344,6 +346,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 });
 
+                holder.img_contact_phone_ctel.setOnClickListener(v -> {
+                    callCtelFree();
+                });
+
 
                 holder.img_map.setOnClickListener(v -> {
                     if (null != mAdapter.getListFilter().get(position).getNewReceiverAddress()) {
@@ -388,7 +394,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
-        SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+        /*SweetAlertDialog dialog = new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
                 .setContentText("Bạn có muốn cập nhật số điện thoại lên hệ thống không?")
@@ -405,7 +411,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     sweetAlertDialog.dismiss();
                 });
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        dialog.show();*/
 
         mPresenter.updateMobile(phone, parcelCode);
         initSearch();
@@ -791,6 +797,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //            }
 //        });
 //        btnConfirmAll.performClick();
+    }
+
+    private void callCtelFree(){
+        SipCmc.callTo("0971842613");
+        Log.d("123123", "click call ctel");
     }
 
     private void callProvidertoReceiver(){

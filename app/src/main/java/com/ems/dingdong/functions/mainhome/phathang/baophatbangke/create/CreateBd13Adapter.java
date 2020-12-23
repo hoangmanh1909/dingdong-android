@@ -172,6 +172,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CheckBox cb_selected;
         @BindView(R.id.tv_code)
         public CustomBoldTextView tv_code;
+        @BindView(R.id.img_contact_phone_ctel)
+        public ImageView img_contact_phone_ctel;
         @BindView(R.id.img_contact_phone)
         public ImageView img_contact_phone;
         @BindView(R.id.img_ContactPhone_extend)

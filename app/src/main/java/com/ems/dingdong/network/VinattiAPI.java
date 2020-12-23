@@ -10,6 +10,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -308,6 +309,9 @@ public interface VinattiAPI {
 
     @POST("api/Collect/ConfirmAllOrderPostman")
     Call<ConfirmAllOrderPostmanResult> confirmAllOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
+
+    @POST("api/Collect/ConfirmOrderPostman")
+    Call<ConfirmOrderPostmanResult> confirmOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
 
 
     @POST("api/Collect/CollectOrderPostman")

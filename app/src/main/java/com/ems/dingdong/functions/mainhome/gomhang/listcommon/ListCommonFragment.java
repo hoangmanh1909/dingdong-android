@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
-import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
+import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
@@ -33,8 +33,12 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -73,6 +77,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     private Calendar mCalendar;
     private String fromDate;
     private String toDate;
+    ArrayList<CommonObject> mListFilter;
+    private int actualPosition;
+    private int actualPositions;
+    CommonObject itemAtPosition;
 
     public static ListCommonFragment getInstance() {
         return new ListCommonFragment();
@@ -86,6 +94,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
+        Log.d("123123", "mPresenter.getType(): "+mPresenter.getType());
 
         if (mPresenter == null) {
             if (getActivity() != null) {
@@ -96,6 +105,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             return;
         }
         mList = new ArrayList<>();
+        mListFilter = new ArrayList<>();
         mCalendar = Calendar.getInstance();
         mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
@@ -104,7 +114,9 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.showDetailView(mList.get(position));
+                        itemAtPosition = mListFilter.get(position);
+                        actualPosition = mList.indexOf(itemAtPosition);
+                        mPresenter.showDetailView(mList.get(actualPosition));
                     }
                 });
             }
@@ -151,7 +163,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 mAdapter.notifyDataSetChanged();
             }
         });
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        /*edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -167,9 +179,28 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             public void afterTextChanged(Editable s) {
                 mAdapter.getFilter().filter(s.toString());
             }
-        });
+        });*/
+        edtSearch.getEditText().addTextChangedListener(textWatcher);
         edtSearch.setSelected(true);
     }
+
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            mAdapter.getFilter().filter(s.toString());
+        }
+    };
 
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 2) {
@@ -256,7 +287,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
-        mList.clear();
+        //mList.clear();
         mList.addAll(list);
         edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();

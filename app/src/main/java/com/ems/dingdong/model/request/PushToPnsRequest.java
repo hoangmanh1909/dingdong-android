@@ -57,9 +57,7 @@ public class PushToPnsRequest {
     @SerializedName("VATCode")
     private String VATCode;
 
-    //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được
-    ///String receiverName,
-    public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
+    public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName,
                             String reasonCode, String solutionCode, String status, String paymentChannel,
                             String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID,
                             String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn, String batchCode,
@@ -69,7 +67,7 @@ public class PushToPnsRequest {
         this.deliveryPOCode = deliveryPOCode;
         this.deliveryDate = deliveryDate;
         this.deliveryTime = deliveryTime;
-        //this.receiverName = receiverName;
+        this.receiverName = receiverName;
         this.reasonCode = reasonCode;
         this.solutionCode = solutionCode;
         this.status = status;

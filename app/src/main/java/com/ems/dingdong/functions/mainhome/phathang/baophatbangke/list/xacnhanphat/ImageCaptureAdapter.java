@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,8 @@ public class ImageCaptureAdapter extends RecyclerView.Adapter<ImageCaptureAdapte
 
         @BindView(R.id.iv_package)
         SimpleDraweeView ivPackage;
+        @BindView(R.id.iv_delete)
+        ImageView ivDelete;
 
         HolderView(View itemView) {
             super(itemView);
@@ -83,7 +86,17 @@ public class ImageCaptureAdapter extends RecyclerView.Adapter<ImageCaptureAdapte
                         mContext.startActivity(intent);
                     }
                 });
+
+                ivDelete.setOnClickListener( v -> {
+                    removeAt(getPosition());
+                });
             }
         }
+    }
+
+    public void removeAt(int position) {
+        mList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mList.size());
     }
 }

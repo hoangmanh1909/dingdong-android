@@ -1,12 +1,14 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.UploadSingleResult;
 
 import java.util.ArrayList;
 
@@ -64,6 +66,31 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void postImage(String path) {
+        mView.showProgress();
+        mInteractor.postImage(path, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
+                super.onSuccess(call, response);
+                if (response.body() != null) {
+                    mView.showImage(response.body().getFile());
+                    //Log.d("123123", "postImage Success: => "+"getName: "+ response.body().getFile());
+                }
+            }
+
+            @Override
+            protected void onError(Call<UploadSingleResult> call, String message) {
+                super.onError(call, message);
+                try {
+                    //Log.d("123123", "showImage Fail image: => "+ message);
+                    mView.showAlertDialog("Không kết nối được với hệ thống");
+                    mView.deleteFile();
+                }catch (Exception exception){}
             }
         });
     }

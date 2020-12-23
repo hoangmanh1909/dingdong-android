@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -82,7 +83,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <FrameLayout
+<!--    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -95,7 +96,46 @@
             android:background="@drawable/bg_round_corner_white_gray"
             android:hint="Nhập bưu gửi để tìm kiếm nhanh"
             android:padding="@dimen/dimen_10dp" />
-    </FrameLayout>
+    </FrameLayout>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@drawable/bg_radius_search">
+
+
+        <LinearLayout
+            android:id="@+id/ll_scan_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/img_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_qr" />
+
+        </LinearLayout>
+
+        <com.ems.dingdong.views.form.FormItemEditText
+            android:id="@+id/edt_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toLeftOf="@+id/ll_scan_qr"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            app:formHint="Nhập bưu gửi để tìm kiếm nhanh"
+            app:formShowUnderline="false"
+            app:formSingleLine="true" />
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

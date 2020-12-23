@@ -37,7 +37,7 @@
             tools:text="1234567890" />
 
         <ImageView
-            android:id="@+id/img_remove_address"
+            android:id="@+id/img_remove_lading_code"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_clear_black"
             android:layout_alignParentRight="true"

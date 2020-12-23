@@ -25,7 +25,8 @@ android {
     buildToolsVersion project.buildToolsVersion as String
     flavorDimensions "default"
     defaultConfig {
-        minSdkVersion 16
+        //minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion project.targetSdkVersion as int
         versionCode 12
         versionName "1.1.0"
@@ -72,7 +73,7 @@ android {
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDongDev"
         }
-        NAT {
+/*        NAT {
 //            def API_URL = '"http://118.70.72.107:50031/"'
             def API_URL = '"http://118.70.72.107:1235/"'
             def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
@@ -82,7 +83,7 @@ android {
             buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDongNAT"
-        }
+        }*/
         /* staging_2 {
              def API_URL = '"http://222.255.250.245:5001/"'
              def PRIVATE_KEY = '"34784DCEAD1484AA758A8C033FB0F858BDACABC7BE8FC2F5CC5AFD376AB8654A"'
@@ -237,6 +238,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.android.material:material:1.1.0'
+
+    implementation fileTree(dir: "libs", include: ['*.jar', '*.aar'])
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -44,6 +44,7 @@ import com.portsip.OnPortSIPEvent;
 import com.portsip.PortSipEnumDefine;
 import com.portsip.PortSipErrorcode;
 import com.portsip.PortSipSdk;
+import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,6 +59,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import com.sip.cmc.callback.RegistrationCallback;
 
 public class PortSipService extends Service implements OnPortSIPEvent, NetWorkReceiver.NetWorkListener {
 
@@ -197,7 +199,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
 
                     String poProvinceCode = userInfo.getPOProvinceCode();
                     String poDistricCode = userInfo.getPODistrictCode();
-                    Log.d("123123", "userInfo.getExtensionUserName(): "+userInfo.getExtensionUserName());
+                    Log.d("123123", "userInfo.getExtensionUserName(): "+userInfo.getExtensionUserName() +" getiD(): "+userInfo.getiD());
 
 
                     Log.d(TAG, "before set user");

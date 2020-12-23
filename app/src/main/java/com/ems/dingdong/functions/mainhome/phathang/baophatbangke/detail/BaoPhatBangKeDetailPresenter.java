@@ -210,8 +210,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             shiftId = Constants.SHIFT;
         }
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được //, receiverName
-        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, reasonCode,
+        //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được //
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, receiverName, deliveryTime, reasonCode,
                 solutionCode, status, "", "", signatureCapture, note,
                 amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature,
                 mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0, "");
@@ -331,7 +331,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             } else {
                 String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
                 //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được //, receiverName
-                PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, reasonCode,
+                PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
                         solutionCode, status, "", "", signatureCapture,
                         "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(),
                         signature, mBaoPhatBangke.getImageDelivery(), "N", "",

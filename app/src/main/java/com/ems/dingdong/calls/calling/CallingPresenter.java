@@ -191,6 +191,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
             protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
+                    Log.d("123123", "history call in success");
 
                 } else {
 

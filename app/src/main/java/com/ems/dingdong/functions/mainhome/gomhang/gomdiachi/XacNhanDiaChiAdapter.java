@@ -17,10 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +36,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdapter.HolderView> implements Filterable {
+    private final XacNhanDiaChiAdapter.FilterDone mFilterDone;
 
     private final int mType;
     List<CommonObject> mListFilter;
     List<CommonObject> mList;
     Context mContext;
     String parcelCodeSearch = "";
+    private List<ParcelCodeInfo> listParcelCode;
+    private ParcelAdapter parcelAdapter;
+    private String checks;
 
 
-    public XacNhanDiaChiAdapter(Context context, int type, List<CommonObject> items) {
+    public XacNhanDiaChiAdapter(Context context, int type, List<CommonObject> items, XacNhanDiaChiAdapter.FilterDone filterDone) {
         mType = type;
         mContext = context;
         mList = items;
         mListFilter = items;
+        mFilterDone = filterDone;
     }
 
     @Override
@@ -99,6 +111,14 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         };
     }
 
+    public void setListFilter(ArrayList<CommonObject> list) {
+        mListFilter = list;
+    }
+
+    public List<CommonObject> getListFilter() {
+        return mListFilter;
+    }
+
     class HolderView extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_contact_address)
@@ -113,7 +133,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         CustomTextView tvStatus;
         @BindView(R.id.recycler)
         RecyclerView recycler;
-
         @BindView(R.id.tv_weight)
         CustomTextView tvWeight;
         @BindView(R.id.linear_layout)
@@ -127,6 +146,10 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             ButterKnife.bind(this, itemView);
         }
 
+        public CommonObject getItem(int position) {
+            return mListFilter.get(position);
+        }
+
         public void bindView(Object model) {
             CommonObject item = (CommonObject) model;
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
@@ -134,6 +157,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
             tvWeight.setText(String.format("Khối lượng: %s Gram", item.weightS + ""));
             cbSelected.setVisibility(View.GONE);
+            cbSelected.setChecked(item.isSelected());
             if (mType == 1) {
                 cbSelected.setVisibility(View.VISIBLE);
                 cbSelected.setOnCheckedChangeListener(null);
@@ -153,6 +177,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         }
                     }
                 });
+
                 cbSelected.setOnCheckedChangeListener((v1, v2) -> {
                     if (v2) {
                         linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
@@ -181,7 +206,30 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
 
-            } else if (mType == 2) {
+            } else if (mType == 4) {
+                if (item.isSelected())
+                    cbSelected.setChecked(true);
+                else {
+                    cbSelected.setChecked(false);
+                }
+                cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            item.setSelected(true);
+                        } else {
+                            item.setSelected(false);
+                        }
+                    }
+                });
+
+                cbSelected.setOnCheckedChangeListener((v1, v2) -> {
+                    if (v2) {
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                    } else {
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    }
+                });
                 if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
                     if (typeface != null) {
@@ -192,6 +240,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         tvStatus.setText("Hoàn tất một phần");
                     } else {
                         tvStatus.setText("Chưa hoàn tất");
+                        cbSelected.setVisibility(View.VISIBLE);
                     }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
@@ -243,7 +292,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     @Override
                     public void onBindViewHolder(BaseViewHolder holder, final int position) {
                         super.onBindViewHolder(holder, position);
-                        ((HolderView) holder).cbSelectedParcel.setVisibility(View.GONE);
+                        //((HolderView) holder).cbSelectedParcel.setVisibility(View.GONE);
+                        ((HolderView) holder).cbSelectedParcel.setVisibility(View.VISIBLE);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -257,7 +307,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                             }
                         });
 
-                        ((HolderView) holder).imgRemoveAddress.setOnClickListener(v -> {
+                        ((HolderView) holder).imgRemoveLadingCode.setOnClickListener(v -> {
                             ((HolderView) holder).cbSelectedParcel.setChecked(false);
                             holder.itemView.setVisibility(View.GONE);
                         });
@@ -270,4 +320,31 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             }
         }
     }
+
+    public List<CommonObject> getItemsFilterSelected() {
+        List<CommonObject> commonObjectsSelected = new ArrayList<>();
+        List<CommonObject> items = mListFilter;
+        for (CommonObject item : items) {
+            if (item.isSelected()) {
+                commonObjectsSelected.add(item);
+            }
+        }
+        return commonObjectsSelected;
+    }
+
+    public List<CommonObject> getItemsSelected() {
+        List<CommonObject> commonObjectsSelected = new ArrayList<>();
+        List<CommonObject> items = mList;
+        for (CommonObject item : items) {
+            if (item.isSelected()) {
+                commonObjectsSelected.add(item);
+            }
+        }
+        return commonObjectsSelected;
+    }
+
+    public interface FilterDone {
+        void getCount(int count, long amount);
+    }
+
 }

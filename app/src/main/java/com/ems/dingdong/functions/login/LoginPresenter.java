@@ -182,16 +182,19 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
                     Realm realm = Realm.getDefaultInstance();
                     for (SolutionInfo info : response.body().getSolutionInfos()) {
-                        SolutionInfo result = realm.where(SolutionInfo.class).equalTo(Constants.SOLUTIONINFO_PRIMARY_KEY, info.getID()).findFirst();
-                        if (result != null) {
-                            realm.beginTransaction();
-                            realm.copyToRealmOrUpdate(info);
-                            realm.commitTransaction();
-                        } else {
-                            realm.beginTransaction();
-                            realm.copyToRealm(info);
-                            realm.commitTransaction();
-                        }
+                        try {
+                            SolutionInfo result = realm.where(SolutionInfo.class).equalTo(Constants.SOLUTIONINFO_PRIMARY_KEY, info.getID()).findFirst();
+                            if (result != null) {
+                                realm.beginTransaction();
+                                realm.copyToRealmOrUpdate(info);
+                                realm.commitTransaction();
+                            } else {
+                                realm.beginTransaction();
+                                realm.copyToRealm(info);
+                                realm.commitTransaction();
+                            }
+                        }catch (NullPointerException nullPointerException){}
+
                     }
                 } else {
                     mView.showError(response.body().getMessage());

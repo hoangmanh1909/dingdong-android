@@ -17,6 +17,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.call_ctel.CallBackCtel;
 import com.ems.dingdong.callback.RouteOptionCallBack;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
@@ -35,6 +36,8 @@ import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.sip.cmc.SipCmc;
+import com.sip.cmc.callback.RegistrationCallback;
 
 import java.util.List;
 
@@ -46,7 +49,7 @@ import butterknife.OnClick;
  */
 public class LoginFragment extends ViewFragment<LoginContract.Presenter> implements LoginContract.View {
 
-
+    CallBackCtel callBackCtel;
     @BindView(R.id.tv_version)
     CustomTextView tvVersion;
     @BindView(R.id.tv_phone)
@@ -86,6 +89,24 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         checkPermissionCall();
 
         mPresenter.getVersion();
+
+        SipCmc.loginAccount("28496");
+        SipCmc.startService(getContext());
+        SipCmc.addCallback(new RegistrationCallback() {
+            @Override
+            public void registrationOk() {
+                super.registrationOk();
+                showSuccessToast("login success");
+            }
+
+            @Override
+            public void registrationFailed() {
+                super.registrationFailed();
+                showSuccessToast("login failure");
+            }
+        }, null);
+
+
 
 
     }
