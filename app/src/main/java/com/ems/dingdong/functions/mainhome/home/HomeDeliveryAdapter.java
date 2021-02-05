@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
@@ -14,9 +13,7 @@ import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -62,7 +59,27 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             HomeCollectInfo homeInfo = (HomeCollectInfo) model;
             Intent intent = new Intent(mContext, ListBaoPhatBangKeActivity.class);
-            if (homeInfo.getType() == 1) {
+            if (homeInfo.getType() == 0) {
+                if (position == 0) {
+                    tv_label.setText("");
+                    tv_column_1.setText(homeInfo.getTotalAddressCollect());
+                    tv_column_2.setText(homeInfo.getTotalAddressNotCollect());
+                    tv_column_1.setTypeface(null, Typeface.BOLD);
+                    tv_column_2.setTypeface(null, Typeface.BOLD);
+                } else if (position == 1) {
+                    tv_label.setText(homeInfo.getLabelCollect());
+                    tv_column_1.setText(homeInfo.getTotalAddressCollect());
+                    tv_column_2.setText(homeInfo.getTotalAddressNotCollect());
+                } else if (position == 2) {
+                    tv_label.setText(homeInfo.getLabelCollect());
+                    tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalLadingCollect())));
+                    tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalLadingNotCollect())));
+                } else {
+                    tv_label.setText(homeInfo.getLabelCollect());
+                    tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalWeightCollect())));
+                    tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalWeightNotCollect())));
+                }
+            } else if (homeInfo.getType() == 1) {
                 if (position == 0) {
                     setItemClickListener(Constants.DELIVERY_LIST_TYPE_NORMAL_NEW, Constants.DELIVERY_LIST_TYPE_NORMAL);
                     tv_label.setText("");

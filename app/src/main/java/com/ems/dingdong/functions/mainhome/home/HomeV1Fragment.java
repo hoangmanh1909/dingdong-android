@@ -4,14 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -20,13 +16,8 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.Objects;
-
 import butterknife.BindView;
 
 /**
@@ -43,6 +34,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     RecyclerView recycler_delivery_hcc;
 
     private HomeCollectAdapter homeCollectAdapter;
+    private HomeDeliveryAdapter homeAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
     private HomeDeliveryAdapter homeDeliveryCODAdapter;
     private HomeDeliveryAdapter homeDeliveryPAAdapter;
@@ -74,10 +66,10 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
         homeViewChangeListerner = new HomeViewChangeListerner();
         getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
-        homeCollectAdapter = new HomeCollectAdapter(getContext(), mListCollect);
 
+        homeAdapter = new HomeDeliveryAdapter(getContext(), mListCollect);
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_collect);
-        recycler_collect.setAdapter(homeCollectAdapter);
+        recycler_collect.setAdapter(homeAdapter);
 
         homeDeliveryAdapter = new HomeDeliveryAdapter(getContext(), mListDelivery);
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
@@ -127,9 +119,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     public void showObjectSuccess(HomeCollectInfoResult objectResult) {
         HomeCollectInfo homeCollectInfo = null;
         HomeCollectInfo resInfo = objectResult.getHomeCollectInfo();
+        mListCollect.clear();
         mListDelivery.clear();
         mListDeliveryCOD.clear();
-        mListCollect.clear();
         mListDeliveryPA.clear();
 
         /**
@@ -137,6 +129,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
          */
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(0);
             if (i == 0) {
                 homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
                 homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
@@ -155,9 +148,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             }
             mListCollect.add(homeCollectInfo);
         }
-        homeCollectAdapter.clear();
-        homeCollectAdapter.addItems(mListCollect);
-        homeCollectAdapter.notifyDataSetChanged();
+        homeAdapter.clear();
+        homeAdapter.addItems(mListCollect);
+        homeAdapter.notifyDataSetChanged();
 
         /**
          * Phát hàng (thường)

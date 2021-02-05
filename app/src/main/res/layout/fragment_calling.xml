@@ -6,12 +6,23 @@
     android:orientation="vertical">
 
     <com.ems.dingdong.views.CustomBoldTextView
-        android:id="@+id/tv_info"
+        android:id="@+id/tv_provider_name"
         android:layout_marginTop="@dimen/size_50dp"
+        android:layout_width="match_parent"
+        android:text=""
+        android:textColor="@color/color_rad_success"
+        android:textSize="@dimen/_20sdp"
+        android:gravity="center"
+        android:layout_height="wrap_content" />
+
+    <com.ems.dingdong.views.CustomBoldTextView
+        android:id="@+id/tv_info"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_width="match_parent"
         android:text="Gọi qua ứng dụng"
         android:textSize="@dimen/size_20dp"
         android:gravity="center"
+        android:layout_below="@+id/tv_provider_name"
         android:layout_height="wrap_content" />
 
     <com.ems.dingdong.views.CustomTextView

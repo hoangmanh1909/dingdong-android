@@ -174,7 +174,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             getCancelDelivery(mFromDate, mToDate, "");

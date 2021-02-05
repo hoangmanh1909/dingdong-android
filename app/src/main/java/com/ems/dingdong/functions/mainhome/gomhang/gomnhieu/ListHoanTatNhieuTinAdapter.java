@@ -4,23 +4,16 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-
 import java.util.List;
-
 import butterknife.BindView;
 
 public class ListHoanTatNhieuTinAdapter extends RecyclerBaseAdapter {
-
-
     Context mContext;
 
     public ListHoanTatNhieuTinAdapter(Context context, List<ItemHoanTatNhieuTin> items) {
@@ -33,9 +26,7 @@ public class ListHoanTatNhieuTinAdapter extends RecyclerBaseAdapter {
         return new HolderView(inflateView(parent, R.layout.item_parcel_hoan_tat_nhieu));
     }
 
-
     class HolderView extends BaseViewHolder {
-
         @BindView(R.id.tv_code)
         CustomTextView tvCode;
         @BindView(R.id.img_remove)

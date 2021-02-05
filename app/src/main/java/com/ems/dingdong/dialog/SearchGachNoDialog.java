@@ -88,7 +88,7 @@ public class SearchGachNoDialog extends BaseEditDayDialog implements View.OnClic
                 break;
             case R.id.tvShowChargre:
 
-                delegate.onChooseDay(calFrom, calTo);
+                delegate.onChooseDay(calFrom, calTo,0);
                 dismiss();
 
                 break;

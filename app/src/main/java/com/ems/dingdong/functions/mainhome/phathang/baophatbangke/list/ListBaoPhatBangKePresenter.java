@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
@@ -20,9 +19,7 @@ import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -289,6 +286,15 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         intent.putExtra(Constants.CALL_TYPE, 1);
         intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
         intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);
+        getViewContext().startActivity(intent);
+    }
+
+    @Override
+    public void callByCtellFree() {
+        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+        intent.putExtra(Constants.CALL_TYPE, 1);
+        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+        //intent.putExtra(Constants.KEY_CALLEE_NUMBER, phoneNumber);
         getViewContext().startActivity(intent);
     }
 

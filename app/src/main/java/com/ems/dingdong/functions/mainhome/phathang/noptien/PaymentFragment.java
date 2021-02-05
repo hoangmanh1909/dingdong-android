@@ -11,12 +11,15 @@ import android.widget.CheckBox;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.NotificationDialog;
+import com.ems.dingdong.model.DataHistoryPayment;
+import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
@@ -24,12 +27,17 @@ import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +45,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
-        implements PaymentContract.View {
+        implements PaymentContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -51,7 +59,8 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     FormItemEditText edtSearch;
     @BindView(R.id.cb_pick_all)
     CheckBox cbPickAll;
-
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private PaymentAdapter mAdapter;
     private List<EWalletDataResponse> mList;
     private String postmanCode = "";
@@ -101,8 +110,14 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void initLayout() {
         super.initLayout();
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+//        String idBuuta = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
@@ -116,12 +131,12 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         }
         fromDate = DateTimeUtils.calculateDay(0);
         toDate = DateTimeUtils.calculateDay(0);
-
         cbPickAll.setClickable(false);
         mList = new ArrayList<>();
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
+
         mAdapter = new PaymentAdapter(getViewContext(), mList, (count, amount, fee) -> new Handler().postDelayed(() -> {
             tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(count)));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
@@ -156,58 +171,10 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_send:
-                SharedPref pref = SharedPref.getInstance(getViewContext());
-                if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
-                    new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText(getString(R.string.notification))
-                            .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
-                            .setCancelText(getString(R.string.payment_cancel))
-                            .setConfirmText(getString(R.string.payment_confirn))
-                            .setCancelClickListener(sweetAlertDialog -> {
-                                mPresenter.back();
-                                sweetAlertDialog.dismiss();
-                            })
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                mPresenter.showLinkWalletFragment();
-                                sweetAlertDialog.dismiss();
-                            })
-                            .show();
-                } else {
-                    if (mAdapter.getItemsSelected().size() == 0) {
-                        showErrorToast("Bạn chưa chọn bưu gửi nào");
-                        return;
-                    }
-                    long cod = 0;
-                    long fee = 0;
-                    for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
-                        cod += item.getCodAmount();
-                        fee += item.getFee();
-                    }
-                    String codAmount = NumberUtils.formatPriceNumber(cod);
-                    String feeAmount = NumberUtils.formatPriceNumber(fee);
-                    String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                            mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
-                            "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                            "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
-
-                    new NotificationDialog(getViewContext())
-                            .setConfirmText(getString(R.string.payment_confirn))
-                            .setCancelText(getString(R.string.payment_cancel))
-                            .setHtmlContent(content)
-                            .setCancelClickListener(Dialog::dismiss)
-                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                mPresenter.requestPayment(mAdapter.getItemsSelected(), poCode, routeCode, postmanCode);
-                                sweetAlertDialog.dismiss();
-                            })
-                            .show();
-                }
                 break;
-
             case R.id.img_back:
                 mPresenter.back();
                 break;
-
             case R.id.tv_search:
                 showDialog();
                 break;
@@ -219,7 +186,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         }
     }
 
-    private void refreshLayout() {
+    public void refreshLayout() {
         mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
     }
 
@@ -235,18 +202,23 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     if (item.getFee() != null)
                         fee += item.getFee();
                 }
+                mPresenter.titleChanged(eWalletDataResponses.size(), 0);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(eWalletDataResponses.size())));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
                 mAdapter.setListFilter(eWalletDataResponses);
-            } else {
-                showErrorToast("Không tìm thấy dữ liệu phù hợp");
+            } else if (eWalletDataResponses.isEmpty()) {
+                if (mPresenter.getCurrentTab() == 0) {
+//                    showErrorToast("Không tìm thấy dữ liệu phù hợp");
+                }
                 mAdapter.setListFilter(eWalletDataResponses);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), "0"));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), "0"));
+
             }
         }
+
     }
 
     @Override
@@ -269,8 +241,8 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setConfirmText(getString(R.string.confirm))
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        sweetAlertDialog.dismiss();
                         refreshLayout();
+                        sweetAlertDialog.dismiss();
                     })
                     .setContent(message)
                     .show();
@@ -293,8 +265,13 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         }
     }
 
+    @Override
+    public void stopRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
     private void showDialog() {
-        new EditDayDialog(getActivity(), fromDate, toDate, (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), fromDate, toDate, 0, (calFrom, calTo, status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             refreshLayout();
@@ -329,4 +306,108 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         return true;
     }
 
+    public void setSend() {
+        SharedPref pref = SharedPref.getInstance(getViewContext());
+        if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
+            new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getString(R.string.notification))
+                    .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
+                    .setCancelText(getString(R.string.payment_cancel))
+                    .setConfirmText(getString(R.string.payment_confirn))
+                    .setCancelClickListener(sweetAlertDialog -> {
+                        mPresenter.back();
+                        sweetAlertDialog.dismiss();
+                    })
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.showLinkWalletFragment();
+                        sweetAlertDialog.dismiss();
+                    })
+                    .show();
+        } else {
+            if (mAdapter.getItemsSelected().size() == 0) {
+                showErrorToast("Bạn chưa chọn bưu gửi nào");
+                return;
+            }
+            long cod = 0;
+            long fee = 0;
+            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+                cod += item.getCodAmount();
+                fee += item.getFee();
+            }
+            String codAmount = NumberUtils.formatPriceNumber(cod);
+            String feeAmount = NumberUtils.formatPriceNumber(fee);
+            String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
+                    mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+
+            new NotificationDialog(getViewContext())
+                    .setConfirmText(getString(R.string.payment_confirn))
+                    .setCancelText(getString(R.string.payment_cancel))
+                    .setHtmlContent(content)
+                    .setCancelClickListener(Dialog::dismiss)
+                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.requestPayment(mAdapter.getItemsSelected(), poCode, routeCode, postmanCode);
+                        sweetAlertDialog.dismiss();
+                    })
+                    .show();
+        }
+    }
+
+    public void deleteSend() {
+        SharedPref pref = SharedPref.getInstance(getViewContext());
+        if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
+            new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getString(R.string.notification))
+                    .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
+                    .setCancelText(getString(R.string.payment_cancel))
+                    .setConfirmText(getString(R.string.payment_confirn))
+                    .setCancelClickListener(sweetAlertDialog -> {
+                        mPresenter.back();
+                        sweetAlertDialog.dismiss();
+                    })
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.showLinkWalletFragment();
+                        sweetAlertDialog.dismiss();
+                    })
+                    .show();
+        } else {
+            if (mAdapter.getItemsSelected().size() == 0) {
+                showErrorToast("Bạn chưa chọn bưu gửi nào");
+                return;
+            }
+            long cod = 0;
+            long fee = 0;
+            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+                cod += item.getCodAmount();
+                fee += item.getFee();
+            }
+            String codAmount = NumberUtils.formatPriceNumber(cod);
+            String feeAmount = NumberUtils.formatPriceNumber(fee);
+            String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
+                    mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+
+            new NotificationDialog(getViewContext())
+                    .setConfirmText(getString(R.string.payment_confirn))
+                    .setCancelText(getString(R.string.payment_cancel))
+                    .setHtmlContent(content)
+                    .setCancelClickListener(Dialog::dismiss)
+                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.deletePayment(mAdapter.getItemsSelected());
+                        sweetAlertDialog.dismiss();
+                    })
+                    .show();
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
+        stopRefresh();
+    }
 }

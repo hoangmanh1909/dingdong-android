@@ -88,7 +88,7 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
             mPresenter.searchStatisticCollect(mUserInfo.getiD(), fromDate, toDate);

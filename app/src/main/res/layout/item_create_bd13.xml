@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -37,10 +39,11 @@
             android:layout_weight="9"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <com.ems.dingdong.views.CustomBoldTextView
                     android:id="@+id/tv_index"
@@ -49,73 +52,80 @@
                     android:layout_centerVertical="true"
                     android:gravity="left"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_16sp" />
+                    android:textSize="@dimen/text_size_16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_code"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_code" />
+
 
                 <com.ems.dingdong.views.CustomBoldTextView
                     android:id="@+id/tv_code"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/tv_index"
-                    android:gravity="center"
-                    android:text="COD20180416"
+                    android:text="COD2018041"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_16sp" />
+                    android:textSize="@dimen/text_size_16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_map"
+                    app:layout_constraintEnd_toStartOf="@+id/img_map"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/tv_index"
+                    app:layout_constraintTop_toTopOf="@+id/img_map" />
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/img_map"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_map64"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_contact_phone"
+                    app:layout_constraintEnd_toStartOf="@+id/img_contact_phone"
+                    app:layout_constraintTop_toTopOf="@+id/img_contact_phone" />
+
+
+                <!--temporary gone-->
+                <ImageView
+                    android:id="@+id/img_contact_phone_ctel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true">
+                    android:layout_gravity="center"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_call"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_map"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_code"
+                    app:layout_constraintTop_toTopOf="@+id/img_map" />
 
-                    <ImageView
-                        android:id="@+id/img_map"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_5dp"
-                        android:src="@drawable/ic_map64" />
+                <!--icon_extend_menu-->
+                <ImageView
+                    android:id="@+id/img_contact_phone"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_call"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_ContactPhone_extend"
+                    app:layout_constraintEnd_toStartOf="@+id/img_ContactPhone_extend"
+                    app:layout_constraintTop_toTopOf="@+id/img_ContactPhone_extend" />
 
+                <ImageView
+                    android:id="@+id/img_ContactPhone_extend"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/icon_extend_menu"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <!--temporary gone-->
-                    <ImageView
-                        android:visibility="visible"
-                        android:id="@+id/img_contact_phone_ctel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/dimen_5dp"
-                        android:padding="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/ic_call" />
-
-                    <ImageView
-                        android:visibility="visible"
-                        android:id="@+id/img_contact_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/dimen_5dp"
-                        android:padding="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/ic_call" />
-
-                    <!--icon_extend_menu-->
-                    <ImageView
-                        android:id="@+id/img_ContactPhone_extend"
-                        android:layout_width="@dimen/_27sdp"
-                        android:layout_height="@dimen/_27sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/dimen_5dp"
-                        android:padding="5dp"
-                        android:layout_marginRight="@dimen/_3sdp"
-                        android:src="@drawable/icon_extend_menu" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_batch_code"

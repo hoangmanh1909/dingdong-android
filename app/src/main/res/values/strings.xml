@@ -5,7 +5,9 @@
     <string name="internal_storage">Internal storage</string>
     <string name="dong">Đóng</string>
     <string name="title_login">truy cập ứng dụng</string>
+    <string name="tong_tien_nop">Tổng tiền nộp</string>
 
+    <string name="so_tham_chieu">Số tham chiếu</string>
     <string name="info_gomhang"><![CDATA[- Xác nhận tin<br />- Cập nhật tin thu gom]]></string>
     <string name="info_phathang"><![CDATA[- Cập nhật thông tin thu hộ COD<br />- Cập nhật thông tin báo phát]]></string>
     <string name="info_dinhvi"><![CDATA[- Tìm kiếm thông tin bưu gửi<br />- Định vị trạng thái bưu gửi]]></string>

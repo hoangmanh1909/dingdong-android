@@ -15,6 +15,10 @@ public class ParcelCodeInfo extends RealmObject {
     private int shipmentID;
     @SerializedName("Weight")
     private int weight;
+    @SerializedName("OrderId")
+    private long orderId;
+    @SerializedName("OrderPostmanId")
+    private long orderPostmanId;
 
     private boolean selected;
     public String getParcelCode() {
@@ -39,5 +43,29 @@ public class ParcelCodeInfo extends RealmObject {
 
     public int getWeight() {
         return weight;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public long getOrderPostmanId() {
+        return orderPostmanId;
+    }
+
+    public void setOrderPostmanId(long orderPostmanId) {
+        this.orderPostmanId = orderPostmanId;
     }
 }

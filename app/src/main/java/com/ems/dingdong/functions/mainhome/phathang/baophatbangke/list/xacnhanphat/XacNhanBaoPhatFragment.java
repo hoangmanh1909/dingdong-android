@@ -14,13 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
@@ -40,7 +38,6 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -54,12 +51,10 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -113,7 +108,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_total)
     CustomBoldTextView tvTotal;
     @BindView(R.id.edt_receiver_name)
-    TextInputEditText tvReceiverName;
+    TextInputEditText edtReceiverName;
     @BindView(R.id.edt_GTTT)
     TextInputEditText tvGTTT;
     @BindView(R.id.edt_relationship)
@@ -217,6 +212,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private UserInfo userInfo;
     private UploadSingleResult uploadSingleResult;
+    //private ListReceiverName listReceiverName;
+    private List<String> listReceiverName;
+    private String receiverName = "";
+    private boolean checkInfoClick = false;
+    private boolean checkImageClick = false;
 
     public static XacNhanBaoPhatFragment getInstance() {
         return new XacNhanBaoPhatFragment();
@@ -288,10 +288,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 holder.itemView.setOnClickListener(v -> {
                     mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
                     if (getItemsSelected().size() == 1 || checkSameAddress()) {
-                        tvReceiverName.setText(getItemsSelected().get(0).getReciverName());
+                        edtReceiverName.setText(getItemsSelected().get(0).getReciverName());
                         tvGTTT.setText("");
                     } else {
-                        tvReceiverName.setText("");
+                        edtReceiverName.setText("");
                     }
 
                     checkVerify();
@@ -304,7 +304,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         recycler.setAdapter(adapter);
 
         if (getItemSelected().size() == 1 || checkSameAddress()) {
-            tvReceiverName.setText(getItemSelected().get(0).getReciverName());
+            edtReceiverName.setText(getItemSelected().get(0).getReciverName());
             tvGTTT.setText("");
         }
 
@@ -347,7 +347,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         });*/
 
 
-
         verifyInfo();
         verifyImage();
 
@@ -358,7 +357,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 .convertDateToString(calDateOfBirth.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
-
 
 
     }
@@ -412,7 +410,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mPresenter.back();
                 break;
             case R.id.img_send:
-                submit();
+                if (checkInfoClick) {
+                    if (TextUtils.isEmpty(edtGTTTDateAccepted.getText()) || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) ||
+                            TextUtils.isEmpty(edtDateOfBirth.getText()) || TextUtils.isEmpty(tvGTTT.getText()) || TextUtils.isEmpty(edtUserAddress.getText())) {
+                        showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+                    } else {
+                        submit();
+                    }
+                } else {
+                    submit();
+                }
+
+                /*if (checkImageClick) {
+                    if (mFileAvatar.isEmpty() || mFileVerify.isEmpty() || mFileOther.isEmpty()) {
+                        showSuccessToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
+                    } else {
+                        submit();
+                    }
+                } else {
+                    submit();
+                }*/
+                //submit();
                 break;
             case R.id.tv_reason:
                 showUIReason();
@@ -457,13 +475,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
 
             case R.id.rl_image_other:
-                if (imageOtherAdapter.getListFilter().size() < 5){
+                if (imageOtherAdapter.getListFilter().size() < 5) {
                     isCaptureAvatar = false;
                     isCaptureVerify = false;
                     isCapture = false;
                     isCaptureOther = true;
                     MediaUltis.captureImage(this);
-                }else {
+                } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_five_photos));
                 }
                 break;
@@ -556,6 +574,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private void submit() {
+        //checkInfo(authenType);
+
         if (mDeliveryType == 2) {
             List<DeliveryPostman> listSelected = getItemSelected();
             if (listSelected.size() == 0) {
@@ -614,28 +634,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
 
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign, tvReceiverName.getText().toString(),
+                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
-                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
                         } else {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign, tvReceiverName.getText().toString(),
-                                    edtRelationship.getText().toString(),
-                                    infoVerify);
-                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
+                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
+                                    edtRelationship.getText().toString(), infoVerify);
                         }
 
-                        /*if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
-                                    tvReceiverName.getText().toString(),
-                                    edtOtherRelationship.getText(), infoVerify);
-                        } else {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
-                                    tvReceiverName.getText().toString(),
-                                    edtRelationship.getText().toString(),
-                                    infoVerify);
-                        }*/
                         confirmDialog.dismiss();
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
@@ -654,9 +659,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mSolutionInfo.getCode(),
                     tv_Description.getText().toString(),
                     mFile,
-                    mFileAvatar+";"+mFileVerify+";"+mFileOther,
+                    mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                     mSign);
-        } else if (mDeliveryType == 3){
+        } else if (mDeliveryType == 3) {
             /**
              * mDeliveryType = 3 -> chuyển tuyến
              */
@@ -679,24 +684,54 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
-    private void verifyInfo(){
+    private void verifyInfo() {
         rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
             if (b) {
+                checkInfoClick = true;
                 llVerifyInfo.setVisibility(View.VISIBLE);
+                /*if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
+                    showErrorToast(getViewContext().getString(R.string.you_have_not_provided_profile));
+                }
+
+                if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
+                    //showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_the_place_of_profile));
+                    showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+                }
+
+                if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
+                    showErrorToast(getViewContext().getString(R.string.you_have_not_entered_date_of_birth));
+                }
+
+                if (TextUtils.isEmpty(tvGTTT.getText())) {
+                    showErrorToast(getViewContext().getString(R.string.you_have_not_enter_number_of_profile));
+                }
+
+                if (TextUtils.isEmpty(edtUserAddress.getText())) {
+                    //showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
+                    showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+                }*/
                 //llCaptureVerify.setVisibility(View.VISIBLE);
             } else {
+                checkInfoClick = false;
                 llVerifyInfo.setVisibility(View.GONE);
+                edtGTTTLocatedAccepted.setText("");
+                edtUserAddress.setText("");
+                tvGTTT.setText("");
+
                 //llCaptureVerify.setVisibility(View.GONE);
             }
         });
     }
 
-    private void verifyImage(){
+    private void verifyImage() {
         rbVerifyImage.setOnCheckedChangeListener((v, b) -> {
-            if (b){
+            if (b) {
+                checkImageClick = true;
                 llVerifyImage.setVisibility(View.VISIBLE);
-            }else {
+            } else {
+                checkImageClick = false;
                 llVerifyImage.setVisibility(View.GONE);
+
             }
         });
     }
@@ -713,7 +748,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
-    private void attemptSendMedia(String path_media)         {
+    private void attemptSendMedia(String path_media) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -729,7 +764,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         mPresenter.postImage(path);
                         //mPresenter.postImageAvatar(pathAvatar);
 
-                        if (isCaptureAvatar){
+                        if (isCaptureAvatar) {
                             mPresenter.postImageAvatar(path);
                             imageAvatarAdapter.getListFilter().add(new Item(path, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
@@ -739,7 +774,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             imageVerifyAdapter.getListFilter().add(new Item(path, ""));
                             imageVerifyAdapter.notifyDataSetChanged();
                         }
-                        if (isCaptureOther){
+                        if (isCaptureOther) {
                             imageOtherAdapter.getListFilter().add(new Item(path, ""));
                             imageOtherAdapter.notifyDataSetChanged();
                         }
@@ -918,7 +953,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void showImage(String file) {
         if (null != getViewContext()) {
-            if (isCaptureAvatar){
+            if (isCaptureAvatar) {
                 mFileAvatar = file;
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
@@ -934,11 +969,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mFile += ";";
                     mFile += file;
                 }
-            }
-            else if (isCaptureOther){
-                if (mFileOther.equals("")){
+            } else if (isCaptureOther) {
+                if (mFileOther.equals("")) {
                     mFileOther = file;
-                }else {
+                } else {
                     mFileOther += ";";
                     mFileOther += file;
                 }
@@ -953,22 +987,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mFileVerify = "";
                 imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
                 imageVerifyAdapter.notifyDataSetChanged();
-            } else if (isCaptureAvatar){
+            } else if (isCaptureAvatar) {
                 try {
                     mFileAvatar = "";
                     imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() - 1);
                     imageAvatarAdapter.notifyDataSetChanged();
-                }catch (Exception exception){}
-            } else if (isCapture){
+                } catch (Exception exception) {
+                }
+            } else if (isCapture) {
                 mFile = "";
                 imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
                 imageAdapter.notifyDataSetChanged();
-            } else if (isCaptureOther){
+            } else if (isCaptureOther) {
                 mFileOther = "";
                 imageOtherAdapter.getListFilter().remove(imageOtherAdapter.getListFilter().size() - 1);
                 imageOtherAdapter.notifyDataSetChanged();
             }
-        }catch (Error error){
+        } catch (Error error) {
             showError("Vui lòng chụp lại");
 
         }
@@ -1047,8 +1082,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void finishView() {
-        mPresenter.back();
-        mPresenter.onTabRefresh();
+        try {
+            mPresenter.back();
+            mPresenter.onTabRefresh();
+        } catch (NullPointerException nullPointerException) {
+        }
+
     }
 
     @Override
@@ -1130,7 +1169,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void checkVerify() {
         authenType = getAuthenType();
-          if (authenType == 0) {
+        if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
@@ -1183,6 +1222,30 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (getAuthenType() == -1 || getAuthenType() == -2)
             return false;
         else return true;
+    }
+
+    private void checkInfos() {
+        if (TextUtils.isEmpty(edtGTTTDateAccepted.getText()) || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) ||
+                TextUtils.isEmpty(edtDateOfBirth.getText()) || TextUtils.isEmpty(tvGTTT.getText()) || TextUtils.isEmpty(edtUserAddress.getText())) {
+            showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+        }
+
+        /*if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
+            showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+        }
+
+        if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
+            showErrorToast(getViewContext().getString(R.string.you_have_not_entered_date_of_birth));
+        }
+
+        if (TextUtils.isEmpty(tvGTTT.getText())) {
+            showErrorToast(getViewContext().getString(R.string.you_have_not_enter_number_of_profile));
+        }
+
+        if (TextUtils.isEmpty(edtUserAddress.getText())) {
+            //showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
+            showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+        }*/
     }
 
     private boolean checkInfo(int authenType) {

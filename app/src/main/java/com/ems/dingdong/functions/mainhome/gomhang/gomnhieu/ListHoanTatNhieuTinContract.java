@@ -11,9 +11,6 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
-import com.ems.dingdong.model.request.PaymentDeviveryRequest;
-import com.ems.dingdong.model.request.PushToPnsRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 

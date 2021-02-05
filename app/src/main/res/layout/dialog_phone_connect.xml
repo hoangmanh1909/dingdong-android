@@ -54,7 +54,7 @@
                 android:layout_marginRight="@dimen/size_16dp"
                 android:background="@color/gray" />
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -79,7 +79,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-                <!--<com.ems.dingdong.views.CustomMediumTextView
+                &lt;!&ndash;<com.ems.dingdong.views.CustomMediumTextView
                     android:visibility="gone"
                     android:id="@+id/tv_call_sender"
                     android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                     android:text="Gọi cho người gửi"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />-->
+                    android:textSize="16sp" />&ndash;&gt;
 
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_call_CSKH"
@@ -152,6 +152,36 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
+                &lt;!&ndash;&ndash;&gt;
+                <EditText
+                    android:visibility="gone"
+                    android:id="@+id/edt_call_ctel_app_to_app"
+                    android:hint="Nhập số điện thoại máy nhánh Ctel"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:visibility="gone"
+                    android:id="@+id/btn_call_ctel_app_to_app"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_button_fix_call"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="Gọi Ctel app to app"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+
+
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:visibility="gone"
                     android:id="@+id/tv_phone_messing"
@@ -170,10 +200,10 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
-            </LinearLayout>
+            </LinearLayout>-->
 
             <!--nâng cấp hiện tại-->
-            <!--<LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -232,7 +262,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
-            </LinearLayout>-->
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

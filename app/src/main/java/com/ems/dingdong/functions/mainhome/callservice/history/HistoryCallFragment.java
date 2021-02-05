@@ -58,7 +58,7 @@ public class HistoryCallFragment extends ViewFragment<HistoryCallContract.Presen
     private void showDialog() {
         new EditDayDialog(getActivity(), new OnChooseDay() {
             @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
+            public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
                 fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
                 toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
                 mPresenter.getHistory(fromDate, toDate);

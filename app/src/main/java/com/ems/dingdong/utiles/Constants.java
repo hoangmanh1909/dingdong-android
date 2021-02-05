@@ -31,8 +31,13 @@ public class Constants {
     public static final int RED = 2;
     public static final int GREEN = 0;
     public static final int GREY = 1;
+    public static final int ADDRESS_SUCCESS = 1000;
+    public static final int ADDRESS_UNSUCCESS = 1001;
+    public static final int ADDRESS_FAILURE = 1002;
+
     public static final String GOM_HANG_THANH_CONG = "P4";
     public static final String GOM_HANG_KHONG_THANH_CONG = "P5";
+    public static final String GOM_HANG_THAT_BAI = "P6";
     public static String HEADER_NUMBER = "tel:159";
     public static final String HEADER_NUMBER_LOG = "159";
     public static final String MANUFACTURE_XIAOMI = "Xiaomi";
@@ -96,6 +101,7 @@ public class Constants {
     public static final String CALL_TYPE = "call_type";
     public static final String SESSION_ID= "SESSION_ID";
     public static final int CALL_TYPE_RECEIVING = 0;
+    public static final int CALL_TYPE_RECEIVING_CTEL = 4;
     public static final int CALL_TYPE_CALLING = 1;
     public static final int CALL_TYPE_HISTORY_POSTMAN_OUT = 2;
     public static final int CALL_TYPE_HISTORY_CUSTOMER_IN = 3;
@@ -117,6 +123,12 @@ public class Constants {
 
     public static final String KEY_PROVIDER = "KEY_PROVIDER";
     public static final String ACTION_PROVIDER = "ACTION_PROVIDER";
+
+    //Ctel
+    public static final String FCM_DATA_KEY = "FCM_DATA_KEY";
+    public static final String CALL_RESPONSE_ACTION_KEY = "CALL_RESPONSE_ACTION_KEY";
+    public static final String CALL_RECEIVE_ACTION = "CALL_RECEIVE_ACTION";
+    public static final String CALL_CANCEL_ACTION = "CALL_CANCEL_ACTION";
 
 
 }

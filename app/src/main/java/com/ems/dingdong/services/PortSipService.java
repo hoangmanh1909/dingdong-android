@@ -245,6 +245,40 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                     } else {
                         isConnectCallService = true;
                     }
+
+                    // Login SipCmc
+                    //SipCmc.startService(this);// tạm stop
+                    SipCmc.addCallback(new RegistrationCallback() {
+                        @Override
+                        public void registrationOk() {
+                            super.registrationOk();
+                            Log.d("123123", "login ctel success");
+                        }
+                        @Override
+                        public void registrationFailed() {
+                            super.registrationFailed();
+                            Log.d("123123", "login ctel failed");
+                        }
+                        @Override
+                        public void registrationNone() {
+                            super.registrationNone();
+                            Log.d("123123", "login ctel registrationNone");
+                        }
+                        @Override
+                        public void registrationProgress() {
+                            super.registrationProgress();
+                            Log.d("123123", "login ctel registrationProgress");
+                        }
+                        @Override
+                        public void registrationCleared() {
+                            super.registrationCleared();
+                            Log.d("123123", "login ctel registrationCleared");
+                        }
+                    }, null);
+
+                    //nên viết callback trước khi gọi
+                    SipCmc.loginAccount(userInfo.getiD());
+
                 }, throwable -> Log.d(TAG, throwable.getMessage()));
     }
 
@@ -264,7 +298,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         }
 
         registerReceiver();
-        showServiceNotifiCation();
+        //Tạm thời comment
+        //showServiceNotifiCation();
 
     }
 
@@ -382,12 +417,16 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         if (!TextUtils.isEmpty(pushToken))
         {
             String pushMessage = "device-os=android;device-uid=" + pushToken + ";allow-call-push=true;allow-message-push=true;app-id=" + APPID;
-            //old version
-            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "portsip-push", pushMessage);
-            //new version
-            mEngine.addSipMessageHeader(-1, "REGISTER", 1, "x-p-push", pushMessage);
 
-            mEngine.refreshRegistration(0);
+            try {
+                //old version
+                mEngine.addSipMessageHeader(-1, "REGISTER", 1, "portsip-push", pushMessage);
+
+                //new version
+                mEngine.addSipMessageHeader(-1, "REGISTER", 1, "x-p-push", pushMessage);
+
+                mEngine.refreshRegistration(0);
+            }catch (NullPointerException nullPointerException) {}
         }
     }
 

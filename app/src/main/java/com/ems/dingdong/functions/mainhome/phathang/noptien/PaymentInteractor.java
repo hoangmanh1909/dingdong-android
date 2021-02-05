@@ -1,7 +1,10 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import com.core.base.viper.Interactor;
+import com.ems.dingdong.model.DataRequestPayment;
+import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
+import com.ems.dingdong.model.EWalletRemoveDataRequest;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
@@ -22,8 +25,18 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     }
 
     @Override
+    public Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+        return NetWorkController.getHistoryPayment(dataRequestPayment);
+    }
+
+    @Override
     public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
         return NetWorkController.requestPayment(paymentRequestModel);
+    }
+
+    @Override
+    public Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment) {
+        return NetWorkController.deletePayment(dataRequestPayment);
     }
 
     @Override

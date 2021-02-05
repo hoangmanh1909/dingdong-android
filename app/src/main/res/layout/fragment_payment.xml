@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@drawable/bg_gradient_top">
+        android:background="@drawable/bg_gradient_top"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -46,149 +47,161 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_search"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/_10sdp">
-
-        <com.ems.dingdong.views.CustomTextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/find_package_quickly"
-            android:textColor="@color/black">
-
-        </com.ems.dingdong.views.CustomTextView>
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/ll_scan_qr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:background="@drawable/bg_radius_search"
-            android:paddingLeft="@dimen/dimen_5dp"
-            android:paddingRight="@dimen/dimen_10dp"
-            android:visibility="visible">
+            android:layout_height="match_parent">
 
-            <com.ems.dingdong.views.form.FormItemEditText
-                android:id="@+id/edt_search"
+            <LinearLayout
+                android:id="@+id/ll_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/img_capture"
-                android:layout_toRightOf="@+id/img_search"
-                android:inputType="textCapCharacters"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp"
-                app:formHint="@string/enter_package"
-                app:formShowUnderline="false" />
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/find_package_quickly"
+                    android:textColor="@color/black">
+
+                </com.ems.dingdong.views.CustomTextView>
+
+                <RelativeLayout
+                    android:id="@+id/ll_scan_qr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_radius_search"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:visibility="visible">
+
+                    <com.ems.dingdong.views.form.FormItemEditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/img_capture"
+                        android:layout_toRightOf="@+id/img_search"
+                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formHint="@string/enter_package"
+                        app:formShowUnderline="false" />
+
+                    <ImageView
+                        android:id="@+id/img_capture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/ic_qr" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_total_debit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_search"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_total_cod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Tổng tiền COD: "
+                        android:textColor="@color/colorPrimary" />
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Số lượng"
+                        android:textColor="@color/colorPrimary" />
+
+                </RelativeLayout>
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_total_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Tổng tiền cước: "
+                    android:textColor="@color/colorPrimary" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/size_16dp"
+                    android:layout_marginRight="@dimen/size_16dp"
+                    android:background="@color/gray" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_item_pick_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_total_debit"
+                android:padding="@dimen/_5sdp">
+
+                <CheckBox
+                    android:id="@+id/cb_pick_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/custom_btn_radio"
+                    android:clickable="false" />
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/pick_all" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/layout_item_pick_all"
+                android:layout_marginTop="@dimen/_5sdp" />
 
             <ImageView
-                android:id="@+id/img_capture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/tv_search"
+                android:layout_width="@dimen/dimen_70dp"
+                android:layout_height="@dimen/dimen_70dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/_2sdp"
-                android:src="@drawable/ic_qr" />
-
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_choose_calendar" />
         </RelativeLayout>
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_total_debit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_search"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_total_cod"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/colorPrimary"
-                android:padding="@dimen/_5sdp"
-                android:text="Tổng tiền COD: " />
-
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="right"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:padding="@dimen/_5sdp"
-                android:text="Số lượng" />
-
-        </RelativeLayout>
-
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_total_fee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:layout_gravity="right"
-            android:textColor="@color/colorPrimary"
-            android:text="Tổng tiền cước: " />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/size_16dp"
-            android:layout_marginRight="@dimen/size_16dp"
-            android:background="@color/gray" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_item_pick_all"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_total_debit"
-        android:padding="@dimen/_5sdp">
-
-        <CheckBox
-            android:id="@+id/cb_pick_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/custom_btn_radio"
-            android:clickable="false" />
-
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/pick_all" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_item_pick_all"
-        android:layout_marginTop="@dimen/_5sdp" />
-    <ImageView
-        android:id="@+id/tv_search"
-        android:layout_width="@dimen/dimen_70dp"
-        android:layout_height="@dimen/dimen_70dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="?attr/selectableItemBackground"
-        android:padding="@dimen/dimen_10dp"
-        android:src="@drawable/ic_choose_calendar" />
 </RelativeLayout>

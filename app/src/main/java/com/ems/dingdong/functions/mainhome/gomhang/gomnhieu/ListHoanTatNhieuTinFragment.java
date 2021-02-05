@@ -4,19 +4,14 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
-
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
@@ -34,17 +29,12 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -52,8 +42,6 @@ import butterknife.OnClick;
  * The CommonObject Fragment
  */
 public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTinContract.Presenter> implements ListHoanTatNhieuTinContract.View {
-
-
     ArrayList<ItemHoanTatNhieuTin> mList;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
@@ -104,6 +92,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 ((HolderView) holder).imgRemove.setOnClickListener(v -> {
                     mList.remove(position);
                     mAdapter.removeItem(position);
+                    notifyDataSetChanged();
                     showCount();
                 });
             }
@@ -129,7 +118,6 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         });
     }
 
-
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
@@ -141,8 +129,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     }
 
     private void showDialog() {
-
-        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.searchAllOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", mFromDate, mToDate);
@@ -173,17 +160,25 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 showDialog();
                 break;
             case R.id.img_confirm:
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
-                        .setConfirmText("OK")
-                        .setCancelText("Đóng")
-                        .setTitleText("Thông báo")
-                        .setContentText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()) + ". "
-                                + String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()))
-                        .setConfirmClickListener(sweetAlertDialog -> {
-                            sweetAlertDialog.dismiss();
-                            submit();
-                        }).show();
-
+                if (mList.isEmpty()) {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                            .setTitleText("Thông báo")
+                            .setContentText("Chưa có giá trị nào xác nhận")
+                            .setConfirmClickListener(sweetAlertDialog -> {
+                                sweetAlertDialog.dismiss();
+                            }).show();
+                } else {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                            .setConfirmText("OK")
+                            .setCancelText("Đóng")
+                            .setTitleText("Thông báo")
+                            .setContentText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()) + ". "
+                                    + String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()))
+                            .setConfirmClickListener(sweetAlertDialog -> {
+                                sweetAlertDialog.dismiss();
+                                submit();
+                            }).show();
+                }
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -205,7 +200,6 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                         (item, position) -> {
                             tvReason.setText(item.getText());
                             mReason = new ReasonInfo(item.getValue(), item.getText());
-
                         }, 0);
                 pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
             } else {
@@ -213,8 +207,6 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 if (!pickerUIReason.isShow) {
                     pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
                 }
-
-
             }
         } else {
             Toast.showToast(getActivity(), "Chưa lấy được lý do, vui lòng chờ hoặc thao tác lại");
@@ -297,6 +289,5 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
         mListReason = reasonInfos;
     }
-
 
 }

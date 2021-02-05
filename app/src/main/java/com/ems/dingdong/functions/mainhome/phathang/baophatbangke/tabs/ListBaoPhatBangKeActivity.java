@@ -30,5 +30,9 @@ public class ListBaoPhatBangKeActivity extends DingDongActivity {
         return diPhatFragment;
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
 }

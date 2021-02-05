@@ -95,4 +95,8 @@ public class HoanTatTinRequest {
     public void setConfirmSignature(String confirmSignature) {
         this.confirmSignature = confirmSignature;
     }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
 }

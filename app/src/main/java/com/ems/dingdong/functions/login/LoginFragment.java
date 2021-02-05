@@ -8,16 +8,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
-import com.ems.dingdong.call_ctel.CallBackCtel;
 import com.ems.dingdong.callback.RouteOptionCallBack;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
@@ -26,8 +22,6 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.network.VinattiAPI;
-import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -36,11 +30,7 @@ import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.sip.cmc.SipCmc;
-import com.sip.cmc.callback.RegistrationCallback;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -49,7 +39,6 @@ import butterknife.OnClick;
  */
 public class LoginFragment extends ViewFragment<LoginContract.Presenter> implements LoginContract.View {
 
-    CallBackCtel callBackCtel;
     @BindView(R.id.tv_version)
     CustomTextView tvVersion;
     @BindView(R.id.tv_phone)
@@ -90,26 +79,35 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
         mPresenter.getVersion();
 
-        SipCmc.loginAccount("28496");
+        //loginSipCmc();
+
+    }
+
+/*    private void loginSipCmc() {
+        SharedPref sharedPref = new SharedPref(getContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+
         SipCmc.startService(getContext());
         SipCmc.addCallback(new RegistrationCallback() {
             @Override
             public void registrationOk() {
                 super.registrationOk();
-                showSuccessToast("login success");
+                //showSuccessToast("login success");
+                Log.d("123123", "login Ctel success");
             }
 
             @Override
             public void registrationFailed() {
                 super.registrationFailed();
-                showSuccessToast("login failure");
+                //showErrorToast("login Ctel failure");
+                Log.d("123123", "login Ctel failed");
             }
         }, null);
 
-
-
-
-    }
+        //nên viết callback trước khi gọi
+        SipCmc.loginAccount("28496");
+    }*/
 
 
     private void checkPermissionCall() {
@@ -137,17 +135,12 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
-
         }
     }
-
-
 
     @Override
     public void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -254,10 +247,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-            //Toast.makeText(getContext(), " getFullName  "+ userInfo.getFullName() + " getExtensionUserName "+ userInfo.getExtensionUserName(), Toast.LENGTH_LONG).show();
-
         }
-
 
         PostOffice postOffice = null;
         RouteInfo routeInfo = null;

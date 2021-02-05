@@ -7,5 +7,5 @@ import java.util.Calendar;
  */
 
 public interface OnChooseDay {
-    void onChooseDay(Calendar calFrom, Calendar calTo);
+    void onChooseDay(Calendar calFrom, Calendar calTo,int status);
 }

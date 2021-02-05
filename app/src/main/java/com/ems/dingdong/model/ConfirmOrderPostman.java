@@ -13,6 +13,15 @@ public class ConfirmOrderPostman {
     String confirmReason;
 
     public String parcel;
+    private boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public void setOrderPostmanID(String orderPostmanID) {
         this.orderPostmanID = orderPostmanID;

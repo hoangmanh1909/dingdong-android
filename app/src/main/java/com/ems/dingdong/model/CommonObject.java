@@ -30,6 +30,11 @@ public class CommonObject extends RealmObject {
     //region hoantattin
     @SerializedName("TrackingCode")
     String trackingCode;
+
+    public void setTrackingCode(String trackingCode) {
+        this.trackingCode = trackingCode;
+    }
+
     @SerializedName("OrderNumber")
     String orderNumber;
     //endregion
@@ -89,6 +94,16 @@ public class CommonObject extends RealmObject {
     Integer fee;
     @SerializedName("Value")
     Integer cod;
+    @SerializedName("OrderId")
+    private long orderId;
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
 
     @SerializedName("RealReceiverName")
     private String realReceiverName;

@@ -2,10 +2,8 @@ package com.ems.dingdong.functions.mainhome.gomhang;
 
 import android.content.Intent;
 import android.view.View;
-
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -18,9 +16,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 
 /**
@@ -57,7 +53,7 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (!"6".equals(userInfo.getEmpGroupID())) {
                 homeInfos.add(new HomeInfo(1, R.drawable.ic_xac_nhan_tin, "Xác nhận tin"));
-                homeInfos.add(new HomeInfo(2, R.drawable.ic_xac_nhan_tin, "Xác nhận nhiều tin"));
+                homeInfos.add(new HomeInfo(2, R.drawable.ic_xac_nhan_tin, "Xác nhận tin theo địa chỉ"));
                 homeInfos.add(new HomeInfo(3, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
                 homeInfos.add(new HomeInfo(4, R.drawable.ic_hoan_tat_tin, "Hoàn tất nhiều tin"));
                 homeInfos.add(new HomeInfo(6, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin theo địa chỉ"));

@@ -5,16 +5,29 @@ import android.text.TextUtils;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabContract;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
+import com.ems.dingdong.model.DataRequestPayment;
+import com.ems.dingdong.model.EWalletRemoveDataRequest;
+import com.ems.dingdong.model.EWalletRemoveRequest;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -23,7 +36,15 @@ import io.reactivex.schedulers.Schedulers;
 public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentContract.Interactor>
         implements PaymentContract.Presenter {
 
+    private int mPos;
+    String id = "";
+    String poCode = "";
+    String Tranid = "";
+    String RetRefNumber = "";
+    String Mess = "";
     private List<LadingPaymentInfo> ladingPaymentInfoList;
+    private List<EWalletRemoveRequest> removeRequests;
+    private PaymentContract.OnTabListener tabListener;
 
     public PaymentPresenter(ContainerView containerView) {
         super(containerView);
@@ -56,7 +77,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
     @Override
     public void getDataPayment(String poCode, String routeCode, String postmanCode, String fromDate, String toDate) {
-
         mView.showProgress();
         mInteractor.getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode)
                 .subscribeOn(Schedulers.io())
@@ -65,6 +85,10 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                     if (eWalletDataResult != null && eWalletDataResult.getErrorCode().equals("00")) {
                         mView.showListSuccess(eWalletDataResult.getListEWalletData());
                         mView.hideProgress();
+                        if (eWalletDataResult.getListEWalletData().size() == 0) {
+                            titleChanged(eWalletDataResult.getListEWalletData().size(),0);
+                            mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
+                        }
                     }
                 }, throwable -> {
                     mView.showErrorToast(throwable.getMessage());
@@ -100,6 +124,58 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         mView.showRequestSuccess(simpleResult.getMessage(),
                                 simpleResult.getListEWalletResponse().getTranid(),
                                 simpleResult.getListEWalletResponse().getRetRefNumber());
+                        Tranid = simpleResult.getListEWalletResponse().getTranid();
+                        RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
+                        Mess = simpleResult.getMessage();
+                    } else if (simpleResult != null) {
+                        mView.showConfirmError(simpleResult.getMessage());
+                    } else {
+                        mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.showConfirmError(throwable.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void deletePayment(List<EWalletDataResponse> list) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        removeRequests = new ArrayList<>();
+        removeRequests.clear();
+        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        if (!TextUtils.isEmpty(userJson)) {
+            id = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD();
+        }
+        if (!TextUtils.isEmpty(postOfficeJson)) {
+            poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
+        }
+        for (EWalletDataResponse item : list) {
+            EWalletRemoveRequest info = new EWalletRemoveRequest();
+            info.setLadingCode(item.getLadingCode());
+            if (item.getRetRefNumber() == null)
+                info.setRetRefNumber("");
+            else
+                info.setRetRefNumber(item.getRetRefNumber());
+//            Log.d("thanhkhiempy", info.getRetRefNumber());
+            info.setRemoveBy(id);
+            info.setPOCode(poCode);
+            removeRequests.add(info);
+        }
+        String dataJson = NetWorkController.getGson().toJson(removeRequests);
+        dataRequestPayment.setData(dataJson);
+        dataRequestPayment.setCode("EWL002");
+        mView.showProgress();
+
+        mInteractor.deletePayment(dataRequestPayment)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        mView.showConfirmSuccess(simpleResult.getMessage());
                     } else if (simpleResult != null) {
                         mView.showConfirmError(simpleResult.getMessage());
                     } else {
@@ -139,6 +215,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showConfirmSuccess(simpleResult.getMessage());
+                    } else if (simpleResult != null && simpleResult.getErrorCode().equals("101")) {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.showRequestSuccess(Mess,
+                                Tranid,
+                                RetRefNumber);
                     } else if (simpleResult != null) {
                         mView.showConfirmError(simpleResult.getMessage());
                     } else {
@@ -150,4 +231,46 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                     mView.hideProgress();
                 });
     }
+
+    @Override
+    public int getPositionTab() {
+        return mPos;
+    }
+
+    @Override
+    public ContainerView getContainerView() {
+        return mContainerView;
+    }
+
+    @Override
+    public void onCanceled() {
+        tabListener.onCanceledDelivery();
+    }
+
+    @Override
+    public void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList) {
+
+    }
+
+    @Override
+    public void titleChanged(int quantity, int currentSetTab) {
+        tabListener.onQuantityChange(quantity, currentSetTab);
+    }
+
+    @Override
+    public int getCurrentTab() {
+        return tabListener.getCurrentTab();
+    }
+
+
+    public PaymentPresenter setTypeTab(int position) {
+        mPos = position;
+        return this;
+    }
+
+    public PaymentPresenter setOnTabListener(PaymentContract.OnTabListener listener) {
+        this.tabListener = listener;
+        return this;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.ems.dingdong.model;
 
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.EWalletRequestResponse;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public class EWalletDataResult extends SimpleResult {
     public List<EWalletDataResponse> getListEWalletData() {
         return listEWalletData;
     }
+
 }

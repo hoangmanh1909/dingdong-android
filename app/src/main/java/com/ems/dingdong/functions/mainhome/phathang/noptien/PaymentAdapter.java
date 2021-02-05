@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
+import com.ems.dingdong.model.EWalletRemoveRequest;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -66,6 +67,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
         return commonObjectsSelected;
     }
 
+
     public List<EWalletDataResponse> getItemsFilterSelected() {
         List<EWalletDataResponse> commonObjectsSelected = new ArrayList<>();
         List<EWalletDataResponse> items = mListFilter;
@@ -98,7 +100,6 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                 } else {
                     List<EWalletDataResponse> filteredList = new ArrayList<>();
                     for (EWalletDataResponse row : mList) {
-
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
                         if (row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
@@ -109,10 +110,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                             filteredList.add(row);
                         }
                     }
-
                     mListFilter = filteredList;
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mListFilter;
                 return filterResults;
@@ -155,6 +154,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
         CheckBox checkBox;
         @BindView(R.id.ll_item_payment)
         LinearLayout linearLayout;
+        @BindView(R.id.tv_trang_thai)
+        CustomTextView tv_trang_thai;
 
         public HolderView(@NonNull View itemView) {
             super(itemView);
@@ -191,6 +192,17 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                 tvReceiverAddress.setText(String.format("%s: %s", mContext.getString(R.string.address_receiver_name), model.getReceiverAddress()));
             else
                 tvReceiverAddress.setText("");
+
+            if (!TextUtils.isEmpty(model.getStatusName())) {
+                if (model.getStatusCode().equals("S"))
+                    tv_trang_thai.setBackgroundResource(R.drawable.bg_button_green);
+                else if (model.getStatusCode().equals("C"))
+                    tv_trang_thai.setBackgroundResource(R.drawable.bg_button_red);
+                else if (model.getStatusCode().equals("A"))
+                    tv_trang_thai.setBackgroundResource(R.drawable.bg_button_yellow);
+                tv_trang_thai.setText(model.getStatusName());
+            } else
+                tv_trang_thai.setText("");
             checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
                 if (b) {
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));

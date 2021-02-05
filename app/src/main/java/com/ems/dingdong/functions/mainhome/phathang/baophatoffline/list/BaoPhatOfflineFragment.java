@@ -312,7 +312,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
             String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.getLocalRecord(fromDate, toDate);

@@ -13,14 +13,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
@@ -29,10 +27,10 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.EditDayDialog;
-import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.dialog.PhoneConectDialogExtend;
+import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
-import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
 import com.ems.dingdong.functions.mainhome.profile.CustomProvider;
@@ -47,7 +45,6 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -55,22 +52,16 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.sip.cmc.SipCmc;
-import com.sip.cmc.callback.RegistrationCallback;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-
 import static android.Manifest.permission.CALL_PHONE;
 
 public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter>
@@ -110,7 +101,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mSenderPhone = "";
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private boolean isFromNotification = true;
-    private PhoneConectDialog mPhoneConectDialog;
+    //private PhoneConectDialog mPhoneConectDialog;
+    private PhoneConectDialogExtend mPhoneConectDialogExtend;
     private String choosenLadingCode = "";
     private int mTotalScrolled = 0;
     String provider = "CTEL";
@@ -202,6 +194,22 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void initLayout() {
         super.initLayout();
+
+        /*if (provider.equals("VHT")){
+            SipCmc.logOut(new LogOutCallBack() {
+                @Override
+                public void logoutSuccess() {
+                    super.logoutSuccess();
+                    Log.d("123123", "logout Ctel success");
+                }
+
+                @Override
+                public void logoutFailed() {
+                    super.logoutFailed();
+                    Log.d("123123", "logout Ctel failed");
+                }
+            });
+        }*/
         if (mPresenter != null) {
             if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 checkSelfPermission();
@@ -257,7 +265,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
-                    mPhoneConectDialog = new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
+                    mPhoneConectDialogExtend = new PhoneConectDialogExtend(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                         @Override
                         public void onCallSenderResponse(String phone) {
                             mPhone = phone;
@@ -328,7 +336,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             callProvidertoCSKH();
                         }
                     });
-                    mPhoneConectDialog.show();
+                    mPhoneConectDialogExtend.show();
                 });
 
                 //Bấm call gọi luôn cho người nhận
@@ -347,7 +355,29 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.img_contact_phone_ctel.setOnClickListener(v -> {
-                    callCtelFree();
+                    try {
+                        mSenderPhone = mAdapter.getListFilter().get(position).getReciverMobile();
+                        choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                        EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+                    new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+
+                        @Override
+                        public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+                            mPresenter.callForward(phoneReceiver, choosenLadingCode);
+                        }
+
+                        @Override
+                        public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+                            callCtelFreeToReceiver();
+                            //mPresenter.callByCtellFree();
+                        }
+                    }).show();
+
+
+                    //callCtelFree();
                 });
 
 
@@ -426,6 +456,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomToNumber(phone));
             mPresenter.callForward(phone, choosenLadingCode);
 
+            //
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+
+                @Override
+                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+                    mPresenter.callForward(phoneReceiver, choosenLadingCode);
+                }
+
+                @Override
+                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+                    callCtelFreeToReceiver();
+                    mPresenter.callByCtellFree();
+                }
+            }).show();*/
+
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
             if (TextUtils.isEmpty(phone)){
@@ -461,6 +506,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomToNumber(phoneSender));
             mPresenter.callForward(phoneSender, choosenLadingCode);
 
+            //
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+
+                @Override
+                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+                    mPresenter.callForward(phoneReceiver, choosenLadingCode);
+                }
+
+                @Override
+                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+                    callCtelFreeToSender();
+                    mPresenter.callByCtellFree();
+                }
+            }).show();*/
+
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
             if (TextUtils.isEmpty(phoneSender)){
@@ -495,21 +555,23 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showSuccessUpdateMobile(String phone, String message) {
         showSuccessToast(message);
-        if (mPhoneConectDialog != null) {
-            mPhoneConectDialog.updateText(phone);
+        if (mPhoneConectDialogExtend != null) {
+            mPhoneConectDialogExtend.updateText(phone);
+            showSuccessToast(phone);
         }
     }
 
     @Override
     public void showSuccessUpdateMobileSender(String phoneSender, String message) {
         showSuccessToast(message);
-        if (mPhoneConectDialog != null) {
-            mPhoneConectDialog.updateTextPhoneSender(phoneSender);
+        if (mPhoneConectDialogExtend != null) {
+            mPhoneConectDialogExtend.updateTextPhoneSender(phoneSender);
+            showSuccessToast(phoneSender);
         }
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), mFromDate, mToDate, (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), mFromDate, mToDate,0, (calFrom, calTo,status) -> {
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
@@ -799,11 +861,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //        btnConfirmAll.performClick();
     }
 
-    private void callCtelFree(){
-        SipCmc.callTo("0971842613");
-        Log.d("123123", "click call ctel");
-    }
-
     private void callProvidertoReceiver(){
         if (provider.equals("CTEL")){
             //Gọi luôn cho người nhận với CTEL
@@ -814,6 +871,22 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phoneReceiver));
             mPresenter.callForward(phoneReceiver, choosenLadingCode);
+
+            //
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+
+                @Override
+                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+                    mPresenter.callForward(phoneReceiver, choosenLadingCode);
+                }
+
+                @Override
+                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+                    callCtelFreeToReceiver();
+                    mPresenter.callByCtellFree();
+                }
+            }).show();*/
+
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
             if (TextUtils.isEmpty(phoneReceiver)){
@@ -844,6 +917,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
             mPresenter.callForward(mSenderPhone, choosenLadingCode);
+
+            //
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+
+                @Override
+                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
+                    mPresenter.callForward(phoneReceiver, choosenLadingCode);
+                }
+
+                @Override
+                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
+                    callCtelFreeToSender();
+                    mPresenter.callByCtellFree();
+                }
+            }).show();*/
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -887,9 +975,25 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     }
 
+    private void callCtelFreeToReceiver(){
+        SipCmc.callTo(phoneReceiver);
+        //Log.d("123123", "click call ctel free to: "+phoneReceiver);
+    }
+
+    private void callCtelFreeToSender(){
+        SipCmc.callTo(mSenderPhone);
+        //Log.d("123123", "click call ctel free: "+ mSenderPhone);
+    }
+
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        recycler.setAdapter(null);//tránh memory leaks
     }
 
     @Override
@@ -901,5 +1005,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Subscribe(sticky = true)
     public void onEventCallProvider(CustomProvider customItem) {
         provider = customItem.getMessage();
+        //android.util.Log.d("123123", "provider = customItem.getMessage(); ListBaoPhat "+provider);
     }
+
 }

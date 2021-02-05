@@ -10,4 +10,5 @@ public class EWalletRequestResult extends SimpleResult {
     public EWalletRequestResponse getListEWalletResponse() {
         return listEWalletResponse;
     }
+
 }

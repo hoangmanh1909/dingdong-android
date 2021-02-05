@@ -4,12 +4,16 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.core.base.BaseActivity;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
+import com.ems.dingdong.views.CustomTextView;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,6 +24,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     @BindView(R.id.btnBack)
     View btnBack;
 
+    private Item mItem;
 
     @BindView(R.id.tvShowChargre)
     TextView tvShow;
@@ -30,6 +35,12 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     @BindView(R.id.layout_date_start)
     View layoutDateStart;
 
+    @BindView(R.id.layout_trang_thai)
+    View layout_trang_thai;
+
+
+    @BindView(R.id.tv_trang_thai)
+    protected CustomTextView tvTrangThai;
 
     OnChooseDay delegate;
 
@@ -42,7 +53,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         setListener();
     }
 
-    public EditDayDialog(Context context, String fromDateString, String toDateString, OnChooseDay delegate) {
+    public EditDayDialog(Context context, String fromDateString, String toDateString, int type, OnChooseDay delegate) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.delegate = delegate;
         Date fromDate = DateTimeUtils.convertStringToDate(fromDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -50,11 +61,30 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         calFrom.setTime(fromDate);
         calTo.setTime(toDate);
         tvDateStart.setText(TimeUtils.convertDateToString(fromDate, TimeUtils.DATE_FORMAT_5));
-        tvDateEnd.setText(TimeUtils.convertDateToString(toDate, TimeUtils.DATE_FORMAT_5));
+        tvDateEnd.setText(TimeUtils.convertDateToString(toDate, TimeUtils.DATE_FORMAT_5)); if (type == 2)
+            layout_trang_thai.setVisibility(View.VISIBLE);
+        else layout_trang_thai.setVisibility(View.GONE);
+
         setListener();
     }
 
+    public EditDayDialog(Context context, String fromDateString, String toDateString, int status, int type, OnChooseDay delegate) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.delegate = delegate;
+        setListener();
+        Date fromDate = DateTimeUtils.convertStringToDate(fromDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        Date toDate = DateTimeUtils.convertStringToDate(toDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        calFrom.setTime(fromDate);
+        calTo.setTime(toDate);
+        mActivity = (BaseActivity) context;
+        tvDateStart.setText(TimeUtils.convertDateToString(fromDate, TimeUtils.DATE_FORMAT_5));
+        tvDateEnd.setText(TimeUtils.convertDateToString(toDate, TimeUtils.DATE_FORMAT_5));
+        if (type == 2)
+            layout_trang_thai.setVisibility(View.VISIBLE);
+        else layout_trang_thai.setVisibility(View.GONE);
+        setListener();
 
+    }
     private void setListener() {
         btnBack.setOnClickListener(this);
         layoutDateStart.setOnClickListener(this);
@@ -71,7 +101,6 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
 
             case R.id.layout_date_start:
                 typeDate = 0;
-
                 new SpinnerDatePickerDialogBuilder()
                         .context(mActivity)
                         .callback(this)
@@ -98,11 +127,12 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                         .build()
                         .show();
                 break;
+            case R.id.layout_trang_thai:
+                showUICancelType();
+                break;
             case R.id.tvShowChargre:
-
-                delegate.onChooseDay(calFrom, calTo);
+                delegate.onChooseDay(calFrom, calTo, status);
                 dismiss();
-
                 break;
             case R.id.btnBack:
                 dismiss();
@@ -110,6 +140,20 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
             default:
                 break;
         }
+    }
+
+    private void showUICancelType() {
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item("0", "Tất cả"));
+        items.add(new Item("1", "1. Đã nộp"));
+        items.add(new Item("2", "2. Đã hủy"));
+        items.add(new Item("3", "3. Đang xử lý"));
+        new PickerLichSuNopDialog(getContext(), "Chọn lý do", items,
+                item -> {
+                    mItem = item;
+                    tvTrangThai.setText(item.getText());
+                    status = Integer.parseInt(mItem.getValue());
+                }).show();
     }
 
 

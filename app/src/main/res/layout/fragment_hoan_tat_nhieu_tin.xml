@@ -28,14 +28,16 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.ems.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="Hoàn tất nhiều tin"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_18sp"/>
 
             <ImageView
                 android:id="@+id/img_confirm"

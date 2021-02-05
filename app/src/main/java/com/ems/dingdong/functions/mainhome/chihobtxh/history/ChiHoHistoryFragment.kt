@@ -129,7 +129,7 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
     }
 
     private fun showDialog() {
-        EditDayDialog(activity, OnChooseDay { calFrom, calTo ->
+        EditDayDialog(activity, OnChooseDay { calFrom, calTo,status ->
             fromDate = DateTimeUtils.convertDateToString(calFrom.time, DateTimeUtils.SIMPLE_DATE_FORMAT)
             toDate = DateTimeUtils.convertDateToString(calTo.time, DateTimeUtils.SIMPLE_DATE_FORMAT)
             search()

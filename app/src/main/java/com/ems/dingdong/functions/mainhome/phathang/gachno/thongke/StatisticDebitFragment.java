@@ -95,7 +95,7 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());

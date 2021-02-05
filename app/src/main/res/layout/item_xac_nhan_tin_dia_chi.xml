@@ -9,8 +9,6 @@
 
     <LinearLayout
         android:id="@+id/linear_layout"
-        android:clickable="false"
-        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -39,12 +37,12 @@
 
                 <CheckBox
                     android:id="@+id/cb_selected"
+                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:padding="@dimen/dimen_5dp" />
             </RelativeLayout>
-
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contactName"

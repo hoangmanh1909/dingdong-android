@@ -12,8 +12,10 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
+import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
@@ -693,35 +695,6 @@ public class NetWorkController {
         return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
     }
 
-    public static Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
-        String signature = Utils.SHA256(paymentRequestModel.getPostmanCode()
-                + paymentRequestModel.getPoCode()
-                + paymentRequestModel.getRouteCode()
-                + paymentRequestModel.getPaymentToken()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        paymentRequestModel.setSignature(signature);
-        return getAPIRxBuilder().requestPayment(paymentRequestModel);
-    }
-
-    public static Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
-        String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
-                + paymentConfirmModel.getPoCode()
-                + paymentConfirmModel.getRouteCode()
-                + paymentConfirmModel.getTransId()
-                + paymentConfirmModel.getOtpCode()
-                + paymentConfirmModel.getRetRefNumber()
-                + paymentConfirmModel.getPaymentToken()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        paymentConfirmModel.setSignature(signature);
-        return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
-    }
-
-    public static Single<EWalletDataResult> getDataPayment(String fromDate, String toDate,
-                                                           String poCode, String routeCode,
-                                                           String postmanCode) {
-        return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
-    }
-
     public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
         return getAPIRxBuilder().checkAmountPayment(request);
 
@@ -736,6 +709,45 @@ public class NetWorkController {
                 request.getTenantID(),
                 request.getCaller(),
                 request.getCallee());
+    }
+
+    public static Single<EWalletDataResult> getDataPayment(String fromDate, String toDate,
+                                                           String poCode, String routeCode,
+                                                           String postmanCode) {
+        return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
+    }
+
+    public static Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+        return getAPIRxBuilder().getHistoryPayment(dataRequestPayment);
+    }
+
+    public static Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+        String signature = Utils.SHA256(paymentRequestModel.getPostmanCode()
+                + paymentRequestModel.getPoCode()
+                + paymentRequestModel.getRouteCode()
+                + paymentRequestModel.getPaymentToken()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        paymentRequestModel.setSignature(signature);
+        return getAPIRxBuilder().requestPayment(paymentRequestModel);
+    }
+
+    public static Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment) {
+        String signature = Utils.SHA256(dataRequestPayment.getData()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        dataRequestPayment.setSignature(signature);
+        return getAPIRxBuilder().deletePayment(dataRequestPayment);
+    }
+    public static Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
+        String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
+                + paymentConfirmModel.getPoCode()
+                + paymentConfirmModel.getRouteCode()
+                + paymentConfirmModel.getTransId()
+                + paymentConfirmModel.getOtpCode()
+                + paymentConfirmModel.getRetRefNumber()
+                + paymentConfirmModel.getPaymentToken()
+                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+        paymentConfirmModel.setSignature(signature);
+        return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
     }
 
 }

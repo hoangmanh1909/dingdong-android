@@ -204,7 +204,7 @@
                 android:layout_marginTop="10dp"
                 android:weightSum="3"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_55sdp"
+                android:layout_height="@dimen/_43sdp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
@@ -267,7 +267,7 @@
                     android:gravity="center"
                     android:textColor="@color/color_yellow"
                     android:textStyle="bold"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/rad_fail"
@@ -278,7 +278,7 @@
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/rad_change_route"
@@ -289,7 +289,7 @@
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:layout_height="match_parent"/>
 
 

@@ -11,8 +11,10 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
+import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
@@ -60,6 +62,7 @@ import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.ResponseObject;
+import com.google.android.gms.vision.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -530,4 +533,9 @@ public interface VinattiAPI {
                                         @Query("mc_caller") Integer caller,
                                         @Query("mc_callee") Integer callee
     );
+    @POST("api/DingDong/Bussiness")
+    Single<EWalletDataHistoryResult> getHistoryPayment(@Body DataRequestPayment dataRequestPayment);
+
+    @POST("api/DingDong/Bussiness")
+    Single<SimpleResult> deletePayment(@Body DataRequestPayment dataRequestPayment);
 }

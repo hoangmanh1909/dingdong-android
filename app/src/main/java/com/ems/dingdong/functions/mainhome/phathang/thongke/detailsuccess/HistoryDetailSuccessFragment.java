@@ -110,7 +110,7 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.statisticDeliveryGeneral(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());

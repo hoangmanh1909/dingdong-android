@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,50 +11,40 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
-import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import static android.view.View.GONE;
 
 public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdapter.HolderView> implements Filterable {
-    private final XacNhanDiaChiAdapter.FilterDone mFilterDone;
 
     private final int mType;
     List<CommonObject> mListFilter;
     List<CommonObject> mList;
+    List<ParcelCodeInfo> listParcel;
     Context mContext;
     String parcelCodeSearch = "";
-    private List<ParcelCodeInfo> listParcelCode;
-    private ParcelAdapter parcelAdapter;
-    private String checks;
+    SparseBooleanArray sparseBooleanArray;
+    int selectParcel = 0;
+    int selectPosition = 0;
+    private int checkedPosition = 0;
 
-
-    public XacNhanDiaChiAdapter(Context context, int type, List<CommonObject> items, XacNhanDiaChiAdapter.FilterDone filterDone) {
+    public XacNhanDiaChiAdapter(Context context, int type, List<CommonObject> items) {
         mType = type;
         mContext = context;
         mList = items;
         mListFilter = items;
-        mFilterDone = filterDone;
     }
 
     @Override
@@ -84,16 +75,26 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
-                        boolean checkCode = false;
-                        for (ParcelCodeInfo item : row.getListParcelCode()) {
+                        boolean checkCode= false;
+                        for(ParcelCodeInfo item: row.getListParcelCode())
+                        {
                             if (item.getParcelCode().toLowerCase().contains(charString.toLowerCase())) {
                                 checkCode = true;
                                 break;
                             }
                         }
-                        if (checkCode)
+                        if (!checkCode)
+                        {
+                            if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
+                            ) {
+                                checkCode = true;
+                            }
+                        }
+                        if(checkCode){
                             filteredList.add(row);
-
+                        }
                     }
 
                     mListFilter = filteredList;
@@ -106,6 +107,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mListFilter = (ArrayList<CommonObject>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -119,8 +121,14 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         return mListFilter;
     }
 
-    class HolderView extends RecyclerView.ViewHolder {
+    public CommonObject getSelected() {
+        if (checkedPosition != -1) {
+            return mListFilter.get(checkedPosition);
+        }
+        return null;
+    }
 
+    class HolderView extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_contact_address)
         CustomTextView tvContactAddress;
         @BindView(R.id.cb_selected)
@@ -138,8 +146,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         @BindView(R.id.linear_layout)
         LinearLayout linearLayout;
 
-
-        ParcelAdapter adapter;
+        ParcelAddressAdapter adapter;
+        ParcelConfirmsAdapter confirmsAdapter;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -155,10 +163,11 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
-            tvWeight.setText(String.format("Khối lượng: %s Gram", item.weightS + ""));
+            tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS) + ""));
+
             cbSelected.setVisibility(View.GONE);
-            cbSelected.setChecked(item.isSelected());
             if (mType == 1) {
+                cbSelected.setClickable(false);
                 cbSelected.setVisibility(View.VISIBLE);
                 cbSelected.setOnCheckedChangeListener(null);
                 if (item.isSelected())
@@ -175,14 +184,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         } else {
                             item.setSelected(false);
                         }
-                    }
-                });
-
-                cbSelected.setOnCheckedChangeListener((v1, v2) -> {
-                    if (v2) {
-                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-                    } else {
-                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                     }
                 });
 
@@ -206,23 +207,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
 
-            } else if (mType == 4) {
-                if (item.isSelected())
-                    cbSelected.setChecked(true);
-                else {
-                    cbSelected.setChecked(false);
-                }
-                cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            item.setSelected(true);
-                        } else {
-                            item.setSelected(false);
-                        }
-                    }
-                });
-
                 cbSelected.setOnCheckedChangeListener((v1, v2) -> {
                     if (v2) {
                         linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
@@ -230,8 +214,70 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                     }
                 });
+                cbSelected.setChecked(item.isSelected());
+
+            } else if (mType == 4) {
+                cbSelected.setClickable(false);
+                //chọn 1 item
+//                if (checkedPosition == -1) {
+//                    cbSelected.setChecked(false);
+//                    item.setSelected(false);
+//                    //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                } else {
+//                    if (checkedPosition == getAdapterPosition()) {
+//                        /*cbSelected.setChecked(true);
+//                        item.setSelected(true);
+//                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));*/
+//                        if (cbSelected.isChecked()) {
+//                            cbSelected.setChecked(false);
+//                            item.setSelected(false);
+//                            //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                        } else {
+//                            cbSelected.setChecked(true);
+//                            item.setSelected(true);
+//                            //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+//                        }
+//                    } else {
+//                        cbSelected.setChecked(false);
+//                        item.setSelected(false);
+//                        //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                    }
+//                }
+
+                //chọn tất cả list parcel code và bỏ chọn tất cả
+                cbSelected.setOnCheckedChangeListener((v1, v2) -> {
+                    if (v2) {
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                        cbSelected.setChecked(true);
+                        item.setSelected(true);
+                        for (ParcelCodeInfo info : item.getListParcelCode()) {
+                            info.setSelected(true);
+                        }
+                    } else {
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        cbSelected.setChecked(false);
+                        item.setSelected(false);
+                        for (ParcelCodeInfo info : item.getListParcelCode()) {
+                            info.setSelected(false);
+                        }
+                    }
+                });
+                cbSelected.setChecked(item.isSelected());
+
                 if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
+                    cbSelected.setVisibility(View.VISIBLE);
+                    if (cbSelected.isChecked()) {
+                        //item.setSelected(true);
+                        for (ParcelCodeInfo info : item.getListParcelCode()) {
+                            info.setSelected(true);
+                        }
+                    } else if (!cbSelected.isChecked()) {
+                        //item.setSelected(false);
+                        for (ParcelCodeInfo info : item.getListParcelCode()) {
+                            info.setSelected(false);
+                        }
+                    }
                     if (typeface != null) {
                         tvContactName.setTypeface(typeface);
                         tvContactAddress.setTypeface(typeface);
@@ -240,7 +286,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         tvStatus.setText("Hoàn tất một phần");
                     } else {
                         tvStatus.setText("Chưa hoàn tất");
-                        cbSelected.setVisibility(View.VISIBLE);
                     }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
@@ -251,9 +296,11 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     }
                     tvStatus.setText("Đã hoàn tất");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
+                    cbSelected.setVisibility(GONE);
                 }
             }
-            if (mType == 1 || mType == 4) {//mType == 1 || mType == 2
+            if (mType == 4) {//2
+                cbSelected.setClickable(false);
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
                 if (parcelCodeSearch.equals("")) {
                     filteredList = item.getListParcelCode();
@@ -264,6 +311,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         }
                     }
                 }
+
                 binParcelCode(filteredList);
                 tvParcelCode.setOnClickListener(view -> {
                     if (recycler.getVisibility() == View.GONE) {
@@ -274,7 +322,38 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 });
                 if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
                     if (item.getListParcelCode().size() == 1) {
+                        recycler.setVisibility(GONE);//VISIBLE tạm thời GONE
+                        tvParcelCode.setVisibility(View.VISIBLE);
+                    } else {
+                        recycler.setVisibility(View.GONE);
+                        tvParcelCode.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    tvParcelCode.setVisibility(View.VISIBLE);
+                }
+            } else if (mType == 1) {
+                List<ParcelCodeInfo> filteredList = new ArrayList<>();
+                if (parcelCodeSearch.equals("")) {
+                    filteredList = item.getListParcelCode();
+                } else {
+                    for (ParcelCodeInfo row : item.getListParcelCode()) {
+                        if (row.getParcelCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+                }
+
+                binParcelCodeConfirms(filteredList);
+                tvParcelCode.setOnClickListener(view -> {
+                    if (recycler.getVisibility() == View.GONE) {
                         recycler.setVisibility(View.VISIBLE);
+                    } else {
+                        recycler.setVisibility(View.GONE);
+                    }
+                });
+                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
+                    if (item.getListParcelCode().size() == 1) {
+                        recycler.setVisibility(GONE);//VISIBLE tạm thời GONE
                         tvParcelCode.setVisibility(View.VISIBLE);
                     } else {
                         recycler.setVisibility(View.GONE);
@@ -286,65 +365,81 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             }
         }
 
-        private void binParcelCode(List<ParcelCodeInfo> listParcelCode) {
-            if (adapter == null) {
-                adapter = new ParcelAdapter(mContext, listParcelCode) {
+        public void defaultBg() {
+            linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        }
+
+        public void selectedBg() {
+            linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+        }
+
+        //Hoàn tất tin theo địa chỉ
+        public void binParcelCode(List<ParcelCodeInfo> listParcelCode) {
+            sparseBooleanArray = new SparseBooleanArray();
+            adapter = new ParcelAddressAdapter(mContext, listParcelCode) {
+                @Override
+                public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                    super.onBindViewHolder(holder, position);
+                    if (((HolderView) holder).getItem(position).isSelected()) {
+                        ((HolderView) holder).cbSelectedParcel.setChecked(true);
+                    } else {
+                        ((HolderView) holder).cbSelectedParcel.setChecked(false);
+                    }
+
+                    ((HolderView) holder).itemView.setOnClickListener(v -> {
+                        if (!((HolderView) holder).cbSelectedParcel.isChecked()) {
+                            ((HolderView) holder).cbSelectedParcel.setChecked(true);
+                            ((HolderView) holder).getItem(position).setSelected(true);
+                        } else {
+                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
+                            ((HolderView) holder).getItem(position).setSelected(false);
+                        }
+                    });
+
+                    ((HolderView) holder).cbSelectedParcel.setOnCheckedChangeListener((v1, v2) -> {
+                        if (v2) {
+                            ((HolderView) holder).cbSelectedParcel.setChecked(true);
+                            ((HolderView) holder).getItem(position).setSelected(true);
+                        } else {
+                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
+                            ((HolderView) holder).getItem(position).setSelected(false);
+                        }
+                    });
+
+                    ((HolderView) holder).imgRemoveLadingCode.setOnClickListener(v -> {
+                        ((HolderView) holder).getItem(position).setSelected(false);
+                        listParcelCode.remove(position);
+                        adapter.removeItem(position);
+                        notifyDataSetChanged();
+                    });
+                }
+            };
+            RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
+            recycler.setAdapter(adapter);
+        }
+
+        //Xác nhận nhiều tin
+        private void binParcelCodeConfirms(List<ParcelCodeInfo> listParcelCode) {
+            if (confirmsAdapter == null) {
+                confirmsAdapter = new ParcelConfirmsAdapter(mContext, listParcelCode) {
                     @Override
                     public void onBindViewHolder(BaseViewHolder holder, final int position) {
                         super.onBindViewHolder(holder, position);
-                        //((HolderView) holder).cbSelectedParcel.setVisibility(View.GONE);
-                        ((HolderView) holder).cbSelectedParcel.setVisibility(View.VISIBLE);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //Toast.makeText(mContext, "click", Toast.LENGTH_SHORT).show();
-                                if (((HolderView) holder).cbSelectedParcel.isChecked()){
-                                    ((HolderView) holder).cbSelectedParcel.setChecked(false);
-                                } else {
-                                    ((HolderView) holder).cbSelectedParcel.setChecked(true);
-                                }
-                            }
-                        });
 
-                        ((HolderView) holder).imgRemoveLadingCode.setOnClickListener(v -> {
-                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
-                            holder.itemView.setVisibility(View.GONE);
+                            }
                         });
                     }
                 };
                 RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
-                recycler.setAdapter(adapter);
+                recycler.setAdapter(confirmsAdapter);
             } else {
-                adapter.refresh(listParcelCode);
+                confirmsAdapter.refresh(listParcelCode);
             }
         }
-    }
-
-    public List<CommonObject> getItemsFilterSelected() {
-        List<CommonObject> commonObjectsSelected = new ArrayList<>();
-        List<CommonObject> items = mListFilter;
-        for (CommonObject item : items) {
-            if (item.isSelected()) {
-                commonObjectsSelected.add(item);
-            }
-        }
-        return commonObjectsSelected;
-    }
-
-    public List<CommonObject> getItemsSelected() {
-        List<CommonObject> commonObjectsSelected = new ArrayList<>();
-        List<CommonObject> items = mList;
-        for (CommonObject item : items) {
-            if (item.isSelected()) {
-                commonObjectsSelected.add(item);
-            }
-        }
-        return commonObjectsSelected;
-    }
-
-    public interface FilterDone {
-        void getCount(int count, long amount);
     }
 
 }

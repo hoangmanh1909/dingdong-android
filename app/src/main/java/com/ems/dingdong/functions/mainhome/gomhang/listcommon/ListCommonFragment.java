@@ -3,7 +3,6 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 import android.content.Intent;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,11 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
-import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
@@ -32,14 +29,8 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -47,7 +38,6 @@ import butterknife.OnClick;
  * The CommonObject Fragment
  */
 public class ListCommonFragment extends ViewFragment<ListCommonContract.Presenter> implements ListCommonContract.View {
-
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
@@ -74,12 +64,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     private String mDate;
     private String mOrder;
     private String mRoute;
-    private Calendar mCalendar;
+    private Calendar  mCalendar;
     private String fromDate;
     private String toDate;
     ArrayList<CommonObject> mListFilter;
-    private int actualPosition;
-    private int actualPositions;
     CommonObject itemAtPosition;
 
     public static ListCommonFragment getInstance() {
@@ -94,7 +82,6 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-        Log.d("123123", "mPresenter.getType(): "+mPresenter.getType());
 
         if (mPresenter == null) {
             if (getActivity() != null) {
@@ -163,7 +150,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 mAdapter.notifyDataSetChanged();
             }
         });
-        /*edtSearch.addTextChangedListener(new TextWatcher() {
+        edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -172,41 +159,21 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 mAdapter.getFilter().filter(s.toString());
             }
-        });*/
-        edtSearch.getEditText().addTextChangedListener(textWatcher);
+        });
         edtSearch.setSelected(true);
     }
-
-
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            mAdapter.getFilter().filter(s.toString());
-        }
-    };
 
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 2) {
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
-                public void onChooseDay(Calendar calFrom, Calendar calTo) {
+                public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
@@ -287,7 +254,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
-        //mList.clear();
+        //mList.clear(); //khắc phục search nhưng click chọn bị sai vị trí
         mList.addAll(list);
         edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();
@@ -305,7 +272,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }
             tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
             tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
-        } else if (mPresenter.getType() == 2) {
+        } else if (mPresenter.getType() == 2 || mPresenter.getType() == 4) {
             int countP1 = 0;
             int countP4P5 = 0;
             if (list.size() > 0) {

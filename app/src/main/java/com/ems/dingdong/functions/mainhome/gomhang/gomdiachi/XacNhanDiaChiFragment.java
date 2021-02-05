@@ -1,9 +1,6 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,48 +10,36 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
-import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
-import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.google.common.collect.Iterables;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * The CommonObject Fragment
- */
-public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Presenter> implements XacNhanDiaChiContract.View {//, OnClickItem
+public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Presenter> implements XacNhanDiaChiContract.View {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -67,7 +52,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @BindView(R.id.cb_all)
     CheckBox cbAll;
     ArrayList<CommonObject> mList;
-    ArrayList<ParcelCodeInfo> mListParcelCodeInfo;
+    List<ParcelCodeInfo> mListParcel;
+    List<ConfirmOrderPostman> mListConfirm;
     @BindView(R.id.tv_accept_count)
     CustomBoldTextView tvAcceptCount;
     @BindView(R.id.tv_accept_reject)
@@ -79,16 +65,15 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
     private XacNhanDiaChiAdapter mAdapter;
-    private ParcelAdapter mParcelAdapter;
     private UserInfo mUserInfo;
-    private String mDate;
-    private String mOrder;
-    private String mRoute;
-    private Calendar mCalendar;
     private String fromDate;
     private String toDate;
-    private boolean isLoading = false;
-    private boolean isReturned = false;
+    private CommonObject itemAtPosition;
+    private int actualPosition;
+    private ArrayList<ItemHoanTatNhieuTin> mListHoanTatNhieuTin;
+    private int checkedPositions = 0;
+    private boolean scanBarcode = false;
+    private boolean click = false;
 
     public static XacNhanDiaChiFragment getInstance() {
         return new XacNhanDiaChiFragment();
@@ -102,6 +87,11 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void initLayout() {
         super.initLayout();
+        mListHoanTatNhieuTin = new ArrayList<>();
+
+        if (mPresenter.getType() == 4) {
+            cbAll.setVisibility(View.GONE);
+        }
 
         if (mPresenter == null) {
             if (getActivity() != null) {
@@ -112,114 +102,73 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             return;
         }
         mList = new ArrayList<>();
-        mListParcelCodeInfo = new ArrayList<>();
-        mCalendar = Calendar.getInstance();
-        //mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList);
-        mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList, new XacNhanDiaChiAdapter.FilterDone() {
-            @Override
-            public void getCount(int count, long amount) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (isLoading) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
-                                mAdapter.getListFilter().size() == 0)
-                            cbAll.setChecked(false);
-                        else
-                            cbAll.setChecked(true);
-//                        tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
-//                        tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
-                    }
-                }, 1000);
-            }
-        }) {
-            @SuppressLint("ResourceAsColor")
+        mListParcel = new ArrayList<>();
+        mListConfirm = new ArrayList<>();
+        /*mCalendar = Calendar.getInstance();
+
+        mParcelAdapter = new ParcelAddressAdapter(getActivity(), mListParcel);*/
+
+        mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(v -> {
-                    //mPresenter.showDetailView(mList.get(position));
-
-
-                    int parcelCode = holder.getItem(position).getListParcelCode().size();
-                    String addressReceiver = holder.getItem(position).getReceiverAddress();
-                    String phoneReceiver = holder.getItem(position).getReceiverPhone();
-                    String nameReceiver = holder.getItem(position).getReceiverName();
-
-                    EventBus.getDefault().postSticky(new CustomAddress(parcelCode, addressReceiver, phoneReceiver, nameReceiver));
-
-                    /*if (holder.cbSelected.isChecked()){
-                        mParcelAdapter = new ParcelAdapter(getActivity(), mListParcelCodeInfo){
-                            @Override
-                            public void onBindViewHolder(BaseViewHolder holder, int position) {
-                                super.onBindViewHolder(holder, position);
-
-                                for (ParcelCodeInfo item : mListParcelCodeInfo){
-                                    if (((HolderView) holder).cbSelectedParcel.isChecked()){
-                                        pa++;
-                                    }
-                                }
-
-
-                            }
-                        };
-                    }*/
-
-                    if (holder.cbSelected.isChecked()){
+                if (mPresenter.getType() == 4) {
+                    //chọn 1 item
+                    if (checkedPositions == -1) {
                         holder.cbSelected.setChecked(false);
+                        holder.getItem(position).setSelected(false);
+                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                     } else {
-                        holder.cbSelected.setChecked(true);
-                    }
-
-                    holder.cbSelected.setOnCheckedChangeListener((v1, v2) ->{
-                        if (v2){
-                            holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                        if (checkedPositions == holder.getAdapterPosition()) {
+                            //thêm.  click lần 2 bỏ chọn
+                            if (selectPosition == 0) {
+                                Log.d("123123", "bỏ chọn");
+                                holder.cbSelected.setChecked(false);
+                                holder.getItem(position).setSelected(false);
+                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                                selectPosition = 1;
+                            } else if (selectPosition == 1) {
+                                //click lần 2 hoặc click sang item khác sẽ nhảy vào
+                                Log.d("123123", "chọn");
+                                holder.cbSelected.setChecked(true);
+                                holder.getItem(position).setSelected(true);
+                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                                selectPosition = 0;
+                            }
                         } else {
+                            holder.cbSelected.setChecked(false);
+                            holder.getItem(position).setSelected(false);
                             holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
+                    }
+
+                    holder.itemView.setOnClickListener(v -> {
+                        /*holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
+
+                        //chọn đúng item sau khi tìm kiếm
+                        itemAtPosition = mListFilter.get(position);
+                        actualPosition = mList.indexOf(itemAtPosition);
+
+                        listParcel = mListFilter.get(position).getListParcelCode();
+                        mListParcel = listParcel;
+                        //chọn 1 item
+                        if (checkedPositions != holder.getAdapterPosition()) {
+                            notifyItemChanged(checkedPositions);
+                            checkedPositions = holder.getAdapterPosition();
+                        }
+
+                        notifyDataSetChanged();// bỏ thì click chuyển sang item khác bt nhưng chưa cập nhật lại trạng thái đã tick hoặc chưa tick item parcel code
                     });
 
-                    holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-                    holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                    if (cbAll.isChecked() && !holder.getItem(position).isSelected()) {
-                        cbAll.setChecked(false);
-                    } else if (isAllSelected()) {
-                        cbAll.setChecked(true);
-                    }
-
-                });
-            }
-
-            @Override
-            public int getItemCount() {
-                return super.getItemCount();
+                } else if (mPresenter.getType() == 1) {
+                    holder.itemView.setOnClickListener(v -> {
+                        holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    });
+                }
             }
         };
-
-        cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    for (CommonObject item : mList) {
-                        if ("P0".equals(item.getStatusCode()))
-                            item.setSelected(true);
-                    }
-
-                } else {
-                    for (CommonObject item : mList) {
-                        item.setSelected(false);
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());
@@ -228,7 +177,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
         if (mPresenter.getType() == 1) {
-            tvTitle.setText("Xác nhận tin");
+            tvTitle.setText("Xác nhận tin theo địa chỉ");
             llGomHang.setVisibility(View.VISIBLE);
             cbAll.setVisibility(View.VISIBLE);
             imgConfirm.setVisibility(View.VISIBLE);
@@ -240,33 +189,32 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         }
         fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    for (CommonObject item : mList) {
-                        if ("P0".equals(item.getStatusCode()))
-                            item.setSelected(true);
+        if (mPresenter.getType() == 1) {
+            cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        for (CommonObject item : mList) {
+                            if ("P0".equals(item.getStatusCode()))
+                                item.setSelected(true);
+                        }
+                    } else {
+                        for (CommonObject item : mList) {
+                            item.setSelected(false);
+                        }
                     }
-
-                } else {
-                    for (CommonObject item : mList) {
-                        item.setSelected(false);
-                    }
+                    mAdapter.notifyDataSetChanged();
                 }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+            });
+        }
+
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
             }
 
             @Override
@@ -275,18 +223,19 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             }
         });
         edtSearch.setSelected(true);
+
     }
 
     private void showDialog() {
-        if (mPresenter.getType() == 1 || mPresenter.getType() == 2 || mPresenter.getType() == 4) {//mPresenter.getType() == 1 || mPresenter.getType() == 2
+        if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
-                public void onChooseDay(Calendar calFrom, Calendar calTo) {
+                public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
                         mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
-                    } else if (mPresenter.getType() == 4){
+                    } else if (mPresenter.getType() == 4) {//2
                         mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
                     }
                 }
@@ -294,23 +243,20 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         }
     }
 
-    //chưa hoàn tất, cần hoàn tất là P1
-    //tin chưa xác nhận là P0
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if (cbAll != null)
-            cbAll.setChecked(false);
         if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
             if (mPresenter.getType() == 1) {
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
-            } else if (mPresenter.getType() == 4){
+            }
+            if (mPresenter.getType() == 4) {//2
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
             }
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_view, R.id.img_confirm, R.id.ll_scan_qr, R.id.cb_all})
+    @OnClick({R.id.img_back, R.id.img_view, R.id.ll_scan_qr, R.id.img_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -319,83 +265,73 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             case R.id.img_view:
                 showDialog();
                 break;
-            case R.id.img_confirm:
-                confirmAll();
-                //confirmAlls();
-                //submit(mListParcelCodeInfo);
-                break;
             case R.id.ll_scan_qr:
+                scanBarcode = true;
                 mPresenter.showBarcode(value -> {
                     edtSearch.setText(value);
                 });
                 break;
-            case R.id.cb_all:
-                setAllCheckBox();
+            case R.id.img_confirm:
+                if (mPresenter.getType() == 1) {
+                    confirmAll();
+                } else if (mPresenter.getType() == 4) {
+                    confirmParcelCode();
+                }
                 break;
         }
     }
 
     private void confirmAll() {
         ArrayList<CommonObject> list = new ArrayList<>();
-        for (CommonObject item : mList) {
-            if (item.getStatusCode().equals("P1") && item.isSelected()) {
+        for (CommonObject item : mAdapter.getListFilter()) {//mList
+            if ("P0".equals(item.getStatusCode()) && item.isSelected()) {
                 list.add(item);
-                Log.d("123123", "list.add(item): "+list.add(item));
             }
-            //list.add(item);
         }
-
         if (!list.isEmpty()) {
             mPresenter.confirmAllOrderPostman(list);
-            Log.d("123123", "!list.isEmpty(): "+list);
-        } else if (list.isEmpty()){
-            Log.d("123123", "list rỗng: "+list);
-        }
-        else {
+        } else {
             Toast.showToast(getActivity(), "Chưa tin nào được chọn");
         }
     }
 
-    private void confirmAlls() {
-        ArrayList<CommonObject> list = new ArrayList<>();
-        ArrayList<ParcelCodeInfo> lists = new ArrayList<>();
-        for (CommonObject item : mList) {
-            for (ParcelCodeInfo items : mListParcelCodeInfo){
-                if (item.getStatusCode().equals("P1") && item.isSelected() && items.isSelected()) {
-                    lists.add(items);
-                    Log.d("123123", "list.add(item): "+lists.add(items));
+    private void confirmParcelCode() {
+        int gram = 0;
+        int totalGram = 0;
+        mListHoanTatNhieuTin = new ArrayList<>();
+        ArrayList<ParcelCodeInfo> listParcel = new ArrayList<>();
+        ArrayList<CommonObject> listCommon = new ArrayList<>();
+
+        for (CommonObject item : mAdapter.getListFilter()) {
+            int count = item.getListParcelCode().size();
+            if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P6".equals(item.getStatusCode()) /*&& item.isSelected()*/) {
+                for (ParcelCodeInfo itemParcel : item.getListParcelCode()) {
+                    if (itemParcel.isSelected()) {
+                        listParcel.add(itemParcel);
+                        gram = itemParcel.getWeight();
+                        totalGram += gram;
+                        ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(itemParcel.getParcelCode(), count >= 1 ? Constants.ADDRESS_SUCCESS : Constants.ADDRESS_UNSUCCESS,
+                                mUserInfo.getiD(), itemParcel.getOrderPostmanId() + "", itemParcel.getOrderId() + "");
+                        mListHoanTatNhieuTin.add(tin);
+                    }
                 }
             }
         }
 
-        if (!list.isEmpty()) {
-            mPresenter.confirmAllOrderPostman(list);
-            Log.d("123123", "!list.isEmpty(): "+lists);
-        } else if (lists.isEmpty()){
-            Log.d("123123", "list rỗng: "+lists);
-        }
-        else {
-            Toast.showToast(getActivity(), "Chưa tin nào được chọn");
-        }
-    }
-
-    public void submit(List<ParcelCodeInfo> itemSelected) {
-        final List<ParcelCodeInfo> parcel = mParcelAdapter.getItemsParcelSelected();
-        parcel.addAll(itemSelected);
-        if (parcel.isEmpty()) {
-            Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
-            return;
-        } else {
-            isReturned = true;
-            mPresenter.confirmParcelCode((ArrayList<ParcelCodeInfo>) parcel);
+        EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram));
+        if (!listParcel.isEmpty()) {
+            mPresenter.showConfirmParcelAddress(listParcel);
+        } else if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")){
+            //Toast.showToast(getActivity(), "Chưa tin nào được chọn");
+            mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
         }
     }
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
         ArrayList<CommonObject> listG = new ArrayList<>();
-        for(CommonObject item: list)
-        {
+        for (CommonObject item : list) {
+
             CommonObject itemExists = Iterables.tryFind(listG,
                     input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
                             && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
@@ -403,22 +339,23 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             if (itemExists == null) {
                 item.addOrderPostmanID(item.getOrderPostmanID());
                 item.addCode(item.getCode());
-                item.weightS += Integer.parseInt(item.getWeigh());
-//                if("P0".equals(item.getStatusCode()))
-//                {
-//                    item.setSelected(true);
-//                }
-                listG.add(item);
+                //Mới bị lỗi k rõ nguyên nhân nên phải để try catch
+                try {
+                    item.weightS += Integer.parseInt(item.getWeigh());
+                } catch (Exception e) {
+                }
 
+                listG.add(item);
             } else {
-                for(ParcelCodeInfo parcelCodeInfo: item.getListParcelCode())
-                {
+                for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
                     itemExists.getListParcelCode().add(parcelCodeInfo);
                 }
                 itemExists.addOrderPostmanID(item.getOrderPostmanID());
                 itemExists.addCode(item.getCode());
-                itemExists.weightS += Integer.parseInt(item.getWeigh());
-
+                try {
+                    itemExists.weightS += Integer.parseInt(item.getWeigh());
+                } catch (Exception e) {
+                }
             }
         }
         mList.clear();
@@ -439,7 +376,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             }
             tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
             tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
-        } else if (mPresenter.getType() == 2) {
+        } else if (mPresenter.getType() == 4 || mPresenter.getType() == 2) {//2
             int countP1 = 0;
             int countP4P5 = 0;
             if (list.size() > 0) {
@@ -476,49 +413,9 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     }
 
     @Override
-    public void showResult(ConfirmAllOrderPostman allOrderPostman) {
-        if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            onDisplay();
-                        }
-                    }).show();
-        }
-    }
-
-    private void setAllCheckBox() {
-
-        if (cbAll.isChecked()) {
-            for (CommonObject item : mAdapter.getListFilter()) {
-                if (item.isSelected()) {
-                    item.setSelected(false);
-                }
-            }
-            cbAll.setChecked(false);
-        } else {
-            for (CommonObject item : mAdapter.getListFilter()) {
-                if (!item.isSelected()) {
-                    item.setSelected(true);
-                }
-            }
-            cbAll.setChecked(true);
-        }
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private boolean isAllSelected() {
-        for (CommonObject item : mAdapter.getListFilter()) {
-            if (!item.isSelected()) {
-                return false;
-            }
-        }
-        return true;
+    public void onPause() {
+        super.onPause();
+        mAdapter.selectParcel = 0;
     }
 
 }

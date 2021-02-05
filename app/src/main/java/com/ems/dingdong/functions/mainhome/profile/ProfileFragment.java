@@ -31,6 +31,8 @@ import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.sip.cmc.SipCmc;
+import com.sip.cmc.callback.LogOutCallBack;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -98,6 +100,17 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 mPresenter.back();
                 break;
             case R.id.img_logout:
+                SipCmc.logOut(new LogOutCallBack() {
+                    @Override
+                    public void logoutSuccess() {
+                        super.logoutSuccess();
+                    }
+
+                    @Override
+                    public void logoutFailed() {
+                        super.logoutFailed();
+                    }
+                });
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
 //                getViewContext().sendBroadcast(new Intent(PortSipService.ACTION_LOG_OUT));

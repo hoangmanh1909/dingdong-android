@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,27 +9,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeAdapter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
-
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,7 +30,6 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
     List<CommonObject> mList;
     Context mContext;
     String parcelCodeSearch = "";
-    //CommonObject itemAtPosition;
     int actualPosition;
     private CommonObject currentItem;
     public ListCommonAdapter(Context context, int type, List<CommonObject> items) {
@@ -50,10 +38,12 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         mList = items;
         mListFilter = items;
     }
+
     @Override
     public int getItemCount() {
         return mListFilter.size();
     }
+
     @Override
     public void onBindViewHolder(@NonNull HolderView holder, int position) {
         holder.bindView(mListFilter.get(position));
@@ -64,6 +54,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         //return new HolderView(inflateView(parent, R.layout.item_xac_nhan_tin));
         return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xac_nhan_tin, parent, false));
     }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -113,8 +104,8 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
             }
         };
     }
-    class HolderView extends RecyclerView.ViewHolder {
 
+    class HolderView extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_stt)
         CustomTextView tvStt;
         @BindView(R.id.tv_code)
@@ -129,7 +120,6 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         CustomTextView tvStatus;
         @BindView(R.id.tv_ParcelCode)
         CustomTextView tvParcelCode;
-
         @BindView(R.id.recycler)
         RecyclerView recycler;
         @BindView(R.id.cb_selected)
@@ -139,7 +129,6 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         public HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
         }
 
         public void bindView(Object model) {
@@ -175,6 +164,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                         }
                     }
                 });
+
                 if ("P0".equals(item.getStatusCode())) {
                     cbSelected.setVisibility(View.VISIBLE);
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
@@ -202,7 +192,6 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     tvStatus.setText("Đã xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
-
             } else if (mType == 2) {
                 if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -220,8 +209,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                         tvStatus.setText("Chưa hoàn tất");
                     }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
-                }
-                else {
+                } else {
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
@@ -248,6 +236,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                         }
                     }
                 }
+
                 binParcelCode(filteredList);
                 tvParcelCode.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -286,10 +275,18 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                 };
                 RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
                 recycler.setAdapter(adapter);
-            }
-            else
-            {
+            } else {
                 adapter.refresh(listParcelCode);
+            }
+        }
+    }
+
+    public void update(List<CommonObject> data){
+        synchronized (mListFilter){
+            if(data != null && mListFilter.contains(data)){
+                int index = mListFilter.indexOf(data);
+                mListFilter.set(index, (CommonObject) data);
+                notifyDataSetChanged();
             }
         }
     }

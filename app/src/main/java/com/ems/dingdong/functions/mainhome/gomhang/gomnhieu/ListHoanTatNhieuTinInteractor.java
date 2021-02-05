@@ -6,10 +6,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
-import com.ems.dingdong.model.request.PaymentDeviveryRequest;
-import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
-
 import java.util.List;
 
 /**
@@ -26,6 +23,7 @@ class ListHoanTatNhieuTinInteractor extends Interactor<ListHoanTatNhieuTinContra
     public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
         NetWorkController.searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
+
     @Override
     public void getReasonsHoanTat(CommonCallback<ReasonResult> commonCallback) {
         NetWorkController.getReasonsHoanTat(commonCallback);

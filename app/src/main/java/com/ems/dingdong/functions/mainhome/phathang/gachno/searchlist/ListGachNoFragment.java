@@ -141,7 +141,7 @@ public class ListGachNoFragment extends ViewFragment<ListGachNoContract.Presente
     private void showDialog() {
         new SearchGachNoDialog(getActivity(), new OnChooseDay() {
             @Override
-            public void onChooseDay(Calendar calFrom, Calendar calTo) {
+            public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
                 fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 mPresenter.getList(fromDate, toDate);

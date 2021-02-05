@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Activity;
 import android.content.Context;
-
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
@@ -28,16 +27,13 @@ import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -137,7 +133,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
-                    //Log.d("123123", "postImage Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
@@ -145,7 +140,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
                 try {
-                    //Log.d("123123", "showImage Fail image: => "+ message);
                     mView.showAlertDialog("Không kết nối được với hệ thống");
                     mView.deleteFile();
                 }catch (Exception exception){}
@@ -253,7 +247,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mView.getItemSelected()) {
             String receiverName;
-            receiverName = newReceiverName;
+            receiverName = item.getReciverName();
             String parcelCode = item.getMaE();
             String reasonCode = "";
             String solutionCode = "";

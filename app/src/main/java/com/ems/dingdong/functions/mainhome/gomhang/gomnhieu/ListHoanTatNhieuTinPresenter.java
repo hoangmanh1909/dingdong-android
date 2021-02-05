@@ -1,7 +1,6 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomnhieu;
 
 import android.app.Activity;
-
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
@@ -11,9 +10,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -23,11 +20,9 @@ import retrofit2.Response;
 public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinContract.View, ListHoanTatNhieuTinContract.Interactor>
         implements ListHoanTatNhieuTinContract.Presenter {
 
-
     public ListHoanTatNhieuTinPresenter(ContainerView containerView) {
         super(containerView);
     }
-
 
     @Override
     public ListHoanTatNhieuTinContract.View onCreateView() {
@@ -43,7 +38,6 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
     public ListHoanTatNhieuTinContract.Interactor onCreateInteractor() {
         return new ListHoanTatNhieuTinInteractor(this);
     }
-
 
     @Override
     public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
@@ -67,7 +61,6 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
                 mView.showErrorToast(message);
             }
         });
-
     }
 
     public void getReasons() {
@@ -116,6 +109,5 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
             }
         });
     }
-
 
 }

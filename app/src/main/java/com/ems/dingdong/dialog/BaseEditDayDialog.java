@@ -25,6 +25,7 @@ public class BaseEditDayDialog extends Dialog implements com.tsongkha.spinnerdat
 
     protected Calendar calFrom = Calendar.getInstance();
     protected Calendar calTo = Calendar.getInstance();
+    protected int status;
     @BindView(R.id.tvDateStart)
     protected TextView tvDateStart;
 

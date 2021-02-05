@@ -3,7 +3,6 @@ package com.ems.dingdong.calls.calling;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,17 +10,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
+import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.PortMessageReceiver;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.calls.diapad.DiapadFragment;
-import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
 import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
@@ -30,13 +28,15 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
 import com.portsip.PortSipSdk;
-
+import com.sip.cmc.SipCmc;
+import com.sip.cmc.callback.PhoneCallback;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
+import org.linphone.core.LinphoneCall;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -62,17 +62,25 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     CustomImageView ivHold;
     @BindView(R.id.iv_mic_off)
     CustomImageView ivMicOff;
+    @BindView(R.id.tv_provider_name)
+    CustomBoldTextView tvProviderName;
     private AudioManager audioManager;
     private PortSipSdk portSipSdk;
     private Session session;
     private CallingEvent callingEvent = new CallingEvent();
-    long mSessionId;
-    String xSessionIdPostmanOut = "";
-    UserInfo userInfo;
-    PostOffice postOffice;
-    RouteInfo routeInfo;
+    private long mSessionId;
+    private String xSessionIdPostmanOut = "";
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    private RouteInfo routeInfo;
     private TypeBD13 mTypeBD13;
-    String ladingCode = "";
+    private String ladingCode = "";
+    private int isSpeak = 0;
+    private String receiverNumber = "";
+    private String senderNumber = "";
+    private String provider = "";
+    private String check = "";
+
 
     @Override
     protected int getLayoutId() {
@@ -125,12 +133,16 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             } catch (NullPointerException nullPointerException) {
             }
         }
+
+        eventCallBackCtel();
+        toggleSpeakerCtel();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getViewContext().registerReceiver(callingEvent, new IntentFilter(PortSipService.ACTION_CALL_EVENT));
+        //Tạm thời comment
+        //getViewContext().registerReceiver(callingEvent, new IntentFilter(PortSipService.ACTION_CALL_EVENT));
     }
 
     @Override
@@ -138,6 +150,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         if (callingEvent != null)
             getViewContext().unregisterReceiver(callingEvent);
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_foward, R.id.iv_mic_off})
@@ -147,6 +160,9 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
         switch (view.getId()) {
             case R.id.iv_call_answer:
+                //Ctel
+                acceptCallCtel();
+
                 //createHistoryVHTIn();
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     changeCallLayout(Constants.CALL_TYPE_CALLING);
@@ -165,6 +181,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
             case R.id.iv_call_cancel:
                 createHistoryVHTIn();
+
                 Log.d(TAG, "iv_speaker clicked");
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     //createHistoryVHTIn();
@@ -198,6 +215,9 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
                 currentLine.reset();
                 ///getViewContext().finish();
+
+                //ctel
+                SipCmc.hangUp();
                 finishCall();
                 break;
 
@@ -215,18 +235,29 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_hold:
-                if (session.isHold) {
-                    int result = portSipSdk.unHold(session.sessionID);
-                    if (result == 0) {
-                        session.isHold = false;
-                        ivHold.setImageResource(R.drawable.ic_phone_paused);
+                if (isSpeak == 0) {
+                    if (!(currentLine.state == Session.CALL_STATE_FLAG.CONNECTED) || currentLine.isHold) {
+                        return;
                     }
-                } else {
-                    int result = portSipSdk.hold(session.sessionID);
-                    if (result == 0) {
-                        session.isHold = true;
-                        ivHold.setImageResource(R.drawable.ic_phone_paused_green);
+                    int result = portSipSdk.hold(currentLine.sessionID);
+                    if (result != 0) {
+                        return;
                     }
+                    currentLine.isHold = true;
+                    ivHold.setImageResource(R.drawable.ic_phone_paused_green);
+                    isSpeak++;
+                } else if (isSpeak == 1){
+                    if (!(currentLine.state == Session.CALL_STATE_FLAG.CONNECTED) || !currentLine.isHold) {
+                        return;
+                    }
+                    int result = portSipSdk.unHold(currentLine.sessionID);
+                    if (result != 0) {
+                        currentLine.isHold = false;
+                        return;
+                    }
+                    currentLine.isHold = false;
+                    ivHold.setImageResource(R.drawable.ic_phone_paused);
+                    isSpeak = 0;
                 }
                 break;
             default:
@@ -288,7 +319,9 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         break;
                 }
             }
-        }
+        } /*else if (MainFragment.CALL_CTEL.equals(action)) {
+            showSuccessToast("Cuộc gọi ctel");
+        }*/
     }
 
 
@@ -350,10 +383,22 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     case PortSipService.CALL_EVENT_SESSION_PROGRESS:
                         createHistoryVHTOut();
                         break;
+                    /*case MainFragment.CALL_CTEL:
+                        showSuccessToast("có cuộc gọi ctel");
+                        break;*/
                     default:
                         throw new IllegalArgumentException("error occurred when get event");
                 }
-            }
+            } /*else if (intent.getAction().equals(MainFragment.CALL_CTEL)) {
+                showSuccessToast("có cuộc gọi ctel");
+                tvCalling.setText("accepted");
+                chronometer.setVisibility(View.VISIBLE);
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                tvCalling.setVisibility(View.GONE);
+                Intent activityIntent = new Intent(getContext(), IncomingCallActivity.class);
+                startActivity(activityIntent);
+            }*/
         }
     }
 
@@ -362,25 +407,6 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         xSessionIdPostmanOut = "";
         ladingCode = "";
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(sticky = true)
-    public void onEvent(CustomItem customItem){
-        xSessionIdPostmanOut = customItem.getMessage();
-    }
-
-
 
     private void createHistoryVHTOut(){
         mPresenter.createCallHistoryVHTOut();
@@ -395,6 +421,155 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     public enum TypeBD13 {
         CREATE_BD13,
         LIST_BD13
+    }
+
+
+    private void eventCallBackCtel(){
+        SipCmc.addCallback(null, new PhoneCallback() {
+            @Override
+            public void incomingCall(LinphoneCall linphoneCall) {
+                super.incomingCall(linphoneCall);
+                Log.d("123123", "incomingCall Ctel: "+linphoneCall);
+                showSuccessToast("có cuộc gọi Ctel");
+                //inCommingCall();
+                check = "callctel";
+                if (check.equals("callctel")) {
+                    Intent activityIntent = new Intent(getContext(), IncomingCallActivity.class);
+                    startActivity(activityIntent);
+                }
+
+            }
+
+            @Override
+            public void outgoingInit() {
+                super.outgoingInit();
+                Log.d("123123", "outgoingInit");
+            }
+
+            @Override
+            public void callConnected(LinphoneCall linphoneCall) {
+                super.callConnected(linphoneCall);
+                Log.d("123123", "callConnected");
+                chronometer.setVisibility(View.VISIBLE);
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                tvCalling.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void callEnd(LinphoneCall linphoneCall) {
+                super.callEnd(linphoneCall);
+                tvCalling.setVisibility(View.VISIBLE);
+                Log.d("123123", "callEnd");
+                tvCalling.setText("call ended");
+                chronometer.stop();
+                chronometer.setVisibility(View.GONE);
+                finishCall();
+            }
+
+            @Override
+            public void callReleased() {
+                super.callReleased();
+                Log.d("123123", "callReleased");
+                finishCall();
+            }
+
+            @Override
+            public void error() {
+                super.error();
+                Log.d("123123", "error");
+                finishCall();
+            }
+
+            @Override
+            public void callStatus(int status) {
+                super.callStatus(status);
+                Log.d("123123", "callStatus: "+status);
+            }
+
+            @Override
+            public void callTimeRing(String time) {
+                super.callTimeRing(time);
+                Log.d("123123", "callTimeRing");
+            }
+
+            @Override
+            public void callTimeAnswer(String time) {
+                super.callTimeAnswer(time);
+                Log.d("123123", "callTimeAnswer");
+            }
+
+            @Override
+            public void callTimeEnd(String time) {
+                super.callTimeEnd(time);
+                Log.d("123123", "callTimeEnd");
+            }
+
+            @Override
+            public void callId(String callId) {
+                super.callId(callId);
+                Log.d("123123", "callId");
+            }
+
+            @Override
+            public void callPhoneNumber(String phoneNumber) {
+                super.callPhoneNumber(phoneNumber);
+                Log.d("123123", "callPhoneNumber: "+ phoneNumber);
+            }
+
+            @Override
+            public void callDuration(long duration) {
+                super.callDuration(duration);
+                Log.d("123123", "callDuration: "+duration);
+            }
+        });
+    }
+
+    private void inCommingCall() {
+        tvPhoneNumber.setText(session.displayName);///
+        ivCallAnswer.setImageResource(R.drawable.ic_call_hang_green);
+        ivCallCancel.setImageResource(R.drawable.ic_call_end_red);
+        ivCallEnd.setVisibility(View.INVISIBLE);
+        ivMicOff.setVisibility(View.GONE);
+        ivFoward.setVisibility(View.GONE);
+        ivHold.setVisibility(View.GONE);
+    }
+
+    private void toggleSpeakerCtel(){
+        ivCallCancel.setOnClickListener(v -> {
+            if (isSpeak == 0){
+                SipCmc.toggleSpeaker(true);
+                ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
+                isSpeak++;
+            } else if (isSpeak == 1){
+                SipCmc.toggleSpeaker(false);
+                ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
+                isSpeak = 0;
+            }
+        });
+    }
+
+    private void acceptCallCtel(){
+        try {
+            SipCmc.acceptCall();
+        }catch (NullPointerException nullPointerException){}
+
+    }
+
+    private void transferCallCtel(){
+        //SipCmc.transferCall();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //EventBus.getDefault().register(this);
+    }
+
+
+    @Subscribe(sticky = true)
+    public void onEvent(CustomItem customItem){
+        xSessionIdPostmanOut = customItem.getMessage();
     }
 
 }
