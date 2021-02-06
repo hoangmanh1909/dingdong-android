@@ -265,6 +265,10 @@ public class CommonObject extends RealmObject {
         return statusCode;
     }
 
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
     public String getiD() {
         return iD;
     }

@@ -127,7 +127,7 @@
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginRight="7dp"
             android:layout_toLeftOf="@+id/ll_scan_qr"
             android:maxLines="1"
             android:textColor="@color/black"

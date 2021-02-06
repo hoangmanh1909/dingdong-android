@@ -38,6 +38,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -575,6 +576,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void submit() {
         //checkInfo(authenType);
+        //checkImage(authenType);
 
         if (mDeliveryType == 2) {
             List<DeliveryPostman> listSelected = getItemSelected();
@@ -590,7 +592,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
-
                     return;
                 } else if (authenType == 2 && !checkImage(authenType)) {
                     return;
@@ -727,6 +728,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         rbVerifyImage.setOnCheckedChangeListener((v, b) -> {
             if (b) {
                 checkImageClick = true;
+                authenType = 2;
                 llVerifyImage.setVisibility(View.VISIBLE);
             } else {
                 checkImageClick = false;
@@ -1087,7 +1089,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mPresenter.onTabRefresh();
         } catch (NullPointerException nullPointerException) {
         }
-
     }
 
     @Override
@@ -1176,11 +1177,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (rbVerifyInfo.isChecked()) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
                 //llCaptureVerify.setVisibility(View.VISIBLE);
-                llVerifyImage.setVisibility(View.VISIBLE);//add
+                llVerifyImage.setVisibility(View.GONE);//add
             } else {
                 llVerifyInfo.setVisibility(View.GONE);
                 //llCaptureVerify.setVisibility(View.GONE);
                 llVerifyImage.setVisibility(View.GONE);//add
+            }
+            if (rbVerifyImage.isChecked()) {
+                authenType = 2;
             }
         } else if (authenType == 1) {
             llVerifyInfo.setVisibility(View.VISIBLE);
@@ -1222,30 +1226,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (getAuthenType() == -1 || getAuthenType() == -2)
             return false;
         else return true;
-    }
-
-    private void checkInfos() {
-        if (TextUtils.isEmpty(edtGTTTDateAccepted.getText()) || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) ||
-                TextUtils.isEmpty(edtDateOfBirth.getText()) || TextUtils.isEmpty(tvGTTT.getText()) || TextUtils.isEmpty(edtUserAddress.getText())) {
-            showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
-        }
-
-        /*if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
-            showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
-        }
-
-        if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
-            showErrorToast(getViewContext().getString(R.string.you_have_not_entered_date_of_birth));
-        }
-
-        if (TextUtils.isEmpty(tvGTTT.getText())) {
-            showErrorToast(getViewContext().getString(R.string.you_have_not_enter_number_of_profile));
-        }
-
-        if (TextUtils.isEmpty(edtUserAddress.getText())) {
-            //showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
-            showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
-        }*/
     }
 
     private boolean checkInfo(int authenType) {

@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
@@ -32,10 +35,13 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.google.common.collect.Iterables;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -73,7 +79,9 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     private ArrayList<ItemHoanTatNhieuTin> mListHoanTatNhieuTin;
     private int checkedPositions = 0;
     private boolean scanBarcode = false;
-    private boolean click = false;
+    private SparseBooleanArray checkbox;
+
+
 
     public static XacNhanDiaChiFragment getInstance() {
         return new XacNhanDiaChiFragment();
@@ -104,15 +112,18 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         mList = new ArrayList<>();
         mListParcel = new ArrayList<>();
         mListConfirm = new ArrayList<>();
-        /*mCalendar = Calendar.getInstance();
-
-        mParcelAdapter = new ParcelAddressAdapter(getActivity(), mListParcel);*/
 
         mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
                 if (mPresenter.getType() == 4) {
+                    if (holder.itemView.isSelected()) {
+                        holder.cbSelected.setChecked(true);
+                    } else {
+                        holder.cbSelected.setChecked(false);
+                    }
+
                     //chọn 1 item
                     if (checkedPositions == -1) {
                         holder.cbSelected.setChecked(false);
@@ -128,7 +139,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                                 holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                                 selectPosition = 1;
                             } else if (selectPosition == 1) {
-                                //click lần 2 hoặc click sang item khác sẽ nhảy vào
+                                //click lần 2 hoặc click sang item khác
                                 Log.d("123123", "chọn");
                                 holder.cbSelected.setChecked(true);
                                 holder.getItem(position).setSelected(true);
@@ -143,7 +154,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     }
 
                     holder.itemView.setOnClickListener(v -> {
-                        /*holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                       /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
                         //chọn đúng item sau khi tìm kiếm
@@ -230,7 +241,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
-                public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
+                public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
@@ -298,18 +309,25 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     private void confirmParcelCode() {
         int gram = 0;
         int totalGram = 0;
+        String code = "";
+        String matin = "";
+        List<String> listCode;
+        listCode = new ArrayList<>();
         mListHoanTatNhieuTin = new ArrayList<>();
         ArrayList<ParcelCodeInfo> listParcel = new ArrayList<>();
         ArrayList<CommonObject> listCommon = new ArrayList<>();
 
         for (CommonObject item : mAdapter.getListFilter()) {
             int count = item.getListParcelCode().size();
-            if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P6".equals(item.getStatusCode()) /*&& item.isSelected()*/) {
+            item.getCode();
+            if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) /*|| "P6".equals(item.getStatusCode())*/ /*&& item.isSelected()*/) {
                 for (ParcelCodeInfo itemParcel : item.getListParcelCode()) {
                     if (itemParcel.isSelected()) {
                         listParcel.add(itemParcel);
                         gram = itemParcel.getWeight();
                         totalGram += gram;
+                        code = itemParcel.getOrderCode();
+                        listCode.add(code);
                         ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(itemParcel.getParcelCode(), count >= 1 ? Constants.ADDRESS_SUCCESS : Constants.ADDRESS_UNSUCCESS,
                                 mUserInfo.getiD(), itemParcel.getOrderPostmanId() + "", itemParcel.getOrderId() + "");
                         mListHoanTatNhieuTin.add(tin);
@@ -318,48 +336,36 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             }
         }
 
-        EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram));
+        EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
         if (!listParcel.isEmpty()) {
             mPresenter.showConfirmParcelAddress(listParcel);
-        } else if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")){
+        } else {
+            /*for (CommonObject item : mAdapter.getListFilter()) {
+                matin = item.getCode();
+                if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")) {
+                    mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
+                }
+            }*/
+            if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") /*|| itemAtPosition.getStatusCode().equals("P6")*/) {
+                mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
+                matin = itemAtPosition.getCode();
+                EventBus.getDefault().postSticky(new CustomCode(matin));
+            }
+        }
+        //EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
+        Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): " + "mListHoanTatNhieuTin " + mListHoanTatNhieuTin + " " + "gram " + totalGram + " " + "mListCode " + listCode + " " + "matin " + matin);
+        //EventBus.getDefault().postSticky(new CustomCode(matin));
+
+        /*else if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")){
             //Toast.showToast(getActivity(), "Chưa tin nào được chọn");
             mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
-        }
+        }*/
     }
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
-        ArrayList<CommonObject> listG = new ArrayList<>();
-        for (CommonObject item : list) {
-
-            CommonObject itemExists = Iterables.tryFind(listG,
-                    input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
-                            && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
-            ).orNull();
-            if (itemExists == null) {
-                item.addOrderPostmanID(item.getOrderPostmanID());
-                item.addCode(item.getCode());
-                //Mới bị lỗi k rõ nguyên nhân nên phải để try catch
-                try {
-                    item.weightS += Integer.parseInt(item.getWeigh());
-                } catch (Exception e) {
-                }
-
-                listG.add(item);
-            } else {
-                for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
-                    itemExists.getListParcelCode().add(parcelCodeInfo);
-                }
-                itemExists.addOrderPostmanID(item.getOrderPostmanID());
-                itemExists.addCode(item.getCode());
-                try {
-                    itemExists.weightS += Integer.parseInt(item.getWeigh());
-                } catch (Exception e) {
-                }
-            }
-        }
         mList.clear();
-        mList.addAll(listG);
+        mList.addAll(list);
         edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {

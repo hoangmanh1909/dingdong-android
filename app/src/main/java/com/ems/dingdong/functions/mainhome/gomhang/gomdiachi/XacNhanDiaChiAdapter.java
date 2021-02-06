@@ -11,8 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
@@ -21,10 +23,13 @@ import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static android.view.View.GONE;
 
 public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdapter.HolderView> implements Filterable {
@@ -39,6 +44,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
     int selectParcel = 0;
     int selectPosition = 0;
     private int checkedPosition = 0;
+    private boolean check = true;
 
     public XacNhanDiaChiAdapter(Context context, int type, List<CommonObject> items) {
         mType = type;
@@ -75,16 +81,14 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
-                        boolean checkCode= false;
-                        for(ParcelCodeInfo item: row.getListParcelCode())
-                        {
+                        boolean checkCode = false;
+                        for (ParcelCodeInfo item : row.getListParcelCode()) {
                             if (item.getParcelCode().toLowerCase().contains(charString.toLowerCase())) {
                                 checkCode = true;
                                 break;
                             }
                         }
-                        if (!checkCode)
-                        {
+                        if (!checkCode) {
                             if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
                                     || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
                                     || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
@@ -92,7 +96,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                                 checkCode = true;
                             }
                         }
-                        if(checkCode){
+                        if (checkCode) {
                             filteredList.add(row);
                         }
                     }
@@ -209,15 +213,16 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
                 cbSelected.setOnCheckedChangeListener((v1, v2) -> {
                     if (v2) {
-                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                        //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
                     } else {
-                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                     }
                 });
                 cbSelected.setChecked(item.isSelected());
 
             } else if (mType == 4) {
                 cbSelected.setClickable(false);
+
                 //chọn 1 item
 //                if (checkedPosition == -1) {
 //                    cbSelected.setChecked(false);
@@ -253,6 +258,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         for (ParcelCodeInfo info : item.getListParcelCode()) {
                             info.setSelected(true);
                         }
+
                     } else {
                         linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         cbSelected.setChecked(false);
@@ -264,7 +270,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 });
                 cbSelected.setChecked(item.isSelected());
 
-                if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
+                if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())/* || "P6".equals(item.getStatusCode())*/) {
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
                     cbSelected.setVisibility(View.VISIBLE);
                     if (cbSelected.isChecked()) {
@@ -300,6 +306,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 }
             }
             if (mType == 4) {//2
+                // trong đoan này à
                 cbSelected.setClickable(false);
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
                 if (parcelCodeSearch.equals("")) {
@@ -390,9 +397,11 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         if (!((HolderView) holder).cbSelectedParcel.isChecked()) {
                             ((HolderView) holder).cbSelectedParcel.setChecked(true);
                             ((HolderView) holder).getItem(position).setSelected(true);
+                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
                         } else {
                             ((HolderView) holder).cbSelectedParcel.setChecked(false);
                             ((HolderView) holder).getItem(position).setSelected(false);
+                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
                     });
 
@@ -400,9 +409,11 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         if (v2) {
                             ((HolderView) holder).cbSelectedParcel.setChecked(true);
                             ((HolderView) holder).getItem(position).setSelected(true);
+                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
                         } else {
                             ((HolderView) holder).cbSelectedParcel.setChecked(false);
                             ((HolderView) holder).getItem(position).setSelected(false);
+                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
                     });
 

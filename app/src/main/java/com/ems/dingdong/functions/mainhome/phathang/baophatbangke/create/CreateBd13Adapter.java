@@ -326,11 +326,11 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
             if (mTypeBD13 == TypeBD13.LIST_BD13) {
                 img_map.setVisibility(View.VISIBLE);
-                //img_contact_phone.setVisibility(View.VISIBLE);
+                img_contact_phone.setVisibility(View.VISIBLE);
                 img_ContactPhone_extend.setVisibility(View.VISIBLE);
             } else {
                 img_map.setVisibility(View.GONE);
-                //img_contact_phone.setVisibility(View.GONE);
+                img_contact_phone.setVisibility(View.GONE);
                 img_ContactPhone_extend.setVisibility(View.GONE);
             }
             if (item.getNewReceiverAddress() != null) {

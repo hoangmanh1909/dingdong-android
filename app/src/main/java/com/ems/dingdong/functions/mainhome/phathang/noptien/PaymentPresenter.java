@@ -86,7 +86,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         mView.showListSuccess(eWalletDataResult.getListEWalletData());
                         mView.hideProgress();
                         if (eWalletDataResult.getListEWalletData().size() == 0) {
-                            titleChanged(eWalletDataResult.getListEWalletData().size(),0);
+                            titleChanged(eWalletDataResult.getListEWalletData().size(), 0);
                             mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                         }
                     }
