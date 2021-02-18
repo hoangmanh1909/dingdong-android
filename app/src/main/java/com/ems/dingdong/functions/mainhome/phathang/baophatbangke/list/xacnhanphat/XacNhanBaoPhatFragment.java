@@ -592,6 +592,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
+
                     return;
                 } else if (authenType == 2 && !checkImage(authenType)) {
                     return;

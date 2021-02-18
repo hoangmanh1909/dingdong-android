@@ -15,7 +15,6 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.SignDialog;
-import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomCode;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomListHoanTatNhieuTin;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
