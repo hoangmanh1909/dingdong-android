@@ -19,6 +19,12 @@ public class ParcelCodeInfo extends RealmObject {
     private long orderId;
     @SerializedName("OrderPostmanId")
     private long orderPostmanId;
+    @SerializedName("OrderCode")
+    private String orderCode;
+
+    public String getOrderCode() {
+        return orderCode;
+    }
 
     private boolean selected;
     public String getParcelCode() {

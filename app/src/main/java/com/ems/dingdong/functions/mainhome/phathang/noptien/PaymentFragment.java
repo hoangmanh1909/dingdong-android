@@ -193,7 +193,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void showListSuccess(List<EWalletDataResponse> eWalletDataResponses) {
         if (null != getViewContext()) {
-            if (!eWalletDataResponses.isEmpty()) {
+            if (eWalletDataResponses != null) {
                 long cod = 0;
                 long fee = 0;
                 for (EWalletDataResponse item : eWalletDataResponses) {
@@ -207,7 +207,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
                 mAdapter.setListFilter(eWalletDataResponses);
-            } else if (eWalletDataResponses.isEmpty()) {
+            } else {
                 if (mPresenter.getCurrentTab() == 0) {
 //                    showErrorToast("Không tìm thấy dữ liệu phù hợp");
                 }

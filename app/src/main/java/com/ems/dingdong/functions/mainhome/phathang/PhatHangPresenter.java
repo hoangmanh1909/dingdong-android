@@ -11,6 +11,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.Create
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.utiles.Constants;
@@ -79,6 +80,6 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showPayment() {
-        new PaymentPresenter(mContainerView).pushView();
+        new TabPaymentPresenter(mContainerView).pushView();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiPresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
@@ -23,6 +24,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     ArrayList<ConfirmOrderPostman> mListRequest;
     ArrayList<CommonObject> mListCommon;
     private CommonObject commonObject;
+    ArrayList<ParcelCodeInfo> mListOrderCode;
 
 
     public ChiTietHoanThanhTinTheoDiaChiPresenter(ContainerView containerView) {
@@ -185,6 +187,11 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
 
     public ChiTietHoanThanhTinTheoDiaChiPresenter setCommonObject(CommonObject commonObject) {
         this.commonObject = commonObject;
+        return this;
+    }
+
+    public ChiTietHoanThanhTinTheoDiaChiPresenter setListOrderCode(ArrayList<ParcelCodeInfo> listOrderCode) {
+        this.mListOrderCode = listOrderCode;
         return this;
     }
 

@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
@@ -36,6 +38,8 @@ public class ParcelAddressAdapter extends RecyclerBaseAdapter {
         public CheckBox cbSelectedParcel;
         @BindView(R.id.img_remove_lading_code)
         ImageView imgRemoveLadingCode;
+        @BindView(R.id.layout_parcel_code)
+        RelativeLayout layoutParcelCode;
 
         public HolderView(View itemView) {
             super(itemView);

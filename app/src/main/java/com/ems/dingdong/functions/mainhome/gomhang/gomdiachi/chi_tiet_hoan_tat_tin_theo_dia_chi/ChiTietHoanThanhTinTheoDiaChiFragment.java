@@ -15,6 +15,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomCode;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomListHoanTatNhieuTin;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
@@ -28,6 +29,7 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -56,6 +58,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     CustomTextView tvTotalParcelCodes;
     @BindView(R.id.tv_parcel_codes)
     CustomTextView tvParcelCodes;
+    @BindView(R.id.tv_total_code)
+    CustomTextView tvTotalCode;
     @BindView(R.id.tv_name_receiver)
     CustomTextView tvNameReceiver;
     @BindView(R.id.tv_phone_receiver)
@@ -101,6 +105,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     private boolean isImage = false;
     private String mFile = "";
     private String parcels = "";
+    private String code = "";
     private ArrayList<ReasonInfo> mListReason;
     private ArrayList<ReasonInfo> mListReasons;
     private ItemBottomSheetPickerUIFragment pickerUIReason;
@@ -108,6 +113,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     private int gram = 100;
     private boolean checkUnSuccess = false;
     private boolean checkFailure = false;
+    private List<String> mListCode;
+    private String matin = "";
 
     public static ChiTietHoanThanhTinTheoDiaChiFragment getInstance() {
         return new ChiTietHoanThanhTinTheoDiaChiFragment();
@@ -129,6 +136,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         mListHoanTatNhieuTin = new ArrayList<>();
         mListCommonObject = new ArrayList<>();
         mListRequest = (ArrayList<ConfirmOrderPostman>) mPresenter.getList();
+        mListCode = new ArrayList<>();
 
         try {
             for (ConfirmOrderPostman item : mListRequest) {
@@ -141,15 +149,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             parcels = parcels.substring(0, parcels.length() - 2);
         }
         tvParcelCodes.setText("" + parcels);
-
-        try {
-            if (mListHoanTatNhieuTin.isEmpty()) {
-                tvTotalParcelCodes.setText("Tổng bưu gửi: 0");
-            } else {
-                tvTotalParcelCodes.setText("Tổng bưu gửi: " + mListRequest.size());
-            }
-        } catch (NullPointerException nullPointerException) {
-        }
 
         listImage = new ArrayList<>();
         imageAdapter = new ImageCaptureAdapter(getViewContext(), listImage);
@@ -201,10 +200,9 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 radSuccess.setTextColor(getResources().getColor(R.color.black));
                 radFailure.setTextColor(getResources().getColor(R.color.black));
                 layoutReasonFailure.setVisibility(View.GONE);
-                llSuccess.setVisibility(View.GONE);
+                llSuccess.setVisibility(View.VISIBLE);
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
-                llSuccess.setVisibility(View.GONE);
                 break;
             case R.id.rad_failure:
                 layoutReasonFailure.setVisibility(View.VISIBLE);
@@ -212,7 +210,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 radSuccess.setTextColor(getResources().getColor(R.color.black));
                 radUnSuccess.setTextColor(getResources().getColor(R.color.black));
                 layoutReasonUnSuccess.setVisibility(View.GONE);
-                llSuccess.setVisibility(View.GONE);
+                llSuccess.setVisibility(View.VISIBLE);
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
                 break;
@@ -261,8 +259,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 .setConfirmText("Hoàn tất")
                 .setCancelText("Từ chối")
                 .setTitleText("Xác nhận hoàn tất tin")
-                .setContentText(String.format("Bạn có muốn hoàn tất: %s", FluentIterable.from(mListHoanTatNhieuTin)
-                                .filter(s -> s.getStatus() == Constants.ADDRESS_SUCCESS).toList().size()) + " tin với tổng khối lượng " + NumberUtils.formatPriceNumber(gram) + " gram không?"
+                .setContentText(/*String.format("Bạn có muốn hoàn tất: %s", FluentIterable.from(mListHoanTatNhieuTin)
+                                .filter(s -> s.getStatus() == Constants.ADDRESS_SUCCESS).toList().size())*/ "Bạn có muốn hoàn tất: "+mListHoanTatNhieuTin.size() + " tin với tổng khối lượng " + NumberUtils.formatPriceNumber(gram) + " gram không?"
                         /*+ String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mListHoanTatNhieuTin).filter(s -> s.getStatus() == Constants.ADDRESS_UNSUCCESS || s.getStatus() == Constants.ADDRESS_FAILURE).toList().size())*/)
                 .setConfirmClickListener(sweetAlertDialog -> {
                     sweetAlertDialog.dismiss();
@@ -313,9 +311,11 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
             if (checkUnSuccess && mReason == null) {
                 Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi không thành công");
+
                 return;
             } else if (checkFailure && mReason == null) {
                 Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi thất bại");
+
                 return;
             }
             mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
@@ -535,6 +535,20 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     public void eventListItem(CustomListHoanTatNhieuTin customListHoanTatNhieuTin) {
         mListHoanTatNhieuTin = customListHoanTatNhieuTin.getList();
         gram = customListHoanTatNhieuTin.getGram();
+        mListCode = customListHoanTatNhieuTin.getCode();
+        matin = customListHoanTatNhieuTin.getMatin();
+        Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): "+ "mListHoanTatNhieuTin "+ mListHoanTatNhieuTin + " "+"gram " + gram + " "+ "mListCode "+ mListCode + " "+"matin "+matin);
+
+        /*for (int i = 0; i < mListCode.size(); i++) {
+            code += mListCode.get(i) + ", ";
+        }
+        tvTotalCode.setText("Tổng tin: " + mListCode.size() + "\n\n" + code);*/
+
+        tvTotalParcelCodes.setText("Tổng bưu gửi: " + mListHoanTatNhieuTin.size());
+
     }
+
+    /*@Subscribe(sticky = true)
+    public void */
 
 }

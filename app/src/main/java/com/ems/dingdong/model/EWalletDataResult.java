@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class EWalletDataResult extends SimpleResult {
-    @SerializedName("Value")
+    @SerializedName("ListValue")
     List<EWalletDataResponse> listEWalletData;
 
     public List<EWalletDataResponse> getListEWalletData() {

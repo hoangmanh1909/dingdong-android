@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
 import android.app.Activity;
 import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
@@ -16,8 +17,16 @@ import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.common.collect.Iterables;
+
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -45,6 +54,15 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
         return new XacNhanDiaChiInteractor(this);
     }
 
+//    int timphantu (ArrayList<CommonObject> list,int n, String x) {
+//        for (int i = 0 ; i < n;i++){
+//            list.get(i).getReceiverAddress().equals(x){
+//                return i;
+//            }
+//        }
+//        return -1;
+//    }
+
     @Override
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
         mView.showProgress();
@@ -54,7 +72,40 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getList());
+                    ArrayList<CommonObject> list = response.body().getList();
+                    ArrayList<CommonObject> listG = new ArrayList<>();
+                    for (CommonObject item : list) {
+                        if (item.getStatusCode().equals("P1")) item.setStatusCode("P5");
+                        if (item.getStatusCode().equals("P4")) item.setStatusCode("P6");
+                        CommonObject itemExists = Iterables.tryFind(listG,
+                                input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
+                                        && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
+                        ).orNull();
+
+                        if (itemExists == null) {
+                            item.addOrderPostmanID(item.getOrderPostmanID());
+                            item.addCode(item.getCode());
+                            //
+                            try {
+                                item.weightS += Integer.parseInt(item.getWeigh());
+                            } catch (Exception e) {
+                            }
+                            listG.add(item);
+                        } else {
+                            for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
+                                itemExists.getListParcelCode().add(parcelCodeInfo);
+                            }
+                            itemExists.addOrderPostmanID(item.getOrderPostmanID());
+                            itemExists.addCode(item.getCode());
+                            try {
+                                itemExists.weightS += Integer.parseInt(item.getWeigh());
+                            } catch (Exception e) {
+                            }
+                        }
+                    }
+
+
+                    mView.showResponseSuccess(listG);
                 } else {
                     mView.showError(response.body().getMessage());
                 }
