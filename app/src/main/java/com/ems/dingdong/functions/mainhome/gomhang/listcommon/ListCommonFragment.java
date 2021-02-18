@@ -254,7 +254,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
-        //mList.clear(); //khắc phục search nhưng click chọn bị sai vị trí
+        mList.clear(); //khắc phục search nhưng click chọn bị sai vị trí
         mList.addAll(list);
         edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();

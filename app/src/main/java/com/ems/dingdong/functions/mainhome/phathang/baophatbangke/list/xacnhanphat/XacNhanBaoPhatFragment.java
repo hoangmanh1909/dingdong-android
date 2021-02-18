@@ -14,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
@@ -52,10 +54,12 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -316,10 +320,54 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         listImages = new ArrayList<>();
         listImageVerify = new ArrayList<>();
         listImageOther = new ArrayList<>();
-        imageAvatarAdapter = new ImageCaptureAdapter(getViewContext(), listImagesAvatar);
-        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages);
-        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), listImageVerify);
-        imageOtherAdapter = new ImageCaptureAdapter(getViewContext(), listImageOther);
+        imageAvatarAdapter = new ImageCaptureAdapter(getViewContext(), listImagesAvatar) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImagesAvatar.remove(position);
+                    imageAvatarAdapter.notifyItemRemoved(position);
+                    imageAvatarAdapter.notifyItemRangeChanged(position, listImagesAvatar.size());
+                });
+            }
+        };
+        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImages.remove(position);
+                    imageAdapter.notifyItemRemoved(position);
+                    imageAdapter.notifyItemRangeChanged(position, listImages.size());
+                });
+            }
+        };
+        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), listImageVerify) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImageVerify.remove(position);
+                    imageVerifyAdapter.notifyItemRemoved(position);
+                    imageVerifyAdapter.notifyItemRangeChanged(position, listImageVerify.size());
+                });
+            }
+        };
+        imageOtherAdapter = new ImageCaptureAdapter(getViewContext(), listImageOther) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImageOther.remove(position);
+                    imageOtherAdapter.notifyItemRemoved(position);
+                    imageOtherAdapter.notifyItemRangeChanged(position, listImageOther.size());
+                });
+            }
+        };
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
@@ -359,6 +407,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
 
+    }
+
+    public void removeAt(String type, int position) {
+        switch (type) {
+            case "AVARTAR": {
+                listImagesAvatar.remove(position);
+                imageAvatarAdapter.notifyItemRemoved(position);
+                imageAvatarAdapter.notifyItemRangeChanged(position, listImagesAvatar.size());
+            }
+        }
 
     }
 
@@ -592,7 +650,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
-
                     return;
                 } else if (authenType == 2 && !checkImage(authenType)) {
                     return;
@@ -617,6 +674,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_real_receiver_name));
                 return;
             }*/
+            String[] arrImages = new String[listImages.size()];
+            for (int i = 0; i < listImages.size(); i++) {
+                if (!TextUtils.isEmpty(listImages.get(0).getText()))
+                    arrImages[i] = listImages.get(0).getText();
+            }
+            mFile = TextUtils.join(";", arrImages);
 
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
@@ -634,6 +697,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             else
                                 infoVerify.setAuthenType(authenType);
                         }
+
 
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                             mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
@@ -954,31 +1018,51 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void showImage(String file) {
+    public void showImage(String file, String path) {
         if (null != getViewContext()) {
             if (isCaptureAvatar) {
-                mFileAvatar = file;
+//                mFileAvatar = file;
+                for (int i = 0; i < listImagesAvatar.size(); i++) {
+                    if (listImagesAvatar.get(i).getValue().equals(path)) {
+                        listImagesAvatar.get(i).setText(file);
+                    }
+                }
             } else if (isCaptureVerify) {
-                if (mFileVerify.equals("")) {
-                    mFileVerify = file;
-                } else {
-                    mFileVerify += ";";
-                    mFileVerify += file;
+//                if (mFileVerify.equals("")) {
+//                    mFileVerify = file;
+//                } else {
+//                    mFileVerify += ";";
+//                    mFileVerify += file;
+//                }
+                for (int i = 0; i < listImageVerify.size(); i++) {
+                    if (listImageVerify.get(i).getValue().equals(path)) {
+                        listImageVerify.get(i).setText(file);
+                    }
                 }
             } else if (isCapture) {
-                if (mFile.equals("")) {
-                    mFile = file;
-                } else {
-                    mFile += ";";
-                    mFile += file;
+                for (int i = 0; i < listImages.size(); i++) {
+                    if (listImages.get(i).getValue().equals(path)) {
+                        listImages.get(i).setText(file);
+                    }
                 }
+//                if (mFile.equals("")) {
+//                    mFile = file;
+//                } else {
+//                    mFile += ";";
+//                    mFile += file;
+//                }
             } else if (isCaptureOther) {
-                if (mFileOther.equals("")) {
-                    mFileOther = file;
-                } else {
-                    mFileOther += ";";
-                    mFileOther += file;
+                for (int i = 0; i < listImageOther.size(); i++) {
+                    if (listImageOther.get(i).getValue().equals(path)) {
+                        listImageOther.get(i).setText(file);
+                    }
                 }
+//                if (mFileOther.equals("")) {
+//                    mFileOther = file;
+//                } else {
+//                    mFileOther += ";";
+//                    mFileOther += file;
+//                }
             }
         }
     }
@@ -1270,11 +1354,46 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private boolean checkImage(int authenType) {
-        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
+        mFileAvatar = "";
+        mFileVerify = "";
+        mFileOther = "";
+
+        String[] arrAvartar = new String[listImagesAvatar.size()];
+        for (int i = 0; i < listImagesAvatar.size(); i++) {
+            if (!TextUtils.isEmpty(listImagesAvatar.get(0).getText()))
+                arrAvartar[i] = listImagesAvatar.get(0).getText();
+        }
+
+        String[] arrVerify = new String[listImageVerify.size()];
+        for (int i = 0; i < listImageVerify.size(); i++) {
+            if (!TextUtils.isEmpty(listImageVerify.get(0).getText()))
+                arrVerify[i] = listImageVerify.get(0).getText();
+        }
+
+        String[] arrOther = new String[listImageOther.size()];
+        for (int i = 0; i < listImageOther.size(); i++) {
+            if (!TextUtils.isEmpty(listImageOther.get(0).getText()))
+                arrOther[i] = listImageOther.get(0).getText();
+        }
+
+
+//        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
+//            if (authenType != 0)
+//                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
+//            return false;
+//        }
+        if (arrAvartar.length == 0 && arrOther.length == 0 && arrVerify.length == 0) {
             if (authenType != 0)
                 showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
             return false;
+        } else {
+            mFileAvatar = TextUtils.join(";", arrAvartar);
+            mFileVerify = TextUtils.join(";", arrVerify);
+            mFileOther = TextUtils.join(";", arrOther);
+
         }
+
+
         return true;
     }
 

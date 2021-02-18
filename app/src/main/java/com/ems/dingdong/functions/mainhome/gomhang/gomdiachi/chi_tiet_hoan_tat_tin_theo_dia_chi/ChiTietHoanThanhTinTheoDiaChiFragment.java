@@ -3,10 +3,13 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.log.Logger;
@@ -15,6 +18,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomCode;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomListHoanTatNhieuTin;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
@@ -150,7 +154,17 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         tvParcelCodes.setText("" + parcels);
 
         listImage = new ArrayList<>();
-        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImage);
+        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImage){
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImage.remove(position);
+                    imageAdapter.notifyItemRemoved(position);
+                    imageAdapter.notifyItemRangeChanged(position, listImage.size());
+                });
+            }
+        };
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImage);
         recyclerImage.setAdapter(imageAdapter);
 
@@ -259,10 +273,16 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 .setCancelText("Từ chối")
                 .setTitleText("Xác nhận hoàn tất tin")
                 .setContentText(/*String.format("Bạn có muốn hoàn tất: %s", FluentIterable.from(mListHoanTatNhieuTin)
-                                .filter(s -> s.getStatus() == Constants.ADDRESS_SUCCESS).toList().size())*/ "Bạn có muốn hoàn tất: "+mListHoanTatNhieuTin.size() + " tin với tổng khối lượng " + NumberUtils.formatPriceNumber(gram) + " gram không?"
+                                .filter(s -> s.getStatus() == Constants.ADDRESS_SUCCESS).toList().size())*/ "Bạn có muốn hoàn tất tin với "+ mListHoanTatNhieuTin.size() + " bưu gửi, tổng khối lượng " + NumberUtils.formatPriceNumber(gram) + " gram không?"
                         /*+ String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mListHoanTatNhieuTin).filter(s -> s.getStatus() == Constants.ADDRESS_UNSUCCESS || s.getStatus() == Constants.ADDRESS_FAILURE).toList().size())*/)
                 .setConfirmClickListener(sweetAlertDialog -> {
                     sweetAlertDialog.dismiss();
+                    String[] arrImage = new String[listImage.size()];
+                    for(int i = 0;i< listImage.size() ;i++){
+                        if(!TextUtils.isEmpty(listImage.get(i).getText()))
+                            arrImage[i] = listImage.get(i).getText();
+                    }
+                    mFile = TextUtils.join(";",arrImage);
                     if (mListHoanTatNhieuTin.isEmpty()) {
                         collectOderPostmanNoPostage();
                     } else {
@@ -336,6 +356,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             hoanTatTinRequest.setEmployeeID(it.getEmployeeId());
             hoanTatTinRequest.setOrderPostmanID(it.getOrderPostmanId());
             hoanTatTinRequest.setOrderID(it.getOrderId());
+
             hoanTatTinRequest.setFile(mFile);
             hoanTatTinRequest.setConfirmSignature(mSign);
             hoanTatTinRequest.setShipmentCode(it.getShipmentCode());
@@ -449,15 +470,15 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     }
 
     @Override
-    public void showImage(String file) {
+    public void showImage(String file,String path) {
         if (null != getViewContext()) {
             if (isImage) {
-                if (mFile.equals("")) {
-                    mFile = file;
-                } else {
-                    mFile += ";";
-                    mFile += file;
+                for(int i = 0;i < listImage.size(); i++){
+                    if(listImage.get(i).getValue().equals(path)){
+                        listImage.get(i).setText(file);
+                    }
                 }
+
             }
         }
     }

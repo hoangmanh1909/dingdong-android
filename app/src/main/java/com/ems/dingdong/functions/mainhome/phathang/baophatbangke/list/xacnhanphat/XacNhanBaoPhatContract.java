@@ -130,7 +130,7 @@ public interface XacNhanBaoPhatContract {
          *
          * @param file path file.
          */
-        void showImage(String file);
+        void showImage(String file,String path);
 
         /**
          * Delete file from server and local.

@@ -11,20 +11,28 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PushOnClickParcelAdapter;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static android.view.View.GONE;
 
 public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdapter.HolderView> implements Filterable {
@@ -139,13 +147,13 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         @BindView(R.id.tv_status)
         CustomTextView tvStatus;
         @BindView(R.id.recycler)
-        RecyclerView recycler;
+        public RecyclerView recycler;
         @BindView(R.id.tv_weight)
         CustomTextView tvWeight;
         @BindView(R.id.linear_layout)
         LinearLayout linearLayout;
 
-        ParcelAddressAdapter adapter;
+        public ParcelAddressAdapter adapter;
         ParcelConfirmsAdapter confirmsAdapter;
 
         public HolderView(View itemView) {
@@ -301,6 +309,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 }
             }
             if (mType == 4) {//2
+                // trong đoan này à
                 cbSelected.setClickable(false);
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
                 if (parcelCodeSearch.equals("")) {
@@ -392,11 +401,13 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                             ((HolderView) holder).cbSelectedParcel.setChecked(true);
                             ((HolderView) holder).getItem(position).setSelected(true);
                             ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                            EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
                         } else {
                             ((HolderView) holder).cbSelectedParcel.setChecked(false);
                             ((HolderView) holder).getItem(position).setSelected(false);
                             ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
+                        EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
                     });
 
                     ((HolderView) holder).cbSelectedParcel.setOnCheckedChangeListener((v1, v2) -> {
@@ -404,18 +415,20 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                             ((HolderView) holder).cbSelectedParcel.setChecked(true);
                             ((HolderView) holder).getItem(position).setSelected(true);
                             ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                            EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
                         } else {
                             ((HolderView) holder).cbSelectedParcel.setChecked(false);
                             ((HolderView) holder).getItem(position).setSelected(false);
                             ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
+                        EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
                     });
 
                     ((HolderView) holder).imgRemoveLadingCode.setOnClickListener(v -> {
                         ((HolderView) holder).getItem(position).setSelected(false);
                         listParcelCode.remove(position);
                         adapter.removeItem(position);
-                        notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                     });
                 }
             };

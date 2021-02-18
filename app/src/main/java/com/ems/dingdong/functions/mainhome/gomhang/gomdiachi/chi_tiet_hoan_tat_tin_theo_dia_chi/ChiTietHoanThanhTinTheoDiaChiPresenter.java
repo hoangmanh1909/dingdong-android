@@ -143,7 +143,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body() != null) {
-                    mView.showImage(response.body().getFile());
+                    mView.showImage(response.body().getFile(),path);
                 }
             }
 

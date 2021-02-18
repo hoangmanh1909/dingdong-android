@@ -36,7 +36,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void showError(String message);
 
-        void showImage(String file);
+        void showImage(String file,String path);
 
         void deleteFile();
 

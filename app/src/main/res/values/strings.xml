@@ -80,7 +80,7 @@
     <string name="message_found_record_from_local_storage">Tìm kiếm bưu gửi thành công</string>
     <string name="message_update_successfully_record_from_local_storage">Cập nhật dữ liệu thành công</string>
     <string name="delivery_succesfully">Báo phát thành công</string>
-    <string name="delivery_not_succesfully">Báo phát thành không công</string>
+    <string name="delivery_not_succesfully">Báo phát không thành công</string>
     <string name="content">Nội dung:</string>
     <string name="confirm">Đồng ý</string>
     <string name="town">Xã</string>

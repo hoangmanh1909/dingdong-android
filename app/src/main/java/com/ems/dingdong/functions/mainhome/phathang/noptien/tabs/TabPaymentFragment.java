@@ -71,7 +71,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         super.initLayout();
         tabList = new ArrayList<>();
         tabList.add((PaymentFragment) new PaymentPresenter(mPresenter.getContainerView()).setTypeTab(0).setOnTabListener(this).getFragment());
-        tabList.add((CancelPaymentFragment) new CancelPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
+        //tabList.add((CancelPaymentFragment) new CancelPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
         tabList.add((HistoryPaymentFragment) new HistoryPaymentPresenter(mPresenter.getContainerView()).setTypeTab(2).setOnTabListener(this).getFragment());
         mAdapter = new TabPaymentAdapter(getChildFragmentManager(), getContext(), tabList);
         pager.setAdapter(mAdapter);
@@ -86,17 +86,17 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
                         imgDelete.setImageResource(R.drawable.ic_remove);
                         imgSend.setImageResource(R.drawable.ic_confirm);
                         break;
-                    case 1:
+                   // case 1:
 //                        mPosition=newPosition;
 //                        imgSend.setVisibility(View.GONE);
 //                        imgDelete.setVisibility(View.GONE);
                         // hủy nộp tiền  chưa triển khai nên ẩn đi
-                        mPosition=newPosition;
-                        imgSend.setVisibility(View.VISIBLE);
-                        imgDelete.setVisibility(View.GONE);
-                        imgSend.setImageResource(R.drawable.close);
-                        break;
-                    case 2:
+                       // mPosition=newPosition;
+                        //imgSend.setVisibility(View.VISIBLE);
+                        //imgDelete.setVisibility(View.GONE);
+                        //imgSend.setImageResource(R.drawable.close);
+                        //break;
+                    case 1:
                         mPosition=newPosition;
                         imgSend.setVisibility(View.GONE);
                         imgDelete.setVisibility(View.GONE);

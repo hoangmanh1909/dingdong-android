@@ -43,7 +43,7 @@ interface XacNhanDiaChiContract {
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
-        void showConfirmParcelAddress(ArrayList<ParcelCodeInfo> confirmOrderPostmen);
+        void showConfirmParcelAddress(CommonObject commonObject, ArrayList<ParcelCodeInfo> confirmOrderPostmen);
         void showConfirmParcelAddressNoPostage(CommonObject commonObject);
 
     }

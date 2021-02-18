@@ -167,9 +167,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     }
 
     @Override
-    public void showConfirmParcelAddress(ArrayList<ParcelCodeInfo> list) {
+    public void showConfirmParcelAddress(CommonObject commonObject, ArrayList<ParcelCodeInfo> list) {
         ArrayList<ConfirmOrderPostman> listRequest = new ArrayList<>();
-        ArrayList<CommonObject> listCommon = new ArrayList<>();
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String user = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = null;
@@ -191,7 +190,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
         }
 
         if (!listRequest.isEmpty()) {
-            new ChiTietHoanThanhTinTheoDiaChiPresenter(mContainerView).setListRequest(listRequest).setListCommon(listCommon).pushView();
+            new ChiTietHoanThanhTinTheoDiaChiPresenter(mContainerView).setListRequest(listRequest).setCommonObject(commonObject).pushView();
         }
     }
 

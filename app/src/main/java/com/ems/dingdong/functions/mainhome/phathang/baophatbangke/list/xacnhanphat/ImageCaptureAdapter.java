@@ -57,7 +57,7 @@ public class ImageCaptureAdapter extends RecyclerView.Adapter<ImageCaptureAdapte
         @BindView(R.id.iv_package)
         SimpleDraweeView ivPackage;
         @BindView(R.id.iv_delete)
-        ImageView ivDelete;
+        public ImageView ivDelete;
 
         HolderView(View itemView) {
             super(itemView);
@@ -87,16 +87,16 @@ public class ImageCaptureAdapter extends RecyclerView.Adapter<ImageCaptureAdapte
                     }
                 });
 
-                ivDelete.setOnClickListener( v -> {
-                    removeAt(getPosition());
-                });
+//                ivDelete.setOnClickListener( v -> {
+//                    removeAt(getPosition());
+//                });
             }
         }
     }
 
-    public void removeAt(int position) {
-        mList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mList.size());
-    }
+//    public void removeAt(int position) {
+//        mList.remove(position);
+//        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, mList.size());
+//    }
 }

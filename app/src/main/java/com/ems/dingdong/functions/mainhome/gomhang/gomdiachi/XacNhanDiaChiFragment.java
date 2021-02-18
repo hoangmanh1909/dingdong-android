@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
@@ -24,6 +25,7 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PushOnClickParcelAdapter;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -37,6 +39,7 @@ import com.google.common.collect.Iterables;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +74,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
     private XacNhanDiaChiAdapter mAdapter;
+    ParcelAddressAdapter adapter;
     private UserInfo mUserInfo;
     private String fromDate;
     private String toDate;
@@ -80,6 +84,9 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     private int checkedPositions = 0;
     private boolean scanBarcode = false;
     private SparseBooleanArray checkbox;
+    int mPositionClick = -1;
+    ParcelCodeInfo mParcelCodeInfo;
+    CommonObject itemClick;
 
     public static XacNhanDiaChiFragment getInstance() {
         return new XacNhanDiaChiFragment();
@@ -112,73 +119,112 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         mListConfirm = new ArrayList<>();
 
         mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList) {
+
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-                if (mPresenter.getType() == 4) {
-                    if (holder.itemView.isSelected()) {
-                        holder.cbSelected.setChecked(true);
-                    } else {
-                        holder.cbSelected.setChecked(false);
-                    }
 
-                    //chọn 1 item
-                    if (checkedPositions == -1) {
-                        holder.cbSelected.setChecked(false);
-                        holder.getItem(position).setSelected(false);
-                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                    } else {
-                        if (checkedPositions == holder.getAdapterPosition()) {
-                            //thêm.  click lần 2 bỏ chọn
-                            if (selectPosition == 0) {
-                                Log.d("123123", "bỏ chọn");
-                                holder.cbSelected.setChecked(false);
-                                holder.getItem(position).setSelected(false);
-                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                                selectPosition = 1;
-                            } else if (selectPosition == 1) {
-                                //click lần 2 hoặc click sang item khác
-                                Log.d("123123", "chọn");
-                                holder.cbSelected.setChecked(true);
-                                holder.getItem(position).setSelected(true);
-                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-                                selectPosition = 0;
-                            }
-                        } else {
-                            holder.cbSelected.setChecked(false);
-                            holder.getItem(position).setSelected(false);
-                            holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        }
-                    }
-
-                    holder.itemView.setOnClickListener(v -> {
+//                binParcelCode(holder.getItem(position).getListParcelCode());
+//                if (mPresenter.getType() == 4) {
+//                    if (holder.itemView.isSelected()) {
+//                        holder.cbSelected.setChecked(true);
+//                    } else {
+//                        holder.cbSelected.setChecked(false);
+//                    }
+//
+//                    //chọn 1 item
+//                    if (checkedPositions == -1) {
+//                        holder.cbSelected.setChecked(false);
+//                        holder.getItem(position).setSelected(false);
+//                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                    } else {
+//                        if (checkedPositions == holder.getAdapterPosition()) {
+//                            //thêm.  click lần 2 bỏ chọn
+//                            if (selectPosition == 0) {
+//                                Log.d("123123", "bỏ chọn");
+//                                holder.cbSelected.setChecked(false);
+//                                holder.getItem(position).setSelected(false);
+//                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                                selectPosition = 1;
+//                            } else if (selectPosition == 1) {
+//                                //click lần 2 hoặc click sang item khác
+//                                Log.d("123123", "chọn");
+//                                holder.cbSelected.setChecked(true);
+//                                holder.getItem(position).setSelected(true);
+//                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+//                                selectPosition = 0;
+//                            }
+//                        } else {
+//                            holder.cbSelected.setChecked(false);
+//                            holder.getItem(position).setSelected(false);
+//                            holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                        }
+//                    }
+                holder.itemView.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
-                        //chọn đúng item sau khi tìm kiếm
-                        itemAtPosition = mListFilter.get(position);
-                        actualPosition = mList.indexOf(itemAtPosition);
-
-                        listParcel = mListFilter.get(position).getListParcelCode();
-                        mListParcel = listParcel;
-                        //chọn 1 item
-                        if (checkedPositions != holder.getAdapterPosition()) {
-                            notifyItemChanged(checkedPositions);
-                            checkedPositions = holder.getAdapterPosition();
+                    if (mPresenter.getType() == 1) {
+                        holder.itemView.setOnClickListener(view -> {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                        });
+                    } else {
+                        if (mPositionClick == position) {
+                            holder.cbSelected.setChecked(false);
+                            holder.getItem(position).setSelected(false);
+                            mPositionClick = -1;
+                            itemClick = null;
+                        } else {
+                            mPositionClick = position;
+                            itemClick = mListFilter.get(position);
                         }
+                        notifyDataSetChanged();
+//                        String ss = "";
+                        //chọn đúng item sau khi tìm kiếm
+//                        itemAtPosition = mListFilter.get(position);
+//                        actualPosition = mList.indexOf(itemAtPosition);
+//
+//                        listParcel = mListFilter.get(position).getListParcelCode();
+//                        mListParcel = listParcel;
+//                        //chọn 1 item
+//                        if (checkedPositions != holder.getAdapterPosition()) {
+//                            notifyItemChanged(checkedPositions);
+//                            checkedPositions = holder.getAdapterPosition();
+//                        }
+//
+//                        notifyDataSetChanged();// bỏ thì click chuyển sang item khác bt nhưng chưa cập nhật lại trạng thái đã tick hoặc chưa tick item parcel code
+                    }
+                });
 
-                        notifyDataSetChanged();// bỏ thì click chuyển sang item khác bt nhưng chưa cập nhật lại trạng thái đã tick hoặc chưa tick item parcel code
-                    });
+                if (mPresenter.getType() == 4) {
+                    CommonObject item = mListFilter.get(position);
 
-                } else if (mPresenter.getType() == 1) {
-                    holder.itemView.setOnClickListener(v -> {
-                        holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                    });
+                    if (mPositionClick == position && itemClick != null
+                            && itemClick.getiD().equals(item.getiD())
+                            && (item.getStatusCode().equals("P1") || item.getStatusCode().equals("P5"))) {
+                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                        holder.cbSelected.setChecked(true);
+                        holder.getItem(position).setSelected(true);
+                    } else {
+                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        holder.cbSelected.setChecked(false);
+                        holder.getItem(position).setSelected(false);
+                    }
                 }
+
+//                } else if (mPresenter.getType() == 1) {
+//                    holder.itemView.setOnClickListener(v -> {
+//                        holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+//                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+//                    });
+//                }
             }
         };
-        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+
+        RecyclerUtils.setupVerticalRecyclerView(
+
+                getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -196,8 +242,13 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             cbAll.setVisibility(View.GONE);
             imgConfirm.setVisibility(View.GONE);
         }
-        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+
+        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().
+
+                getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().
+
+                getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (mPresenter.getType() == 1) {
             cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -239,7 +290,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
-                public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
+                public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
@@ -255,6 +306,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
+        itemClick = null;
+        itemAtPosition = null;
         if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
             if (mPresenter.getType() == 1) {
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
@@ -285,6 +338,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     confirmAll();
                 } else if (mPresenter.getType() == 4) {
                     confirmParcelCode();
+
                 }
                 break;
         }
@@ -313,44 +367,61 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         listCode = new ArrayList<>();
         mListHoanTatNhieuTin = new ArrayList<>();
         ArrayList<ParcelCodeInfo> listParcel = new ArrayList<>();
-        ArrayList<CommonObject> listCommon = new ArrayList<>();
 
-        for (CommonObject item : mAdapter.getListFilter()) {
-            int count = item.getListParcelCode().size();
-            item.getCode();
-            if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) /*|| "P6".equals(item.getStatusCode())*/ /*&& item.isSelected()*/) {
-                for (ParcelCodeInfo itemParcel : item.getListParcelCode()) {
-                    if (itemParcel.isSelected()) {
-                        listParcel.add(itemParcel);
-                        gram = itemParcel.getWeight();
-                        totalGram += gram;
-                        code = itemParcel.getOrderCode();
-                        listCode.add(code);
-                        ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(itemParcel.getParcelCode(), count >= 1 ? Constants.ADDRESS_SUCCESS : Constants.ADDRESS_UNSUCCESS,
-                                mUserInfo.getiD(), itemParcel.getOrderPostmanId() + "", itemParcel.getOrderId() + "");
-                        mListHoanTatNhieuTin.add(tin);
-                    }
+        for (CommonObject commonObject : mList) {
+            if (commonObject.isSelected()) {
+                itemAtPosition = commonObject;
+                break;
+            }
+        }
+        if (itemAtPosition == null) {
+            for (CommonObject commonObject : mAdapter.mListFilter) {
+                if (commonObject.isSelected()) {
+                    itemAtPosition = commonObject;
+                    break;
                 }
+            }
+            if(itemAtPosition == null) {
+                Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ trước khi hoàn tất");
+                return;
             }
         }
 
-        EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
+        for (ParcelCodeInfo itemParcel : itemAtPosition.getListParcelCode()) {
+            if (itemParcel.isSelected()) {
+                listParcel.add(itemParcel);
+                gram = itemParcel.getWeight();
+                totalGram += gram;
+                code = itemParcel.getOrderCode();
+                listCode.add(code);
+                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(itemParcel.getParcelCode(), Constants.ADDRESS_SUCCESS, mUserInfo.getiD(), itemParcel.getOrderPostmanId() + "", itemParcel.getOrderId() + "");
+                mListHoanTatNhieuTin.add(tin);
+            }
+        }
+
+        if(itemAtPosition.getListParcelCode().size() > 0 && listParcel.size() == 0){
+            Toast.showToast(getViewContext(), "Vui lòng chọn bưu gửi trước khi hoàn tất");
+            return;
+        }
+
+
         if (!listParcel.isEmpty()) {
-            mPresenter.showConfirmParcelAddress(listParcel);
+            mPresenter.showConfirmParcelAddress(itemAtPosition, listParcel);
         } else {
             /*for (CommonObject item : mAdapter.getListFilter()) {
                 matin = item.getCode();
                 if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")) {
                     mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
                 }
-            }*/
-            if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") /*|| itemAtPosition.getStatusCode().equals("P6")*/) {
-                mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
-                matin = itemAtPosition.getCode();
-            }
+//            }*/
+//            if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") /*|| itemAtPosition.getStatusCode().equals("P6")*/) {
+            mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
+//                matin = itemAtPosition.getCode();
+//                EventBus.getDefault().postSticky(new CustomCode(matin));
+//            }
         }
-        //EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
-        Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): " + "mListHoanTatNhieuTin " + mListHoanTatNhieuTin + " " + "gram " + totalGram + " " + "mListCode " + listCode + " " + "matin " + matin);
+        EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
+        //Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): " + "mListHoanTatNhieuTin " + mListHoanTatNhieuTin + " " + "gram " + totalGram + " " + "mListCode " + listCode + " " + "matin " + matin);
         //EventBus.getDefault().postSticky(new CustomCode(matin));
 
         /*else if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")){
@@ -363,6 +434,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     public void showResponseSuccess(ArrayList<CommonObject> list) {
         mList.clear();
         mList.addAll(list);
+        itemAtPosition = null;
         edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {
@@ -421,4 +493,24 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         mAdapter.selectParcel = 0;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(sticky = true)
+    public void eventListItem(PushOnClickParcelAdapter pushOnClickParcelAdapter) {
+        mParcelCodeInfo = pushOnClickParcelAdapter.getParcelCode();
+//        mAdapter.notifyDataSetChanged();
+    }
 }
