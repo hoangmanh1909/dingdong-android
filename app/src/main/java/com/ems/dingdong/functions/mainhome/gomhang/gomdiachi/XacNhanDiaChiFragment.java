@@ -81,8 +81,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     private boolean scanBarcode = false;
     private SparseBooleanArray checkbox;
 
-
-
     public static XacNhanDiaChiFragment getInstance() {
         return new XacNhanDiaChiFragment();
     }
@@ -241,7 +239,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
-                public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
+                public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
@@ -349,7 +347,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") /*|| itemAtPosition.getStatusCode().equals("P6")*/) {
                 mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
                 matin = itemAtPosition.getCode();
-                EventBus.getDefault().postSticky(new CustomCode(matin));
             }
         }
         //EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
