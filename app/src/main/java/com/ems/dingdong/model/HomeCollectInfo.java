@@ -22,6 +22,7 @@ public class HomeCollectInfo {
     @SerializedName("TotalQuantityTodayNormal")
     @Expose
     private Integer totalQuantityTodayNormal;
+
     @SerializedName("TotalQuantityTodayCOD")
     @Expose
     private Integer totalQuantityTodayCOD;

@@ -202,6 +202,8 @@
     <string name="permlab_recordAudio">record audio</string>
     <string name="permdesc_recordAudio">Allows the app to record audio with the microphone. This permission allows the app to record audio at any time without your confirmation.</string>
     <string name="permgroupdesc_microphone">record audio</string>
+    <string name="permission_rationale_message">You have rejected us to apply for authorization, please agree to authorization, otherwise the function can\'t be used normally!</string>
+    <string name="permission_denied_forever_message">We need some of the permissions you rejected or the system failed to apply failed, please manually set to the page authorize, otherwise the function can\'t be used normally!</string>
 
     <!--for setting  -->
     <string name="MEDIA_G722">MEDIA_G722</string>
