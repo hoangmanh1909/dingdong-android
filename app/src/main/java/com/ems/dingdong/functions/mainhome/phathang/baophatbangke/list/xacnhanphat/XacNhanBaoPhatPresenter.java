@@ -247,7 +247,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mView.getItemSelected()) {
             String receiverName;
-            receiverName = item.getReciverName();
+            //receiverName = item.getReciverName();
+            if (newReceiverName.isEmpty()) {
+                receiverName = item.getReciverName();
+            } else {
+                receiverName = newReceiverName;
+            }
             String parcelCode = item.getMaE();
             String reasonCode = "";
             String solutionCode = "";

@@ -86,7 +86,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
                         imgDelete.setImageResource(R.drawable.ic_remove);
                         imgSend.setImageResource(R.drawable.ic_confirm);
                         break;
-                   // case 1:
+//                    case 1:
 //                        mPosition=newPosition;
 //                        imgSend.setVisibility(View.GONE);
 //                        imgDelete.setVisibility(View.GONE);
@@ -107,15 +107,16 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
             }
         });
         tabs.setViewPager(pager);
+        pager.setOffscreenPageLimit(3);
     }
 
     @Override
     public void onCanceledDelivery() {
-//        CancelPaymentFragment fragment = (CancelPaymentFragment) tabList.get(1);
-        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(1);
+        //CancelPaymentFragment fragment = (CancelPaymentFragment) tabList.get(1);
+        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(2);
         PaymentFragment paymentFragment = (PaymentFragment) tabList.get(0);
         paymentFragment.refreshLayout();
-//        fragment.refreshLayout();
+        //fragment.refreshLayout();
         historyPaymentFragment.refreshLayout();
     }
 

@@ -138,7 +138,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         recycler.setItemAnimator(new DefaultItemAnimator());
 
         mAdapter = new PaymentAdapter(getViewContext(), mList, (count, amount, fee) -> new Handler().postDelayed(() -> {
-            tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(count)));
+            tvAmount.setText(String.format("%s %s", getViewContext().getString(R.string.amount), String.valueOf(count)));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
             tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(amount)));
             if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||

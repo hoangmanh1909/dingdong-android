@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.StringUtils;
 
 import java.util.List;
 
@@ -56,24 +58,24 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
     void setTittle(int quantity, int positionTab) {
         if (positionTab == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[positionTab] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[0] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[positionTab] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[0] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
         }
-        /* ẩn chức năng hủy nộp
-        else if (positionTab == 1)  {
+        // ẩn chức năng hủy nộp
+        /*else if (positionTab == 1)  {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[positionTab] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[positionTab] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
-        } */
-        else if (positionTab == 1)  {
+        }*/
+        else if (positionTab == 2)  {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[positionTab] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[positionTab] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
         }
     }
