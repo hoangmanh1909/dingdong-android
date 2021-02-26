@@ -72,7 +72,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         tabList = new ArrayList<>();
         tabList.add((PaymentFragment) new PaymentPresenter(mPresenter.getContainerView()).setTypeTab(0).setOnTabListener(this).getFragment());
         //tabList.add((CancelPaymentFragment) new CancelPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
-        tabList.add((HistoryPaymentFragment) new HistoryPaymentPresenter(mPresenter.getContainerView()).setTypeTab(2).setOnTabListener(this).getFragment());
+        tabList.add((HistoryPaymentFragment) new HistoryPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
         mAdapter = new TabPaymentAdapter(getChildFragmentManager(), getContext(), tabList);
         pager.setAdapter(mAdapter);
         pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
@@ -107,13 +107,13 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
             }
         });
         tabs.setViewPager(pager);
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(2);
     }
 
     @Override
     public void onCanceledDelivery() {
         //CancelPaymentFragment fragment = (CancelPaymentFragment) tabList.get(1);
-        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(2);
+        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(1);
         PaymentFragment paymentFragment = (PaymentFragment) tabList.get(0);
         paymentFragment.refreshLayout();
         //fragment.refreshLayout();

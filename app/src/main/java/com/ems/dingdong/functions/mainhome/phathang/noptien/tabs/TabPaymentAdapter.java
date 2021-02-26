@@ -45,7 +45,7 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mTitleString.length;
+        return 2;
     }
 
     @Nullable
@@ -58,9 +58,9 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
     void setTittle(int quantity, int positionTab) {
         if (positionTab == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[0] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[positionTab] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[0] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[positionTab] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
         }
         // ẩn chức năng hủy nộp
@@ -71,7 +71,7 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
                 mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
         }*/
-        else if (positionTab == 2)  {
+        else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
