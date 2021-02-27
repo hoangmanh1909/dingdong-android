@@ -426,7 +426,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
     private void eventCallBackCtel(){
         SipCmc.addCallback(null, new PhoneCallback() {
-            @Override
+            /*@Override
             public void incomingCall(LinphoneCall linphoneCall) {
                 super.incomingCall(linphoneCall);
                 Log.d("123123", "incomingCall Ctel: "+linphoneCall);
@@ -438,7 +438,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                     startActivity(activityIntent);
                 }
 
-            }
+            }*/
 
             @Override
             public void outgoingInit() {

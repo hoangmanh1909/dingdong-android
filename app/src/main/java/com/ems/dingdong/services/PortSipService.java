@@ -247,7 +247,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                     }
 
                     // Login SipCmc
-                    //SipCmc.startService(this);// tạm stop
+                    SipCmc.startService(this);// tạm stop
                     SipCmc.addCallback(new RegistrationCallback() {
                         @Override
                         public void registrationOk() {

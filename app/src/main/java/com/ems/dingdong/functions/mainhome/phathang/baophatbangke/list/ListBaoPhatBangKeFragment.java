@@ -45,6 +45,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -355,7 +356,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.img_contact_phone_ctel.setOnClickListener(v -> {
-                    try {
+
+                    SipCmc.callTo("000023");
+                    mPresenter.callByCtellFree();
+                    Log.d("123123", "call free ctel to 000023");
+
+                    /*try {
                         mSenderPhone = mAdapter.getListFilter().get(position).getReciverMobile();
                         choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
                         EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
@@ -374,7 +380,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             callCtelFreeToReceiver();
                             //mPresenter.callByCtellFree();
                         }
-                    }).show();
+                    }).show();*/
 
 
                     //callCtelFree();
@@ -454,10 +460,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phone));
-            mPresenter.callForward(phone, choosenLadingCode);
+            ///mPresenter.callForward(phone, choosenLadingCode);
 
             //
-            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -466,10 +472,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 @Override
                 public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
-                    callCtelFreeToReceiver();
+                    callCtelFreeToReceiver(phone);
                     mPresenter.callByCtellFree();
                 }
-            }).show();*/
+            }).show();
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -504,10 +510,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phoneSender));
-            mPresenter.callForward(phoneSender, choosenLadingCode);
+            ///mPresenter.callForward(phoneSender, choosenLadingCode);
 
             //
-            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -516,10 +522,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 @Override
                 public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
-                    callCtelFreeToSender();
+                    callCtelFreeToSender(phoneSender);
                     mPresenter.callByCtellFree();
                 }
-            }).show();*/
+            }).show();
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -870,10 +876,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phoneReceiver));
-            mPresenter.callForward(phoneReceiver, choosenLadingCode);
+            ///mPresenter.callForward(phoneReceiver, choosenLadingCode);
 
             //
-            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -882,10 +888,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 @Override
                 public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
-                    callCtelFreeToReceiver();
+                    callCtelFreeToReceiver(phoneReceiver);
                     mPresenter.callByCtellFree();
                 }
-            }).show();*/
+            }).show();
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -916,10 +922,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
-            mPresenter.callForward(mSenderPhone, choosenLadingCode);
+            ///mPresenter.callForward(mSenderPhone, choosenLadingCode);
 
             //
-            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -928,10 +934,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                 @Override
                 public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
-                    callCtelFreeToSender();
+                    callCtelFreeToSender(mSenderPhone);
                     mPresenter.callByCtellFree();
                 }
-            }).show();*/
+            }).show();
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -975,14 +981,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     }
 
-    private void callCtelFreeToReceiver(){
-        SipCmc.callTo(phoneReceiver);
-        //Log.d("123123", "click call ctel free to: "+phoneReceiver);
+    private void callCtelFreeToReceiver(String mNumberReceiver){
+        //SipCmc.callTo(phoneReceiver);
+        SipCmc.callTo(mNumberReceiver);
+        Log.d("123123", "call ctel free to: "+mNumberReceiver);
     }
 
-    private void callCtelFreeToSender(){
-        SipCmc.callTo(mSenderPhone);
-        //Log.d("123123", "click call ctel free: "+ mSenderPhone);
+    private void callCtelFreeToSender(String mNumberSender){
+        SipCmc.callTo(mNumberSender);
+        Log.d("123123", "call ctel free to: "+ mNumberSender);
     }
 
     @Override
