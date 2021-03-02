@@ -636,6 +636,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         //checkInfo(authenType);
         //checkImage(authenType);
 
+        String[] arrImages = new String[listImages.size()];
+        for (int i = 0; i < listImages.size(); i++) {
+            if (!TextUtils.isEmpty(listImages.get(i).getText()))
+                arrImages[i] = listImages.get(i).getText();
+        }
+        mFile = TextUtils.join(";", arrImages);
+
         if (mDeliveryType == 2) {
             List<DeliveryPostman> listSelected = getItemSelected();
             if (listSelected.size() == 0) {
@@ -674,12 +681,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_real_receiver_name));
                 return;
             }*/
-            String[] arrImages = new String[listImages.size()];
-            for (int i = 0; i < listImages.size(); i++) {
-                if (!TextUtils.isEmpty(listImages.get(0).getText()))
-                    arrImages[i] = listImages.get(0).getText();
-            }
-            mFile = TextUtils.join(";", arrImages);
+
 
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
@@ -1120,10 +1122,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     .setCancelClickListener(v -> {
                         mPresenter.paymentV2(false);
                         v.dismiss();
+                        hideProgress();
                     })
                     .setConfirmClickListener(v -> {
                         mPresenter.paymentV2(true);
                         v.dismiss();
+                        hideProgress();
                     })
                     .show();
         }
@@ -1360,20 +1364,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         String[] arrAvartar = new String[listImagesAvatar.size()];
         for (int i = 0; i < listImagesAvatar.size(); i++) {
-            if (!TextUtils.isEmpty(listImagesAvatar.get(0).getText()))
-                arrAvartar[i] = listImagesAvatar.get(0).getText();
+            if (!TextUtils.isEmpty(listImagesAvatar.get(i).getText()))
+                arrAvartar[i] = listImagesAvatar.get(i).getText();
         }
 
         String[] arrVerify = new String[listImageVerify.size()];
         for (int i = 0; i < listImageVerify.size(); i++) {
-            if (!TextUtils.isEmpty(listImageVerify.get(0).getText()))
-                arrVerify[i] = listImageVerify.get(0).getText();
+            if (!TextUtils.isEmpty(listImageVerify.get(i).getText()))
+                arrVerify[i] = listImageVerify.get(i).getText();
         }
 
         String[] arrOther = new String[listImageOther.size()];
         for (int i = 0; i < listImageOther.size(); i++) {
-            if (!TextUtils.isEmpty(listImageOther.get(0).getText()))
-                arrOther[i] = listImageOther.get(0).getText();
+            if (!TextUtils.isEmpty(listImageOther.get(i).getText()))
+                arrOther[i] = listImageOther.get(i).getText();
         }
 
 

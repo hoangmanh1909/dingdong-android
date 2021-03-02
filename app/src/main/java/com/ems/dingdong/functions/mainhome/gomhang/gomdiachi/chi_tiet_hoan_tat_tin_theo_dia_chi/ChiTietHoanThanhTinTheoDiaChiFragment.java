@@ -557,7 +557,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         gram = customListHoanTatNhieuTin.getGram();
         mListCode = customListHoanTatNhieuTin.getCode();
         matin = customListHoanTatNhieuTin.getMatin();
-        Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): "+ "mListHoanTatNhieuTin "+ mListHoanTatNhieuTin + " "+"gram " + gram + " "+ "mListCode "+ mListCode + " "+"matin "+matin);
+        //Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): "+ "mListHoanTatNhieuTin "+ mListHoanTatNhieuTin + " "+"gram " + gram + " "+ "mListCode "+ mListCode + " "+"matin "+matin);
 
         /*for (int i = 0; i < mListCode.size(); i++) {
             code += mListCode.get(i) + ", ";
