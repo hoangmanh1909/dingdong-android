@@ -377,6 +377,13 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <receiver android:name=".calls.calling.NotificationReceiver">
+            <intent-filter>
+                <action android:name="YES_ACTION"/>
+                <action android:name="STOP_ACTION"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

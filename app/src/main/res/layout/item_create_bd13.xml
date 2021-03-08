@@ -88,7 +88,7 @@
 
                 <!--temporary gone-->
                 <ImageView
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:id="@+id/img_contact_phone_ctel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

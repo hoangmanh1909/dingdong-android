@@ -2,12 +2,15 @@ package com.ems.dingdong.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
+import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
@@ -89,8 +92,12 @@ public class PhoneConectDialogExtend extends Dialog {
                 break;
 
             case R.id.btn_call_ctel_app_to_app:
-                Log.d("123123", "click call ctel app to app");
-                SipCmc.callTo(edt_call_ctel_app_to_app.getText().toString());
+                //Log.d("123123", "click call ctel app to app");
+                SipCmc.callTo(edt_call_ctel_app_to_app.getText().toString().trim());
+                Intent intent = new Intent(getContext(), IncomingCallActivity.class);
+                intent.putExtra(Constants.CALL_TYPE, 1);
+                intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+                getContext().startActivity(intent);
                 break;
         }
     }
@@ -116,7 +123,7 @@ public class PhoneConectDialogExtend extends Dialog {
     }
 
     @Subscribe(sticky = true)
-    public void onEventPhoneSender(CustomNumberSender customNumberSender){
+    public void onEventPhoneSender(CustomNumberSender customNumberSender) {
         numberSender = customNumberSender.getMessage();
     }
 

@@ -12,17 +12,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.RingtoneManager;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
@@ -30,7 +32,6 @@ import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.NetWorkReceiver;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
-import com.ems.dingdong.calls.calling.CallingContract;
 import com.ems.dingdong.calls.calling.CallingFragment;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
 import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
@@ -45,20 +46,20 @@ import com.portsip.PortSipEnumDefine;
 import com.portsip.PortSipErrorcode;
 import com.portsip.PortSipSdk;
 import com.sip.cmc.SipCmc;
-
 import org.greenrobot.eventbus.EventBus;
-
+import org.linphone.core.LinphoneCall;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import com.sip.cmc.callback.PhoneCallback;
 import com.sip.cmc.callback.RegistrationCallback;
 
 public class PortSipService extends Service implements OnPortSIPEvent, NetWorkReceiver.NetWorkListener {
@@ -76,6 +77,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
     public static final String CALL_EVENT_ANSWER_REJECT = "CALL_EVENT_ANSWER_REJECT";
     public static final String CALL_EVENT_ANSWER_ACCEPT = "CALL_EVENT_ANSWER_ACCEPT";
     public static final String CALL_EVENT_END = "CALL_EVENT_END";
+    public static final String CALL_EVENT_END_CTEL = "CALL_EVENT_END_CTEL";
     public static final String CALL_EVENT_TRYING = "CALL_EVENT_TRYING";
     public static final String CALL_EVENT_SESSION_PROGRESS = "CALL_EVENT_SESSION_PROGRESS";
     public static final String ACTION_CALL_EVENT = "ACTION_CALL_EVENT";
@@ -107,6 +109,9 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
     String callerNumberCustomer ="";
     CallingFragment callingFragment;
 
+    private String CHANNEL_ID = "VoipChannel";
+    private String CHANNEL_NAME = "Voip Channel";
+
     private SharedPreferences preferences;
     private PortSipSdk mEngine;
     private ApplicationController applicaton;
@@ -132,8 +137,11 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
     }
 
     public void registerToServer() {
+        eventLoginAndCallCtel();
+
         applicaton.portSipSdk = new PortSipSdk();
         mEngine = applicaton.portSipSdk;
+
         Random rm = new Random();
         Log.d(TAG, Thread.currentThread().getName());
         int localPort = 5060 + rm.nextInt(60000);
@@ -246,39 +254,6 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                         isConnectCallService = true;
                     }
 
-                    // Login SipCmc
-                    SipCmc.startService(this);// tạm stop
-                    SipCmc.addCallback(new RegistrationCallback() {
-                        @Override
-                        public void registrationOk() {
-                            super.registrationOk();
-                            Log.d("123123", "login ctel success");
-                        }
-                        @Override
-                        public void registrationFailed() {
-                            super.registrationFailed();
-                            Log.d("123123", "login ctel failed");
-                        }
-                        @Override
-                        public void registrationNone() {
-                            super.registrationNone();
-                            Log.d("123123", "login ctel registrationNone");
-                        }
-                        @Override
-                        public void registrationProgress() {
-                            super.registrationProgress();
-                            Log.d("123123", "login ctel registrationProgress");
-                        }
-                        @Override
-                        public void registrationCleared() {
-                            super.registrationCleared();
-                            Log.d("123123", "login ctel registrationCleared");
-                        }
-                    }, null);
-
-                    //nên viết callback trước khi gọi
-                    SipCmc.loginAccount(userInfo.getiD());
-
                 }, throwable -> Log.d(TAG, throwable.getMessage()));
     }
 
@@ -299,11 +274,11 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
 
         registerReceiver();
         //Tạm thời comment
-        //showServiceNotifiCation();
+        showServiceNotification();//notification call app to app
 
     }
 
-    private void showServiceNotifiCation(){
+    private void showServiceNotification(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0/*requestCode*/, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -352,6 +327,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
             applicaton.unregisterReceiver(logoutEvent);
         }*/
 
+        SipCmc.stopService(this);
 
         mEngine.destroyConference();
         unregisterReceiver();
@@ -404,6 +380,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 refreshPushToken();
             }
         }
+
+
         return result;
     }
 
@@ -483,6 +461,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         CallManager.Instance().getSession().displayName = calleeDisplayName;
         CallManager.Instance().getSession().sessionID = sessionId;*/
 
+        ///
         /*Intent intent = new Intent(ACTION_CALL_EVENT);
         intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_COMMING);
         sendBroadcast(intent);*/
@@ -586,8 +565,9 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         return activePackages.toArray(new String[activePackages.size()]);
     }
 
-    public void showPendingCallNotification(Context context, String contenTitle,String contenText,Intent intent) {
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    public void showPendingCallNotification(Context context, String contenTitle, String contentText, Intent intent) {
+        ///old
+        /*PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, callChannelID)
                 .setSmallIcon(R.drawable.ic_logo_ding_dong)
@@ -597,7 +577,49 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 .setShowWhen(true)
                 .setContentIntent(contentIntent)
                 .setFullScreenIntent(contentIntent, true);
+        mNotificationManager.notify(PENDINGCALL_NOTIFICATION, builder.build());*/
+
+
+        ///new
+        createChannel();
+
+        Intent yesReceive = new Intent();
+        yesReceive.setAction(Constants.YES_ACTION);
+        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent yesReceive2 = new Intent();
+        yesReceive2.setAction(Constants.STOP_ACTION);
+        PendingIntent pendingIntentNo = PendingIntent.getBroadcast(this, 12345, yesReceive2, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_logo_ding_dong)
+                .setContentTitle(contenTitle)
+                .setContentText(contentText)
+                .setAutoCancel(true)
+                /*.setShowWhen(true)*/
+                .addAction(R.drawable.ic_call_hang_green, "Nghe", pendingIntentYes)
+                .addAction(R.drawable.ic_call_end_red, "Tắt máy", pendingIntentNo)
+                .setContentIntent(contentIntent)
+                .setFullScreenIntent(contentIntent, true);
         mNotificationManager.notify(PENDINGCALL_NOTIFICATION, builder.build());
+
+    }
+
+    /*
+    Create noticiation channel if OS version is greater than or eqaul to Oreo
+    */
+    public void createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Call Notifications");
+            channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE),
+                    new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .setLegacyStreamType(AudioManager.STREAM_RING)
+                            .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION).build());
+            Objects.requireNonNull(getApplicationContext().getSystemService(NotificationManager.class)).createNotificationChannel(channel);
+        }
     }
 
     public void sendPortSipMessage(String message, Intent broadIntent) {
@@ -616,6 +638,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                     .setContentTitle("Thông báo mới")//Sip Notify
                     .setContentText(message)
                     .setContentIntent(contentIntent)
+                    .setAutoCancel(true)
                     .build();// getNotification()
 
             mNotificationManager.notify(1, builder.build());
@@ -662,7 +685,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
             String description = "Cuộc gọi nhỡ: "+ callerNumberCustomer;
             broadIntent.putExtra(EXTRA_CALL_DESCRIPTION, description);
 
-            ///sendPortSipMessage(description, broadIntent);
+            sendPortSipMessage(description, broadIntent);
 
             EventBus.getDefault().postSticky(new CustomItem(xSessionIdPostmanOut));
 
@@ -1082,6 +1105,159 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         if (preferences.getBoolean(context.getString(R.string.MEDIA_PCMA), true)) {
             sdk.addAudioCodec(PortSipEnumDefine.ENUM_AUDIOCODEC_PCMA);
         }
+    }
+
+    private void eventLoginAndCallCtel() {
+        SharedPref sharedPref = new SharedPref(this);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+
+        ///
+        // Login SipCmc
+        SipCmc.startService(this);// tạm stop
+        SipCmc.addCallback(new RegistrationCallback() {
+            @Override
+            public void registrationOk() {
+                super.registrationOk();
+                Log.d("123123", "login ctel success");
+            }
+            @Override
+            public void registrationFailed() {
+                super.registrationFailed();
+                Log.d("123123", "login ctel failed");
+            }
+            @Override
+            public void registrationNone() {
+                super.registrationNone();
+                Log.d("123123", "login ctel registrationNone");
+            }
+            @Override
+            public void registrationProgress() {
+                super.registrationProgress();
+                Log.d("123123", "login ctel registrationProgress");
+            }
+            @Override
+            public void registrationCleared() {
+                super.registrationCleared();
+                Log.d("123123", "login ctel registrationCleared");
+            }
+        }, null);
+
+        //nên viết callback trước khi gọi
+        SipCmc.loginAccount(userInfo.getiD());
+
+        ///
+        SipCmc.addCallback(null, new PhoneCallback() {
+            @Override
+            public void incomingCall(LinphoneCall linphoneCall) {
+                super.incomingCall(linphoneCall);
+                Log.d("123123", "incomingCall: ");
+
+                Session session = CallManager.Instance().findIdleSession();
+                session.state = Session.CALL_STATE_FLAG.INCOMING;
+
+                Intent activityIntent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+                activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (isForeground()) {
+                    startActivity(activityIntent);
+                } else {
+                    showPendingCallNotification(getApplicationContext(), "Cuộc gọi Ctel", linphoneCall.toString(), activityIntent);
+                }
+
+            }
+
+            @Override
+            public void outgoingInit() {
+                super.outgoingInit();
+                Log.d("123123", "outgoingInit");
+            }
+
+            @Override
+            public void callConnected(LinphoneCall linphoneCall) {
+                super.callConnected(linphoneCall);
+                Log.d("123123", "callConnected");
+                Intent intent = new Intent(ACTION_CALL_EVENT);
+                intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_CONNECTED);
+                sendBroadcast(intent);
+                mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
+            }
+
+            @Override
+            public void callEnd(LinphoneCall linphoneCall) {
+                super.callEnd(linphoneCall);
+                Log.d("123123", "callEnd");
+                //Toast.makeText(getApplicationContext(), "callEnd", Toast.LENGTH_SHORT).show();
+                try {
+                    Intent intent = new Intent(ACTION_CALL_EVENT);
+                    intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
+                    sendBroadcast(intent);
+                }catch (NullPointerException nullPointerException) {}
+
+                mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
+
+            }
+
+            @Override
+            public void callReleased() {
+                super.callReleased();
+                Log.d("123123", "callReleased");
+                //Toast.makeText(getApplicationContext(), "callReleased", Toast.LENGTH_SHORT).show();
+                try {
+
+                    Intent intent = new Intent(ACTION_CALL_EVENT);
+                    intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
+                    sendBroadcast(intent);
+                } catch (NullPointerException nullPointerException) {}
+            }
+
+            @Override
+            public void error() {
+                super.error();
+                Log.d("123123", "error");
+            }
+
+            @Override
+            public void callStatus(int status) {
+                super.callStatus(status);
+                Log.d("123123", "callStatus: " + status);
+            }
+
+            @Override
+            public void callTimeRing(String time) {
+                super.callTimeRing(time);
+                Log.d("123123", "callTimeRing");
+            }
+
+            @Override
+            public void callTimeAnswer(String time) {
+                super.callTimeAnswer(time);
+                Log.d("123123", "callTimeAnswer");
+            }
+
+            @Override
+            public void callTimeEnd(String time) {
+                super.callTimeEnd(time);
+                Log.d("123123", "callTimeEnd");
+            }
+
+            @Override
+            public void callId(String callId) {
+                super.callId(callId);
+                Log.d("123123", "callId");
+            }
+
+            @Override
+            public void callPhoneNumber(String phoneNumber) {
+                super.callPhoneNumber(phoneNumber);
+                Log.d("123123", "callPhoneNumber: " + phoneNumber);
+            }
+
+            @Override
+            public void callDuration(long duration) {
+                super.callDuration(duration);
+                Log.d("123123", "callDuration: " + duration);
+            }
+        });
     }
 
 }

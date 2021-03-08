@@ -129,6 +129,8 @@ public class Constants {
     public static final String CALL_RESPONSE_ACTION_KEY = "CALL_RESPONSE_ACTION_KEY";
     public static final String CALL_RECEIVE_ACTION = "CALL_RECEIVE_ACTION";
     public static final String CALL_CANCEL_ACTION = "CALL_CANCEL_ACTION";
+    public static final String YES_ACTION = "YES_ACTION";
+    public static final String STOP_ACTION = "STOP_ACTION";
 
 
 }

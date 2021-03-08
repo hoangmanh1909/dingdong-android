@@ -27,6 +27,7 @@ import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.sip.cmc.SipCmc;
 
 import java.util.Map;
 
@@ -63,6 +64,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         intent.setAction(PortSipService.ACTION_PUSH_TOKEN );
         intent.putExtra(PortSipService.EXTRA_PUSHTOKEN,token);
         startService(intent);
+        SipCmc.startService(this);
     }
 
     @Override

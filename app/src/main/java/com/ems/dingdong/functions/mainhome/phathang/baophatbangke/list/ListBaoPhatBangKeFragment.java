@@ -109,7 +109,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     String provider = "CTEL";
     String phoneReceiver = "";
 
-
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
         public void onLeafClick(Leaf leaf) {
@@ -356,11 +355,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.img_contact_phone_ctel.setOnClickListener(v -> {
-
-                    SipCmc.callTo("000023");
-                    mPresenter.callByCtellFree();
-                    Log.d("123123", "call free ctel to 000023");
-
                     /*try {
                         mSenderPhone = mAdapter.getListFilter().get(position).getReciverMobile();
                         choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();

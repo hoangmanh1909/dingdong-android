@@ -243,4 +243,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--notification ctel-->
+    <string name="channel_name">channel_name</string>
+    <string name="channel_description">channel_description</string>
+
 </resources>
