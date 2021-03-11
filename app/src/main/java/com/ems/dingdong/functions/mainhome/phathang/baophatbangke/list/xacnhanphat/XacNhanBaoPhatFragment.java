@@ -1,10 +1,14 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -55,6 +59,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -552,6 +557,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     isCapture = true;
                     isCaptureOther = false;
                     MediaUltis.captureImage(this);
+//                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                    startActivityForResult(cameraIntent, Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
                 } else {
                     showErrorToast(getViewContext().getString(R.string.do_not_allow_take_over_three_photos));
                 }
@@ -642,7 +649,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 arrImages[i] = listImages.get(i).getText();
         }
         mFile = TextUtils.join(";", arrImages);
-
+        checkImage(authenType);
         if (mDeliveryType == 2) {
             List<DeliveryPostman> listSelected = getItemSelected();
             if (listSelected.size() == 0) {
@@ -658,14 +665,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
                     return;
-                } else if (authenType == 2 && !checkImage(authenType)) {
-                    return;
-                } else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
-                    return;
-                } else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
-                    showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
+                }
+//                else if (authenType == 2 && !checkImage(authenType)) {
+//                    return;
+//                }
+                else if (authenType == 3 && (!checkInfo(authenType))) {
                     return;
                 }
+//                else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
+//                    return;
+//                }
+//                else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
+//                    showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
+//                    return;
+//                }
             }
 
             if (TextUtils.isEmpty(edtOtherRelationship.getText()) &&
@@ -809,12 +822,28 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == getActivity().RESULT_OK) {
-                attemptSendMedia(data.getData().getPath());
+            if (resultCode == Activity.RESULT_OK) {
+//                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+//                String path = getRealPathFromURI(getImageUri1(bitmap));
+//                attemptSendMedia(path);
 
-                //attemptSendMediaAvatar(data.getData().getPath());
+                attemptSendMedia(data.getData().getPath());
             }
         }
+    }
+
+    private Uri getImageUri1(Bitmap photo) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getViewContext().getContentResolver(), photo, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getViewContext().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 
     private void attemptSendMedia(String path_media) {
@@ -1386,16 +1415,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
 //            return false;
 //        }
-        if (arrAvartar.length == 0 && arrOther.length == 0 && arrVerify.length == 0) {
-            if (authenType != 0)
-                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
-            return false;
-        } else {
-            mFileAvatar = TextUtils.join(";", arrAvartar);
-            mFileVerify = TextUtils.join(";", arrVerify);
-            mFileOther = TextUtils.join(";", arrOther);
+//        if (arrAvartar.length == 0 && arrOther.length == 0 && arrVerify.length == 0) {
+//            if (authenType != 0)
+//                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
+//            return false;
+//        } else {
+        mFileAvatar = TextUtils.join(";", arrAvartar);
+        mFileVerify = TextUtils.join(";", arrVerify);
+        mFileOther = TextUtils.join(";", arrOther);
 
-        }
+//        }
 
 
         return true;
