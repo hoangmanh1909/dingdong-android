@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
@@ -15,8 +16,10 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.sip.cmc.SipCmc;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,7 +47,8 @@ public class PhoneConectDialogExtend extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_phone_updating, R.id.tv_phone_calling, R.id.tv_phone_messing, R.id.tv_call_CSKH, R.id.tv_phone_update_sender, R.id.btn_call_ctel_app_to_app})
+    @OnClick({R.id.tv_phone_updating, R.id.tv_phone_calling, R.id.tv_phone_messing, R.id.tv_call_CSKH, R.id.tv_phone_update_sender, R.id.btn_call_ctel_app_to_app,
+            R.id.btn_call_ctel_operator})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_phone_updating:
@@ -98,6 +102,21 @@ public class PhoneConectDialogExtend extends Dialog {
                 intent.putExtra(Constants.CALL_TYPE, 1);
                 intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
                 getContext().startActivity(intent);
+                break;
+
+            case R.id.btn_call_ctel_operator:
+                if (TextUtils.isEmpty(phone)) {
+                    Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
+                    return;
+                }
+                if (!NumberUtils.checkNumber(phone)) {
+                    Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
+                    return;
+                }
+                if (mDelegate != null) {
+                    mDelegate.onCallReceiverResponse(phone);
+                    dismiss();
+                }
                 break;
         }
     }

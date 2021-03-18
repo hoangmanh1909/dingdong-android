@@ -335,6 +335,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         public void onCallCSKH(String phone) {
                             callProvidertoCSKH();
                         }
+
+                        @Override
+                        public void onCallReceiverResponse(String phone) {
+                            mPresenter.callForward(phone, choosenLadingCode);
+                        }
                     });
                     mPhoneConectDialogExtend.show();
                 });
@@ -455,9 +460,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phone));
             ///mPresenter.callForward(phone, choosenLadingCode);
+            //hiện tại đang chỉ muốn gọi của ctel thôi
+            callCtelFreeToReceiver(phone);
+            mPresenter.callByCtellFree();
 
             //
-            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -469,7 +477,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     callCtelFreeToReceiver(phone);
                     mPresenter.callByCtellFree();
                 }
-            }).show();
+            }).show();*/
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -505,9 +513,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phoneSender));
             ///mPresenter.callForward(phoneSender, choosenLadingCode);
+            //hiện tại đang chỉ muốn gọi của ctel thôi
+            callCtelFreeToSender(phoneSender);
+            mPresenter.callByCtellFree();
 
             //
-            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -519,7 +530,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     callCtelFreeToSender(phoneSender);
                     mPresenter.callByCtellFree();
                 }
-            }).show();
+            }).show();*/
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -871,9 +882,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomToNumber(phoneReceiver));
             ///mPresenter.callForward(phoneReceiver, choosenLadingCode);
+            //hiện tại đang chỉ muốn gọi của ctel thôi
+            callCtelFreeToReceiver(phoneReceiver);
+            mPresenter.callByCtellFree();
 
             //
-            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -885,7 +899,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     callCtelFreeToReceiver(phoneReceiver);
                     mPresenter.callByCtellFree();
                 }
-            }).show();
+            }).show();*/
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT
@@ -917,9 +931,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
             EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
             ///mPresenter.callForward(mSenderPhone, choosenLadingCode);
+            //hiện tại đang chỉ muốn gọi của ctel thôi
+            callCtelFreeToSender(mSenderPhone);
+            mPresenter.callByCtellFree();
 
             //
-            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
+            /*new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
 
                 @Override
                 public void onCallBySimClicked(PhoneDecisionDialog dialog) {
@@ -931,7 +948,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     callCtelFreeToSender(mSenderPhone);
                     mPresenter.callByCtellFree();
                 }
-            }).show();
+            }).show();*/
 
         } else if (provider.equals("VHT")){
             //Gọi luôn cho người nhận với VHT

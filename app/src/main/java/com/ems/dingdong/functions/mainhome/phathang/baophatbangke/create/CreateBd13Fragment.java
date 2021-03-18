@@ -192,6 +192,12 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
 
+                            @Override
+                            public void onCallReceiverResponse(String phone) {
+                                mPhone = phone;
+                                mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            }
+
 
                             @Override
                             public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {

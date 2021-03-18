@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
+import com.ems.dingdong.model.DeliveryListProduct;
+import com.ems.dingdong.model.DeliveryListRelease;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;

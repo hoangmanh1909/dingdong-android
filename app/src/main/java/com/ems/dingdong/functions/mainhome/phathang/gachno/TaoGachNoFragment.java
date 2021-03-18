@@ -137,6 +137,12 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                             }
 
                             @Override
+                            public void onCallReceiverResponse(String phone) {
+                                mPhone = phone;
+                                mPresenter.callForward(phone, mList.get(position).getParcelCode());
+                            }
+
+                            @Override
                             public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
 
                             }

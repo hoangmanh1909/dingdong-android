@@ -184,6 +184,7 @@
     <string name="you_have_not_entered_addres_of_user">Bạn chưa nhập địa chỉ người sử dụng</string>
     <string name="you_have_not_taked_verify_photos">Bạn chưa chụp ảnh xác thực</string>
     <string name="are_you_sure_deliver_successfully">Bạn có chắc chắn muốn ghi nhận phát thành công</string>
+    <string name="are_you_sure_deliver_partial">Bạn có chắc chắn muốn ghi nhận báo phát một phần</string>
     <string name="please_pick_reason">Xin vui lòng chọn lý do</string>
     <string name="you_have_not_chosen_solution">Bạn chưa chọn phương án xử lý</string>
     <string name="there_is_one_package_needed_to_particular_delivered">Có bưu gửi cần xác thực thông tin, yêu cầu báo phát riêng</string>

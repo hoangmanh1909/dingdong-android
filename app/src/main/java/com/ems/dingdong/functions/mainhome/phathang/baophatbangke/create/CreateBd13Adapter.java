@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -303,9 +306,12 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 }
             });
             cb_selected.setChecked(item.isSelected());
-            if (null != item.getVatCode())
+            if (null != item.getVatCode()) {
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
-            else {
+                if (!item.getVatCode().isEmpty()) {
+                    EventBus.getDefault().postSticky(new CustomDOP1("partialRelease"));
+                }
+            } else {
                 gtgt.setText("GTGT: ");
             }
             if (!TextUtils.isEmpty(item.getNewInstruction())) {

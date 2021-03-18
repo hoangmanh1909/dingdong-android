@@ -392,7 +392,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     }
 
     private void finishCall() {
-        getActivity().finish();
+        try {
+            getActivity().finish();
+        }catch (Exception e) {}
+
         xSessionIdPostmanOut = "";
         ladingCode = "";
     }
