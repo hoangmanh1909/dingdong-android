@@ -5,8 +5,6 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.calls.CallManager;
-import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
 import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
@@ -21,9 +19,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -182,7 +178,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         }
 
         CallHistoryVHT = new CallHistoryVHT("", userInfo.getPOProvinceCode(), userInfo.getPODistrictCode(), userInfo.getUnitCode(), userInfo.getUserName(), routeInfo.getRouteCode(), numberCustomer, userInfo.getMobileNumber(), "", xSessionIdIn);
-        Log.d("123123", "ladingCode: " + "" + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + numberCustomer + " toNumber: " + userInfo.getMobileNumber() + " xSessionIdIn: " + xSessionIdIn);
+        //Log.d("123123", "ladingCode: " + "" + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + numberCustomer + " toNumber: " + userInfo.getMobileNumber() + " xSessionIdIn: " + xSessionIdIn);
 
         Gson gsons = new Gson();
         String jsons = gsons.toJson(CallHistoryVHT);

@@ -1,14 +1,14 @@
 package com.ems.dingdong.app;
 
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
-
 import androidx.multidex.MultiDexApplication;
-
 import com.crashlytics.android.Crashlytics;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.app.realm.DingDongRealm;
@@ -16,13 +16,15 @@ import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.portsip.PortSipSdk;
-
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class ApplicationController extends MultiDexApplication {
     private static String TAG = "ApplicationController.class";
+
+    public static final  String CHANNEL_1_ID = "channel1";
+    public static final  String CHANNEL_2_ID = "channel2";
 
     static ApplicationController applicationController;
     private PortSipService portSipService;
@@ -62,6 +64,8 @@ public class ApplicationController extends MultiDexApplication {
         applicationController = this;
         Intent intent = new Intent(this, PortSipService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+        this.createNotificationChannels();
     }
 
     public void initPortSipService() {
@@ -80,5 +84,19 @@ public class ApplicationController extends MultiDexApplication {
 
     public static ApplicationController getInstance() {
         return applicationController;
+    }
+
+    private void createNotificationChannels()  {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Call ", NotificationManager.IMPORTANCE_HIGH);
+            channel1.setDescription("This is channel call");
+
+            /*NotificationChannel channel2 = new NotificationChannel(CHANNEL_2_ID, "Channel 2", NotificationManager.IMPORTANCE_LOW);
+            channel1.setDescription("This is channel 2");*/
+
+            NotificationManager manager = this.getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel1);
+            //manager.createNotificationChannel(channel2);
+        }
     }
 }

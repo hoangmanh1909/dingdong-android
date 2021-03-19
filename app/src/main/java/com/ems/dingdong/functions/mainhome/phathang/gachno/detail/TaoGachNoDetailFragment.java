@@ -288,6 +288,12 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                         }
 
                         @Override
+                        public void onCallReceiverResponse(String phone) {
+                            mPhone = phone;
+                            mPresenter.callForward(phone);
+                        }
+
+                        @Override
                         public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
 
                         }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_content_item_partial"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_down_quantity_item"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_down_quantity_item"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:background="@color/red_light"
+        android:gravity="center"
+        android:text="-"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_quantity_item"
+        app:layout_constraintEnd_toStartOf="@+id/tv_quantity_item"
+        app:layout_constraintTop_toTopOf="@+id/tv_quantity_item" />
+
+    <TextView
+        android:id="@+id/tv_quantity_item"
+        android:layout_width="46dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:gravity="center"
+        android:text="3"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_increase_quantity_item"
+        app:layout_constraintEnd_toStartOf="@+id/tv_increase_quantity_item"
+        app:layout_constraintTop_toTopOf="@+id/tv_increase_quantity_item" />
+
+    <TextView
+        android:id="@+id/tv_increase_quantity_item"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@color/red_light"
+        android:gravity="center"
+        android:text="+"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_content_item_partial"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_content_item_partial" />
+
+    <TextView
+        android:id="@+id/tv_background_item"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_cac9c9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content_item_partial" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/img_delete_item_added"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_cancel_red" />
+</androidx.constraintlayout.widget.ConstraintLayout>

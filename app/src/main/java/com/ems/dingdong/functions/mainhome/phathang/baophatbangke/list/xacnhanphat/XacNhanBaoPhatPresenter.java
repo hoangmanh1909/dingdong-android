@@ -2,12 +2,16 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Activity;
 import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
+import com.ems.dingdong.model.DeliveryListRelease;
+import com.ems.dingdong.model.DeliveryListReturn;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.DeliveryProductRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
@@ -27,13 +31,16 @@ import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -41,6 +48,7 @@ import retrofit2.Response;
 
 public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.View, XacNhanBaoPhatContract.Interactor> implements XacNhanBaoPhatContract.Presenter {
     List<DeliveryPostman> mBaoPhatBangke;
+    List<DeliveryListRelease> mListRelease;
     private Calendar calDate;
     private int mHour;
     private int mMinute;
@@ -51,6 +59,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     private List<DeliveryCheckAmountPaymentResponse> paymentResponses;
     private List<PaypostPaymentRequest> paymentRequests;
     private UploadSingleResult uploadSingleResult;
+    private List<DeliveryProductRequest> deliveryProductRequest;
+    private List<DeliveryListRelease> deliveryListReleases;
+    private List<DeliveryListReturn> deliveryListReturns;
 
     public XacNhanBaoPhatPresenter(ContainerView containerView) {
         super(containerView);
@@ -86,6 +97,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public List<DeliveryPostman> getBaoPhatBangke() {
         return mBaoPhatBangke;
+    }
+
+    @Override
+    public List<DeliveryListRelease> getListProduct() {
+        return mListRelease;
     }
 
     @Override
@@ -132,7 +148,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body() != null) {
-                    mView.showImage(response.body().getFile(),path);
+                    mView.showImage(response.body().getFile(), path);
                 }
             }
 
@@ -142,7 +158,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 try {
                     mView.showAlertDialog("Không kết nối được với hệ thống");
                     mView.deleteFile();
-                }catch (Exception exception){}
+                } catch (Exception exception) {
+                }
             }
         });
     }
@@ -154,8 +171,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
-                if (response.body() != null){
-                    mView.showImage(response.body().getFile(),pathAvatar);
+                if (response.body() != null) {
+                    mView.showImage(response.body().getFile(), pathAvatar);
                 }
             }
 
@@ -231,6 +248,168 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             });
 
         }
+    }
+
+    @Override
+    public void deliveryPartial(String deliveryImage, String imageAuthen, String imageReturn, String content, long amountRelease, long amountReturn,
+                                String signCapture, String newReceiverName, String relationship, InfoVerify infoVerify,
+                                List<DeliveryListRelease> listRelease, List<DeliveryListRelease> listReturn) {
+
+        deliveryProductRequest = new ArrayList<>();
+        deliveryListReleases = new ArrayList<>();
+        deliveryListReturns = new ArrayList<>();
+        String postmanID = userInfo.getiD();
+        String mobileNumber = userInfo.getMobileNumber();
+        String deliveryPOCode = postOffice.getCode();
+        String routeCode = routeInfo.getRouteCode();
+        String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
+        for (DeliveryPostman item : mView.getItemSelected()) {
+            String receiverName;
+            //receiverName = item.getReciverName();
+            if (newReceiverName.isEmpty()) {
+                receiverName = item.getReciverName();
+            } else {
+                receiverName = newReceiverName;
+            }
+            String parcelCode = item.getMaE();
+            String reasonCode = "";
+            String solutionCode = "";
+            String status = "C14";
+            String note = "";
+
+            final String paymentChannel = "1";
+            String deliveryType = "";
+            String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+
+            DeliveryListRelease deliveryListRelease = new DeliveryListRelease();
+            /*deliveryListProduct.setProductId();
+            deliveryListProduct.setProductName();
+            deliveryListProduct.setQuantity();
+            deliveryListProduct.setUnitName();
+            deliveryListProduct.setWeight();
+            deliveryListProduct.setPrice();
+            deliveryListProduct.setAmount();
+            deliveryListProduct.setLadingToPostmanId();
+            deliveryListProduct.setLadingCode();
+            deliveryListProduct.setpODeliveryCode();
+            deliveryListProducts.add(deliveryListProduct);*/
+
+            for (DeliveryListRelease items : mView.getProductRelease()) {
+                deliveryListRelease.setProductId(items.getProductId());
+                deliveryListRelease.setProductName(items.getProductName());
+                deliveryListRelease.setQuantity(items.getQuantity());
+                deliveryListRelease.setUnitName(items.getUnitName());
+                deliveryListRelease.setWeight(items.getWeight());
+                deliveryListRelease.setPrice(items.getPrice());
+                deliveryListRelease.setAmounts(items.getAmounts());
+                deliveryListRelease.setLadingToPostmanId(items.getLadingToPostmanId());
+                deliveryListRelease.setLadingCode(items.getLadingCode());
+                deliveryListRelease.setpODeliveryCode(items.getpODeliveryCode());
+                deliveryListReleases.add(deliveryListRelease);
+                Log.d("123123", "deliveryListRelease.getQuantity() release: "+deliveryListRelease.getQuantity());
+            }
+
+            DeliveryListReturn deliveryListReturn = new DeliveryListReturn();
+            /*deliveryListReturn.setProductId();
+            deliveryListReturn.setProductName();
+            deliveryListReturn.setQuantity();
+            deliveryListReturn.setUnitName();
+            deliveryListReturn.setWeight();
+            deliveryListReturn.setPrice();
+            deliveryListReturn.setAmount();
+            deliveryListReturn.setLadingToPostmanId();
+            deliveryListReturn.setLadingCode();
+            deliveryListReturn.setpODeliveryCode();
+            deliveryListReturns.add(deliveryListReturn);*/
+
+            for (DeliveryListRelease items : mView.getProductReturn()) {
+                deliveryListReturn.setProductId(items.getProductId());
+                deliveryListReturn.setProductName(items.getProductName());
+                deliveryListReturn.setQuantity(items.getQuantity());
+                deliveryListReturn.setUnitName(items.getUnitName());
+                deliveryListReturn.setWeight(items.getWeight());
+                deliveryListReturn.setPrice(items.getPrice());
+                deliveryListReturn.setAmounts(items.getAmounts());
+                deliveryListReturn.setLadingToPostmanId(items.getLadingToPostmanId());
+                deliveryListReturn.setLadingCode(items.getLadingCode());
+                deliveryListReturn.setpODeliveryCode(items.getpODeliveryCode());
+                deliveryListReturns.add(deliveryListReturn);
+                Log.d("123123", "deliveryListReturn.getQuantity() return: "+deliveryListReturn.getQuantity());
+            }
+
+            //DeliveryListRelease itemPartialRelease = mListRelease.get(position);
+
+
+
+            DeliveryProductRequest request = new DeliveryProductRequest();
+            request.setReturnImage(imageReturn);
+            request.setDeliveryAmount(amountRelease);
+            request.setReturnAmount(amountReturn);
+            request.setPostmanID(postmanID);
+            request.setParcelCode(parcelCode);
+            request.setMobileNumber(mobileNumber);
+            request.setDeliveryPOCode(deliveryPOCode);
+            request.setDeliveryDate(deliveryDate);
+            request.setDeliveryTime(deliveryTime);
+            request.setReceiverName(receiverName);
+            request.setReasonCode(reasonCode);
+            request.setSolutionCode(solutionCode);
+            request.setStatus(status);
+            request.setPaymentChannel(paymentChannel);
+            request.setSignatureCapture(signCapture);
+            request.setNote(note);
+            request.setCollectAmount(item.getAmount());
+            request.setShiftID(item.getShiftId());
+            request.setRouteCode(routeCode);
+            request.setLadingPostmanID(item.getId());
+            request.setSignature(signature);
+            request.setImageDelivery(deliveryImage);
+            request.setBatchCode(item.getBatchCode());
+            request.setIsItemReturn(item.isItemReturn());
+            request.setItemsInBatch(item.getItemsInBatch());
+            request.setAmountForBatch(item.getAmountForBatch());
+            request.setReceiverReference(relationship);
+            request.setPaymentPP(isPaymentPP);
+            request.setReplaceCode(item.getReplaceCode());
+            request.setRePaymentBatch(item.isRePaymentBatch());
+            request.setLastLadingCode(item.getLastLadingCode());
+            request.setPaymentBatch(item.isPaymentBatch());
+            request.setPostmanCode(userInfo.getUserName());
+            request.setCustomerCode(item.getCustomerCode());
+            request.setReceiverPIDWhere(infoVerify.getReceiverPIDWhere());
+            request.setReceiverPIDDate(infoVerify.getReceiverPIDDate());
+            request.setReceiverBirthday(infoVerify.getReceiverBirthday());
+            request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
+            request.setAuthenType(infoVerify.getAuthenType());
+            request.setReceiverIDNumber(infoVerify.getGtgt());
+            request.setImageAuthen(imageAuthen);
+            request.setVATCode(item.getVatCode());
+            request.setListProduct(deliveryListReleases);
+            request.setListReturn(deliveryListReturns);
+            deliveryProductRequest.add(request);
+
+            //
+            mInteractor.deliveryPartial(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    super.onSuccess(call, response);
+                    //mView.showSuccessPartial(response.body().getErrorCode());
+                    Log.d("123123", "onSuccess");
+                }
+
+                @Override
+                protected void onError(Call<SimpleResult> call, String message) {
+                    super.onError(call, message);
+                    //mView.showSuccessPartial(message);
+                    Log.d("123123", "onError");
+                }
+            });
+        }
+
+
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
+import com.ems.dingdong.model.DeliveryProductRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -62,7 +63,6 @@ import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.ResponseObject;
-import com.google.android.gms.vision.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,6 +203,9 @@ public interface VinattiAPI {
 
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Body PushToPnsRequest request);
+
+    @POST("api/Delivery/DeliveryPartial")
+    Call<SimpleResult> deliveryPartial(@Body DeliveryProductRequest request);
 
     @POST("api/Delivery/PushToPNS")
     Single<SimpleResult> pushToPNSDeliveryObservable(@Body PushToPnsRequest request);

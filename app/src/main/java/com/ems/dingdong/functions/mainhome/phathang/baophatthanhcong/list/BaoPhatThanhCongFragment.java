@@ -135,27 +135,33 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""),
                                 new PhoneCallback() {
-                            @Override
-                            public void onCallSenderResponse(String phone) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone, mList.get(position).getParcelCode());
-                            }
+                                    @Override
+                                    public void onCallSenderResponse(String phone) {
+                                        mPhone = phone;
+                                        mPresenter.callForward(phone, mList.get(position).getParcelCode());
+                                    }
 
-                            @Override
-                            public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
+                                    @Override
+                                    public void onCallReceiverResponse(String phone) {
+                                        mPhone = phone;
+                                        mPresenter.callForward(phone, mList.get(position).getParcelCode());
+                                    }
 
-                            }
+                                    @Override
+                                    public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
 
-                            @Override
-                            public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+                                    }
 
-                            }
+                                    @Override
+                                    public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
 
-                            @Override
-                            public void onCallCSKH(String phone) {
+                                    }
 
-                            }
-                        }).show();
+                                    @Override
+                                    public void onCallCSKH(String phone) {
+
+                                    }
+                                }).show();
                     }
                 });
             }

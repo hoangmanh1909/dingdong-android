@@ -373,6 +373,12 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         }
 
                         @Override
+                        public void onCallReceiverResponse(String phone) {
+                            mPhone = phone;
+                            mPresenter.callForward(phone);
+                        }
+
+                        @Override
                         public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
                             showConfirmSaveMobile(phone, callback);
                         }

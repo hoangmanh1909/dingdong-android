@@ -88,13 +88,13 @@
 
                 <!--temporary gone-->
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/img_contact_phone_ctel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="3dp"
                     android:src="@drawable/ic_call"
-                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/img_map"
                     app:layout_constraintEnd_toEndOf="@+id/tv_code"
                     app:layout_constraintTop_toTopOf="@+id/img_map" />
