@@ -155,7 +155,6 @@
 
                 <!---->
                 <EditText
-                    android:visibility="gone"
                     android:id="@+id/edt_call_ctel_app_to_app"
                     android:hint="Nhập số điện thoại máy nhánh Ctel"
                     android:layout_margin="@dimen/_10sdp"
@@ -163,7 +162,6 @@
                     android:layout_height="wrap_content"/>
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:visibility="gone"
                     android:id="@+id/btn_call_ctel_app_to_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,7 +178,6 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
-
 
 
                 <com.ems.dingdong.views.CustomMediumTextView
