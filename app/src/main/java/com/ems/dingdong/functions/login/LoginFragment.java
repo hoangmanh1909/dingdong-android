@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.BuildConfig;
@@ -30,7 +32,9 @@ import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -70,7 +74,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;9B35AB87DDA0EE9B0C614E612D528D3C8846F47EEC718695AEF2F0A372DB0BE2");//dev EMS
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;BCB33E1DE2C4D12BFD69514F89271DC3745831AA9D5830680934A0CDD96B3D4F");// dev UAT
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;8892778BD430D6A1A51851B2BC15F43B891A2C74213BE87D91A53D8D924F7DBB");// dev UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0948035226;7C8FD391550599BF0BEFC98F0AD8D50642A624411355DB1ED5B211676C32B89D");// dev UAT
 
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;2F262E57DC9ED1EF7BC07C10AD72096213FC9DAF8B6990EFF17F03FF110A4BDC");// dev vinatti
@@ -85,6 +89,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
 /*    private void loginSipCmc() {
         SharedPref sharedPref = new SharedPref(getContext());
+D/OkHttp: {"Code":"01","Message":"Không tìm thấy dữ liệu","Time":"19/03/2021 14:58:17","ListValue":null,"Signature":"909D7004071C8A1CD2121909DB5819AF8CA87B1595905B6D08CB12E339AA9E34"}
+    <-- END HTTP (181-byte body)
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
 
@@ -147,7 +153,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     public void onDisplay() {
         super.onDisplay();
         String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
-        Log.d("1212", "a: "+values);
+        Log.d("1212", "a: " + values);
         if (!TextUtils.isEmpty(values)) {
             String mobileNumber = values.split(";")[0];
             if (!TextUtils.isEmpty(mobileNumber)) {

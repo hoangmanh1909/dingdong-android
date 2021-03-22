@@ -165,10 +165,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
                     if (mPresenter.getType() == 1) {
-                        holder.itemView.setOnClickListener(view -> {
+                        //holder.itemView.setOnClickListener(view -> {
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                        });
+                        //});
                     } else {
                         if (mPositionClick == position) {
                             holder.cbSelected.setChecked(false);

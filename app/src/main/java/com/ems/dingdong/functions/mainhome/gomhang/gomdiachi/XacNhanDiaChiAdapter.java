@@ -177,10 +177,13 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 cbSelected.setClickable(false);
                 cbSelected.setVisibility(View.VISIBLE);
                 cbSelected.setOnCheckedChangeListener(null);
-                if (item.isSelected())
+                if (item.isSelected()) {
                     cbSelected.setChecked(true);
+                    linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                }
                 else {
                     cbSelected.setChecked(false);
+                    linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 }
 
                 cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -188,8 +191,10 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             item.setSelected(true);
+                            linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
                         } else {
                             item.setSelected(false);
+                            linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
                     }
                 });
@@ -216,9 +221,9 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
                 cbSelected.setOnCheckedChangeListener((v1, v2) -> {
                     if (v2) {
-                        //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
                     } else {
-                        //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                     }
                 });
                 cbSelected.setChecked(item.isSelected());

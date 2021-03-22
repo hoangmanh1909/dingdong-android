@@ -14,11 +14,13 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import java.util.ArrayList;
 import java.util.Objects;
 import butterknife.BindView;
+import android.provider.Settings.Secure;
 
 /**
  * The Home Fragment
@@ -63,6 +65,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     @Override
     public void initLayout() {
         super.initLayout();
+        String android_id = Secure.getString(getContext().getContentResolver(),
+                Secure.ANDROID_ID);
+        Log.d("123123", "android_id: "+android_id);
 
         homeViewChangeListerner = new HomeViewChangeListerner();
         getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
@@ -85,6 +90,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
 
         updateHomeView();
+        eventCallInAppCtel();
 
     }
 
@@ -242,6 +248,10 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 updateHomeView();
             }
         }
+    }
+
+    private void eventCallInAppCtel() {
+
     }
 
 }

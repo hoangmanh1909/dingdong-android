@@ -126,8 +126,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                         } else if (homeInfo.getId() == 15) {
                             Intent intent = new Intent(getActivity(), RouteTabsActivity.class);
                             startActivity(intent);
-                        }
-                        else if (homeInfo.getId() == 16) {
+                        } else if (homeInfo.getId() == 16) {
                             mPresenter.showPayment();
                         }
                     }
