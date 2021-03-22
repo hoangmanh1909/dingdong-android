@@ -267,7 +267,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvBatchCode.setText("");
                 tvBatchCode.setVisibility(View.GONE);
             }
-
+//            Log.d("thanhkhiempt",receiverName + " asd " +receiverMobile);
             tv_receiver.setText(String.format("Người nhận: %s - %s - %s", receiverName, receiverMobile, receiverAddress));
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + senderMobile + " - " + senderAddress);
 

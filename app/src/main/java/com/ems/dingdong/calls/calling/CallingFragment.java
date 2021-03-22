@@ -54,8 +54,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     CustomTextView tvPhoneNumber;
     @BindView(R.id.tv_calling)
     CustomTextView tvCalling;
-    @BindView(R.id.iv_foward)
-    CustomImageView ivFoward;
+//    @BindView(R.id.iv_foward)
+//    CustomImageView ivFoward;
     @BindView(R.id.iv_hold)
     CustomImageView ivHold;
     @BindView(R.id.iv_mic_off)
@@ -153,8 +153,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     public IBinder onBind(Intent intent) {
         return null;
     }*/
-
-    @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_foward, R.id.iv_mic_off})
+//, R.id.iv_foward
+    @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_mic_off})
     public void onViewClicked(View view) {
 
         Session currentLine = CallManager.Instance().getCurrentSession();
@@ -234,8 +234,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 }
                 break;
 
-            case R.id.iv_foward:
-                break;
+//            case R.id.iv_foward:
+//                break;
 
             case R.id.iv_hold:
                 if (isSpeak == 10) {
@@ -275,7 +275,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
             ivCallEnd.setVisibility(View.VISIBLE);
             ivMicOff.setVisibility(View.VISIBLE);
-            ivFoward.setVisibility(View.GONE);//VISIBLE
+//            ivFoward.setVisibility(View.GONE);//VISIBLE
             ivHold.setVisibility(View.VISIBLE);
         } else {
             tvPhoneNumber.setText(session.displayName);///
@@ -283,7 +283,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivCallCancel.setImageResource(R.drawable.ic_call_end_red);
             ivCallEnd.setVisibility(View.INVISIBLE);
             ivMicOff.setVisibility(View.GONE);
-            ivFoward.setVisibility(View.GONE);
+//            ivFoward.setVisibility(View.GONE);
             ivHold.setVisibility(View.GONE);
         }
     }

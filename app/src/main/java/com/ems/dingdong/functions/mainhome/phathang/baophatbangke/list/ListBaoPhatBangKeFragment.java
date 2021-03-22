@@ -348,13 +348,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 holder.img_contact_phone.setOnClickListener(v -> {
                     try {
                         phoneReceiver = mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", "");
+//                        Log.d("thanhkhiempt",phoneReceiver);
                         mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
                         choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
                         //EventBus.getDefault().postSticky(new CustomItem(mSenderPhone));
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
-
                     callProvidertoReceiver();
 
                 });

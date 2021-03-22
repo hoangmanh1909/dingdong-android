@@ -138,11 +138,9 @@ public class SettingFragment extends ViewFragment<SettingContract.Presenter> imp
         new CallProviderDialog(getActivity(), (item, callProvider) -> {
             tv_provider_Profile.setText(item.getText());
 
-
             SharedPref sharedPref = new SharedPref(getActivity());
             sharedPref.putString(Constants.KEY_CALL_PROVIDER, tv_provider_Profile.getText().toString());
             EventBus.getDefault().postSticky(new CustomProvider(tv_provider_Profile.getText().toString()));
-
             mPresenter.back();
             getViewContext().sendBroadcast(new Intent(HomeV1Fragment.ACTION_HOME_VIEW_CHANGE));
         }).show();
