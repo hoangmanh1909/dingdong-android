@@ -21,6 +21,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
@@ -234,8 +235,27 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
+    public void deliveryPartial(DeliveryProductRequest request) {
+        mView.showProgress();
+        mInteractor.deliveryPartial(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.showSuccess(response.body().getErrorCode());
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showError(message);
+            }
+        });
+    }
+
+    @Override
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
                                 String relationship, InfoVerify infoVerify) {
+        mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
@@ -310,6 +330,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         simpleResult -> {
+                            mView.hideProgress();
                             paymentResponses = simpleResult.getPaymentResponses();
                             if (simpleResult.getErrorCode().equals("01")) {
                                 long amountPP = 0;
@@ -329,6 +350,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                             }
                         },
                         throwable -> {
+                            mView.hideProgress();
                             mView.showPaymentV2Success(throwable.getMessage());
                         }
                 );

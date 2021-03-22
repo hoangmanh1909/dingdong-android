@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,7 +10,9 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,23 +26,32 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CreateDeliveryParialDialog;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.DeliveryPartialAdapter;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.ProductModel;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
+import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
@@ -50,20 +62,25 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.common.collect.ImmutableList;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -162,6 +179,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout llVerify;
     @BindView(R.id.ll_capture_verify)
     LinearLayout llCaptureVerify;
+    @BindView(R.id.ll_delivery)
+    LinearLayout ll_delivery;
     @BindView(R.id.edt_date_of_birth)
     CustomTextView edtDateOfBirth;
     @BindView(R.id.edt_GTTT_date_accepted)
@@ -170,6 +189,42 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     TextInputEditText edtGTTTLocatedAccepted;
     @BindView(R.id.edt_user_address)
     TextInputEditText edtUserAddress;
+
+    @BindView(R.id.tv_pt_des)
+    TextView tv_pt_des;
+    @BindView(R.id.et_pt_amount)
+    TextInputEditText et_pt_amount;
+    @BindView(R.id.recycler_delivery_partial)
+    RecyclerView recycler_delivery_partial;
+    @BindView(R.id.iv_camera_partial_d)
+    ImageView iv_camera_partial_d;
+    @BindView(R.id.recycler_image_partial_d)
+    RecyclerView recycler_image_partial_d;
+    @BindView(R.id.iv_add_delivery)
+    ImageView iv_add_delivery;
+    @BindView(R.id.rad_partial)
+    TextView rad_partial;
+    @BindView(R.id.ll_partial)
+    LinearLayout ll_partial;
+
+    @BindView(R.id.tv_pt_amount_r)
+    TextView tv_pt_amount_r;
+    @BindView(R.id.recycler_refund_partial)
+    RecyclerView recycler_refund_partial;
+    @BindView(R.id.iv_camera_partial_r)
+    ImageView iv_camera_partial_r;
+    @BindView(R.id.recycler_image_partial_r)
+    RecyclerView recycler_image_partial_r;
+    @BindView(R.id.iv_add_refund)
+    ImageView iv_add_refund;
+
+    @BindView(R.id.rl_image_partial_d)
+    RelativeLayout rl_image_partial_d;
+    @BindView(R.id.rl_image_partial_r)
+    RelativeLayout rl_image_partial_r;
+    @BindView(R.id.ll_image)
+    LinearLayout ll_image;
+
     private Calendar calDateOfBirth = Calendar.getInstance();
     private Calendar calDateAccepted = Calendar.getInstance();
     private XacNhanBaoPhatAdapter adapter;
@@ -209,6 +264,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private boolean isCaptureVerify = false;
     private boolean isCaptureAvatar = false;
     private boolean isCaptureOther = false;
+
+    private boolean isCaptureDelivery = false;
+    private boolean isCaptureRefund = false;
+
     //private int authenType = -2;
     private int authenType;
     private List<Item> listImages;
@@ -220,13 +279,33 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private ImageCaptureAdapter imageVerifyAdapter;
     private ImageCaptureAdapter imageOtherAdapter;
 
+    private List<Item> listImageDelivery;
+    private List<Item> listImageRefund;
+
+    private ImageCaptureAdapter imageDeliveryAdapter;
+    private ImageCaptureAdapter imageRefundAdapter;
+
+    List<ProductModel> listProductDelivery;
+    List<ProductModel> listProductRefund;
+
+    List<ProductModel> listProductDeliveryRequest;
+
+    DeliveryPartialAdapter deliveryPartialAdapter;
+    DeliveryPartialAdapter refundPartialAdapter;
+
+    private RouteInfo routeInfo;
     private UserInfo userInfo;
+    private PostOffice postOffice;
+
     private UploadSingleResult uploadSingleResult;
     //private ListReceiverName listReceiverName;
     private List<String> listReceiverName;
     private String receiverName = "";
     private boolean checkInfoClick = false;
     private boolean checkImageClick = false;
+    String modePartial = "INIT";
+//    int quantity = 0;
+//    int mPosition = 0;
 
     public static XacNhanBaoPhatFragment getInstance() {
         return new XacNhanBaoPhatFragment();
@@ -255,9 +334,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: "));
         tvAddressUser.setText(StringUtils.fromHtml("Địa chỉ người sử dụng: " + "<font color=\"red\">*</font>"));
         tvProviders.setText(StringUtils.fromHtml("Nơi cấp: " + "<font color=\"red\">*</font>"));
+
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
@@ -265,8 +347,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mCurrentRouteInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
 
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+
+        if (!routeJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+        }
+
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
+        ll_partial.setVisibility(View.GONE);
 
         /*radio_group.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rad_fail) {
@@ -291,6 +382,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         });*/
 
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
+
         adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -321,10 +413,144 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         updateTotalPackage();
         mPresenter.getReasons();
         mPresenter.getRouteByPoCode(userInfo.getUnitCode());
+
         listImagesAvatar = new ArrayList<>();//
         listImages = new ArrayList<>();
         listImageVerify = new ArrayList<>();
         listImageOther = new ArrayList<>();
+
+        listImageDelivery = new ArrayList<>();
+        listImageRefund = new ArrayList<>();
+
+        listProductDelivery = new ArrayList<>();
+        listProductRefund = new ArrayList<>();
+        listProductDeliveryRequest = new ArrayList<>();
+
+        if (mBaoPhatBangke.size() == 1) {
+            rad_partial.setVisibility(View.VISIBLE);
+
+            listProductDelivery.addAll(mBaoPhatBangke.get(0).getListProducts());
+
+            for (ProductModel productModel : listProductDelivery) {
+                ProductModel productModel1 = new ProductModel();
+                productModel1.setQuantity(productModel.getQuantity());
+                productModel1.setProductName(productModel.getProductName());
+                productModel1.setWeight(productModel.getWeight());
+                productModel1.setPrice(productModel.getPrice());
+                productModel1.setUnitName(productModel.getUnitName());
+                listProductDeliveryRequest.add(productModel1);
+            }
+
+            for (ProductModel productModel : listProductDelivery) {
+                ProductModel productModel1 = new ProductModel();
+                productModel1.setQuantity(0);
+                productModel1.setProductName(productModel.getProductName());
+                productModel1.setWeight(productModel.getWeight());
+                productModel1.setPrice(productModel.getPrice());
+                productModel1.setUnitName(productModel.getUnitName());
+                listProductRefund.add(productModel1);
+            }
+
+            if (listProductDelivery.size() > 0) {
+                String content = "";
+                int i = 0;
+                String join = " - ";
+                for (ProductModel productModel : listProductDelivery) {
+                    ++i;
+                    content += i + ". " + productModel.getProductName() + join + productModel.getQuantity() + "(" + productModel.getUnitName() + ")" + join + productModel.getWeight() + "g" +
+                            " Đơn giá:" + NumberUtils.formatAmount(productModel.getPrice()) + join + " Thành tiền: " + NumberUtils.formatAmount(productModel.getAmounts()) + "\n";
+                }
+                content = content.substring(0, content.length() - 1);
+                tv_pt_des.setText(content);
+            } else {
+                tv_pt_des.setText(mBaoPhatBangke.get(0).getDescription());
+                modePartial = "EMPTY";
+            }
+
+        } else {
+            modePartial = "EMPTY";
+            ll_delivery.setWeightSum(3);
+            rad_partial.setVisibility(View.GONE);
+        }
+
+        recycler_delivery_partial.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler_refund_partial.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        if (modePartial.equals("EMPTY")) {
+            deliveryPartialAdapter = new DeliveryPartialAdapter(getContext(), listProductDelivery, modePartial) {
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    super.onBindViewHolder(holder, position);
+
+                    ((HolderView) holder).iv_delete.setOnClickListener(v -> {
+                        listProductDelivery.remove(position);
+                        listProductDeliveryRequest.remove(position);
+                        deliveryPartialAdapter.removeItem(position);
+                        deliveryPartialAdapter.notifyItemRangeChanged(position, listProductDelivery.size());
+                    });
+                }
+            };
+            recycler_delivery_partial.setAdapter(deliveryPartialAdapter);
+
+            refundPartialAdapter = new DeliveryPartialAdapter(getContext(), listProductRefund, modePartial) {
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    super.onBindViewHolder(holder, position);
+
+                    ((HolderView) holder).iv_delete.setOnClickListener(v -> {
+                        listProductRefund.remove(position);
+                        refundPartialAdapter.removeItem(position);
+                        refundPartialAdapter.notifyItemRangeChanged(position, listProductRefund.size());
+                    });
+                }
+            };
+            recycler_refund_partial.setAdapter(refundPartialAdapter);
+        } else {
+            deliveryPartialAdapter = new DeliveryPartialAdapter(getContext(), listProductDelivery, "ADD") {
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    super.onBindViewHolder(holder, position);
+
+                    ((HolderView) holder).iv_increase.setOnClickListener(v -> {
+                        ProductModel productModel = listProductDelivery.get(position);
+                        int quantity = Integer.parseInt(((HolderView) holder).tv_quantity.getText().toString());
+                        if (quantity < productModel.getQuantity()) {
+                            quantity += 1;
+
+                            listProductDeliveryRequest.get(position).setQuantity(quantity);
+                            ((HolderView) holder).tv_quantity.setText(quantity + "");
+
+                            int refund = listProductRefund.get(position).getQuantity();
+                            refund -= 1;
+
+                            listProductRefund.get(position).setQuantity(refund);
+                            refundPartialAdapter.notifyItemChanged(position);
+                        }
+                    });
+
+                    ((HolderView) holder).iv_decrease.setOnClickListener(v -> {
+                        int quantity = Integer.parseInt(((HolderView) holder).tv_quantity.getText().toString());
+                        if (quantity > 0) {
+                            quantity -= 1;
+
+                            listProductDeliveryRequest.get(position).setQuantity(quantity);
+                            ((HolderView) holder).tv_quantity.setText(quantity + "");
+
+                            int refund = listProductRefund.get(position).getQuantity();
+                            refund += 1;
+
+                            listProductRefund.get(position).setQuantity(refund);
+                            refundPartialAdapter.notifyItemChanged(position);
+                        }
+                    });
+                }
+            };
+            recycler_delivery_partial.setAdapter(deliveryPartialAdapter);
+
+            refundPartialAdapter = new DeliveryPartialAdapter(getContext(), listProductRefund, "REFUND");
+            recycler_refund_partial.setAdapter(refundPartialAdapter);
+        }
+
         imageAvatarAdapter = new ImageCaptureAdapter(getViewContext(), listImagesAvatar) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -373,14 +599,44 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 });
             }
         };
+        imageDeliveryAdapter = new ImageCaptureAdapter(getViewContext(), listImageDelivery) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImageDelivery.remove(position);
+                    imageDeliveryAdapter.notifyItemRemoved(position);
+                    imageDeliveryAdapter.notifyItemRangeChanged(position, listImageDelivery.size());
+                });
+            }
+        };
+        imageRefundAdapter = new ImageCaptureAdapter(getViewContext(), listImageRefund) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImageRefund.remove(position);
+                    imageRefundAdapter.notifyItemRemoved(position);
+                    imageRefundAdapter.notifyItemRangeChanged(position, listImageRefund.size());
+                });
+            }
+        };
+
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
         RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageOther);
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recycler_image_partial_d);
+        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recycler_image_partial_r);
+
         recyclerImageVerifyAvatar.setAdapter(imageAvatarAdapter);//
         recyclerViewImage.setAdapter(imageAdapter);
         recyclerViewImageVerify.setAdapter(imageVerifyAdapter);
         recyclerImageOther.setAdapter(imageOtherAdapter);
+        recycler_image_partial_d.setAdapter(imageDeliveryAdapter);
+        recycler_image_partial_r.setAdapter(imageRefundAdapter);
 
         /*rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
             if (b) {
@@ -400,7 +656,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         });*/
 
-
         verifyInfo();
         verifyImage();
 
@@ -412,63 +667,122 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
 
-    }
+        et_pt_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    public void removeAt(String type, int position) {
-        switch (type) {
-            case "AVARTAR": {
-                listImagesAvatar.remove(position);
-                imageAvatarAdapter.notifyItemRemoved(position);
-                imageAvatarAdapter.notifyItemRangeChanged(position, listImagesAvatar.size());
             }
-        }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                et_pt_amount.removeTextChangedListener(this);
+                if (!TextUtils.isEmpty(charSequence.toString())) {
+                    try {
+                        long amount = Long.parseLong(charSequence.toString().replace(",", ""));
+                        if (totalAmount >= amount) {
+                            et_pt_amount.setText(NumberUtils.formatAmount(amount));
+                            long amountR = totalAmount - amount;
+                            tv_pt_amount_r.setText(amountR + "");
+                        }
+
+                    } catch (Exception ex) {
+                        Logger.w(ex);
+                    }
+                }
+                et_pt_amount.addTextChangedListener(this);
+                et_pt_amount.setSelection(et_pt_amount.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
 
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
             R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
-            R.id.rad_success, R.id.rad_fail, R.id.rad_change_route})
+            R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund,
+            R.id.rl_image_partial_d, R.id.rl_image_partial_r})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rad_success:
                 mDeliveryType = 2;
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                ll_partial.setVisibility(View.GONE);
                 linearLayoutName.setVisibility(View.VISIBLE);
                 llVerify.setVisibility(View.VISIBLE);
+                ll_image.setVisibility(View.VISIBLE);
+
                 rad_success.setBackgroundResource(R.drawable.bg_form_success);
                 rad_fail.setBackgroundResource(R.color.color_rad_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_partial.setBackgroundResource(R.color.color_rad_partial);
+
                 rad_success.setTextColor(getResources().getColor(R.color.color_yellow));
                 rad_fail.setTextColor(getResources().getColor(R.color.white));
                 rad_change_route.setTextColor(getResources().getColor(R.color.white));
+                rad_partial.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.rad_fail:
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
+                ll_partial.setVisibility(View.GONE);
                 linearLayoutName.setVisibility(View.GONE);
                 llVerify.setVisibility(View.GONE);
+                ll_image.setVisibility(View.VISIBLE);
+
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_fail.setBackgroundResource(R.drawable.bg_form_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_partial.setBackgroundResource(R.color.color_rad_partial);
+
                 rad_success.setTextColor(getResources().getColor(R.color.white));
                 rad_fail.setTextColor(getResources().getColor(R.color.color_yellow));
                 rad_change_route.setTextColor(getResources().getColor(R.color.white));
+                rad_partial.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.rad_change_route:
                 mDeliveryType = 3;
+                ll_partial.setVisibility(View.GONE);
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
                 ll_change_route.setVisibility(LinearLayout.VISIBLE);
                 linearLayoutName.setVisibility(View.GONE);
                 llVerify.setVisibility(View.GONE);
+                ll_image.setVisibility(View.VISIBLE);
+
                 rad_fail.setBackgroundResource(R.color.color_rad_fail);
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_change_route.setBackgroundResource(R.drawable.bg_form_change_route);
+                rad_partial.setBackgroundResource(R.color.color_rad_partial);
+
                 rad_success.setTextColor(getResources().getColor(R.color.white));
                 rad_fail.setTextColor(getResources().getColor(R.color.white));
                 rad_change_route.setTextColor(getResources().getColor(R.color.color_yellow));
+                rad_partial.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.rad_partial:
+                mDeliveryType = 4;
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                ll_partial.setVisibility(View.VISIBLE);
+                linearLayoutName.setVisibility(View.VISIBLE);
+                llVerify.setVisibility(View.GONE);
+                ll_image.setVisibility(View.GONE);
+
+                rad_success.setBackgroundResource(R.color.color_rad_success);
+                rad_fail.setBackgroundResource(R.color.color_rad_fail);
+                rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_partial.setBackgroundResource(R.drawable.bg_form_parital);
+
+                rad_success.setTextColor(getResources().getColor(R.color.white));
+                rad_fail.setTextColor(getResources().getColor(R.color.white));
+                rad_change_route.setTextColor(getResources().getColor(R.color.white));
+                rad_partial.setTextColor(getResources().getColor(R.color.color_yellow));
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -528,11 +842,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             //file_selfie_avatar.jpg
             case R.id.rl_image_capture_avatar:
                 if (imageAvatarAdapter.getListFilter().size() < 1) {
-                    isCaptureAvatar = true;
-                    isCaptureVerify = false;
-                    isCapture = false;
-                    isCaptureOther = false;
-                    MediaUltis.captureImage(this);
+                    setIsCapture("AVATAR");
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_one_photos));
                 }
@@ -540,11 +850,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             case R.id.rl_image_other:
                 if (imageOtherAdapter.getListFilter().size() < 5) {
-                    isCaptureAvatar = false;
-                    isCaptureVerify = false;
-                    isCapture = false;
-                    isCaptureOther = true;
-                    MediaUltis.captureImage(this);
+                    setIsCapture("OTHER");
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_five_photos));
                 }
@@ -552,13 +858,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             case R.id.rl_image_capture:
                 if (imageAdapter.getListFilter().size() < 3) {
-                    isCaptureAvatar = false;
-                    isCaptureVerify = false;
-                    isCapture = true;
-                    isCaptureOther = false;
-                    MediaUltis.captureImage(this);
-//                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(cameraIntent, Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+                    setIsCapture("DEFAULT");
                 } else {
                     showErrorToast(getViewContext().getString(R.string.do_not_allow_take_over_three_photos));
                 }
@@ -566,13 +866,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             case R.id.rl_image_capture_verify:
                 if (imageVerifyAdapter.getListFilter().size() < 2) {
-                    isCaptureAvatar = false;
-                    isCaptureVerify = true;
-                    isCapture = false;
-                    isCaptureOther = false;
-                    MediaUltis.captureImage(this);
+                    setIsCapture("VERIFY");
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_two_photos));
+                }
+                break;
+            case R.id.rl_image_partial_d:
+                if (listImageDelivery.size() == 0) {
+                    setIsCapture("PARTIAL_D");
+                }
+                break;
+            case R.id.rl_image_partial_r:
+                if (listImageRefund.size() == 0) {
+                    setIsCapture("PARTIAL_R");
                 }
                 break;
             case R.id.edt_date_of_birth:
@@ -636,7 +942,80 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 popup.setGravity(Gravity.END);
                 popup.show();
                 break;
+            case R.id.iv_add_delivery:
+                productAdd("D");
+                break;
+            case R.id.iv_add_refund:
+                productAdd("R");
+                break;
         }
+    }
+
+    void setIsCapture(String type) {
+        switch (type) {
+            case "AVATAR":
+                isCaptureAvatar = true;
+                isCaptureVerify = false;
+                isCapture = false;
+                isCaptureOther = false;
+                isCaptureDelivery = false;
+                isCaptureRefund = false;
+                break;
+            case "OTHER":
+                isCaptureOther = true;
+                isCaptureAvatar = false;
+                isCaptureVerify = false;
+                isCapture = false;
+                isCaptureDelivery = false;
+                isCaptureRefund = false;
+                break;
+            case "DEFAULT":
+                isCapture = true;
+                isCaptureAvatar = false;
+                isCaptureVerify = false;
+                isCaptureOther = false;
+                isCaptureDelivery = false;
+                isCaptureRefund = false;
+                break;
+            case "VERIFY":
+                isCaptureVerify = true;
+                isCaptureAvatar = false;
+                isCapture = false;
+                isCaptureOther = false;
+                isCaptureDelivery = false;
+                isCaptureRefund = false;
+                break;
+            case "PARTIAL_D":
+                isCaptureDelivery = true;
+                isCaptureAvatar = false;
+                isCaptureVerify = false;
+                isCapture = false;
+                isCaptureOther = false;
+                isCaptureRefund = false;
+                break;
+            case "PARTIAL_R":
+                isCaptureRefund = true;
+                isCaptureDelivery = false;
+                isCaptureAvatar = false;
+                isCaptureVerify = false;
+                isCapture = false;
+                isCaptureOther = false;
+                break;
+        }
+        MediaUltis.captureImage(this);
+    }
+
+    void productAdd(String type) {
+        new CreateDeliveryParialDialog(getContext(), v -> {
+            if (type.equals("D")) {
+                listProductDelivery.add(v);
+                listProductDeliveryRequest.add(v);
+                deliveryPartialAdapter.setItems(listProductDelivery);
+            } else {
+                listProductRefund.add(v);
+                refundPartialAdapter.setItems(listProductRefund);
+            }
+        }).show();
     }
 
     private void submit() {
@@ -650,7 +1029,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
         mFile = TextUtils.join(";", arrImages);
         checkImage(authenType);
-        if (mDeliveryType == 2) {
+
+        if (mDeliveryType == 2 || mDeliveryType == 4) {
             List<DeliveryPostman> listSelected = getItemSelected();
             if (listSelected.size() == 0) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_pick_any_package));
@@ -695,11 +1075,25 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }*/
 
-
+            if (mDeliveryType == 4) {
+                if (totalAmount > 0) {
+                    if (TextUtils.isEmpty(et_pt_amount.getText())) {
+                        Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
+                        return;
+                    } else {
+                        int amount = Integer.parseInt(et_pt_amount.getText().toString().replace(",", ""));
+                        if (amount > totalAmount) {
+                            Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+                            return;
+                        }
+                    }
+                }
+            }
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
-                        showProgress();
+                        confirmDialog.dismiss();
+
                         InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
                         if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                             infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
@@ -713,19 +1107,31 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 infoVerify.setAuthenType(authenType);
                         }
 
-
-                        if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                    edtOtherRelationship.getText(), infoVerify);
+                        if (mDeliveryType == 2) {
+                            if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                                mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
+                                        edtOtherRelationship.getText(), infoVerify);
+                            } else {
+                                mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
+                                        edtRelationship.getText().toString(), infoVerify);
+                            }
                         } else {
-                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                    edtRelationship.getText().toString(), infoVerify);
-                        }
 
-                        confirmDialog.dismiss();
+                            if (totalAmount > 0) {
+                                int amount = Integer.parseInt(et_pt_amount.getText().toString().replace(",", ""));
+                                if (!TextUtils.isEmpty(et_pt_amount.getText())) {
+                                    if (amount <= totalAmount)
+                                        deliveryPartial(infoVerify, amount);
+                                    else
+                                        Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+                                } else
+                                    Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
+                            } else deliveryPartial(infoVerify, 0);
+                        }
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
                     .show();
+
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(tv_reason.getContext(), getViewContext().getString(R.string.please_pick_reason));
@@ -763,6 +1169,96 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             ///mPresenter.cancelDivided(Integer.parseInt(mCurrentRouteInfo.getRouteId()), postmanId, mSign, mFile);
 //            mPresenter.changeRouteInsert(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
         }
+    }
+
+    void deliveryPartial(InfoVerify infoVerify, int amount) {
+        String mFileDelivery = "";
+        String mFileRefund = "";
+
+        if (listImageDelivery.size() > 0) {
+            mFileDelivery = listImageDelivery.get(0).getText();
+        }
+        if (listImageRefund.size() > 0) {
+            mFileRefund = listImageRefund.get(0).getText();
+        }
+
+        DeliveryProductRequest request = new DeliveryProductRequest();
+
+        Calendar calDate = Calendar.getInstance();
+        int mHour = calDate.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calDate.get(Calendar.MINUTE);
+
+        String postmanID = userInfo.getiD();
+        String mobileNumber = userInfo.getMobileNumber();
+        String deliveryPOCode = postOffice.getCode();
+        String routeCode = routeInfo.getRouteCode();
+        String deliveryDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String deliveryTime = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
+
+        DeliveryPostman item = getItemSelected().get(0);
+
+        String receiverName;
+
+        if (TextUtils.isEmpty(edtReceiverName.getText())) {
+            receiverName = item.getReciverName();
+        } else {
+            receiverName = edtReceiverName.getText().toString();
+        }
+
+        String parcelCode = item.getMaE();
+        String reasonCode = "";
+        String solutionCode = "";
+        String status = "C14";
+        String note = "";
+
+        final String paymentChannel = "1";
+
+        String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+
+        request.setDeliveryAmount(amount);
+        request.setReturnAmount((int) totalAmount - amount);
+        request.setPostmanID(Integer.parseInt(postmanID));
+        request.setParcelCode(parcelCode);
+        request.setMobileNumber(mobileNumber);
+        request.setDeliveryPOCode(deliveryPOCode);
+        request.setDeliveryDate(deliveryDate);
+        request.setDeliveryTime(deliveryTime);
+        request.setReceiverName(receiverName);
+        request.setReasonCode(reasonCode);
+        request.setSolutionCode(solutionCode);
+        request.setStatus(status);
+        request.setPaymentChannel(paymentChannel);
+        request.setSignatureCapture(mSign);
+        request.setNote(note);
+        request.setCollectAmount(item.getAmount());
+        request.setShiftID(item.getShiftId());
+        request.setRouteCode(routeCode);
+        request.setLadingPostmanID(item.getId());
+        request.setSignature(signature);
+
+        request.setImageDelivery(mFileDelivery);
+        request.setReturnImage(mFileRefund);
+        request.setImageAuthen(mFileAvatar + ";" + mFileVerify + ";" + mFileOther);
+
+        request.setBatchCode(item.getBatchCode());
+        request.setIsItemReturn(item.isItemReturn());
+        request.setItemsInBatch(item.getItemsInBatch());
+        request.setAmountForBatch(item.getAmountForBatch());
+        request.setReceiverReference(edtRelationship.getText().toString());
+        request.setReplaceCode(item.getReplaceCode());
+        request.setPostmanCode(userInfo.getUserName());
+        request.setCustomerCode(item.getCustomerCode());
+        request.setReceiverPIDWhere(infoVerify.getReceiverPIDWhere());
+        request.setReceiverPIDDate(infoVerify.getReceiverPIDDate());
+        request.setReceiverBirthday(infoVerify.getReceiverBirthday());
+        request.setReceiverAddressDetail(infoVerify.getReceiverAddressDetail());
+        request.setAuthenType(infoVerify.getAuthenType());
+        request.setReceiverIDNumber(infoVerify.getGtgt());
+        request.setVATCode(item.getVatCode());
+
+        request.setReturnProducts(listProductRefund);
+        request.setDeliveryProducts(listProductDeliveryRequest);
+        mPresenter.deliveryPartial(request);
     }
 
     private void verifyInfo() {
@@ -820,7 +1316,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 //                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -859,27 +1354,42 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
-                        mPresenter.postImage(path);
+
                         //mPresenter.postImageAvatar(pathAvatar);
 
                         if (isCaptureAvatar) {
                             mPresenter.postImageAvatar(path);
                             imageAvatarAdapter.getListFilter().add(new Item(path, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
+                        } else {
+                            mPresenter.postImage(path);
+
+                            if (isCaptureVerify) {
+                                imageVerifyAdapter.getListFilter().add(new Item(path, ""));
+                                imageVerifyAdapter.notifyDataSetChanged();
+                            }
+
+                            if (isCaptureOther) {
+                                imageOtherAdapter.getListFilter().add(new Item(path, ""));
+                                imageOtherAdapter.notifyDataSetChanged();
+                            }
+
+                            if (isCapture) {
+                                imageAdapter.getListFilter().add(new Item(path, ""));
+                                imageAdapter.notifyDataSetChanged();
+                            }
+
+                            if (isCaptureDelivery) {
+                                imageDeliveryAdapter.getListFilter().add(new Item(path, ""));
+                                imageDeliveryAdapter.notifyDataSetChanged();
+                            }
+
+                            if (isCaptureRefund) {
+                                imageRefundAdapter.getListFilter().add(new Item(path, ""));
+                                imageRefundAdapter.notifyDataSetChanged();
+                            }
                         }
 
-                        if (isCaptureVerify) {
-                            imageVerifyAdapter.getListFilter().add(new Item(path, ""));
-                            imageVerifyAdapter.notifyDataSetChanged();
-                        }
-                        if (isCaptureOther) {
-                            imageOtherAdapter.getListFilter().add(new Item(path, ""));
-                            imageOtherAdapter.notifyDataSetChanged();
-                        }
-                        if (isCapture) {
-                            imageAdapter.getListFilter().add(new Item(path, ""));
-                            imageAdapter.notifyDataSetChanged();
-                        }
                         if (file.exists())
                             file.delete();
                     } else {
@@ -1052,48 +1562,51 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file, String path) {
         if (null != getViewContext()) {
             if (isCaptureAvatar) {
-//                mFileAvatar = file;
                 for (int i = 0; i < listImagesAvatar.size(); i++) {
                     if (listImagesAvatar.get(i).getValue().equals(path)) {
                         listImagesAvatar.get(i).setText(file);
                     }
                 }
-            } else if (isCaptureVerify) {
-//                if (mFileVerify.equals("")) {
-//                    mFileVerify = file;
-//                } else {
-//                    mFileVerify += ";";
-//                    mFileVerify += file;
-//                }
+            }
+
+            if (isCaptureVerify) {
                 for (int i = 0; i < listImageVerify.size(); i++) {
                     if (listImageVerify.get(i).getValue().equals(path)) {
                         listImageVerify.get(i).setText(file);
                     }
                 }
-            } else if (isCapture) {
+            }
+
+            if (isCapture) {
                 for (int i = 0; i < listImages.size(); i++) {
                     if (listImages.get(i).getValue().equals(path)) {
                         listImages.get(i).setText(file);
                     }
                 }
-//                if (mFile.equals("")) {
-//                    mFile = file;
-//                } else {
-//                    mFile += ";";
-//                    mFile += file;
-//                }
-            } else if (isCaptureOther) {
+            }
+
+            if (isCaptureOther) {
                 for (int i = 0; i < listImageOther.size(); i++) {
                     if (listImageOther.get(i).getValue().equals(path)) {
                         listImageOther.get(i).setText(file);
                     }
                 }
-//                if (mFileOther.equals("")) {
-//                    mFileOther = file;
-//                } else {
-//                    mFileOther += ";";
-//                    mFileOther += file;
-//                }
+            }
+
+            if (isCaptureDelivery) {
+                for (int i = 0; i < listImageDelivery.size(); i++) {
+                    if (listImageDelivery.get(i).getValue().equals(path)) {
+                        listImageDelivery.get(i).setText(file);
+                    }
+                }
+            }
+
+            if (isCaptureRefund) {
+                for (int i = 0; i < listImageRefund.size(); i++) {
+                    if (listImageRefund.get(i).getValue().equals(path)) {
+                        listImageRefund.get(i).setText(file);
+                    }
+                }
             }
         }
     }

@@ -3,6 +3,8 @@ package com.ems.dingdong.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class DeliveryPostman implements Comparable {
     @SerializedName("Count")
     @Expose
@@ -127,12 +129,23 @@ public class DeliveryPostman implements Comparable {
     private String customerCode;
     @SerializedName("AuthenType")
     private Integer authenType;
+    @SerializedName("Products")
+    private List<ProductModel> listProducts;
+
 
     public DeliveryPostman() {
     }
 
     public DeliveryPostman(Integer orderNumberInBD13) {
         this.orderNumberInBD13 = orderNumberInBD13;
+    }
+
+    public List<ProductModel> getListProducts() {
+        return listProducts;
+    }
+
+    public void setListProducts(List<ProductModel> listProducts) {
+        this.listProducts = listProducts;
     }
 
     private boolean selected;

@@ -46,6 +46,7 @@ import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -393,6 +394,9 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/CancelDivided")
     Call<SimpleResult> cancelDivided(@Body List<DingDongCancelDividedRequest> taskRequest);
+
+    @POST("api/Delivery/DeliveryPartial")
+    Call<SimpleResult> deliveryPartial(@Body DeliveryProductRequest request);
 
     @GET("api/VietMap/Reverse")
     Call<XacMinhDiaChiResult> getAddressByLocation(@Query("longitude") double longitude,

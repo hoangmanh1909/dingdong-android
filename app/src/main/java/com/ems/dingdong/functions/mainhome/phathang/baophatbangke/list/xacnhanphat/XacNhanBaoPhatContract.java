@@ -20,6 +20,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -93,6 +94,7 @@ public interface XacNhanBaoPhatContract {
         void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback);
 
         void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback);
+        void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -230,5 +232,6 @@ public interface XacNhanBaoPhatContract {
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
         void onTabRefresh();
+        void deliveryPartial(DeliveryProductRequest request);
     }
 }

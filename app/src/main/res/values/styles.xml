@@ -256,4 +256,12 @@
     <style name="TextViewChangeRoute">
         <item name="android:background">@color/color_rad_change_route</item>
     </style>
+
+    <style name="TextHeaderDeliveryPartial">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/tx_blue_link</item>
+    </style>
 </resources>

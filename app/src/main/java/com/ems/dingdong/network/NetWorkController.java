@@ -49,6 +49,7 @@ import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -549,6 +550,12 @@ public class NetWorkController {
 
     public static void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().cancelDivided(request);
+        call.enqueue(callback);
+    }
+
+
+    public static void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().deliveryPartial(request);
         call.enqueue(callback);
     }
 

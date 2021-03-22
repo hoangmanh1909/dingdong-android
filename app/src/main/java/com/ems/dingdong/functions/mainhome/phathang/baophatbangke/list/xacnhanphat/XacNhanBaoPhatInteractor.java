@@ -12,6 +12,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -84,5 +85,10 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     @Override
     public void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback) {
         NetWorkController.changeRouteInsert(requests, callback);
+    }
+
+    @Override
+    public void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
+        NetWorkController.deliveryPartial(request, callback);
     }
 }

@@ -375,6 +375,7 @@
     <color name="color_rad_success">#27BF04</color>
     <color name="color_rad_fail">#F80B0B</color>
     <color name="color_rad_change_route">#145CED</color>
+    <color name="color_rad_partial">@color/colorPrimary</color>
     <color name="color_yellow">#FFE600</color>
 
 </resources>
