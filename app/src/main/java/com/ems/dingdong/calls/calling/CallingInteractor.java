@@ -10,8 +10,8 @@ public class CallingInteractor extends Interactor<CallingContract.Presenter> imp
         super(presenter);
     }
 
-    @Override
-    public void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
-        NetWorkController.createCallHistoryVHT(code,data,signature,callback);
-    }
+//    @Override
+//    public void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
+////        NetWorkController.createCallHistoryVHT(code,data,signature,callback);
+//    }
 }

@@ -139,23 +139,23 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
             Gson gson = new Gson();
             String json = gson.toJson(CallHistoryVHT);
-            mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", json, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
-                    super.onSuccess(call, response);
-                    if (response.body().getErrorCode().equals("00")) {
-
-                    } else {
-
-                    }
-                }
-
-                @Override
-                protected void onError(Call<ResponseObject> call, String message) {
-                    super.onError(call, message);
-
-                }
-            });
+//            mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", json, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
+//                @Override
+//                protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
+//                    super.onSuccess(call, response);
+//                    if (response.body().getErrorCode().equals("00")) {
+//
+//                    } else {
+//
+//                    }
+//                }
+//
+//                @Override
+//                protected void onError(Call<ResponseObject> call, String message) {
+//                    super.onError(call, message);
+//
+//                }
+//            });
         //}
 
     }
@@ -182,24 +182,24 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
         Gson gsons = new Gson();
         String jsons = gsons.toJson(CallHistoryVHT);
-        mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", jsons, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
-                super.onSuccess(call, response);
-                if (response.body().getErrorCode().equals("00")) {
-                    Log.d("123123", "history call in success");
-
-                } else {
-
-                }
-            }
-
-            @Override
-            protected void onError(Call<ResponseObject> call, String message) {
-                super.onError(call, message);
-
-            }
-        });
+//        mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", jsons, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
+//            @Override
+//            protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
+//                super.onSuccess(call, response);
+//                if (response.body().getErrorCode().equals("00")) {
+//                    Log.d("123123", "history call in success");
+//
+//                } else {
+//
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(Call<ResponseObject> call, String message) {
+//                super.onError(call, message);
+//
+//            }
+//        });
     }
 
     @Subscribe(sticky = true)
