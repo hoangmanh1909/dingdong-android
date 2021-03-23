@@ -3,7 +3,6 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
-import com.ems.dingdong.model.DeliveryProductRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
@@ -13,6 +12,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -68,11 +68,6 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.deliveryPartial(request, callback);
-    }
-
-    @Override
     public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
         NetWorkController.getDeliveryRoute(poCode, callback);
     }
@@ -92,4 +87,8 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
         NetWorkController.changeRouteInsert(requests, callback);
     }
 
+    @Override
+    public void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
+        NetWorkController.deliveryPartial(request, callback);
+    }
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f6fa"
@@ -63,8 +62,6 @@
                 style="@style/HeaderNews"
                 android:layout_width="wrap_content"
                 android:padding="@dimen/dimen_10dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:paddingBottom="@dimen/dimen_10dp"
                 android:text="Thông tin báo phát"
                 android:textColor="@color/n_gray_text"
                 android:textSize="@dimen/text_size_16sp" />
@@ -164,8 +161,8 @@
                             android:layout_height="wrap_content"
                             android:text="Tổng tiền phải thu"
                             android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_21sp" />
+                            android:textSize="@dimen/text_size_21sp"
+                            android:textStyle="bold" />
 
                         <com.ems.dingdong.views.CustomBoldTextView
                             android:id="@+id/tv_total"
@@ -175,39 +172,36 @@
                             android:gravity="center"
                             android:text="1000000"
                             android:textColor="@color/red_light"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_21sp" />
+                            android:textSize="@dimen/text_size_21sp"
+                            android:textStyle="bold" />
                     </RelativeLayout>
 
                 </LinearLayout>
             </LinearLayout>
 
-
-            <!--Hình thức báo phát-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white" />
 
+
+            <!--Hình thức báo phát-->
             <com.ems.dingdong.views.CustomTextView
-                android:visibility="gone"
                 style="@style/HeaderNews"
                 android:layout_width="wrap_content"
                 android:padding="@dimen/dimen_10dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:paddingBottom="@dimen/dimen_10dp"
                 android:text="Hình thức báo phát"
                 android:textColor="@color/n_gray_text"
-                android:textSize="@dimen/text_size_16sp" />
+                android:textSize="@dimen/text_size_16sp"/>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:weightSum="4"
+                android:id="@+id/ll_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="4">
 
                 <!--<RadioGroup
                     android:id="@+id/radio_group"
@@ -261,49 +255,56 @@
                 <!---->
                 <TextView
                     android:id="@+id/rad_success"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_form_success"
-                    android:text="THÀNH CÔNG"
                     android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="THÀNH CÔNG"
                     android:textColor="@color/color_yellow"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_13sdp"
-                    android:layout_height="match_parent"/>
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/rad_fail"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@color/color_rad_fail"
-                    android:text="KHÔNG THÀNH CÔNG"
                     android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="KHÔNG THÀNH CÔNG"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_13sdp"
-                    android:layout_height="match_parent"/>
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/rad_partial"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:background="@color/bg_yellow_primary"
-                    android:text="PHÁT MỘT PHẦN"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
                     android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Phát một phần"
+                    android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_13sdp"
-                    android:layout_height="match_parent"/>
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/rad_change_route"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@color/color_rad_change_route"
-                    android:text="CHUYỂN TUYẾN"
                     android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="CHUYỂN TUYẾN"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_13sdp"
-                    android:layout_height="match_parent"/>
-
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -443,8 +444,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
@@ -486,14 +486,14 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
-<!--                    <com.ems.dingdong.views.form.FormItemEditText-->
-<!--                        android:id="@+id/edt_GTTT"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="right"-->
-<!--                        android:text="1000000"-->
-<!--                        android:textColor="@color/red_light"-->
-<!--                        android:textSize="@dimen/text_size_16sp" />-->
+                    <!--                    <com.ems.dingdong.views.form.FormItemEditText-->
+                    <!--                        android:id="@+id/edt_GTTT"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:gravity="right"-->
+                    <!--                        android:text="1000000"-->
+                    <!--                        android:textColor="@color/red_light"-->
+                    <!--                        android:textSize="@dimen/text_size_16sp" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -516,10 +516,8 @@
                 <View
                     style="@style/Devider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginRight="@dimen/dimen_10dp" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -535,14 +533,14 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
-<!--                    <com.ems.dingdong.views.form.FormItemEditText-->
-<!--                        android:id="@+id/edt_note"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="right"-->
-<!--                        android:text="1000000"-->
-<!--                        android:textColor="@color/red_light"-->
-<!--                        android:textSize="@dimen/text_size_16sp" />-->
+                    <!--                    <com.ems.dingdong.views.form.FormItemEditText-->
+                    <!--                        android:id="@+id/edt_note"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:gravity="right"-->
+                    <!--                        android:text="1000000"-->
+                    <!--                        android:textColor="@color/red_light"-->
+                    <!--                        android:textSize="@dimen/text_size_16sp" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -554,14 +552,244 @@
                             android:id="@+id/edt_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/red_light"
                             android:gravity="right"
+                            android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <!--phat 1 phan-->
+            <LinearLayout
+                android:id="@+id/ll_partial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/TextHeaderDeliveryPartial"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="Nội dung" />
+
+                <TextView
+                    android:id="@+id/tv_pt_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                <View style="@style/Devider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_anchor1"
+                        style="@style/TextHeaderDeliveryPartial"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_centerVertical="true"
+                        android:text="SP phát" />
+
+                    <LinearLayout
+                        android:layout_toEndOf="@+id/tv_anchor1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:layout_marginStart="@dimen/_30sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:text="Tổng COD phát"
+                            android:gravity="center_vertical"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:endIconMode="clear_text">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_pt_amount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/red_light"
+                                android:inputType="number"
+                                android:textSize="@dimen/text_size_16sp"
+                                android:gravity="right"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_delivery_partial"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_image_partial_d"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp">
+
+                        <ImageView
+                            android:id="@+id/iv_camera_partial_d"
+                            android:layout_width="@dimen/dimen_70dp"
+                            android:layout_height="@dimen/dimen_70dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginEnd="@dimen/size_10dp"
+                            android:src="@drawable/ic_camera_plus" />
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_camera_partial_d"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/size_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Chụp ảnh"
+                            android:textColor="@color/n_gray_text"
+                            android:textSize="@dimen/text_size_12sp" />
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_image_partial_d"
+                        android:layout_toEndOf="@+id/rl_image_partial_d"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5sdp" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_add_delivery"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/bg_success"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_add_control_point" />
+                </RelativeLayout>
+
+                <View style="@style/Devider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_anchor2"
+                        style="@style/TextHeaderDeliveryPartial"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:text="SP hoàn" />
+
+                    <LinearLayout
+                        android:layout_toEndOf="@+id/tv_anchor2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:gravity="end">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:text="Tổng COD hoàn: "/>
+
+                        <TextView
+                            android:id="@+id/tv_pt_amount_r"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_light"
+                            android:text="0"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_refund_partial"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_image_partial_r"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp">
+
+                        <ImageView
+                            android:id="@+id/iv_camera_partial_r"
+                            android:layout_width="@dimen/dimen_70dp"
+                            android:layout_height="@dimen/dimen_70dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginRight="@dimen/size_10dp"
+                            android:src="@drawable/ic_camera_plus" />
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_camera_partial_r"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/size_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Chụp ảnh"
+                            android:textColor="@color/n_gray_text"
+                            android:textSize="@dimen/text_size_12sp" />
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_image_partial_r"
+                        android:layout_toEndOf="@+id/rl_image_partial_r"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5sdp" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_add_refund"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/ic_add_control_point"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_success"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -654,15 +882,15 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
-<!--                    <com.ems.dingdong.views.form.FormItemEditText-->
-<!--                        android:id="@+id/tv_Description"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="right"-->
-<!--                        android:textColor="#253854"-->
-<!--                        android:textSize="16sp"-->
-<!--                        app:formHint="Ghi chú"-->
-<!--                        app:formShowUnderline="false" />-->
+                    <!--                    <com.ems.dingdong.views.form.FormItemEditText-->
+                    <!--                        android:id="@+id/tv_Description"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:gravity="right"-->
+                    <!--                        android:textColor="#253854"-->
+                    <!--                        android:textSize="16sp"-->
+                    <!--                        app:formHint="Ghi chú"-->
+                    <!--                        app:formShowUnderline="false" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -765,289 +993,6 @@
                     android:layout_height="0.5dp" />
             </LinearLayout>
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ll_partial"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp">
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/customTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="NỘI DUNG"
-                    android:textColor="@color/text_blue_bank"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/edt_content_partial"
-                    android:background="@drawable/bg_border_body_common"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
-                    android:layout_marginTop="8dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:maxLines="14"
-                    android:minLines="2"
-                    android:gravity="left|top"
-                    app:layout_constraintStart_toStartOf="@+id/customTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/customTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="SP PHÁT"
-                    android:textColor="@color/text_blue_bank"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Tổng COD phát"
-                    android:textColor="@color/red_light"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/edt_price_partial_release"
-                    app:layout_constraintEnd_toStartOf="@+id/edt_price_partial_release"
-                    app:layout_constraintTop_toTopOf="@+id/edt_price_partial_release"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <EditText
-                    android:id="@+id/edt_price_partial_release"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="right"
-                    android:inputType="textPersonName"
-                    android:text=""
-                    android:textColor="@color/red_light"
-                    app:layout_constraintEnd_toEndOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="1.5dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/edt_content_partial"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_content_partial" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_item_partial_release"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="0dp"
-                    android:layout_height="1.5dp"
-                    android:background="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="SP HOÀN"
-                    android:textColor="@color/text_blue_bank"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Tổng COD hoàn"
-                    android:textColor="@color/red_light"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/edt_price_partial_refund"
-                    app:layout_constraintEnd_toStartOf="@+id/edt_price_partial_refund"
-                    app:layout_constraintTop_toTopOf="@+id/edt_price_partial_refund" />
-
-                <EditText
-                    android:id="@+id/edt_price_partial_refund"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="right"
-                    android:inputType="textPersonName"
-                    android:text=""
-                    android:textColor="@color/red_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_item_partial_refund"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="@+id/recycler_item_partial_release"
-                    app:layout_constraintHorizontal_bias="0.888"
-                    app:layout_constraintStart_toStartOf="@+id/recycler_item_partial_release"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler_item_partial_release">
-
-                    <!--<RelativeLayout
-                        android:id="@+id/rl_image_partial_release"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingRight="@dimen/_5sdp">-->
-
-                    <!--</RelativeLayout>-->
-
-                    <ImageView
-                        android:id="@+id/img_camera_partial_release"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_camera_plus"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_image_partial_release"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/img_camera_partial_release"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/img_add_item_release"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/img_camera_partial_release"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/img_camera_partial_release"
-                        app:srcCompat="@drawable/ic_add_shift" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="@+id/recycler_item_partial_refund"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/recycler_item_partial_refund"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler_item_partial_refund">
-
-                    <!--<RelativeLayout
-                        android:id="@+id/rl_image_partial_refund"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingRight="@dimen/_5sdp">-->
-
-                    <ImageView
-                        android:id="@+id/img_camera_partial_refund"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_camera_plus"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <!--</RelativeLayout>-->
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_image_partial_refund"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/img_camera_partial_refund"
-                        app:layout_constraintStart_toEndOf="@+id/img_camera_partial_refund"
-                        app:layout_constraintTop_toTopOf="@+id/img_camera_partial_refund" />
-
-                    <ImageView
-                        android:id="@+id/img_add_item_refund"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/img_camera_partial_refund"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/img_camera_partial_refund"
-                        app:srcCompat="@drawable/ic_add_shift" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="0dp"
-                    android:layout_height="1.5dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/black"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-                    app:layout_constraintStart_toStartOf="@+id/linearLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <LinearLayout
                 android:id="@+id/ll_verify"
                 android:layout_width="match_parent"
@@ -1116,28 +1061,28 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
 
-<!--                            <com.ems.dingdong.views.form.FormItemEditText-->
-<!--                                android:id="@+id/edt_user_address"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_weight="5"-->
-<!--                                android:gravity="right"-->
-<!--                                android:text="1000000"-->
-<!--                                android:textColor="@color/red_light"-->
-<!--                                android:textSize="@dimen/text_size_16sp" />-->
+                            <!--                            <com.ems.dingdong.views.form.FormItemEditText-->
+                            <!--                                android:id="@+id/edt_user_address"-->
+                            <!--                                android:layout_width="0dp"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_weight="5"-->
+                            <!--                                android:gravity="right"-->
+                            <!--                                android:text="1000000"-->
+                            <!--                                android:textColor="@color/red_light"-->
+                            <!--                                android:textSize="@dimen/text_size_16sp" />-->
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
-                                android:layout_weight="5"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="5"
                                 android:gravity="right"
                                 app:endIconMode="clear_text">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edt_user_address"
                                     android:layout_width="match_parent"
-                                    android:gravity="right"
                                     android:layout_height="wrap_content"
+                                    android:gravity="right"
                                     android:textColor="@color/red_light"
                                     android:textSize="@dimen/text_size_16sp" />
 
@@ -1231,14 +1176,14 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
 
-<!--                            <com.ems.dingdong.views.form.FormItemEditText-->
-<!--                                android:id="@+id/edt_GTTT_located_accepted"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:gravity="right"-->
-<!--                                android:text="1000000"-->
-<!--                                android:textColor="@color/red_light"-->
-<!--                                android:textSize="@dimen/text_size_16sp" />-->
+                            <!--                            <com.ems.dingdong.views.form.FormItemEditText-->
+                            <!--                                android:id="@+id/edt_GTTT_located_accepted"-->
+                            <!--                                android:layout_width="wrap_content"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:gravity="right"-->
+                            <!--                                android:text="1000000"-->
+                            <!--                                android:textColor="@color/red_light"-->
+                            <!--                                android:textSize="@dimen/text_size_16sp" />-->
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
@@ -1249,8 +1194,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edt_GTTT_located_accepted"
                                     android:layout_width="match_parent"
-                                    android:gravity="right"
                                     android:layout_height="wrap_content"
+                                    android:gravity="right"
                                     android:textColor="@color/red_light"
                                     android:textSize="@dimen/text_size_16sp" />
 
@@ -1293,11 +1238,11 @@
                     <!--start xác thực hình ảnh-->
                     <LinearLayout
                         android:id="@+id/ll_verify_image"
-                        android:orientation="vertical"
-                        android:visibility="visible"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
                         <!-- ảnh chân dung -->
                         <LinearLayout
@@ -1319,8 +1264,8 @@
 
                                 <ImageView
                                     android:id="@+id/iv_camera_plus_verify_avatar"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="70dp"
+                                    android:layout_width="@dimen/dimen_70dp"
+                                    android:layout_height="@dimen/dimen_70dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginRight="@dimen/size_10dp"
                                     android:src="@drawable/ic_camera_plus" />
@@ -1447,9 +1392,6 @@
                     </LinearLayout>
 
 
-
-
-
                 </LinearLayout>
 
             </LinearLayout>
@@ -1482,7 +1424,6 @@
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-
                 <ImageView
                     android:id="@+id/img_sign"
                     android:layout_width="match_parent"
@@ -1497,6 +1438,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_16sdp">

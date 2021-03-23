@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -64,6 +65,13 @@ public class NumberUtils {
         }
         return getValueFormat().format(value);
     }
+
+
+    public static String formatAmount(long price) {
+        NumberFormat nf = new DecimalFormat("###,###", new DecimalFormatSymbols(Locale.ROOT));
+        return nf.format(price);
+    }
+
 
     public static String formatVinatti(Integer value) {
         return formatVinattiNumber(value);

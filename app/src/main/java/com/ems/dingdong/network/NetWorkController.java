@@ -14,7 +14,6 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
-import com.ems.dingdong.model.DeliveryProductRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -50,6 +49,7 @@ import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
+import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -73,6 +73,7 @@ import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -483,11 +484,6 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().deliveryPartial(request);
-        call.enqueue(callback);
-    }
-
     public static Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
         return getAPIRxBuilder().pushToPNSDeliveryObservable(request);
     }
@@ -554,6 +550,12 @@ public class NetWorkController {
 
     public static void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().cancelDivided(request);
+        call.enqueue(callback);
+    }
+
+
+    public static void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().deliveryPartial(request);
         call.enqueue(callback);
     }
 

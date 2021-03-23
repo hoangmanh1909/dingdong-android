@@ -7,10 +7,40 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class EditTextUtils {
     private static String character = "•π¶{}\\%[]@#_&-()/*\"':;!?.,-*/,.  %,";
 
     public static void editTextListener(final EditText edtMoneyNumber) {
+        edtMoneyNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                edtMoneyNumber.removeTextChangedListener(this);
+                if (!TextUtils.isEmpty(s.toString())) {
+                    try {
+                        edtMoneyNumber.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                    } catch (Exception ex) {
+                        Logger.w(ex);
+                    }
+                }
+                edtMoneyNumber.addTextChangedListener(this);
+                edtMoneyNumber.setSelection(edtMoneyNumber.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    public static void editTextEditListener(final TextInputEditText edtMoneyNumber) {
         edtMoneyNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

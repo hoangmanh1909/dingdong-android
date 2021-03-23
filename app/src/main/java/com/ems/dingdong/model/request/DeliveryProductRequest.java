@@ -1,117 +1,150 @@
-package com.ems.dingdong.model;
+package com.ems.dingdong.model.request;
 
-import com.google.android.gms.vision.L;
+import com.ems.dingdong.model.ProductModel;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class DeliveryProductRequest {
-    ///
     @SerializedName("DeliveryProducts")
-    private List<DeliveryListRelease> listProduct;
+    @Expose
+    private List<ProductModel> deliveryProducts = null;
     @SerializedName("ReturnProducts")
-    private List<DeliveryListReturn> listReturn;
-
+    @Expose
+    private List<ProductModel> returnProducts = null;
     @SerializedName("ReturnImage")
+    @Expose
     private String returnImage;
     @SerializedName("DeliveryAmount")
-    private Long deliveryAmount;
+    @Expose
+    private Integer deliveryAmount;
     @SerializedName("ReturnAmount")
-    private Long returnAmount;
+    @Expose
+    private Integer returnAmount;
     @SerializedName("PostmanID")
-    private String postmanID;
+    @Expose
+    private Integer postmanID;
     @SerializedName("ParcelCode")
+    @Expose
     private String parcelCode;
     @SerializedName("MobileNumber")
+    @Expose
     private String mobileNumber;
     @SerializedName("DeliveryPOCode")
+    @Expose
     private String deliveryPOCode;
     @SerializedName("DeliveryDate")
+    @Expose
     private String deliveryDate;
     @SerializedName("DeliveryTime")
+    @Expose
     private String deliveryTime;
     @SerializedName("ReceiverName")
+    @Expose
     private String receiverName;
     @SerializedName("ReceiverIDNumber")
+    @Expose
     private String receiverIDNumber;
     @SerializedName("ReasonCode")
+    @Expose
     private String reasonCode;
     @SerializedName("SolutionCode")
+    @Expose
     private String solutionCode;
     @SerializedName("Status")
+    @Expose
     private String status;
     @SerializedName("PaymentChannel")
+    @Expose
     private String paymentChannel;
     @SerializedName("ShiftID")
+    @Expose
     private Integer shiftID;
     @SerializedName("SignatureCapture")
+    @Expose
     private String signatureCapture;
     @SerializedName("Note")
+    @Expose
     private String note;
     @SerializedName("CollectAmount")
+    @Expose
     private Integer collectAmount;
     @SerializedName("Signature")
+    @Expose
     private String signature;
     @SerializedName("RouteCode")
+    @Expose
     private String routeCode;
     @SerializedName("LadingPostmanID")
+    @Expose
     private Integer ladingPostmanID;
     @SerializedName("ImageDelivery")
+    @Expose
     private String imageDelivery;
     @SerializedName("PostmanCode")
+    @Expose
     private String postmanCode;
     @SerializedName("BatchCode")
+    @Expose
     private String batchCode;
     @SerializedName("IsPaymentPP")
-    private boolean isPaymentPP;
+    @Expose
+    private Boolean isPaymentPP;
     @SerializedName("IsItemReturn")
+    @Expose
     private String isItemReturn;
     @SerializedName("AmountForBatch")
+    @Expose
     private String amountForBatch;
     @SerializedName("ItemsInBatch")
+    @Expose
     private Integer itemsInBatch;
-    @SerializedName("IsPaymentBatch")
-    private boolean isPaymentBatch;
-    @SerializedName("LastLadingCode")
-    private String lastLadingCode;
-    @SerializedName("IsRePaymentBatch")
-    private boolean isRePaymentBatch;
     @SerializedName("ReceiverReference")
+    @Expose
     private String receiverReference;
     @SerializedName("ReplaceCode")
+    @Expose
     private String replaceCode;
-    @SerializedName("CustomerCode")
-    private String customerCode;
+    @SerializedName("AuthenType")
+    @Expose
+    private Integer authenType;
     @SerializedName("ReceiverBirthday")
+    @Expose
     private String receiverBirthday;
     @SerializedName("ReceiverPIDDate")
+    @Expose
     private String receiverPIDDate;
     @SerializedName("ReceiverPIDWhere")
+    @Expose
     private String receiverPIDWhere;
     @SerializedName("ReceiverAddressDetail")
+    @Expose
     private String receiverAddressDetail;
-    @SerializedName("AuthenType")
-    private Integer authenType;
+    @SerializedName("CustomerCode")
+    @Expose
+    private String customerCode;
     @SerializedName("ImageAuthen")
-    private String ImageAuthen;
+    @Expose
+    private String imageAuthen;
     @SerializedName("VATCode")
-    private String VATCode;
+    @Expose
+    private String vATCode;
 
-    public List<DeliveryListRelease> getListProduct() {
-        return listProduct;
+    public List<ProductModel> getDeliveryProducts() {
+        return deliveryProducts;
     }
 
-
-    public void setListProduct(List<DeliveryListRelease> listProduct) {
-        this.listProduct = listProduct;
+    public void setDeliveryProducts(List<ProductModel> deliveryProducts) {
+        this.deliveryProducts = deliveryProducts;
     }
 
-    public List<DeliveryListReturn> getListReturn() {
-        return listReturn;
+    public List<ProductModel> getReturnProducts() {
+        return returnProducts;
     }
 
-    public void setListReturn(List<DeliveryListReturn> listReturn) {
-        this.listReturn = listReturn;
+    public void setReturnProducts(List<ProductModel> returnProducts) {
+        this.returnProducts = returnProducts;
     }
 
     public String getReturnImage() {
@@ -122,27 +155,27 @@ public class DeliveryProductRequest {
         this.returnImage = returnImage;
     }
 
-    public Long getDeliveryAmount() {
+    public Integer getDeliveryAmount() {
         return deliveryAmount;
     }
 
-    public void setDeliveryAmount(Long deliveryAmount) {
+    public void setDeliveryAmount(Integer deliveryAmount) {
         this.deliveryAmount = deliveryAmount;
     }
 
-    public Long getReturnAmount() {
+    public Integer getReturnAmount() {
         return returnAmount;
     }
 
-    public void setReturnAmount(Long returnAmount) {
+    public void setReturnAmount(Integer returnAmount) {
         this.returnAmount = returnAmount;
     }
 
-    public String getPostmanID() {
+    public Integer getPostmanID() {
         return postmanID;
     }
 
-    public void setPostmanID(String postmanID) {
+    public void setPostmanID(Integer postmanID) {
         this.postmanID = postmanID;
     }
 
@@ -314,12 +347,12 @@ public class DeliveryProductRequest {
         this.batchCode = batchCode;
     }
 
-    public boolean isPaymentPP() {
+    public Boolean getIsPaymentPP() {
         return isPaymentPP;
     }
 
-    public void setPaymentPP(boolean paymentPP) {
-        isPaymentPP = paymentPP;
+    public void setIsPaymentPP(Boolean isPaymentPP) {
+        this.isPaymentPP = isPaymentPP;
     }
 
     public String getIsItemReturn() {
@@ -346,30 +379,6 @@ public class DeliveryProductRequest {
         this.itemsInBatch = itemsInBatch;
     }
 
-    public boolean isPaymentBatch() {
-        return isPaymentBatch;
-    }
-
-    public void setPaymentBatch(boolean paymentBatch) {
-        isPaymentBatch = paymentBatch;
-    }
-
-    public String getLastLadingCode() {
-        return lastLadingCode;
-    }
-
-    public void setLastLadingCode(String lastLadingCode) {
-        this.lastLadingCode = lastLadingCode;
-    }
-
-    public boolean isRePaymentBatch() {
-        return isRePaymentBatch;
-    }
-
-    public void setRePaymentBatch(boolean rePaymentBatch) {
-        isRePaymentBatch = rePaymentBatch;
-    }
-
     public String getReceiverReference() {
         return receiverReference;
     }
@@ -386,12 +395,12 @@ public class DeliveryProductRequest {
         this.replaceCode = replaceCode;
     }
 
-    public String getCustomerCode() {
-        return customerCode;
+    public Integer getAuthenType() {
+        return authenType;
     }
 
-    public void setCustomerCode(String customerCode) {
-        this.customerCode = customerCode;
+    public void setAuthenType(Integer authenType) {
+        this.authenType = authenType;
     }
 
     public String getReceiverBirthday() {
@@ -426,27 +435,28 @@ public class DeliveryProductRequest {
         this.receiverAddressDetail = receiverAddressDetail;
     }
 
-    public Integer getAuthenType() {
-        return authenType;
+    public String getCustomerCode() {
+        return customerCode;
     }
 
-    public void setAuthenType(Integer authenType) {
-        this.authenType = authenType;
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
     }
 
     public String getImageAuthen() {
-        return ImageAuthen;
+        return imageAuthen;
     }
 
     public void setImageAuthen(String imageAuthen) {
-        ImageAuthen = imageAuthen;
+        this.imageAuthen = imageAuthen;
     }
 
     public String getVATCode() {
-        return VATCode;
+        return vATCode;
     }
 
-    public void setVATCode(String VATCode) {
-        this.VATCode = VATCode;
+    public void setVATCode(String vATCode) {
+        this.vATCode = vATCode;
     }
 }
+
