@@ -14,7 +14,6 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
-import com.ems.dingdong.model.DeliveryProductRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -74,6 +73,7 @@ import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -481,11 +481,6 @@ public class NetWorkController {
 
     public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
-        call.enqueue(callback);
-    }
-
-    public static void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().deliveryPartial(request);
         call.enqueue(callback);
     }
 

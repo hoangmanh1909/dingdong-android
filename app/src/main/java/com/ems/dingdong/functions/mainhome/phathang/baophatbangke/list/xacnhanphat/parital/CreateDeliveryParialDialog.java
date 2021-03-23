@@ -14,6 +14,7 @@ import com.core.base.log.Logger;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ProductAddCallback;
 import com.ems.dingdong.model.ProductModel;
+import com.ems.dingdong.utiles.EditTextUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 
@@ -42,30 +43,10 @@ public class CreateDeliveryParialDialog extends Dialog {
         ButterKnife.bind(this, view);
 
         this.productAddCallback = productAddCallback;
-        edtPriceProductAdd.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                edtPriceProductAdd.removeTextChangedListener(this);
-                if (!TextUtils.isEmpty(charSequence.toString())) {
-                    try {
-                        edtPriceProductAdd.setText(NumberUtils.formatAmount(Integer.parseInt(charSequence.toString().replace(",", ""))));
-                    } catch (Exception ex) {
-                        Logger.w(ex);
-                    }
-                }
-                edtPriceProductAdd.addTextChangedListener(this);
-                edtPriceProductAdd.setSelection(edtPriceProductAdd.getText().length());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
+        EditTextUtils.editTextListener(edtQuantityProductAdd);
+        EditTextUtils.editTextListener(edtWeightProductAdd);
+        EditTextUtils.editTextListener(edtPriceProductAdd);
     }
 
     @Override
@@ -121,7 +102,7 @@ public class CreateDeliveryParialDialog extends Dialog {
         }
 
         ProductModel productModel = new ProductModel();
-        productModel.setAmounts(amount);
+        productModel.setPrice(amount);
         productModel.setProductName(edtNameProductAdd.getText().toString());
         productModel.setWeight(weight);
         productModel.setQuantity(quantity);

@@ -56,6 +56,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.EditTextUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltis;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -506,6 +507,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             };
             recycler_refund_partial.setAdapter(refundPartialAdapter);
         } else {
+            iv_add_delivery.setVisibility(View.GONE);
+            iv_add_refund.setVisibility(View.GONE);
             deliveryPartialAdapter = new DeliveryPartialAdapter(getContext(), listProductDelivery, "ADD") {
                 @Override
                 public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -667,38 +670,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
 
-        et_pt_amount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                et_pt_amount.removeTextChangedListener(this);
-                if (!TextUtils.isEmpty(charSequence.toString())) {
-                    try {
-                        long amount = Long.parseLong(charSequence.toString().replace(",", ""));
-                        if (totalAmount >= amount) {
-                            et_pt_amount.setText(NumberUtils.formatAmount(amount));
-                            long amountR = totalAmount - amount;
-                            tv_pt_amount_r.setText(amountR + "");
-                        }
-
-                    } catch (Exception ex) {
-                        Logger.w(ex);
-                    }
-                }
-                et_pt_amount.addTextChangedListener(this);
-                et_pt_amount.setSelection(et_pt_amount.getText().length());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-
+        EditTextUtils.editTextEditListener(et_pt_amount);
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
@@ -1075,21 +1047,24 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }*/
 
+            long _amountShow = 0;
             if (mDeliveryType == 4) {
                 if (totalAmount > 0) {
                     if (TextUtils.isEmpty(et_pt_amount.getText())) {
                         Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
                         return;
                     } else {
-                        int amount = Integer.parseInt(et_pt_amount.getText().toString().replace(",", ""));
+                        long amount = Long.parseLong(et_pt_amount.getText().toString().replace(",", ""));
                         if (amount > totalAmount) {
                             Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
                             return;
                         }
+                        _amountShow = amount;
                     }
                 }
-            }
-            new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
+            } else
+                _amountShow = totalAmount;
+            new ConfirmDialog(getViewContext(), listSelected.size(), _amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         confirmDialog.dismiss();
@@ -1208,13 +1183,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         String parcelCode = item.getMaE();
         String reasonCode = "";
         String solutionCode = "";
-        String status = "C14";
+        String status = "C44";
         String note = "";
 
         final String paymentChannel = "1";
 
         String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
+        request.setCollectAmount((int) totalAmount);
         request.setDeliveryAmount(amount);
         request.setReturnAmount((int) totalAmount - amount);
         request.setPostmanID(Integer.parseInt(postmanID));

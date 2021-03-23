@@ -5,11 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
-import com.ems.dingdong.model.DeliveryListProduct;
-import com.ems.dingdong.model.DeliveryListRelease;
-import com.ems.dingdong.model.DeliveryListReturn;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.model.DeliveryProductRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.ReasonInfo;
@@ -74,8 +70,6 @@ public interface XacNhanBaoPhatContract {
          * delivery not success.
          */
         void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
-
-        void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback);
 
         /**
          * Get all route by Post code.
@@ -159,9 +153,6 @@ public interface XacNhanBaoPhatContract {
          */
         void showSuccess(String code);
 
-        void showSuccessPartial(String code);
-        void showErrorPartial(String message);
-
         /**
          * Show change route status.
          *
@@ -175,11 +166,6 @@ public interface XacNhanBaoPhatContract {
         void finishView();
 
         List<DeliveryPostman> getItemSelected();
-
-        List<DeliveryListRelease> getProductRelease();
-        List<DeliveryListRelease> getProductReturn();
-
-        //void showListProducts(List<DeliveryProductRequest> list);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -189,7 +175,6 @@ public interface XacNhanBaoPhatContract {
          * @return list chosen.
          */
         List<DeliveryPostman> getBaoPhatBangke();
-        List<DeliveryListRelease> getListProduct();
 
         /**
          * Get reason.
@@ -216,10 +201,6 @@ public interface XacNhanBaoPhatContract {
          * delivery not success.
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture);
-
-        void deliveryPartial(String deliveryImage, String imageAuthen, String imageReturn, String content, long amountRelease, long amountReturn,
-                             String signCapture, String newReceiverName, String relationship, InfoVerify infoVerify,
-                             List<DeliveryListRelease> listRelease, List<DeliveryListRelease> listReturn);
 
         /**
          * delivery success.

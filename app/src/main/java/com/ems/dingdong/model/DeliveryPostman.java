@@ -133,9 +133,6 @@ public class DeliveryPostman implements Comparable {
     private List<ProductModel> listProducts;
 
 
-    @SerializedName("Products")
-    private List<DeliveryListRelease> listProducts;
-
     public DeliveryPostman() {
     }
 
@@ -455,14 +452,6 @@ public class DeliveryPostman implements Comparable {
 
     public String getIsItemReturn() {
         return isItemReturn;
-    }
-
-    public List<DeliveryListRelease> getListProducts() {
-        return listProducts;
-    }
-
-    public void setListProducts(List<DeliveryListRelease> listProducts) {
-        this.listProducts = listProducts;
     }
 
     @Override

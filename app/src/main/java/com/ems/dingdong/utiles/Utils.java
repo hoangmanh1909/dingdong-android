@@ -116,6 +116,7 @@ public class Utils {
         return vinattiAPI;
     }
 
+
     public static String SHA256(String base) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
