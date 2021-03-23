@@ -256,7 +256,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private List<Item> listImageOther;
     private List<Item> listImageRelease;
     private List<Item> listImageRefund;
-    private List<DeliveryListRelease> listItemPartialRelease;
+    private List<DeliveryListRelease> listItemPartialRelease = new ArrayList<>();
     ///private List<DeliveryListReturn> listItemPartialReturn;
     private List<DeliveryListRelease> listItemPartialReturn;
     private ImageCaptureAdapter imageAvatarAdapter;
