@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_4sdp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_service_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp"
+        android:text="Dịch vụ"
+        android:textColor="@color/blue" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp">
+
+        <TextView
+            android:id="@+id/tv_cod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số tiền COD" />
+
+        <TextView
+            android:id="@+id/tv_amount_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Số tiền C" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp">
+
+        <TextView
+            android:id="@+id/tv_amount_ppa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số tiền PPA" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_confirm_enable"
+            android:paddingStart="@dimen/_4sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:text="Số lượng"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <View style="@style/Devider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

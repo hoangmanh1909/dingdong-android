@@ -140,6 +140,7 @@
                 android:id="@+id/tvShowChargre"
                 style="@style/ConfirmButton"
                 android:background="@drawable/bg_gradient_search"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:text="Tìm kiếm"

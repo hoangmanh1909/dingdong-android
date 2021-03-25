@@ -68,14 +68,14 @@ public class DeliveryPartialAdapter extends RecyclerBaseAdapter {
             tv_quantity.setText(item.getQuantity() + "");
             if (mode.equals("ADD")) {
                 iv_delete.setVisibility(View.GONE);
-                tv_content.setText(_pos + "." + item.getProductName() + " - " + item.getWeight() + " (g) - Đơn giá: " + NumberUtils.formatPriceNumber(item.getPrice()));
+                tv_content.setText(_pos + "." + item.getProductName() + " - " + NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " + NumberUtils.formatVinatti(item.getPrice()));
             } else if (mode.equals("REFUND")) {
-                tv_content.setText(_pos + "." + item.getProductName() + " - " + item.getWeight() + " (g) - Đơn giá: " + NumberUtils.formatPriceNumber(item.getPrice()));
+                tv_content.setText(_pos + "." + item.getProductName() + " - " + NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " + NumberUtils.formatVinatti(item.getPrice()));
                 iv_decrease.setVisibility(View.GONE);
                 iv_increase.setVisibility(View.GONE);
                 iv_delete.setVisibility(View.GONE);
             } else {
-                tv_content.setText(_pos + "." + item.getProductName() + " - " + item.getWeight() + " (g) - Đơn giá: " + NumberUtils.formatPriceNumber(item.getPrice()));
+                tv_content.setText(_pos + "." + item.getProductName() + " - " + NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " + NumberUtils.formatVinatti(item.getPrice()));
                 iv_decrease.setVisibility(View.GONE);
                 iv_increase.setVisibility(View.GONE);
                 iv_delete.setVisibility(View.VISIBLE);

@@ -387,6 +387,9 @@ public interface VinattiAPI {
     @GET("api/Dictionary/GetDeliveryRoute")
     Call<RouteInfoResult> getDeliveryRoute(@Query("poCode") String poCode);
 
+    @GET("api/Dictionary/GetDeliveryRoute")
+    Call<RouteInfoResult> getRoute(@Query("poCode") String poCode, @Query("routeType") String routeType);
+
     @GET("api/Dictionary/GetPostmanByRoute")
     Call<UserInfoResult> getPostmanByRoute(@Query("poCode") String poCode,
                                            @Query("routeId") Integer routeId,
@@ -537,9 +540,13 @@ public interface VinattiAPI {
                                         @Query("mc_caller") Integer caller,
                                         @Query("mc_callee") Integer callee
     );
+
     @POST("api/DingDong/Bussiness")
     Single<EWalletDataHistoryResult> getHistoryPayment(@Body DataRequestPayment dataRequestPayment);
 
     @POST("api/DingDong/Bussiness")
     Single<SimpleResult> deletePayment(@Body DataRequestPayment dataRequestPayment);
+
+    @POST("api/DingDong/Bussiness")
+    Single<SimpleResult> commonService(@Body DataRequestPayment requestData);
 }

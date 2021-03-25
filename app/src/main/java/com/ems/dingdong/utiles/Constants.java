@@ -95,11 +95,14 @@ public class Constants {
     public static final int ALL_SEARCH_TYPE = 0;
     public static final int HCC_SEARCH_TYPE = 3;
 
+    public static final String ROUTE_CHANGE_MODE = "ROUTE_CHANGE_MODE";
+    public static final String ROUTE_CHANGE_DELIVERY = "ROUTE_CHANGE_DELIVERY";
+    public static final String ROUTE_CHANGE_ORDER = "ROUTE_CHANGE_ORDER";
 
     public static final String CALL_ID = "call_id";
 
     public static final String CALL_TYPE = "call_type";
-    public static final String SESSION_ID= "SESSION_ID";
+    public static final String SESSION_ID = "SESSION_ID";
     public static final int CALL_TYPE_RECEIVING = 0;
     public static final int CALL_TYPE_RECEIVING_CTEL = 4;
     public static final int CALL_TYPE_CALLING = 1;
@@ -116,7 +119,7 @@ public class Constants {
     public static final String KEY_LINK_REQUEST_ID = "KEY_LINK_REQUEST_ID";
     public static final String KEY_PAYMENT_TOKEN = "KEY_PAYMENT_TOKEN";
     public static final String KEY_PAYMENT_REQUEST_ID = "KEY_PAYMENT_REQUEST_ID";
-    public static final String KEY_RET_REF_NUMBER= "KEY_RET_REF_NUMBER";
+    public static final String KEY_RET_REF_NUMBER = "KEY_RET_REF_NUMBER";
 
     public static final int PAYMENT_FROM_DELIVERY = 10;
     public static final int PAYMENT_FROM_CONFIRM_DELIVERY = 11;

@@ -582,4 +582,156 @@ public class CommonObject extends RealmObject {
     public Integer getCod() {
         return cod;
     }
+
+    public void setOrderPostmanID(String orderPostmanID) {
+        this.orderPostmanID = orderPostmanID;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAssignDateTime(String assignDateTime) {
+        this.assignDateTime = assignDateTime;
+    }
+
+    public void setAssignFullName(String assignFullName) {
+        this.assignFullName = assignFullName;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public void setAutoCallStatus(String autoCallStatus) {
+        this.autoCallStatus = autoCallStatus;
+    }
+
+    public void setiD(String iD) {
+        this.iD = iD;
+    }
+
+    public void setWeigh(String weigh) {
+        this.weigh = weigh;
+    }
+
+    public void setPoCode(String poCode) {
+        this.poCode = poCode;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setLoadDate(String loadDate) {
+        this.loadDate = loadDate;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public void setService(String service) {
+        Service = service;
+    }
+
+    public void setInfo(String info) {
+        Info = info;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+
+    public void setRouteCode(String routeCode) {
+        this.routeCode = routeCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
+
+    public void setFee(Integer fee) {
+        this.fee = fee;
+    }
+
+    public void setCod(Integer cod) {
+        this.cod = cod;
+    }
+
+    public String getPaymentChanel() {
+        return paymentChanel;
+    }
+
+    public boolean isLocal() {
+        return local;
+    }
+
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+
+    public void setIsCOD(String isCOD) {
+        this.isCOD = isCOD;
+    }
+
+    public void setReceiveCollectFee(String receiveCollectFee) {
+        this.receiveCollectFee = receiveCollectFee;
+    }
+
+    public void setReceiverIDNumber(String receiverIDNumber) {
+        this.receiverIDNumber = receiverIDNumber;
+    }
+
+    public void setDeliveryPOCode(String deliveryPOCode) {
+        this.deliveryPOCode = deliveryPOCode;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public void setCheckStatus(boolean checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
+    public void setCheckStatusNo(boolean checkStatusNo) {
+        this.checkStatusNo = checkStatusNo;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setStatusInfoArrayList(RealmList<StatusInfo> statusInfoArrayList) {
+        this.statusInfoArrayList = statusInfoArrayList;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setIsPaypost(String isPaypost) {
+        this.isPaypost = isPaypost;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
+
+    public void setListParcelCode(RealmList<ParcelCodeInfo> listParcelCode) {
+        this.listParcelCode = listParcelCode;
+    }
 }

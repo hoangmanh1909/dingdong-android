@@ -5,13 +5,19 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.OrderChangeRouteModel;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.OrderChangeRouteRequest;
+import com.ems.dingdong.model.request.OrderChangeRouteDingDongManagementRequest;
+import com.ems.dingdong.model.response.OrderChangeRouteDingDongManagementResponse;
 import com.ems.dingdong.model.response.RouteResponse;
 
 import java.util.List;
+
+import io.reactivex.Single;
 
 public interface RouteConstract {
 
@@ -20,6 +26,8 @@ public interface RouteConstract {
          * Show list success.
          */
         void showListSucces(List<RouteResponse> responseList);
+
+        void showListOrderSucces(OrderChangeRouteDingDongManagementResponse responseList);
 
         /**
          * Show error message.
@@ -40,6 +48,9 @@ public interface RouteConstract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        String getMode();
+        void getChangeRouteOrder(String fromDate, String toDate);
+        void showDetailOrder(OrderChangeRouteModel item);
         /**
          * Get records for approve.
          *
@@ -85,6 +96,8 @@ public interface RouteConstract {
          */
         void approvedAgree(String id, String ladingCode, String postmanId, String postmanCode, String poCode, String routeId, String routeCode);
 
+        void approveOrder(OrderChangeRouteRequest request);
+
         /**
          * Approve disagreed.
          * @param id id of record.
@@ -97,12 +110,16 @@ public interface RouteConstract {
          */
         void approvedDisagree(String id, String ladingCode, String postmanId, String postmanCode, String poCode, String routeId, String routeCode);
 
+        void rejectOrder(OrderChangeRouteRequest request);
+
         /**
          * Cancel current postman request.
          * @param id id of record.
          * @param postmanId current postman id
          */
         void cancel(Integer id, Integer postmanId);
+
+        void cancelOrder(OrderChangeRouteRequest request);
 
         void setTitleTab(int quantity);
 
@@ -126,6 +143,10 @@ public interface RouteConstract {
     }
 
     interface Interactor extends IInteractor<Presenter> {
+        Single<SimpleResult> getChangeRouteOrder(OrderChangeRouteDingDongManagementRequest request);
+        Single<SimpleResult> cancelOrder(OrderChangeRouteRequest request);
+        Single<SimpleResult> approveOrder(OrderChangeRouteRequest request);
+        Single<SimpleResult> rejectOrder(OrderChangeRouteRequest request);
         /**
          * @see Presenter
          */
@@ -186,5 +207,32 @@ public interface RouteConstract {
          * @param item
          */
         void onLadingCodeClick(RouteResponse item);
+    }
+
+    interface OnItemOrderClickListenner {
+        /**
+         * Cancel change route from current postman.
+         *
+         * @param item item
+         */
+        void onCancelRequestClick(OrderChangeRouteModel item);
+
+        /**
+         * Cancel change route from other postman to.
+         * @param item item
+         */
+        void onCancelClick(OrderChangeRouteModel item);
+
+        /**
+         * Approve change route from other postman
+         * @param item
+         */
+        void onApproveClick(OrderChangeRouteModel item);
+
+        /**
+         * Event to show detail record.
+         * @param item
+         */
+        void onLadingCodeClick(OrderChangeRouteModel item);
     }
 }

@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -34,12 +34,13 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
+
             <ImageView
                 android:id="@+id/img_confirm"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_collect_service_success" />
         </RelativeLayout>
@@ -47,24 +48,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:background="@color/line_gray"
-        android:weightSum="2"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal"
+        android:weightSum="2">
+
         <LinearLayout
             android:id="@+id/ll_gom_hang"
             android:layout_width="0dp"
-            android:layout_weight="1.6"
             android:layout_height="wrap_content"
+            android:layout_weight="1.6"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp">
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:paddingBottom="@dimen/_6sdp">
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_accept_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
+                android:text="0"
                 android:textSize="@dimen/text_size_16sp" />
 
             <com.ems.dingdong.views.CustomBoldTextView
@@ -72,46 +76,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_000080"
+                android:text="0"
                 android:textSize="@dimen/text_size_16sp" />
         </LinearLayout>
+
         <CheckBox
             android:id="@+id/cb_all"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
-            android:text="Chọn tất cả"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"/>
+            android:layout_weight="0.4"
+            android:text="Chọn tất cả" />
     </LinearLayout>
 
-<!--    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.ems.dingdong.views.CustomEditText
-            android:id="@+id/edt_search"
+    <!--    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:background="@drawable/bg_round_corner_white_gray"
-            android:hint="Nhập bưu gửi để tìm kiếm nhanh"
-            android:padding="@dimen/dimen_10dp" />
-    </FrameLayout>-->
+            android:layout_height="wrap_content">
+
+            <com.ems.dingdong.views.CustomEditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/bg_round_corner_white_gray"
+                android:hint="Nhập bưu gửi để tìm kiếm nhanh"
+                android:padding="@dimen/dimen_10dp" />
+        </FrameLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/bg_radius_search">
-
 
         <LinearLayout
             android:id="@+id/ll_scan_qr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_20dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
             android:gravity="center">
 
             <ImageView
@@ -120,14 +125,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_qr" />
-
         </LinearLayout>
 
         <com.ems.dingdong.views.form.FormItemEditText
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
+            android:layout_marginEnd="7dp"
             android:layout_toLeftOf="@+id/ll_scan_qr"
             android:maxLines="1"
             android:textColor="@color/black"
@@ -137,13 +141,12 @@
             app:formSingleLine="true" />
     </RelativeLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
-            android:nestedScrollingEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
@@ -159,22 +162,13 @@
             android:textColor="@color/black"
             android:visibility="gone" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dimen_40dp"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10dp">
-
-            <ImageView
-                android:id="@+id/img_view"
-                android:layout_width="@dimen/size_50dp"
-                android:layout_height="@dimen/size_50dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_choose_calendar" />
-        </RelativeLayout>
-
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/img_view"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_choose_calendar" />
+    </RelativeLayout>
 </LinearLayout>

@@ -670,7 +670,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         checkVerify();
 
-        EditTextUtils.editTextEditListener(et_pt_amount);
+        EditTextUtils.editTextListener(et_pt_amount);
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
@@ -844,12 +844,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
                 break;
             case R.id.rl_image_partial_d:
-                if (listImageDelivery.size() == 0) {
+                if (listImageDelivery.size() < 3) {
                     setIsCapture("PARTIAL_D");
                 }
                 break;
             case R.id.rl_image_partial_r:
-                if (listImageRefund.size() == 0) {
+                if (listImageRefund.size() < 3) {
                     setIsCapture("PARTIAL_R");
                 }
                 break;
@@ -1002,12 +1002,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mFile = TextUtils.join(";", arrImages);
         checkImage(authenType);
 
+        List<DeliveryPostman> listSelected = getItemSelected();
+        if (listSelected.size() == 0) {
+            showErrorToast(getViewContext().getString(R.string.you_have_not_pick_any_package));
+            return;
+        }
+
         if (mDeliveryType == 2 || mDeliveryType == 4) {
-            List<DeliveryPostman> listSelected = getItemSelected();
-            if (listSelected.size() == 0) {
-                showErrorToast(getViewContext().getString(R.string.you_have_not_pick_any_package));
-                return;
-            }
             boolean isCanVerify = canVerify();
             if (!isCanVerify) {
                 showErrorToast(getViewContext().getString(R.string.there_is_one_package_needed_to_particular_delivered));
@@ -1054,7 +1055,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
                         return;
                     } else {
-                        long amount = Long.parseLong(et_pt_amount.getText().toString().replace(",", ""));
+                        long amount = Long.parseLong(et_pt_amount.getText().toString().replaceAll("\\.", ""));
                         if (amount > totalAmount) {
                             Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
                             return;
@@ -1093,7 +1094,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         } else {
 
                             if (totalAmount > 0) {
-                                int amount = Integer.parseInt(et_pt_amount.getText().toString().replace(",", ""));
+                                int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
                                 if (!TextUtils.isEmpty(et_pt_amount.getText())) {
                                     if (amount <= totalAmount)
                                         deliveryPartial(infoVerify, amount);
@@ -1151,10 +1152,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         String mFileRefund = "";
 
         if (listImageDelivery.size() > 0) {
-            mFileDelivery = listImageDelivery.get(0).getText();
+            String[] arrImg = new String[listImageDelivery.size()];
+            for (int i = 0; i < listImageDelivery.size(); i++) {
+                if (!TextUtils.isEmpty(listImageDelivery.get(i).getText()))
+                    arrImg[i] = listImageDelivery.get(i).getText();
+            }
+            mFileDelivery = TextUtils.join(";", arrImg);
         }
         if (listImageRefund.size() > 0) {
-            mFileRefund = listImageRefund.get(0).getText();
+            String[] arrImg = new String[listImageRefund.size()];
+            for (int i = 0; i < listImageRefund.size(); i++) {
+                if (!TextUtils.isEmpty(listImageRefund.get(i).getText()))
+                    arrImg[i] = listImageRefund.get(i).getText();
+            }
+            mFileRefund = TextUtils.join(";", arrImg);
         }
 
         DeliveryProductRequest request = new DeliveryProductRequest();

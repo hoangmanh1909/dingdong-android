@@ -202,6 +202,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_refund_postage"
                 android:text=""
@@ -209,6 +210,17 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:visibility="gone"
+                android:id="@+id/tv_sml_status"
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_14sp" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_create_dated"
                 android:layout_width="match_parent"

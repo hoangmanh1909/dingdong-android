@@ -131,7 +131,16 @@ public class DeliveryPostman implements Comparable {
     private Integer authenType;
     @SerializedName("Products")
     private List<ProductModel> listProducts;
+    @SerializedName("SMLStatusName")
+    private String sMLStatusName;
 
+    public String getsMLStatusName() {
+        return sMLStatusName;
+    }
+
+    public void setsMLStatusName(String sMLStatusName) {
+        this.sMLStatusName = sMLStatusName;
+    }
 
     public DeliveryPostman() {
     }

@@ -5,11 +5,35 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.OrderChangeRouteRequest;
+import com.ems.dingdong.model.request.OrderChangeRouteDingDongManagementRequest;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Single;
 
 public class RouteInteractor extends Interactor<RouteConstract.Presenter> implements RouteConstract.Interactor {
     public RouteInteractor(RouteConstract.Presenter presenter) {
         super(presenter);
+    }
+
+    @Override
+    public Single<SimpleResult> getChangeRouteOrder(OrderChangeRouteDingDongManagementRequest request) {
+        return NetWorkController.getChangeRouteOrder(request);
+    }
+
+    @Override
+    public Single<SimpleResult> cancelOrder(OrderChangeRouteRequest request) {
+        return NetWorkController.cancelOrder(request);
+    }
+
+    @Override
+    public Single<SimpleResult> approveOrder(OrderChangeRouteRequest request) {
+        return NetWorkController.approveOrder(request);
+    }
+
+    @Override
+    public Single<SimpleResult> rejectOrder(OrderChangeRouteRequest request) {
+        return NetWorkController.rejectOrder(request);
     }
 
     @Override
