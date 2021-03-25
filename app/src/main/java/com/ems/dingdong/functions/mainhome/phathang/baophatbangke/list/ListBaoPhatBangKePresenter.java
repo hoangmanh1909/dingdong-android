@@ -18,6 +18,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import java.util.List;
 import retrofit2.Call;
@@ -136,6 +137,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void showConfirmDelivery(List<DeliveryPostman> commonObject) {
+
+        Log.d("asdasdasda", String.valueOf(commonObject.get(0).getListProducts().size()));
         new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).setOnTabChangeListener(titleTabsListener).pushView();
     }
 
