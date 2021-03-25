@@ -28,6 +28,7 @@ import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
@@ -59,6 +60,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     public XacNhanBaoPhatPresenter setBaoPhatBangKe(List<DeliveryPostman> baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
+        Log.d("asdasdad", String.valueOf(mBaoPhatBangke.size()));
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);

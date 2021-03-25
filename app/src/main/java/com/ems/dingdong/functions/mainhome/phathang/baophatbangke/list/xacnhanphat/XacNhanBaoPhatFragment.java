@@ -429,9 +429,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         if (mBaoPhatBangke.size() == 1) {
             rad_partial.setVisibility(View.VISIBLE);
-
             listProductDelivery.addAll(mBaoPhatBangke.get(0).getListProducts());
-
             for (ProductModel productModel : listProductDelivery) {
                 ProductModel productModel1 = new ProductModel();
                 productModel1.setQuantity(productModel.getQuantity());
@@ -650,7 +648,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 //llCaptureVerify.setVisibility(View.GONE);
             }
         });
-
         rbVerifyImage.setOnCheckedChangeListener((v, b) -> {
             if (b){
                 llVerifyImage.setVisibility(View.VISIBLE);
@@ -1256,20 +1253,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 /*if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
                     showErrorToast(getViewContext().getString(R.string.you_have_not_provided_profile));
                 }
-
                 if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
                     //showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_the_place_of_profile));
                     showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
                 }
-
                 if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
                     showErrorToast(getViewContext().getString(R.string.you_have_not_entered_date_of_birth));
                 }
-
                 if (TextUtils.isEmpty(tvGTTT.getText())) {
                     showErrorToast(getViewContext().getString(R.string.you_have_not_enter_number_of_profile));
                 }
-
                 if (TextUtils.isEmpty(edtUserAddress.getText())) {
                     //showErrorToast(getViewContext().getString(R.string.you_have_not_entered_addres_of_user));
                     showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));

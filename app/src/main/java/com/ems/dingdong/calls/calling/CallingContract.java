@@ -10,7 +10,7 @@ import com.ems.dingdong.model.response.ResponseObject;
 public interface CallingContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback);
+//        void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback);
     }
 
     interface View extends PresentView<Presenter> {
