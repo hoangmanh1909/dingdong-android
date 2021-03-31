@@ -11,6 +11,36 @@ public class ConfirmOrderPostman {
     String statusCode;
     @SerializedName("ConfirmReason")
     String confirmReason;
+    @SerializedName("Code")
+    String code;
+    @SerializedName("Weigh")
+    String weigh;
+    @SerializedName("AssignDateTime")
+    String assignDateTime;
+
+    public String getAssignDateTime() {
+        return assignDateTime;
+    }
+
+    public void setAssignDateTime(String assignDateTime) {
+        this.assignDateTime = assignDateTime;
+    }
+
+    public String getWeigh() {
+        return weigh;
+    }
+
+    public void setWeigh(String weigh) {
+        this.weigh = weigh;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String parcel;
     private boolean selected;

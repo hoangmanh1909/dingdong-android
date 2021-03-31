@@ -85,7 +85,6 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                             intent.putExtra(Constants.TYPE_GOM_HANG, 2);
                             startActivity(intent);
                         } else if (homeInfo.getId() == 2) {
-//                            mPresenter.showXacNhanDiaChiPresenter();
                             Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
                             intent.putExtra(Constants.TYPE_GOM_HANG, 1);
                             startActivity(intent);

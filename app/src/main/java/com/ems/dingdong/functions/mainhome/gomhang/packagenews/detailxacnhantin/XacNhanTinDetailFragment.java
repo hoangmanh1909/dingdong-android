@@ -81,6 +81,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     LinearLayout ll_op;
     @BindView(R.id.ll_change_route)
     LinearLayout ll_change_route;
+
     private RouteInfo routeInfo;
     private UserInfo userInfo;
     private PostOffice postOffice;

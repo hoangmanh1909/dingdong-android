@@ -139,9 +139,9 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
         mInteractor.orderChangeRoute(request).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
-                        mView.showMessage("Chuyển tuyến thành công.");
+                        mView.showMessage(simpleResult.getMessage());
                     }else{
-                        mView.showErrorToast("Chuyển tuyến thất bại");
+                        mView.showErrorToast(simpleResult.getMessage());
                     }
                 }, throwable -> {
                     mView.hideProgress();

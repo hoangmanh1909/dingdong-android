@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,8 +10,7 @@
     <FrameLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_height="wrap_content">
 
         <include layout="@layout/item_head_bg_common" />
 
@@ -35,72 +35,190 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
+
+            <ImageView
+                android:id="@+id/img_send"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_5dp"
+                android:src="@drawable/ic_send_telegram" />
         </RelativeLayout>
     </FrameLayout>
 
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:id="@+id/tv_parcel_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dimen_100dp"
-            android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_16sp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen_10dp">
+            android:orientation="vertical">
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/btn_confirm"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_confirm_continue"
-                android:drawableLeft="@drawable/ic_done"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dimen_20dp"
-                android:paddingTop="@dimen/dimen_5dp"
-                android:paddingRight="@dimen/dimen_20dp"
-                android:paddingBottom="@dimen/dimen_5dp"
-                android:text="Xác nhận"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_18sp" />
+                android:background="@color/color_33323232"
+                android:padding="@dimen/_6sdp"
+                android:text="Hình thức thu gom"
+                android:textAllCaps="true" />
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/btn_reject"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_op"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:background="@drawable/bg_reject_continue"
-                android:drawableLeft="@drawable/ic_cancel"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dimen_20dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:paddingRight="@dimen/dimen_20dp"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:text="Từ chối"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_18sp" />
-        </LinearLayout>
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <!---->
+                <TextView
+                    android:id="@+id/op_ok"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_form_success"
+                    android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Đồng ý"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_yellow"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/op_change"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/color_rad_change_route"
+                    android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="CHUYỂN TUYẾN"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/op_reject"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/color_rad_fail"
+                    android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Từ chối"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:id="@+id/ll_change_route"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_33323232"
+                android:padding="@dimen/_6sdp"
+                android:text="THÔNG TIN CHUYỂN TUYẾN"
+                android:textAllCaps="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_6sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text="Tuyến"
+                        android:textColor="#253854"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/et_route"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="6"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="10dp"
+                        app:formHint="Chọn tuyến"
+                        app:formShowUnderline="false"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text="Nhân viên thu gom"
+                        android:textColor="#253854"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/et_postman"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="6"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="10dp"
+                        app:formHint="Chọn NVTG"
+                        app:formShowUnderline="false"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_33323232"
+                android:padding="@dimen/_6sdp"
+                android:text="Danh sách tin"
+                android:textAllCaps="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

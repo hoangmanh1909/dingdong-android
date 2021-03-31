@@ -264,4 +264,29 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/tx_blue_link</item>
     </style>
+
+    <style name="RelativeLayoutPersonal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+    </style>
+
+    <style name="ImageViewPersonal">
+        <item name="android:layout_width">@dimen/_24sdp</item>
+        <item name="android:layout_height">@dimen/_24sdp</item>
+        <item name="android:padding">@dimen/_4sdp</item>
+
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+        <item name="android:background">@drawable/bg_persion</item>
+    </style>
+
+
+    <style name="ImageViewArrowRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_arrow_right_v1</item>
+    </style>
+
 </resources>

@@ -77,6 +77,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     for (CommonObject item : list) {
                         if (item.getStatusCode().equals("P1")) item.setStatusCode("P5");
                         if (item.getStatusCode().equals("P4")) item.setStatusCode("P6");
+
                         CommonObject itemExists = Iterables.tryFind(listG,
                                 input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
                                         && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
@@ -103,7 +104,6 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             }
                         }
                     }
-
 
                     mView.showResponseSuccess(listG);
                 } else {
@@ -145,6 +145,9 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 int index = 0;
                 for (String orderPostmanID : item.getOrderPostmanIDS()) {
                     ConfirmOrderPostman confirmOrderPostman = new ConfirmOrderPostman();
+                    confirmOrderPostman.setAssignDateTime(item.getAssignDateTime());
+                    confirmOrderPostman.setWeigh(item.getWeigh());
+                    confirmOrderPostman.setCode(item.getCodeS().get(index));
                     confirmOrderPostman.setConfirmReason("");
                     confirmOrderPostman.setConfirmReason("");
                     confirmOrderPostman.setEmployeeID(userInfo.getiD());

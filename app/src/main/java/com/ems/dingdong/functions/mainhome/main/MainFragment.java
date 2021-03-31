@@ -165,11 +165,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
              * follow Hanh
              */
             //imgCall.setVisibility(View.VISIBLE);
-            imgTopSetting.setVisibility(View.VISIBLE);
+//            imgTopSetting.setVisibility(View.VISIBLE);
             viewTop.setVisibility(View.VISIBLE);
         } else {
             imgCall.setVisibility(View.INVISIBLE);
-            imgTopSetting.setVisibility(View.INVISIBLE);
+//            imgTopSetting.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.INVISIBLE);
             Handler handler = new Handler();
             handler.postDelayed(() -> {

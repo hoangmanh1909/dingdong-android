@@ -7,7 +7,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
@@ -49,8 +53,6 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
     private static final String TAG = ProfileFragment.class.getSimpleName();
-    @BindView(R.id.img_profile)
-    SimpleDraweeView imgProfile;
     @BindView(R.id.tv_username)
     CustomMediumTextView tvUsername;
     @BindView(R.id.tv_fullname)
@@ -59,9 +61,16 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     CustomMediumTextView tvPoname;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.tv_version)
+    TextView tv_version;
+    @BindView(R.id.switch_pay_pos)
+    SwitchCompat switchPayPos;
+    @BindView(R.id.tv_route)
+    TextView tv_route;
 
     private PhoneDecisionDialog.OnClickListener callback;
-
+    RouteInfo routeInfo;
+    PostOffice postOffice;
 
     public static ProfileFragment getInstance() {
         return new ProfileFragment();
@@ -88,18 +97,35 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
             tvPoname.setText(String.format("%s %s", postOffice.getCode(), postOffice.getName()));
         }
-        tvTitle.setText(StringUtils.getCharSequence("THÔNG TIN TÀI KHOẢN", String.format("Phiên bản %s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE), getActivity()));
+        tv_version.setText(BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")");
 
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
+            switchPayPos.setChecked(true);
+        }
+        tv_route.setText(routeInfo.getRouteName());
+
+        switchPayPos.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isChecked);
+        });
     }
 
-    @OnClick({R.id.img_back, R.id.img_logout, R.id.rl_e_wallet})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet,R.id.rl_route})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
-            case R.id.img_logout:
+            case R.id.rl_logout:
                 SipCmc.logOut(new LogOutCallBack() {
                     @Override
                     public void logoutSuccess() {
@@ -122,7 +148,21 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             case R.id.rl_e_wallet:
                 mPresenter.moveToEWallet();
                 break;
+            case R.id.rl_route: {
+                showDialog(postOffice.getRoutes());
+            }
+            break;
         }
+    }
+
+    void showDialog(List<RouteInfo> routeInfos) {
+        new RouteDialog(getActivity(), routeInfos, (item, routeInfo) -> {
+            SharedPref sharedPref = new SharedPref(getActivity());
+            sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
+            tv_route.setText(routeInfo.getRouteName());
+//            mPresenter.back();
+            getViewContext().sendBroadcast(new Intent(HomeV1Fragment.ACTION_HOME_VIEW_CHANGE));
+        }).show();
     }
 
 }
