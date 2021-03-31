@@ -103,11 +103,13 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 SipCmc.logOut(new LogOutCallBack() {
                     @Override
                     public void logoutSuccess() {
+                        Log.d("logoutSuccess"," thanh cong");
                         super.logoutSuccess();
                     }
 
                     @Override
                     public void logoutFailed() {
+                        Log.d("logoutFailed"," that bai");
                         super.logoutFailed();
                     }
                 });

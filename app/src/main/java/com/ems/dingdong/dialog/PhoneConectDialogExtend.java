@@ -100,7 +100,7 @@ public class PhoneConectDialogExtend extends Dialog {
                 SipCmc.callTo(edt_call_ctel_app_to_app.getText().toString().trim());
                 Intent intent = new Intent(getContext(), IncomingCallActivity.class);
                 intent.putExtra(Constants.CALL_TYPE, 1);
-                intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+//                intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
                 getContext().startActivity(intent);
                 break;
 

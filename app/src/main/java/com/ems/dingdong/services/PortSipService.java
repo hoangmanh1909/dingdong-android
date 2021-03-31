@@ -1123,11 +1123,10 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         SharedPref sharedPref = new SharedPref(this);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-
         ///
         // Login SipCmc
         SipCmc.startService(this);// tạm stop
-        SipCmc.getAccountInfo();
+//        SipCmc.getAccountInfo();
         SipCmc.addCallback(new RegistrationCallback() {
             @Override
             public void registrationOk() {
@@ -1162,7 +1161,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
 
         //nên viết callback trước khi gọi
         SipCmc.loginAccount(userInfo.getiD());
-
+//
         ///
         SipCmc.addCallback(null, new PhoneCallback() {
             @Override
