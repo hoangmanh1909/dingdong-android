@@ -180,10 +180,11 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white" />
+                android:background="@color/white"/>
 
 
             <!--Hình thức báo phát-->
@@ -193,7 +194,7 @@
                 android:padding="@dimen/dimen_10dp"
                 android:text="Hình thức báo phát"
                 android:textColor="@color/n_gray_text"
-                android:textSize="@dimen/text_size_16sp"/>
+                android:textSize="@dimen/text_size_16sp" />
 
             <LinearLayout
                 android:id="@+id/ll_delivery"
@@ -582,63 +583,79 @@
                     android:id="@+id/tv_pt_des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="@dimen/_10sdp"/>
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textColor="@color/black" />
 
-                <View style="@style/Devider"/>
+                <View style="@style/Devider" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_anchor1"
                         style="@style/TextHeaderDeliveryPartial"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:layout_centerVertical="true"
-                        android:text="SP phát" />
-
-                    <LinearLayout
-                        android:layout_toEndOf="@+id/tv_anchor1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:gravity="center"
-                        android:layout_marginStart="@dimen/_30sdp">
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginBottom="@dimen/_6sdp"
+                        android:text="Sản phẩm phát" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/red_light"
-                            android:text="Tổng COD phát"
-                            android:gravity="center_vertical"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:endIconMode="clear_text">
+                            android:layout_toLeftOf="@+id/iv_add_delivery"
+                            android:orientation="horizontal">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_pt_amount"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Tổng COD phát"
+                                android:textColor="@color/red_light" />
+
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/red_light"
-                                android:inputType="number"
-                                android:textSize="@dimen/text_size_16sp"
-                                android:gravity="right"/>
+                                app:endIconMode="clear_text"
+                                app:hintEnabled="false">
 
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-                </RelativeLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_pt_amount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:gravity="right"
+                                    android:inputType="number"
+                                    android:textColor="@color/red_light"
+                                    android:textSize="@dimen/text_size_16sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_add_delivery"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:background="@drawable/bg_success"
+                            android:src="@drawable/ic_add_control_point" />
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_delivery_partial"
-                    android:nestedScrollingEnabled="false"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
 
                 <RelativeLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -673,67 +690,78 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_image_partial_d"
-                        android:layout_toEndOf="@+id/rl_image_partial_d"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
                         android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_toEndOf="@+id/rl_image_partial_d"
+                        android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
                         android:padding="@dimen/_5sdp" />
 
 
-                    <ImageView
-                        android:id="@+id/iv_add_delivery"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/bg_success"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_add_control_point" />
                 </RelativeLayout>
 
-                <View style="@style/Devider"/>
+                <View style="@style/Devider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <RelativeLayout
                         android:id="@+id/tv_anchor2"
-                        style="@style/TextHeaderDeliveryPartial"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:text="SP hoàn" />
-
-                    <LinearLayout
-                        android:layout_toEndOf="@+id/tv_anchor2"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:gravity="end">
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/red_light"
-                            android:text="Tổng COD hoàn: "/>
+                            android:layout_toLeftOf="@+id/iv_add_refund"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_pt_amount_r"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/red_light"
-                            android:text="0"/>
-                    </LinearLayout>
+                            <TextView
+                                style="@style/TextHeaderDeliveryPartial"
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_6sdp"
+                                android:layout_marginBottom="@dimen/_6sdp"
+                                android:text="Sản phẩm hoàn" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tổng COD hoàn: "
+                                    android:textColor="@color/red_light" />
+
+                                <TextView
+                                    android:id="@+id/tv_pt_amount_r"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/red_light" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_add_refund"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/bg_success"
+                            android:src="@drawable/ic_add_control_point" />
+                    </RelativeLayout>
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_refund_partial"
-                    android:nestedScrollingEnabled="false"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -772,23 +800,15 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_image_partial_r"
-                        android:layout_toEndOf="@+id/rl_image_partial_r"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
                         android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_toEndOf="@+id/rl_image_partial_r"
+                        android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
                         android:padding="@dimen/_5sdp" />
 
 
-                    <ImageView
-                        android:id="@+id/iv_add_refund"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/ic_add_control_point"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/bg_success"/>
                 </RelativeLayout>
             </LinearLayout>
 

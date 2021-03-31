@@ -79,7 +79,7 @@ public class CreateDeliveryParialDialog extends Dialog {
             Toast.showToast(getContext(), "Bạn chưa nhập Số lượng");
             return;
         } else {
-            quantity = Integer.parseInt(edtQuantityProductAdd.getText().toString().replace(".", ""));
+            quantity = Integer.parseInt(edtQuantityProductAdd.getText().toString().replaceAll("\\.", ""));
             if (quantity <= 0) {
                 Toast.showToast(getContext(), "Số lượng phải lớn hơn 0");
                 return;
@@ -90,7 +90,7 @@ public class CreateDeliveryParialDialog extends Dialog {
             Toast.showToast(getContext(), "Bạn chưa nhập Khối lượng");
             return;
         } else {
-            weight = Long.parseLong(edtWeightProductAdd.getText().toString().replace(".", ""));
+            weight = Long.parseLong(edtWeightProductAdd.getText().toString().replaceAll("\\.", ""));
             if (weight <= 0) {
                 Toast.showToast(getContext(), "Khối lượng phải lớn hơn 0");
                 return;
@@ -98,7 +98,7 @@ public class CreateDeliveryParialDialog extends Dialog {
         }
 
         if (!TextUtils.isEmpty(edtPriceProductAdd.getText().toString())) {
-            amount = Long.parseLong(edtPriceProductAdd.getText().toString().replace(".", ""));
+            amount = Long.parseLong(edtPriceProductAdd.getText().toString().replaceAll("\\.", ""));
         }
 
         ProductModel productModel = new ProductModel();

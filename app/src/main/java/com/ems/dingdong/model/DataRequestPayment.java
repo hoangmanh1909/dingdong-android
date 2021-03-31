@@ -38,4 +38,5 @@ public class DataRequestPayment {
     public void setData(String data) {
         this.data = data;
     }
+
 }

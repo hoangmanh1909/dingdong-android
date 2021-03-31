@@ -53,6 +53,9 @@ import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.model.request.OrderChangeRouteRequest;
+import com.ems.dingdong.model.request.OrderChangeRouteDingDongManagementRequest;
+import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
@@ -63,6 +66,7 @@ import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
+import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
@@ -73,7 +77,6 @@ import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -543,6 +546,11 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void getRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
+        Call<RouteInfoResult> call = getAPIBuilder().getRoute(poCode,"P");
+        call.enqueue(callback);
+    }
+
     public static void getPostmanByRoute(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
         Call<UserInfoResult> call = getAPIBuilder().getPostmanByRoute(poCode, routeId, routeType);
         call.enqueue(callback);
@@ -755,6 +763,50 @@ public class NetWorkController {
                 + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
         paymentConfirmModel.setSignature(signature);
         return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
+    }
+
+    public static Single<SimpleResult> statisticSMLDeliveryFail(StatisticSMLDeliveryFailRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("STT001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ORC001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getChangeRouteOrder(OrderChangeRouteDingDongManagementRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ORC002");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> cancelOrder(OrderChangeRouteRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ORC003");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> rejectOrder(OrderChangeRouteRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ORC004");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> approveOrder(OrderChangeRouteRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ORC005");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
 }

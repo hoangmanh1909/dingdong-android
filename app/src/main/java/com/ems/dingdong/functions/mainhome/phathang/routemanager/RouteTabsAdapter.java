@@ -21,20 +21,38 @@ public class RouteTabsAdapter extends FragmentStatePagerAdapter {
     private final Context mContext;
     private List<RouteFragment> tabs;
     private CharSequence[] mTitleString = new Spanned[2];
+    String mode;
 
-    public RouteTabsAdapter(FragmentManager fm, Context context, ContainerView containerView, List<RouteFragment> tabs) {
+    public RouteTabsAdapter(FragmentManager fm, Context context, ContainerView containerView, List<RouteFragment> tabs,String mode) {
         super(fm);
         this.tabs = tabs;
         this.mContext = context;
-        mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "Nhận Bưu Gửi "+"(" + 0 + ")" + "</font>");
-        mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        this.mode = mode;
+
+        if(mode.equals(Constants.ROUTE_CHANGE_DELIVERY)) {
+            mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" +  "(" + 0 + ")" + "</font>");
+            mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        }
+        else{
+            mTitleString[0] = StringUtils.fromHtml("Nhận tin " + "<font color=\"red\", size=\"20dp\">"  + "(" + 0 + ")" + "</font>");
+            mTitleString[1] = StringUtils.fromHtml("Chuyển tin " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+        }
     }
 
     public void setTittle(int quantity, int positionTab) {
-        if (positionTab == Constants.ROUTE_RECEIVED) {
-            mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
-        } else {
-            mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+        if(mode.equals(Constants.ROUTE_CHANGE_DELIVERY)) {
+            if (positionTab == Constants.ROUTE_RECEIVED) {
+                mTitleString[0] = StringUtils.fromHtml("Nhận Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+            } else {
+                mTitleString[1] = StringUtils.fromHtml("Chuyển Bưu Gửi " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+            }
+        }
+        else{
+            if (positionTab == Constants.ROUTE_RECEIVED) {
+                mTitleString[0] = StringUtils.fromHtml("Nhận tin " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+            } else {
+                mTitleString[1] = StringUtils.fromHtml("Chuyển tin " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+            }
         }
     }
 

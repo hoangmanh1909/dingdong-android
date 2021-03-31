@@ -78,6 +78,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                  * update tạm thời chưa cần nộp tiền
                  */
                 homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
+                homeInfos.add(new HomeInfo(17, R.drawable.ic_thong_ke_bao_phat, "Smartlocker"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
@@ -125,9 +126,13 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showViewStatisticPtc(StatisticType.CONTINUOUS_DELIVERY);
                         } else if (homeInfo.getId() == 15) {
                             Intent intent = new Intent(getActivity(), RouteTabsActivity.class);
+                            intent.putExtra(Constants.ROUTE_CHANGE_MODE,Constants.ROUTE_CHANGE_DELIVERY);
                             startActivity(intent);
                         } else if (homeInfo.getId() == 16) {
                             mPresenter.showPayment();
+                        }
+                        else if (homeInfo.getId() == 17) {
+                            mPresenter.showStatisticSML();
                         }
                     }
                 });

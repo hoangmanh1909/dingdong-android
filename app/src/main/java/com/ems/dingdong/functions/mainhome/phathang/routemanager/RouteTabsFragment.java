@@ -1,6 +1,8 @@
 package com.ems.dingdong.functions.mainhome.phathang.routemanager;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter
 
     private List<RouteFragment> tabList;
     private RouteTabsAdapter mAdapter;
+    String mode;
 
     @Override
     protected int getLayoutId() {
@@ -44,6 +47,12 @@ public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter
     @Override
     public void initLayout() {
         super.initLayout();
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras != null) {
+            this.mode = extras.getString(Constants.ROUTE_CHANGE_MODE);
+        }
+
         if (mPresenter == null) {
             if (getActivity() != null) {
                 Intent intent = getActivity().getIntent();
@@ -53,16 +62,17 @@ public class RouteTabsFragment extends ViewFragment<RouteTabsConstract.Presenter
             return;
         }
         tabList = new ArrayList<>();
-        tabList.add((RouteFragment) new RoutePresenter(mPresenter.getContainerView())
+        tabList.add((RouteFragment) new RoutePresenter(mPresenter.getContainerView(),mode)
                 .setTypeRoute(Constants.ROUTE_RECEIVED)
                 .setTitleTabsListener(this)
                 .getFragment());
-        tabList.add((RouteFragment) new RoutePresenter(mPresenter.getContainerView())
+        tabList.add((RouteFragment) new RoutePresenter(mPresenter.getContainerView(),mode)
                 .setTypeRoute(Constants.ROUTE_DELIVER)
                 .setTitleTabsListener(this)
                 .getFragment());
         tvTitle.setText("Quản lý chuyển tuyến");
-        mAdapter = new RouteTabsAdapter(getChildFragmentManager(), getContext(), mPresenter.getContainerView(), tabList);
+
+        mAdapter = new RouteTabsAdapter(getChildFragmentManager(), getContext(), mPresenter.getContainerView(), tabList, mode);
         pager.setAdapter(mAdapter);
         tabs.setViewPager(pager);
         pager.setOffscreenPageLimit(2);

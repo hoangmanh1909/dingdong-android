@@ -6,29 +6,116 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.RouteTabsConstract;
 import com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.OrderChangeRouteModel;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.OrderChangeRouteRequest;
+import com.ems.dingdong.model.request.OrderChangeRouteDingDongManagementRequest;
+import com.ems.dingdong.model.response.OrderChangeRouteDingDongManagementResponse;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 
+import java.util.Calendar;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstract.Interactor> implements RouteConstract.Presenter {
-
+    private RouteInfo routeInfo;
+    private UserInfo userInfo;
+    private PostOffice postOffice;
+    Calendar calCreate;
     private int typeRoute;
+    String mode;
 
     private RouteTabsConstract.OnTabsListener titleTabsListener;
 
-    public RoutePresenter(ContainerView containerView) {
+    public RoutePresenter(ContainerView containerView, String mode) {
         super(containerView);
+        this.mode = mode;
     }
 
     @Override
     public void start() {
 
+    }
+
+    @Override
+    public String getMode() {
+        return mode;
+    }
+
+    @Override
+    public void getChangeRouteOrder(String fromDate, String toDate) {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+
+        if (!routeJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+        }
+
+        OrderChangeRouteDingDongManagementRequest request = new OrderChangeRouteDingDongManagementRequest();
+        request.setFromDate(fromDate);
+        request.setToDate(toDate);
+        request.setPostmanCode(userInfo.getUserName());
+        request.setRouteCode(routeInfo.getRouteCode());
+        request.setPOCode(postOffice.getCode());
+
+        mView.hideProgress();
+        mInteractor.getChangeRouteOrder(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        OrderChangeRouteDingDongManagementResponse managementResponse = NetWorkController.getGson().fromJson(simpleResult.getData(), OrderChangeRouteDingDongManagementResponse.class);
+                        mView.showListOrderSucces(managementResponse);
+                        if (titleTabsListener != null) {
+                            if (typeRoute == Constants.ROUTE_RECEIVED)
+                                titleTabsListener.setQuantity(managementResponse.getToOrders().size(), typeRoute);
+                            else
+                                titleTabsListener.setQuantity(managementResponse.getFromOrders().size(), typeRoute);
+                        }
+                    }
+                }, throwable -> {
+                    mView.hideProgress();
+                    mView.showErrorToast(throwable.getMessage());
+                });
+    }
+
+    @Override
+    public void showDetailOrder(OrderChangeRouteModel item) {
+        CommonObject commonObject = new CommonObject();
+        commonObject.setAssignDateTime(item.getDivideDate());
+        commonObject.setAssignFullName(item.getContactName());
+        commonObject.setReceiverAddress(item.getContactAddress());
+        commonObject.setReceiverName(item.getContactName());
+        commonObject.setReceiverPhone(item.getContactPhone());
+        commonObject.setDescription(item.getContents());
+        commonObject.setQuantity(Integer.toString(item.getQuantity()));
+        commonObject.setWeigh(Integer.toString(item.getWeight()));
+        commonObject.setCode(item.getOrderCode());
+        new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).setMode("VIEW").pushView();
     }
 
     public RoutePresenter setTypeRoute(int typeRoute) {
@@ -138,6 +225,23 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
     }
 
     @Override
+    public void approveOrder(OrderChangeRouteRequest request) {
+        mView.showProgress();
+        mInteractor.approveOrder(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    mView.hideProgress();
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        mView.showChangeRouteCommandSucces();
+                        mView.showSuccessToast(simpleResult.getMessage());
+                    }
+                }, throwable -> {
+                    mView.hideProgress();
+                    mView.showErrorToast(throwable.getMessage());
+                });
+    }
+
+    @Override
     public void approvedDisagree(String id, String ladingCode, String postmanId, String postmanCode, String poCode, String routeId, String routeCode) {
         mView.showProgress();
         mInteractor.approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode, new CommonCallback<SimpleResult>(getViewContext()) {
@@ -162,6 +266,23 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
     }
 
     @Override
+    public void rejectOrder(OrderChangeRouteRequest request) {
+        mView.showProgress();
+        mInteractor.rejectOrder(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    mView.hideProgress();
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        mView.showChangeRouteCommandSucces();
+                        mView.showSuccessToast(simpleResult.getMessage());
+                    }
+                }, throwable -> {
+                    mView.hideProgress();
+                    mView.showErrorToast(throwable.getMessage());
+                });
+    }
+
+    @Override
     public void cancel(Integer id, Integer postmanId) {
         mView.showProgress();
         mInteractor.cancel(id, postmanId, new CommonCallback<SimpleResult>(getViewContext()) {
@@ -183,6 +304,23 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                 }
             }
         });
+    }
+
+    @Override
+    public void cancelOrder(OrderChangeRouteRequest request) {
+        mView.showProgress();
+        mInteractor.cancelOrder(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    mView.hideProgress();
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        mView.showChangeRouteCommandSucces();
+                        mView.showSuccessToast(simpleResult.getMessage());
+                    }
+                }, throwable -> {
+                    mView.hideProgress();
+                    mView.showErrorToast(throwable.getMessage());
+                });
     }
 
     @Override

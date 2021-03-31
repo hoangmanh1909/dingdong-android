@@ -16,6 +16,11 @@ public class SimpleResult implements Parcelable {
     @SerializedName(value = "message", alternate = "Message")
     String message  ="";
 
+    @SerializedName("Data")
+    String data;
+    public String getData() {
+        return data;
+    }
     @Override
     public String toString() {
         return "SimpleResult{" +

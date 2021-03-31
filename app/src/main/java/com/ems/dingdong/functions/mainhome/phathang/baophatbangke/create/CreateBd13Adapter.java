@@ -11,6 +11,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -211,6 +212,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvInstruction;
         @BindView(R.id.tv_batch_code)
         public CustomTextView tvBatchCode;
+        @BindView(R.id.tv_sml_status)
+        public CustomTextView tv_sml_status;
         @BindView(R.id.tv_refund_postage)
         public CustomTextView tvRefundPostage;
 
@@ -306,11 +309,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 }
             });
             cb_selected.setChecked(item.isSelected());
-            if (null != item.getVatCode()) {
+            if (!TextUtils.isEmpty(item.getVatCode())) {
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
-                if (!item.getVatCode().isEmpty()) {
-                    EventBus.getDefault().postSticky(new CustomDOP1("partialRelease"));
-                }
             } else {
                 gtgt.setText("GTGT: ");
             }
@@ -346,6 +346,11 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             } else {
                 tvNewReceiverAddress.setVisibility(View.GONE);
                 tvNewReceiverAddress.setText("");
+            }
+
+            if(!TextUtils.isEmpty(item.getsMLStatusName())) {
+                tv_sml_status.setVisibility(View.VISIBLE);
+                tv_sml_status.setText("Trạng thái SML: " + item.getsMLStatusName());
             }
         }
     }

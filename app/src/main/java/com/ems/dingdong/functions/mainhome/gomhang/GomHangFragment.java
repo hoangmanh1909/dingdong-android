@@ -2,21 +2,26 @@ package com.ems.dingdong.functions.mainhome.gomhang;
 
 import android.content.Intent;
 import android.view.View;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
+import com.ems.dingdong.functions.mainhome.phathang.routemanager.RouteTabsActivity;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 
 /**
@@ -58,6 +63,7 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                 homeInfos.add(new HomeInfo(4, R.drawable.ic_hoan_tat_tin, "Hoàn tất nhiều tin"));
                 homeInfos.add(new HomeInfo(6, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin theo địa chỉ"));
                 homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_manage, "Thống kê"));
+                homeInfos.add(new HomeInfo(7, R.drawable.ic_thong_ke_bao_phat, "Quản lý chuyển tuyến"));
 
                 mList.add(new GroupInfo("Gom hàng", homeInfos));
             }
@@ -88,6 +94,10 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                         } else if (homeInfo.getId() == 6) {
                             Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
                             intent.putExtra(Constants.TYPE_GOM_HANG, 4);
+                            startActivity(intent);
+                        } else if (homeInfo.getId() == 7) {
+                            Intent intent = new Intent(getActivity(), RouteTabsActivity.class);
+                            intent.putExtra(Constants.ROUTE_CHANGE_MODE,Constants.ROUTE_CHANGE_ORDER);
                             startActivity(intent);
                         } else {
                             mPresenter.showListStatistic();

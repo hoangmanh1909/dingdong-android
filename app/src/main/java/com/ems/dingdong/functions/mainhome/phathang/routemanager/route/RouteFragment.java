@@ -15,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.RouteManagerDialog;
+import com.ems.dingdong.model.OrderChangeRouteModel;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.OrderChangeRouteRequest;
+import com.ems.dingdong.model.response.OrderChangeRouteDingDongManagementResponse;
 import com.ems.dingdong.model.response.RouteResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -49,6 +53,10 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     private List<RouteResponse> mList;
     private RouteAdapter mAdapter;
 
+    private List<OrderChangeRouteModel> mListOrder;
+    private List<OrderChangeRouteModel> mListOrderSend;
+    private RouteOrderAdapter mAdapterOrder;
+
     private UserInfo mUserInfo;
     private RouteInfo mRouteInfo;
     private PostOffice mPostOffice;
@@ -59,6 +67,8 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     private String mStatusId;
     private List<RouteInfo> mListRoute;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
+
+    String mode;
 
     @Override
     protected int getLayoutId() {
@@ -75,70 +85,153 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
             return;
 
         mList = new ArrayList<>();
+        mListOrder = new ArrayList<>();
+        mListOrderSend = new ArrayList<>();
+
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
         initUserInfo();
         Date now = Calendar.getInstance().getTime();
         mToDate = DateTimeUtils.convertDateToString(now, DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mFromDate = DateTimeUtils.convertDateToString(now, DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
-            mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_RECEIVED);
-            mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
-                @Override
-                public void onCancelRequestClick(RouteResponse item) {
-                }
 
-                @Override
-                public void onCancelClick(RouteResponse item) {
-                    mPresenter.approvedDisagree(item.getId().toString(),
-                            item.getLadingCode(), mUserInfo.getiD(),
-                            mUserInfo.getUserName(), mPostOffice.getCode(),
-                            item.getToRouteId().toString(), mRouteInfo.getRouteCode());
-                }
+        mode = mPresenter.getMode();
+        if (mode.equals(Constants.ROUTE_CHANGE_ORDER)) {
+            edtSearch.setHintText("Nhập mã tin, tên, sđt");
 
-                @Override
-                public void onApproveClick(RouteResponse item) {
-                    mPresenter.approvedAgree(item.getId().toString(),
-                            item.getLadingCode(), mUserInfo.getiD(),
-                            mUserInfo.getUserName(), mPostOffice.getCode(),
-                            item.getToRouteId().toString(), mRouteInfo.getRouteCode());
-                }
+            if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
+                mAdapterOrder = new RouteOrderAdapter(getViewContext(), mListOrder, Constants.ROUTE_RECEIVED);
 
-                @Override
-                public void onLadingCodeClick(RouteResponse item) {
-                    //show detail
-                    mPresenter.showDetail(item.getLadingCode());
-                }
-            });
-            recycler.setAdapter(mAdapter);
+                mAdapterOrder.setOnItenClickListener(new RouteConstract.OnItemOrderClickListenner() {
+                    @Override
+                    public void onCancelRequestClick(OrderChangeRouteModel item) {
+                    }
 
-            mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+                    @Override
+                    public void onCancelClick(OrderChangeRouteModel item) {
+                        long routeID = item.getOrderChangeRouteId();
+                        List<Long> longs = new ArrayList<>();
+                        longs.add(routeID);
+                        OrderChangeRouteRequest request = new OrderChangeRouteRequest();
+                        request.setPostmanId(Integer.parseInt(mUserInfo.getiD()));
+                        request.setOrderChangeRouteIds(longs);
+
+                        mPresenter.rejectOrder(request);
+                    }
+
+                    @Override
+                    public void onApproveClick(OrderChangeRouteModel item) {
+                        long routeID = item.getOrderChangeRouteId();
+                        List<Long> longs = new ArrayList<>();
+                        longs.add(routeID);
+                        OrderChangeRouteRequest request = new OrderChangeRouteRequest();
+                        request.setPostmanId(Integer.parseInt(mUserInfo.getiD()));
+                        request.setOrderChangeRouteIds(longs);
+
+                        mPresenter.approveOrder(request);
+                    }
+
+                    @Override
+                    public void onLadingCodeClick(OrderChangeRouteModel item) {
+                        //show detail
+                        mPresenter.showDetailOrder(item);
+                    }
+                });
+
+                recycler.setAdapter(mAdapterOrder);
+            } else {
+                mAdapterOrder = new RouteOrderAdapter(getViewContext(), mListOrderSend, Constants.ROUTE_DELIVER);
+                mAdapterOrder.setOnItenClickListener(new RouteConstract.OnItemOrderClickListenner() {
+
+                    @Override
+                    public void onCancelRequestClick(OrderChangeRouteModel item) {
+                        long routeID = item.getOrderChangeRouteId();
+                        List<Long> longs = new ArrayList<>();
+                        longs.add(routeID);
+                        OrderChangeRouteRequest request = new OrderChangeRouteRequest();
+                        request.setPostmanId(Integer.parseInt(mUserInfo.getiD()));
+                        request.setOrderChangeRouteIds(longs);
+
+                        mPresenter.cancelOrder(request);
+                    }
+
+                    @Override
+                    public void onCancelClick(OrderChangeRouteModel item) {
+                    }
+
+                    @Override
+                    public void onApproveClick(OrderChangeRouteModel item) {
+                    }
+
+                    @Override
+                    public void onLadingCodeClick(OrderChangeRouteModel item) {
+                        //show detail
+                        mPresenter.showDetailOrder(item);
+                    }
+                });
+                recycler.setAdapter(mAdapterOrder);
+            }
+            mPresenter.getChangeRouteOrder(mFromDate, mToDate);
         } else {
-            mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_DELIVER);
-            mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
+            if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
+                mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_RECEIVED);
+                mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
+                    @Override
+                    public void onCancelRequestClick(RouteResponse item) {
+                    }
 
-                @Override
-                public void onCancelRequestClick(RouteResponse item) {
-                    mPresenter.cancel(item.getId(), item.getFromPostmanId());
-                }
+                    @Override
+                    public void onCancelClick(RouteResponse item) {
+                        mPresenter.approvedDisagree(item.getId().toString(),
+                                item.getLadingCode(), mUserInfo.getiD(),
+                                mUserInfo.getUserName(), mPostOffice.getCode(),
+                                item.getToRouteId().toString(), mRouteInfo.getRouteCode());
+                    }
 
-                @Override
-                public void onCancelClick(RouteResponse item) {
-                }
+                    @Override
+                    public void onApproveClick(RouteResponse item) {
+                        mPresenter.approvedAgree(item.getId().toString(),
+                                item.getLadingCode(), mUserInfo.getiD(),
+                                mUserInfo.getUserName(), mPostOffice.getCode(),
+                                item.getToRouteId().toString(), mRouteInfo.getRouteCode());
+                    }
 
-                @Override
-                public void onApproveClick(RouteResponse item) {
-                }
+                    @Override
+                    public void onLadingCodeClick(RouteResponse item) {
+                        //show detail
+                        mPresenter.showDetail(item.getLadingCode());
+                    }
+                });
+                recycler.setAdapter(mAdapter);
 
-                @Override
-                public void onLadingCodeClick(RouteResponse item) {
-                    //show detail
-                    mPresenter.showDetail(item.getLadingCode());
-                }
-            });
-            recycler.setAdapter(mAdapter);
-            mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+                mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+            } else {
+                mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_DELIVER);
+                mAdapter.setOnItenClickListener(new RouteConstract.OnItemClickListenner() {
+
+                    @Override
+                    public void onCancelRequestClick(RouteResponse item) {
+                        mPresenter.cancel(item.getId(), item.getFromPostmanId());
+                    }
+
+                    @Override
+                    public void onCancelClick(RouteResponse item) {
+                    }
+
+                    @Override
+                    public void onApproveClick(RouteResponse item) {
+                    }
+
+                    @Override
+                    public void onLadingCodeClick(RouteResponse item) {
+                        //show detail
+                        mPresenter.showDetail(item.getLadingCode());
+                    }
+                });
+                recycler.setAdapter(mAdapter);
+                mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+            }
+            initSearchListener();
         }
-        initSearchListener();
     }
 
     public static RouteFragment getInstance() {
@@ -166,6 +259,42 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     }
 
     @Override
+    public void showListOrderSucces(OrderChangeRouteDingDongManagementResponse responseList) {
+        hideProgress();
+        if (null != getViewContext()) {
+
+
+            if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
+                mListOrder.clear();
+                if (null == responseList.getToOrders() || responseList.getToOrders().size() == 0) {
+                    tvNodata.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
+                } else {
+                    tvNodata.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
+                    mListOrder.addAll(responseList.getToOrders());
+                    mAdapterOrder.setListFilter(mListOrder);
+                    recycler.setVisibility(View.VISIBLE);
+                }
+                mAdapterOrder.notifyDataSetChanged();
+            } else {
+                mListOrderSend.clear();
+                if (null == responseList.getFromOrders() || responseList.getFromOrders().size() == 0) {
+                    tvNodata.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
+                } else {
+                    tvNodata.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
+                    mListOrderSend.addAll(responseList.getFromOrders());
+                    mAdapterOrder.setListFilter(mListOrderSend);
+                    recycler.setVisibility(View.VISIBLE);
+                }
+                mAdapterOrder.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
     public void showListError(String message) {
         if (null != getViewContext()) {
             showErrorToast(message);
@@ -177,11 +306,14 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
 
     @Override
     public void showChangeRouteCommandSucces() {
-        showProgress();
-        if (mPresenter.getTypeRoute() == Constants.ROUTE_DELIVER) {
-            mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+        if (mode.equals(Constants.ROUTE_CHANGE_ORDER)) {
+            mPresenter.getChangeRouteOrder(mFromDate, mToDate);
         } else {
-            mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+            if (mPresenter.getTypeRoute() == Constants.ROUTE_DELIVER) {
+                mPresenter.searchForCancel("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+            } else {
+                mPresenter.searchForApproved("", mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), "", 0);
+            }
         }
     }
 
@@ -236,17 +368,25 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     }
 
     private void showDialog() {
-        new RouteManagerDialog(getActivity(), mPresenter.getTypeRoute(), mListRoute, mFromDate, mToDate, (calFrom, calTo, ladingCode, statusId, routeId) -> {
-            mFromDate = calFrom;
-            mToDate = calTo;
-            mladingCode = ladingCode;
-            mStatusId = statusId;
-            mRouteId = routeId;
-            if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
-                mPresenter.searchForApproved(mladingCode, mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), statusId, routeId);
-            } else
-                mPresenter.searchForCancel(mladingCode, mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), statusId, routeId);
-        }).show();
+        if (mode.equals(Constants.ROUTE_CHANGE_ORDER)) {
+            new EditDayDialog(getActivity(), mFromDate, mToDate, 0, (calFrom, calTo, status) -> {
+                mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                mPresenter.getChangeRouteOrder(mFromDate, mToDate);
+            }).show();
+        } else {
+            new RouteManagerDialog(getActivity(), mPresenter.getTypeRoute(), mListRoute, mFromDate, mToDate, (calFrom, calTo, ladingCode, statusId, routeId) -> {
+                mFromDate = calFrom;
+                mToDate = calTo;
+                mladingCode = ladingCode;
+                mStatusId = statusId;
+                mRouteId = routeId;
+                if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
+                    mPresenter.searchForApproved(mladingCode, mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), statusId, routeId);
+                } else
+                    mPresenter.searchForCancel(mladingCode, mFromDate, mToDate, mUserInfo.getiD(), mRouteInfo.getRouteId(), mPostOffice.getCode(), statusId, routeId);
+            }).show();
+        }
     }
 
     private void checkSelfPermission() {

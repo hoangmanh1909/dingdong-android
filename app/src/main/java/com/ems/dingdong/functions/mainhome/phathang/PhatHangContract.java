@@ -32,6 +32,7 @@ interface PhatHangContract {
         void showStatisticForward();
 
         void showPayment();
+        void showStatisticSML();
     }
 }
 

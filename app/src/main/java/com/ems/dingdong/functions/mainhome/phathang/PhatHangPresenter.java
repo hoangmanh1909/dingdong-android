@@ -14,6 +14,7 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.sml.SmartlockStatisticPresenter;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -81,5 +82,10 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     @Override
     public void showPayment() {
         new TabPaymentPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showStatisticSML() {
+        new SmartlockStatisticPresenter(mContainerView).pushView();
     }
 }

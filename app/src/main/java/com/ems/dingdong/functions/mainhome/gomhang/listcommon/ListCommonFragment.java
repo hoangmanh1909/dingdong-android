@@ -256,7 +256,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         }
         mList.clear(); //khắc phục search nhưng click chọn bị sai vị trí
         mList.addAll(list);
-        edtSearch.setVisibility(View.VISIBLE);
+//        edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
@@ -292,7 +292,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
-            edtSearch.setVisibility(View.GONE);
+//            edtSearch.setVisibility(View.GONE);
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")

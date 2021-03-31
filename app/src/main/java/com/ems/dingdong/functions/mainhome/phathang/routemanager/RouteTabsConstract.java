@@ -12,6 +12,7 @@ public interface RouteTabsConstract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        String getMode();
         ContainerView getContainerView();
     }
 
@@ -30,6 +31,8 @@ public interface RouteTabsConstract {
         void setQuantity(int quantity, int currentSetTab);
 
         void onTabChange(int position);
+
+
     }
 
 }

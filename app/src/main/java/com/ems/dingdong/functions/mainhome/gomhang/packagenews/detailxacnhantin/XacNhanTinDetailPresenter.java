@@ -1,14 +1,26 @@
 package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
+import com.ems.dingdong.model.response.StatisticSMLDeliveryFailResponse;
+import com.ems.dingdong.network.NetWorkController;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.List;
+
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -18,12 +30,17 @@ import retrofit2.Response;
 public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContract.View, XacNhanTinDetailContract.Interactor>
         implements XacNhanTinDetailContract.Presenter {
 
+    String mode = "ADD";
+
     private CommonObject commonObject;
 
     public XacNhanTinDetailPresenter(ContainerView containerView) {
         super(containerView);
     }
-
+    public XacNhanTinDetailPresenter setMode(String mode){
+        this.mode = mode;
+        return this;
+    }
     @Override
     public XacNhanTinDetailContract.View onCreateView() {
         return XacNhanTinDetailFragment.getInstance();
@@ -84,6 +101,54 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
         return commonObject;
     }
 
+    @Override
+    public void getRouteByPoCode(String poCode) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
+                super.onSuccess(call, response);
+                mView.showRoute(response.body().getRouteInfos());
+            }
+
+            @Override
+            protected void onError(Call<RouteInfoResult> call, String message) {
+                super.onError(call, message);
+            }
+        });
+    }
+
+    @Override
+    public void getPostman(String poCode, int routeId, String routeType) {
+        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<UserInfoResult>((Context) mContainerView) {
+            @Override
+            protected void onSuccess(Call<UserInfoResult> call, Response<UserInfoResult> response) {
+                super.onSuccess(call, response);
+                mView.showPostman(response.body().getUserInfos());
+            }
+
+            @Override
+            protected void onError(Call<UserInfoResult> call, String message) {
+                super.onError(call, message);
+            }
+        });
+    }
+
+    @Override
+    public void orderChangeRoute(OrderChangeRouteInsertRequest request) {
+        mView.showProgress();
+        mInteractor.orderChangeRoute(request).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        mView.showMessage("Chuyển tuyến thành công.");
+                    }else{
+                        mView.showErrorToast("Chuyển tuyến thất bại");
+                    }
+                }, throwable -> {
+                    mView.hideProgress();
+                    mView.showErrorToast(throwable.getMessage());
+                });
+    }
+
     public XacNhanTinDetailPresenter setCommonObject(CommonObject commonObject) {
         this.commonObject = commonObject;
         return this;
@@ -115,5 +180,10 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
                 mView.showError(message);
             }
         });
+    }
+
+    @Override
+    public String getMode() {
+        return mode;
     }
 }
