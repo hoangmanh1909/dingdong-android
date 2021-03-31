@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_alignParentEnd="true"
                     android:layout_toLeftOf="@+id/img_top_setting"
                     android:src="@drawable/ic_top_person" />
 
@@ -59,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/dimen_10dp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_top_setting" />
 
             </RelativeLayout>

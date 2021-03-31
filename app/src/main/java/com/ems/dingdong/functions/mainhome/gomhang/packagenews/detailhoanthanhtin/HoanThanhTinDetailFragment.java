@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
+import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.HoanThanhTinCallback;
@@ -139,7 +140,18 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
         checkPermission();
         mList = new ArrayList<>();
-        mAdapter = new ItemScanAdapter(getActivity(), mList);
+        mAdapter = new ItemScanAdapter(getActivity(), mList) {
+            @Override
+            public void onBindViewHolder(BaseViewHolder holder, int position) {
+                super.onBindViewHolder(holder, position);
+
+                ((HolderView) holder).iv_delete.setOnClickListener(v -> {
+                    mList.remove(position);
+                    mAdapter.removeItem(position);
+                    mAdapter.notifyItemRangeChanged(position, mList.size());
+                });
+            }
+        };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerScan);
         recyclerScan.setAdapter(mAdapter);
         edtCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -414,25 +426,25 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     private void addItem(String item) {
         if (!item.isEmpty()) {
-            boolean scanItemCheck = FluentIterable.from(mHoanThanhTin.getListParcelCode()).anyMatch(new Predicate<ParcelCodeInfo>() {
-                @Override
-                public boolean apply(@Nullable ParcelCodeInfo input) {
-                    return item.equals(input.getParcelCode());
-                }
-            });
-            if (!scanItemCheck) {
-                Toast.showToast(getActivity(), "Không tồn tại bưu gửi trong tin gom");
+//            boolean scanItemCheck = FluentIterable.from(mHoanThanhTin.getListParcelCode()).anyMatch(new Predicate<ParcelCodeInfo>() {
+//                @Override
+//                public boolean apply(@Nullable ParcelCodeInfo input) {
+//                    return item.equals(input.getParcelCode());
+//                }
+//            });
+//            if (!scanItemCheck) {
+//                Toast.showToast(getActivity(), "Không tồn tại bưu gửi trong tin gom");
+//            } else {
+            boolean scanItem = FluentIterable.from(mList).anyMatch(input -> item.equals(input.getCode()));
+            if (!scanItem) {
+                mList.add(new ScanItem(item));
+                mAdapter.addItem(new ScanItem(item));
+                edtCode.setText("");
             } else {
-                boolean scanItem = FluentIterable.from(mList).anyMatch(input -> item.equals(input.getCode()));
-                if (!scanItem) {
-                    mList.add(new ScanItem(item));
-                    mAdapter.addItem(new ScanItem(item));
-                    edtCode.setText("");
-                } else {
-                    Toast.showToast(getActivity(), "Đã tồn tại bưu gửi trong danh sách");
-                }
-                tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
+                Toast.showToast(getActivity(), "Đã tồn tại bưu gửi trong danh sách");
             }
+            tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
+//            }
         } else {
             Toast.showToast(getActivity(), "Chưa nhập mã");
 
@@ -476,6 +488,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         tvTrackingCode.setText(commonObject.getTrackingCode());
         tvOrderNumber.setText(commonObject.getOrderNumber());
         String[] phones = commonObject.getReceiverPhone().split(",");
+
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
                 getChildFragmentManager().beginTransaction()

@@ -435,7 +435,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         mList.clear();
         mList.addAll(list);
         itemAtPosition = null;
-        edtSearch.setVisibility(View.VISIBLE);
+//        edtSearch.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
@@ -471,7 +471,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
-            edtSearch.setVisibility(View.GONE);
+//            edtSearch.setVisibility(View.GONE);
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")

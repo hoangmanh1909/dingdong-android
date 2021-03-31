@@ -997,7 +997,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 arrImages[i] = listImages.get(i).getText();
         }
         mFile = TextUtils.join(";", arrImages);
-        checkImage(authenType);
+//        checkImage(authenType);
 
         List<DeliveryPostman> listSelected = getItemSelected();
         if (listSelected.size() == 0) {
@@ -1015,20 +1015,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
                     return;
-                }
-//                else if (authenType == 2 && !checkImage(authenType)) {
-//                    return;
-//                }
-                else if (authenType == 3 && (!checkInfo(authenType))) {
+                } else if (authenType == 2 && !checkImage(authenType)) {
+                    return;
+                } else if (authenType == 3 && (!checkInfo(authenType))) {
+                    return;
+                } else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
+                    return;
+                } else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
+                    showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
                     return;
                 }
-//                else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
-//                    return;
-//                }
-//                else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
-//                    showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
-//                    return;
-//                }
             }
 
             if (TextUtils.isEmpty(edtOtherRelationship.getText()) &&
@@ -1903,21 +1899,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
 
-//        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
-//            if (authenType != 0)
-//                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
-//            return false;
-//        }
-//        if (arrAvartar.length == 0 && arrOther.length == 0 && arrVerify.length == 0) {
-//            if (authenType != 0)
-//                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
-//            return false;
-//        } else {
-        mFileAvatar = TextUtils.join(";", arrAvartar);
-        mFileVerify = TextUtils.join(";", arrVerify);
-        mFileOther = TextUtils.join(";", arrOther);
-
-//        }
+        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
+            if (authenType != 0)
+                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
+            return false;
+        }
+        if (arrAvartar.length == 0 && arrOther.length == 0 && arrVerify.length == 0) {
+            if (authenType != 0)
+                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
+            return false;
+        } else {
+            mFileAvatar = TextUtils.join(";", arrAvartar);
+            mFileVerify = TextUtils.join(";", arrVerify);
+            mFileOther = TextUtils.join(";", arrOther);
+        }
 
 
         return true;

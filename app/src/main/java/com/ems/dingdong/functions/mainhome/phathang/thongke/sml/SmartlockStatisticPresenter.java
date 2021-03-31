@@ -16,6 +16,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -86,6 +87,8 @@ public class SmartlockStatisticPresenter extends Presenter<SmartlockStatisticCon
                         List<StatisticSMLDeliveryFailResponse> list = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<List<StatisticSMLDeliveryFailResponse>>() {
                         }.getType());
                         mView.showListSuccess(list);
+                    }else{
+                        mView.showListSuccess(new ArrayList<>());
                     }
                 }, throwable -> {
                     mView.hideProgress();

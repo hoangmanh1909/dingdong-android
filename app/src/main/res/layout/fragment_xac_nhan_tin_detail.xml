@@ -477,7 +477,7 @@
                     android:background="@drawable/bg_form_success"
                     android:gravity="center"
                     android:padding="@dimen/_4sdp"
-                    android:text="Thu gom"
+                    android:text="Đồng ý"
                     android:textAllCaps="true"
                     android:textColor="@color/color_yellow"
                     android:textSize="@dimen/_14sdp"

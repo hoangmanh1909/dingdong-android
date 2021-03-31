@@ -171,6 +171,22 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
                 recycler.setAdapter(mAdapterOrder);
             }
             mPresenter.getChangeRouteOrder(mFromDate, mToDate);
+            edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mAdapterOrder.getFilter().filter(s.toString());
+                }
+            });
         } else {
             if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
                 mAdapter = new RouteAdapter(getViewContext(), mList, Constants.ROUTE_RECEIVED);

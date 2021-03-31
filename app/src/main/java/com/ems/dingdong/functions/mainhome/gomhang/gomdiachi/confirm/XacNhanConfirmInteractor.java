@@ -4,8 +4,14 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.RouteInfoResult;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.network.NetWorkController;
 import java.util.ArrayList;
+
+import io.reactivex.Single;
 
 /**
  * The Setting interactor
@@ -19,5 +25,20 @@ class XacNhanConfirmInteractor extends Interactor<XacNhanConfirmContract.Present
     @Override
     public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
         NetWorkController.confirmAllOrderPostman(request, callback);
+    }
+
+    @Override
+    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
+        NetWorkController.getRoute(poCode, callback);
+    }
+
+    @Override
+    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
+        NetWorkController.getPostmanByRoute(poCode, routeId, routeType, callback);
+    }
+
+    @Override
+    public Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request) {
+        return NetWorkController.orderChangeRoute(request);
     }
 }

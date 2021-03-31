@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:background="#F9F9F9"
     android:orientation="vertical">
 
     <FrameLayout
@@ -37,7 +37,6 @@
         </RelativeLayout>
     </FrameLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,29 +45,21 @@
         <RelativeLayout
             android:id="@+id/frame_profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:background="@drawable/bg_radius_white"
-            android:padding="@dimen/dimen_5dp">
+            android:layout_height="wrap_content">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/img_profile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                fresco:actualImageResource="@drawable/ic_validation"
-                fresco:roundAsCircle="true" />
+            <ImageView
+                android:id="@+id/img_logo_persion"
+                android:layout_width="@dimen/_56sdp"
+                android:layout_height="@dimen/_56sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:src="@drawable/ic_account_v1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_toEndOf="@id/img_logo_persion"
                 android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_toLeftOf="@+id/img_logout"
-                android:layout_toRightOf="@id/img_profile"
                 android:orientation="vertical">
 
                 <com.ems.dingdong.views.CustomMediumTextView
@@ -95,56 +86,221 @@
 
 
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/img_logout"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/ic_sign_out" />
         </RelativeLayout>
 
-        <!--Tạm thời android:visibility="gone" vì chưa cần-->
-        <RelativeLayout
-            android:visibility="visible"
-            android:id="@+id/rl_e_wallet"
+        <View style="@style/Devider" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:background="@drawable/bg_item_payment_select">
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ic_bank"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_bank_building_100" />
+            <RelativeLayout
+                android:id="@+id/rl_e_wallet"
+                style="@style/RelativeLayoutPersonal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@+id/ic_bank"
-                android:text="@string/e_wallet"
-                android:textColor="#333333"
-                android:textSize="@dimen/text_size_14sp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_forward" />
-        </RelativeLayout>
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_balance_v1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ví điện tử"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <ImageView style="@style/ImageViewArrowRight" />
+            </RelativeLayout>
+
+            <View style="@style/Devider" />
+
+            <RelativeLayout
+                android:id="@+id/rl_route"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_title_route"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_route_change_1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuyến"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_title_route"
+                    android:gravity="end"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
+
+                    <TextView
+                        android:id="@+id/tv_route"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuyến"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right_v1" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View style="@style/Devider" />
+
+            <RelativeLayout
+                android:id="@+id/rl_paypost"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_receipt_v1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gạch nợ Paypost"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_pay_pos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:gravity="right" />
+            </RelativeLayout>
+
+            <View style="@style/Devider" />
+
+            <RelativeLayout
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_version_v1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Phiên bản phần mềm"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="V1.1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <View style="@style/Devider" />
+
+            <RelativeLayout
+                android:id="@+id/rl_logout"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_logout_v1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đăng xuất"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <ImageView style="@style/ImageViewArrowRight" />
+            </RelativeLayout>
+            <View style="@style/Devider"/>
+        </LinearLayout>
+
+        <!--Tạm thời android:visibility="gone" vì chưa cần-->
+        <!--        <RelativeLayout-->
+        <!--            android:visibility="visible"-->
+        <!--            android:id="@+id/rl_e_wallet"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="@dimen/dimen_10dp"-->
+        <!--            android:layout_marginTop="@dimen/dimen_10dp"-->
+        <!--            android:layout_marginRight="@dimen/dimen_10dp"-->
+        <!--            android:background="@drawable/bg_item_payment_select">-->
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/ic_bank"-->
+        <!--                android:layout_width="45dp"-->
+        <!--                android:layout_height="45dp"-->
+        <!--                android:layout_alignParentLeft="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:src="@drawable/ic_bank_building_100" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="20dp"-->
+        <!--                android:layout_toRightOf="@+id/ic_bank"-->
+        <!--                android:text="@string/e_wallet"-->
+        <!--                android:textColor="#333333"-->
+        <!--                android:textSize="@dimen/text_size_14sp" />-->
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:src="@drawable/ic_forward" />-->
+        <!--        </RelativeLayout>-->
 
 
     </LinearLayout>
-
 
 </LinearLayout>
