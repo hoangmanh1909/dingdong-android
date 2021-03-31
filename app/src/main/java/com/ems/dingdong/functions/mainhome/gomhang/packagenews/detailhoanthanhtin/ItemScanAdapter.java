@@ -3,15 +3,18 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.R;
 import com.ems.dingdong.model.ScanItem;
 
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ItemScanAdapter extends RecyclerBaseAdapter {
 
@@ -22,23 +25,25 @@ public class ItemScanAdapter extends RecyclerBaseAdapter {
 
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new HolderView(inflateView(parent, android.R.layout.simple_list_item_1));
+        return new HolderView(inflateView(parent, R.layout.item_order_shipment_codes));
     }
 
     class HolderView extends BaseViewHolder {
 
-        @BindView(android.R.id.text1)
-        TextView tvItem;
+        @BindView(R.id.tv_shipment_code)
+        TextView tv_shipment_code;
+        @BindView(R.id.iv_delete)
+        public ImageView iv_delete;
 
         public HolderView(View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
         }
 
         @Override
         public void bindView(Object model, int position) {
             ScanItem item = (ScanItem) model;
-            tvItem.setText(String.format(". %s", item.getCode()));
-
+            tv_shipment_code.setText((position + 1) + item.getCode());
         }
     }
 }
