@@ -23,6 +23,7 @@ import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryTabFragment;
+import com.ems.dingdong.model.AccountCtel;
 import com.ems.dingdong.model.CallProvider;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
@@ -37,6 +38,7 @@ import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.sip.cmc.SipCmc;
 import com.sip.cmc.callback.LogOutCallBack;
+import com.sip.cmc.network.Account;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -67,6 +69,8 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     SwitchCompat switchPayPos;
     @BindView(R.id.tv_route)
     TextView tv_route;
+    @BindView(R.id.tv_ctel)
+    TextView tvCtel;
 
     private PhoneDecisionDialog.OnClickListener callback;
     RouteInfo routeInfo;
@@ -93,6 +97,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             tvFullname.setText(userInfo.getFullName());
         }
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+
+        tvCtel.setText("Số máy lẻ : " +SipCmc.getAccountInfo().getName());
+
         if (!postOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
             tvPoname.setText(String.format("%s %s", postOffice.getCode(), postOffice.getName()));

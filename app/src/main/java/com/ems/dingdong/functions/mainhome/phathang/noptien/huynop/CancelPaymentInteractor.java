@@ -18,7 +18,7 @@ public class CancelPaymentInteractor extends Interactor<CancelPaymentContract.Pr
     }
 
     @Override
-    public Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+    public Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
         return NetWorkController.getHistoryPayment(dataRequestPayment);
     }
 

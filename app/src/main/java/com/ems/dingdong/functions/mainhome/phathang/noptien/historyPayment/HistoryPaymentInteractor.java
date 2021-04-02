@@ -20,7 +20,7 @@ public class HistoryPaymentInteractor extends Interactor<HistoryPaymentContract.
     }
 
     @Override
-    public Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+    public Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
         return NetWorkController.getHistoryPayment(dataRequestPayment);
     }
 

@@ -31,7 +31,6 @@ interface HoanThanhTinDetailContract {
     interface View extends PresentView<Presenter> {
      //   void showErrorAndBack(String message);
 
-
         void showMessage(String message);
 
         void showError(String message);

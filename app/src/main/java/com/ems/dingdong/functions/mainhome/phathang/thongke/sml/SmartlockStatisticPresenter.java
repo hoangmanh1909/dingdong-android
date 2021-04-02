@@ -14,6 +14,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public class SmartlockStatisticPresenter extends Presenter<SmartlockStatisticCon
                         }.getType());
                         mView.showListSuccess(list);
                     }else{
+                        Toast.showToast(getViewContext(),simpleResult.getMessage());
                         mView.showListSuccess(new ArrayList<>());
                     }
                 }, throwable -> {

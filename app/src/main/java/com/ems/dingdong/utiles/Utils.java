@@ -534,7 +534,7 @@ public class Utils {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             if (BuildConfig.DEBUG)
                 loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             HostnameVerifier hostnameVerifier = new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
@@ -571,7 +571,9 @@ public class Utils {
 
         try {
             // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+
+            //TrustManager
+            final TrustManager[] trustAllCerts = new X509TrustManager[]{new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(
                         java.security.cert.X509Certificate[] chain,
@@ -593,6 +595,7 @@ public class Utils {
 
             // Install the all-trusting trust manager
             final SSLContext tls = SSLContext.getInstance("TLS");
+
             tls.init(null, trustAllCerts,
                     new java.security.SecureRandom());
             // Create an ssl socket factory with our all-trusting manager

@@ -27,6 +27,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
@@ -38,11 +39,13 @@ import com.ems.dingdong.calls.calling.CallingFragment;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
 import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
 import com.ems.dingdong.functions.mainhome.profile.CustomItem;
+import com.ems.dingdong.model.AccountCtel;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.portsip.OnPortSIPEvent;
 import com.portsip.PortSipEnumDefine;
 import com.portsip.PortSipErrorcode;
@@ -67,6 +70,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import com.sip.cmc.callback.PhoneCallback;
 import com.sip.cmc.callback.RegistrationCallback;
+import com.sip.cmc.network.Account;
 
 public class PortSipService extends Service implements OnPortSIPEvent, NetWorkReceiver.NetWorkListener {
 
@@ -176,6 +180,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         mEngine.setOnPortSIPEvent(this);
         String dataPath = getExternalFilesDir(null).getAbsolutePath();
         Log.d(TAG, "before init");
+//        Log.d("khiempt",SipCmc.getAccountInfo().getName());
+
         disposable = Observable.fromCallable(() -> {
                     Log.d(TAG, Thread.currentThread().getName());
                     return mEngine.initialize(PortSipEnumDefine.ENUM_TRANSPORT_UDP, "0.0.0.0", localPort,
@@ -1131,8 +1137,10 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
             @Override
             public void registrationOk() {
                 super.registrationOk();
-                Log.d("123123", "login ctel success");
+                Log.d("123123123123", SipCmc.getAccountInfo().getName());
+
             }
+            //SipCmc.getAccountInfo() cho nay sdk co van de gi rooif
 
             @Override
             public void registrationFailed() {
@@ -1151,7 +1159,6 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 super.registrationProgress();
                 Log.d("123123", "login ctel registrationProgress");
             }
-
             @Override
             public void registrationCleared() {
                 super.registrationCleared();
@@ -1159,10 +1166,6 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
             }
         }, null);
 
-        //nên viết callback trước khi gọi
-        SipCmc.loginAccount(userInfo.getiD());
-//
-        ///
         SipCmc.addCallback(null, new PhoneCallback() {
             @Override
             public void incomingCall(LinphoneCall linphoneCall) {
@@ -1276,6 +1279,10 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 Log.d("123123", "callDuration: " + duration);
             }
         });
+
+        SipCmc.loginAccount(userInfo.getiD(), BuildConfig.DOMAIN_CTEL,BuildConfig.AUTH_CTEL);
+
+//        Log.e("123123123", SipCmc.getAccountInfo().getName());
     }
 
 }

@@ -18,6 +18,7 @@ public class SimpleResult implements Parcelable {
 
     @SerializedName("Data")
     String data;
+
     public String getData() {
         return data;
     }

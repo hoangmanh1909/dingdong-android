@@ -97,7 +97,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
         ApplicationController.getInstance().initPortSipService();
 
-
 //        CallHistoryRequest request = new CallHistoryRequest();
 //        request.setTenantID(12);
 //        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())

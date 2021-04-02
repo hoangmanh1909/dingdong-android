@@ -84,6 +84,13 @@
                     android:textColor="#cccccc"
                     android:textSize="@dimen/text_size_14sp" />
 
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_ctel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#cccccc"
+                    android:textSize="@dimen/text_size_14sp" />
+
 
             </LinearLayout>
         </RelativeLayout>

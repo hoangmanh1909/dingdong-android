@@ -106,7 +106,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         long successAmount = 0;
         long failAmount = 0;
         for (CommonObject item : list) {
-            if (item.getStatus().equals("C14")) {
+            if (item.getStatus().equals("C14") || item.getStatus().equals("C44")) {
                 successCount++;
                 if (!TextUtils.isEmpty(item.getCollectAmount())) {
                     successAmount += Long.parseLong(item.getCollectAmount());
@@ -118,7 +118,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
                 }
             }
         }
-        if (mPresenter.getStatus().equals("C14")) {
+        if (mPresenter.getStatus().equals("C14") || mPresenter.getStatus().equals("C44")) {
             mPresenter.setCount(successCount);
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(successAmount)));
         } else {

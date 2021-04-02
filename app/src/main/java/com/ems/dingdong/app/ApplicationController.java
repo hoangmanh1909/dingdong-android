@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
+
 import androidx.multidex.MultiDexApplication;
+
 import com.crashlytics.android.Crashlytics;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.app.realm.DingDongRealm;
@@ -16,6 +19,9 @@ import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.portsip.PortSipSdk;
+import com.sip.cmc.SipCmc;
+import com.sip.cmc.network.UserDataManager;
+
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -23,14 +29,14 @@ import io.realm.RealmConfiguration;
 public class ApplicationController extends MultiDexApplication {
     private static String TAG = "ApplicationController.class";
 
-    public static final  String CHANNEL_1_ID = "channel1";
-    public static final  String CHANNEL_2_ID = "channel2";
+    public static final String CHANNEL_1_ID = "channel1";
+    public static final String CHANNEL_2_ID = "channel2";
 
     static ApplicationController applicationController;
     private PortSipService portSipService;
     private boolean mBound = false;
     public PortSipSdk portSipSdk;
-    public boolean mConference= false;
+    public boolean mConference = false;
 
     private ServiceConnection connection = new ServiceConnection() {
 
@@ -52,6 +58,7 @@ public class ApplicationController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        SipCmc.initPrefs(this);
         if (!BuildConfig.DEBUG)
             Fabric.with(this, new Crashlytics());
         Fresco.initialize(this);
@@ -72,12 +79,14 @@ public class ApplicationController extends MultiDexApplication {
         if (mBound) {
             Logger.d(TAG, "1" + Thread.currentThread().getName());
             portSipService.registerToServer();
+
         } else {
             Intent intent = new Intent(this, PortSipService.class);
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
     }
-//
+
+    //
     public boolean isPortsipConnected() {
         return portSipService.isConnectCallService();
     }
@@ -86,8 +95,8 @@ public class ApplicationController extends MultiDexApplication {
         return applicationController;
     }
 
-    private void createNotificationChannels()  {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Call ", NotificationManager.IMPORTANCE_HIGH);
             channel1.setDescription("This is channel call");
 

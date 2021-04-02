@@ -72,6 +72,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.collect.ImmutableList;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.sip.cmc.SipCmc;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.ByteArrayOutputStream;
@@ -324,7 +325,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         }
-
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         scrollView.setFocusable(true);
         scrollView.setFocusableInTouchMode(true);
@@ -396,7 +396,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     } else {
                         edtReceiverName.setText("");
                     }
-
                     checkVerify();
                     adapter.notifyDataSetChanged();
                     updateTotalPackage();
@@ -668,6 +667,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         checkVerify();
 
         EditTextUtils.editTextListener(et_pt_amount);
+
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
@@ -1011,7 +1011,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showErrorToast(getViewContext().getString(R.string.there_is_one_package_needed_to_particular_delivered));
                 return;
             }
-
+            if (rbVerifyImage.isChecked() && rbVerifyInfo.isChecked()) authenType = 0;
+            else if (rbVerifyInfo.isChecked()) authenType = 1;
+            else if (rbVerifyImage.isChecked()) authenType = 2;
+//            Log.d("thasndasdasd", authenType + "");
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
                     return;
@@ -1019,10 +1022,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     return;
                 } else if (authenType == 3 && (!checkInfo(authenType))) {
                     return;
+                } else if (authenType == 0) {
+                    if (!checkImage(authenType) || !checkInfo(authenType)) {
+                        showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
+                        return;
+                    }
                 } else if (authenType == 3 && (!checkInfo(authenType) || !checkImage(authenType))) {
-                    return;
-                } else if (authenType == 0 && !checkInfo(authenType) && !checkImage(authenType)) {
-                    showErrorToast(getViewContext().getString(R.string.you_must_take_verify_photos_or_enter_enough_verification_info));
                     return;
                 }
             }
@@ -1043,6 +1048,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             long _amountShow = 0;
             if (mDeliveryType == 4) {
+//                Log.d ("khiempt",totalAmount + "");
                 if (totalAmount > 0) {
                     if (TextUtils.isEmpty(et_pt_amount.getText())) {
                         Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
@@ -1054,6 +1060,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             return;
                         }
                         _amountShow = amount;
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(et_pt_amount.getText())) {
+                        long amount = Long.parseLong(et_pt_amount.getText().toString().replaceAll("\\.", ""));
+                        if (amount > totalAmount) {
+                            Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+                            return;
+                        }
                     }
                 }
             } else
@@ -1245,6 +1259,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         rbVerifyInfo.setOnCheckedChangeListener((v, b) -> {
             if (b) {
                 checkInfoClick = true;
+                authenType = 1;
                 llVerifyInfo.setVisibility(View.VISIBLE);
                 /*if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
                     showErrorToast(getViewContext().getString(R.string.you_have_not_provided_profile));
@@ -1899,14 +1914,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
 
-        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
-            if (authenType != 0)
-                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
-            return false;
-        }
+//        if (TextUtils.isEmpty(mFileAvatar) && TextUtils.isEmpty(mFileVerify) && TextUtils.isEmpty(mFileOther)) {
+////            if (authenType != 0)
+//                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
+////            return false;
+//        }
         if (arrAvartar.length == 0 && arrOther.length == 0 && arrVerify.length == 0) {
-            if (authenType != 0)
-                showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
+            showErrorToast(getViewContext().getString(R.string.you_have_not_taked_verify_photos));
             return false;
         } else {
             mFileAvatar = TextUtils.join(";", arrAvartar);

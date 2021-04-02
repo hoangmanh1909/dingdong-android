@@ -20,7 +20,7 @@ import io.reactivex.Single;
 public interface CancelPaymentContract {
     interface Interactor extends IInteractor<Presenter> {
 
-        Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
+        Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
         Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
 

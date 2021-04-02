@@ -94,6 +94,7 @@ public interface XacNhanBaoPhatContract {
         void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback);
 
         void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback);
+
         void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback);
     }
 
@@ -127,12 +128,13 @@ public interface XacNhanBaoPhatContract {
         void showPostman(ArrayList<UserInfo> userInfos);
 
         void showPaymentV2Success(String message);
+
         /**
          * Show image.
          *
          * @param file path file.
          */
-        void showImage(String file,String path);
+        void showImage(String file, String path);
 
         /**
          * Delete file from server and local.
@@ -141,7 +143,6 @@ public interface XacNhanBaoPhatContract {
 
         /**
          * Show error when server emit error.
-         *
          */
         void showError(String message);
 
@@ -232,6 +233,7 @@ public interface XacNhanBaoPhatContract {
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
         void onTabRefresh();
+
         void deliveryPartial(DeliveryProductRequest request);
     }
 }

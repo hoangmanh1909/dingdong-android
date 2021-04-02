@@ -26,7 +26,7 @@ public interface PaymentContract {
         Single<EWalletDataResult> getDataPayment(String fromDate, String toDate, String poCode,
                                                  String routeCode, String postmanCode);
 
-        Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
+        Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
         Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
 

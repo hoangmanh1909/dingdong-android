@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 
 public class ItemScanAdapter extends RecyclerBaseAdapter {
 
-
     public ItemScanAdapter(Context context, List<ScanItem> items) {
         super(context, items);
     }
@@ -43,7 +42,7 @@ public class ItemScanAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(Object model, int position) {
             ScanItem item = (ScanItem) model;
-            tv_shipment_code.setText((position + 1) + item.getCode());
+            tv_shipment_code.setText((position + 1)+"."+ item.getCode());
         }
     }
 }

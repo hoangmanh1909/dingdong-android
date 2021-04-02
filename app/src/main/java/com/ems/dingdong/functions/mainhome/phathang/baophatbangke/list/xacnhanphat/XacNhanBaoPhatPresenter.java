@@ -60,7 +60,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     public XacNhanBaoPhatPresenter setBaoPhatBangKe(List<DeliveryPostman> baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
-        Log.d("asdasdad", String.valueOf(mBaoPhatBangke.size()));
+//        Log.d("asdasdad", String.valueOf(mBaoPhatBangke.size()));
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
@@ -354,6 +354,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                         throwable -> {
                             mView.hideProgress();
                             mView.showPaymentV2Success(throwable.getMessage());
+
                         }
                 );
     }

@@ -542,7 +542,7 @@ public interface VinattiAPI {
     );
 
     @POST("api/DingDong/Bussiness")
-    Single<EWalletDataHistoryResult> getHistoryPayment(@Body DataRequestPayment dataRequestPayment);
+    Single<SimpleResult> getHistoryPayment(@Body DataRequestPayment dataRequestPayment);
 
     @POST("api/DingDong/Bussiness")
     Single<SimpleResult> deletePayment(@Body DataRequestPayment dataRequestPayment);

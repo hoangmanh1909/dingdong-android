@@ -1,21 +1,25 @@
 package com.ems.dingdong.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
+import com.ems.dingdong.model.AccountCtel;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.sip.cmc.SipCmc;
+import com.sip.cmc.network.Account;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,7 +35,10 @@ public class PhoneConectDialogExtend extends Dialog {
     private String numberSender;
     @BindView(R.id.edt_call_ctel_app_to_app)
     EditText edt_call_ctel_app_to_app;
+    @BindView(R.id.tv_somayle)
+    TextView tvSomayle;
 
+    @SuppressLint("SetTextI18n")
     public PhoneConectDialogExtend(Context context, String phone, PhoneCallback reasonCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
@@ -40,6 +47,7 @@ public class PhoneConectDialogExtend extends Dialog {
         View view = View.inflate(getContext(), R.layout.dialog_phone_connect_extend, null);
         setContentView(view);
         ButterKnife.bind(this, view);
+        tvSomayle.setText("Số máy lẻ : " + SipCmc.getAccountInfo().getName());
     }
 
     @Override

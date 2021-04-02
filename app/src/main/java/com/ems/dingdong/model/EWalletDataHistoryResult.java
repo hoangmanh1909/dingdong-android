@@ -10,6 +10,7 @@ import java.util.List;
 
 @SuppressLint("ParcelCreator")
 public class EWalletDataHistoryResult extends SimpleResult {
+
     @SerializedName("Data")
     private String getList;
 

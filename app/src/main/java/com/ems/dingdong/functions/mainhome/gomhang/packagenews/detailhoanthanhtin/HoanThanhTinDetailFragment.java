@@ -149,6 +149,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     mList.remove(position);
                     mAdapter.removeItem(position);
                     mAdapter.notifyItemRangeChanged(position, mList.size());
+                    recyclerScan.setAdapter(mAdapter);
                 });
             }
         };
@@ -326,14 +327,11 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 mPresenter.back();
                 break;
             case R.id.btn_confirm:
-
                 final StringBuilder scans = new StringBuilder();
                 List<ScanItem> scanItems = mAdapter.getItems();
                 for (ScanItem item : scanItems) {
                     scans.append(item.getCode()).append(";");
                 }
-
-
                 if (mHoanThanhTin != null) {
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(), new HoanThanhTinCallback() {
                         @Override
@@ -539,7 +537,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     @Override
     public void controlViews() {
         btnConfirm.setEnabled(false);
-
     }
 
 

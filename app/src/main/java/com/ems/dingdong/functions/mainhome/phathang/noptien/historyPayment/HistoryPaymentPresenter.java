@@ -139,7 +139,7 @@ public class HistoryPaymentPresenter extends Presenter<HistoryPaymentContract.Vi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(walletDataHistoryResult -> {
                     if (walletDataHistoryResult != null && walletDataHistoryResult.getErrorCode().equals("00")) {
-                        EWalletDataResponse[] list = NetWorkController.getGson().fromJson(walletDataHistoryResult.getListCodes(), EWalletDataResponse[].class);
+                        EWalletDataResponse[] list = NetWorkController.getGson().fromJson(walletDataHistoryResult.getData(), EWalletDataResponse[].class);
                         List<EWalletDataResponse> list1 = Arrays.asList(list);
                         for (EWalletDataResponse item : list1)
                             item.setGetPositionTab(getPositionTab());

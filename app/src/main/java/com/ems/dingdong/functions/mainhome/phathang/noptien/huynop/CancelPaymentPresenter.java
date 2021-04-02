@@ -132,7 +132,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(walletDataHistoryResult -> {
                     if (walletDataHistoryResult != null && walletDataHistoryResult.getErrorCode().equals("00")) {
-                        EWalletDataResponse[] list = NetWorkController.getGson().fromJson(walletDataHistoryResult.getListCodes(), EWalletDataResponse[].class);
+                        EWalletDataResponse[] list = NetWorkController.getGson().fromJson(walletDataHistoryResult.getData(), EWalletDataResponse[].class);
                         List<EWalletDataResponse> list1 = Arrays.asList(list);
                         if (getPositionTab() == 1) {
                             for (EWalletDataResponse item : list1)

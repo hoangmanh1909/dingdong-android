@@ -76,30 +76,35 @@ public class CreateDeliveryParialDialog extends Dialog {
             return;
         }
         if (TextUtils.isEmpty(edtQuantityProductAdd.getText().toString())) {
-            Toast.showToast(getContext(), "Bạn chưa nhập Số lượng");
-            return;
+            quantity = 0;
+//            Toast.showToast(getContext(), "Bạn chưa nhập Số lượng");
+//            return;
         } else {
             quantity = Integer.parseInt(edtQuantityProductAdd.getText().toString().replaceAll("\\.", ""));
-            if (quantity <= 0) {
-                Toast.showToast(getContext(), "Số lượng phải lớn hơn 0");
-                return;
-            }
         }
+//            if (quantity <= 0) {
+//                Toast.showToast(getContext(), "Số lượng phải lớn hơn 0");
+//                return;
+//            }
+//        }
 
         if (TextUtils.isEmpty(edtWeightProductAdd.getText().toString())) {
-            Toast.showToast(getContext(), "Bạn chưa nhập Khối lượng");
-            return;
+            weight = 0;
+//            Toast.showToast(getContext(), "Bạn chưa nhập Khối lượng");
+//            return;
         } else {
             weight = Long.parseLong(edtWeightProductAdd.getText().toString().replaceAll("\\.", ""));
-            if (weight <= 0) {
-                Toast.showToast(getContext(), "Khối lượng phải lớn hơn 0");
-                return;
-            }
         }
+//            if (weight <= 0) {
+//                Toast.showToast(getContext(), "Khối lượng phải lớn hơn 0");
+//                return;
+//            }
+//        }
 
         if (!TextUtils.isEmpty(edtPriceProductAdd.getText().toString())) {
             amount = Long.parseLong(edtPriceProductAdd.getText().toString().replaceAll("\\.", ""));
-        }
+        }else
+            amount=0;
 
         ProductModel productModel = new ProductModel();
         productModel.setPrice(amount);

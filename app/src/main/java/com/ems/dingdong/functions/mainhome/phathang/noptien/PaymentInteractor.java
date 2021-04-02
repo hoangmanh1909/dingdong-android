@@ -25,7 +25,7 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     }
 
     @Override
-    public Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+    public Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
         return NetWorkController.getHistoryPayment(dataRequestPayment);
     }
 

@@ -732,7 +732,7 @@ public class NetWorkController {
         return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
-    public static Single<EWalletDataHistoryResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+    public static Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
         return getAPIRxBuilder().getHistoryPayment(dataRequestPayment);
     }
 

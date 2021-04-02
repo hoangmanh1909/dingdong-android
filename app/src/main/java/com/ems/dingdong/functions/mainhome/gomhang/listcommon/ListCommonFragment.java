@@ -257,7 +257,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         mList.clear(); //khắc phục search nhưng click chọn bị sai vị trí
         mList.addAll(list);
 //        edtSearch.setVisibility(View.VISIBLE);
+//
         mAdapter.notifyDataSetChanged();
+
+        edtSearch.setText(edtSearch.getText().toString());
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
             int countP1 = 0;
