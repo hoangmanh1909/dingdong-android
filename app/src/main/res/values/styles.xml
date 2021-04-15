@@ -126,6 +126,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+
+    <style name="CustomTitleTextTicket">
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
     <style name="LightGrayDevider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>

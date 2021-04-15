@@ -102,7 +102,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             }
 
             @Override
-            public void registrationFailed() {
+            public void registrationFailed()  {
                 super.registrationFailed();
                 //showErrorToast("login Ctel failure");
                 Log.d("123123", "login Ctel failed");

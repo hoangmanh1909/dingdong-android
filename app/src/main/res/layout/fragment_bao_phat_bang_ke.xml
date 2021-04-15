@@ -58,7 +58,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp">
-
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/img_ContactPhone_extend"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="2dp"
+            android:padding="3dp"
+            android:src="@drawable/icon_extend_menu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
@@ -89,6 +100,8 @@
             android:layout_marginLeft="@dimen/_10sdp"
             android:padding="@dimen/_5sdp"
             android:text="@string/pick_all" />
+
+
 
     </LinearLayout>
 

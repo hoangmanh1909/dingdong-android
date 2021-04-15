@@ -79,7 +79,6 @@ public class ApplicationController extends MultiDexApplication {
         if (mBound) {
             Logger.d(TAG, "1" + Thread.currentThread().getName());
             portSipService.registerToServer();
-
         } else {
             Intent intent = new Intent(this, PortSipService.class);
             bindService(intent, connection, Context.BIND_AUTO_CREATE);

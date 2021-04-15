@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
@@ -20,7 +21,10 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.sip.cmc.SipCmc;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -232,7 +236,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void updateMobile(String phone, String parcelCode) {
         mView.showProgress();
         String tPhone = phone;
-        addCallback(mInteractor.updateMobile(parcelCode,"1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        addCallback(mInteractor.updateMobile(parcelCode, "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -253,7 +257,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void updateMobileSender(String phoneSender, String parcelCode) {
         mView.showProgress();
         String tPhoneSender = phoneSender;
-        addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView){
+        addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -286,18 +290,24 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void callByWifi(String calleeNumber) {
         Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
         intent.putExtra(Constants.CALL_TYPE, 1);
-        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+//        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
         intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);
         getViewContext().startActivity(intent);
     }
 
     @Override
-    public void callByCtellFree() {
+    public void callByCtellFree(String calleeNumber) {
+        SipCmc.callTo(calleeNumber);
         Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
         intent.putExtra(Constants.CALL_TYPE, 1);
-        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
-        //intent.putExtra(Constants.KEY_CALLEE_NUMBER, phoneNumber);
+        intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);
+//                intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
         getViewContext().startActivity(intent);
+//        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+//        intent.putExtra(Constants.CALL_TYPE, 1);
+//        intent.putExtra(Constants.KEY_CALLER_NUMBER, "0969803622");
+//        intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);
+//        getViewContext().startActivity(intent);
     }
 
     @Override

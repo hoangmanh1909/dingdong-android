@@ -41,7 +41,7 @@ public class PhoneConectDialog extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_phone_updating:
-                new PhoneNumberUpdateDialog(getContext(), phone, mDelegate).show();
+                new PhoneNumberUpdateDialog(getContext(), phone,1, mDelegate).show();
                 break;
 
             case R.id.tv_phone_messing:

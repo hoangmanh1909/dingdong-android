@@ -10,6 +10,7 @@ import com.ems.dingdong.functions.mainhome.address.AddressPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.notify.ListNotifyPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.PostOffice;
@@ -98,6 +99,11 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
             protected void onError(Call<StatisticPaymentResult> call, String message) {
             }
         });
+    }
+
+    @Override
+    public void showNitify() {
+        new ListNotifyPresenter(mContainerView).pushView();
     }
 
     @Override

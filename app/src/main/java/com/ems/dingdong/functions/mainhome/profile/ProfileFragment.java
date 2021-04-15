@@ -98,7 +98,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         }
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
 
-        tvCtel.setText("Số máy lẻ : " +SipCmc.getAccountInfo().getName());
+        if (SipCmc.getAccountInfo() != null) {
+            tvCtel.setText("Số máy lẻ : " + SipCmc.getAccountInfo().getName());
+        }
 
         if (!postOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
@@ -125,7 +127,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         });
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet,R.id.rl_route})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -136,13 +138,13 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 SipCmc.logOut(new LogOutCallBack() {
                     @Override
                     public void logoutSuccess() {
-                        Log.d("logoutSuccess"," thanh cong");
+                        Log.d("logoutSuccess", " thanh cong");
                         super.logoutSuccess();
                     }
 
                     @Override
                     public void logoutFailed() {
-                        Log.d("logoutFailed"," that bai");
+                        Log.d("logoutFailed", " that bai");
                         super.logoutFailed();
                     }
                 });

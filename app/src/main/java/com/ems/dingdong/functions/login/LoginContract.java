@@ -18,7 +18,8 @@ import com.ems.dingdong.model.response.ResponseObject;
 interface LoginContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void login(String mobileNumber, String signCode,String version,String appCode, CommonCallback<LoginResult> commonCallback);
+        void login(String mobileNumber, String signCode, String version, String appCode, CommonCallback<LoginResult> commonCallback);
+
         void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback);
 
         void getSolutions(CommonCallback<SolutionResult> commonCallback);
@@ -33,7 +34,7 @@ interface LoginContract {
 
         void showError(String message);
 
-        void showVersion(String version,String urlDownload);
+        void showVersion(String version, String urlDownload);
 
         void gotoHome();
     }

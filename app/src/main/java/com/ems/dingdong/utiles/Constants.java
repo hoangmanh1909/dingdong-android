@@ -102,6 +102,7 @@ public class Constants {
     public static final String CALL_ID = "call_id";
 
     public static final String CALL_TYPE = "call_type";
+    public static final String APP_TO_APP = "APP_TO_APP";
     public static final String SESSION_ID = "SESSION_ID";
     public static final int CALL_TYPE_RECEIVING = 0;
     public static final int CALL_TYPE_RECEIVING_CTEL = 4;

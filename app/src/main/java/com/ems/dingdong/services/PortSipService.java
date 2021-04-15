@@ -155,26 +155,6 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         Random rm = new Random();
         Log.d(TAG, Thread.currentThread().getName());
         int localPort = 5060 + rm.nextInt(60000);
-//        int transType = preferences.getInt(TRANS, 0);
-//        int srtpType = preferences.getInt(SRTP, 0);
-
-
-/*        //String userName = "1000001969803622";
-        String userName = "1000001963170164";
-        String password = "Abcd1234";
-        //String displayName = "1000001969803622";
-        String displayName = "1000001963170164";
-        String authName = "";
-        String userDomain = "vnpost-shipper.vht.com.vn";
-        String sipServer = "sip.vht.com.vn";
-        String serverPort = "5060";
-        String stunServer = "";
-        String stunPort = "3478";
-
-        int sipServerPort = Integer.parseInt(serverPort);
-        int stunServerPort = Integer.parseInt(stunPort);*/
-
-
         mEngine.DeleteCallManager();
         mEngine.CreateCallManager(applicaton);
         mEngine.setOnPortSIPEvent(this);
@@ -1130,34 +1110,31 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         ///
-        // Login SipCmc
-        SipCmc.startService(this);// tạm stop
-//        SipCmc.getAccountInfo();
+        SipCmc.startService(this);
+        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL,BuildConfig.AUTH_CTEL);
         SipCmc.addCallback(new RegistrationCallback() {
             @Override
             public void registrationOk() {
                 super.registrationOk();
-                Log.d("123123123123", SipCmc.getAccountInfo().getName());
-
+                Log.d("registrationOk", "login ctel registrationOk");
             }
-            //SipCmc.getAccountInfo() cho nay sdk co van de gi rooif
 
             @Override
             public void registrationFailed() {
                 super.registrationFailed();
-                Log.d("123123", "login ctel failed");
+                Log.d("registrationFailed", "login ctel failed");
             }
 
             @Override
             public void registrationNone() {
                 super.registrationNone();
-                Log.d("123123", "login ctel registrationNone");
+                Log.d("registrationNone", "login ctel registrationNone");
             }
 
             @Override
             public void registrationProgress() {
                 super.registrationProgress();
-                Log.d("123123", "login ctel registrationProgress");
+                Log.d("registrationProgress", "login ctel registrationProgress");
             }
             @Override
             public void registrationCleared() {
@@ -1171,10 +1148,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
             public void incomingCall(LinphoneCall linphoneCall) {
                 super.incomingCall(linphoneCall);
                 Log.d("123123", "incomingCall: ");
-
                 Session session = CallManager.Instance().findIdleSession();
                 session.state = Session.CALL_STATE_FLAG.INCOMING;
-
                 Intent activityIntent = new Intent(getApplicationContext(), IncomingCallActivity.class);
                 activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (isForeground()) {
@@ -1223,7 +1198,6 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 Log.d("123123", "callReleased");
                 //Toast.makeText(getApplicationContext(), "callReleased", Toast.LENGTH_SHORT).show();
                 try {
-
                     Intent intent = new Intent(ACTION_CALL_EVENT);
                     intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
                     sendBroadcast(intent);
@@ -1279,10 +1253,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 Log.d("123123", "callDuration: " + duration);
             }
         });
-
-        SipCmc.loginAccount(userInfo.getiD(), BuildConfig.DOMAIN_CTEL,BuildConfig.AUTH_CTEL);
-
-//        Log.e("123123123", SipCmc.getAccountInfo().getName());
+        // Login SipCmc
+//
     }
 
 }

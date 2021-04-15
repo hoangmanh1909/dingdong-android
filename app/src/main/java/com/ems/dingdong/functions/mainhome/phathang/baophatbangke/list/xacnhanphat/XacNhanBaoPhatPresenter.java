@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.app.Activity;
 import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
@@ -32,10 +33,12 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -135,7 +138,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body() != null) {
-                    mView.showImage(response.body().getFile(),path);
+                    mView.showImage(response.body().getFile(), path);
                 }
             }
 
@@ -145,7 +148,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 try {
                     mView.showAlertDialog("Không kết nối được với hệ thống");
                     mView.deleteFile();
-                }catch (Exception exception){}
+                } catch (Exception exception) {
+                }
             }
         });
     }
@@ -157,8 +161,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
-                if (response.body() != null){
-                    mView.showImage(response.body().getFile(),pathAvatar);
+                if (response.body() != null) {
+                    mView.showImage(response.body().getFile(), pathAvatar);
                 }
             }
 
@@ -179,7 +183,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         String routeCode = routeInfo.getRouteCode();
 
         for (DeliveryPostman item : mView.getItemSelected()) {
-
             String ladingCode = item.getMaE();
             String deliveryPOCode = deliveryPOSCode;
             String deliveryDate = DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -243,7 +246,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showSuccess(response.body().getErrorCode());
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.hideProgress();
+                    mView.showSuccess(response.body().getErrorCode());
+                } else mView.showError(response.body().getMessage());
             }
 
             @Override
@@ -284,7 +290,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             final String paymentChannel = "1";
             String deliveryType = "";
             String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-
             PaypostPaymentRequest request = new PaypostPaymentRequest();
             request.setPostmanID(postmanID);
             request.setParcelCode(parcelCode);

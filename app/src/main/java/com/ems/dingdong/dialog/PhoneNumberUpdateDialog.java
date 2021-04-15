@@ -25,7 +25,7 @@ public class PhoneNumberUpdateDialog extends Dialog {
     @BindView(R.id.edt_phone)
     CustomEditText edtPhone;
 
-    public PhoneNumberUpdateDialog(Context context, String phone, PhoneCallback reasonCallback) {
+    public PhoneNumberUpdateDialog(Context context, String phone,int type, PhoneCallback reasonCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
         this.phone = phone;

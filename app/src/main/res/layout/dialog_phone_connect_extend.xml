@@ -38,11 +38,11 @@
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/calling_method"
                         android:textColor="@color/black"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:textSize="@dimen/text_size_18sp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -67,8 +67,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -104,8 +104,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -122,8 +122,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -140,8 +140,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -155,29 +155,46 @@
 
                 <!---->
                 <EditText
-                    android:visibility="visible"
                     android:id="@+id/edt_call_ctel_app_to_app"
-                    android:inputType="number"
-                    android:hint="Nhập số máy lẻ Ctel"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_somayle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:text=""/>
+                    android:layout_margin="@dimen/_10sdp"
+                    android:hint="Nhập số máy lẻ Ctel"
+                    android:inputType="number"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/tv_somayle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_weight="5"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/id_login_ctel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:layout_marginLeft="10dp"
+                        android:text="Đăng nhập Ctel"
+                        android:layout_gravity="right"
+                        android:gravity="right"/>
+                </LinearLayout>
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:visibility="visible"
                     android:id="@+id/btn_call_ctel_app_to_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -187,15 +204,16 @@
                     android:text="Gọi Ctel app to app"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="visible" />
 
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/btn_call_ctel_operator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_fix_call"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -208,15 +226,13 @@
                     android:textSize="16sp" />
 
 
-
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:visibility="gone"
                     android:id="@+id/tv_phone_messing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/bg_button_message"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
@@ -226,7 +242,8 @@
                     android:text="@string/messaging"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -288,6 +288,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private ImageCaptureAdapter imageRefundAdapter;
 
     List<ProductModel> listProductDelivery;
+
     List<ProductModel> listProductRefund;
 
     List<ProductModel> listProductDeliveryRequest;
@@ -436,6 +437,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 productModel1.setWeight(productModel.getWeight());
                 productModel1.setPrice(productModel.getPrice());
                 productModel1.setUnitName(productModel.getUnitName());
+//                productModel1.setLadingCode(productModel.getLadingCode());
+//                productModel1.setLadingToPostmanId(productModel.getLadingToPostmanId());
+//                productModel1.setpODeliveryCode(productModel.getpODeliveryCode());
                 listProductDeliveryRequest.add(productModel1);
             }
 
@@ -446,6 +450,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 productModel1.setWeight(productModel.getWeight());
                 productModel1.setPrice(productModel.getPrice());
                 productModel1.setUnitName(productModel.getUnitName());
+//                productModel1.setLadingCode(productModel.getLadingCode());
+//                productModel1.setLadingToPostmanId(productModel.getLadingToPostmanId());
+//                productModel1.setpODeliveryCode(productModel.getpODeliveryCode());
                 listProductRefund.add(productModel1);
             }
 
@@ -494,7 +501,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 @Override
                 public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                     super.onBindViewHolder(holder, position);
-
                     ((HolderView) holder).iv_delete.setOnClickListener(v -> {
                         listProductRefund.remove(position);
                         refundPartialAdapter.removeItem(position);
@@ -1048,7 +1054,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             long _amountShow = 0;
             if (mDeliveryType == 4) {
-//                Log.d ("khiempt",totalAmount + "");
                 if (totalAmount > 0) {
                     if (TextUtils.isEmpty(et_pt_amount.getText())) {
                         Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
@@ -1249,6 +1254,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setAuthenType(infoVerify.getAuthenType());
         request.setReceiverIDNumber(infoVerify.getGtgt());
         request.setVATCode(item.getVatCode());
+
+
+        ///// bor sung them LadingToPostmanId ,LadingCode, PODeliveryCode  an toan cho tung san pham phat hoan
+
+        for (ProductModel productModel : listProductRefund){
+            productModel.setLadingToPostmanId(item.getId());
+            productModel.setpODeliveryCode(deliveryPOCode);
+            productModel.setLadingCode(parcelCode);
+        }
+
+        for (ProductModel productModel : listProductDeliveryRequest){
+            productModel.setLadingToPostmanId(item.getId());
+            productModel.setpODeliveryCode(deliveryPOCode);
+            productModel.setLadingCode(parcelCode);
+        }
 
         request.setReturnProducts(listProductRefund);
         request.setDeliveryProducts(listProductDeliveryRequest);

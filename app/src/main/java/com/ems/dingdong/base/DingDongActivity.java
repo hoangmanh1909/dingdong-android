@@ -32,14 +32,17 @@ public abstract class DingDongActivity extends ContainerActivity {
     public void showAlertDialog(String message) {
         DialogUtils.showAlert(this, message);
     }
+
     @Override
     public void showAlertDialog(String message, DialogInterface.OnClickListener onClickListener) {
 
-        DialogUtils.showAlertAction(this, message,onClickListener);
+        DialogUtils.showAlertAction(this, message, onClickListener);
     }
+
     public void showErrorToast(String message) {
         Toast.showToast(this, message);
     }
+
     public void showSuccessToast(String message) {
         Toast.showToast(this, message);
     }

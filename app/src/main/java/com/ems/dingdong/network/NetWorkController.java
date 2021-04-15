@@ -38,6 +38,7 @@ import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
@@ -67,6 +68,7 @@ import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
+import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
@@ -806,6 +808,28 @@ public class NetWorkController {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("ORC005");
         dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("TCK001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> isSeen(List<String> request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("TCK002");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getDetailTicket(String request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("TCK003");
+        dataRequestPayment.setData(request);
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
