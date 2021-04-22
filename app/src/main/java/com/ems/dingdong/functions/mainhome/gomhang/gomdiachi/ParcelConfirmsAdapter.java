@@ -37,7 +37,7 @@ public class ParcelConfirmsAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
-            tvCodeConfirm.setText(item.getParcelCode());
+            tvCodeConfirm.setText(item.getTrackingCode());
         }
     }
 }

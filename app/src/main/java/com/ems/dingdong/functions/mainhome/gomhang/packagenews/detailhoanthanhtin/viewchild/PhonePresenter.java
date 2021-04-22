@@ -12,6 +12,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -71,6 +72,7 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
+                    Toast.showToast(getViewContext(),"Đang thực hiện cuộc gọi đến : " +phone);
                     mView.showCallSuccess();
                 } else {
                     mView.showError(response.body().getMessage());

@@ -21,7 +21,6 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.common.collect.Iterables;
 
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +79,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
 
                         CommonObject itemExists = Iterables.tryFind(listG,
                                 input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
+                                        && item.getCustomerName().equals(input != null ? input.getCustomerName() : "")
                                         && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
                         ).orNull();
 
@@ -104,7 +104,6 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             }
                         }
                     }
-
                     mView.showResponseSuccess(listG);
                 } else {
                     mView.showError(response.body().getMessage());
@@ -132,7 +131,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     }
 
     @Override
-    public void confirmAllOrderPostman(ArrayList<CommonObject> list) {
+    public void confirmAllOrderPostman(ArrayList<CommonObject> list, String tenkhachhang) {
         ArrayList<ConfirmOrderPostman> listRequest = new ArrayList<>();
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String user = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -160,7 +159,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
             }
         }
         if (!listRequest.isEmpty()) {
-            new XacNhanConfirmPresenter(mContainerView).setListRequest(listRequest).pushView();
+            new XacNhanConfirmPresenter(mContainerView).setListRequest(listRequest).setTenKH(tenkhachhang).pushView();
         }
     }
 
@@ -186,7 +185,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 confirmOrderPostman.setEmployeeID(userInfo.getiD());
                 confirmOrderPostman.setOrderPostmanID(code.toString());
                 confirmOrderPostman.setStatusCode("P1");
-                confirmOrderPostman.parcel = code.getParcelCode();
+                confirmOrderPostman.parcel = code.getTrackingCode();
                 listRequest.add(confirmOrderPostman);
                 index++;
             }
@@ -199,6 +198,11 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
 
     @Override
     public void showConfirmParcelAddressNoPostage(CommonObject commonObject) {
+        new ChiTietHoanThanhTinTheoDiaChiPresenter(mContainerView).setCommonObject(commonObject).pushView();
+    }
+
+    @Override
+    public void showChiTietHoanThanhTin(CommonObject commonObject) {
         new ChiTietHoanThanhTinTheoDiaChiPresenter(mContainerView).setCommonObject(commonObject).pushView();
     }
 

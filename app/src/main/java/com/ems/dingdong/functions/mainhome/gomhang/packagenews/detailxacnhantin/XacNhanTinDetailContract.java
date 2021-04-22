@@ -24,17 +24,20 @@ import io.reactivex.Single;
 interface XacNhanTinDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-       // void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
+        // void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
 
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                         String statusCode, String confirmReason, CommonCallback<SimpleResult> callback);
+
         void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
+
         void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
+
         Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request);
     }
 
     interface View extends PresentView<Presenter> {
-      //  void showErrorAndBack(String message);
+        //  void showErrorAndBack(String message);
 
         void showView(CommonObject commonObject);
 
@@ -43,16 +46,22 @@ interface XacNhanTinDetailContract {
         void showError(String message);
 
         void showRoute(ArrayList<RouteInfo> routeInfos);
+
         void showPostman(ArrayList<UserInfo> userInfos);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, String statusCode, String reason);
+
         String getMode();
-       // void searchOrderPostman();
+
+        // void searchOrderPostman();
         CommonObject getCommonObject();
+
         void getRouteByPoCode(String poCode);
+
         void getPostman(String poCode, int routeId, String routeType);
+
         void orderChangeRoute(OrderChangeRouteInsertRequest request);
     }
 }

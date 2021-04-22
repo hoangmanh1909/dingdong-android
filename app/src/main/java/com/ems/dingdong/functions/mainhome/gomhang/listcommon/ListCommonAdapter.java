@@ -9,17 +9,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,6 +38,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
     String parcelCodeSearch = "";
     int actualPosition;
     private CommonObject currentItem;
+
     public ListCommonAdapter(Context context, int type, List<CommonObject> items) {
         mType = type;
         mContext = context;
@@ -49,6 +56,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         holder.bindView(mListFilter.get(position));
 
     }
+
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
         //return new HolderView(inflateView(parent, R.layout.item_xac_nhan_tin));
@@ -67,24 +75,22 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
-                        boolean checkCode= false;
-                        for(ParcelCodeInfo item: row.getListParcelCode())
-                        {
-                            if (item.getParcelCode().toLowerCase().contains(charString.toLowerCase())) {
+                        boolean checkCode = false;
+                        for (ParcelCodeInfo item : row.getListParcelCode()) {
+                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
                                 checkCode = true;
                                 break;
                             }
                         }
-                        if (!checkCode)
-                        {
+                        if (!checkCode) {
                             if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
-                            || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
-                            || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
                             ) {
                                 checkCode = true;
                             }
                         }
-                        if(checkCode){
+                        if (checkCode) {
                             filteredList.add(row);
                         }
                     }
@@ -124,8 +130,11 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         RecyclerView recycler;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
+        @BindView(R.id.tv_thoi_gian)
+        CustomBoldTextView tvThoiGian;
         ParcelAdapter adapter;
-
+        @BindView(R.id.tv_customName)
+        CustomTextView tvCustomName;
         public HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -143,6 +152,12 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
             } else {
                 tvContactDescription.setText(item.getDescription());
             }
+
+//            item.setAppointmentTime("10:59:49 16/04/2021");
+            tvCustomName.setText(item.getCustomerName());
+            if (item.getAppointmentTime() != null)
+                tvThoiGian.setText("Thời gian hẹn: "+item.getAppointmentTime());
+            else tvThoiGian.setVisibility(View.GONE);
 
             cbSelected.setVisibility(View.GONE);
             if (mType == 1) {
@@ -225,13 +240,11 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
             }
             if (mType == 1 || mType == 2) {
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
-                if(parcelCodeSearch.equals(""))
-                {
+                if (parcelCodeSearch.equals("")) {
                     filteredList = item.getListParcelCode();
-                }
-                else {
+                } else {
                     for (ParcelCodeInfo row : item.getListParcelCode()) {
-                        if (row.getParcelCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
+                        if (row.getTrackingCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -265,12 +278,12 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         }
 
         private void binParcelCode(List<ParcelCodeInfo> listParcelCode) {
-            if(adapter == null) {
+            if (adapter == null) {
                 adapter = new ParcelAdapter(mContext, listParcelCode) {
                     @Override
                     public void onBindViewHolder(BaseViewHolder holder, final int position) {
                         super.onBindViewHolder(holder, position);
-                        ((HolderView)holder).cbSelected.setVisibility(View.GONE);
+                        ((HolderView) holder).cbSelected.setVisibility(View.GONE);
                     }
                 };
                 RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
@@ -281,9 +294,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         }
     }
 
-    public void update(List<CommonObject> data){
-        synchronized (mListFilter){
-            if(data != null && mListFilter.contains(data)){
+    public void update(List<CommonObject> data) {
+        synchronized (mListFilter) {
+            if (data != null && mListFilter.contains(data)) {
                 int index = mListFilter.indexOf(data);
                 mListFilter.set(index, (CommonObject) data);
                 notifyDataSetChanged();

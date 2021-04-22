@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
@@ -22,7 +24,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
         implements ChiTietHoanThanhTinTheoDiaChiContract.Presenter {
 
     ArrayList<ConfirmOrderPostman> mListRequest;
-    ArrayList<CommonObject> mListCommon;
+    CommonObject mListCommon;
     private CommonObject commonObject;
     ArrayList<ParcelCodeInfo> mListOrderCode;
 
@@ -42,7 +44,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     }
 
     @Override
-    public ArrayList<CommonObject> getListCommon() {
+    public CommonObject getListCommon() {
         return mListCommon;
     }
 
@@ -160,6 +162,11 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     }
 
     @Override
+    public void showBarcode(BarCodeCallback barCodeCallback) {
+        new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    @Override
     public void start() {
         getReasons();
         getReasonFailure();
@@ -180,7 +187,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
         return this;
     }
 
-    public ChiTietHoanThanhTinTheoDiaChiPresenter setListCommon(ArrayList<CommonObject> listCommon) {
+    public ChiTietHoanThanhTinTheoDiaChiPresenter setListCommon(CommonObject listCommon) {
         this.mListCommon = listCommon;
         return this;
     }

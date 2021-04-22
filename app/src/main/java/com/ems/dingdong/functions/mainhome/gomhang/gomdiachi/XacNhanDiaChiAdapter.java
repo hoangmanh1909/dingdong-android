@@ -86,7 +86,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     for (CommonObject row : mList) {
                         boolean checkCode = false;
                         for (ParcelCodeInfo item : row.getListParcelCode()) {
-                            if (item.getParcelCode().toLowerCase().contains(charString.toLowerCase())) {
+                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
                                 checkCode = true;
                                 break;
                             }
@@ -153,6 +153,9 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         @BindView(R.id.linear_layout)
         LinearLayout linearLayout;
 
+        @BindView(R.id.tv_customName)
+        CustomTextView tvCustomName;
+
         public ParcelAddressAdapter adapter;
         ParcelConfirmsAdapter confirmsAdapter;
 
@@ -169,6 +172,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             CommonObject item = (CommonObject) model;
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
+            tvCustomName.setText(String.format("Khách hàng: %s",item.getCustomerName()));
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
             tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS) + ""));
 
@@ -277,7 +281,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     }
                 });
                 cbSelected.setChecked(item.isSelected());
-
                 if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())/* || "P6".equals(item.getStatusCode())*/) {
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
                     cbSelected.setVisibility(View.VISIBLE);
@@ -315,13 +318,14 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             }
             if (mType == 4) {//2
                 // trong đoan này à
+                cbSelected.setVisibility(GONE);
                 cbSelected.setClickable(false);
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
                 if (parcelCodeSearch.equals("")) {
                     filteredList = item.getListParcelCode();
                 } else {
                     for (ParcelCodeInfo row : item.getListParcelCode()) {
-                        if (row.getParcelCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
+                        if (row.getTrackingCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -352,7 +356,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     filteredList = item.getListParcelCode();
                 } else {
                     for (ParcelCodeInfo row : item.getListParcelCode()) {
-                        if (row.getParcelCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
+                        if (row.getTrackingCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -401,19 +405,19 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         ((HolderView) holder).cbSelectedParcel.setChecked(false);
                     }
 
-                    ((HolderView) holder).itemView.setOnClickListener(v -> {
-                        if (!((HolderView) holder).cbSelectedParcel.isChecked()) {
-                            ((HolderView) holder).cbSelectedParcel.setChecked(true);
-                            ((HolderView) holder).getItem(position).setSelected(true);
-                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-                            EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
-                        } else {
-                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
-                            ((HolderView) holder).getItem(position).setSelected(false);
-                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        }
-                        EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
-                    });
+//                    ((HolderView) holder).itemView.setOnClickListener(v -> {
+//                        if (!((HolderView) holder).cbSelectedParcel.isChecked()) {
+//                            ((HolderView) holder).cbSelectedParcel.setChecked(true);
+//                            ((HolderView) holder).getItem(position).setSelected(true);
+//                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+//                            EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
+//                        } else {
+//                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
+//                            ((HolderView) holder).getItem(position).setSelected(false);
+//                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                        }
+//                        EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
+//                    });
 
                     ((HolderView) holder).cbSelectedParcel.setOnCheckedChangeListener((v1, v2) -> {
                         if (v2) {

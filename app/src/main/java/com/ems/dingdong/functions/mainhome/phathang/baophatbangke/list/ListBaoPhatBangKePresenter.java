@@ -141,7 +141,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void showConfirmDelivery(List<DeliveryPostman> commonObject) {
-//        Log.d("asdasdasda", String.valueOf(commonObject.get(0).getListProducts().size()));
         new XacNhanBaoPhatPresenter(mContainerView).setBaoPhatBangKe(commonObject).setOnTabChangeListener(titleTabsListener).pushView();
     }
 

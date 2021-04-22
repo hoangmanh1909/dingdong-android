@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
@@ -54,7 +56,8 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
     FormItemTextView et_postman;
     @BindView(R.id.ll_change_route)
     LinearLayout ll_change_route;
-
+    @BindView(R.id.tv_customer_name)
+    CustomBoldTextView tvCustomerName;
     ArrayList<ConfirmOrderPostman> mListRequest;
     XacNhanConfirmAdapter adapter;
 
@@ -106,7 +109,7 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
         if (!routeJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
-
+        tvCustomerName.setText(mPresenter.setTenKH());
         recycle.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new XacNhanConfirmAdapter(getContext(), mListRequest);
         recycle.setAdapter(adapter);
@@ -188,6 +191,11 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
                 }).show();
                 break;
             case chuyenTuyen:
+
+                if (mPostmanInfo == null) {
+                    Toast.showToast(getViewContext(), "Vui lòng chọn nhân viên thu gom");
+                    return;
+                }
                 OrderChangeRouteInsertRequest request = new OrderChangeRouteInsertRequest();
 
                 List<String> code = new ArrayList<>();

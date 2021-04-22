@@ -488,7 +488,7 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         if (isForeground()) {
             startActivity(activityIntent);
         } else {
-            showPendingCallNotification(this, callerDisplayName, caller, activityIntent);
+//            showPendingCallNotification(this, callerDisplayName, caller, activityIntent);
         }
         Intent broadIntent = new Intent(CALL_CHANGE_ACTION);
         ///String description = session.lineName + " onInviteIncoming";
@@ -1111,7 +1111,6 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
         UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         ///
         SipCmc.startService(this);
-        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL,BuildConfig.AUTH_CTEL);
         SipCmc.addCallback(new RegistrationCallback() {
             @Override
             public void registrationOk() {
@@ -1154,8 +1153,9 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (isForeground()) {
                     startActivity(activityIntent);
-                } else {
-                    showPendingCallNotification(getApplicationContext(), "Cuộc gọi Ctel", linphoneCall.toString(), activityIntent);
+                }
+                else {
+//                    showPendingCallNotification(getApplicationContext(), "Cuộc gọi Ctel", linphoneCall.toString(), activityIntent);
                 }
 
             }
@@ -1253,8 +1253,8 @@ public class PortSipService extends Service implements OnPortSIPEvent, NetWorkRe
                 Log.d("123123", "callDuration: " + duration);
             }
         });
-        // Login SipCmc
-//
+        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL,BuildConfig.AUTH_CTEL);
+
     }
 
 }

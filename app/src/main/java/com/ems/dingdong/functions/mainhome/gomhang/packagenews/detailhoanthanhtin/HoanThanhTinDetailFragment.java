@@ -11,6 +11,8 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -53,7 +55,7 @@ import com.google.common.collect.FluentIterable;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+//import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -104,14 +106,15 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     @BindView(R.id.edt_code)
     MaterialEditText edtCode;
     @BindView(R.id.tv_ReceiverName)
-    CustomTextView tvReceiverName;
+    CustomBoldTextView tvReceiverName;
     @BindView(R.id.tv_count_scan)
     CustomBoldTextView tvCountScan;
     @BindView(R.id.ll_signed)
     LinearLayout llSigned;
     @BindView(R.id.img_sign)
     ImageView imgSign;
-
+    @BindView(R.id.tv_customer_name)
+    CustomBoldTextView tvCustomerName;
     @BindView(R.id.edt_Description)
     CustomEditText edtDescription;
     @BindView(R.id.edt_Quantity)
@@ -162,9 +165,24 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     addItem(edtCode.getText().toString());
                     return true;
                 }
+
                 return false;
             }
         });
+
+        edtCode.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    addItem(edtCode.getText().toString());
+                    edtCode.setText("");
+                    return true;
+                }
+                return false;
+            }
+        });
+
         showView(mPresenter.getCommonObject());
     }
 
@@ -485,6 +503,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
         tvTrackingCode.setText(commonObject.getTrackingCode());
         tvOrderNumber.setText(commonObject.getOrderNumber());
+        tvCustomerName.setText(commonObject.getCustomerName());
         String[] phones = commonObject.getReceiverPhone().split(",");
 
         for (int i = 0; i < phones.length; i++) {

@@ -12,10 +12,33 @@ import io.realm.annotations.PrimaryKey;
 
 public class CommonObject extends RealmObject {
 
+
+    @SerializedName("CustomerName")
+    String customerName;
+
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    @SerializedName("AppointmentTime")
+    String appointmentTime;
+
+    public String getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(String appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
+
     //region xacnhantin
     @SerializedName("OrderPostmanID")
     String orderPostmanID;
-
     @SerializedName("Count")
     String count;
     @SerializedName("Description")
@@ -95,13 +118,13 @@ public class CommonObject extends RealmObject {
     @SerializedName("Value")
     Integer cod;
     @SerializedName("OrderId")
-    private long orderId;
+    private String orderId;
 
-    public long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
@@ -563,10 +586,12 @@ public class CommonObject extends RealmObject {
     public void setImageDelivery(String imageDelivery) {
         this.imageDelivery = imageDelivery;
     }
+
     ///
     public String getImageAuthen() {
         return imageAuthen;
     }
+
     public void setImageAuthen(String imageAuthen) {
         this.imageAuthen = imageAuthen;
     }

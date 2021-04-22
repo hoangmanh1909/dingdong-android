@@ -18,6 +18,10 @@ public class ConfirmOrderPostman {
     @SerializedName("AssignDateTime")
     String assignDateTime;
 
+    public String getStatusCode() {
+        return statusCode;
+    }
+
     public String getAssignDateTime() {
         return assignDateTime;
     }

@@ -87,9 +87,8 @@ public class PhoneConectDialogExtend extends Dialog {
             case R.id.id_login_ctel:
                 ApplicationController.getInstance().initPortSipService();
                 break;
-            /// Gọi cho người gửi type =1 , Gọi CSKH type ==2,Sửa số người nhận ==3,Sửa số người gửi==4 , goi app ==5
             case R.id.tv_phone_updating:
-                new PhoneNumberUpdateDialog(getContext(), phone, 1, mDelegate).show();
+                new PhoneNumberUpdateDialog(getContext(), phone, mDelegate).show();
                 break;
 
             case R.id.tv_phone_messing:

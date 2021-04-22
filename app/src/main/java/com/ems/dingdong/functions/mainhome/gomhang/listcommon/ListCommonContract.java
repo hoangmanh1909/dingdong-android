@@ -25,10 +25,12 @@ interface ListCommonContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate, CommonCallback<CommonObjectListResult> callback);
+
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String route,
                                    String order, CommonCallback<CommonObjectListResult> callback);
+
         void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback);
     }
 
@@ -47,11 +49,14 @@ interface ListCommonContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);
+
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String route,
                                    String order);
+
         void showDetailView(CommonObject commonObject);
+
         ListCommonPresenter setType(int type);
 
         int getType();

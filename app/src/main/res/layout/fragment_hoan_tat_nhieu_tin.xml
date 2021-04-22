@@ -2,10 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <FrameLayout
@@ -35,9 +35,9 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="Hoàn tất nhiều tin"
-                android:textColor="@color/white"
                 android:textAllCaps="true"
-                android:textSize="@dimen/text_size_18sp"/>
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18sp" />
 
             <ImageView
                 android:id="@+id/img_confirm"
@@ -84,18 +84,42 @@
 
             </LinearLayout>
 
-            <com.ems.dingdong.views.form.FormItemEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_gravity="center"
                 android:layout_toLeftOf="@+id/ll_scan_qr"
-                android:maxLines="1"
-                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:hint="Nhập bưu gửi"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:textColorHint="@color/colorBlackTrans20"
                 android:textSize="@dimen/text_size_14sp"
-                app:formHint="Nhập bưu gửi"
-                app:formShowUnderline="false"
-                app:formSingleLine="true" />
+                app:met_bottomTextSize="@dimen/text_size_sub"
+                app:met_clearButton="true"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/black"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/colorBlackTrans20"
+                app:met_underlineColor="@color/transparent">
+
+                <requestFocus />
+            </com.rengwuxian.materialedittext.MaterialEditText>
+            <!--            <com.rengwuxian.materialedittext.MaterialEditText-->
+            <!--                android:id="@+id/edt_search"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginRight="@dimen/_5sdp"-->
+            <!--                android:inputType="textCapCharacters"-->
+            <!--                android:layout_toLeftOf="@+id/ll_scan_qr"-->
+            <!--                android:maxLines="1"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="@dimen/text_size_14sp"-->
+            <!--                app:formShowUnderline="false"-->
+            <!--                app:formSingleLine="true" >-->
+            <!--                <requestFocus />-->
+            <!--            </com.rengwuxian.materialedittext.MaterialEditText>-->
         </RelativeLayout>
 
 

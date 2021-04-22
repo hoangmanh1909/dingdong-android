@@ -106,7 +106,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     public void showDetailView(CommonObject commonObject) {
         if (mType == 1) {
             new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
-           // new ListParcelPresenter(mContainerView).setList(commonObject.getListParcelCode()).pushView();
+            // new ListParcelPresenter(mContainerView).setList(commonObject.getListParcelCode()).pushView();
         } else if (mType == 2) {
             new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 3) {
@@ -144,8 +144,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                 listRequest.add(confirmOrderPostman);
             }
         }
-        if(!listRequest.isEmpty())
-        {
+        if (!listRequest.isEmpty()) {
             mView.showProgress();
             mInteractor.confirmAllOrderPostman(listRequest, new CommonCallback<ConfirmAllOrderPostmanResult>((Activity) mContainerView) {
                 @Override

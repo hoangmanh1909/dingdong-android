@@ -70,6 +70,56 @@
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_header_common"
                     android:padding="@dimen/dimen_10dp"
+                    android:text="Thông tin khách hàng"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Tên khách hàng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomBoldTextView
+                            android:id="@+id/tv_customer_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:orientation="vertical">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    style="@style/HeaderNews"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_header_common"
+                    android:padding="@dimen/dimen_10dp"
                     android:text="Tin thu gom"
                     android:textColor="@color/white" />
 
@@ -78,11 +128,12 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.ems.dingdong.views.CustomTextView
@@ -106,16 +157,18 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+                        android:layout_height="0.5dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <com.ems.dingdong.views.CustomTextView
@@ -139,11 +192,13 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+                        android:layout_height="0.5dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -303,11 +358,13 @@
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <View
                         style="@style/Devider"
                         android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:layout_height="0.5dp" />
+                        android:layout_height="0.5dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -325,7 +382,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
-                        <com.ems.dingdong.views.CustomTextView
+                        <com.ems.dingdong.views.CustomBoldTextView
                             android:id="@+id/tv_ReceiverName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -463,10 +520,10 @@
                 android:id="@+id/ll_op"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@color/white"
+                android:orientation="horizontal"
                 android:weightSum="3">
                 <!---->
                 <TextView
@@ -495,6 +552,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/op_reject"
                     android:layout_width="0dp"
@@ -558,7 +616,7 @@
                             app:formAction="@drawable/ic_arrow_down"
                             app:formDrawablePadding="10dp"
                             app:formHint="Chọn tuyến"
-                            app:formShowUnderline="false"/>
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -588,7 +646,7 @@
                             app:formAction="@drawable/ic_arrow_down"
                             app:formDrawablePadding="10dp"
                             app:formHint="Chọn NVTG"
-                            app:formShowUnderline="false"/>
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
                 </LinearLayout>

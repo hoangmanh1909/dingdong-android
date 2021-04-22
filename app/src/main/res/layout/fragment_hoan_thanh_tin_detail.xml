@@ -63,6 +63,56 @@
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_header_common"
                     android:padding="@dimen/dimen_10dp"
+                    android:text="Thông tin khách hàng"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Tên khách hàng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <com.ems.dingdong.views.CustomBoldTextView
+                            android:id="@+id/tv_customer_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:orientation="vertical">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    style="@style/HeaderNews"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_header_common"
+                    android:padding="@dimen/dimen_10dp"
                     android:text="Tin thu gom"
                     android:textColor="@color/white" />
 
@@ -325,7 +375,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
-                        <com.ems.dingdong.views.CustomTextView
+                        <com.ems.dingdong.views.CustomBoldTextView
                             android:id="@+id/tv_ReceiverName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -503,12 +553,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:background="@color/transparent"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
-                            tools:text="1\n1\n1\n1"
-                            android:gravity="right"
-                            android:textSize="@dimen/text_size_14sp" />
+                            android:textSize="@dimen/text_size_14sp"
+                            tools:text="1\n1\n1\n1" />
 
                     </LinearLayout>
 
@@ -539,13 +589,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:background="@color/transparent"
+                            android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
-                            android:gravity="right"
                             android:textSize="@dimen/text_size_14sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -649,6 +700,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
                     android:background="@drawable/bg_white_radius_bottom_common"
                     android:orientation="vertical">
 
@@ -675,7 +727,7 @@
                             android:layout_toLeftOf="@+id/img_search"
                             android:hint="Nhập số hiệu bưu gửi"
                             android:imeOptions="actionDone"
-                            android:inputType="text"
+                            android:inputType="textCapCharacters"
                             android:textColorHint="@color/colorBlackTrans20"
                             android:textSize="@dimen/text_size_14sp"
                             app:met_bottomTextSize="@dimen/text_size_sub"
@@ -684,7 +736,9 @@
                             app:met_primaryColor="@color/black"
                             app:met_textColor="@color/black"
                             app:met_textColorHint="@color/colorBlackTrans20"
-                            app:met_underlineColor="@color/transparent" />
+                            app:met_underlineColor="@color/transparent">
+                            <requestFocus />
+                        </com.rengwuxian.materialedittext.MaterialEditText>
 
                         <ImageView
                             android:id="@+id/img_search"
