@@ -297,7 +297,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
                 attemptShowMedia(data.getData().getPath());
