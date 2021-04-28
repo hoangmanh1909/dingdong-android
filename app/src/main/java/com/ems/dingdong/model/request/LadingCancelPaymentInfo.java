@@ -13,6 +13,17 @@ public class LadingCancelPaymentInfo {
     @SerializedName("RetRefNumber")
     String retRefNumber;
 
+    @SerializedName("Fee")
+    int fee;
+
+    public int getFee() {
+        return fee;
+    }
+
+    public void setFee(int fee) {
+        this.fee = fee;
+    }
+
     public String getRetRefNumber() {
         return retRefNumber;
     }

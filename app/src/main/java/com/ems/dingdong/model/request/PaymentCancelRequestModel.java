@@ -26,6 +26,17 @@ public class PaymentCancelRequestModel {
     @SerializedName("Signature")
     String signature;
 
+    @SerializedName("RouteId")
+    String routeId;
+
+    public String getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
+    }
+
     public int getReasonType() {
         return reasonType;
     }

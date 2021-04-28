@@ -9,6 +9,7 @@ import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.LadingCancelPaymentInfo;
 import com.ems.dingdong.model.request.LadingPaymentInfo;
@@ -32,6 +33,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
     String id = "";
     String poCode = "";
     String postmanTel = "";
+    String routeInfo = "";
     private List<LadingPaymentInfo> ladingPaymentInfoList;
     private List<LadingCancelPaymentInfo> cancelRequests;
     private CancelPaymentContract.OnTabListener tabListener;
@@ -72,6 +74,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
             id = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD();
         }
@@ -82,11 +85,16 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
             postmanTel = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber();
         }
 
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId();
+        }
+
         for (EWalletDataResponse item : list) {
             LadingCancelPaymentInfo info = new LadingCancelPaymentInfo();
             info.setLadingCode(item.getLadingCode());
             info.setRetRefNumber(item.getRetRefNumber());
             info.setAmount(item.getCodAmount());
+            info.setFee(item.getFee());
             cancelRequests.add(info);
         }
         PaymentCancelRequestModel paymentCancelRequestModel = new PaymentCancelRequestModel();
@@ -96,6 +104,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
         paymentCancelRequestModel.setPoCode(poCode);
         paymentCancelRequestModel.setPostmanCode(postmanTel);
         paymentCancelRequestModel.setLadingPaymentInfoList(cancelRequests);
+        paymentCancelRequestModel.setRouteId(routeInfo);
         String dataJson = NetWorkController.getGson().toJson(paymentCancelRequestModel);
         dataRequestPayment.setData(dataJson);
         dataRequestPayment.setCode("EWL003");

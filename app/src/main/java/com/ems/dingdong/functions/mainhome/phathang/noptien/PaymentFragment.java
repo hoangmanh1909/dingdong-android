@@ -105,6 +105,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void onDisplay() {
         super.onDisplay();
+        mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
     }
 
     @Override
@@ -163,7 +164,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         };
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         recycler.setAdapter(mAdapter);
-        mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
+
     }
 
     @OnClick({R.id.img_send, R.id.img_back, R.id.cb_pick_all, R.id.tv_search,

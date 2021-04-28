@@ -107,6 +107,18 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
+        DataHistoryPayment payment = new DataHistoryPayment();
+        payment.setRouteCode(routeCode);
+        payment.setPostmanCode(postmanCode);
+        payment.setPOCode(poCode);
+        payment.setToDate(toDate);
+        payment.setFromDate(fromDate);
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        layout_item_pick_all.setVisibility(View.VISIBLE);
+        dataRequestPayment.setCode("COD002");
+        String data = NetWorkController.getGson().toJson(payment);
+        dataRequestPayment.setData(data);
+        mPresenter.getHistoryPayment(dataRequestPayment, 0);
     }
 
     @Override
@@ -164,18 +176,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
         };
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         recycler.setAdapter(mAdapter);
-        DataHistoryPayment payment = new DataHistoryPayment();
-        payment.setRouteCode(routeCode);
-        payment.setPostmanCode(postmanCode);
-        payment.setPOCode(poCode);
-        payment.setToDate(toDate);
-        payment.setFromDate(fromDate);
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        layout_item_pick_all.setVisibility(View.VISIBLE);
-        dataRequestPayment.setCode("COD002");
-        String data = NetWorkController.getGson().toJson(payment);
-        dataRequestPayment.setData(data);
-        mPresenter.getHistoryPayment(dataRequestPayment, 0);
+
 
     }
 
@@ -215,8 +216,6 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
         mPresenter.getHistoryPayment(dataRequestPayment, 1);
-
-
     }
 
     @Override

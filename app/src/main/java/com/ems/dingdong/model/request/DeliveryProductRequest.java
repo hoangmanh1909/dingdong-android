@@ -137,6 +137,18 @@ public class DeliveryProductRequest {
     @Expose
     private String vATCode;
 
+    @SerializedName("IsDOP")
+    @Expose
+    private int IsDOP;
+
+    public int getIsDOP() {
+        return IsDOP;
+    }
+
+    public void setIsDOP(int isDOP) {
+        IsDOP = isDOP;
+    }
+
     public List<ProductModel> getDeliveryProducts() {
         return deliveryProducts;
     }

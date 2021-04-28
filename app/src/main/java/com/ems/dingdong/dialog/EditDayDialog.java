@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class EditDayDialog extends BaseEditDayDialog implements View.OnClickListener {
@@ -61,7 +62,8 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         calFrom.setTime(fromDate);
         calTo.setTime(toDate);
         tvDateStart.setText(TimeUtils.convertDateToString(fromDate, TimeUtils.DATE_FORMAT_5));
-        tvDateEnd.setText(TimeUtils.convertDateToString(toDate, TimeUtils.DATE_FORMAT_5)); if (type == 2)
+        tvDateEnd.setText(TimeUtils.convertDateToString(toDate, TimeUtils.DATE_FORMAT_5));
+        if (type == 2)
             layout_trang_thai.setVisibility(View.VISIBLE);
         else layout_trang_thai.setVisibility(View.GONE);
 
@@ -85,6 +87,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         setListener();
 
     }
+
     private void setListener() {
         btnBack.setOnClickListener(this);
         layoutDateStart.setOnClickListener(this);
@@ -93,6 +96,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     }
 
     @Override
+    @OnClick({R.id.layout_date_start, R.id.layout_date_end, R.id.layout_trang_thai, R.id.tvShowChargre, R.id.btnBack})
     public void onClick(View v) {
         Calendar maxStart = Calendar.getInstance();
         //  maxStart.add(Calendar.DATE,-1);
@@ -148,6 +152,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         items.add(new Item("1", "1. Đã nộp"));
         items.add(new Item("2", "2. Đã hủy"));
         items.add(new Item("3", "3. Đang xử lý"));
+        items.add(new Item("4", "4. Chờ phê duyệt"));
         new PickerLichSuNopDialog(getContext(), "Chọn lý do", items,
                 item -> {
                     mItem = item;

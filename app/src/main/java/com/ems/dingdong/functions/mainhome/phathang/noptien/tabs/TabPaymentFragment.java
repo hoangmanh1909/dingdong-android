@@ -71,8 +71,8 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         super.initLayout();
         tabList = new ArrayList<>();
         tabList.add((PaymentFragment) new PaymentPresenter(mPresenter.getContainerView()).setTypeTab(0).setOnTabListener(this).getFragment());
-        //tabList.add((CancelPaymentFragment) new CancelPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
-        tabList.add((HistoryPaymentFragment) new HistoryPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
+        tabList.add((CancelPaymentFragment) new CancelPaymentPresenter(mPresenter.getContainerView()).setTypeTab(1).setOnTabListener(this).getFragment());
+        tabList.add((HistoryPaymentFragment) new HistoryPaymentPresenter(mPresenter.getContainerView()).setTypeTab(2).setOnTabListener(this).getFragment());
         mAdapter = new TabPaymentAdapter(getChildFragmentManager(), getContext(), tabList);
         pager.setAdapter(mAdapter);
         pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
@@ -86,17 +86,17 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
                         imgDelete.setImageResource(R.drawable.ic_remove);
                         imgSend.setImageResource(R.drawable.ic_confirm);
                         break;
-//                    case 1:
-//                        mPosition=newPosition;
-//                        imgSend.setVisibility(View.GONE);
-//                        imgDelete.setVisibility(View.GONE);
-                        // hủy nộp tiền  chưa triển khai nên ẩn đi
-                       // mPosition=newPosition;
-                        //imgSend.setVisibility(View.VISIBLE);
-                        //imgDelete.setVisibility(View.GONE);
-                        //imgSend.setImageResource(R.drawable.close);
-                        //break;
                     case 1:
+                        mPosition=newPosition;
+                        imgSend.setVisibility(View.GONE);
+                        imgDelete.setVisibility(View.GONE);
+//                         hủy nộp tiền  chưa triển khai nên ẩn đi
+                        mPosition=newPosition;
+                        imgSend.setVisibility(View.VISIBLE);
+                        imgDelete.setVisibility(View.GONE);
+                        imgSend.setImageResource(R.drawable.close);
+                        break;
+                    case 2:
                         mPosition=newPosition;
                         imgSend.setVisibility(View.GONE);
                         imgDelete.setVisibility(View.GONE);
@@ -107,16 +107,14 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
             }
         });
         tabs.setViewPager(pager);
-        pager.setOffscreenPageLimit(2);
+        pager.setOffscreenPageLimit(3);
     }
 
     @Override
     public void onCanceledDelivery() {
-        //CancelPaymentFragment fragment = (CancelPaymentFragment) tabList.get(1);
-        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(1);
+        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(2);
         PaymentFragment paymentFragment = (PaymentFragment) tabList.get(0);
         paymentFragment.refreshLayout();
-        //fragment.refreshLayout();
         historyPaymentFragment.refreshLayout();
     }
 
@@ -133,6 +131,17 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
     }
 
 
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if(mPosition==0){
+
+        }else if(mPosition==1){
+
+        }else if(mPosition==2){
+
+        }
+    }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.img_delete})
     public void onViewClicked(View view) {

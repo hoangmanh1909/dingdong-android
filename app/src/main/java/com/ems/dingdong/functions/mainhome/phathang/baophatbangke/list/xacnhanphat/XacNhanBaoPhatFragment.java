@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -227,6 +229,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.ll_image)
     LinearLayout ll_image;
 
+    @BindView(R.id.rad_dop1)
+    RadioButton rad_dop1;
+    @BindView(R.id.rad_dop2)
+    RadioButton rad_dop2;
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+
     private Calendar calDateOfBirth = Calendar.getInstance();
     private Calendar calDateAccepted = Calendar.getInstance();
     private XacNhanBaoPhatAdapter adapter;
@@ -385,6 +394,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
 
+        if (mBaoPhatBangke.get(0).getIsDOP() == 1) {
+            rad_dop1.setChecked(true);
+            rad_dop2.setChecked(false);
+        } else if (mBaoPhatBangke.get(0).getIsDOP() == 2) {
+            rad_dop2.setChecked(true);
+            rad_dop1.setChecked(false);
+        }
         adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -1254,17 +1270,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setAuthenType(infoVerify.getAuthenType());
         request.setReceiverIDNumber(infoVerify.getGtgt());
         request.setVATCode(item.getVatCode());
-
+        request.setIsDOP(item.getIsDOP());
 
         ///// bor sung them LadingToPostmanId ,LadingCode, PODeliveryCode  an toan cho tung san pham phat hoan
 
-        for (ProductModel productModel : listProductRefund){
+        for (ProductModel productModel : listProductRefund) {
             productModel.setLadingToPostmanId(item.getId());
             productModel.setpODeliveryCode(deliveryPOCode);
             productModel.setLadingCode(parcelCode);
         }
 
-        for (ProductModel productModel : listProductDeliveryRequest){
+        for (ProductModel productModel : listProductDeliveryRequest) {
             productModel.setLadingToPostmanId(item.getId());
             productModel.setpODeliveryCode(deliveryPOCode);
             productModel.setLadingCode(parcelCode);

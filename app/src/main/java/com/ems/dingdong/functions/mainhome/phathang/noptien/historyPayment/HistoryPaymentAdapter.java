@@ -209,6 +209,8 @@ public class HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAd
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_prmary_blue);
                 else if (model.getStatusCode().equals("A"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_yellow);
+                else if (model.getStatusCode().equals("W"))
+                    tv_trang_thai.setBackgroundResource(R.drawable.bg_button_blue);
                 tv_trang_thai.setText(model.getStatusName());
             } else
                 tv_trang_thai.setText("");

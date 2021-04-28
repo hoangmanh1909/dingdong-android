@@ -182,7 +182,7 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
 
             <!--Hình thức báo phát-->
@@ -571,6 +571,36 @@
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp">
 
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rad_dop1"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:text="DOP1"
+                        android:textColor="@color/blue"
+                        android:enabled="false"/>
+
+                    <RadioButton
+                        android:id="@+id/rad_dop2"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:text="DOP2"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/blue"
+                        android:enabled="false"/>
+                </RadioGroup>
+
                 <TextView
                     style="@style/TextHeaderDeliveryPartial"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -650,7 +680,7 @@
                     android:id="@+id/recycler_delivery_partial"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
+                    android:nestedScrollingEnabled="false" />
 
                 <RelativeLayout
 

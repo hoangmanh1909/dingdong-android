@@ -64,7 +64,7 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                 homeInfos.add(new HomeInfo(6, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin theo địa chỉ"));
                 homeInfos.add(new HomeInfo(5, R.drawable.ic_delivery_manage, "Thống kê"));
                 homeInfos.add(new HomeInfo(7, R.drawable.ic_thong_ke_bao_phat, "Quản lý chuyển tuyến"));
-//                homeInfos.add(new HomeInfo(8, R.drawable.ic_tao_tin, "Tạo tin"));
+                homeInfos.add(new HomeInfo(8, R.drawable.ic_tao_tin, "Tạo tin"));
                 mList.add(new GroupInfo("Gom hàng", homeInfos));
             }
         }

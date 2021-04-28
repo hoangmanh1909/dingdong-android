@@ -134,6 +134,17 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("SMLStatusName")
     private String sMLStatusName;
 
+    @SerializedName("IsDOP")
+    private int IsDOP;
+
+    public int getIsDOP() {
+        return IsDOP;
+    }
+
+    public void setIsDOP(int isDOP) {
+        IsDOP = isDOP;
+    }
+
     public String getsMLStatusName() {
         return sMLStatusName;
     }

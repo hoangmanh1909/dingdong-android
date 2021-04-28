@@ -20,7 +20,7 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
 
     private final Context mContext;
     private List<ViewFragment> tabs;
-    private CharSequence[] mTitleString = new Spanned[2];
+    private CharSequence[] mTitleString = new Spanned[3];
 
     TabPaymentAdapter(FragmentManager fm, Context context, List<ViewFragment> tabs) {
         super(fm);
@@ -29,12 +29,12 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mTitleString[0] = Html.fromHtml("Nộp tiền "  + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            //mTitleString[1] = Html.fromHtml("Hủy nộp "+ "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            mTitleString[1] = Html.fromHtml("Hủy nộp "+ "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            mTitleString[2] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
         } else {
             mTitleString[0] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
-            //mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
-            mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+            mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
+            mTitleString[2] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + 0 + ")" + "</font>");
         }
     }
 
@@ -45,7 +45,7 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Nullable
@@ -64,18 +64,18 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
             }
         }
         // ẩn chức năng hủy nộp
-        /*else if (positionTab == 1)  {
+        else if (positionTab == 1)  {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
                 mTitleString[1] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
-        }*/
+        }
         else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[2] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[1] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[2] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"20dp\">" + "(" + quantity + ")" + "</font>");
             }
         }
     }

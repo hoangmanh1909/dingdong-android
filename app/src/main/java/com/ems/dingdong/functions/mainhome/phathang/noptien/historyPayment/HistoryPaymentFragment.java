@@ -110,6 +110,19 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
     @Override
     public void onDisplay() {
         super.onDisplay();
+        DataHistoryPayment payment = new DataHistoryPayment();
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        payment.setRouteCode(routeCode);
+        payment.setPostmanCode(postmanCode);
+        payment.setPOCode(poCode);
+        payment.setFromDate(fromDate);
+        payment.setToDate(toDate);
+        payment.setStatus(status);
+        layout_item_pick_all.setVisibility(View.GONE);
+        dataRequestPayment.setCode("COD001");
+        String data = NetWorkController.getGson().toJson(payment);
+        dataRequestPayment.setData(data);
+        mPresenter.getHistoryPayment(dataRequestPayment,0);
     }
 
     @Override
@@ -167,19 +180,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
         };
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         recycler.setAdapter(mAdapter);
-        DataHistoryPayment payment = new DataHistoryPayment();
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        payment.setRouteCode(routeCode);
-        payment.setPostmanCode(postmanCode);
-        payment.setPOCode(poCode);
-        payment.setFromDate(fromDate);
-        payment.setToDate(toDate);
-        payment.setStatus(status);
-        layout_item_pick_all.setVisibility(View.GONE);
-        dataRequestPayment.setCode("COD001");
-        String data = NetWorkController.getGson().toJson(payment);
-        dataRequestPayment.setData(data);
-        mPresenter.getHistoryPayment(dataRequestPayment,0);
+
     }
 
     @OnClick({R.id.img_send, R.id.img_back, R.id.cb_pick_all, R.id.tv_search,
