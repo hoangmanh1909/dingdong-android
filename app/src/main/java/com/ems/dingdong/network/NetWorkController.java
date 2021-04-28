@@ -15,7 +15,6 @@ import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
-import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
@@ -67,6 +66,7 @@ import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
+import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
@@ -193,9 +193,9 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void loginAuthorized(String mobileNumber, String signCode,String version,String appCode, CommonCallback<LoginResult> callback) {
+    public static void loginAuthorized(String mobileNumber, String signCode, String version, String appCode, CommonCallback<LoginResult> callback) {
         String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode,version,appCode, signature);
+        Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode, version, appCode, signature);
         call.enqueue(callback);
     }
 
@@ -225,6 +225,8 @@ public class NetWorkController {
         } else {
             type = "2";
         }
+
+//        Log.d("thasdasdasdas",Constants.HEADER_NUMBER);
         String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
                 hotlineNumber, ladingCode, type, signature);
@@ -232,6 +234,17 @@ public class NetWorkController {
         return call;
     }
 
+    //    public static Single<SimpleResult> searchOrderPostmanCollect(String orderPostmanID,
+//                                                                 String orderID,
+//                                                                 String postmanID,
+//                                                                 String status,
+//                                                                 String fromAssignDate,
+//                                                                 String toAssignDate) {
+//
+////        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+////        call.enqueue(callback);
+//        return null;
+//    }
     public static void searchOrderPostmanCollect(String orderPostmanID,
                                                  String orderID,
                                                  String postmanID,
@@ -413,7 +426,7 @@ public class NetWorkController {
     }
 
     ///
-    public static void postImageAvatar(String filePath, CommonCallback<UploadSingleResult> callback){
+    public static void postImageAvatar(String filePath, CommonCallback<UploadSingleResult> callback) {
         File file = new File(filePath);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part bodyAvatar = MultipartBody.Part.createFormData("image_avatar", "file_selfie_avatar.jpg", reqFile);
@@ -547,7 +560,7 @@ public class NetWorkController {
     }
 
     public static void getRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
-        Call<RouteInfoResult> call = getAPIBuilder().getRoute(poCode,"P");
+        Call<RouteInfoResult> call = getAPIBuilder().getRoute(poCode, "P");
         call.enqueue(callback);
     }
 
@@ -752,6 +765,7 @@ public class NetWorkController {
         dataRequestPayment.setSignature(signature);
         return getAPIRxBuilder().deletePayment(dataRequestPayment);
     }
+
     public static Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
         String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
                 + paymentConfirmModel.getPoCode()
@@ -806,6 +820,28 @@ public class NetWorkController {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("ORC005");
         dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("TCK001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> isSeen(List<String> request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("TCK002");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getDetailTicket(String request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("TCK003");
+        dataRequestPayment.setData(request);
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 

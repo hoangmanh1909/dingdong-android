@@ -7,8 +7,6 @@ public class PushToPnsRequest {
     String postmanID;
     @SerializedName("LadingCode")
     String ladingCode;
-
-
     @SerializedName("DeliveryPOCode")
     String deliveryPOCode;
     @SerializedName("DeliveryDate")

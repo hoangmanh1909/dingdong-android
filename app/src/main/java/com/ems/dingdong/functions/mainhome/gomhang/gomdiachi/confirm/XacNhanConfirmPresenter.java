@@ -27,6 +27,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
         implements XacNhanConfirmContract.Presenter {
 
     ArrayList<ConfirmOrderPostman> mListRequest;
+    String tenKH;
     public XacNhanConfirmPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -49,6 +50,11 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
     @Override
     public ArrayList<ConfirmOrderPostman> getList() {
         return mListRequest;
+    }
+
+    @Override
+    public String setTenKH() {
+        return tenKH;
     }
 
     @Override
@@ -77,6 +83,11 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
 
     public XacNhanConfirmPresenter setListRequest(ArrayList<ConfirmOrderPostman> listRequest) {
         this.mListRequest = listRequest;
+        return this;
+    }
+
+    public XacNhanConfirmPresenter setTenKH(String tenKH) {
+        this.tenKH = tenKH;
         return this;
     }
 

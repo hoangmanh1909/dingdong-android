@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ParcelCodeInfo;
+
 import java.util.ArrayList;
 
 interface XacNhanDiaChiContract {
@@ -35,16 +36,20 @@ interface XacNhanDiaChiContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);
+
         XacNhanDiaChiPresenter setType(int type);
 
         int getType();
 
-        void confirmAllOrderPostman(ArrayList<CommonObject> list);
+        void confirmAllOrderPostman(ArrayList<CommonObject> list,String tenkhachhang);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
         void showConfirmParcelAddress(CommonObject commonObject, ArrayList<ParcelCodeInfo> confirmOrderPostmen);
+
         void showConfirmParcelAddressNoPostage(CommonObject commonObject);
+
+        void showChiTietHoanThanhTin(CommonObject commonObject);
 
     }
 }

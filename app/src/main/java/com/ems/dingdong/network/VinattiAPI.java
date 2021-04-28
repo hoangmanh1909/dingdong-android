@@ -549,4 +549,14 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/Bussiness")
     Single<SimpleResult> commonService(@Body DataRequestPayment requestData);
+
+
+//    @FormUrlEncoded
+//    @POST("api/Collect/SearchOrderPostman")
+//    Single<CommonObjectListResult> searchOrderPostmanCollect1(@Field("OrderPostmanID") String orderPostmanID,
+//                                                              @Field("OrderID") String orderID,
+//                                                              @Field("PostmanID") String postmanID,
+//                                                              @Field("Status") String status,
+//                                                              @Field("FromAssignDate") String fromAssignDate,
+//                                                              @Field("ToAssignDate") String toAssignDate);
 }

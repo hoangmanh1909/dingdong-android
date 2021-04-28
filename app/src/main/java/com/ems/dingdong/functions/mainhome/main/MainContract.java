@@ -48,6 +48,7 @@ interface MainContract {
 
         void getBalance();
 
+        void showNitify();
     }
 }
 

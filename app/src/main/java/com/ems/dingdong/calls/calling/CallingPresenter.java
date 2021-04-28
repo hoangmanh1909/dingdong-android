@@ -37,6 +37,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
     private String callId;
     private int type;
+    private int apptoapp;
     private String callerNumber;
     private String calleeNumber;
     private long sessionId;
@@ -58,6 +59,11 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
     public CallingPresenter setType(int type) {
         this.type = type;
+        return this;
+    }
+
+    public CallingPresenter setAppToApp(int apptoapp) {
+        this.apptoapp = apptoapp;
         return this;
     }
 
@@ -102,6 +108,11 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
     }
 
     @Override
+    public int getAppToApp() {
+        return apptoapp;
+    }
+
+    @Override
     public String getCallerNumber() {
         return callerNumber;
     }
@@ -136,7 +147,6 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         //if (type == Constants.CALL_TYPE_HISTORY_POSTMAN_OUT) {
             CallHistoryVHT = new CallHistoryVHT(ladingCode, userInfo.getPOProvinceCode(), userInfo.getPODistrictCode(), userInfo.getUnitCode(), userInfo.getUserName(), routeInfo.getRouteCode(), userInfo.getMobileNumber(), toNumber, "", xSessionIdPostmanOut);
             Log.d("123123", "ladingCodes: " + ladingCode + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + userInfo.getMobileNumber() + " toNumber: " + toNumber + " xSessionIdPostmanOut:" + xSessionIdPostmanOut);
-
             Gson gson = new Gson();
             String json = gson.toJson(CallHistoryVHT);
 //            mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", json, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {

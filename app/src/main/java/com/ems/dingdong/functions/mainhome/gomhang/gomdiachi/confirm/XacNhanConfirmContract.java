@@ -46,6 +46,8 @@ interface XacNhanConfirmContract {
     interface Presenter extends IPresenter<View, Interactor> {
         ArrayList<ConfirmOrderPostman> getList();
 
+        String setTenKH();
+
         void confirmAllOrderPostman();
 
         void getRouteByPoCode(String poCode);

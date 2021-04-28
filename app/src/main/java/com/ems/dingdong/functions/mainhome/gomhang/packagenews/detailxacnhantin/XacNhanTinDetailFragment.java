@@ -60,7 +60,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
 //    @BindView(R.id.btn_reject)
 //    CustomTextView btnReject;
     @BindView(R.id.tv_ReceiverName)
-    CustomTextView tvReceiverName;
+    CustomBoldTextView tvReceiverName;
     @BindView(R.id.tv_TrackingCode)
     CustomTextView tvTrackingCode;
     @BindView(R.id.tv_OrderNumber)
@@ -81,7 +81,8 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
     LinearLayout ll_op;
     @BindView(R.id.ll_change_route)
     LinearLayout ll_change_route;
-
+    @BindView(R.id.tv_customer_name)
+    CustomBoldTextView tvCustomerName;
     private RouteInfo routeInfo;
     private UserInfo userInfo;
     private PostOffice postOffice;
@@ -288,6 +289,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         tvReceiverName.setText(commonObject.getReceiverName());
         tvTrackingCode.setText(commonObject.getTrackingCode());
         tvOrderNumber.setText(commonObject.getOrderNumber());
+        tvCustomerName.setText(commonObject.getCustomerName());
     }
 
     private void showUIRoute() {

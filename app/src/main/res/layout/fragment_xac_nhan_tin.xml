@@ -131,6 +131,7 @@
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
             android:layout_marginEnd="7dp"
             android:layout_toLeftOf="@+id/ll_scan_qr"
             android:maxLines="1"

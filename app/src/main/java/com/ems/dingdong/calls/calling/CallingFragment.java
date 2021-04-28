@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
+
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
@@ -33,8 +36,10 @@ import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
 import com.portsip.PortSipSdk;
 import com.sip.cmc.SipCmc;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -54,12 +59,17 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     CustomTextView tvPhoneNumber;
     @BindView(R.id.tv_calling)
     CustomTextView tvCalling;
-//    @BindView(R.id.iv_foward)
+    //    @BindView(R.id.iv_foward)
 //    CustomImageView ivFoward;
     @BindView(R.id.iv_hold)
     CustomImageView ivHold;
     @BindView(R.id.iv_mic_off)
     CustomImageView ivMicOff;
+
+    @BindView(R.id.tv_info)
+    TextView tv_info;
+    @BindView(R.id.tv_sub_info)
+    TextView tv_sub_info;
     @BindView(R.id.tv_provider_name)
     CustomBoldTextView tvProviderName;
     private AudioManager audioManager;
@@ -77,7 +87,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private String receiverNumber = "";
     private String senderNumber = "";
     private String provider = "";
-
+    int apptoapp = 0;
 
     @Override
     protected int getLayoutId() {
@@ -96,7 +106,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-
+        apptoapp = mPresenter.getAppToApp();
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
@@ -106,7 +116,6 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-
         audioManager = (AudioManager) getViewContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_CALL);
 //        audioManager.setMicrophoneMute(false);
@@ -119,15 +128,17 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             tvPhoneNumber.setText(mPresenter.getCalleeNumber());
             changeCallLayout(Constants.CALL_TYPE_CALLING);
             try {
-                session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
+//                session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
             } catch (NullPointerException nullPointerException) {
+
             }
-            ///session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
+//            session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
         } else {
             try {
                 //tvPhoneNumber.setText(CallManager.Instance().getSession().phoneNumber);
                 changeCallLayout(Constants.CALL_TYPE_RECEIVING);
             } catch (NullPointerException nullPointerException) {
+
             }
         }
 
@@ -138,6 +149,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
         super.onCreate(savedInstanceState);
         //Tạm thời comment
         getViewContext().registerReceiver(callingEvent, new IntentFilter(PortSipService.ACTION_CALL_EVENT));
+//        Log.d("thanhkhiem",callingEvent.getResultData());
     }
 
     @Override
@@ -156,9 +168,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 //, R.id.iv_foward
     @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_mic_off})
     public void onViewClicked(View view) {
-
         Session currentLine = CallManager.Instance().getCurrentSession();
-
         switch (view.getId()) {
             case R.id.iv_call_answer:
                 //Ctel
@@ -182,9 +192,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
             case R.id.iv_call_cancel:
                 createHistoryVHTIn();
-
                 Log.d(TAG, "iv_speaker clicked");
-                Log.d(TAG, "mPresenter.getCallType(): "+mPresenter.getCallType());
+                Log.d(TAG, "mPresenter.getCallType(): " + mPresenter.getCallType());
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     //createHistoryVHTIn();
                     portSipSdk.rejectCall(session.sessionID, 486);
@@ -275,6 +284,13 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
             ivCallEnd.setVisibility(View.VISIBLE);
             ivMicOff.setVisibility(View.VISIBLE);
+//            Log.d("thansdasdasda", apptoapp + "");
+            if (apptoapp == 5) {
+                tv_info.setText("Gọi qua ứng dụng");
+            } else {
+                tv_info.setText("Đang thực hiện cuộc gọi");
+                tv_sub_info.setText(mPresenter.getCalleeNumber());
+            }
 //            ivFoward.setVisibility(View.GONE);//VISIBLE
             ivHold.setVisibility(View.VISIBLE);
         } else {
@@ -328,22 +344,22 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             if (intent.getAction().equals(PortSipService.ACTION_CALL_EVENT)) {
                 switch (intent.getStringExtra(PortSipService.TYPE_ACTION)) {
                     case PortSipService.CALL_EVENT_RINGING:
-                        tvCalling.setText("Ringing");
+                        tvCalling.setText("Đang run chuông");
                         break;
                     case PortSipService.CALL_EVENT_TRYING:
-                        tvCalling.setText("Calling");
+                        tvCalling.setText("Đang gọi...");
                         break;
                     case PortSipService.CALL_EVENT_ANSWER:
                         Ring.getInstance(getViewContext()).stopRingTone();
                         break;
                     case PortSipService.CALL_EVENT_FAILURE:
-                        tvCalling.setText("failure");
+                        tvCalling.setText("Gọi thất bại");
                         chronometer.stop();
                         tvCalling.setVisibility(View.VISIBLE);
                         finishCall();
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_REJECT:
-                        tvCalling.setText("busy");
+                        tvCalling.setText("Người dùng bận");
                         break;
                     case PortSipService.CALL_EVENT_INVITE_COMMING:
                         //tvCalling.setText(session.phoneNumber);
@@ -352,7 +368,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         break;
                     case PortSipService.CALL_EVENT_END:
                         try {
-                            tvCalling.setText("call ended");
+                            tvCalling.setText("Kết thúc cuộc gọi");
                             chronometer.stop();
                             tvCalling.setVisibility(View.VISIBLE);
                             chronometer.setVisibility(View.GONE);
@@ -362,7 +378,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                             //SipCmc.hangUp();
                             finishCall();
                         } catch (NullPointerException nullPointerException) {
-                            showErrorToast("error cal end");
+                            showErrorToast("Lỗi cuộc gọi");
                         }
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_ACCEPT:
@@ -394,7 +410,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private void finishCall() {
         try {
             getActivity().finish();
-        }catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         xSessionIdPostmanOut = "";
         ladingCode = "";
@@ -437,7 +454,8 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private void endCallCtel() {
         try {
             SipCmc.hangUp();
-        }catch (NullPointerException nullPointerException) {}
+        } catch (NullPointerException nullPointerException) {
+        }
     }
 
     private void transferCallCtel() {

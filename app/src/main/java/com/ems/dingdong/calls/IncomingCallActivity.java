@@ -18,12 +18,14 @@ public class IncomingCallActivity extends DingDongActivity {
         int type = 0;
         String callerNumber = "";
         String calleeNumber = "";
+        int apptoapp=0;
         Long sessionId = null;
         Intent intent = getIntent();
         if (intent != null) {
             type = intent.getIntExtra(Constants.CALL_TYPE, 0);
             callerNumber = intent.getStringExtra(Constants.KEY_CALLER_NUMBER);
             calleeNumber = intent.getStringExtra(Constants.KEY_CALLEE_NUMBER);
+            apptoapp = intent.getIntExtra(Constants.APP_TO_APP,0);
             sessionId = intent.getLongExtra(PortSipService.EXTRA_CALL_SEESIONID, 10);
 
         }
@@ -32,6 +34,7 @@ public class IncomingCallActivity extends DingDongActivity {
                 .setCallerNumber(callerNumber)
                 .setCalleeNumber(calleeNumber)
                 .setSessionId(sessionId)
+                .setAppToApp(apptoapp)
                 .getFragment();
     }
 }

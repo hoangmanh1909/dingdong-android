@@ -9,7 +9,9 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
+
 import java.util.List;
+
 import retrofit2.Call;
 
 /**
@@ -56,8 +58,8 @@ interface ListBaoPhatBangKeContract {
          * @param ladingCode    lading code.
          */
         Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
-                                   String callForwardType, String hotlineNumber,
-                                   String ladingCode, CommonCallback<SimpleResult> callback);
+                                                 String callForwardType, String hotlineNumber,
+                                                 String ladingCode, CommonCallback<SimpleResult> callback);
 
         /**
          * Update mobile of current lading code.
@@ -66,9 +68,9 @@ interface ListBaoPhatBangKeContract {
          * @param phone                      new phone number.
          * @param simpleResultCommonCallback callback from retrofit.
          */
-        Call<SimpleResult> updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+        Call<SimpleResult> updateMobile(String code, String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
-        Call<SimpleResult> updateMobileSender(String code,String type, String phoneSender, CommonCallback<SimpleResult> simpleResultCommonCallback);
+        Call<SimpleResult> updateMobileSender(String code, String type, String phoneSender, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
     }
 
@@ -100,6 +102,7 @@ interface ListBaoPhatBangKeContract {
         void showCallSuccess();
 
         void showSuccessUpdateMobile(String phone, String message);
+
         void showSuccessUpdateMobileSender(String phoneSender, String message);
     }
 
@@ -237,7 +240,7 @@ interface ListBaoPhatBangKeContract {
          */
         void callByWifi(String calleeNumber);
 
-        void callByCtellFree();
+        void callByCtellFree(String calleeNumber);
     }
 
 }

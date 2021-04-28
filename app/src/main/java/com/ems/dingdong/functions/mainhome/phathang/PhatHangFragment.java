@@ -79,6 +79,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                  */
                 homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
                 homeInfos.add(new HomeInfo(17, R.drawable.ic_thong_ke_bao_phat, "Smartlocker"));
+
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }

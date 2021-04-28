@@ -47,7 +47,6 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     @Override
     public void initLayout() {
         super.initLayout();
-//        Log.d("khiempt", SipCmc.getAccountInfo().getName());
         if (mPresenter == null) {
             if (getActivity() != null) {
                 Intent intent = getActivity().getIntent();

@@ -104,6 +104,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
         if (mPresenter.getType() == 4) {
             cbAll.setVisibility(View.GONE);
+            imgConfirm.setVisibility(View.GONE);
         }
 
         if (mPresenter == null) {
@@ -117,108 +118,26 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         mList = new ArrayList<>();
         mListParcel = new ArrayList<>();
         mListConfirm = new ArrayList<>();
-
         mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList) {
-
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-
-//                binParcelCode(holder.getItem(position).getListParcelCode());
-//                if (mPresenter.getType() == 4) {
-//                    if (holder.itemView.isSelected()) {
-//                        holder.cbSelected.setChecked(true);
-//                    } else {
-//                        holder.cbSelected.setChecked(false);
-//                    }
-//
-//                    //chọn 1 item
-//                    if (checkedPositions == -1) {
-//                        holder.cbSelected.setChecked(false);
-//                        holder.getItem(position).setSelected(false);
-//                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                    } else {
-//                        if (checkedPositions == holder.getAdapterPosition()) {
-//                            //thêm.  click lần 2 bỏ chọn
-//                            if (selectPosition == 0) {
-//                                Log.d("123123", "bỏ chọn");
-//                                holder.cbSelected.setChecked(false);
-//                                holder.getItem(position).setSelected(false);
-//                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                                selectPosition = 1;
-//                            } else if (selectPosition == 1) {
-//                                //click lần 2 hoặc click sang item khác
-//                                Log.d("123123", "chọn");
-//                                holder.cbSelected.setChecked(true);
-//                                holder.getItem(position).setSelected(true);
-//                                holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-//                                selectPosition = 0;
-//                            }
-//                        } else {
-//                            holder.cbSelected.setChecked(false);
-//                            holder.getItem(position).setSelected(false);
-//                            holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                        }
-//                    }
                 holder.itemView.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
                     if (mPresenter.getType() == 1) {
                         //holder.itemView.setOnClickListener(view -> {
-                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                        holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                         //});
                     } else {
-                        if (mPositionClick == position) {
-                            holder.cbSelected.setChecked(false);
-                            holder.getItem(position).setSelected(false);
-                            mPositionClick = -1;
-                            itemClick = null;
-                        } else {
-                            mPositionClick = position;
-                            itemClick = mListFilter.get(position);
-                        }
-                        notifyDataSetChanged();
-//                        String ss = "";
-                        //chọn đúng item sau khi tìm kiếm
-//                        itemAtPosition = mListFilter.get(position);
-//                        actualPosition = mList.indexOf(itemAtPosition);
-//
-//                        listParcel = mListFilter.get(position).getListParcelCode();
-//                        mListParcel = listParcel;
-//                        //chọn 1 item
-//                        if (checkedPositions != holder.getAdapterPosition()) {
-//                            notifyItemChanged(checkedPositions);
-//                            checkedPositions = holder.getAdapterPosition();
-//                        }
-//
-//                        notifyDataSetChanged();// bỏ thì click chuyển sang item khác bt nhưng chưa cập nhật lại trạng thái đã tick hoặc chưa tick item parcel code
+                        mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+
                     }
                 });
 
-                if (mPresenter.getType() == 4) {
-                    CommonObject item = mListFilter.get(position);
 
-                    if (mPositionClick == position && itemClick != null
-                            && itemClick.getiD().equals(item.getiD())
-                            && (item.getStatusCode().equals("P1") || item.getStatusCode().equals("P5"))) {
-                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-                        holder.cbSelected.setChecked(true);
-                        holder.getItem(position).setSelected(true);
-                    } else {
-                        holder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        holder.cbSelected.setChecked(false);
-                        holder.getItem(position).setSelected(false);
-                    }
-                }
-
-//                } else if (mPresenter.getType() == 1) {
-//                    holder.itemView.setOnClickListener(v -> {
-//                        holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-//                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-//                    });
-//                }
             }
         };
 
@@ -352,7 +271,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             }
         }
         if (!list.isEmpty()) {
-            mPresenter.confirmAllOrderPostman(list);
+            mPresenter.confirmAllOrderPostman(list, list.get(0).getCustomerName());
         } else {
             Toast.showToast(getActivity(), "Chưa tin nào được chọn");
         }
@@ -381,7 +300,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     break;
                 }
             }
-            if(itemAtPosition == null) {
+            if (itemAtPosition == null) {
                 Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ trước khi hoàn tất");
                 return;
             }
@@ -394,20 +313,20 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 totalGram += gram;
                 code = itemParcel.getOrderCode();
                 listCode.add(code);
-                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(itemParcel.getParcelCode(), Constants.ADDRESS_SUCCESS, mUserInfo.getiD(), itemParcel.getOrderPostmanId() + "", itemParcel.getOrderId() + "");
+                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(itemParcel.getTrackingCode(), Constants.ADDRESS_SUCCESS, mUserInfo.getiD(), itemParcel.getOrderPostmanId() + "", itemParcel.getOrderId() + "");
                 mListHoanTatNhieuTin.add(tin);
             }
         }
 
-        if(itemAtPosition.getListParcelCode().size() > 0 && listParcel.size() == 0){
-            Toast.showToast(getViewContext(), "Vui lòng chọn bưu gửi trước khi hoàn tất");
-            return;
-        }
+//        if (itemAtPosition.getListParcelCode().size() > 0 && listParcel.size() == 0) {
+//            Toast.showToast(getViewContext(), "Vui lòng chọn bưu gửi trước khi hoàn tất");
+//            return;
+//        }
 
 
-        if (!listParcel.isEmpty()) {
-            mPresenter.showConfirmParcelAddress(itemAtPosition, listParcel);
-        } else {
+//        if (!listParcel.isEmpty()) {
+        mPresenter.showConfirmParcelAddress(itemAtPosition, listParcel);
+//        } else {
             /*for (CommonObject item : mAdapter.getListFilter()) {
                 matin = item.getCode();
                 if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")) {
@@ -415,11 +334,11 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 }
 //            }*/
 //            if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") /*|| itemAtPosition.getStatusCode().equals("P6")*/) {
-            mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
+//            mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
 //                matin = itemAtPosition.getCode();
 //                EventBus.getDefault().postSticky(new CustomCode(matin));
 //            }
-        }
+//        }
         EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
         //Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): " + "mListHoanTatNhieuTin " + mListHoanTatNhieuTin + " " + "gram " + totalGram + " " + "mListCode " + listCode + " " + "matin " + matin);
         //EventBus.getDefault().postSticky(new CustomCode(matin));
@@ -463,7 +382,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     }
                 }
             }
-            tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
+            tvRejectCount.setText(String.format("Tin chưa hoàn tất : %s", countP1));
             tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
         }
     }

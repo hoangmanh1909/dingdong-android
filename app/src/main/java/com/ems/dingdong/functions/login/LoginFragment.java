@@ -71,8 +71,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0389302289;E0F56BB3AF3A5918FD3C289EAD94AD83BC67483B5D04F6CAB1CFBEE3C15F19B8");//dev EMS
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0389302289;DF55A990FAC74872DC973236FF82DFB614066AB500236D8C64239FDF1AF4932A");//dev EMS
+        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// pro vinatti
         // mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936236826;8640DD007AB020F4F4C53C69FB64D3D8D907203F8D923EFDAC8D56F101FE38FB");// dev vinatti
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;BCB33E1DE2C4D12BFD69514F89271DC3745831AA9D5830680934A0CDD96B3D4F");// dev UAT
         //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0948035226;7C8FD391550599BF0BEFC98F0AD8D50642A624411355DB1ED5B211676C32B89D");// dev UAT
@@ -102,7 +102,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             }
 
             @Override
-            public void registrationFailed() {
+            public void registrationFailed()  {
                 super.registrationFailed();
                 //showErrorToast("login Ctel failure");
                 Log.d("123123", "login Ctel failed");
@@ -126,6 +126,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission8 = getActivity().checkSelfPermission(Manifest.permission.INTERNET);
             int hasPermission9 = getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO);
             int hasPermission10 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int hasPermission11 = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
@@ -136,6 +137,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     || hasPermission8 != PackageManager.PERMISSION_GRANTED
                     || hasPermission9 != PackageManager.PERMISSION_GRANTED
                     || hasPermission10 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission11 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }

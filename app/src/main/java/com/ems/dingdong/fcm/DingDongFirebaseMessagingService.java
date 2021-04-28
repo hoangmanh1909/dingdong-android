@@ -22,11 +22,13 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.ems.dingdong.functions.mainhome.notify.NotifiActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 import com.sip.cmc.SipCmc;
 
 import java.util.Map;
@@ -61,8 +63,8 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendRegistrationToServer(String token) {
         Intent intent = new Intent(this, PortSipService.class);
-        intent.setAction(PortSipService.ACTION_PUSH_TOKEN );
-        intent.putExtra(PortSipService.EXTRA_PUSHTOKEN,token);
+        intent.setAction(PortSipService.ACTION_PUSH_TOKEN);
+        intent.putExtra(PortSipService.EXTRA_PUSHTOKEN, token);
         startService(intent);
         SipCmc.startService(this);
     }
@@ -71,11 +73,12 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         RemoteMessage.Notification notification = remoteMessage.getNotification();
+        Log.d("thanhkhiem", new Gson().toJson(remoteMessage.getData()));
         if (remoteMessage.getData().size() > 0) {
             if (!TextUtils.isEmpty(remoteMessage.getData().get("send_from"))) {
-                sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13));
-            } else if (!TextUtils.isEmpty(remoteMessage.getData().get("message"))) {
-                sendNotification(remoteMessage.getData().get("message"));
+                sendNotification("0", "Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13),"");
+            } else if (!TextUtils.isEmpty(remoteMessage.getData().get("notifyNavigationType"))) {
+                sendNotification(remoteMessage.getData().get("notifyNavigationType"), remoteMessage.getData().get("message"), remoteMessage.getData().get("ticketCode"));
             } else {
                 Log.d(TAG, "call id is null");
                 Log.d(TAG, remoteMessage.getData().toString());
@@ -98,24 +101,34 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         }*/
     }
 
-    private void sendNotification(String messageBody) {
-        if (messageBody != null) {
+    private void sendNotification(String type, String messageBody,String ticketCode) {
+        if (type != null) {
             Intent intent;
             Bundle bundle = new Bundle();
-            if (messageBody.contains(Constants.GOM_HANG)) {
+//            if (messageBody.contains(Constants.GOM_HANG)) {
+//                intent = new Intent(this, ListCommonActivity.class);
+//                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+//            }  else {
+//                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+//                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+//            }
+
+            if (type.equals("3")) {
+                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+            } else if (type.equals("1") || type.equals("2")) {
                 intent = new Intent(this, ListCommonActivity.class);
                 intent.putExtra(Constants.TYPE_GOM_HANG, 1);
             } else {
-                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
-                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+                intent = new Intent(this, NotifiActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 4);
             }
             bundle.putString("message", messageBody);
+            bundle.putString("ticketCode", ticketCode);
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
-
-
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
             long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
@@ -132,7 +145,6 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                             .setContentIntent(pendingIntent);
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(
                         getString(R.string.notification_channel_id),

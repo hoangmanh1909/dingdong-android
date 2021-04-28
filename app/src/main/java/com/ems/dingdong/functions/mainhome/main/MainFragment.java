@@ -65,6 +65,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     ImageView imgTopSetting;
     @BindView(R.id.view_top)
     View viewTop;
+    @BindView(R.id.img_notification)
+    ImageView img_notification;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
     private Fragment gomHangFragment;
@@ -155,7 +157,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         /**
          * follow Hanh
          */
-        imgCall.setVisibility(View.INVISIBLE);
+        imgCall.setVisibility(View.GONE);
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getViewContext().startService(intent);
@@ -167,7 +169,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 //            imgTopSetting.setVisibility(View.VISIBLE);
             viewTop.setVisibility(View.VISIBLE);
         } else {
-            imgCall.setVisibility(View.INVISIBLE);
+            imgCall.setVisibility(View.GONE);
 //            imgTopSetting.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.INVISIBLE);
             Handler handler = new Handler();
@@ -237,9 +239,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     }
 
 
-    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting})
+    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting,R.id.fr_thongbao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.fr_thongbao:
+                mPresenter.showNitify();
+                break;
             case R.id.img_call: {
                 Intent intent = new Intent(getActivity(), CallActivity.class);
                 startActivity(intent);

@@ -1,7 +1,11 @@
 package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+
+import androidx.core.app.ActivityCompat;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.callback.DismissDialogCallback;
@@ -75,9 +79,19 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @Override
     public void showCallSuccess() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
-        startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_CALL);
+//        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+//        if (ActivityCompat.checkSelfPermission(getActivity(),
+//                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+        startActivity(newPhoneCallIntent(Constants.HEADER_NUMBER));
+    }
+
+    public static Intent newPhoneCallIntent(String phoneNumber) {
+        Intent callintent = new Intent(Intent.ACTION_CALL);
+        callintent.setData(Uri.parse(phoneNumber));
+        return callintent;
     }
 
     @Override
@@ -95,7 +109,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     }
 
     @Override
-    public void showView(String phone,String mes) {
+    public void showView(String phone, String mes) {
         showSuccessToast(mes);
         if (mPhoneConectDialog != null) {
             mPhoneConectDialog.updateText(phone);

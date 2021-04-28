@@ -22,6 +22,8 @@ public interface CallingContract {
 
         int getCallType();
 
+        int getAppToApp();
+
         void setCallType(int type);
 
         String getCallerNumber();

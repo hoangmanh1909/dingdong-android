@@ -6,7 +6,7 @@ import io.realm.RealmObject;
 
 public class ParcelCodeInfo extends RealmObject {
     @SerializedName("TrackingCode")
-    private String parcelCode;
+    private String trackingCode;
     @SerializedName("OrderNumber")
     private String orderNumber;
     @SerializedName("ReceiverName")
@@ -16,23 +16,45 @@ public class ParcelCodeInfo extends RealmObject {
     @SerializedName("Weight")
     private int weight;
     @SerializedName("OrderId")
-    private long orderId;
+    private String orderId;
     @SerializedName("OrderPostmanId")
-    private long orderPostmanId;
+    private String orderPostmanId;
     @SerializedName("OrderCode")
     private String orderCode;
+
+    int status;
+
+    public void setShipmentID(int shipmentID) {
+        this.shipmentID = shipmentID;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+
+
 
     public String getOrderCode() {
         return orderCode;
     }
 
-    private boolean selected;
-    public String getParcelCode() {
-        return parcelCode;
+    private boolean selected = false;
+
+    public String getTrackingCode() {
+        return trackingCode;
     }
 
-    public void setParcelCode(String parcelCode) {
-        this.parcelCode = parcelCode;
+    public void setTrackingCode(String trackingCode) {
+        this.trackingCode = trackingCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
     }
 
     public boolean isSelected() {
@@ -51,11 +73,11 @@ public class ParcelCodeInfo extends RealmObject {
         return weight;
     }
 
-    public long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
@@ -67,11 +89,11 @@ public class ParcelCodeInfo extends RealmObject {
         this.orderNumber = orderNumber;
     }
 
-    public long getOrderPostmanId() {
+    public String getOrderPostmanId() {
         return orderPostmanId;
     }
 
-    public void setOrderPostmanId(long orderPostmanId) {
+    public void setOrderPostmanId(String orderPostmanId) {
         this.orderPostmanId = orderPostmanId;
     }
 }

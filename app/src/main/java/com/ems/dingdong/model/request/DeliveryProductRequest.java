@@ -7,6 +7,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class DeliveryProductRequest {
+
+    @SerializedName("LadingCode")
+    private String ladingCode;
+    @SerializedName("PODeliveryCode")
+    private String PODeliveryCode;
+
     @SerializedName("DeliveryProducts")
     @Expose
     private List<ProductModel> deliveryProducts = null;
@@ -201,6 +207,23 @@ public class DeliveryProductRequest {
 
     public void setDeliveryPOCode(String deliveryPOCode) {
         this.deliveryPOCode = deliveryPOCode;
+    }
+
+
+    public String getLadingCode() {
+        return ladingCode;
+    }
+
+    public void setLadingCode(String ladingCode) {
+        this.ladingCode = ladingCode;
+    }
+
+    public String getPODeliveryCode() {
+        return PODeliveryCode;
+    }
+
+    public void setPODeliveryCode(String PODeliveryCode) {
+        this.PODeliveryCode = PODeliveryCode;
     }
 
     public String getDeliveryDate() {

@@ -62,7 +62,6 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             @Override
             protected void onSuccess(Call<LoginResult> call, Response<LoginResult> response) {
                 super.onSuccess(call, response);
-
                 if (response.body().getErrorCode().equals("00")) {
                     getSolutions();
                     getReasons();
@@ -75,6 +74,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     } else {
                         Constants.HEADER_NUMBER = "tel:18002009";
                     }
+
                     boolean isDebit = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
                     sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
                     if (!"6".equals(response.body().getUserInfo().getEmpGroupID())) {

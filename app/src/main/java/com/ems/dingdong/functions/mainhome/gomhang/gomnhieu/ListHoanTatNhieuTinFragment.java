@@ -3,11 +3,16 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomnhieu;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
@@ -23,6 +28,7 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -32,9 +38,12 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rengwuxian.materialedittext.MaterialEditText;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -44,7 +53,7 @@ import butterknife.OnClick;
 public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTinContract.Presenter> implements ListHoanTatNhieuTinContract.View {
     ArrayList<ItemHoanTatNhieuTin> mList;
     @BindView(R.id.edt_search)
-    FormItemEditText edtSearch;
+    MaterialEditText edtSearch;
     @BindView(R.id.tv_success_count)
     CustomBoldTextView tvSuccessCount;
     @BindView(R.id.tv_fail_count)
@@ -107,14 +116,30 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         mFromDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         initSearch();
+//        edtSearch.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         edtSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(edtSearch.getText().replace("+", ""), Constants.RED,
+                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(edtSearch.getText().toString().replace("+", ""), Constants.RED,
                         mUserInfo.getiD(), "", "");
                 processData(tin);
                 return true;
             }
             return false;
+        });
+
+        edtSearch.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(edtSearch.getText().toString().replace("+", ""), Constants.RED,
+                            mUserInfo.getiD(), "", "");
+                    processData(tin);
+                    edtSearch.setText("");
+                    return true;
+                }
+                return false;
+            }
         });
     }
 
@@ -129,7 +154,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo, status) -> {
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.searchAllOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", mFromDate, mToDate);
@@ -254,7 +279,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         for (CommonObject item : list) {
             int count = item.getListParcelCode().size();
             for (ParcelCodeInfo it : item.getListParcelCode()) {
-                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(it.getParcelCode(), count > 1 ? Constants.RED : Constants.GREY,
+                ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(it.getTrackingCode(), count > 1 ? Constants.RED : Constants.GREY,
                         mUserInfo.getiD(), item.getOrderPostmanID(), item.getiD());
                 mList.add(tin);
             }
@@ -270,6 +295,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 tin.setStatus(Constants.RED);
                 mList.add(tin);
                 mAdapter.addItem(tin);
+                edtSearch.setText("");
             } else {
                 it.setStatus(Constants.GREEN);
                 mAdapter.refresh(mList);

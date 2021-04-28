@@ -45,20 +45,10 @@ public class PhoneConectDialog extends Dialog {
                 break;
 
             case R.id.tv_phone_messing:
-//                if (TextUtils.isEmpty(phone)) {
-//                    Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
-//                    return;
-//                }
-//                if (!NumberUtils.checkMobileNumber(phone)) {
-//                    Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
-//                    return;
-//                }
-//                mDelegate.onUpdateResponse(phone);
                 break;
 
                 //call receiver
             case R.id.tv_phone_calling:
-
                 if (TextUtils.isEmpty(phone)) {
                     Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
                     return;
@@ -72,22 +62,6 @@ public class PhoneConectDialog extends Dialog {
                     dismiss();
                 }
                 break;
-
-           /* case R.id.tv_call_CSKH:
-                if (mDelegate != null) {
-                    mDelegate.onCallCSKH("1900545481");
-                    dismiss();
-                }
-                break;
-
-            case R.id.tv_phone_update_sender:
-                new PhoneNumberUpdateSenderDialog(getContext(), numberSender, mDelegate).show();
-                break;
-
-            case R.id.btn_call_ctel_app_to_app:
-                Log.d("123123", "click call ctel app to app");
-                //SipCmc.callTo(edt_call_ctel_app_to_app.getText().toString());
-                break;*/
         }
     }
 
