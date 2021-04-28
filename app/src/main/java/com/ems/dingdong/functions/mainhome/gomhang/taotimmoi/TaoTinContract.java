@@ -1,13 +1,16 @@
-package com.ems.dingdong.functions.mainhome.gomhang;
+package com.ems.dingdong.functions.mainhome.gomhang.taotimmoi;
 
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.model.StatisticDetailCollect;
+
+import java.util.List;
 
 /**
- * The GomHang Contract
+ * The CommonObject Contract
  */
-interface GomHangContract {
+interface TaoTinContract {
 
     interface Interactor extends IInteractor<Presenter> {
     }
@@ -16,15 +19,7 @@ interface GomHangContract {
 
     }
 
-
     interface Presenter extends IPresenter<View, Interactor> {
-        void showListStatistic();
-
-        void showListHoanTatNhieuTin();
-
-        void showXacNhanDiaChiPresenter();
-
-        void showTaoTinmoi();
     }
 }
 

@@ -121,8 +121,8 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onSuccess(call, response);
-                        mView.hideProgress();
                         if (response.body().getErrorCode().equals("00")) {
+                            mView.hideProgress();
                             mView.controlViews();
                         }
                         mView.showMessage(response.body().getMessage());

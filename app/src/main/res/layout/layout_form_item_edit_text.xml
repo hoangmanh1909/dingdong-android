@@ -30,7 +30,8 @@
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:scrollbarStyle="insideInset"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:layout_toLeftOf="@+id/clear_btn"/>
 
             <ImageView
                 android:id="@+id/clear_btn"
@@ -39,8 +40,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="5dp"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/clear"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <ImageView

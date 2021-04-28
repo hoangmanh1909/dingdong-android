@@ -17,13 +17,15 @@
         <TextView
             android:id="@+id/form_item_value_text"
             style="@style/FormItemValue"
-            android:text="" />
+            android:text=""
+            android:layout_marginRight="5dp"/>
 
         <ImageView
             android:id="@+id/form_item_action"
             style="@style/FormItemValueAction"
             android:src="@drawable/ic_arrow_down"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:padding="5dp"/>
     </LinearLayout>
 
     <View
