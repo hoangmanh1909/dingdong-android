@@ -12,6 +12,7 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
+import com.ems.dingdong.model.CreateOrderRequest;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
@@ -842,6 +843,47 @@ public class NetWorkController {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("TCK003");
         dataRequestPayment.setData(request);
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getTinhThanhPho() {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("DIC001");
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getQuanHuyen(int id) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("DIC002");
+        dataRequestPayment.setData(String.valueOf(id));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getXaPhuong(int id) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("DIC003");
+        dataRequestPayment.setData(String.valueOf(id));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> search(String request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("BSP007");
+        dataRequestPayment.setData(request);
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> searchdaichi(String request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("BSP006");
+        dataRequestPayment.setData(request);
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> themTin(CreateOrderRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ORD001");
+        dataRequestPayment.setData(getGson().toJson(request));
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 

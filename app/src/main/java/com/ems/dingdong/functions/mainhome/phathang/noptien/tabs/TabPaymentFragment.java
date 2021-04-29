@@ -80,24 +80,24 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
             public void onCustomPageSelected(int newPosition) {
                 switch (newPosition) {
                     case 0:
-                        mPosition=newPosition;
+                        mPosition = newPosition;
                         imgSend.setVisibility(View.VISIBLE);
                         imgDelete.setVisibility(View.VISIBLE);
                         imgDelete.setImageResource(R.drawable.ic_remove);
                         imgSend.setImageResource(R.drawable.ic_confirm);
                         break;
                     case 1:
-                        mPosition=newPosition;
+                        mPosition = newPosition;
                         imgSend.setVisibility(View.GONE);
                         imgDelete.setVisibility(View.GONE);
 //                         hủy nộp tiền  chưa triển khai nên ẩn đi
-                        mPosition=newPosition;
+                        mPosition = newPosition;
                         imgSend.setVisibility(View.VISIBLE);
                         imgDelete.setVisibility(View.GONE);
                         imgSend.setImageResource(R.drawable.close);
                         break;
                     case 2:
-                        mPosition=newPosition;
+                        mPosition = newPosition;
                         imgSend.setVisibility(View.GONE);
                         imgDelete.setVisibility(View.GONE);
                         break;
@@ -123,6 +123,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         mAdapter.setTittle(quantity, currentSetTab);
         mAdapter.notifyDataSetChanged();
         tabs.notifyDataSetChanged();
+        onDisplay();
     }
 
     @Override
@@ -134,13 +135,12 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if(mPosition==0){
-
-        }else if(mPosition==1){
-
-        }else if(mPosition==2){
-
-        }
+        PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
+        paymentFragment1.onDisplay();
+        CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(1);
+        cancelPaymentFragment.onDisplay();
+        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(2);
+        historyPaymentFragment.onDisplay();
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.img_delete})

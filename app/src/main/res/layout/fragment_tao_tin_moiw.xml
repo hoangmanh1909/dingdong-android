@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <FrameLayout
@@ -37,7 +38,7 @@
                 android:textSize="@dimen/text_size_18sp" />
 
             <ImageView
-                android:id="@+id/img_confirm"
+                android:id="@+id/img_send"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_alignParentRight="true"
@@ -73,7 +74,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/img_search"
-                    android:layout_weight="8.5"
+                    android:layout_weight="8"
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_12sp"
@@ -89,9 +90,10 @@
                     android:id="@+id/ll_scan_qr"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5"
+                    android:layout_weight="2"
                     android:background="@drawable/bg_tim_kiem"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:id="@+id/img_capture"
@@ -159,8 +161,10 @@
                         android:gravity="right"
                         android:textColor="#253854"
                         android:textSize="14sp"
+                        android:maxLines="1"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập mã khách hàng"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -200,11 +204,13 @@
                         android:layout_gravity="right"
                         android:layout_weight="6"
                         android:gravity="right"
+                        android:maxLines="1"
                         android:inputType="textCapCharacters"
                         android:textColor="#253854"
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập tên khách hàng"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -249,6 +255,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập số điện thoại"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
 
                 </LinearLayout>
@@ -288,6 +295,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập địa chỉ email"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -394,6 +402,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập số lượng"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -432,6 +441,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập khối lượng(gram)"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -672,7 +682,7 @@
                         android:textSize="14sp"
                         app:formAction="@drawable/ic_down"
                         app:formDrawablePadding="10dp"
-                        app:formHint="Nhập khối lượng(gram)"
+                        app:formHint="Nhập Xã, Phường"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -716,6 +726,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập Số nhà, Tên đường(*)"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -759,6 +770,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập số điện thoại (*)"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
@@ -802,6 +814,7 @@
                         android:textSize="14sp"
                         app:formDrawablePadding="10dp"
                         app:formHint="Nhập Người liên hệ"
+                        app:formShowClear="true"
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
