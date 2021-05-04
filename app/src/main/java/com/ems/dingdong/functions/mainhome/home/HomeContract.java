@@ -18,7 +18,7 @@ import java.util.ArrayList;
 interface HomeContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getHomeView(String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback);
+        void getHomeView(String fromDate,String toDate,String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -39,7 +39,7 @@ interface HomeContract {
 
         void showViewStatisticPtc(StatisticType isSuccess);
 
-        void getHomeView(String postmanCode, String routeCode);
+        void getHomeView(String fromDate,String toDate,String postmanCode, String routeCode);
 
         void showListBd13(int typeListDelivery);
     }

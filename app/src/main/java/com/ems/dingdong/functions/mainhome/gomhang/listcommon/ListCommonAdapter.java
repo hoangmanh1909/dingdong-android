@@ -59,7 +59,6 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
 
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        //return new HolderView(inflateView(parent, R.layout.item_xac_nhan_tin));
         return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xac_nhan_tin, parent, false));
     }
 
@@ -75,29 +74,20 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
-                        boolean checkCode = false;
-                        for (ParcelCodeInfo item : row.getListParcelCode()) {
-                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
-                                checkCode = true;
-                                break;
-                            }
-                        }
-                        if (!checkCode) {
-                            if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
-                            ) {
-                                checkCode = true;
-                            }
-                        }
-                        if (checkCode) {
+                        if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
+                                || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
+                                || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getCode().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
+                        } else for (ParcelCodeInfo item : row.getListParcelCode()) {
+                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row);
+                            }
                         }
                     }
-
                     mListFilter = filteredList;
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mListFilter;
                 return filterResults;
@@ -135,6 +125,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         ParcelAdapter adapter;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
+
         public HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -153,10 +144,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                 tvContactDescription.setText(item.getDescription());
             }
 
-//            item.setAppointmentTime("10:59:49 16/04/2021");
             tvCustomName.setText(item.getCustomerName());
             if (item.getAppointmentTime() != null)
-                tvThoiGian.setText("Thời gian hẹn: "+item.getAppointmentTime());
+                tvThoiGian.setText("Thời gian hẹn: " + item.getAppointmentTime());
             else tvThoiGian.setVisibility(View.GONE);
 
             cbSelected.setVisibility(View.GONE);

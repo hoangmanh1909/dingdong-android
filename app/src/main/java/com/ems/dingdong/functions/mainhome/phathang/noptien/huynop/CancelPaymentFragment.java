@@ -107,6 +107,10 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
+
+    }
+
+    public void onDisplayFake(){
         DataHistoryPayment payment = new DataHistoryPayment();
         payment.setRouteCode(routeCode);
         payment.setPostmanCode(postmanCode);

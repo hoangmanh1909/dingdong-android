@@ -17,7 +17,7 @@ class HomeInteractor extends Interactor<HomeContract.Presenter>
     }
 
     @Override
-    public void getHomeView(String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
-        NetWorkController.getHomeData(postmanCode, routeCode, callback);
+    public void getHomeView(String fromDate,String toDate,String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
+        NetWorkController.getHomeData(fromDate,toDate,postmanCode, routeCode, callback);
     }
 }

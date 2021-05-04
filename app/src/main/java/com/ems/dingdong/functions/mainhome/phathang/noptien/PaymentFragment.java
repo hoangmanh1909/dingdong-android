@@ -105,6 +105,9 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void onDisplay() {
         super.onDisplay();
+    }
+
+    public void onDisplayFake(){
         mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
     }
 

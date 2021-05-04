@@ -14,10 +14,13 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import butterknife.BindView;
 import android.provider.Settings.Secure;
@@ -117,8 +120,16 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         if (!routeJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
         }
+
+        Date today = Calendar.getInstance().getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DATE, -3);
+
+       String fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+       String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (mPresenter != null && userInfo != null && routeInfo != null)
-            mPresenter.getHomeView(userInfo.getUserName(), routeInfo.getRouteCode());
+            mPresenter.getHomeView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode());
     }
 
     @Override

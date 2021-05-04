@@ -442,15 +442,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     private void addItem(String item) {
         if (!item.isEmpty()) {
-//            boolean scanItemCheck = FluentIterable.from(mHoanThanhTin.getListParcelCode()).anyMatch(new Predicate<ParcelCodeInfo>() {
-//                @Override
-//                public boolean apply(@Nullable ParcelCodeInfo input) {
-//                    return item.equals(input.getParcelCode());
-//                }
-//            });
-//            if (!scanItemCheck) {
-//                Toast.showToast(getActivity(), "Không tồn tại bưu gửi trong tin gom");
-//            } else {
             boolean scanItem = FluentIterable.from(mList).anyMatch(input -> item.equals(input.getCode()));
             if (!scanItem) {
                 mList.add(new ScanItem(item));

@@ -84,23 +84,16 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
-                        boolean checkCode = false;
-                        for (ParcelCodeInfo item : row.getListParcelCode()) {
-                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
-                                checkCode = true;
-                                break;
-                            }
-                        }
-                        if (!checkCode) {
-                            if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
-                            ) {
-                                checkCode = true;
-                            }
-                        }
-                        if (checkCode) {
+                        if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
+                                || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
+                                || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
+                        } else for (ParcelCodeInfo item : row.getListParcelCode()) {
+                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row);
+                            }
                         }
                     }
 

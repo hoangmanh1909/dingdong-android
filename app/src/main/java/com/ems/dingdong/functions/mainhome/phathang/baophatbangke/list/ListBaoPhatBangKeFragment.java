@@ -224,51 +224,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         EventBus.getDefault().postSticky(new CustomToNumber(mPhone));
                         //mPresenter.callForward(mPhone, choosenLadingCode);
                         callProvidertoSender();
-
-//                            new PhoneDecisionDialog(getViewContext(), new PhoneDecisionDialog.OnClickListener() {
-//                                @Override
-//                                public void onCallBySimClicked(PhoneDecisionDialog dialog) {
-//                                    dialog.dismiss();
-//                                    choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
-//                                    mPresenter.callForward(mPhone, choosenLadingCode);
-//
-//                                }
-//
-//                                @Override
-//                                public void onCallByVHTClicked(PhoneDecisionDialog dialog) {
-//                                    dialog.dismiss();
-//                                    List<Tree> leaf1 = new ArrayList<>();
-//                                    leaf1.add(new Leaf(1, "Gọi tiết kiệm"));
-//                                    //leaf1.add(new Leaf(2, "Gọi chuyển mạch"));
-//                                    leaf1.add(new Leaf(3, "Gọi bằng sim"));
-//
-//                                    /**
-//                                     * follow Ms Hanh
-//                                     */
-//
-//                                    /*List<Tree> leaf2 = new ArrayList<>();
-//                                    leaf2.add(new Leaf(4, "Gọi tiết kiệm"));
-//                                    leaf2.add(new Leaf(5, "Gọi chuyển mạch"));
-//                                    leaf2.add(new Leaf(6, "Gọi bằng sim"));
-//
-//                                    Leaf leaf = new Leaf(7, "Gọi qua tổng đài");
-//                                    Leaf leaf3 = new Leaf(7, "Cho bưu cục nhận");
-//                                    Leaf leaf4 = new Leaf(7, "Cho bưu cục phát");
-//                                    Leaf leaf5 = new Leaf(7, "Cho tổng đài hỗ trợ");
-//                                    Tree tree1 = new TreeNote(7, "Cho người nhận", leaf1);
-//                                    Tree tree2 = new TreeNote(7, "Cho người gửi", leaf2);
-//                                    List<Tree> listVHT = new ArrayList<>();
-//                                    listVHT.add(tree1);
-//                                    listVHT.add(tree2);
-//                                    listVHT.add(leaf3);
-//                                    listVHT.add(leaf4);
-//                                    listVHT.add(leaf5);
-//                                    listVHT.add(leaf);
-//                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(listVHT, "Gọi qua máy lẻ", listener);*/
-//                                    BottomPickerCallUIFragment fragment = new BottomPickerCallUIFragment(leaf1, "Gọi qua máy lẻ", listener);
-//                                    fragment.show(getActivity().getSupportFragmentManager(), "add_fragment");
-//                                }
-//                            }).show();
                     }
 
                     @Override

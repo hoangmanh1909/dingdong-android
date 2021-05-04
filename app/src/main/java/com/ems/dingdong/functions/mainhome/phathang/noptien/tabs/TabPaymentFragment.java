@@ -123,7 +123,6 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         mAdapter.setTittle(quantity, currentSetTab);
         mAdapter.notifyDataSetChanged();
         tabs.notifyDataSetChanged();
-        onDisplay();
     }
 
     @Override
@@ -136,11 +135,11 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
     public void onDisplay() {
         super.onDisplay();
         PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
-        paymentFragment1.onDisplay();
+        paymentFragment1.onDisplayFake();
         CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(1);
-        cancelPaymentFragment.onDisplay();
+        cancelPaymentFragment.onDisplayFake();
         HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(2);
-        historyPaymentFragment.onDisplay();
+        historyPaymentFragment.onDisplayFake();
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.img_delete})

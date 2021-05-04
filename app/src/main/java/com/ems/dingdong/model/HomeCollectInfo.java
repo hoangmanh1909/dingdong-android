@@ -12,10 +12,10 @@ public class HomeCollectInfo {
     private Integer totalWeight;
     @SerializedName("TotalCODAmount")
     @Expose
-    private Integer totalCODAmount;
+    private long totalCODAmount;
     @SerializedName("TotalFee")
     @Expose
-    private Integer totalFee;
+    private long totalFee;
     @SerializedName("TotalQuantityToday")
     @Expose
     private String totalQuantityToday;
@@ -25,28 +25,28 @@ public class HomeCollectInfo {
 
     @SerializedName("TotalQuantityTodayCOD")
     @Expose
-    private Integer totalQuantityTodayCOD;
+    private long totalQuantityTodayCOD;
     @SerializedName("TotalWeightToday")
     @Expose
     private Integer totalWeightToday;
     @SerializedName("TotalCODAmountToday")
     @Expose
-    private Integer totalCODAmountToday;
+    private long totalCODAmountToday;
     @SerializedName("TotalCODAmountTodayNormal")
     @Expose
-    private Integer totalCODAmountTodayNormal;
+    private long totalCODAmountTodayNormal;
     @SerializedName("TotalCODAmountTodayCOD")
     @Expose
-    private Integer totalCODAmountTodayCOD;
+    private long totalCODAmountTodayCOD;
     @SerializedName("TotalFeeToday")
     @Expose
-    private Integer totalFeeToday;
+    private long totalFeeToday;
     @SerializedName("TotalFeeTodayNormal")
     @Expose
     private Integer totalFeeTodayNormal;
     @SerializedName("TotalFeeTodayCOD")
     @Expose
-    private Integer totalFeeTodayCOD;
+    private long totalFeeTodayCOD;
     @SerializedName("TotalQuantityPast")
     @Expose
     private String totalQuantityPast;
@@ -55,19 +55,19 @@ public class HomeCollectInfo {
     private Integer totalQuantityPastNormal;
     @SerializedName("TotalQuantityPastCOD")
     @Expose
-    private Integer totalQuantityPastCOD;
+    private long totalQuantityPastCOD;
     @SerializedName("TotalWeightPast")
     @Expose
     private Integer totalWeightPast;
     @SerializedName("TotalCODAmountPast")
     @Expose
-    private Integer totalCODAmountPast;
+    private long totalCODAmountPast;
     @SerializedName("TotalCODAmountPastNormal")
     @Expose
-    private Integer totalCODAmountPastNormal;
+    private long totalCODAmountPastNormal;
     @SerializedName("TotalCODAmountPastCOD")
     @Expose
-    private Integer totalCODAmountPastCOD;
+    private long totalCODAmountPastCOD;
     @SerializedName("TotalFeePast")
     @Expose
     private Integer totalFeePast;
@@ -76,7 +76,7 @@ public class HomeCollectInfo {
     private Integer totalFeePastNormal;
     @SerializedName("TotalFeePastCOD")
     @Expose
-    private Integer totalFeePastCOD;
+    private long totalFeePastCOD;
     @SerializedName("TotalAddressNotCollect")
     @Expose
     private String totalAddressNotCollect;
@@ -115,22 +115,6 @@ public class HomeCollectInfo {
     private String labelCollect;
     private int Type;
 
-    public int getType() {
-        return Type;
-    }
-
-    public void setType(int type) {
-        Type = type;
-    }
-
-    public String getLabelCollect() {
-        return labelCollect;
-    }
-
-    public void setLabelCollect(String labelCollect) {
-        this.labelCollect = labelCollect;
-    }
-
     public Integer getTotalQuantity() {
         return totalQuantity;
     }
@@ -147,19 +131,19 @@ public class HomeCollectInfo {
         this.totalWeight = totalWeight;
     }
 
-    public Integer getTotalCODAmount() {
+    public long getTotalCODAmount() {
         return totalCODAmount;
     }
 
-    public void setTotalCODAmount(Integer totalCODAmount) {
+    public void setTotalCODAmount(long totalCODAmount) {
         this.totalCODAmount = totalCODAmount;
     }
 
-    public Integer getTotalFee() {
+    public long getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(Integer totalFee) {
+    public void setTotalFee(long totalFee) {
         this.totalFee = totalFee;
     }
 
@@ -179,11 +163,11 @@ public class HomeCollectInfo {
         this.totalQuantityTodayNormal = totalQuantityTodayNormal;
     }
 
-    public Integer getTotalQuantityTodayCOD() {
+    public long getTotalQuantityTodayCOD() {
         return totalQuantityTodayCOD;
     }
 
-    public void setTotalQuantityTodayCOD(Integer totalQuantityTodayCOD) {
+    public void setTotalQuantityTodayCOD(long totalQuantityTodayCOD) {
         this.totalQuantityTodayCOD = totalQuantityTodayCOD;
     }
 
@@ -195,35 +179,35 @@ public class HomeCollectInfo {
         this.totalWeightToday = totalWeightToday;
     }
 
-    public Integer getTotalCODAmountToday() {
+    public long getTotalCODAmountToday() {
         return totalCODAmountToday;
     }
 
-    public void setTotalCODAmountToday(Integer totalCODAmountToday) {
+    public void setTotalCODAmountToday(long totalCODAmountToday) {
         this.totalCODAmountToday = totalCODAmountToday;
     }
 
-    public Integer getTotalCODAmountTodayNormal() {
+    public long getTotalCODAmountTodayNormal() {
         return totalCODAmountTodayNormal;
     }
 
-    public void setTotalCODAmountTodayNormal(Integer totalCODAmountTodayNormal) {
+    public void setTotalCODAmountTodayNormal(long totalCODAmountTodayNormal) {
         this.totalCODAmountTodayNormal = totalCODAmountTodayNormal;
     }
 
-    public Integer getTotalCODAmountTodayCOD() {
+    public long getTotalCODAmountTodayCOD() {
         return totalCODAmountTodayCOD;
     }
 
-    public void setTotalCODAmountTodayCOD(Integer totalCODAmountTodayCOD) {
+    public void setTotalCODAmountTodayCOD(long totalCODAmountTodayCOD) {
         this.totalCODAmountTodayCOD = totalCODAmountTodayCOD;
     }
 
-    public Integer getTotalFeeToday() {
+    public long getTotalFeeToday() {
         return totalFeeToday;
     }
 
-    public void setTotalFeeToday(Integer totalFeeToday) {
+    public void setTotalFeeToday(long totalFeeToday) {
         this.totalFeeToday = totalFeeToday;
     }
 
@@ -235,11 +219,11 @@ public class HomeCollectInfo {
         this.totalFeeTodayNormal = totalFeeTodayNormal;
     }
 
-    public Integer getTotalFeeTodayCOD() {
+    public long getTotalFeeTodayCOD() {
         return totalFeeTodayCOD;
     }
 
-    public void setTotalFeeTodayCOD(Integer totalFeeTodayCOD) {
+    public void setTotalFeeTodayCOD(long totalFeeTodayCOD) {
         this.totalFeeTodayCOD = totalFeeTodayCOD;
     }
 
@@ -259,11 +243,11 @@ public class HomeCollectInfo {
         this.totalQuantityPastNormal = totalQuantityPastNormal;
     }
 
-    public Integer getTotalQuantityPastCOD() {
+    public long getTotalQuantityPastCOD() {
         return totalQuantityPastCOD;
     }
 
-    public void setTotalQuantityPastCOD(Integer totalQuantityPastCOD) {
+    public void setTotalQuantityPastCOD(long totalQuantityPastCOD) {
         this.totalQuantityPastCOD = totalQuantityPastCOD;
     }
 
@@ -275,27 +259,27 @@ public class HomeCollectInfo {
         this.totalWeightPast = totalWeightPast;
     }
 
-    public Integer getTotalCODAmountPast() {
+    public long getTotalCODAmountPast() {
         return totalCODAmountPast;
     }
 
-    public void setTotalCODAmountPast(Integer totalCODAmountPast) {
+    public void setTotalCODAmountPast(long totalCODAmountPast) {
         this.totalCODAmountPast = totalCODAmountPast;
     }
 
-    public Integer getTotalCODAmountPastNormal() {
+    public long getTotalCODAmountPastNormal() {
         return totalCODAmountPastNormal;
     }
 
-    public void setTotalCODAmountPastNormal(Integer totalCODAmountPastNormal) {
+    public void setTotalCODAmountPastNormal(long totalCODAmountPastNormal) {
         this.totalCODAmountPastNormal = totalCODAmountPastNormal;
     }
 
-    public Integer getTotalCODAmountPastCOD() {
+    public long getTotalCODAmountPastCOD() {
         return totalCODAmountPastCOD;
     }
 
-    public void setTotalCODAmountPastCOD(Integer totalCODAmountPastCOD) {
+    public void setTotalCODAmountPastCOD(long totalCODAmountPastCOD) {
         this.totalCODAmountPastCOD = totalCODAmountPastCOD;
     }
 
@@ -315,11 +299,11 @@ public class HomeCollectInfo {
         this.totalFeePastNormal = totalFeePastNormal;
     }
 
-    public Integer getTotalFeePastCOD() {
+    public long getTotalFeePastCOD() {
         return totalFeePastCOD;
     }
 
-    public void setTotalFeePastCOD(Integer totalFeePastCOD) {
+    public void setTotalFeePastCOD(long totalFeePastCOD) {
         this.totalFeePastCOD = totalFeePastCOD;
     }
 
@@ -401,5 +385,21 @@ public class HomeCollectInfo {
 
     public void setTotalQuantityTodayPA(Integer totalQuantityTodayPA) {
         this.totalQuantityTodayPA = totalQuantityTodayPA;
+    }
+
+    public String getLabelCollect() {
+        return labelCollect;
+    }
+
+    public void setLabelCollect(String labelCollect) {
+        this.labelCollect = labelCollect;
+    }
+
+    public int getType() {
+        return Type;
+    }
+
+    public void setType(int type) {
+        Type = type;
     }
 }

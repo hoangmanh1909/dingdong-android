@@ -535,8 +535,8 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getHomeData(String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
-        Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData("", "", postmanCode, routeCode);
+    public static void getHomeData(String fromDate,String toDate,String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
+        Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData(fromDate, toDate, postmanCode, routeCode);
         call.enqueue(callback);
     }
 

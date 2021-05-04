@@ -30,7 +30,8 @@
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
-            tools:text="Địa chỉ" />
+            tools:text="Địa chỉ"
+            android:foreground="?attr/selectableItemBackground"/>
 
         <com.ems.dingdong.views.CustomTextView
             android:id="@+id/tv_column_2"
@@ -41,6 +42,7 @@
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
-            tools:text="Số lượng" />
+            tools:text="Số lượng"
+            android:foreground="?attr/selectableItemBackground"/>
     </LinearLayout>
 </LinearLayout>

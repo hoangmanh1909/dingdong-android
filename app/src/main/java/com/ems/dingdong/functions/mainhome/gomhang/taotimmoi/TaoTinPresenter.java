@@ -159,8 +159,10 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     if (simpleResult.getErrorCode().equals("00")) {
                         mView.showSuccess(simpleResult.getMessage());
                         mView.hideProgress();
-                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
-                    mView.hideProgress();
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
                 }, throwable -> {
                     mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();

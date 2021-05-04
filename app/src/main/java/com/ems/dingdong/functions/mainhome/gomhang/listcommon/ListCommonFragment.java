@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 import android.content.Intent;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
@@ -29,8 +31,11 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -48,7 +53,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     ImageView imgView;
     @BindView(R.id.cb_all)
     CheckBox cbAll;
-    ArrayList<CommonObject> mList;
+    //    ArrayList<CommonObject> mList;
     @BindView(R.id.tv_accept_count)
     CustomBoldTextView tvAcceptCount;
     @BindView(R.id.tv_accept_reject)
@@ -64,11 +69,13 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     private String mDate;
     private String mOrder;
     private String mRoute;
-    private Calendar  mCalendar;
+    private Calendar mCalendar;
     private String fromDate;
     private String toDate;
     ArrayList<CommonObject> mListFilter;
     CommonObject itemAtPosition;
+    ArrayList<CommonObject> mListChua;
+    ArrayList<CommonObject> mListDa;
 
     public static ListCommonFragment getInstance() {
         return new ListCommonFragment();
@@ -91,25 +98,46 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }
             return;
         }
-        mList = new ArrayList<>();
-        mListFilter = new ArrayList<>();
-        mCalendar = Calendar.getInstance();
-        mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
-            @Override
-            public void onBindViewHolder(HolderView holder, final int position) {
-                super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        itemAtPosition = mListFilter.get(position);
-                        actualPosition = mList.indexOf(itemAtPosition);
-                        mPresenter.showDetailView(mList.get(actualPosition));
-                    }
-                });
-            }
-        };
+        if (mPresenter.getTab() == 0) {
+            mListChua = new ArrayList<>();
+            mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListChua) {
+                @Override
+                public void onBindViewHolder(HolderView holder, final int position) {
+                    super.onBindViewHolder(holder, position);
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            itemAtPosition = mListFilter.get(position);
+                            actualPosition = mList.indexOf(itemAtPosition);
+                            edtSearch.setText("");
+                            mPresenter.showDetailView(mList.get(actualPosition));
+                        }
+                    });
+                }
+            };
+        } else {
+            mListDa = new ArrayList<>();
+            mListFilter = new ArrayList<>();
+            mCalendar = Calendar.getInstance();
+            mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListDa) {
+                @Override
+                public void onBindViewHolder(HolderView holder, final int position) {
+                    super.onBindViewHolder(holder, position);
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            itemAtPosition = mListFilter.get(position);
+                            actualPosition = mList.indexOf(itemAtPosition);
+                            edtSearch.setText("");
+                            mPresenter.showDetailView(mList.get(actualPosition));
+                        }
+                    });
+                }
+            };
+        }
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
+
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
@@ -131,20 +159,40 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             cbAll.setVisibility(View.GONE);
             imgConfirm.setVisibility(View.GONE);
         }
-        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+
+        Date today = Calendar.getInstance().getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DATE, -3);
+
+        fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    for (CommonObject item : mList) {
-                        if ("P0".equals(item.getStatusCode()))
-                            item.setSelected(true);
-                    }
+                if (mPresenter.getTab() == 0) {
+                    if (isChecked) {
+                        for (CommonObject item : mListChua) {
+                            if ("P0".equals(item.getStatusCode()))
+                                item.setSelected(true);
+                        }
 
+                    } else {
+                        for (CommonObject item : mListChua) {
+                            item.setSelected(false);
+                        }
+                    }
                 } else {
-                    for (CommonObject item : mList) {
-                        item.setSelected(false);
+                    if (isChecked) {
+                        for (CommonObject item : mListDa) {
+                            if ("P0".equals(item.getStatusCode()))
+                                item.setSelected(true);
+                        }
+
+                    } else {
+                        for (CommonObject item : mListDa) {
+                            item.setSelected(false);
+                        }
                     }
                 }
                 mAdapter.notifyDataSetChanged();
@@ -167,13 +215,14 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }
         });
         edtSearch.setSelected(true);
+
     }
 
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 2) {
             new EditDayDialog(getActivity(), new OnChooseDay() {
                 @Override
-                public void onChooseDay(Calendar calFrom, Calendar calTo,int s) {
+                public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
@@ -183,25 +232,30 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     }
                 }
             }).show();
-        } /*else if (mPresenter.getType() == 3) {
-
-            new BaoPhatBangKeSearchDialog(getActivity(), mCalendar, new BaoPhatbangKeSearchCallback() {
-                @Override
-                public void onResponse(String fromDate, String order, String route) {
-                    mDate = fromDate;
-                    mCalendar.setTime(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-                    mOrder = order;
-                    mRoute = route;
-                    mPresenter.searchDeliveryPostman(mUserInfo.getiD(), fromDate, order, route);
-
-                }
-            }).show();
-        }*/
+        }
     }
 
     @Override
     public void onDisplay() {
         super.onDisplay();
+    }
+
+    public void onDisPlayFake(){
+
+        if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
+            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
+        }
+        if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
+            if (mPresenter.getType() == 1) {
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+            }
+            if (mPresenter.getType() == 2) {
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+            }
+        }
+    }
+
+    public void refreshLayout() {
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
         }
@@ -235,18 +289,34 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         }
     }
 
-    private void confirmAll() {
-        ArrayList<CommonObject> list = new ArrayList<>();
-        for (CommonObject item : mList) {
-            if ("P0".equals(item.getStatusCode()) && item.isSelected()) {
-                list.add(item);
+    public void confirmAll() {
+        if (mPresenter.getTab() == 0) {
+            ArrayList<CommonObject> list = new ArrayList<>();
+            for (CommonObject item : mListChua) {
+                if ("P0".equals(item.getStatusCode()) && item.isSelected()) {
+                    list.add(item);
+                }
+            }
+
+            if (!list.isEmpty()) {
+                mPresenter.confirmAllOrderPostman(list);
+            } else {
+                Toast.showToast(getActivity(), "Chưa tin nào được chọn");
+            }
+        } else {
+            ArrayList<CommonObject> list = new ArrayList<>();
+            for (CommonObject item : mListDa) {
+                if ("P0".equals(item.getStatusCode()) && item.isSelected()) {
+                    list.add(item);
+                }
+            }
+            if (!list.isEmpty()) {
+                mPresenter.confirmAllOrderPostman(list);
+            } else {
+                Toast.showToast(getActivity(), "Chưa tin nào được chọn");
             }
         }
-        if (!list.isEmpty()) {
-            mPresenter.confirmAllOrderPostman(list);
-        } else {
-            Toast.showToast(getActivity(), "Chưa tin nào được chọn");
-        }
+
     }
 
     @Override
@@ -254,12 +324,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
-        mList.clear(); //khắc phục search nhưng click chọn bị sai vị trí
-        mList.addAll(list);
-//        edtSearch.setVisibility(View.VISIBLE);
-//
-        mAdapter.notifyDataSetChanged();
-
+        ArrayList<CommonObject> mListChuatam = new ArrayList<>();
+        ArrayList<CommonObject> mListDatam = new ArrayList<>();
         edtSearch.setText(edtSearch.getText().toString());
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
@@ -268,13 +334,30 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 for (CommonObject commonObject : list) {
                     if (commonObject.getStatusCode().equals("P0")) {
                         countP0 += 1;
+                        mListChuatam.add(commonObject);
                     } else if (commonObject.getStatusCode().equals("P1")) {
                         countP1 += 1;
+                        mListDatam.add(commonObject);
                     }
                 }
             }
-            tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
-            tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
+
+            if (mPresenter.getTab() == 0) {
+                mListChua.clear();
+                mListChua.addAll(mListChuatam);
+                mPresenter.titleChanged(mListChua.size(), 0);
+                tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
+                tvRejectCount.setVisibility(View.VISIBLE);
+                tvAcceptCount.setVisibility(View.GONE);
+            } else {
+                mListDa.clear();
+                mListDa.addAll(mListDatam);
+                tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
+                tvRejectCount.setVisibility(View.GONE);
+                tvAcceptCount.setVisibility(View.VISIBLE);
+                mPresenter.titleChanged(mListDa.size(), 1);
+            }
+            mAdapter.notifyDataSetChanged();
         } else if (mPresenter.getType() == 2 || mPresenter.getType() == 4) {
             int countP1 = 0;
             int countP4P5 = 0;
@@ -282,20 +365,36 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 for (CommonObject commonObject : list) {
                     if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
                         countP1 += 1;
+                        mListChuatam.add(commonObject);
                     } else if (commonObject.getStatusCode().equals("P4") || commonObject.getStatusCode().equals("P6")) {
                         countP4P5 += 1;
+                        mListDatam.add(commonObject);
                     }
                 }
             }
-            tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
-            tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
+            if (mPresenter.getTab() == 0) {
+                mListChua.clear();
+                mListChua.addAll(mListChuatam);
+                tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
+                tvAcceptCount.setVisibility(View.GONE);
+                tvRejectCount.setVisibility(View.VISIBLE);
+                mPresenter.titleChanged(mListChua.size(), 0);
+            } else {
+                mListDa.clear();
+                mListDa.addAll(mListDatam);
+                tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
+                tvRejectCount.setVisibility(View.GONE);
+                tvAcceptCount.setVisibility(View.VISIBLE);
+                mPresenter.titleChanged(mListDa.size(), 1);
+            }
+            mAdapter.notifyDataSetChanged();
         }
+
     }
 
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
-//            edtSearch.setVisibility(View.GONE);
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
@@ -303,7 +402,9 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            mList.clear();
+                            if (mPresenter.getTab() == 0)
+                                mListChua.clear();
+                            else mListDa.clear();
                             mAdapter.notifyDataSetChanged();
                             sweetAlertDialog.dismiss();
                         }
@@ -322,7 +423,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            onDisplay();
+                            onDisPlayFake();
                         }
                     }).show();
         }

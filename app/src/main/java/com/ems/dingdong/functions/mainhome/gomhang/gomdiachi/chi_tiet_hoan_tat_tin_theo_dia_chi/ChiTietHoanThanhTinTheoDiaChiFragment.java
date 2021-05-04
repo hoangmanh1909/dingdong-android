@@ -164,7 +164,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     public void initLayout() {
         super.initLayout();
         radioBtn.setChecked(false);
-//        Log.d("thanshasdasd",new Gson().toJson(mPresenter.getCommonObject()));
         llUnsuccess.setVisibility(View.GONE);
         llFailure.setVisibility(View.GONE);
         layoutReasonUnSuccess.setVisibility(View.GONE);
@@ -195,6 +194,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             parcelCodeInfo.setTrackingCode("");
             parcelCodeInfo.setOrderCode(mListCommonObject.getCode());
             parcelCodeInfo.setOrderId(mListCommonObject.getiD());
+            parcelCodeInfo.setOrderPostmanId(mListCommonObject.getOrderPostmanID());
             commonObjects.add(parcelCodeInfo);
         } else {
             int soluongbuugui = 0;
@@ -503,16 +503,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         String.format("", FluentIterable.from(mListHoanTatNhieuTin)
                 .filter(s -> s.getStatus() == Constants.ADDRESS_SUCCESS));
 
-//        if (commonObjects.size() == 1) {
-//            for (ParcelCodeInfo info : commonObjects) {
-//                if (!TextUtils.isEmpty(info.getTrackingCode()))
-//                    if (tam == 0) {
-//                        Toast.showToast(getViewContext(), "Vui lòng chọn bưu gửi");
-//                        return;
-//                    }
-//            }
-//        }
-
         int soBuugu = 0;
         int tam1 = 0;
         int totalGram = 0;
@@ -544,11 +534,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                             arrImage[i] = listImage.get(i).getText();
                     }
                     mFile = TextUtils.join(";", arrImage);
-//                    if (mListHoanTatNhieuTin.isEmpty()) {
-//                        collectOderPostmanNoPostage();
-//                    } else {
                     collectAllOrderPostman();
-//                    }
                 }).show();
     }
 
@@ -617,7 +603,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             if (info.isSelected() == true) {
                 hoanTatTinRequest.setEmployeeID(mUserInfo.getiD());
                 hoanTatTinRequest.setOrderPostmanID(info.getOrderPostmanId());
-
                 hoanTatTinRequest.setOrderID(info.getOrderId());
                 hoanTatTinRequest.setFile(mFile);
                 hoanTatTinRequest.setConfirmSignature(mSign);
@@ -668,12 +653,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             list.add(hoanTatTinRequest);
         }
 
-        Log.d("btnKHiem", new
-
-                Gson().
-
-                toJson(list));
-        mPresenter.collectAllOrderPostman(list);
+        Log.d("btnKHiem", new Gson().toJson(list));
     }
 
     private void showUIReasonUnSuccess() {

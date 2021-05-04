@@ -5,15 +5,20 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,6 +61,33 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
             });
         }
 
+        void setItemClickListener1(int newDeliveryType, int notDeliveryType) {
+            Intent intent1 = new Intent(mContext, XacNhanDiaChiActivity.class);
+            tv_column_1.setOnClickListener(v -> {
+                intent1.putExtra(Constants.TYPE_GOM_HANG, 1);
+                mContext.startActivity(intent1);
+            });
+            Intent intent2 = new Intent(mContext, ListCommonActivity.class);
+            tv_column_2.setOnClickListener(v -> {
+                intent2.putExtra(Constants.TYPE_GOM_HANG, 1);
+                mContext.startActivity(intent2);
+            });
+        }
+
+        void setItemClickListener2(int newDeliveryType, int notDeliveryType) {
+            Intent intent1 = new Intent(mContext, XacNhanDiaChiActivity.class);
+            tv_column_1.setOnClickListener(v -> {
+                intent1.putExtra(Constants.TYPE_GOM_HANG, 4);
+                mContext.startActivity(intent1);
+            });
+            Intent intent2 = new Intent(mContext, ListCommonActivity.class);
+            tv_column_2.setOnClickListener(v -> {
+                intent2.putExtra(Constants.TYPE_GOM_HANG, 2);
+                mContext.startActivity(intent2);
+            });
+        }
+
+
         public void bindView(Object model, int position) {
             HomeCollectInfo homeInfo = (HomeCollectInfo) model;
             Intent intent = new Intent(mContext, ListBaoPhatBangKeActivity.class);
@@ -66,11 +98,14 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                     tv_column_2.setText(homeInfo.getTotalAddressNotCollect());
                     tv_column_1.setTypeface(null, Typeface.BOLD);
                     tv_column_2.setTypeface(null, Typeface.BOLD);
+
                 } else if (position == 1) {
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(homeInfo.getTotalAddressCollect());
                     tv_column_2.setText(homeInfo.getTotalAddressNotCollect());
+                    setItemClickListener1(Constants.DELIVERY_LIST_TYPE_NORMAL_NEW, Constants.DELIVERY_LIST_TYPE_NORMAL);
                 } else if (position == 2) {
+                    setItemClickListener2(Constants.DELIVERY_LIST_TYPE_NORMAL_NEW, Constants.DELIVERY_LIST_TYPE_NORMAL);
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalLadingCollect())));
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalLadingNotCollect())));
@@ -81,7 +116,6 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                 }
             } else if (homeInfo.getType() == 1) {
                 if (position == 0) {
-                    setItemClickListener(Constants.DELIVERY_LIST_TYPE_NORMAL_NEW, Constants.DELIVERY_LIST_TYPE_NORMAL);
                     tv_label.setText("");
                     tv_column_1.setText(homeInfo.getTotalQuantityToday());
                     tv_column_2.setText(homeInfo.getTotalQuantityPast());

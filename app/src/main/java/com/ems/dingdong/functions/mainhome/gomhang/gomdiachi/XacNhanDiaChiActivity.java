@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.base.DingDongActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.tabtheodiachi.TabListDiaChiPresenter;
 import com.ems.dingdong.utiles.Constants;
 
 public class XacNhanDiaChiActivity extends DingDongActivity {
@@ -21,6 +22,6 @@ public class XacNhanDiaChiActivity extends DingDongActivity {
                 }
             }
         }
-        return (ViewFragment) new XacNhanDiaChiPresenter(this).setType(intent.getIntExtra(Constants.TYPE_GOM_HANG,type)).getFragment();
+        return (ViewFragment) new TabListDiaChiPresenter(this).setType(intent.getIntExtra(Constants.TYPE_GOM_HANG,type)).getFragment();
     }
 }

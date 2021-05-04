@@ -89,9 +89,6 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 } else {
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (row.getCode().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }

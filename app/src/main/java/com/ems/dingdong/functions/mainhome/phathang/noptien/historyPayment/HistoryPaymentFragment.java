@@ -110,6 +110,10 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
     @Override
     public void onDisplay() {
         super.onDisplay();
+
+    }
+
+    public  void onDisplayFake(){
         DataHistoryPayment payment = new DataHistoryPayment();
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         payment.setRouteCode(routeCode);

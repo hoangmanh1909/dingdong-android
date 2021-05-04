@@ -9,13 +9,17 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.tabliscommon.TabListCommonContract;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
+import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
@@ -36,8 +40,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     }
 
     int mType;
-
-
+    int mTab;
+    private ListCommonContract.OnTabListener tabListener;
     @Override
     public ListCommonContract.View onCreateView() {
         return ListCommonFragment.getInstance();
@@ -171,5 +175,46 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     @Override
     public void showBarcode(BarCodeCallback barCodeCallback) {
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    @Override
+    public int getTab() {
+        return mTab;
+    }
+
+
+    @Override
+    public int getPositionTab() {
+        return 0;
+    }
+
+    @Override
+    public void onCanceled() {
+        tabListener.onCanceledDelivery();
+    }
+
+    @Override
+    public void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList) {
+
+    }
+
+    @Override
+    public void titleChanged(int quantity, int currentSetTab) {
+        tabListener.onQuantityChange(quantity, currentSetTab);
+    }
+
+    @Override
+    public int getCurrentTab() {
+        return tabListener.getCurrentTab();
+    }
+
+    public ListCommonPresenter setTypeTab(int mTab) {
+        this.mTab = mTab;
+        return this;
+    }
+
+    public ListCommonPresenter setOnTabListener(ListCommonContract.OnTabListener listener) {
+        this.tabListener = listener;
+        return this;
     }
 }

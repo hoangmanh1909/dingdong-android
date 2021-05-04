@@ -9,12 +9,15 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonContract;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -37,6 +40,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     }
 
     int mType;
+    int mTab;
+    private XacNhanDiaChiContract.OnTabListener tabListener;
 
     @Override
     public XacNhanDiaChiContract.View onCreateView() {
@@ -74,8 +79,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     ArrayList<CommonObject> list = response.body().getList();
                     ArrayList<CommonObject> listG = new ArrayList<>();
                     for (CommonObject item : list) {
-                        if (item.getStatusCode().equals("P1")) item.setStatusCode("P5");
-                        if (item.getStatusCode().equals("P4")) item.setStatusCode("P6");
+                        if (item.getStatusCode().equals("P5")) item.setStatusCode("P1");
+                        if (item.getStatusCode().equals("P6")) item.setStatusCode("P4");
 
                         CommonObject itemExists = Iterables.tryFind(listG,
                                 input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
@@ -206,4 +211,42 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
         new ChiTietHoanThanhTinTheoDiaChiPresenter(mContainerView).setCommonObject(commonObject).pushView();
     }
 
+    @Override
+    public int getTab() {
+        return mTab;
+    }
+
+    @Override
+    public int getPositionTab() {
+        return 0;
+    }
+
+    @Override
+    public void onCanceled() {
+        tabListener.onCanceledDelivery();
+    }
+
+    @Override
+    public void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList) {
+
+    }
+
+    @Override
+    public void titleChanged(int quantity, int currentSetTab) {
+        tabListener.onQuantityChange(quantity, currentSetTab);
+    }
+
+    @Override
+    public int getCurrentTab() {
+        return tabListener.getCurrentTab();
+    }
+    public XacNhanDiaChiPresenter setTypeTab(int mTab) {
+        this.mTab = mTab;
+        return this;
+    }
+
+    public XacNhanDiaChiPresenter setOnTabListener(XacNhanDiaChiContract.OnTabListener listener) {
+        this.tabListener = listener;
+        return this;
+    }
 }

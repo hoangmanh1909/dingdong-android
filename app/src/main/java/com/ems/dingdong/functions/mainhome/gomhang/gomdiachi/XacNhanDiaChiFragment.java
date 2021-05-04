@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +61,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     ImageView imgView;
     @BindView(R.id.cb_all)
     CheckBox cbAll;
-    ArrayList<CommonObject> mList;
+    ArrayList<CommonObject> mListChua;
+    ArrayList<CommonObject> mListDa;
     List<ParcelCodeInfo> mListParcel;
     List<ConfirmOrderPostman> mListConfirm;
     @BindView(R.id.tv_accept_count)
@@ -115,35 +117,55 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             }
             return;
         }
-        mList = new ArrayList<>();
-        mListParcel = new ArrayList<>();
-        mListConfirm = new ArrayList<>();
-        mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mList) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(v -> {
+        if (mPresenter.getTab() == 0) {
+            mListChua = new ArrayList<>();
+            mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mListChua) {
+                @Override
+                public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                    super.onBindViewHolder(holder, position);
+                    holder.itemView.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
-                    if (mPresenter.getType() == 1) {
-                        //holder.itemView.setOnClickListener(view -> {
-                        holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                        //});
-                    } else {
-                        mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                        if (mPresenter.getType() == 1) {
+                            //holder.itemView.setOnClickListener(view -> {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                            //});
+                        } else {
+                            edtSearch.setText("");
+                            mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                        }
+                    });
 
-                    }
-                });
+                }
+            };
+        } else {
+            mListDa = new ArrayList<>();
+            mAdapter = new XacNhanDiaChiAdapter(getActivity(), mPresenter.getType(), mListDa) {
+                @Override
+                public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                    super.onBindViewHolder(holder, position);
+                    holder.itemView.setOnClickListener(v -> {
+                       /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
+                        if (mPresenter.getType() == 1) {
+                            //holder.itemView.setOnClickListener(view -> {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                            //});
+                        } else {
+                            edtSearch.setText("");
+                            mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                        }
+                    });
 
-            }
-        };
+                }
+            };
+        }
 
-        RecyclerUtils.setupVerticalRecyclerView(
-
-                getViewContext(), recycler);
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -155,34 +177,48 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             llGomHang.setVisibility(View.VISIBLE);
             cbAll.setVisibility(View.VISIBLE);
             imgConfirm.setVisibility(View.VISIBLE);
-        } else if (mPresenter.getType() == 2) {
-            tvTitle.setText("Hoàn tất tin");
+        } else if (mPresenter.getType() == 4) {
+            tvTitle.setText("Hoàn tất tin theo địa chỉ");
             llGomHang.setVisibility(View.VISIBLE);
             cbAll.setVisibility(View.GONE);
             imgConfirm.setVisibility(View.GONE);
         }
-
-        fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().
-
-                getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().
-
-                getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        Date today = Calendar.getInstance().getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DATE, -3);
+//        Log.d("asdasdasdsa",mPresenter.getType()+"");
+        fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (mPresenter.getType() == 1) {
             cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        for (CommonObject item : mList) {
-                            if ("P0".equals(item.getStatusCode()))
-                                item.setSelected(true);
+                    if (mPresenter.getTab() == 0) {
+                        if (isChecked) {
+                            for (CommonObject item : mListChua) {
+                                if ("P0".equals(item.getStatusCode()))
+                                    item.setSelected(true);
+                            }
+                        } else {
+                            for (CommonObject item : mListChua) {
+                                item.setSelected(false);
+                            }
                         }
+                        mAdapter.notifyDataSetChanged();
                     } else {
-                        for (CommonObject item : mList) {
-                            item.setSelected(false);
+                        if (isChecked) {
+                            for (CommonObject item : mListDa) {
+                                if ("P0".equals(item.getStatusCode()))
+                                    item.setSelected(true);
+                            }
+                        } else {
+                            for (CommonObject item : mListDa) {
+                                item.setSelected(false);
+                            }
                         }
+                        mAdapter.notifyDataSetChanged();
                     }
-                    mAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -225,6 +261,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
+        onDisPlayFaKe();
+    }
+
+    public void onDisPlayFaKe() {
         itemClick = null;
         itemAtPosition = null;
         if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
@@ -263,7 +303,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         }
     }
 
-    private void confirmAll() {
+    public void confirmAll() {
         ArrayList<CommonObject> list = new ArrayList<>();
         for (CommonObject item : mAdapter.getListFilter()) {//mList
             if ("P0".equals(item.getStatusCode()) && item.isSelected()) {
@@ -277,7 +317,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         }
     }
 
-    private void confirmParcelCode() {
+    public void confirmParcelCode() {
         int gram = 0;
         int totalGram = 0;
         String code = "";
@@ -287,10 +327,19 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         mListHoanTatNhieuTin = new ArrayList<>();
         ArrayList<ParcelCodeInfo> listParcel = new ArrayList<>();
 
-        for (CommonObject commonObject : mList) {
-            if (commonObject.isSelected()) {
-                itemAtPosition = commonObject;
-                break;
+        if (mPresenter.getTab() == 0) {
+            for (CommonObject commonObject : mListChua) {
+                if (commonObject.isSelected()) {
+                    itemAtPosition = commonObject;
+                    break;
+                }
+            }
+        } else {
+            for (CommonObject commonObject : mListDa) {
+                if (commonObject.isSelected()) {
+                    itemAtPosition = commonObject;
+                    break;
+                }
             }
         }
         if (itemAtPosition == null) {
@@ -351,11 +400,11 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
-        mList.clear();
-        mList.addAll(list);
+//        mList.clear();
+//        mList.addAll(list);
+        ArrayList<CommonObject> mListChuatam = new ArrayList<>();
+        ArrayList<CommonObject> mListDatam = new ArrayList<>();
         itemAtPosition = null;
-//        edtSearch.setVisibility(View.VISIBLE);
-        mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
             int countP1 = 0;
@@ -363,13 +412,31 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 for (CommonObject commonObject : list) {
                     if (commonObject.getStatusCode().equals("P0")) {
                         countP0 += 1;
+                        mListChuatam.add(commonObject);
                     } else if (commonObject.getStatusCode().equals("P1")) {
                         countP1 += 1;
+                        mListDatam.add(commonObject);
                     }
                 }
             }
-            tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
-            tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
+            if (mPresenter.getTab() == 0) {
+                mListChua.clear();
+                mListChua.addAll(mListChuatam);
+                mPresenter.titleChanged(mListChua.size(), 0);
+                tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
+                tvAcceptCount.setVisibility(View.GONE);
+                tvRejectCount.setVisibility(View.VISIBLE);
+                mAdapter.notifyDataSetChanged();
+            } else {
+                mListDa.clear();
+                mListDa.addAll(mListDatam);
+                tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
+                tvRejectCount.setVisibility(View.GONE);
+                tvAcceptCount.setVisibility(View.VISIBLE);
+                mPresenter.titleChanged(mListDa.size(), 1);
+                mAdapter.notifyDataSetChanged();
+            }
+
         } else if (mPresenter.getType() == 4 || mPresenter.getType() == 2) {//2
             int countP1 = 0;
             int countP4P5 = 0;
@@ -377,13 +444,32 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 for (CommonObject commonObject : list) {
                     if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
                         countP1 += 1;
+                        mListChuatam.add(commonObject);
                     } else if (commonObject.getStatusCode().equals("P4") || commonObject.getStatusCode().equals("P6")) {
                         countP4P5 += 1;
+                        mListDatam.add(commonObject);
                     }
                 }
             }
-            tvRejectCount.setText(String.format("Tin chưa hoàn tất : %s", countP1));
-            tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
+            if (mPresenter.getTab() == 0) {
+                mListChua.clear();
+                mListChua.addAll(mListChuatam);
+                tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
+                tvAcceptCount.setVisibility(View.GONE);
+                tvRejectCount.setVisibility(View.VISIBLE);
+                mPresenter.titleChanged(mListChua.size(), 0);
+                mAdapter.notifyDataSetChanged();
+
+            } else {
+                mListDa.clear();
+                mListDa.addAll(mListDatam);
+                tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
+                tvRejectCount.setVisibility(View.GONE);
+                tvAcceptCount.setVisibility(View.VISIBLE);
+                mPresenter.titleChanged(mListDa.size(), 1);
+                mAdapter.notifyDataSetChanged();
+
+            }
         }
     }
 
@@ -398,9 +484,15 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            mList.clear();
-                            mAdapter.notifyDataSetChanged();
+                            if (mPresenter.getTab() == 0) {
+                                mListChua.clear();
+                                mAdapter.notifyDataSetChanged();
+                            } else {
+                                mListDa.clear();
+                                mAdapter.notifyDataSetChanged();
+                            }
                             sweetAlertDialog.dismiss();
+
                         }
                     }).show();
         }

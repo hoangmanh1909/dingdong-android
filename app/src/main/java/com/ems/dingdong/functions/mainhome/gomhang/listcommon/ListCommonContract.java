@@ -10,13 +10,14 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 
 import java.util.ArrayList;
 
 /**
  * The CommonObject Contract
  */
-interface ListCommonContract {
+public interface ListCommonContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void searchOrderPostmanCollect(String orderPostmanID,
@@ -64,6 +65,53 @@ interface ListCommonContract {
         void confirmAllOrderPostman(ArrayList<CommonObject> list);
 
         void showBarcode(BarCodeCallback barCodeCallback);
+
+        int getTab();
+
+        int getPositionTab();
+
+        /**
+         * Get cancel delivery record.
+         *
+         * @param postmanCode postman code from UserInfo
+         * @param routeCode   route code from RouteInfo
+         * @param fromDate    from date.
+         * @param toDate      to date
+         * @param ladingCode  lading code.
+         */
+        /**
+         * cancel deliver.
+         *
+         * @param dingDongGetCancelDeliveryRequestList list cancel delivery chosen.
+         */
+        /**
+         * Event refresh nearby tab.
+         */
+        void onCanceled();
+
+        void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList);
+
+        /**
+         * Event set title count.
+         */
+        void titleChanged(int quantity, int currentSetTab);
+
+        int getCurrentTab();
+
+    }
+
+    interface OnTabListener {
+        /**
+         * Event when tab cancel delivery success.
+         */
+        void onCanceledDelivery();
+
+        /**
+         * Event when title change.
+         */
+        void onQuantityChange(int quantity, int currentSetTab);
+
+        int getCurrentTab();
     }
 }
 

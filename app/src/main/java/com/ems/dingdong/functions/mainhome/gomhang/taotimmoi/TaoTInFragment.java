@@ -32,6 +32,7 @@ import com.ems.dingdong.model.WardModels;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
@@ -148,10 +149,6 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         } else {
             edt_gioyeucau.setText(String.format("%s:%s AM", mHour, mMinute));
         }
-
-
-        edt_search.setText("20191108084134");
-
     }
 
 
@@ -177,7 +174,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         nguoilienhe = edt_nguoilienhe.getText();
     }
 
-    void setNull() {
+    public void setNull() {
         edt_makhachhang.setText("");
         edt_tenkhachhang.setText("");
         edt_sodienthoai.setText("");
@@ -198,10 +195,10 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
 
     void sumit() {
         anhxa();
-        if (TextUtils.isEmpty(maKhachhang)) {
-            Toast.showToast(getViewContext(), "Vui lòng nhập mã khách hàng");
-            return;
-        }
+//        if (TextUtils.isEmpty(maKhachhang)) {
+//            Toast.showToast(getViewContext(), "Vui lòng nhập mã khách hàng");
+//            return;
+//        }
         if (TextUtils.isEmpty(tenKhachhang)) {
             Toast.showToast(getViewContext(), "Vui lòng nhập tên khách hàng");
             return;
@@ -501,7 +498,9 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        calFrom.set(year, monthOfYear, dayOfMonth);
         edt_ngayyeucau.setText(TimeUtils.convertDateToString(calFrom.getTime(), TimeUtils.DATE_FORMAT_5));
         date = DateTimeUtils.convertDateToString(calendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+
     }
 }
