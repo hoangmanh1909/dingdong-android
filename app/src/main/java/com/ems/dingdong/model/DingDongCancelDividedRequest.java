@@ -35,6 +35,18 @@ public class DingDongCancelDividedRequest {
     @Expose
     private String imageDelivery;
 
+    @SerializedName("ToPOCode")
+    @Expose
+    private String ToPOCode;
+
+    public String getToPOCode() {
+        return ToPOCode;
+    }
+
+    public void setToPOCode(String toPOCode) {
+        ToPOCode = toPOCode;
+    }
+
     public String getAmndPOCode() {
         return amndPOCode;
     }

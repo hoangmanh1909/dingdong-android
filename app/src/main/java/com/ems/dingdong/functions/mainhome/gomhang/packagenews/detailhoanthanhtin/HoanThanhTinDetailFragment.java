@@ -52,6 +52,7 @@ import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -119,6 +120,12 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     CustomEditText edtDescription;
     @BindView(R.id.edt_Quantity)
     CustomEditText edtQuantity;
+    @BindView(R.id.list_ds)
+    LinearLayout list_ds;
+    @BindView(R.id.chupanh)
+    LinearLayout chupanh;
+    @BindView(R.id.btn_sign)
+    CustomTextView btn_sign;
     private String mUser;
     private CommonObject mHoanThanhTin;
     private String mFile = "";
@@ -156,6 +163,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 });
             }
         };
+
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerScan);
         recyclerScan.setAdapter(mAdapter);
         edtCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -354,14 +362,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(), new HoanThanhTinCallback() {
                         @Override
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
-                                               String pickUpTime, ArrayList<Integer> ShipmentID) {
+                                               String pickUpTime, ArrayList<Integer> ShipmentID, String noidung) {
                             if (getActivity() != null) {
-                               /* if ("P4".equals(statusCode)) {
-                                    if (mAdapter.getItemCount() == 0) {
-                                        Toast.showToast(getActivity(), "Chưa scan bưu gửi trong tin gom");
-                                        return;
-                                    }
-                                }*/
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 if (!userJson.isEmpty()) {
@@ -381,6 +383,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setShipmentCode(scans.toString());
                                     hoanTatTinRequest.setReasonCode(reasonInfo != null ? reasonInfo.getCode() : "");
                                     hoanTatTinRequest.setShipmentIds(ShipmentID);
+                                    hoanTatTinRequest.setNoteReason(noidung);
+                                    com.ems.dingdong.utiles.Log.d("asdasjdg12431723", new Gson().toJson(hoanTatTinRequest));
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
                                 }
                             }
@@ -477,8 +481,16 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")
                 || commonObject.getStatusCode().equals("P7")) {
             btnConfirm.setEnabled(true);
+            list_ds.setVisibility(View.VISIBLE);
+            chupanh.setVisibility(View.VISIBLE);
+            btn_sign.setVisibility(View.VISIBLE);
+            btnConfirm.setVisibility(View.VISIBLE);
         } else {
             btnConfirm.setEnabled(false);
+            btnConfirm.setVisibility(View.GONE);
+            list_ds.setVisibility(View.GONE);
+            chupanh.setVisibility(View.GONE);
+            btn_sign.setVisibility(View.GONE);
         }
         mHoanThanhTin = commonObject;
         tvAssignDateTime.setText(commonObject.getAssignDateTime());

@@ -7,6 +7,16 @@ public class StatisticDebitDetailResponse {
     private String ladingCode;
     @SerializedName("DebitAmount")
     private String amount;
+    @SerializedName("FeeTypeName")
+    private String FeeTypeName;
+
+    public String getFeeTypeName() {
+        return FeeTypeName;
+    }
+
+    public void setFeeTypeName(String feeTypeName) {
+        FeeTypeName = feeTypeName;
+    }
 
     public String getLadingCode() {
         return ladingCode;

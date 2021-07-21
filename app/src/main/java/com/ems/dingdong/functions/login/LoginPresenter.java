@@ -27,6 +27,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -58,14 +60,14 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void login(String mobileNumber, String signCode) {
-        mInteractor.login(mobileNumber, signCode,BuildConfig.VERSION_NAME,"DD_ANDROID", new CommonCallback<LoginResult>((Activity) mContainerView) {
+        mInteractor.login(mobileNumber, signCode, BuildConfig.VERSION_NAME, "DD_ANDROID", new CommonCallback<LoginResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<LoginResult> call, Response<LoginResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     getSolutions();
                     getReasons();
-
+                    getList(response.body().getUserInfo().getUnitCode());
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
                     sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, response.body().getUserInfo().geteWalletPaymentToken());
@@ -108,7 +110,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void getVersion() {
-        mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION","","", new CommonCallback<ResponseObject>((Activity) mContainerView) {
+        mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION", "", "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
                 super.onSuccess(call, response);
@@ -123,12 +125,11 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
                         String versionApp = BuildConfig.VERSION_NAME;
 
-                        if(!version.equals(versionApp))
-                        {
-                            mView.showVersion(version,urlDowload);
+                        if (!version.equals(versionApp)) {
+                            mView.showVersion(version, urlDowload);
                         }
 
-                    }catch (JSONException err){
+                    } catch (JSONException err) {
                         Log.d("Error", err.toString());
                         mView.showError("Lỗi xử lý dữ liệu");
                     }
@@ -146,6 +147,21 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
         });
     }
 
+    @Override
+    public void getList(String data) {
+        mView.showProgress();
+        mInteractor.getList(data)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                        sharedPref.putString(Constants.KEY_BUU_CUC_HUYEN, simpleResult.getData());
+                    }
+                });
+
+    }
+
     private void getPostOfficeByCode(String unitCode, String postmanID) {
         mInteractor.getPostOfficeByCode(unitCode, postmanID, new CommonCallback<PostOfficeResult>((Activity) mContainerView) {
             @Override
@@ -157,6 +173,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_HOTLINE_NUMBER, response.body().getPostOffice().getHolineNumber());
                     sharedPref.putString(Constants.KEY_POST_OFFICE, NetWorkController.getGson().toJson(response.body().getPostOffice()));
+
                     mView.gotoHome();
                 } else {
                     mView.showError(response.body().getMessage());
@@ -193,7 +210,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                                 realm.copyToRealm(info);
                                 realm.commitTransaction();
                             }
-                        }catch (NullPointerException nullPointerException){}
+                        } catch (NullPointerException nullPointerException) {
+                        }
 
                     }
                 } else {

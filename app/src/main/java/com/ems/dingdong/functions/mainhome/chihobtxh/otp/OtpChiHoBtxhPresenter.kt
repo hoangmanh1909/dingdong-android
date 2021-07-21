@@ -2,17 +2,19 @@ package com.ems.dingdong.functions.mainhome.chihobtxh.otp
 
 import android.app.Activity
 import android.content.Context
+import android.text.TextUtils
 import com.core.base.viper.Presenter
 import com.core.base.viper.interfaces.ContainerView
 import com.ems.dingdong.BuildConfig
 import com.ems.dingdong.callback.CommonCallback
 import com.ems.dingdong.functions.mainhome.chihobtxh.payment.PaymentChiHoBtxhPresenter
 import com.ems.dingdong.model.SimpleResult
+import com.ems.dingdong.model.UserInfo
 import com.ems.dingdong.model.request.SeaBankPaymentRequest
 import com.ems.dingdong.model.response.SeaBankInquiryModel
 import com.ems.dingdong.model.response.SeaBankInquiryResponse
-import com.ems.dingdong.utiles.Toast
-import com.ems.dingdong.utiles.Utils
+import com.ems.dingdong.network.NetWorkController
+import com.ems.dingdong.utiles.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
@@ -25,7 +27,7 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
 
     private lateinit var mSeaBankPaymentRequest: SeaBankPaymentRequest
     private lateinit var mSeaBankInquiryModel: SeaBankInquiryModel
-
+    private lateinit var type :String
     override fun onCreateView(): OtpChiHoBtxhContract.View {
         return OtpChiHoBtxhFragment.instance
     }
@@ -38,9 +40,11 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
         return OtpChiHoBtxhInteractor(this)
     }
 
-    fun setData(seaBankPaymentRequest: SeaBankPaymentRequest, seaBankInquiryModel: SeaBankInquiryModel): OtpChiHoBtxhPresenter {
+    fun setData(seaBankPaymentRequest: SeaBankPaymentRequest, seaBankInquiryModel: SeaBankInquiryModel, int: Int): OtpChiHoBtxhPresenter {
         mSeaBankPaymentRequest = seaBankPaymentRequest
         mSeaBankInquiryModel = seaBankInquiryModel
+        type = int.toString();
+        Log.d("tasdasdad",type);
         return this
     }
 
@@ -53,6 +57,8 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
     }
 
     override fun payment(otp: String) {
+//        mSeaBankPaymentRequest.ProviderACNTCode ="2205"
+
         mSeaBankPaymentRequest.apply {
             OTPNumber = otp
             Signature = Utils.SHA256(MobileNumber + OTPNumber + BuildConfig.PRIVATE_KEY).toUpperCase(Locale.getDefault())
@@ -76,5 +82,15 @@ class OtpChiHoBtxhPresenter(containerView: ContainerView) : Presenter<OtpChiHoBt
                 mView.showAlertDialog(message)
             }
         })
+    }
+
+    override fun int(): String {
+        return type;
+    }
+
+
+    fun setSeaBankInquiryModel(seaBankInquiryModel: SeaBankInquiryModel): OtpChiHoBtxhPresenter {
+        mSeaBankInquiryModel = seaBankInquiryModel
+        return this
     }
 }

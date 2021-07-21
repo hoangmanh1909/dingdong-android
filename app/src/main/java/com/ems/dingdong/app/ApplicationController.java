@@ -18,7 +18,6 @@ import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.portsip.PortSipSdk;
 import com.sip.cmc.SipCmc;
 import com.sip.cmc.network.UserDataManager;
 
@@ -34,8 +33,8 @@ public class ApplicationController extends MultiDexApplication {
 
     static ApplicationController applicationController;
     private PortSipService portSipService;
-    private boolean mBound = false;
-    public PortSipSdk portSipSdk;
+    private boolean mBound = true;
+//    public PortSipSdk portSipSdk;
     public boolean mConference = false;
 
     private ServiceConnection connection = new ServiceConnection() {

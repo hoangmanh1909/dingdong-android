@@ -89,6 +89,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     int mPositionClick = -1;
     ParcelCodeInfo mParcelCodeInfo;
     CommonObject itemClick;
+    int type = 0;
 
     public static XacNhanDiaChiFragment getInstance() {
         return new XacNhanDiaChiFragment();
@@ -126,15 +127,14 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     holder.itemView.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
-
                         if (mPresenter.getType() == 1) {
                             //holder.itemView.setOnClickListener(view -> {
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             //});
                         } else {
-                            edtSearch.setText("");
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+//                            edtSearch.setText("");
                         }
                     });
 
@@ -156,8 +156,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             //});
                         } else {
-                            edtSearch.setText("");
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+//                            edtSearch.setText("");
                         }
                     });
 
@@ -186,7 +186,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         Date today = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
-        cal.add(Calendar.DATE, -3);
+        cal.add(Calendar.DATE, -2);
 //        Log.d("asdasdasdsa",mPresenter.getType()+"");
         fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -249,9 +249,9 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
-                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, type);
                     } else if (mPresenter.getType() == 4) {//2
-                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, type);
                     }
                 }
             }).show();
@@ -269,10 +269,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         itemAtPosition = null;
         if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
             if (mPresenter.getType() == 1) {
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, type);
             }
             if (mPresenter.getType() == 4) {//2
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, type);
             }
         }
     }
@@ -366,42 +366,15 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 mListHoanTatNhieuTin.add(tin);
             }
         }
-
-//        if (itemAtPosition.getListParcelCode().size() > 0 && listParcel.size() == 0) {
-//            Toast.showToast(getViewContext(), "Vui lòng chọn bưu gửi trước khi hoàn tất");
-//            return;
-//        }
-
-
-//        if (!listParcel.isEmpty()) {
         mPresenter.showConfirmParcelAddress(itemAtPosition, listParcel);
-//        } else {
-            /*for (CommonObject item : mAdapter.getListFilter()) {
-                matin = item.getCode();
-                if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")) {
-                    mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
-                }
-//            }*/
-//            if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") /*|| itemAtPosition.getStatusCode().equals("P6")*/) {
-//            mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
-//                matin = itemAtPosition.getCode();
-//                EventBus.getDefault().postSticky(new CustomCode(matin));
-//            }
-//        }
         EventBus.getDefault().postSticky(new CustomListHoanTatNhieuTin(mListHoanTatNhieuTin, totalGram, listCode, matin));
-        //Log.d("123123", "EventBus.getDefault() EventBus.getDefault(): " + "mListHoanTatNhieuTin " + mListHoanTatNhieuTin + " " + "gram " + totalGram + " " + "mListCode " + listCode + " " + "matin " + matin);
-        //EventBus.getDefault().postSticky(new CustomCode(matin));
-
-        /*else if (itemAtPosition.getStatusCode().equals("P1") || itemAtPosition.getStatusCode().equals("P5") || itemAtPosition.getStatusCode().equals("P6")){
-            //Toast.showToast(getActivity(), "Chưa tin nào được chọn");
-            mPresenter.showConfirmParcelAddressNoPostage(itemAtPosition);
-        }*/
     }
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
 //        mList.clear();
 //        mList.addAll(list);
+        type = 1;
         ArrayList<CommonObject> mListChuatam = new ArrayList<>();
         ArrayList<CommonObject> mListDatam = new ArrayList<>();
         itemAtPosition = null;
@@ -477,6 +450,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     public void showError(String message) {
         if (getActivity() != null) {
 //            edtSearch.setVisibility(View.GONE);
+            type = 1;
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")

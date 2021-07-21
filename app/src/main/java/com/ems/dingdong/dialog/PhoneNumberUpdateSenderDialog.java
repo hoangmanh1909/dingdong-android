@@ -8,6 +8,7 @@ import android.view.View;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.callback.PhoneUpdateCallback;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -26,15 +27,16 @@ public class PhoneNumberUpdateSenderDialog extends Dialog {
     private DismissDialogCallback dismissCallback;
     private Context mContext;
     private String phoneSenders;
-
+    PhoneUpdateCallback callback;
     @BindView(R.id.edt_phone_sender)
     CustomEditText edtPhoneSender;
 
-    public PhoneNumberUpdateSenderDialog(Context context, String phoneSender,int typeCall, PhoneCallback reasonCallback) {
+    public PhoneNumberUpdateSenderDialog(Context context, String phoneSender, int typeCall, PhoneCallback reasonCallback, PhoneUpdateCallback callback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
         this.phoneSenders = phoneSender;
         this.mContext = context;
+        this.callback = callback;
         View view = View.inflate(getContext(), R.layout.dialog_phone_connect_edit_phone_sender, null);
         setContentView(view);
         ButterKnife.bind(this, view);
@@ -47,9 +49,24 @@ public class PhoneNumberUpdateSenderDialog extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_update_sender, R.id.tv_close_sender})
+    @OnClick({R.id.tv_update_sender, R.id.tv_close_sender, R.id.tv_update_thuong})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_update_thuong:
+                if (TextUtils.isEmpty(edtPhoneSender.getText().toString())) {
+                    Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
+                    return;
+                }
+                if (!NumberUtils.checkNumber(edtPhoneSender.getText().toString())) {
+                    Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
+                    return;
+                }
+                if (mDelegate != null) {
+                    mDelegate.onCallSenderResponse1(edtPhoneSender.getText().toString());
+                    callback.onCall(edtPhoneSender.getText().toString());
+                    dismiss();
+                }
+                break;
             case R.id.tv_update_sender:
                 if (TextUtils.isEmpty(edtPhoneSender.getText())) {
                     Toast.showToast(mContext, "Xin vui lòng nhập SĐT.");
@@ -60,6 +77,7 @@ public class PhoneNumberUpdateSenderDialog extends Dialog {
                     return;
                 }
                 mDelegate.onUpdateNumberSenderResponse(edtPhoneSender.getText().toString(), dismissCallback);
+                callback.onCall(edtPhoneSender.getText().toString());
                 dismiss();
                 break;
 
@@ -82,7 +100,7 @@ public class PhoneNumberUpdateSenderDialog extends Dialog {
     }
 
     @Subscribe(sticky = true)
-    public void onEventPhoneSender(CustomNumberSender customNumberSender){
+    public void onEventPhoneSender(CustomNumberSender customNumberSender) {
         phoneSenders = customNumberSender.getMessage();
     }
 }

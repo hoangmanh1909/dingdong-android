@@ -60,6 +60,8 @@ public class CreatedBd13Dialog extends Dialog {
 
         if (type == 1) {
             tbv_title.setText("Hủy báo phát");
+        } else if (type == 99) {
+            tbv_title.setText("Hủy nộp tiền");
         } else {
             ll_cancel_bd13.setVisibility(LinearLayout.GONE);
         }
@@ -92,7 +94,7 @@ public class CreatedBd13Dialog extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.tv_ok, R.id.tv_close,R.id.tv_cancel_type})
+    @OnClick({R.id.tv_ok, R.id.tv_close, R.id.tv_cancel_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_ok:

@@ -132,12 +132,6 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     FormItemTextView tvCollectAmount;
     @BindView(R.id.edt_CollectAmount)
     FormItemEditText edtCollectAmount;
-    /*  @BindView(R.id.rad_cash)
-      RadioButton radCash;*/
-    /*  @BindView(R.id.rad_mpos)
-      RadioButton radMpos;*/
-/*    @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;*/
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
@@ -255,13 +249,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                                                 .getFragment(), TAG + i)
                                 .commit();
                     }
-                    // phoneStrings += ", " + Constants.HEADER_NUMBER_LOG + "," + phones[i].trim();
                 }
             }
-           /* if (!TextUtils.isEmpty(phoneStrings)) {
-                phoneStrings = phoneStrings.substring(1);
-            }*/
-            //tvContact.setText(phoneStrings);
         } else {
             getChildFragmentManager().beginTransaction()
                     .add(R.id.ll_contact,
@@ -376,6 +365,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                         public void onCallReceiverResponse(String phone) {
                             mPhone = phone;
                             mPresenter.callForward(phone);
+                        }
+
+                        @Override
+                        public void onCallSenderResponse1(String phone) {
+
                         }
 
                         @Override

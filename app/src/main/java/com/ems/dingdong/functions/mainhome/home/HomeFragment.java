@@ -84,7 +84,6 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
         recycler.setAdapter(adapter);*/
 
         mList = new ArrayList<>();
-
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");

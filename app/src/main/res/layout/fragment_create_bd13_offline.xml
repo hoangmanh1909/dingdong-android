@@ -188,18 +188,132 @@
                         android:layout_gravity="left"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="@string/amount_collect"
+                        android:text="Số tiền COD"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
                     <EditText
-                        android:id="@+id/tv_collect_amount"
+                        android:id="@+id/tv_collect_amount_cod"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:digits="0123456789"
                         android:gravity="right"
-                        android:hint="@string/amount_of_money"
+                        android:hint="Nhập số tiền COD"
+                        android:inputType="number"
+                        android:maxLength="21"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textColor="#253854"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Phí PPA"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <EditText
+                        android:id="@+id/tv_phi_ppa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:digits="0123456789"
+                        android:gravity="right"
+                        android:hint="Nhập phí PPA"
+                        android:inputType="number"
+                        android:maxLength="21"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textColor="#253854"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Phí ship"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <EditText
+                        android:id="@+id/tv_phi_ship"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:digits="0123456789"
+                        android:gravity="right"
+                        android:hint="Nhập phí ship"
+                        android:inputType="number"
+                        android:maxLength="21"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textColor="#253854"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Lệ Phí thu sau"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <EditText
+                        android:id="@+id/tv_le_phi_sao_thu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:digits="0123456789"
+                        android:gravity="right"
+                        android:hint="Nhập lệ Phí thu sau"
                         android:inputType="number"
                         android:maxLength="21"
                         android:paddingTop="@dimen/dimen_10dp"
@@ -342,7 +456,63 @@
                         app:formShowUnderline="false" />
                 </LinearLayout>
 
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <CheckBox
+                        android:id="@+id/ic_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/custom_btn_radio"
+                        android:paddingLeft="10dp"
+                        android:text="Thu phí huỷ đơn hàng" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_phi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Phí hủy đơn hàng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
+
+                        <EditText
+                            android:id="@+id/tv_phi_huy_don_hang"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:digits="0123456789"
+                            android:gravity="right"
+                            android:hint="Nhập phí hủy đơn hàng"
+                            android:inputType="number"
+                            android:maxLength="21"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColor="#253854"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

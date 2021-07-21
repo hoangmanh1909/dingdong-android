@@ -158,7 +158,7 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature,imageDelivery, postmanCode, null, isPaymentPP, "N", "", 0);
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature,imageDelivery, postmanCode, null, isPaymentPP, "N", "", 0,0,0,0,0,0,0);
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

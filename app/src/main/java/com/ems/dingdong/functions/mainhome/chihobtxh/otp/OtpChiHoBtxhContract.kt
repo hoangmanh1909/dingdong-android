@@ -19,11 +19,12 @@ interface OtpChiHoBtxhContract {
 
     interface View : PresentView<Presenter>
 
-    interface Presenter : IPresenter<View, Interactor>
-    {
+    interface Presenter : IPresenter<View, Interactor> {
         fun getSeaBankPaymentRequest(): SeaBankPaymentRequest
         fun getSeaBankInquiryModel(): SeaBankInquiryModel
         fun payment(otp: String)
+
+        fun int(): String;
     }
 }
 

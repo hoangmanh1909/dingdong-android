@@ -38,6 +38,29 @@ public class RouteResponse {
     @SerializedName("Fee")
     Integer fee;
 
+
+
+    @SerializedName("ToPOCode")
+    String ToPOCode;
+    @SerializedName("ToPOName")
+    String ToPOName;
+
+    public String getToPOCode() {
+        return ToPOCode;
+    }
+
+    public void setToPOCode(String toPOCode) {
+        ToPOCode = toPOCode;
+    }
+
+    public String getToPOName() {
+        return ToPOName;
+    }
+
+    public void setToPOName(String toPOName) {
+        ToPOName = toPOName;
+    }
+
     public Integer getId() {
         return id;
     }

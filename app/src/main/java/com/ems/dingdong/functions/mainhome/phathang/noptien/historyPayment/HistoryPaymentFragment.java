@@ -113,7 +113,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
 
     }
 
-    public  void onDisplayFake(){
+    public void onDisplayFake() {
         DataHistoryPayment payment = new DataHistoryPayment();
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         payment.setRouteCode(routeCode);
@@ -122,11 +122,10 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
         payment.setFromDate(fromDate);
         payment.setToDate(toDate);
         payment.setStatus(status);
-        layout_item_pick_all.setVisibility(View.GONE);
         dataRequestPayment.setCode("COD001");
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
-        mPresenter.getHistoryPayment(dataRequestPayment,0);
+        mPresenter.getHistoryPayment(dataRequestPayment, 0);
     }
 
     @Override
@@ -137,6 +136,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        layout_item_pick_all.setVisibility(View.GONE);
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -221,7 +221,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
         dataRequestPayment.setCode("COD001");
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
-        mPresenter.getHistoryPayment(dataRequestPayment,1);
+        mPresenter.getHistoryPayment(dataRequestPayment, 1);
 
     }
 
@@ -277,7 +277,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismiss();
-                        refreshLayout();
+                        mPresenter.onCanceled();
                     })
                     .setContent(message)
                     .show();
@@ -389,19 +389,19 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-            DataHistoryPayment payment = new DataHistoryPayment();
-            payment.setRouteCode(routeCode);
-            payment.setPostmanCode(postmanCode);
-            payment.setPOCode(poCode);
-            payment.setToDate(toDate);
-            payment.setStatus(status);
-            payment.setFromDate(fromDate);
-            DataRequestPayment dataRequestPayment = new DataRequestPayment();
-            layout_item_pick_all.setVisibility(View.GONE);
-            dataRequestPayment.setCode("COD001");
-            String data = NetWorkController.getGson().toJson(payment);
-            dataRequestPayment.setData(data);
-            mPresenter.getHistoryPayment(dataRequestPayment,1);
+        DataHistoryPayment payment = new DataHistoryPayment();
+        payment.setRouteCode(routeCode);
+        payment.setPostmanCode(postmanCode);
+        payment.setPOCode(poCode);
+        payment.setToDate(toDate);
+        payment.setStatus(status);
+        payment.setFromDate(fromDate);
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        layout_item_pick_all.setVisibility(View.GONE);
+        dataRequestPayment.setCode("COD001");
+        String data = NetWorkController.getGson().toJson(payment);
+        dataRequestPayment.setData(data);
+        mPresenter.getHistoryPayment(dataRequestPayment, 1);
 
         stopRefresh();
     }

@@ -13,6 +13,35 @@ public class StatisticDebitGeneralResponse {
     @SerializedName("DebitErrorAmount")
     private String errorAmount;
 
+
+    /// <summary>
+    /// Tổng khoản thu
+    /// </summary>
+    @SerializedName("TotalDebit")
+    private int TotalDebit;
+
+    /// <summary>
+    /// Tổng bưu gửi
+    /// </summary>
+    @SerializedName("TotalLading")
+    private int TotalLading;
+
+    public int getTotalDebit() {
+        return TotalDebit;
+    }
+
+    public void setTotalDebit(int totalDebit) {
+        TotalDebit = totalDebit;
+    }
+
+    public int getTotalLading() {
+        return TotalLading;
+    }
+
+    public void setTotalLading(int totalLading) {
+        TotalLading = totalLading;
+    }
+
     public String getSuccessQuantity() {
         return successQuantity;
     }

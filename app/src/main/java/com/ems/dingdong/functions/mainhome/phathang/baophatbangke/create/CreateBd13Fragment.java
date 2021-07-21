@@ -169,11 +169,6 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
-//                        if (TextUtils.isEmpty(edtSearch.getText().toString())) {
-//                            showViewDetail(mList.get(position));
-//                        } else {
-//                            showViewDetail(mAdapter.getListFilter().get(position));
-//                        }
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                     if (cbPickAll.isChecked() && !holder.getItem(position).isSelected()) {
@@ -196,6 +191,11 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                             public void onCallReceiverResponse(String phone) {
                                 mPhone = phone;
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            }
+
+                            @Override
+                            public void onCallSenderResponse1(String phone) {
+
                             }
 
 
@@ -372,7 +372,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         mPresenter.searchLadingBd13(objRequest);
     }
 
-    private void submit() {
+    public void submit() {
         final List<DeliveryPostman> deliveryPostmamns = mAdapter.getItemsSelected();
         if (!deliveryPostmamns.isEmpty() && deliveryPostmamns.size() > 0) {
             long totalAmount = 0;
@@ -475,6 +475,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
         mAdapter.setListFilter(list);
+        mPresenter.titleChanged(list.size(),0);
         mAdapter.notifyDataSetChanged();
     }
 

@@ -71,22 +71,18 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0389302289;DF55A990FAC74872DC973236FF82DFB614066AB500236D8C64239FDF1AF4932A");//dev EMS
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0933201368;4F2F8F0912F705077A43290CFDBC639A933F784B1106EBF17689DA8B84DAD1B2");// pro vinatti
-         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;BCB33E1DE2C4D12BFD69514F89271DC3745831AA9D5830680934A0CDD96B3D4F");// dev UAT
-        //mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0948035226;7C8FD391550599BF0BEFC98F0AD8D50642A624411355DB1ED5B211676C32B89D");// dev UAT
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0394610790;0BE19E95374396A6B4C64201E7255638ED304A0FDBEACEA542ED2A2150F4FB45");//dev EMS
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0982309296;52ABAEB8C9BC049C5B6F1E77CEE5585FD11078ACCBA8949A10F5D77898110547");// pro vinatti
+//         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919743436;6DF63D7BFF563C2B7B5CFF2F2F20D3C230D60246E78F4628E51CCBC0817B3B26");// dev UAT
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;7E07841110E0CFA71DA886869DE68562C1CDECF32844D48B12F99EA4FF0B9E8F");// pre UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;85F82893905E3CD675BBE371E737A45C8BB2E4A5F6CC09A88889A00B2B56581B");// dev UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963170164;1303D417B8C5D73A58202C14AC278D1533562A96D812119DFC0976B05D6D9638");// dev vinatti
-
         checkPermissionCall();
-
         //mPresenter.getVersion();
-
         //loginSipCmc();
 
     }
-
 /*    private void loginSipCmc() {
         SharedPref sharedPref = new SharedPref(getContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -112,7 +108,6 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         //nên viết callback trước khi gọi
         SipCmc.loginAccount("28496");
     }*/
-
 
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -179,12 +174,11 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     if ("Y".equals(userInfo.getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
-                        Constants.HEADER_NUMBER = "tel:18002009,";
+                            Constants.HEADER_NUMBER = "tel:18002009";
                     }
                     gotoHome();
                 }
             }
-
         } else {
             String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
             if (TextUtils.isEmpty(values)) {
@@ -291,6 +285,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                         showDialog(routeInfos);
                     }
                 }
+            } else {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                getActivity().finish();
+                getActivity().startActivity(intent);
             }
         }
     }

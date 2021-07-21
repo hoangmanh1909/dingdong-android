@@ -36,7 +36,8 @@ public interface XacNhanDiaChiContract {
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate);
+                                       String toAssignDate,
+                                       int type);
 
         XacNhanDiaChiPresenter setType(int type);
 

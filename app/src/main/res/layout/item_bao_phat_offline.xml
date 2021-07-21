@@ -21,7 +21,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:orientation="vertical">
 
                 <com.ems.dingdong.views.CustomBoldTextView
@@ -51,7 +51,30 @@
                     android:text="Số tiền"
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
-
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_phi_ppa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:text="Số tiền"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_phi_ship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:text="Số tiền"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_le_phi_sau_thu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:text="Số tiền"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
             </LinearLayout>
         </LinearLayout>
 

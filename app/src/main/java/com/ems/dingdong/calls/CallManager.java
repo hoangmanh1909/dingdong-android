@@ -1,8 +1,5 @@
 package com.ems.dingdong.calls;
 
-import com.portsip.PortSIPVideoRenderer;
-import com.portsip.PortSipEnumDefine;
-import com.portsip.PortSipSdk;
 
 public class CallManager {
     private static CallManager mInstance;
@@ -14,17 +11,6 @@ public class CallManager {
     Session[] sessions;
     public int CurrentLine;
     public static final int MAX_LINES = 10;
-
-
-    public boolean setSpeakerOn(PortSipSdk portSipSdk, boolean speakerOn) {
-        this.speakerOn = speakerOn;
-        if (speakerOn) {
-            portSipSdk.setAudioDevice(PortSipEnumDefine.AudioDevice.SPEAKER_PHONE);
-        } else {
-            portSipSdk.setAudioDevice(PortSipEnumDefine.AudioDevice.EARPIECE);
-        }
-        return speakerOn;
-    }
 
     public boolean isSpeakerOn() {
         return speakerOn;
@@ -54,14 +40,6 @@ public class CallManager {
 
     }
 
-    public void hangupAllCalls(PortSipSdk sdk) {
-        for (Session session: sessions) {
-            if (session.sessionID > Session.INVALID_SESSION_ID) {
-                sdk.hangUp(session.sessionID);
-            }
-        }
-    }
-
     public boolean hasActiveSession() {
         if (session.sessionID > Session.INVALID_SESSION_ID) {
             return true;
@@ -87,40 +65,6 @@ public class CallManager {
         return null;
     }
 
-    public void addActiveSessionToConfrence(PortSipSdk sdk)
-    {
-        for (Session session : sessions)
-        {
-            if(session.state == Session.CALL_STATE_FLAG.CONNECTED)
-            {
-                sdk.joinToConference(session.sessionID);
-                sdk.sendVideo(session.sessionID, true);
-            }
-        }
-    }
-
-    public void setRemoteVideoWindow(PortSipSdk sdk,long sessionid,PortSIPVideoRenderer renderer){
-        sdk.setConferenceVideoWindow(null);
-        for (Session session : sessions)
-        {
-            if(session.state == Session.CALL_STATE_FLAG.CONNECTED&&sessionid!=session.sessionID)
-            {
-                sdk.setRemoteVideoWindow(session.sessionID,null);
-            }
-        }
-        sdk.setRemoteVideoWindow(sessionid,renderer);
-    }
-
-    public void setConferenceVideoWindow(PortSipSdk sdk, PortSIPVideoRenderer renderer){
-        for (Session session : sessions)
-        {
-            if(session.state == Session.CALL_STATE_FLAG.CONNECTED)
-            {
-                sdk.setRemoteVideoWindow(session.sessionID,null);
-            }
-        }
-        sdk.setConferenceVideoWindow(renderer);
-    }
     public void resetAll()
     {
         for(Session session :sessions)
@@ -144,7 +88,6 @@ public class CallManager {
     }
 
     public void reset() {
-        //session.reset();
         try {
             session.reset();
         }catch (NullPointerException nullPointerException){
@@ -156,7 +99,6 @@ public class CallManager {
     {
         if (CurrentLine >= 0 && CurrentLine <= sessions.length)
         {
-
             return sessions[CurrentLine];
 
         }

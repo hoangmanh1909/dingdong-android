@@ -63,7 +63,6 @@ public class DeliveryPartialAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(final Object model, int position) {
             ProductModel item = (ProductModel) model;
-
             int _pos = position + 1;
             tv_quantity.setText(item.getQuantity() + "");
             if (mode.equals("ADD")) {

@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -35,7 +36,10 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
     CustomTextView unsuccessful_quantity;
     @BindView(R.id.tv_Unsuccess_AmountOfMoney)
     CustomTextView unsuccessful_amount_of_money;
-
+    @BindView(R.id.tv_tongbuugui)
+    TextView _tvTongbuugui;
+    @BindView(R.id.tv_tongkhoanthu)
+    TextView _tvTongkhoanthu;
     private UserInfo mUserInfo;
     private RouteInfo mRouteInfo;
     private String fromDate;
@@ -91,11 +95,14 @@ public class StatisticDebitFragment extends ViewFragment<StatisticDebitContract.
             successful_amount_of_money.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getSuccessAmount()))));
             unsuccessful_quantity.setText(value.getErrorQuantity());
             unsuccessful_amount_of_money.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getErrorAmount()))));
+
+            _tvTongbuugui.setText("Tổng bưu gửi : " + value.getTotalLading());
+            _tvTongkhoanthu.setText("Tổng khoản thu : " + value.getTotalDebit());
         }
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo, status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.showStatistic(mUserInfo.getiD(), fromDate, toDate, mRouteInfo.getRouteCode());

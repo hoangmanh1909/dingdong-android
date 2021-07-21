@@ -62,10 +62,14 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
                     case 0:
                         mPosition = newPosition;
                         img_confirm.setVisibility(View.VISIBLE);
+//                        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
+//                        commonFragment.onDisPlayFaKe();
                         break;
                     case 1:
                         mPosition = newPosition;
                         img_confirm.setVisibility(View.GONE);
+//                        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
+//                        commonFragment1.onDisPlayFaKe();
                         break;
 
                     default:
@@ -110,10 +114,11 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
-        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
-        commonFragment.onDisPlayFaKe();
-        commonFragment1.onDisPlayFaKe();
+            XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
+            commonFragment.onDisPlayFaKe();
+            commonFragment.onDisPlayFaKe();
+            XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
+            commonFragment1.onDisPlayFaKe();
     }
 
     @OnClick({R.id.img_back, R.id.img_confirm})

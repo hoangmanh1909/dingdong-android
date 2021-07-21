@@ -206,6 +206,23 @@
                     android:textSize="@dimen/text_size_14sp"
                     app:formAction="@drawable/ic_arrow_down"
                     app:formHint="Chọn lý do" />
+
+                <com.ems.dingdong.views.CustomEditText
+                    android:id="@+id/edt_noidungtin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:background="@drawable/bg_radius_content"
+                    android:gravity="top"
+                    android:hint="Nhập ghi chú"
+                    android:inputType="textMultiLine"
+                    android:lines="8"
+                    android:maxLines="10"
+                    android:minLines="5"
+                    android:padding="@dimen/dimen_5dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
             </LinearLayout>
 
         </RelativeLayout>

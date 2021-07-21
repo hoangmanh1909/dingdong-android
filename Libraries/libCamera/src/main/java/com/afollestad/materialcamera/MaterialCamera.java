@@ -368,4 +368,6 @@ public class MaterialCamera {
       mAppFragment.startActivityForResult(getIntent(), requestCode);
     else mActivityContext.startActivityForResult(getIntent(), requestCode);
   }
+
+
 }

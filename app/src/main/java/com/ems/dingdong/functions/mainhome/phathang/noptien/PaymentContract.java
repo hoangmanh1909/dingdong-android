@@ -85,7 +85,9 @@ public interface PaymentContract {
          * Event refresh nearby tab.
          */
         void onCanceled();
+
         void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList);
+
         /**
          * Event set title count.
          */
@@ -94,6 +96,7 @@ public interface PaymentContract {
         int getCurrentTab();
 
     }
+
     interface OnTabListener {
         /**
          * Event when tab cancel delivery success.

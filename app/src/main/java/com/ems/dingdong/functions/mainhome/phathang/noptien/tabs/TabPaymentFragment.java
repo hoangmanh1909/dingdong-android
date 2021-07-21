@@ -112,10 +112,12 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
 
     @Override
     public void onCanceledDelivery() {
+        PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
+        paymentFragment1.onDisplayFake();
+        CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(1);
+        cancelPaymentFragment.onDisplayFake();
         HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(2);
-        PaymentFragment paymentFragment = (PaymentFragment) tabList.get(0);
-        paymentFragment.refreshLayout();
-        historyPaymentFragment.refreshLayout();
+        historyPaymentFragment.onDisplayFake();
     }
 
     @Override

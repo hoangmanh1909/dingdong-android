@@ -5,5 +5,5 @@ import com.ems.dingdong.model.ReasonInfo;
 import java.util.ArrayList;
 
 public interface HoanThanhTinCallback {
-    void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime, ArrayList<Integer> arrayShipmentID);//String quantity,
+    void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime, ArrayList<Integer> arrayShipmentID,String noidung);//String quantity,
 }

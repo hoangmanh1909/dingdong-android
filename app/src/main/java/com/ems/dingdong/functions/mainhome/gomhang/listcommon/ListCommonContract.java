@@ -49,7 +49,8 @@ public interface ListCommonContract {
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate);
+                                       String toAssignDate,
+                                       int type);
 
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,

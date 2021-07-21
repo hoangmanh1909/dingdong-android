@@ -24,7 +24,7 @@
         <com.ems.dingdong.views.CustomTextView
             android:id="@+id/tv_column_1"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="17dp"
             android:layout_weight="1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"

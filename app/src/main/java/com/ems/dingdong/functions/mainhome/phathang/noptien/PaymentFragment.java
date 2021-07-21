@@ -213,7 +213,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 mAdapter.setListFilter(eWalletDataResponses);
             } else {
                 if (mPresenter.getCurrentTab() == 0) {
-//                    showErrorToast("Không tìm thấy dữ liệu phù hợp");
                 }
                 mAdapter.setListFilter(eWalletDataResponses);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
@@ -245,7 +244,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setConfirmText(getString(R.string.confirm))
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        refreshLayout();
+                        mPresenter.onCanceled();
                         sweetAlertDialog.dismiss();
                     })
                     .setContent(message)

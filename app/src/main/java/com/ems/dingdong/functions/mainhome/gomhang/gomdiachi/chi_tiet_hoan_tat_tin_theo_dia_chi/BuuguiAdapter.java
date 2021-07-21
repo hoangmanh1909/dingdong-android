@@ -142,22 +142,7 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
                 }
             });
             radioBtn.setChecked(item.isSelected());
-
-
-
-//            if (position == 0) {
-//                radioBtn.setVisibility(View.VISIBLE);
-//            } else {
-//                ParcelCodeInfo info = (ParcelCodeInfo) mItems.get(position - 1);
-//                String prevDate = info.getOrderCode().split("\\s")[0];
-//                if (compareDate(model.getOrderCode(), prevDate) == 1) {
-//                    radioBtn.setVisibility(View.INVISIBLE);
-//                } else {
-//                    radioBtn.setVisibility(View.VISIBLE);
-//                }
-//            }
         }
-
 
     }
 }

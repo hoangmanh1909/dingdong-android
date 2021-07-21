@@ -40,6 +40,44 @@ public class DingDongCancelDeliveryRequest {
     @SerializedName("PaymentLadingCode")
     private String paymentLadingCode;
 
+    @SerializedName("FeeShip")
+    @Expose
+    private Integer FeeShip;
+    @SerializedName("FeeCollectLater")
+    @Expose
+    private Integer FeeCollectLater;
+    @SerializedName("FeePPA")
+    @Expose
+    private Integer FeePPA;
+
+    public String getPaymentLadingCode() {
+        return paymentLadingCode;
+    }
+
+    public Integer getFeeShip() {
+        return FeeShip;
+    }
+
+    public void setFeeShip(Integer feeShip) {
+        FeeShip = feeShip;
+    }
+
+    public Integer getFeeCollectLater() {
+        return FeeCollectLater;
+    }
+
+    public void setFeeCollectLater(Integer feeCollectLater) {
+        FeeCollectLater = feeCollectLater;
+    }
+
+    public Integer getFeePPA() {
+        return FeePPA;
+    }
+
+    public void setFeePPA(Integer feePPA) {
+        FeePPA = feePPA;
+    }
+
     public String getAmndPOCode() {
         return amndPOCode;
     }

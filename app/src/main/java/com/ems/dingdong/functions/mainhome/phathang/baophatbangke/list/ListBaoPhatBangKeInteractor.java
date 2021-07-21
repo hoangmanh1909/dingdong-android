@@ -4,9 +4,11 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 
 /**
@@ -43,6 +45,16 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     @Override
     public Call<SimpleResult> updateMobileSender(String code, String type, String phoneSender, CommonCallback<SimpleResult> simpleResultCommonCallback) {
         return NetWorkController.updateMobile(code,type, phoneSender, simpleResultCommonCallback);
+    }
+
+    @Override
+    public Single<SimpleResult> _phatSml(SMLRequest smlRequest) {
+        return NetWorkController.phatSml(smlRequest);
+    }
+
+    @Override
+    public Single<SimpleResult> _huySml(SMLRequest smlRequest) {
+        return NetWorkController.huySml(smlRequest);
     }
 
 }

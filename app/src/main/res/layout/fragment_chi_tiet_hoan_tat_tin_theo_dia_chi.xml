@@ -47,7 +47,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_send_telegram"
-                android:padding="@dimen/dimen_10dp" />
+                android:padding="@dimen/dimen_10dp"
+                android:enabled="true"/>
         </RelativeLayout>
     </FrameLayout>
 
@@ -335,7 +336,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp" />
 
-                        <com.ems.dingdong.views.CustomTextView
+                        <com.ems.dingdong.views.CustomBoldTextView
                             android:id="@+id/tv_address_receiver"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -413,8 +414,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_radius_search"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_radius_search">
 
                         <LinearLayout
                             android:id="@+id/ll_scan_qr"
@@ -438,8 +439,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_toLeftOf="@+id/ll_scan_qr"
                             android:layout_marginLeft="5dp"
+                            android:layout_toLeftOf="@+id/ll_scan_qr"
                             android:hint="Nhập bưu gửi"
                             android:imeOptions="actionDone"
                             android:inputType="textCapCharacters"
@@ -735,6 +736,23 @@
                             app:formAction="@drawable/ic_arrow_down"
                             app:formHint="Chọn lý do" />
                     </LinearLayout>
+
+                    <com.ems.dingdong.views.CustomEditText
+                        android:id="@+id/edt_noidungtin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:background="@drawable/bg_radius_content"
+                        android:gravity="top"
+                        android:hint="Nhập ghi chú"
+                        android:inputType="textMultiLine"
+                        android:lines="8"
+                        android:maxLines="10"
+                        android:minLines="5"
+                        android:padding="@dimen/dimen_5dp"
+                        android:scrollbars="vertical"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
 
                     <LinearLayout
                         android:id="@+id/ll_unsuccess"

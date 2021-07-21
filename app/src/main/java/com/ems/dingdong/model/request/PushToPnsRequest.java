@@ -55,11 +55,39 @@ public class PushToPnsRequest {
     @SerializedName("VATCode")
     private String VATCode;
 
+
+    @SerializedName("PostmanTel")
+    private String PostmanTel;
+    @SerializedName("PostmanCode")
+    private String PostmanCode;
+
+    @SerializedName("IsCancelOrder")
+    private boolean isCancelOrder;
+
+    @SerializedName("FeeCancelOrder")
+    private long feeCancelOrder;
+
+    public boolean isCancelOrder() {
+        return isCancelOrder;
+    }
+
+    public void setCancelOrder(boolean cancelOrder) {
+        isCancelOrder = cancelOrder;
+    }
+
+    public long getFeeCancelOrder() {
+        return feeCancelOrder;
+    }
+
+    public void setFeeCancelOrder(long feeCancelOrder) {
+        this.feeCancelOrder = feeCancelOrder;
+    }
+
     public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName,
                             String reasonCode, String solutionCode, String status, String paymentChannel,
                             String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID,
                             String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn, String batchCode,
-                            Integer itemsInBatch, String amountForBatch) {
+                            Integer itemsInBatch, String amountForBatch, boolean isCancelOrder, long feeCancelOrder, String postmanTel, String postmanCode) {
         this.postmanID = postmanID;
         this.ladingCode = ladingCode;
         this.deliveryPOCode = deliveryPOCode;
@@ -83,6 +111,10 @@ public class PushToPnsRequest {
         this.batchCode = batchCode;
         this.itemsInBatch = itemsInBatch;
         this.amountForBatch = amountForBatch;
+        this.isCancelOrder = isCancelOrder;
+        this.feeCancelOrder = feeCancelOrder;
+        this.PostmanTel = postmanTel;
+        this.PostmanCode = postmanCode;
     }
 
 

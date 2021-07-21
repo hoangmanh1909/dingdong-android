@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ThuPhiMode;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
@@ -91,6 +92,7 @@ public interface XacNhanBaoPhatContract {
          *
          * @see DingDongCancelDividedRequest
          */
+        //chuyen tuyen
         void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback);
 
         void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback);
@@ -225,7 +227,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * @see Interactor
          */
-        void cancelDivided(int toRouteId, int toPostmanId, String signCapture, String fileImg);
+        void cancelDivided(String toPOCode,int toRouteId, int toPostmanId, String signCapture, String fileImg);
 
         void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg);
 

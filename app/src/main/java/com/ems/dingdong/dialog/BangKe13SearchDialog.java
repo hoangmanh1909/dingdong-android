@@ -162,7 +162,6 @@ public class BangKe13SearchDialog extends Dialog implements DatePickerDialog.OnD
     }
 
     private void showUIShift() {
-
         if (pickerUIShift == null) {
             pickerUIShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {

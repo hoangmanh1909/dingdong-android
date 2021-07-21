@@ -97,7 +97,6 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showMessage(response.body().getMessage());
-                    back();
                 } else {
                     mView.showMessage(response.body().getMessage());
                 }

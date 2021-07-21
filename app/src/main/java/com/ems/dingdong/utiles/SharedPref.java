@@ -81,7 +81,6 @@ public class SharedPref {
 
     public void clear() {
         try {
-
             editor.remove("UniqueID");
             editor.remove(Constants.KEY_HOTLINE_NUMBER);
             editor.remove(Constants.KEY_USER_INFO);
@@ -92,7 +91,6 @@ public class SharedPref {
             editor.remove(Constants.ACCESS_CALL_TOKEN);
             editor.remove(Constants.KEY_PAYMENT_TOKEN);
             editor.remove(Constants.KEY_UPLOAD_IMAGE);
-
             editor.commit();
         } catch (Exception ex) {
             Logger.w(ex);

@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.profile;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,5 +37,10 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
     @Override
     public void moveToEWallet() {
         new EWalletPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showLichsuCuocgoi() {
+        new TabCallPresenter(mContainerView).pushView();
     }
 }

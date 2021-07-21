@@ -25,6 +25,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.ems.dingdong.R;
@@ -65,8 +66,6 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     FormItemTextView tvTime;
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
-
-
     @BindView(R.id.rad_success)
     RadioButton radSuccess;
     @BindView(R.id.rad_success_part)
@@ -79,6 +78,8 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     RecyclerView recycler;
     @BindView(R.id.tv_count)
     CustomTextView tvCount;
+    @BindView(R.id.edt_noidungtin)
+    CustomEditText edt_ghichu;
     // private ArrayList<CollectReason> mListReasonFail;
     //  private ItemBottomSheetPickerUIFragment pickerUIReasonFail;
     // private CollectReason mReasonFail;
@@ -119,6 +120,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     radMiss.setChecked(false);
                     tvStatus.setText("");
                     tvReason.setVisibility(View.GONE);
+                    edt_ghichu.setVisibility(View.GONE);
                     llDateTime.setVisibility(View.GONE);
                     recycler.setVisibility(View.GONE);
                     tvCount.setVisibility(View.GONE);
@@ -136,6 +138,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     radMiss.setChecked(false);
                     tvStatus.setText("");
                     tvReason.setVisibility(View.GONE);
+                    edt_ghichu.setVisibility(View.GONE);
                     llDateTime.setVisibility(View.GONE);
                     recycler.setVisibility(View.VISIBLE);
                     tvCount.setVisibility(View.VISIBLE);
@@ -153,6 +156,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     radSuccess.setChecked(false);
                     tvStatus.setText("Lý do");
                     tvReason.setVisibility(View.VISIBLE);
+                    edt_ghichu.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
                     tvCount.setVisibility(View.GONE);
                     // edtMon.setVisibility(View.GONE);
@@ -170,6 +174,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                     radSuccess.setChecked(false);
                     tvStatus.setText("Lý do");
                     tvReason.setVisibility(View.VISIBLE);
+                    edt_ghichu.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
                     tvCount.setVisibility(View.GONE);
                     //  edtMon.setVisibility(View.GONE);
@@ -467,7 +472,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 if (pickUpDate.isEmpty()) {
                     pickUpDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                 }
-                mDelegate.onResponse(statusCode, mReason, pickUpDate, pickUpTime, arrayShipmentID);//quantity,
+                mDelegate.onResponse(statusCode, mReason, pickUpDate, pickUpTime, arrayShipmentID,edt_ghichu.getText().toString().trim());//quantity,
                 dismiss();
                 break;
             case R.id.tv_close:

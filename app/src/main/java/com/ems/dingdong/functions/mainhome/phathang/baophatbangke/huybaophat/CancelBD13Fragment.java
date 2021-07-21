@@ -174,7 +174,7 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo, status) -> {
             mFromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mToDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             getCancelDelivery(mFromDate, mToDate, "");
@@ -210,6 +210,9 @@ public class CancelBD13Fragment extends ViewFragment<CancelBD13Contract.Presente
             request.setIsPaymentBatch(item.getIsPaymentBatch());
             request.setBatchCode(item.getBatchCode());
             request.setPaymentLadingCode(item.getPaymentLadingCode());
+            request.setFeeCollectLater(item.getFeeCollectLater());
+            request.setFeePPA(item.getFeePPA());
+            request.setFeeShip(item.getFeeShip());
             mPresenter.cancelDelivery(request);
         }).show();
     }

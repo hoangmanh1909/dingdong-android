@@ -72,8 +72,7 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
         return commonObjectsSelected;
     }
 
-    public void clearList()
-    {
+    public void clearList() {
         mListFilter.clear();
         mList.clear();
     }
@@ -178,12 +177,6 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
                 tvContactDescription.setText(item.getDescription());
             }
             cbSelected.setChecked(item.isSelected());
-//            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    item.setSelected(isChecked);
-//                }
-//            });
             if (!TextUtils.isEmpty(item.getAmount())) {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount().replace("vnd", "")))));
             }

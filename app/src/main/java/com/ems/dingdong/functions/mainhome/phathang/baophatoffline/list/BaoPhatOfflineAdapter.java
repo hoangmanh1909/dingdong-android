@@ -57,6 +57,13 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter<CommonObject, Bao
         @BindView(R.id.layout_bp_offline)
         RelativeLayout layoutBpOffline;
 
+        @BindView(R.id.tv_phi_ppa)
+        CustomTextView tv_phi_ppa;
+        @BindView(R.id.tv_phi_ship)
+        CustomTextView tv_phi_ship;
+        @BindView(R.id.tv_le_phi_sau_thu)
+        CustomTextView tv_le_phi_sau_thu;
+
 
         public HolderView(View itemView) {
             super(itemView);
@@ -72,8 +79,36 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter<CommonObject, Bao
             if (!TextUtils.isEmpty(model.getDeliveryType())) {
                 if ("2".equals(model.getDeliveryType())) {
                     tvDeliveryType.setText(mContext.getResources().getString(R.string.delivery_succesfully));
+
+                    if (!TextUtils.isEmpty(String.valueOf(model.getFeePPA())))
+                        tv_phi_ppa.setText(String.format(mContext.getResources().getString(R.string.fee_ppa)
+                                + ": %s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(model.getFeePPA())))));
+                    else
+                        tv_phi_ppa.setText(mContext.getResources().getString(R.string.fee_ppa) + ": 0 đ");
+
+                    if (!TextUtils.isEmpty(String.valueOf(model.getFeeShip())))
+                        tv_phi_ship.setText(String.format(mContext.getResources().getString(R.string.fee_ship)
+                                + ": %s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(model.getFeeShip())))));
+                    else
+                        tv_phi_ship.setText(mContext.getResources().getString(R.string.fee_ship) + ": 0 đ");
+
+                    if (!TextUtils.isEmpty(String.valueOf(model.getFeeCollectLater())))
+                        tv_le_phi_sau_thu.setText(String.format(mContext.getResources().getString(R.string.le_phi_sau_thu)
+                                + ": %s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(model.getFeeCollectLater())))));
+                    else
+                        tv_le_phi_sau_thu.setText(mContext.getResources().getString(R.string.le_phi_sau_thu) + ": 0 đ");
+
                 } else {
                     tvDeliveryType.setText(mContext.getResources().getString(R.string.delivery_not_succesfully));
+
+                    if (!TextUtils.isEmpty(String.valueOf(model.getFeeCancelOrder())))
+                        tv_phi_ppa.setText(String.format(mContext.getResources().getString(R.string.phi_huy_don_hang)
+                                + ": %s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(model.getFeePPA())))));
+                    else
+                        tv_phi_ppa.setText(mContext.getResources().getString(R.string.phi_huy_don_hang) + ": 0 đ");
+
+                    tv_phi_ship.setVisibility(View.GONE);
+                    tv_le_phi_sau_thu.setVisibility(View.GONE);
                 }
             }
             if (!TextUtils.isEmpty(model.getCollectAmount()))
@@ -81,6 +116,7 @@ public class BaoPhatOfflineAdapter extends RecyclerBaseAdapter<CommonObject, Bao
                         + ": %s đ", NumberUtils.formatPriceNumber(Long.parseLong(model.getCollectAmount()))));
             else
                 tvCollectAmount.setText(mContext.getResources().getString(R.string.amount_of_money) + ": 0 đ");
+
 
             cbSelected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {

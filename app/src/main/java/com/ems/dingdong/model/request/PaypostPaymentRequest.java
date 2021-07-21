@@ -82,6 +82,67 @@ public class PaypostPaymentRequest {
     @SerializedName("VATCode")
     private String VATCode;
 
+    @SerializedName("FeePPA")
+    private long feePPA;
+    @SerializedName("FeeShip")
+    private long feeShip;
+    @SerializedName("FeeCollectLater")
+    private long feeCollectLater;
+    @SerializedName("FeePPAPNS")
+    private long feePPAPNS;
+    @SerializedName("FeeShipPNS")
+    private long feeShipPNS;
+    @SerializedName("FeeCollectLaterPNS")
+    private long feeCollectLaterPNS;
+
+    public long getFeePPA() {
+        return feePPA;
+    }
+
+    public void setFeePPA(long feePPA) {
+        this.feePPA = feePPA;
+    }
+
+    public long getFeeShip() {
+        return feeShip;
+    }
+
+    public void setFeeShip(long feeShip) {
+        this.feeShip = feeShip;
+    }
+
+    public long getFeeCollectLater() {
+        return feeCollectLater;
+    }
+
+    public void setFeeCollectLater(long feeCollectLater) {
+        this.feeCollectLater = feeCollectLater;
+    }
+
+    public long getFeePPAPNS() {
+        return feePPAPNS;
+    }
+
+    public void setFeePPAPNS(long feePPAPNS) {
+        this.feePPAPNS = feePPAPNS;
+    }
+
+    public long getFeeShipPNS() {
+        return feeShipPNS;
+    }
+
+    public void setFeeShipPNS(long feeShipPNS) {
+        this.feeShipPNS = feeShipPNS;
+    }
+
+    public long getFeeCollectLaterPNS() {
+        return feeCollectLaterPNS;
+    }
+
+    public void setFeeCollectLaterPNS(long feeCollectLaterPNS) {
+        this.feeCollectLaterPNS = feeCollectLaterPNS;
+    }
+
     public void setPostmanID(String postmanID) {
         this.postmanID = postmanID;
     }

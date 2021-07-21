@@ -19,7 +19,6 @@ import butterknife.BindView;
 
 public class StatictisAdapter extends RecyclerBaseAdapter {
 
-
     public StatictisAdapter(Context context, List<CommonObject> items) {
         super(context, items);
     }
@@ -28,7 +27,6 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
         return new HolderView(inflateView(parent, R.layout.item_statictis));
     }
-
 
     class HolderView extends BaseViewHolder {
 
@@ -104,7 +102,7 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.color_debit_unsuccessful));
             }
             // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
-
+            tvStatusPaypost.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusName.setText(item.getStatusName());
             } else {

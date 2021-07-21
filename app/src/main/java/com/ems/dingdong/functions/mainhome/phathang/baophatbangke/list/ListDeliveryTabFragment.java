@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
@@ -8,10 +9,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.astuetz.PagerSlidingTabStrip;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.calls.IncomingCallActivity;
+import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.sip.cmc.SipCmc;
+import com.sip.cmc.callback.PhoneCallback;
+
+import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +52,91 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     @Override
     public void initLayout() {
         super.initLayout();
+        SipCmc.addCallback(null, new PhoneCallback() {
+            @Override
+            public void incomingCall(LinphoneCall linphoneCall) {
+                super.incomingCall(linphoneCall);
+                android.util.Log.d("123123khiem", "incomingCall: ListDeliveryTabFragment");
+                Intent activityIntent = new Intent(getActivity(), IncomingCallActivity.class);
+                activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(activityIntent);
+            }
+
+            @Override
+            public void outgoingInit() {
+                super.outgoingInit();
+                android.util.Log.d("123123khiem", "outgoingInit");
+            }
+
+            @Override
+            public void callConnected(LinphoneCall linphoneCall) {
+                super.callConnected(linphoneCall);
+                android.util.Log.d("123123khiem", String.valueOf(linphoneCall));
+            }
+
+            @Override
+            public void callEnd(LinphoneCall linphoneCall) {
+                super.callEnd(linphoneCall);
+                android.util.Log.d("123123khiem", "callEnd");
+
+            }
+
+            @Override
+            public void callReleased() {
+                super.callReleased();
+                android.util.Log.d("123123khiem", "callReleased");
+            }
+
+            @Override
+            public void error() {
+                super.error();
+
+                android.util.Log.d("123123khiem", "error");
+            }
+
+            @Override
+            public void callStatus(int status) {
+                super.callStatus(status);
+                android.util.Log.d("123123khiem", "callStatus: " + status);
+
+            }
+
+            @Override
+            public void callTimeRing(String time) {
+                super.callTimeRing(time);
+                android.util.Log.d("123123khiem", "callTimeRing");
+            }
+
+            @Override
+            public void callTimeAnswer(String time) {
+                super.callTimeAnswer(time);
+                android.util.Log.d("123123khiem", time);
+            }
+
+            @Override
+            public void callTimeEnd(String time) {
+                super.callTimeEnd(time);
+                android.util.Log.d("123123khiem", "callTimeEnd");
+            }
+
+            @Override
+            public void callId(String callId) {
+                super.callId(callId);
+                android.util.Log.d("123123khiem", "callId");
+            }
+
+            @Override
+            public void callPhoneNumber(String phoneNumber) {
+                super.callPhoneNumber(phoneNumber);
+                android.util.Log.d("123123khiem", "callPhoneNumber: " + phoneNumber);
+            }
+
+            @Override
+            public void callDuration(long duration) {
+                super.callDuration(duration);
+                Log.d("123123khiem", "callDuration: " + duration);
+            }
+        });
         if (mPresenter == null) {
             if (getActivity() != null) {
                 Intent intent = getActivity().getIntent();

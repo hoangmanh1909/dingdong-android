@@ -33,6 +33,7 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +64,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     public XacNhanBaoPhatPresenter setBaoPhatBangKe(List<DeliveryPostman> baoPhatBangKe) {
         this.mBaoPhatBangke = baoPhatBangKe;
-//        Log.d("asdasdad", String.valueOf(mBaoPhatBangke.size()));
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
@@ -178,9 +178,13 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture) {
+        mView.showProgress();
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
+
+        String postManCode1 = userInfo.getUserName();
+        String postManTel1 = userInfo.getMobileNumber();
 
         for (DeliveryPostman item : mView.getItemSelected()) {
             String ladingCode = item.getMaE();
@@ -193,7 +197,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String status = "C18";
             String amount = Integer.toString(item.getAmount());
             String shiftId = Integer.toString(item.getShiftId());
+            boolean isCancle = false;
+            long feeCancle = item.getFeeCancelOrder();
 
+            if (feeCancle != 0) isCancle = true;
+            else isCancle = false;
             String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
             PushToPnsRequest request = new PushToPnsRequest(
@@ -219,7 +227,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.isItemReturn(),
                     item.getBatchCode(),
                     item.getItemsInBatch(),
-                    item.getAmountForBatch());
+                    item.getAmountForBatch(),
+                    isCancle,
+                    feeCancle,
+                    postManTel1,
+                    postManCode1);
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
@@ -227,12 +239,14 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mView.showSuccess(response.body().getErrorCode());
+                    mView.hideProgress();
                 }
 
                 @Override
                 protected void onError(Call<SimpleResult> call, String message) {
                     super.onError(call, message);
                     mView.showError(message);
+                    mView.hideProgress();
                 }
             });
 
@@ -330,6 +344,14 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setReceiverIDNumber(infoVerify.getGtgt());
             request.setImageAuthen(imageAuthen);
             request.setVATCode(item.getVatCode());
+
+            request.setFeeCollectLater(item.getFeeCollectLater());
+            request.setFeePPA(item.getFeePPA());
+            request.setFeeShip(item.getFeeShip());
+            request.setFeeCollectLaterPNS(item.getFeeCollectLater());
+            request.setFeePPAPNS(item.getFeePPA());
+            request.setFeeShipPNS(item.getFeeShip());
+
             paymentRequests.add(request);
         }
         mInteractor.paymentDelivery(paymentRequests)
@@ -344,8 +366,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                 long amountPNS = 0;
                                 if (paymentResponses != null) {
                                     for (DeliveryCheckAmountPaymentResponse item : paymentResponses) {
-                                        amountPP += item.getPayPostAmount();
-                                        amountPNS += item.getPNSAmount();
+                                        amountPP += item.getPayPostAmount() + item.getFeeCollectLaterPP() + item.getFeePPAPNS() + item.getFeeShipPP();
+                                        amountPNS += item.getPNSAmount() + item.getFeePPAPNS() + item.getFeeShipPNS() + item.getFeeCollectLaterPNS();
                                     }
                                 }
                                 mView.showCheckAmountPaymentError(
@@ -410,7 +432,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void cancelDivided(int toRouteId, int toPostmanId, String signCapture, String fileImg) {
+    public void cancelDivided(String toPoCode, int toRouteId, int toPostmanId, String signCapture, String fileImg) {
         List<DingDongCancelDividedRequest> requests = new ArrayList<>();
 
         for (DeliveryPostman item : mView.getItemSelected()) {
@@ -425,6 +447,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setDescription("");
             request.setSignatureCapture(signCapture);
             request.setImageDelivery(fileImg);
+            request.setToPOCode(toPoCode);
             requests.add(request);
         }
 

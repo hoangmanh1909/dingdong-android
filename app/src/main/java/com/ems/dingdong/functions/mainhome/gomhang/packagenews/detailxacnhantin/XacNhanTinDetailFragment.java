@@ -283,6 +283,10 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         tvContactName.setText(commonObject.getReceiverName());
         tvContactPhone.setText(commonObject.getReceiverPhone());
         tvDescription.setText(commonObject.getDescription());
+
+        if (!TextUtils.isEmpty(commonObject.getNote()))
+            tvDescription.setText(commonObject.getDescription() + " , " + commonObject.getNote());
+
         tvQuantity.setText(commonObject.getQuantity());
         tvWeigh.setText(commonObject.getWeigh());
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));

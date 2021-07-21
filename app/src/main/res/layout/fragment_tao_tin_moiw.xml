@@ -78,7 +78,7 @@
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_12sp"
-                    app:formHint="Nhập mã khách hàng"
+                    app:formHint="Nhập Sđt, tên KH, mã KH, tên viết tắt"
                     app:formShowClear="true"
                     app:formShowUnderline="false"
                     app:formSingleLine="true">
@@ -92,8 +92,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:background="@drawable/bg_tim_kiem"
-                    android:gravity="center"
-                    android:foreground="?attr/selectableItemBackground">
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/img_capture"
@@ -104,722 +104,728 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:background="@color/bg_yellow_primary"
-                android:padding="@dimen/_6sdp"
-                android:text="THÔNG TIN KHÁCH HÀNG"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-
             <LinearLayout
+                android:id="@+id/ll_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@color/bg_yellow_primary"
+                    android:padding="@dimen/_6sdp"
+                    android:text="THÔNG TIN KHÁCH HÀNG"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Mã khách hàng "
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="(*)"
-                            android:textColor="@color/red_light"
-                            android:visibility="gone"/>
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_makhachhang"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        android:maxLines="1"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập mã khách hàng"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Tên khách hàng "
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Mã khách hàng "
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="(*)"
+                                android:textColor="@color/red_light"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_makhachhang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:maxLines="1"
                             android:textColor="#253854"
-                            android:textSize="12sp" />
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập mã khách hàng"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                    <View style="@style/Devider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="(*)"
-                            android:textColor="@color/red_light" />
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Tên khách hàng "
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="(*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_tenkhachhang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:inputType="textCapCharacters"
+                            android:maxLines="1"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập tên khách hàng"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View style="@style/Devider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Số điện thoại"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_sodienthoai"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:inputType="phone"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập số điện thoại"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
 
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_tenkhachhang"
-                        android:layout_width="0dp"
+                    <View style="@style/Devider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:maxLines="1"
-                        android:inputType="textCapCharacters"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập tên khách hàng"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Địa chỉ Email"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_diachimail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:inputType="textEmailAddress"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập địa chỉ email"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View style="@style/Devider" />
                 </LinearLayout>
 
-                <View style="@style/Devider" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@color/bg_yellow_primary"
+                    android:padding="@dimen/_6sdp"
+                    android:text="THÔNG TIN TIN"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Số điện thoại"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Nội dung tin"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.CustomEditText
+                            android:id="@+id/edt_noidungtin"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
+                            android:layout_weight="6"
+                            android:background="@drawable/bg_radius_content"
+                            android:gravity="right|top"
+                            android:hint="Nhập ghi chú"
+                            android:inputType="textMultiLine"
+                            android:lines="8"
+                            android:maxLines="10"
+                            android:minLines="5"
+                            android:padding="@dimen/dimen_5dp"
+                            android:scrollbars="vertical"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_14sp" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_sodienthoai"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:inputType="phone"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập số điện thoại"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
+                    <View style="@style/Devider" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Số lượng"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_soluong"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:inputType="phone"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập số lượng"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View style="@style/Devider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Khối lượng(gram)"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_khoiluong"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:inputType="phone"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập khối lượng(gram)"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View style="@style/Devider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Ngày yêu cầu"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemTextView
+                            android:id="@+id/edt_ngayyeucau"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formAction="@drawable/ic_down"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập ngày yêu cầu"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View style="@style/Devider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Giờ yêu cầu"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemTextView
+                            android:id="@+id/edt_gioyeucau"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formAction="@drawable/ic_down"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập giờ yêu cầu (*)"
+                            app:formShowUnderline="false" />
+                    </LinearLayout>
+
+                    <View style="@style/Devider" />
                 </LinearLayout>
 
-                <View style="@style/Devider" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@color/bg_yellow_primary"
+                    android:padding="@dimen/_6sdp"
+                    android:text="ĐỊA CHỈ"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Địa chỉ Email"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
 
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Tỉnh, Thành phố"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemTextView
+                            android:id="@+id/edt_tinhthanhpho"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formAction="@drawable/ic_down"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập Tỉnh, Thành phố"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_diachimail"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:inputType="textEmailAddress"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập địa chỉ email"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:background="@color/bg_yellow_primary"
-                android:padding="@dimen/_6sdp"
-                android:text="THÔNG TIN TIN"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    <View style="@style/Devider" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Nội dung tin"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Quận huyện"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemTextView
+                            android:id="@+id/edt_quanhuyen"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
                             android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
+                            android:textSize="14sp"
+                            app:formAction="@drawable/ic_down"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập Quận huyện"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.CustomEditText
-                        android:id="@+id/edt_noidungtin"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:background="@drawable/bg_radius_content"
-                        android:gravity="right|top"
-                        android:hint="Nhập ghi chú"
-                        android:inputType="textMultiLine"
-                        android:lines="8"
-                        android:maxLines="10"
-                        android:minLines="5"
-                        android:padding="@dimen/dimen_5dp"
-                        android:scrollbars="vertical"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    <View style="@style/Devider" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Số lượng"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
 
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Xã, Phường"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemTextView
+                            android:id="@+id/edt_xaphuong"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formAction="@drawable/ic_down"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập Xã, Phường"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_soluong"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:inputType="phone"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập số lượng"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    <View style="@style/Devider" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Khối lượng(gram)"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
 
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp"
+                                android:text="Số nhà, Tên đường  "
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_sonha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
+                            android:textColor="#253854"
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập Số nhà, Tên đường(*)"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_khoiluong"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:inputType="phone"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập khối lượng(gram)"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    <View style="@style/Devider" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Ngày yêu cầu"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp"
+                                android:text="Điện thoại "
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
                             android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập số điện thoại (*)"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemTextView
-                        android:id="@+id/edt_ngayyeucau"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formAction="@drawable/ic_down"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập ngày yêu cầu"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    <View style="@style/Devider" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
+                        android:layout_weight="10">
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Giờ yêu cầu"
+                            android:layout_gravity="center"
+                            android:layout_weight="4">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="Người liên hệ"
+                                android:textColor="#253854"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" (*)"
+                                android:textColor="@color/red_light" />
+
+                        </LinearLayout>
+
+                        <com.ems.dingdong.views.form.FormItemEditText
+                            android:id="@+id/edt_nguoilienhe"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:gravity="right"
                             android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
+                            android:textSize="14sp"
+                            app:formDrawablePadding="10dp"
+                            app:formHint="Nhập Người liên hệ"
+                            app:formShowClear="true"
+                            app:formShowUnderline="false" />
                     </LinearLayout>
 
-                    <com.ems.dingdong.views.form.FormItemTextView
-                        android:id="@+id/edt_gioyeucau"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formAction="@drawable/ic_down"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập giờ yêu cầu (*)"
-                        app:formShowUnderline="false" />
+                    <View style="@style/Devider" />
                 </LinearLayout>
-
-                <View style="@style/Devider" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:background="@color/bg_yellow_primary"
-                android:padding="@dimen/_6sdp"
-                android:text="ĐỊA CHỈ"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Tỉnh, Thành phố"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemTextView
-                        android:id="@+id/edt_tinhthanhpho"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formAction="@drawable/ic_down"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập Tỉnh, Thành phố"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Quận huyện"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemTextView
-                        android:id="@+id/edt_quanhuyen"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formAction="@drawable/ic_down"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập Quận huyện"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Xã, Phường"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemTextView
-                        android:id="@+id/edt_xaphuong"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formAction="@drawable/ic_down"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập Xã, Phường"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="2dp"
-                            android:text="Số nhà, Tên đường  "
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_sonha"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập Số nhà, Tên đường(*)"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="2dp"
-                            android:text="Điện thoại "
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_phone"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập số điện thoại (*)"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="4">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:text="Người liên hệ"
-                            android:textColor="#253854"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" (*)"
-                            android:textColor="@color/red_light" />
-
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.form.FormItemEditText
-                        android:id="@+id/edt_nguoilienhe"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="6"
-                        android:gravity="right"
-                        android:textColor="#253854"
-                        android:textSize="14sp"
-                        app:formDrawablePadding="10dp"
-                        app:formHint="Nhập Người liên hệ"
-                        app:formShowClear="true"
-                        app:formShowUnderline="false" />
-                </LinearLayout>
-
-                <View style="@style/Devider" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

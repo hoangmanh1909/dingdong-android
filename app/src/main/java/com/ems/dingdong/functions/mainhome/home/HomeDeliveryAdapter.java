@@ -67,17 +67,18 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                 intent1.putExtra(Constants.TYPE_GOM_HANG, 1);
                 mContext.startActivity(intent1);
             });
-            Intent intent2 = new Intent(mContext, ListCommonActivity.class);
+            Intent intent2 = new Intent(mContext, XacNhanDiaChiActivity.class);
             tv_column_2.setOnClickListener(v -> {
-                intent2.putExtra(Constants.TYPE_GOM_HANG, 1);
+                intent2.putExtra(Constants.TYPE_GOM_HANG, 4);
                 mContext.startActivity(intent2);
             });
+
         }
 
         void setItemClickListener2(int newDeliveryType, int notDeliveryType) {
-            Intent intent1 = new Intent(mContext, XacNhanDiaChiActivity.class);
+            Intent intent1 = new Intent(mContext, ListCommonActivity.class);
             tv_column_1.setOnClickListener(v -> {
-                intent1.putExtra(Constants.TYPE_GOM_HANG, 4);
+                intent1.putExtra(Constants.TYPE_GOM_HANG, 1);
                 mContext.startActivity(intent1);
             });
             Intent intent2 = new Intent(mContext, ListCommonActivity.class);

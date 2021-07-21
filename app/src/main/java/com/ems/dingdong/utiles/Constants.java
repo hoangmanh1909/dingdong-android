@@ -8,7 +8,9 @@ public class Constants {
     public static final String KEY_SHARE_PREFERENCES = "KEY_SHARE_PREFERENCES";
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
     public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
+    public static final String KEY_BUU_CUC_HUYEN = "KEY_BUU_CUC_HUYEN";
     public static final String KEY_POST_OFFICE = "OBJECT_POST_OFFICE";
+    public static final String KEY_MODE_TU = "KEY_MODE_TU";
     public static final String KEY_POST_SHIFT = "KEY_POST_SHIFT";
     public static final String KEY_ROUTE_INFO = "KEY_ROUTE_INFO";
     public static final String KEY_CALL_PROVIDER = "KEY_CALL_PROVIDER";

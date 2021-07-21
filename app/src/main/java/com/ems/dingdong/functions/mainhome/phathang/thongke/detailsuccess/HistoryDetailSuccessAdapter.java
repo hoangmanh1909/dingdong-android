@@ -19,9 +19,6 @@ import butterknife.BindView;
 
 public class HistoryDetailSuccessAdapter extends RecyclerBaseAdapter {
 
-
-
-
     public HistoryDetailSuccessAdapter(Context context, List<StatisticDeliveryGeneralResponse> items) {
         super(context, items);
     }

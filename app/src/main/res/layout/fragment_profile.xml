@@ -57,9 +57,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_toEndOf="@id/img_logo_persion"
-                android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <com.ems.dingdong.views.CustomMediumTextView
@@ -135,9 +135,9 @@
                 style="@style/RelativeLayoutPersonal">
 
                 <LinearLayout
+                    android:id="@+id/tv_title_route"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_title_route"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -156,10 +156,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tv_title_route"
-                    android:gravity="end"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true">
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/tv_title_route"
+                    android:gravity="end">
 
                     <TextView
                         android:id="@+id/tv_route"
@@ -212,7 +212,36 @@
             <View style="@style/Devider" />
 
             <RelativeLayout
-                style="@style/RelativeLayoutPersonal">
+                android:id="@+id/rl_cuocgoi"
+                style="@style/RelativeLayoutPersonal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_call_history" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lịch sử cuộc gọi"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <View
+                style="@style/Devider"
+                android:visibility="gone" />
+
+            <RelativeLayout style="@style/RelativeLayoutPersonal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -236,16 +265,18 @@
                     android:id="@+id/tv_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="V1.1"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:text="V1.1" />
             </RelativeLayout>
+
             <View style="@style/Devider" />
 
             <RelativeLayout
                 android:id="@+id/rl_logout"
                 style="@style/RelativeLayoutPersonal">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -266,7 +297,8 @@
 
                 <ImageView style="@style/ImageViewArrowRight" />
             </RelativeLayout>
-            <View style="@style/Devider"/>
+
+            <View style="@style/Devider" />
         </LinearLayout>
 
         <!--Tạm thời android:visibility="gone" vì chưa cần-->

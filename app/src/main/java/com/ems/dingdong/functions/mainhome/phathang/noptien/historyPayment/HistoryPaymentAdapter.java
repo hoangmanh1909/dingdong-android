@@ -26,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAdapter.HolderView> implements Filterable {
+public class  HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAdapter.HolderView> implements Filterable {
 
     private List<EWalletDataResponse> mListFilter;
     private List<EWalletDataResponse> mList;
@@ -203,7 +203,7 @@ public class HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAd
             if (!TextUtils.isEmpty(model.getStatusName())) {
                 if (model.getStatusCode().equals("S"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_green);
-                else if (model.getStatusCode().equals("C"))
+                else if (model.getStatusCode().equals("C") || model.getStatusCode().equals("R"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_red);
                 else if (model.getStatusCode().equals("T"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_prmary_blue);

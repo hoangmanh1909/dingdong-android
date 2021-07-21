@@ -36,12 +36,16 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
 
     @BindView(R.id.recycler)
     lateinit var recycler: RecyclerView
+
     @BindView(R.id.tv_nodata)
     lateinit var tvNodata: TextView
+
     @BindView(R.id.edt_search)
     lateinit var edtSearch: CustomEditText
+
     @BindView(R.id.tv_count)
     lateinit var tvCount: CustomBoldTextView
+
     @BindView(R.id.tv_amount)
     lateinit var tvAmount: CustomBoldTextView
 
@@ -129,7 +133,7 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
     }
 
     private fun showDialog() {
-        EditDayDialog(activity, OnChooseDay { calFrom, calTo,status ->
+        EditDayDialog(activity, OnChooseDay { calFrom, calTo, status ->
             fromDate = DateTimeUtils.convertDateToString(calFrom.time, DateTimeUtils.SIMPLE_DATE_FORMAT)
             toDate = DateTimeUtils.convertDateToString(calTo.time, DateTimeUtils.SIMPLE_DATE_FORMAT)
             search()
@@ -142,12 +146,10 @@ class ChiHoHistoryFragment : ViewFragment<ChiHoHistoryContract.Presenter>(), Chi
         mList.clear()
         for (item in data) {
             mList.add(item)
-            if (!TextUtils.isEmpty(item.stringValue)) {
-                val values = item.stringValue?.split("#")
-                val amountString = values!![1].replace("Số tiền rút: ", "")
-                amount += amountString.toLong()
-            }
+            val values = item.transAmount
+            amount += values!!.toLong()
         }
+
         mAdapter.notifyDataSetChanged()
         tvCount.text = String.format(" %s", mList.size)
         tvAmount.text = String.format(" %s VNĐ", NumberUtils.formatPriceNumber(amount))

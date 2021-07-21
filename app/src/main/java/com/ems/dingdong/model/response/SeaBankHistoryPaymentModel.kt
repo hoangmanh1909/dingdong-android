@@ -59,4 +59,8 @@ class SeaBankHistoryPaymentModel {
     @Expose
     val createDate: String? = null
 
+    @SerializedName("TransAmount")
+    @Expose
+    val transAmount: String? = null
+
 }

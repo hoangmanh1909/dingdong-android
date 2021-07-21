@@ -78,11 +78,14 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                                 || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
                                 || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())
-                                || row.getCode().toLowerCase().contains(charString.toLowerCase())) {
+                                || row.getCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getWeigh().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
-                        } else for (ParcelCodeInfo item : row.getListParcelCode()) {
-                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
-                                filteredList.add(row);
+                        } else {
+                            for (ParcelCodeInfo item : row.getListParcelCode()) {
+                                if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
+                                    filteredList.add(row);
+                                }
                             }
                         }
                     }

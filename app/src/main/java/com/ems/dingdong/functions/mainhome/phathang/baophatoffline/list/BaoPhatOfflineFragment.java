@@ -149,7 +149,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         if (mList.size() > 0) {
             for (CommonObject item : mList) {
                 if (org.apache.commons.lang3.math.NumberUtils.isDigits(item.getCollectAmount()))
-                    mAmount += Long.parseLong(item.getCollectAmount());
+                    mAmount += Long.parseLong(item.getCollectAmount()) + item.getFeeCancelOrder() + item.getFeeShip() + item.getFeePPA()+ item.getFeeCollectLater();
             }
             mAdapter.setItems(mList);
         }
@@ -266,7 +266,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         long totalAmount = 0;
         for (CommonObject commonObject : list) {
             if (org.apache.commons.lang3.math.NumberUtils.isDigits(commonObject.getCollectAmount()))
-                totalAmount += Long.parseLong(commonObject.getCollectAmount());
+                totalAmount += Long.parseLong(commonObject.getCollectAmount()) + commonObject.getFeeCollectLater() + commonObject.getFeeShip() + commonObject.getFeePPA() + commonObject.getFeeCancelOrder();
         }
         return totalAmount;
     }
@@ -312,7 +312,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo, status) -> {
             String fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             String toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
             mPresenter.getLocalRecord(fromDate, toDate);

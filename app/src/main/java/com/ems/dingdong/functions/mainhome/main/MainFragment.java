@@ -14,8 +14,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.calls.CallManager;
+import com.ems.dingdong.calls.IncomingCallActivity;
+import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.profile.CustomItem;
@@ -35,9 +39,13 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
 import com.roughike.bottombar.BottomBar;
+import com.sip.cmc.SipCmc;
+import com.sip.cmc.callback.PhoneCallback;
+import com.sip.cmc.callback.RegistrationCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.linphone.core.LinphoneCall;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,7 +86,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     String callProviderHome = "CTEL";
     String provide = "";
 
-
     public static MainFragment getInstance() {
         return new MainFragment();
     }
@@ -93,25 +100,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         String callProvider = sharedPref.getString(Constants.KEY_CALL_PROVIDER_HOME, callProviderHome);
-
         updateUserHeader();
         setupAdapter();
 
-        ApplicationController.getInstance().initPortSipService();
-
-//        CallHistoryRequest request = new CallHistoryRequest();
-//        request.setTenantID(12);
-//        NetWorkController.getHistoryCall(request).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                        (simpleResult, throwable) -> {
-//                            Log.d("MainFragment.class", throwable.getMessage());
-//                        }
-//                );
-//
-//        ApplicationController applicationController =
-//                (ApplicationController) getViewContext().getApplication();
-//        applicationController.initPortSipService();
 
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
@@ -169,9 +160,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 //            imgTopSetting.setVisibility(View.VISIBLE);
             viewTop.setVisibility(View.VISIBLE);
         } else {
+            img_notification.setVisibility(View.GONE);
             imgCall.setVisibility(View.GONE);
 //            imgTopSetting.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.INVISIBLE);
+            viewTop.setVisibility(View.GONE);
             Handler handler = new Handler();
             handler.postDelayed(() -> {
                 ViewGroup v = bottomBar.findViewById(R.id.bb_bottom_bar_item_container);
@@ -180,6 +173,138 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 v.removeViewAt(1);
             }, 100);
         }
+
+        eventLoginAndCallCtel();
+//        ApplicationController.getInstance().initPortSipService();
+    }
+
+    private void eventLoginAndCallCtel() {
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        ///
+        SipCmc.startService(getActivity());
+
+        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL, BuildConfig.AUTH_CTEL);
+        SipCmc.addCallback(null, new PhoneCallback() {
+            @Override
+            public void incomingCall(LinphoneCall linphoneCall) {
+                super.incomingCall(linphoneCall);
+                Log.d("123123khiem", "incomingCall: ");
+                Session session = CallManager.Instance().findIdleSession();
+                session.state = Session.CALL_STATE_FLAG.INCOMING;
+                Intent activityIntent = new Intent(getActivity(), IncomingCallActivity.class);
+                activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(activityIntent);
+            }
+
+            @Override
+            public void outgoingInit() {
+                super.outgoingInit();
+                Log.d("123123khiem", "outgoingInit");
+            }
+
+            @Override
+            public void callConnected(LinphoneCall linphoneCall) {
+                super.callConnected(linphoneCall);
+
+            }
+
+            @Override
+            public void callEnd(LinphoneCall linphoneCall) {
+                super.callEnd(linphoneCall);
+                Log.d("123123khiem", "callEnd");
+                //Toast.makeText(getApplicationContext(), "callEnd", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void callReleased() {
+                super.callReleased();
+                Log.d("123123khiem", "callReleased");
+                //Toast.makeText(getApplicationContext(), "callReleased", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void error() {
+                super.error();
+                Log.d("123123khiem", "error");
+            }
+
+            @Override
+            public void callStatus(int status) {
+                super.callStatus(status);
+                Log.d("123123khiem", "callStatus: " + status);
+            }
+
+            @Override
+            public void callTimeRing(String time) {
+                super.callTimeRing(time);
+                Log.d("123123khiem", "callTimeRing");
+            }
+
+            @Override
+            public void callTimeAnswer(String time) {
+                super.callTimeAnswer(time);
+                Log.d("123123khiem", "callTimeAnswer");
+            }
+
+            @Override
+            public void callTimeEnd(String time) {
+                super.callTimeEnd(time);
+                Log.d("123123khiem", "callTimeEnd");
+            }
+
+            @Override
+            public void callId(String callId) {
+                super.callId(callId);
+                Log.d("123123khiem", "callId");
+            }
+
+            @Override
+            public void callPhoneNumber(String phoneNumber) {
+                super.callPhoneNumber(phoneNumber);
+                Log.d("123123khiem", "callPhoneNumber: " + phoneNumber);
+            }
+
+            @Override
+            public void callDuration(long duration) {
+                super.callDuration(duration);
+                Log.d("123123khiem", "callDuration: " + duration);
+            }
+        });
+        SipCmc.addCallback(new RegistrationCallback() {
+            @Override
+            public void registrationOk() {
+                super.registrationOk();
+                android.util.Log.d("registrationOk", "login ctel registrationOk");
+            }
+
+            @Override
+            public void registrationFailed() {
+                super.registrationFailed();
+                android.util.Log.d("registrationFailed", "login ctel failed");
+            }
+
+            @Override
+            public void registrationNone() {
+                super.registrationNone();
+                android.util.Log.d("registrationNone", "login ctel registrationNone");
+            }
+
+            @Override
+            public void registrationProgress() {
+                super.registrationProgress();
+                android.util.Log.d("registrationProgress", "login ctel registrationProgress");
+            }
+
+            @Override
+            public void registrationCleared() {
+                super.registrationCleared();
+                android.util.Log.d("123123", "login ctel registrationCleared");
+            }
+        }, null);
+
     }
 
     @Override
@@ -239,7 +364,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     }
 
 
-    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting,R.id.fr_thongbao})
+    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting, R.id.fr_thongbao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fr_thongbao:
@@ -272,7 +397,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             case 2:
                 try {
                     mPresenter.getBalance();
-                }catch (NullPointerException nullPointerException){
+                } catch (NullPointerException nullPointerException) {
 
                 }
                 break;

@@ -42,6 +42,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     int mType;
     int mTab;
     private ListCommonContract.OnTabListener tabListener;
+
     @Override
     public ListCommonContract.View onCreateView() {
         return ListCommonFragment.getInstance();
@@ -58,7 +59,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     }
 
     @Override
-    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
+    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, int type) {
         mView.showProgress();
         mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
@@ -68,7 +69,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showResponseSuccess(response.body().getList());
                 } else {
-                    mView.showError(response.body().getMessage());
+                    if (type == 0)
+                        mView.showError(response.body().getMessage());
                 }
             }
 
@@ -76,7 +78,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
             protected void onError(Call<CommonObjectListResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showError(message);
+                if (type == 0)
+                    mView.showError(message);
             }
         });
 

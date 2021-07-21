@@ -76,7 +76,6 @@ public class DialogTaoTin extends Dialog {
         mDelegate1 = callback;
         tvTitle.setText(tv_title);
         mList1 = list;
-        Log.d("asdasdasd",mList1+"");
         mAdapter1 = new DiaChiAdapter(getContext(), mList1) {
             @Override
             public void onBindViewHolder(HolderView holder, final int position) {

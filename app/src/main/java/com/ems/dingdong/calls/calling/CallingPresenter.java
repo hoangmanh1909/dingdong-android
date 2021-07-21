@@ -1,6 +1,7 @@
 package com.ems.dingdong.calls.calling;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -12,6 +13,7 @@ import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
 import com.ems.dingdong.model.CallHistoryVHT;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
@@ -142,31 +144,12 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-
         //Lịch sử gọi đi
         //if (type == Constants.CALL_TYPE_HISTORY_POSTMAN_OUT) {
             CallHistoryVHT = new CallHistoryVHT(ladingCode, userInfo.getPOProvinceCode(), userInfo.getPODistrictCode(), userInfo.getUnitCode(), userInfo.getUserName(), routeInfo.getRouteCode(), userInfo.getMobileNumber(), toNumber, "", xSessionIdPostmanOut);
             Log.d("123123", "ladingCodes: " + ladingCode + " province: " + userInfo.getPOProvinceCode() + " district: " + userInfo.getPODistrictCode() + " po code: " + userInfo.getUnitCode() + " id postman: " + userInfo.getUserName() + " route code: " + routeInfo.getRouteCode() + " sdt ng gọi: " + userInfo.getMobileNumber() + " toNumber: " + toNumber + " xSessionIdPostmanOut:" + xSessionIdPostmanOut);
             Gson gson = new Gson();
             String json = gson.toJson(CallHistoryVHT);
-//            mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", json, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
-//                @Override
-//                protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
-//                    super.onSuccess(call, response);
-//                    if (response.body().getErrorCode().equals("00")) {
-//
-//                    } else {
-//
-//                    }
-//                }
-//
-//                @Override
-//                protected void onError(Call<ResponseObject> call, String message) {
-//                    super.onError(call, message);
-//
-//                }
-//            });
-        //}
 
     }
 
@@ -192,24 +175,7 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
 
         Gson gsons = new Gson();
         String jsons = gsons.toJson(CallHistoryVHT);
-//        mInteractor.createCallHistoryVHT("VHT_PUSH_DATA", jsons, "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
-//            @Override
-//            protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
-//                super.onSuccess(call, response);
-//                if (response.body().getErrorCode().equals("00")) {
-//                    Log.d("123123", "history call in success");
-//
-//                } else {
-//
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(Call<ResponseObject> call, String message) {
-//                super.onError(call, message);
-//
-//            }
-//        });
+
     }
 
     @Subscribe(sticky = true)
@@ -233,5 +199,49 @@ public class CallingPresenter extends Presenter<CallingContract.View, CallingCon
         numberCustomer = customCallerInAndSessonIdIn.getNumberCustomer();
         xSessionIdIn = customCallerInAndSessonIdIn.getSessionId();
     }
+
+
+    @Override
+    public void callForward(String phone, String parcelCode) {
+
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String callerNumber = "";
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            callerNumber = userInfo.getMobileNumber();
+        }
+        String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        mView.showProgress();
+        addCallback(mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showCallSuccess();
+                    } else {
+                        mView.showCallError(response.body().getMessage());
+                    }
+                }
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showCallError(message);
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.showCallError("Lỗi kết nối đến tổng đài");
+            }
+        }));
+
+    }
+
 
 }

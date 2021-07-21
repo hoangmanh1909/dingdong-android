@@ -2,10 +2,12 @@ package com.ems.dingdong.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.SystemClock;
 import android.view.View;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -21,7 +23,7 @@ public class ConfirmDialog extends Dialog {
     CustomBoldTextView totalRecord;
     @BindView(R.id.total_amount)
     CustomBoldTextView totalAmount;
-
+    private long lastClickTime = 0;
     private OnCancelClickListener cancelClickListener;
     private OnOkClickListener okClickListener;
 
@@ -47,6 +49,11 @@ public class ConfirmDialog extends Dialog {
                 break;
 
             case R.id.tv_ok_dialog:
+                if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                    Toast.showToast(getContext(),"Bạn thao tác quá nhanh");
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
                 okClickListener.onClick(this);
                 break;
         }

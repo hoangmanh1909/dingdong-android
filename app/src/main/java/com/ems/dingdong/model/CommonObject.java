@@ -105,6 +105,9 @@ public class CommonObject extends RealmObject {
     String Amount;
     @SerializedName("Service")
     String Service;
+
+    @SerializedName("ReceiverMobile")
+    String receiverMobile;
     @SerializedName("Info")
     String Info;
     @SerializedName("Instruction")
@@ -120,6 +123,96 @@ public class CommonObject extends RealmObject {
     @SerializedName("OrderId")
     private String orderId;
 
+
+    @SerializedName("FeePPA")
+    private long feePPA;
+
+    @SerializedName("FeeShip")
+    private long feeShip;
+
+    @SerializedName("FeeCollectLater")
+    private long feeCollectLater;
+
+    @SerializedName("FeePPAPNS")
+    private long feePPAPNS;
+
+    @SerializedName("FeeShipPNS")
+    private long feeShipPNS;
+
+    @SerializedName("FeeCollectLaterPNS")
+    private long feeCollectLaterPNS;
+
+    @SerializedName("IsCancelOrder")
+    private boolean isCancelOrder;
+
+    @SerializedName("FeeCancelOrder")
+    private long feeCancelOrder;
+
+
+    public boolean isCancelOrder() {
+        return isCancelOrder;
+    }
+
+    public void setCancelOrder(boolean cancelOrder) {
+        isCancelOrder = cancelOrder;
+    }
+
+    public long getFeeCancelOrder() {
+        return feeCancelOrder;
+    }
+
+    public void setFeeCancelOrder(long feeCancelOrder) {
+        this.feeCancelOrder = feeCancelOrder;
+    }
+
+    public long getFeePPA() {
+        return feePPA;
+    }
+
+    public void setFeePPA(long feePPA) {
+        this.feePPA = feePPA;
+    }
+
+    public long getFeeShip() {
+        return feeShip;
+    }
+
+    public void setFeeShip(long feeShip) {
+        this.feeShip = feeShip;
+    }
+
+    public long getFeeCollectLater() {
+        return feeCollectLater;
+    }
+
+    public void setFeeCollectLater(long feeCollectLater) {
+        this.feeCollectLater = feeCollectLater;
+    }
+
+    public long getFeePPAPNS() {
+        return feePPAPNS;
+    }
+
+    public void setFeePPAPNS(long feePPAPNS) {
+        this.feePPAPNS = feePPAPNS;
+    }
+
+    public long getFeeShipPNS() {
+        return feeShipPNS;
+    }
+
+    public void setFeeShipPNS(long feeShipPNS) {
+        this.feeShipPNS = feeShipPNS;
+    }
+
+    public long getFeeCollectLaterPNS() {
+        return feeCollectLaterPNS;
+    }
+
+    public void setFeeCollectLaterPNS(long feeCollectLaterPNS) {
+        this.feeCollectLaterPNS = feeCollectLaterPNS;
+    }
+
     public String getOrderId() {
         return orderId;
     }
@@ -130,6 +223,14 @@ public class CommonObject extends RealmObject {
 
     @SerializedName("RealReceiverName")
     private String realReceiverName;
+
+    public String getReceiverMobile() {
+        return receiverMobile;
+    }
+
+    public void setReceiverMobile(String receiverMobile) {
+        this.receiverMobile = receiverMobile;
+    }
 
     private String realReceiverIDNumber;
     private String DeliveryType;
@@ -188,12 +289,19 @@ public class CommonObject extends RealmObject {
     private String shiftId;
 
     private String dateSearch;
+
     @SerializedName("Shipments")
     private RealmList<ParcelCodeInfo> listParcelCode;
+
     @Ignore
     List<String> orderPostmanIDS;
+
     @Ignore
     List<String> codeS;
+
+    @Ignore
+    List<String> codeS1;
+
     @Ignore
     public int weightS = 0;
 
@@ -209,6 +317,17 @@ public class CommonObject extends RealmObject {
             codeS = new ArrayList<>();
         }
         codeS.add(code);
+    }
+
+    public void addCode1(String code) {
+        if (codeS1 == null) {
+            codeS1 = new ArrayList<>();
+        }
+        codeS1.add(code);
+    }
+
+    public List<String> getCodeS1() {
+        return codeS1;
     }
 
     public List<String> getOrderPostmanIDS() {

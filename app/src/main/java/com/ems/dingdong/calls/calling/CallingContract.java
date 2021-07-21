@@ -5,15 +5,23 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CallHistoryVHT;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.response.ResponseObject;
+
+import retrofit2.Call;
 
 public interface CallingContract {
 
     interface Interactor extends IInteractor<Presenter> {
-//        void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback);
+        Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
+                                                 String callForwardType, String hotlineNumber,
+                                                 String ladingCode, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
+        void showCallError(String mess);
+
+        void showCallSuccess();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -35,6 +43,8 @@ public interface CallingContract {
         void createCallHistoryVHTOut();
 
         void createCallHistoryVHTIn();
+
+        void callForward(String phone, String parcelCode);
 
     }
 }

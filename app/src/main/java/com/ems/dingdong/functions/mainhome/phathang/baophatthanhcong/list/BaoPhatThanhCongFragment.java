@@ -148,6 +148,11 @@ public class BaoPhatThanhCongFragment extends ViewFragment<BaoPhatThanhCongContr
                                     }
 
                                     @Override
+                                    public void onCallSenderResponse1(String phone) {
+
+                                    }
+
+                                    @Override
                                     public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
 
                                     }

@@ -57,7 +57,7 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (!"6".equals(userInfo.getEmpGroupID())) {
-                homeInfos.add(new HomeInfo(1, R.drawable.ic_xac_nhan_tin, "Xác nhận tin"));
+                homeInfos.add(new HomeInfo(1, R.drawable.document, "Xác nhận tin"));
                 homeInfos.add(new HomeInfo(2, R.drawable.ic_xac_nhan_tin, "Xác nhận tin theo địa chỉ"));
                 homeInfos.add(new HomeInfo(3, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
                 homeInfos.add(new HomeInfo(4, R.drawable.ic_hoan_tat_tin, "Hoàn tất nhiều tin"));

@@ -12,6 +12,8 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.response.ResponseObject;
 
+import io.reactivex.Single;
+
 /**
  * The Login Contract
  */
@@ -27,6 +29,8 @@ interface LoginContract {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
         void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback);
+
+        Single<SimpleResult> getList(String data);
     }
 
     interface View extends PresentView<Presenter> {
@@ -45,6 +49,9 @@ interface LoginContract {
         void gotoValidation();
 
         void getVersion();
+
+
+        void getList(String data);
     }
 }
 

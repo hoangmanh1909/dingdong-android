@@ -12,7 +12,7 @@ import com.ems.dingdong.model.response.SeaBankInquiryModel
 /**
  * The PaymentChiHoBtxh Contract
  */
- interface PaymentChiHoBtxhContract {
+interface PaymentChiHoBtxhContract {
 
     interface Interactor : IInteractor<Presenter> {
         fun getIdentifyCation(callback: CommonCallback<IdentifyCationResponse>)

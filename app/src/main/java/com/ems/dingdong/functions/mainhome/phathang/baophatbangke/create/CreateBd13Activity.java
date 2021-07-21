@@ -2,6 +2,9 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.base.DingDongActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabtaobanke.TabCreateAdapter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabtaobanke.TabCreateFragment;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabtaobanke.TabCreatePresenter;
 
 
 /**
@@ -10,11 +13,11 @@ import com.ems.dingdong.base.DingDongActivity;
 
 public class CreateBd13Activity extends DingDongActivity {
     //private SearchView searchView;
-    private CreateBd13Fragment mFragment;
+    private TabCreateFragment mFragment;
 
     @Override
     public ViewFragment onCreateFirstFragment() {
-        mFragment = (CreateBd13Fragment) new CreateBd13Presenter(this).getFragment();
+        mFragment = (TabCreateFragment) new TabCreatePresenter(this).getFragment();
         return mFragment;
     }
 

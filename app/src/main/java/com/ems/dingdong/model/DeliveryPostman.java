@@ -30,6 +30,11 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("ReciverAddress")
     @Expose
     private String reciverAddress;
+    @SerializedName("ReceiverEmail")
+    @Expose
+    private String receiverEmail;
+
+
     @SerializedName("ReciverMobile")
     @Expose
     private String reciverMobile;
@@ -134,8 +139,120 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("SMLStatusName")
     private String sMLStatusName;
 
+    @SerializedName("FeeShip")
+    private long feeShip;
+
     @SerializedName("IsDOP")
     private int IsDOP;
+
+    @SerializedName("IDHub")
+    private String iDHub;
+
+    @SerializedName("HubAddress")
+    private String hubAddress;
+
+    @SerializedName("FeeCOD")
+    private long feeCOD;
+    @SerializedName("FeeC")
+    private long feeC;
+    @SerializedName("FeePPA")
+    private long feePPA;
+    @SerializedName("FeeCollectLater")
+    private long feeCollectLater;
+    @SerializedName("AmountCOD")
+    private long amountCOD;
+    @SerializedName("IsCancelOrder ")
+    private boolean isCancelOrder ;
+    @SerializedName("FeeCancelOrder")
+    private long FeeCancelOrder;
+
+    public boolean isCancelOrder() {
+        return isCancelOrder;
+    }
+
+    public void setCancelOrder(boolean cancelOrder) {
+        isCancelOrder = cancelOrder;
+    }
+
+    public long getFeeCancelOrder() {
+        return FeeCancelOrder;
+    }
+
+    public void setFeeCancelOrder(long feeCancelOrder) {
+        FeeCancelOrder = feeCancelOrder;
+    }
+
+    public long getFeeCollectLater() {
+        return feeCollectLater;
+    }
+
+    public void setFeeCollectLater(long feeCollectLater) {
+        this.feeCollectLater = feeCollectLater;
+    }
+
+    public long getAmountCOD() {
+        return amountCOD;
+    }
+
+    public void setAmountCOD(long amountCOD) {
+        this.amountCOD = amountCOD;
+    }
+
+    public long getFeeCOD() {
+        return feeCOD;
+    }
+
+    public void setFeeCOD(long feeCOD) {
+        this.feeCOD = feeCOD;
+    }
+
+    public long getFeeC() {
+        return feeC;
+    }
+
+    public void setFeeC(long feeC) {
+        this.feeC = feeC;
+    }
+
+    public long getFeePPA() {
+        return feePPA;
+    }
+
+    public void setFeePPA(long feePPA) {
+        this.feePPA = feePPA;
+    }
+
+    public String getiDHub() {
+        return iDHub;
+    }
+
+    public void setiDHub(String iDHub) {
+        this.iDHub = iDHub;
+    }
+
+    public String getHubAddress() {
+        return hubAddress;
+    }
+
+    public void setHubAddress(String hubAddress) {
+        this.hubAddress = hubAddress;
+    }
+
+    public String getReceiverEmail() {
+        return receiverEmail;
+    }
+
+    public void setReceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
+    }
+
+    public long getFeeShip() {
+        return feeShip;
+    }
+
+    public void setFeeShip(long feeShip) {
+        this.feeShip = feeShip;
+    }
 
     public int getIsDOP() {
         return IsDOP;

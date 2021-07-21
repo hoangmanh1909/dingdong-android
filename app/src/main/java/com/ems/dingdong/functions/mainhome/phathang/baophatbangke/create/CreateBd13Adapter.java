@@ -213,13 +213,15 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_batch_code)
         public CustomTextView tvBatchCode;
         @BindView(R.id.tv_sml_status)
-        public CustomTextView tv_sml_status;
+        CustomTextView tv_sml_status;
         @BindView(R.id.tv_refund_postage)
         public CustomTextView tvRefundPostage;
+        @BindView(R.id.img_sml)
+        public ImageView imgSml;
 
         public HolderView(View itemView) {
             super(itemView);
-                ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         public DeliveryPostman getItem(int position) {
@@ -270,7 +272,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvBatchCode.setText("");
                 tvBatchCode.setVisibility(View.GONE);
             }
-//            Log.d("thanhkhiempt",receiverName + " asd " +receiverMobile);
             tv_receiver.setText(String.format("Người nhận: %s - %s - %s", receiverName, receiverMobile, receiverAddress));
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + senderMobile + " - " + senderAddress);
 
@@ -280,16 +281,16 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             if (item.getAmount() != null)
                 tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
 
-            if (item.getTotalFee() != null)
-                tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
+//            if (item.getTotalFee() != null)
+            tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD())));
 
             tvRefundPostage.setVisibility(View.GONE);
             try {
-                if (item.getIsItemReturn().equals("Y")){
+                if (item.getIsItemReturn().equals("Y")) {
                     tvRefundPostage.setText("Bưu gửi phát hoàn");
                     tvRefundPostage.setVisibility(View.VISIBLE);
                 }
-            }catch (NullPointerException nullPointerException){
+            } catch (NullPointerException nullPointerException) {
 
             }
 
@@ -314,6 +315,24 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             } else {
                 gtgt.setText("GTGT: ");
             }
+
+            if (!TextUtils.isEmpty(item.getVatCode())) {
+                String tam[] = item.getVatCode().split(",");
+                for (int i = 0; i < tam.length; i++)
+                    if (tam[i].equals("PHS")) {
+                        imgSml.setVisibility(View.VISIBLE);
+                        imgSml.setImageResource(R.drawable.ic_huy_sml);
+                        break;
+                    } else if (!tam[i].equals("PHS")) {
+                        imgSml.setImageResource(R.drawable.ic_sml);
+                        imgSml.setVisibility(View.VISIBLE);
+                    } else imgSml.setVisibility(View.GONE);
+            } else {
+                imgSml.setImageResource(R.drawable.ic_sml);
+                imgSml.setVisibility(View.VISIBLE);
+            }
+
+
             if (!TextUtils.isEmpty(item.getNewInstruction())) {
                 tvNewInstruction.setVisibility(View.VISIBLE);
                 tvNewInstruction.setText(String.format("Chỉ dẫn phát: %s", item.getNewInstruction()));
@@ -336,6 +355,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 img_ContactPhone_extend.setVisibility(View.VISIBLE);
             } else {
                 img_map.setVisibility(View.GONE);
+                imgSml.setVisibility(View.GONE);
                 img_contact_phone.setVisibility(View.GONE);
                 img_ContactPhone_extend.setVisibility(View.GONE);
             }
@@ -348,10 +368,12 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvNewReceiverAddress.setText("");
             }
 
-            if(!TextUtils.isEmpty(item.getsMLStatusName())) {
+            if (!TextUtils.isEmpty(item.getsMLStatusName())) {
                 tv_sml_status.setVisibility(View.VISIBLE);
                 tv_sml_status.setText("Trạng thái SML: " + item.getsMLStatusName());
-            }
+            } else tv_sml_status.setVisibility(View.GONE);
+
+
         }
     }
 

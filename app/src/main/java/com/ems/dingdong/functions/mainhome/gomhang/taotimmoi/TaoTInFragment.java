@@ -99,6 +99,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     FormItemEditText edt_nguoilienhe;
     @BindView(R.id.edt_search)
     FormItemEditText edt_search;
+
     String maKhachhang = "";
     String tenKhachhang = "";
     String sodienthoaiKhachhang = "";
@@ -279,6 +280,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         createOrderRequest.setPickupDistrictId(idQuuanhuyen);
         createOrderRequest.setPickupWardId(idXaphuong);
         createOrderRequest.setContactName(nguoilienhe);
+        createOrderRequest.setPickupStreet(edt_sonha.getText().toString());
         createOrderRequest.setContactPhone(phone);
 
 

@@ -4,12 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.chihobtxh.BtxhActivity;
+import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.model.HomeCollectInfoResult;
+import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -18,12 +23,18 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+
 import butterknife.BindView;
+import butterknife.OnClick;
+
 import android.provider.Settings.Secure;
+import android.view.View;
+import android.widget.LinearLayout;
 
 /**
  * The Home Fragment
@@ -37,7 +48,10 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     RecyclerView recycler_delivery_cod;
     @BindView(R.id.recycler_delivery_hcc)
     RecyclerView recycler_delivery_hcc;
-
+    @BindView(R.id.ll_main)
+    LinearLayout ll_main;
+    @BindView(R.id.linearLayoutHome)
+    LinearLayout linearLayoutHome;
     private HomeCollectAdapter homeCollectAdapter;
     private HomeDeliveryAdapter homeAdapter;
     private HomeDeliveryAdapter homeDeliveryAdapter;
@@ -70,30 +84,41 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         super.initLayout();
         String android_id = Secure.getString(getContext().getContentResolver(),
                 Secure.ANDROID_ID);
-        Log.d("123123", "android_id: "+android_id);
+        ArrayList<HomeInfo> homeInfos = new ArrayList<>();
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            if ("6".equals(userInfo.getEmpGroupID())) {
+                homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
+                linearLayoutHome.setVisibility(View.VISIBLE);
+                ll_main.setVisibility(View.GONE);
+            }else {
+                linearLayoutHome.setVisibility(View.GONE);
+                ll_main.setVisibility(View.VISIBLE);
+                homeViewChangeListerner = new HomeViewChangeListerner();
+                getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
 
-        homeViewChangeListerner = new HomeViewChangeListerner();
-        getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
+                homeAdapter = new HomeDeliveryAdapter(getContext(), mListCollect);
+                RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_collect);
+                recycler_collect.setAdapter(homeAdapter);
 
-        homeAdapter = new HomeDeliveryAdapter(getContext(), mListCollect);
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_collect);
-        recycler_collect.setAdapter(homeAdapter);
+                homeDeliveryAdapter = new HomeDeliveryAdapter(getContext(), mListDelivery);
+                RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
+                recycler_delivery.setAdapter(homeDeliveryAdapter);
 
-        homeDeliveryAdapter = new HomeDeliveryAdapter(getContext(), mListDelivery);
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery);
-        recycler_delivery.setAdapter(homeDeliveryAdapter);
+                homeDeliveryCODAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryCOD);
+                RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_cod);
+                recycler_delivery_cod.setAdapter(homeDeliveryCODAdapter);
 
-        homeDeliveryCODAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryCOD);
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_cod);
-        recycler_delivery_cod.setAdapter(homeDeliveryCODAdapter);
+                homeDeliveryPAAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryPA);
+                RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_hcc);
+                recycler_delivery_hcc.setAdapter(homeDeliveryPAAdapter);
 
-        homeDeliveryPAAdapter = new HomeDeliveryAdapter(getContext(), mListDeliveryPA);
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler_delivery_hcc);
-        recycler_delivery_hcc.setAdapter(homeDeliveryPAAdapter);
-
-
-        updateHomeView();
-        eventCallInAppCtel();
+                updateHomeView();
+                eventCallInAppCtel();
+            }
+        }
 
     }
 
@@ -124,12 +149,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         Date today = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
-        cal.add(Calendar.DATE, -3);
+        cal.add(Calendar.DATE, -2);
 
-       String fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-       String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (mPresenter != null && userInfo != null && routeInfo != null)
-            mPresenter.getHomeView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode());
+            mPresenter.getHomeView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode());
     }
 
     @Override
@@ -263,6 +288,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
     private void eventCallInAppCtel() {
 
+    }
+
+    @OnClick(R.id.linearLayoutHome)
+    public void onViewClicked() {
+        Intent intent = new Intent(getActivity(), BtxhActivity.class);
+        startActivity(intent);
     }
 
 }

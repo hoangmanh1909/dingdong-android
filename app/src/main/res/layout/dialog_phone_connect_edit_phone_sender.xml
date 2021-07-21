@@ -51,10 +51,10 @@
                             <com.ems.dingdong.views.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
                                 android:layout_gravity="center"
                                 android:paddingTop="@dimen/dimen_10dp"
-                                android:layout_centerVertical="true"
-                                android:layout_centerHorizontal="true"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="@string/title_edit_phone_number"
                                 android:textAllCaps="true"
@@ -64,10 +64,10 @@
 
                         <com.ems.dingdong.views.CustomEditText
                             android:id="@+id/edt_phone_sender"
-                            android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Nhập số điện thoại"
+                            android:inputType="number"
                             android:textColor="@color/color_5f2f75"
                             android:textSize="@dimen/text_size_18sp" />
                     </LinearLayout>
@@ -80,12 +80,47 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="@dimen/dimen_10dp"
-                    android:weightSum="2">
+                    android:weightSum="3">
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_update_sender"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button_fix_call"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Gọi Internet"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_update_thuong"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button_fix_call_internet"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Gọi Thường"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
 
                     <com.ems.dingdong.views.CustomMediumTextView
                         android:id="@+id/tv_close_sender"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_cancel"
@@ -95,24 +130,6 @@
                         android:paddingRight="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="@string/cancel_sign"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <com.ems.dingdong.views.CustomMediumTextView
-                        android:id="@+id/tv_update_sender"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_button_fix_call"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/dimen_10dp"
-                        android:paddingTop="@dimen/dimen_10dp"
-                        android:paddingRight="@dimen/dimen_10dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Gọi"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="16sp" />

@@ -108,6 +108,10 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
         String mobileNumber = userInfo.getMobileNumber();
+
+        String postManCode1 = userInfo.getUserName();
+        String postManTel1 = userInfo.getMobileNumber();
+
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (CommonObject item : commonObjects) {
@@ -148,7 +152,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         "N",
                         "",
                         0,
-                        "");
+                        "", item.isCancelOrder(), item.getFeeCancelOrder(), postManTel1, postManCode1);
                 List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     mView.showProgress();
@@ -225,8 +229,22 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         isPaymentPP,
                         "N",
                         "",
-                        0
+                        0,
+                        item.getFeePPA(),
+                        item.getFeeShip(),
+                        item.getFeeCollectLater(),
+                        item.getFeePPAPNS(),
+                        item.getFeeShipPNS(),
+                        item.getFeeCollectLaterPNS()
                 );
+
+                //  this.feePPA = feePPA;
+                //        this.feeShip = feeShip;
+                //        this.feeCollectLater = feeCollectLater;
+                //        this.feePPAPNS = feePPAPNS;
+                //        this.feeShip = feeShip;
+                //        this.feeShipPNS = feeShipPNS;
+                //        this.feeCollectLaterPNS = feeCollectLaterPNS;
 
                 List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {

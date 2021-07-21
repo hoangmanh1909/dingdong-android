@@ -19,7 +19,7 @@ interface PhoneContract {
     }
 
     interface View extends PresentView<Presenter> {
-        void showCallSuccess();
+        void showCallSuccess(String phone);
 
         void showError(String message);
 

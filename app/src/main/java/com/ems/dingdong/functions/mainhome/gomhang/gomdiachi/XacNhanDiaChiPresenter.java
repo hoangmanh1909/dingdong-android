@@ -23,6 +23,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.common.collect.Iterables;
+import com.google.gson.Gson;
 
 
 import java.util.ArrayList;
@@ -68,7 +69,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
 //    }
 
     @Override
-    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
+    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate,
+                                          int type) {
         mView.showProgress();
         mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
@@ -91,6 +93,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                         if (itemExists == null) {
                             item.addOrderPostmanID(item.getOrderPostmanID());
                             item.addCode(item.getCode());
+                            item.addCode1(item.getiD());
                             //
                             try {
                                 item.weightS += Integer.parseInt(item.getWeigh());
@@ -103,15 +106,18 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             }
                             itemExists.addOrderPostmanID(item.getOrderPostmanID());
                             itemExists.addCode(item.getCode());
+                            itemExists.addCode1(item.getiD());
                             try {
                                 itemExists.weightS += Integer.parseInt(item.getWeigh());
                             } catch (Exception e) {
                             }
                         }
                     }
+
                     mView.showResponseSuccess(listG);
                 } else {
-                    mView.showError(response.body().getMessage());
+                    if (type == 0)
+                        mView.showError(response.body().getMessage());
                 }
             }
 
@@ -119,7 +125,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
             protected void onError(Call<CommonObjectListResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showError(message);
+                if (type == 0)
+                    mView.showError(message);
             }
         });
     }
@@ -240,6 +247,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     public int getCurrentTab() {
         return tabListener.getCurrentTab();
     }
+
     public XacNhanDiaChiPresenter setTypeTab(int mTab) {
         this.mTab = mTab;
         return this;

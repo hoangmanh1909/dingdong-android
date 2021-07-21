@@ -116,10 +116,8 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showConfirmSuccess(simpleResult.getMessage());
-                    } else if (simpleResult != null) {
+                    } else  {
                         mView.showConfirmError(simpleResult.getMessage());
-                    } else {
-                        mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
                     mView.hideProgress();
                 }, throwable -> {

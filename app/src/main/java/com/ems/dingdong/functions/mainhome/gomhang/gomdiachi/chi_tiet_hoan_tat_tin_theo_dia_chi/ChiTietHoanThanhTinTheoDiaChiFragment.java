@@ -47,6 +47,7 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
@@ -80,7 +81,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     @BindView(R.id.tv_phone_receiver)
     LinearLayout tvPhoneReceiver;
     @BindView(R.id.tv_address_receiver)
-    CustomTextView tvAddressReceiver;
+    CustomBoldTextView tvAddressReceiver;
     @BindView(R.id.ll_success)
     ConstraintLayout llSuccess;
     @BindView(R.id.ll_unsuccess)
@@ -125,6 +126,9 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     CustomTextView tvTotalParcelCodes;
     @BindView(R.id.edt_search)
     MaterialEditText edtSearch;
+
+    @BindView(R.id.edt_noidungtin)
+    CustomEditText edtGhichu;
     private boolean scanBarcode = false;
 
     List<ParcelCodeInfo> commonObjects;
@@ -142,8 +146,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     private String code = "";
     private ArrayList<ReasonInfo> mListReason;
     private ArrayList<ReasonInfo> mListReasons;
-    private ItemBottomSheetPickerUIFragment pickerUIReason;
-    private ReasonInfo mReason;
+    private ItemBottomSheetPickerUIFragment pickerUIReason, pickerUIReason1;
+    private ReasonInfo mReason, mReason1;
     private int totalGram = 0;
     private boolean checkUnSuccess = false;
     private boolean checkFailure = false;
@@ -167,14 +171,13 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         llUnsuccess.setVisibility(View.GONE);
         llFailure.setVisibility(View.GONE);
         layoutReasonUnSuccess.setVisibility(View.GONE);
+        edtGhichu.setVisibility(View.GONE);
         layoutReasonFailure.setVisibility(View.GONE);
         mListHoanTatNhieuTin = new ArrayList<>();
         mListCommonObject = mPresenter.getCommonObject();
-
         if (!parcels.isEmpty()) {
             parcels = parcels.substring(0, parcels.length() - 2);
         }
-
         listImage = new ArrayList<>();
         imageAdapter = new ImageCaptureAdapter(getViewContext(), listImage) {
             @Override
@@ -190,35 +193,36 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         commonObjects = new ArrayList<>();
         commonObjects.addAll(mListCommonObject.getListParcelCode());
         if (commonObjects.size() == 0) {
-            ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
-            parcelCodeInfo.setTrackingCode("");
-            parcelCodeInfo.setOrderCode(mListCommonObject.getCode());
-            parcelCodeInfo.setOrderId(mListCommonObject.getiD());
-            parcelCodeInfo.setOrderPostmanId(mListCommonObject.getOrderPostmanID());
-            commonObjects.add(parcelCodeInfo);
-        } else {
-            int soluongbuugui = 0;
-            int soluongtin = 1;
-            for (ParcelCodeInfo info : commonObjects) {
-                if (!TextUtils.isEmpty(info.getTrackingCode()))
-                    soluongbuugui++;
+            commonObjects = new ArrayList<>();
+            for (int i = 0; i < mListCommonObject.getCodeS().size(); i++) {
+                ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
+                parcelCodeInfo.setTrackingCode("");
+                parcelCodeInfo.setOrderCode(mListCommonObject.getCodeS().get(i));
+                parcelCodeInfo.setOrderId(mListCommonObject.getCodeS1().get(i));
+                parcelCodeInfo.setOrderPostmanId(mListCommonObject.getOrderPostmanIDS().get(i));
+                commonObjects.add(parcelCodeInfo);
             }
-            for (int i = 1; i < commonObjects.size(); i++) {
-                ParcelCodeInfo info = commonObjects.get(i - 1);
-                String prevDate = info.getOrderCode().split("\\s")[0];
-                if (compareMatin(commonObjects.get(i).getOrderCode(), prevDate) != 1)
-                    soluongtin++;
-            }
-            tvTotalCode.setText("Số lượng tin: " + soluongtin);
-            tvTotalParcelCodes.setText("Số lượng bưu gửi: " + soluongbuugui);
         }
+        int soluongbuugui = 0;
+        int soluongtin = 1;
+        for (ParcelCodeInfo info : commonObjects) {
+            if (!TextUtils.isEmpty(info.getTrackingCode()))
+                soluongbuugui++;
+        }
+        for (int i = 1; i < commonObjects.size(); i++) {
+            ParcelCodeInfo info = commonObjects.get(i - 1);
+            String prevDate = info.getOrderCode().split("\\s")[0];
+            if (compareMatin(commonObjects.get(i).getOrderCode(), prevDate) != 1)
+                soluongtin++;
+        }
+        tvTotalCode.setText("Số lượng tin: " + soluongtin);
+        tvTotalParcelCodes.setText("Số lượng bưu gửi: " + soluongbuugui);
+
 
         buuguiAdapter = new BuuguiAdapter(getViewContext(), commonObjects) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-
-
                 if (position == 0) {
                     holder.radioBtn.setVisibility(View.VISIBLE);
                 } else {
@@ -345,7 +349,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         final String[] tam = new String[1];
         edtSearch.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
                 if ((keyCode == KeyEvent.KEYCODE_ENTER)) {
                     tam[0] = edtSearch.getText().toString();
                     edtSearch.setText("");
@@ -420,7 +423,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 break;
             case R.id.radio_btn:
                 setAllCheckBox();
-
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -440,7 +442,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 layoutReasonFailure.setVisibility(View.GONE);
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
-
+                edtGhichu.setVisibility(View.GONE);
                 break;
             case R.id.rad_unsuccess:
                 layoutReasonUnSuccess.setVisibility(View.VISIBLE);
@@ -451,6 +453,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 llSuccess.setVisibility(View.VISIBLE);
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
+                edtGhichu.setVisibility(View.VISIBLE);
                 break;
             case R.id.rad_failure:
                 layoutReasonFailure.setVisibility(View.VISIBLE);
@@ -461,6 +464,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 llSuccess.setVisibility(View.VISIBLE);
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
+                edtGhichu.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.btn_sign:
@@ -523,9 +527,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 .setConfirmText("Hoàn tất")
                 .setCancelText("Từ chối")
                 .setTitleText("Xác nhận hoàn tất tin")
-                .setContentText(/*String.format("Bạn có muốn hoàn tất: %s", FluentIterable.from(mListHoanTatNhieuTin)
-                                .filter(s -> s.getStatus() == Constants.ADDRESS_SUCCESS).toList().size())*/ "Bạn có muốn hoàn tất tin với " + soBuugu + " bưu gửi, tổng khối lượng " + NumberUtils.formatPriceNumber(totalGram) + " gram không?"
-                        /*+ String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mListHoanTatNhieuTin).filter(s -> s.getStatus() == Constants.ADDRESS_UNSUCCESS || s.getStatus() == Constants.ADDRESS_FAILURE).toList().size())*/)
+                .setContentText("Bạn có muốn hoàn tất tin với " + soBuugu + " bưu gửi, tổng khối lượng " + NumberUtils.formatPriceNumber(totalGram) + " gram không?")
                 .setConfirmClickListener(sweetAlertDialog -> {
                     sweetAlertDialog.dismiss();
                     String[] arrImage = new String[listImage.size()];
@@ -545,10 +547,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
             hoanTatTinRequest.setEmployeeID(userInfo.getiD());
-            try {
-                hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD());
-            } catch (NullPointerException nullPointerException) {
-            }
+            hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD());
             hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID());
             hoanTatTinRequest.setFile(mFile);
             hoanTatTinRequest.setConfirmSignature(mSign);
@@ -600,7 +599,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         }
         for (ParcelCodeInfo info : commonObjects) {
             HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
-            if (info.isSelected() == true) {
+            if (info.isSelected()) {
                 hoanTatTinRequest.setEmployeeID(mUserInfo.getiD());
                 hoanTatTinRequest.setOrderPostmanID(info.getOrderPostmanId());
                 hoanTatTinRequest.setOrderID(info.getOrderId());
@@ -619,6 +618,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 }
                 hoanTatTinRequest.setShipmentCode(tempShipmentCode);
                 hoanTatTinRequest.setShipmentIds(tempShipmentIds);
+                hoanTatTinRequest.setNoteReason(edtGhichu.getText().toString().trim());
             }
             int tamStatus = 0;
             if (radSuccess.isChecked()) {
@@ -652,8 +652,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             }
             list.add(hoanTatTinRequest);
         }
-
-        Log.d("btnKHiem", new Gson().toJson(list));
+        mPresenter.collectAllOrderPostman(list);
     }
 
     private void showUIReasonUnSuccess() {
@@ -667,7 +666,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                         (item, position) -> {
                             tvReasonUnSuccess.setText(item.getText());
                             mReason = new ReasonInfo(item.getValue(), item.getText());
-
                         }, 0);
                 pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
             } else {
@@ -687,18 +685,18 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             for (ReasonInfo item : mListReasons) {
                 items.add(new Item(item.getCode(), item.getName()));
             }
-            if (pickerUIReason == null) {
-                pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
+            if (pickerUIReason1 == null) {
+                pickerUIReason1 = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
                         (item, position) -> {
                             tvReasonFailure.setText(item.getText());
                             mReason = new ReasonInfo(item.getValue(), item.getText());
 
                         }, 0);
-                pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
+                pickerUIReason1.show(getActivity().getSupportFragmentManager(), pickerUIReason1.getTag());
             } else {
-                pickerUIReason.setData(items, 0);
-                if (!pickerUIReason.isShow) {
-                    pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
+                pickerUIReason1.setData(items, 0);
+                if (!pickerUIReason1.isShow) {
+                    pickerUIReason1.show(getActivity().getSupportFragmentManager(), pickerUIReason1.getTag());
                 }
             }
         } else {
@@ -717,12 +715,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            btnConfirm.setEnabled(false);
-                            if (mPresenter != null)
-                                try {
-                                    mPresenter.back();
-                                } catch (NullPointerException nullPointerException) {
-                                }
+                            mPresenter.back();
                         }
                     }).show();
     }

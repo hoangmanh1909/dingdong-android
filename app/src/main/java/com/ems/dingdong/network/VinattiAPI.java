@@ -356,7 +356,7 @@ public interface VinattiAPI {
                                                             @Field("RouteCode") String routeCode);
 
     @FormUrlEncoded
-    @POST(" api/Statistic/DebitDetail")
+    @POST("api/Statistic/DebitDetail")
     Call<StatisticDebitDetailResult> statisticDebitDetail(@Field("PostmanId") String postmanID,
                                                           @Field("FromDate") String fromDate,
                                                           @Field("ToDate") String toDate,

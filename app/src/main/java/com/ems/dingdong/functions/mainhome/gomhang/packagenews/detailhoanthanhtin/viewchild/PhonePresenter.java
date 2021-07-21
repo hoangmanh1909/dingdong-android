@@ -73,7 +73,7 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     Toast.showToast(getViewContext(),"Đang thực hiện cuộc gọi đến : " +phone);
-                    mView.showCallSuccess();
+                    mView.showCallSuccess(phone);
                 } else {
                     mView.showError(response.body().getMessage());
                 }

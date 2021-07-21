@@ -24,28 +24,34 @@ import java.util.*
  * The PaymentChiHoBtxh Fragment
  */
 class PaymentChiHoBtxhFragment : ViewFragment<PaymentChiHoBtxhContract.Presenter>(), PaymentChiHoBtxhContract.View,
-        com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener
-{
+        com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
 
 
     @BindView(R.id.edt_agent)
     lateinit var edtAgent: CustomEditText
+
     @BindView(R.id.edt_ReceiverName)
     lateinit var edtReceiverName: CustomEditText
+
     @BindView(R.id.edt_addressReceiver)
     lateinit var edtAddressReceiver: CustomEditText
+
     @BindView(R.id.edt_phone)
     lateinit var edtPhoneReceiver: CustomEditText
+
     @BindView(R.id.tv_typeId_receiver)
     lateinit var tvTypeIdReceiver: FormItemTextView
+
     @BindView(R.id.edt_id_receiver)
     lateinit var edtIdReceiver: CustomEditText
+
     @BindView(R.id.edt_id_date_receiver)
     lateinit var edtIdDateReceiver: FormItemTextView
+
     @BindView(R.id.edt_id_place_receiver)
     lateinit var edtIdPlaceReceiver: CustomEditText
     var pickerTypeId: ItemBottomSheetPickerUIFragment? = null
-    var mTypeId: String =""
+    var mTypeId: String = ""
     lateinit var mCalendar: Calendar
     override fun getLayoutId(): Int {
         return R.layout.fragment_payment_chi_ho_btxh
@@ -61,6 +67,7 @@ class PaymentChiHoBtxhFragment : ViewFragment<PaymentChiHoBtxhContract.Presenter
         super.initLayout()
         mCalendar = Calendar.getInstance()
     }
+
     @OnClick(R.id.img_back, R.id.tv_typeId_receiver, R.id.edt_id_date_receiver, R.id.btn_check)
     fun onViewClicked(view: View) {
         when (view.id) {
@@ -88,19 +95,20 @@ class PaymentChiHoBtxhFragment : ViewFragment<PaymentChiHoBtxhContract.Presenter
                 val userJson = sharedPref.getString(Constants.KEY_USER_INFO, "")
                 if (!TextUtils.isEmpty(userJson)) {
                     val userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo::class.java)
-                    val seaBankPaymentRequest = SeaBankPaymentRequest(userInfo.mobileNumber, item.stringInfo!!,item.stringHeader!!,item.stringValue!!,
-                            item.seaBankRetRefNumber!!,edtReceiverName.text.toString(),edtAddressReceiver.text.toString(),edtPhoneReceiver.text.toString(),
-                            mTypeId ,edtIdReceiver.text.toString(),edtIdDateReceiver.text.toString(),edtIdPlaceReceiver.text.toString(),""
-                            )
+                    val seaBankPaymentRequest = SeaBankPaymentRequest(userInfo.mobileNumber, item.stringInfo!!, item.stringHeader!!, item.stringValue!!,
+                            item.seaBankRetRefNumber!!, edtReceiverName.text.toString(), edtAddressReceiver.text.toString(), edtPhoneReceiver.text.toString(),
+                            mTypeId, edtIdReceiver.text.toString(), edtIdDateReceiver.text.toString(), edtIdPlaceReceiver.text.toString(), "", "", "", "")
                     mPresenter.toOtp(seaBankPaymentRequest)
                 }
             }
         }
     }
+
     override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
         mCalendar.set(year, monthOfYear, dayOfMonth)
         edtIdDateReceiver.text = mCalendar.dateToString("dd/MM/yyyy")
     }
+
     private fun showTypeId() {
         val items = ArrayList<Item>()
         for (item in mPresenter.getList()) {

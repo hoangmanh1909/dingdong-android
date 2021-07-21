@@ -36,6 +36,17 @@ public class HoanTatTinRequest {
     @SerializedName("ConfirmSignature")
     String confirmSignature;
 
+    @SerializedName("NoteReason")
+    String NoteReason;
+
+    public String getNoteReason() {
+        return NoteReason;
+    }
+
+    public void setNoteReason(String noteReason) {
+        NoteReason = noteReason;
+    }
+
     public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
     }

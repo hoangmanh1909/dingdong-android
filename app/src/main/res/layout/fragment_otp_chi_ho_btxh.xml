@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Chi hộ BTXH - SEABANK"
+                android:text="XÁC NHẬN OTP"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp" />
@@ -70,6 +70,7 @@
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tt_noidung"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"

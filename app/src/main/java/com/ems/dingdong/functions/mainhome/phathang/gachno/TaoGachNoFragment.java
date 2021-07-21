@@ -143,6 +143,11 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                             }
 
                             @Override
+                            public void onCallSenderResponse1(String phone) {
+
+                            }
+
+                            @Override
                             public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
 
                             }

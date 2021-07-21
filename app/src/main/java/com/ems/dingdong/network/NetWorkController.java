@@ -7,6 +7,7 @@ import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
+import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
@@ -29,6 +30,7 @@ import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
+import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -64,6 +66,7 @@ import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
@@ -866,6 +869,13 @@ public class NetWorkController {
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
+    public static Single<SimpleResult> getListBuuCucHuyen(String data) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("DIC004");
+        dataRequestPayment.setData(data);
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
     public static Single<SimpleResult> search(String request) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("BSP007");
@@ -883,6 +893,43 @@ public class NetWorkController {
     public static Single<SimpleResult> themTin(CreateOrderRequest request) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("ORD001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> searchTu(String request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SML001");
+        dataRequestPayment.setData(request);
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> phatSml(SMLRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SML002");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> huySml(SMLRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SML003");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> searchCreate(SearchMode request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("BD13001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> comfirmCreate(ComfrimCreateMode request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("BD13002");
         dataRequestPayment.setData(getGson().toJson(request));
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }

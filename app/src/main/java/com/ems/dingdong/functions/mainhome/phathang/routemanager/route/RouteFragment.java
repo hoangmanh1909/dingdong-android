@@ -100,7 +100,6 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
 
             if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
                 mAdapterOrder = new RouteOrderAdapter(getViewContext(), mListOrder, Constants.ROUTE_RECEIVED);
-
                 mAdapterOrder.setOnItenClickListener(new RouteConstract.OnItemOrderClickListenner() {
                     @Override
                     public void onCancelRequestClick(OrderChangeRouteModel item) {
@@ -141,7 +140,6 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
             } else {
                 mAdapterOrder = new RouteOrderAdapter(getViewContext(), mListOrderSend, Constants.ROUTE_DELIVER);
                 mAdapterOrder.setOnItenClickListener(new RouteConstract.OnItemOrderClickListenner() {
-
                     @Override
                     public void onCancelRequestClick(OrderChangeRouteModel item) {
                         long routeID = item.getOrderChangeRouteId();

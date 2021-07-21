@@ -8,10 +8,12 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 
 /**
@@ -72,6 +74,10 @@ interface ListBaoPhatBangKeContract {
 
         Call<SimpleResult> updateMobileSender(String code, String type, String phoneSender, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
+        Single<SimpleResult> _phatSml (SMLRequest smlRequest);
+
+        Single<SimpleResult> _huySml (SMLRequest smlRequest);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -104,6 +110,9 @@ interface ListBaoPhatBangKeContract {
         void showSuccessUpdateMobile(String phone, String message);
 
         void showSuccessUpdateMobileSender(String phoneSender, String message);
+
+
+        void showThongBao (String mess);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -113,6 +122,10 @@ interface ListBaoPhatBangKeContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);*/
+
+        void _phatSml(SMLRequest smlRequest);
+
+        void _huySml (SMLRequest smlRequest);
 
         /**
          * This search record to display and deliver.

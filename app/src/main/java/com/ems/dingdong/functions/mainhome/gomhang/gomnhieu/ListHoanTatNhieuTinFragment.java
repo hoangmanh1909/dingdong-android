@@ -32,6 +32,7 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
@@ -64,7 +65,8 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     RecyclerView recycler;
     @BindView(R.id.tv_reason)
     FormItemTextView tvReason;
-
+    @BindView(R.id.edt_noidungtin)
+    CustomEditText edtGhichu;
     private ListHoanTatNhieuTinAdapter mAdapter;
     private UserInfo mUserInfo;
     private Calendar mCalendar;
@@ -253,6 +255,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 rq.setOrderPostmanID(it.getOrderPostmanId());
                 rq.setOrderID(it.getOrderId());
                 rq.setShipmentCode(it.getShipmentCode());
+                rq.setNoteReason(edtGhichu.getText().toString().trim());
                 if (it.getStatus() == Constants.GREEN) {
                     rq.setStatusCode(Constants.GOM_HANG_THANH_CONG);
                 } else {

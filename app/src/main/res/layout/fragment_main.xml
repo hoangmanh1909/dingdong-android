@@ -72,19 +72,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
                     android:layout_toLeftOf="@+id/img_top_person"
                     android:src="@drawable/ic_call" />
 
                 <ImageView
                     android:id="@+id/img_top_person"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="left"
                     android:layout_marginRight="@dimen/dimen_20dp"
                     android:layout_toLeftOf="@+id/img_top_setting"
-                    android:src="@drawable/ic_top_person" />
+                    android:src="@drawable/ic_top_person"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/dimen_10dp"/>
 
                 <ImageView
                     android:id="@+id/img_top_setting"

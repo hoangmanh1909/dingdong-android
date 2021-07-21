@@ -159,7 +159,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money)));
 
             if (item.getFee() != null)
-                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee())));
+                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee() + item.getFeeCollectLater()+item.getFeeShip())));
             else
                 tvFee.setText(String.format(mContext.getString(R.string.fee)));
 

@@ -156,6 +156,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                 if (!TextUtils.isEmpty(item.getToPostmanName())) {
                     tvStartEndPostman.setText(item.getToPostmanName());
                 }
+
+                if (!TextUtils.isEmpty(item.getToPOName())) {
+                    tvStartEndRoute.setText(item.getToPOCode() + " - "+item.getToPOName());
+                    tvStartEndPostman.setVisibility(View.GONE);
+                }
+
             }
 
             if (!TextUtils.isEmpty(item.getStatusDate())) {

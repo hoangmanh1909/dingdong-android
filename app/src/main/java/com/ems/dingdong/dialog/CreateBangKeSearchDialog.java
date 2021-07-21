@@ -206,8 +206,6 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
             if (!pickerUIShift.isShow) {
                 pickerUIShift.show(mActivity.getSupportFragmentManager(), pickerUIShift.getTag());
             }
-
-
         }
     }
 }

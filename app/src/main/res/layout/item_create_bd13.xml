@@ -67,11 +67,11 @@
                     android:text="COD2018041"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_map"
-                    app:layout_constraintEnd_toStartOf="@+id/img_map"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_sml"
+                    app:layout_constraintEnd_toStartOf="@+id/img_sml"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/tv_index"
-                    app:layout_constraintTop_toTopOf="@+id/img_map" />
+                    app:layout_constraintTop_toTopOf="@+id/img_sml" />
 
                 <ImageView
                     android:id="@+id/img_map"
@@ -84,6 +84,20 @@
                     app:layout_constraintBottom_toBottomOf="@+id/img_contact_phone"
                     app:layout_constraintEnd_toStartOf="@+id/img_contact_phone"
                     app:layout_constraintTop_toTopOf="@+id/img_contact_phone" />
+
+                <ImageView
+                    android:id="@+id/img_sml"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_sml"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_map"
+                    app:layout_constraintEnd_toStartOf="@+id/img_map"
+                    app:layout_constraintTop_toTopOf="@+id/img_map"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_code" />
+
 
 
                 <!--temporary gone-->
@@ -225,7 +239,6 @@
                 android:id="@+id/tv_create_dated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 

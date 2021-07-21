@@ -141,6 +141,84 @@ public class DeliveryProductRequest {
     @Expose
     private int IsDOP;
 
+
+    @SerializedName("FeePPA")
+    private long feePPA;
+    @SerializedName("FeeShip")
+    private long feeShip;
+    @SerializedName("FeeCollectLater")
+    private long feeCollectLater;
+    @SerializedName("FeePPAPNS")
+    private long feePPAPNS;
+    @SerializedName("FeeShipPNS")
+    private long feeShipPNS;
+    @SerializedName("FeeCollectLaterPNS")
+    private long feeCollectLaterPNS;
+
+    public Boolean getPaymentPP() {
+        return isPaymentPP;
+    }
+
+    public void setPaymentPP(Boolean paymentPP) {
+        isPaymentPP = paymentPP;
+    }
+
+    public String getvATCode() {
+        return vATCode;
+    }
+
+    public void setvATCode(String vATCode) {
+        this.vATCode = vATCode;
+    }
+
+    public long getFeePPA() {
+        return feePPA;
+    }
+
+    public void setFeePPA(long feePPA) {
+        this.feePPA = feePPA;
+    }
+
+    public long getFeeShip() {
+        return feeShip;
+    }
+
+    public void setFeeShip(long feeShip) {
+        this.feeShip = feeShip;
+    }
+
+    public long getFeeCollectLater() {
+        return feeCollectLater;
+    }
+
+    public void setFeeCollectLater(long feeCollectLater) {
+        this.feeCollectLater = feeCollectLater;
+    }
+
+    public long getFeePPAPNS() {
+        return feePPAPNS;
+    }
+
+    public void setFeePPAPNS(long feePPAPNS) {
+        this.feePPAPNS = feePPAPNS;
+    }
+
+    public long getFeeShipPNS() {
+        return feeShipPNS;
+    }
+
+    public void setFeeShipPNS(long feeShipPNS) {
+        this.feeShipPNS = feeShipPNS;
+    }
+
+    public long getFeeCollectLaterPNS() {
+        return feeCollectLaterPNS;
+    }
+
+    public void setFeeCollectLaterPNS(long feeCollectLaterPNS) {
+        this.feeCollectLaterPNS = feeCollectLaterPNS;
+    }
+
     public int getIsDOP() {
         return IsDOP;
     }

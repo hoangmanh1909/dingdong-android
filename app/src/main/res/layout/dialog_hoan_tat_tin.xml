@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="#80000000">
 
     <androidx.cardview.widget.CardView
@@ -69,6 +69,7 @@
                                 android:paddingLeft="@dimen/dimen_5dp"
                                 android:text="Thành công"
                                 android:textColor="@color/blue" />
+
                             <RadioButton
                                 android:id="@+id/rad_success_part"
                                 style="@style/CustomRadioButtonStyle"
@@ -76,9 +77,10 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="left|center"
                                 android:paddingLeft="@dimen/dimen_5dp"
-                                android:visibility="gone"
                                 android:text="Thành công một phần"
-                                android:textColor="@color/blue" />
+                                android:textColor="@color/blue"
+                                android:visibility="gone" />
+
                             <RadioButton
                                 android:id="@+id/rad_fail"
                                 style="@style/CustomRadioButtonStyle"
@@ -112,14 +114,15 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp" />
 
+
                     <com.ems.dingdong.views.form.FormItemEditText
                         android:id="@+id/edt_mon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:visibility="gone"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textSize="@dimen/text_size_14sp"
+                        android:visibility="gone" />
 
                     <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_reason"
@@ -131,6 +134,24 @@
                         android:visibility="gone"
                         app:formAction="@drawable/ic_arrow_down"
                         app:formHint="Chọn lý do" />
+
+                    <com.ems.dingdong.views.CustomEditText
+                        android:id="@+id/edt_noidungtin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:background="@drawable/bg_radius_content"
+                        android:gravity="top"
+                        android:hint="Nhập ghi chú"
+                        android:inputType="textMultiLine"
+                        android:lines="8"
+                        android:maxLines="10"
+                        android:minLines="5"
+                        android:padding="@dimen/dimen_5dp"
+                        android:scrollbars="vertical"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:id="@+id/ll_date_time"
@@ -193,14 +214,16 @@
                                 app:formAction="@drawable/ic_arrow_down" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tv_count"
-                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Số bưu gửi: 10"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textSize="@dimen/text_size_14sp"
+                        tools:text="Số bưu gửi: 10" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler"
                         android:layout_width="match_parent"

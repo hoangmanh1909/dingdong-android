@@ -65,20 +65,21 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(9, R.drawable.ic_bao_phat_offline, "Báo phát offline"));
                 homeInfos.add(new HomeInfo(10, R.drawable.close, "Hủy báo phát"));
                 homeInfos.add(new HomeInfo(4, R.drawable.ic_thong_ke_bao_phat, "Thống kê báo phát"));
-                homeInfos.add(new HomeInfo(11, R.drawable.ic_gach_no, "Thống kê gạch nợ"));
+                homeInfos.add(new HomeInfo(11, R.drawable.statistics_chart_marketing_graph_business_icon, "Thống kê gạch nợ"));
                 //  homeInfos.add(new HomeInfo(2, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
                 // homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
-                homeInfos.add(new HomeInfo(5, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết PTC"));
-                homeInfos.add(new HomeInfo(6, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết PKTC"));
+                homeInfos.add(new HomeInfo(5, R.drawable.analytics, "Thống kê chi tiết PTC"));
+                homeInfos.add(new HomeInfo(6, R.drawable.graph_bar, "Thống kê chi tiết PKTC"));
                 homeInfos.add(new HomeInfo(13, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển hoàn"));
                 homeInfos.add(new HomeInfo(14, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển tiếp"));
+
                 homeInfos.add(new HomeInfo(15, R.drawable.ic_thong_ke_bao_phat, "Quản lý chuyển tuyến"));
-                homeInfos.add(new HomeInfo(12, R.drawable.ic_location_blue, "Tra cứu bưu gửi"));
+                homeInfos.add(new HomeInfo(12, R.drawable.ic_tra_cuu_buu_gui, "Tra cứu bưu gửi"));
                 /**
                  * update tạm thời chưa cần nộp tiền
                  */
                 homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
-                homeInfos.add(new HomeInfo(17, R.drawable.ic_thong_ke_bao_phat, "Smartlocker"));
+                homeInfos.add(new HomeInfo(17, R.drawable.ic_sml_123, "Smartlocker"));
 
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
@@ -127,12 +128,11 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showViewStatisticPtc(StatisticType.CONTINUOUS_DELIVERY);
                         } else if (homeInfo.getId() == 15) {
                             Intent intent = new Intent(getActivity(), RouteTabsActivity.class);
-                            intent.putExtra(Constants.ROUTE_CHANGE_MODE,Constants.ROUTE_CHANGE_DELIVERY);
+                            intent.putExtra(Constants.ROUTE_CHANGE_MODE, Constants.ROUTE_CHANGE_DELIVERY);
                             startActivity(intent);
                         } else if (homeInfo.getId() == 16) {
                             mPresenter.showPayment();
-                        }
-                        else if (homeInfo.getId() == 17) {
+                        } else if (homeInfo.getId() == 17) {
                             mPresenter.showStatisticSML();
                         }
                     }

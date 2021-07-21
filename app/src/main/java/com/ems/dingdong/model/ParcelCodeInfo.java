@@ -43,7 +43,7 @@ public class ParcelCodeInfo extends RealmObject {
         return orderCode;
     }
 
-    private boolean selected = false;
+    private boolean selected;
 
     public String getTrackingCode() {
         return trackingCode;

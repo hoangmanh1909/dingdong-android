@@ -74,11 +74,10 @@ class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val m
                 if (mFilterDone != null) {
                     var amount: Long = 0
                     for (item in listFilter!!) {
-
                         if (!TextUtils.isEmpty(item.stringValue)) {
                             val values = item.stringValue?.split("#")
                             val amountString = values!![1].replace("Số tiền rút: ", "")
-                            amount += amountString.toLong()
+                            amount += item.transAmount!!.toLong()
                         }
                     }
                     mFilterDone.getCount(listFilter!!.size, amount)
@@ -106,9 +105,8 @@ class ChiHoHistoryAdapter(items: List<SeaBankHistoryPaymentModel>, private val m
         fun bindView(model: Any) {
             val item = model as SeaBankHistoryPaymentModel
             val values = item.stringValue?.split("#")
-            val amountString = values!![1].replace("Số tiền rút: ", "")
             val gttt = values!![2]
-            tvAmount.text = "${NumberUtils.formatPriceNumber(amountString.toLong())} VNĐ"
+            tvAmount.text = "${NumberUtils.formatPriceNumber( item.transAmount!!.toLong())} VNĐ"
             tvTime.text = item.createDate
             tvId.text = gttt
             tvCode.text = item.payPostRetRefNumber

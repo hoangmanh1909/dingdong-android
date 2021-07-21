@@ -35,6 +35,8 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
     lateinit var tvAccount: TextView
     @BindView(R.id.edt_amount)
     lateinit var edtAmount: EditText
+    @BindView (R.id.tvTaiKhoan)
+    lateinit var tvTaiKhoan : TextView
 
     lateinit var bankAccountNumber: BankAccountNumber
     override fun getLayoutId(): Int {
@@ -51,6 +53,7 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
 
     override fun initLayout() {
         super.initLayout()
+
         tvTitleAccount.text = "Số tài khoản (*)"
         tvTitleAccount.fillColor("(*)", R.color.red_light)
 
@@ -89,8 +92,9 @@ class InquiryChiHoFragment : ViewFragment<InquiryChiHoContract.Presenter>(), Inq
                     val userJson = sharedPref.getString(Constants.KEY_USER_INFO, "")
                     if (!TextUtils.isEmpty(userJson)) {
                         val userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo::class.java)
-                        val seaBankInquiryRequest = SeaBankInquiryRequest(userInfo.mobileNumber,
-                                bankAccountNumber.identifyNumber!!, bankAccountNumber.bankAccountNumber!!, amount, bankAccountNumber.assigneeName!!, bankAccountNumber.mandatorName!!)
+
+                        val seaBankInquiryRequest = SeaBankInquiryRequest("2110",userInfo.mobileNumber,
+                                bankAccountNumber.identifyNumber!!, bankAccountNumber.bankAccountNumber!!, "","",amount, bankAccountNumber.assigneeName!!, bankAccountNumber.mandatorName!!)
                         mPresenter.seaBankInquiry(seaBankInquiryRequest)
                     }
 

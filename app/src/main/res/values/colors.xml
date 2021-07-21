@@ -45,6 +45,7 @@
     <color name="gray">#c6c6c6</color>
     <color name="n_gray_text">#666666</color>
     <color name="n_gray_hsd">#999999</color>
+    <color name="item_selected">#eaeaea</color>
     <color name="n_green_text">#25928a</color>
     <color name="green">#5025928a</color>
     <color name="green_text">#00ff00</color>

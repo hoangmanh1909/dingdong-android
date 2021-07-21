@@ -53,8 +53,33 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
+                android:weightSum="2"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/tv_tongbuugui"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tổng số bưu gửi"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_14dp" />
+
+                <TextView
+                    android:id="@+id/tv_tongkhoanthu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tổng khoản thu"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_14dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layout_success"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical">
 
                 <com.ems.dingdong.views.CustomBoldTextView
@@ -135,10 +160,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_unsuccess"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:id="@+id/layout_unsuccess"
                 android:orientation="vertical">
 
                 <com.ems.dingdong.views.CustomBoldTextView

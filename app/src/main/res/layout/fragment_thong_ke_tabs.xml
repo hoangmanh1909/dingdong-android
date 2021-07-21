@@ -47,7 +47,7 @@
         app:pstsTabTextAlpha="100"
         app:pstsDividerColor="@color/text_color_primary"
         app:pstsDividerWidth="1dp"
-        app:pstsTabTextSize="16dp"
+        app:pstsTabTextSize="14dp"
         app:pstsTabTextStyle="bold"
         app:pstsTabTextAllCaps="false"
         app:pstsTabTextColor="@color/color_text_tab_header"

@@ -19,6 +19,7 @@ interface TaoGachNoContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
+
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
@@ -29,9 +30,13 @@ interface TaoGachNoContract {
 
     interface View extends PresentView<Presenter> {
         void showData(CommonObject commonObject);
+
         void showSuccessMessage(String message);
+
         void showCallSuccess();
+
         void showError(String message);
+
         void finishView();
     }
 
@@ -43,6 +48,7 @@ interface TaoGachNoContract {
         void showDetail(CommonObject commonObject, int position);
 
         void pushViewConfirmAll(List<CommonObject> list);
+
         void callForward(String phone, String ladingCode);
 
         void showViewList();

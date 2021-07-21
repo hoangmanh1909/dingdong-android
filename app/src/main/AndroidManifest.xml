@@ -14,23 +14,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.READ_CALL_LOG" /> -->
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- tools:overrideLibrary="com.tsongkha.spinnerdatepicker" -->
     <!-- for audio access -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <eat-comment />
     <!--
@@ -346,16 +332,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-        <!--
-  <receiver android:name="com.ems.dingdong.calls.CallReceiver">
-              <intent-filter>
-                  <action android:name="android.intent.action.PHONE_STATE" />
-              </intent-filter>
-              <intent-filter>
-                  <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-              </intent-filter>
-          </receiver>
-        -->
+
         <service
             android:name=".location.CheckLocationService"
             android:exported="false" />
@@ -388,6 +365,9 @@
                 <action android:name="STOP_ACTION"/>
             </intent-filter>
         </receiver>
+
+
+
     </application>
 
 </manifest>

@@ -112,6 +112,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+            tv_route.setText(routeInfo.getRouteName());
         }
 
         if (!postOfficeJson.isEmpty()) {
@@ -120,17 +121,20 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
             switchPayPos.setChecked(true);
         }
-        tv_route.setText(routeInfo.getRouteName());
+
 
         switchPayPos.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isChecked);
         });
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
+            case R.id.rl_cuocgoi:
+                mPresenter.showLichsuCuocgoi();
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -150,7 +154,6 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 });
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
-//                getViewContext().sendBroadcast(new Intent(PortSipService.ACTION_LOG_OUT));
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().finishAffinity();

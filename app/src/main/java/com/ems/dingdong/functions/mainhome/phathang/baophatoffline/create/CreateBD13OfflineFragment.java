@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,8 +80,17 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     FormItemTextView tv_solution;
     @BindView(R.id.tv_Description)
     FormItemEditText tv_Description;
-    @BindView(R.id.tv_collect_amount)
-    EditText tv_collect_amount;
+    @BindView(R.id.tv_collect_amount_cod)
+    EditText tv_collect_amount_cod;
+
+    @BindView(R.id.tv_phi_huy_don_hang)
+    EditText tv_phi_huy_don_hang;
+    @BindView(R.id.tv_phi_ppa)
+    EditText tv_phi_ppa;
+    @BindView(R.id.tv_phi_ship)
+    EditText tv_phi_ship;
+    @BindView(R.id.tv_le_phi_sao_thu)
+    EditText tv_le_phi_sao_thu;
     @BindView(R.id.edt_parcelcode)
     FormItemEditText edt_parcelcode;
     @BindView(R.id.tv_receiver)
@@ -93,7 +103,11 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     ImageView imgSign;
     @BindView(R.id.recycler_image_verify)
     RecyclerView recyclerViewImageVerify;
+    @BindView(R.id.ic_check)
+    CheckBox ic_check;
 
+    @BindView(R.id.ll_phi)
+    LinearLayout ll_phi;
     private Calendar calDate;
     private int mHour;
     private int mMinute;
@@ -166,7 +180,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             }
         });
 
-        tv_collect_amount.addTextChangedListener(new TextWatcher() {
+        tv_collect_amount_cod.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -177,14 +191,98 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                tv_collect_amount.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(s.toString()))));
                 if (s.toString().length() <= 20) {
-                    tv_collect_amount.removeTextChangedListener(this);
+                    tv_collect_amount_cod.removeTextChangedListener(this);
 
                     String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
                     String cleanString = s.toString().replaceAll(replaceable, "");
                     String formatted = NumberUtils.formatDecimal(cleanString);
-                    tv_collect_amount.setText(formatted);
-                    tv_collect_amount.setSelection(formatted.length());
-                    tv_collect_amount.addTextChangedListener(this);
+                    tv_collect_amount_cod.setText(formatted);
+                    tv_collect_amount_cod.setSelection(formatted.length());
+                    tv_collect_amount_cod.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        tv_phi_ppa.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                tv_collect_amount.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(s.toString()))));
+                if (s.toString().length() <= 20) {
+                    tv_phi_ppa.removeTextChangedListener(this);
+
+                    String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
+                    String cleanString = s.toString().replaceAll(replaceable, "");
+                    String formatted = NumberUtils.formatDecimal(cleanString);
+                    tv_phi_ppa.setText(formatted);
+                    tv_phi_ppa.setSelection(formatted.length());
+                    tv_phi_ppa.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+
+        });
+
+        tv_phi_ship.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                tv_collect_amount.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(s.toString()))));
+                if (s.toString().length() <= 20) {
+                    tv_phi_ship.removeTextChangedListener(this);
+
+                    String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
+                    String cleanString = s.toString().replaceAll(replaceable, "");
+                    String formatted = NumberUtils.formatDecimal(cleanString);
+                    tv_phi_ship.setText(formatted);
+                    tv_phi_ship.setSelection(formatted.length());
+                    tv_phi_ship.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+
+        });
+        tv_le_phi_sao_thu.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                tv_collect_amount.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(s.toString()))));
+                if (s.toString().length() <= 20) {
+                    tv_le_phi_sao_thu.removeTextChangedListener(this);
+
+                    String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
+                    String cleanString = s.toString().replaceAll(replaceable, "");
+                    String formatted = NumberUtils.formatDecimal(cleanString);
+                    tv_le_phi_sao_thu.setText(formatted);
+                    tv_le_phi_sao_thu.setSelection(formatted.length());
+                    tv_le_phi_sao_thu.addTextChangedListener(this);
                 }
             }
 
@@ -200,9 +298,14 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.btn_sign, R.id.tv_reason,
-            R.id.tv_solution, R.id.ll_scan_qr, R.id.rl_image_capture_verify})
+            R.id.tv_solution, R.id.ll_scan_qr, R.id.rl_image_capture_verify, R.id.ic_check})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ic_check:
+                if (ic_check.isChecked())
+                    ll_phi.setVisibility(View.VISIBLE);
+                else ll_phi.setVisibility(View.GONE);
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -247,14 +350,20 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         String ladingCode = edt_parcelcode.getText();
         CommonObject commonObject;
         if (mDeliveryType == 2) {
-
             if (TextUtils.isEmpty(tv_receiver.getText())) {
                 Toast.showToast(getViewContext(), "Xin vui lòng nhập người nhận");
                 return;
             }
             commonObject = new CommonObject();
             commonObject.setReceiverName(tv_receiver.getText());
-            commonObject.setCollectAmount(tv_collect_amount.getText().toString().replace(",", ""));
+            commonObject.setCollectAmount(tv_collect_amount_cod.getText().toString().replace(",", ""));
+            commonObject.setFeePPA(Long.parseLong(tv_phi_ppa.getText().toString().replace(",", "")));
+            commonObject.setFeeShip(Long.parseLong(tv_phi_ship.getText().toString().replace(",", "")));
+            commonObject.setFeeCollectLater(Long.parseLong(tv_le_phi_sao_thu.getText().toString().replace(",", "")));
+
+            commonObject.setFeePPAPNS(Long.parseLong(tv_phi_ppa.getText().toString().replace(",", "")));
+            commonObject.setFeeShipPNS(Long.parseLong(tv_phi_ship.getText().toString().replace(",", "")));
+            commonObject.setFeeCollectLaterPNS(Long.parseLong(tv_le_phi_sao_thu.getText().toString().replace(",", "")));
         } else {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(getViewContext(), "Xin vui lòng chọn lý do");
@@ -265,6 +374,19 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 return;
             }
             commonObject = new CommonObject();
+
+            if (ic_check.isChecked()) {
+                if (!TextUtils.isEmpty(tv_phi_huy_don_hang.getText().toString())) {
+                    Toast.showToast(getViewContext(), "Vui lòng nhập phí hủy đơn hàng");
+                    return;
+                }
+            } else {
+                commonObject.setFeeCancelOrder(0);
+                commonObject.setCancelOrder(false);
+                commonObject.setCollectAmount("");
+            }
+            commonObject.setFeeCancelOrder(Long.parseLong(tv_phi_huy_don_hang.getText().toString().replace(",", "")));
+            commonObject.setCancelOrder(true);
             commonObject.setReasonCode(mReasonCode);
             commonObject.setReasonName(mReasonInfo.getName());
             commonObject.setSolutionCode(mSolutionCode);

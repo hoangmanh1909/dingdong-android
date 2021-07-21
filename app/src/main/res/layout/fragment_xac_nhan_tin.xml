@@ -138,7 +138,7 @@
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
-            app:formHint="Nhập bưu gửi để tìm kiếm nhanh"
+            app:formHint="Nhập tiêu chí để tìm kiếm nhanh"
             app:formShowUnderline="false"
             app:formSingleLine="true" />
     </RelativeLayout>

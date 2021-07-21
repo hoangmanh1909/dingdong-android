@@ -5,466 +5,559 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical"
-    android:padding="@dimen/dimen_10dp">
+    android:orientation="vertical">
 
-    <!--<RelativeLayout
-        android:id="@+id/ll_scan_qr"
+    <FrameLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:paddingRight="@dimen/dimen_10dp">
+        android:layout_alignParentTop="true">
 
-        <ImageView
-            android:id="@+id/img_capture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/tv_capture"
-            android:src="@drawable/ic_capture" />
+        <include layout="@layout/item_head_bg_common" />
 
-        <com.ems.dingdong.views.CustomTextView
-            android:id="@+id/tv_capture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Quét mã vạch"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp" />
-    </RelativeLayout>-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Tra cứu bưu gửi"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
+        </RelativeLayout>
+    </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/ll_location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_radius_search"
-        android:orientation="horizontal">
-
-        <com.ems.dingdong.views.form.FormItemEditText
-            android:id="@+id/edt_ladingCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:formHint="Nhập mã để tìm kiếm"
-            app:formShowClear="true"
-            app:formShowUnderline="false">
-
-        </com.ems.dingdong.views.form.FormItemEditText>
-
-        <ImageView
-            android:id="@+id/img_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_search_black" />
-
-        <ImageView
-            android:id="@+id/img_capture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_toLeftOf="@+id/tv_capture"
-            android:src="@drawable/ic_qr" />
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ll_detail"
+            android:id="@+id/ll_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:background="@drawable/bg_radius_search"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <com.ems.dingdong.views.form.FormItemEditText
+                android:id="@+id/edt_ladingCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                app:formHint="Nhập mã để tìm kiếm"
+                app:formShowClear="true"
+                app:formShowUnderline="false">
 
-                <com.ems.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_gradient_top"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN BƯU GỬI"
-                    android:textColor="@color/white" />
+            </com.ems.dingdong.views.form.FormItemEditText>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/search_hint"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_parcelCode"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/cod_amount"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_COD"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@string/fee_collected"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_fee"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_search_black" />
 
-                <com.ems.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_gradient_top"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN NGƯỜI GỬI"
-                    android:textColor="@color/white" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Họ tên"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_SenderName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Địa chỉ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_SenderAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/img_capture"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
-
-                <com.ems.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_gradient_top"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN NGƯỜI NHẬN"
-                    android:textColor="@color/white" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Họ tên"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_receiverName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Người nhận thực"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_realReceiverName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Địa chỉ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_receiverAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_sign"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Chữ ký"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                        <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/img_sign"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_120sdp"
-                            android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
-
-                <com.ems.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_gradient_top"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="THÔNG TIN TRẠNG THÁI"
-                    android:textColor="@color/white" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_marginRight="@dimen/dimen_10dp"
-                        android:visibility="visible" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_toLeftOf="@+id/tv_capture"
+                android:src="@drawable/ic_qr" />
         </LinearLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </androidx.core.widget.NestedScrollView>
+            <LinearLayout
+                android:id="@+id/ll_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_gradient_top"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN BƯU GỬI"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_white_radius_bottom_common"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="@string/search_hint"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_parcelCode"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="@string/cod_amount"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_COD"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="@string/fee_collected"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_fee"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_gradient_top"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN NGƯỜI GỬI"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_white_radius_bottom_common"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Họ tên"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_SenderName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Số điện thoại"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp"
+                                android:layout_gravity="center"/>
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_SenderPhone"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16sp"
+                                android:background="@drawable/bg_gradient_search"
+                                android:paddingLeft="@dimen/dimen_10dp"
+                                android:drawableLeft="@drawable/ic_tel"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Địa chỉ"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_SenderAddress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_gradient_top"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN NGƯỜI NHẬN"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_white_radius_bottom_common"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Họ tên"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_receiverName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Số điện thoại"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp"
+                                android:layout_gravity="center"/>
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_ReceiverPhone"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_14sp"
+                                android:background="@drawable/bg_gradient_search"
+                                android:paddingLeft="@dimen/dimen_10dp"
+                                android:drawableLeft="@drawable/ic_tel"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Người nhận thực"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_realReceiverName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Địa chỉ"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_receiverAddress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_sign"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Chữ ký"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <com.facebook.drawee.view.SimpleDraweeView
+                                android:id="@+id/img_sign"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_120sdp"
+                                android:layout_weight="1.2"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16sp"
+                                android:layout_gravity="center"
+                                android:gravity="center"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_gradient_top"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="THÔNG TIN TRẠNG THÁI"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_white_radius_bottom_common"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginRight="@dimen/dimen_10dp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 </LinearLayout>

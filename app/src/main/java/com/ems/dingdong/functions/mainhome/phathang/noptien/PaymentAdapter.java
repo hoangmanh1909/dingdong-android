@@ -198,7 +198,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_green);
                 else if (model.getStatusCode().equals("C"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_red);
-                else if (model.getStatusCode().equals("A"))
+                else if (model.getStatusCode().equals("A") ||model.getStatusCode().equals("E") )
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_yellow);
                 tv_trang_thai.setText(model.getStatusName());
             } else

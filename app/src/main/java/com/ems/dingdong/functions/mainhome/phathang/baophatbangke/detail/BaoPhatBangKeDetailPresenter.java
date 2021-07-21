@@ -214,7 +214,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, receiverName, deliveryTime, reasonCode,
                 solutionCode, status, "", "", signatureCapture, note,
                 amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature,
-                mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0, "");
+                mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0, "",false,0,"","");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -335,7 +335,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                         solutionCode, status, "", "", signatureCapture,
                         "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(),
                         signature, mBaoPhatBangke.getImageDelivery(), "N", "",
-                        0, "");
+                        0, "",false,0,"","");
                 mInteractor.pushToPNSDelivery(request,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override
@@ -418,7 +418,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 status, paymentChannel, "0", signatureCapture,
                 note, amount, shiftId, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature,
                 mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null,
-                isPaymentPP, "N", "", 0);
+                isPaymentPP, "N", "", 0,0,0,0,0,0,0);
 
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override

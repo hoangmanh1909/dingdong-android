@@ -16,15 +16,19 @@ import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.sip.cmc.SipCmc;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -85,6 +89,35 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public ListBaoPhatBangKePresenter setOnTitleChangeListener(ListDeliveryConstract.OnTabsListener listener) {
         titleTabsListener = listener;
         return this;
+    }
+
+    @Override
+    public void _phatSml(SMLRequest smlRequest) {
+        mView.showProgress();
+        mInteractor._phatSml(smlRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showThongBao(simpleResult.getMessage());
+                    } else mView.showThongBao(simpleResult.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void _huySml(SMLRequest smlRequest) {
+        mView.showProgress();
+        mInteractor._huySml(smlRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showThongBao(simpleResult.getMessage());
+                    } else mView.showThongBao(simpleResult.getMessage());
+
+                    mView.hideProgress();
+                });
     }
 
     @Override
@@ -192,6 +225,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void callForward(String phone, String parcelCode) {
+//        updateMobile(phone, parcelCode);
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");

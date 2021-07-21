@@ -15,12 +15,12 @@ public class ProgressDialog extends Dialog {
     public ProgressDialog(Context context) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         setContentView(R.layout.dialog_progress);
-        progressBar = findViewById(R.id.progress_bar);
+//        progressBar = findViewById(R.id.progress_bar);
     }
 
     @Override
     public void show() {
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
         super.show();
     }
 }

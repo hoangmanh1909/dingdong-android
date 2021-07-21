@@ -7,7 +7,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.31.2'
     }
 }
 apply plugin: 'com.android.application'
@@ -26,10 +26,10 @@ android {
     flavorDimensions "default"
     defaultConfig {
         //minSdkVersion 16
-        minSdkVersion 17
+        minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 21
-        versionName "1.1.6"
+        versionCode 24
+        versionName "1.1.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -196,7 +196,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ['*.jar', '*.aar'])
-    implementation files('src\\libs\\portsipvoipsdk.jar')
+//    implementation files('src\\libs\\portsipvoipsdk.jar')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     configurations {
@@ -207,6 +207,8 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    // thu vien anh
+//    compile 'com.erikagtierrez.multiple_media_picker:multiple-media-picker:1.0.5'
     implementation project(':Libraries:VinattiCore')
     testImplementation 'junit:junit:4.12'
     implementation 'com.redmadrobot:inputmask:2.3.0'
@@ -261,5 +263,6 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
+    implementation 'com.airbnb.android:lottie:3.4.0'
 }
 apply plugin: 'com.google.gms.google-services'

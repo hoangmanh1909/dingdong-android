@@ -22,7 +22,7 @@ public class MediaUltis {
             saveDir = new File(Environment.getExternalStorageDirectory(), "MaterialCamera");
             saveDir.mkdirs();
         }
-        MaterialCamera materialCamera = new MaterialCamera(fragment)
+        MaterialCameraV1 materialCamera = new MaterialCameraV1(fragment)
                 .saveDir(saveDir)
                 .showPortraitWarning(true)
                 .allowRetry(true)
@@ -32,7 +32,7 @@ public class MediaUltis {
         materialCamera.stillShot(); // launches the Camera in stillshot mode
         materialCamera.labelConfirm(R.string.cam_use_capture);
         materialCamera.labelRetry(R.string.retry);
-        materialCamera.start(Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+        materialCamera.start(Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE,true);
 
 
     }

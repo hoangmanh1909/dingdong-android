@@ -6,7 +6,11 @@
     <string name="dong">Đóng</string>
     <string name="title_login">truy cập ứng dụng</string>
     <string name="tong_tien_nop">Tổng tiền nộp</string>
-
+    <string name="speaker">Loa</string>
+    <string name="mute">Tắt âm</string>
+    <string name="keypad">Bàn phím</string>
+    <string name="video">Video</string>
+    <string name="incoming">Cuộc gọi đến</string>
     <string name="so_tham_chieu">Số tham chiếu</string>
     <string name="info_gomhang"><![CDATA[- Xác nhận tin<br />- Cập nhật tin thu gom]]></string>
     <string name="info_phathang"><![CDATA[- Cập nhật thông tin thu hộ COD<br />- Cập nhật thông tin báo phát]]></string>
@@ -34,6 +38,13 @@
     <string name="success">Gạch nợ thành công</string>
     <string name="amount">Số lượng:</string>
     <string name="amount_of_money">Số tiền</string>
+
+    <string name="fee_ppa">Phí PPA</string>
+
+    <string name="fee_ship">Phí ship</string>
+    <string name="le_phi_sau_thu">Lệ Phí thu sau</string>
+    <string name="phi_huy_don_hang">Phí hủy đơn hàng</string>
+
     <string name="vietnamese_currency">đ</string>
     <string name="not_success">Gạch nợ thất bại</string>
     <string name="gach_no_thanh_cong">THỐNG KÊ GẠCH NỢ THÀNH CÔNG</string>
@@ -58,8 +69,8 @@
     <string name="employee_balance">Số tiền đã thu:</string>
     <string name="employee_balance_success">Số tiền đã nộp:</string>
     <string name="employee_balance_missing">Số tiền còn phải nộp:</string>
-    <string name="amount_max">HẠN MỨC:</string>
-    <string name="so_tien_da_thu">SỐ TIỀN ĐÃ THU:</string>
+    <string name="amount_max">Hạn mức : </string>
+    <string name="so_tien_da_thu">Số tiền đã thu : </string>
     <string name="cancel">Hủy bỏ</string>
     <string name="pick_all">Chọn tất cả</string>
     <string name="offline_delivery">Báo phát offline</string>
@@ -74,7 +85,7 @@
     <string name="total_amount">Tổng tiền:</string>
     <string name="title_edit_phone_number">Sửa số điện thoại</string>
     <string name="calling_method">Thực hiện thao tác gọi</string>
-    <string name="calling">Gọi</string>
+    <string name="calling">Đang gọi...</string>
     <string name="messaging">Nhắn tin</string>
     <string name="message_not_found_record_from_local_storage">Không tìm thấy bưu gửi trên hệ thống</string>
     <string name="message_found_record_from_local_storage">Tìm kiếm bưu gửi thành công</string>

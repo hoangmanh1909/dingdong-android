@@ -1,16 +1,21 @@
 package com.ems.dingdong.functions.mainhome.chihobtxh.payment
 
 import android.app.Activity
+import android.text.TextUtils
 import com.core.base.viper.Presenter
 import com.core.base.viper.interfaces.ContainerView
 import com.ems.dingdong.callback.CommonCallback
 import com.ems.dingdong.functions.mainhome.chihobtxh.otp.OtpChiHoBtxhPresenter
+import com.ems.dingdong.model.UserInfo
 import com.ems.dingdong.model.request.SeaBankInquiryRequest
 import com.ems.dingdong.model.request.SeaBankPaymentRequest
 import com.ems.dingdong.model.response.IdentifyCationModel
 import com.ems.dingdong.model.response.IdentifyCationResponse
 import com.ems.dingdong.model.response.SeaBankInquiryModel
 import com.ems.dingdong.model.response.SeaBankInquiryResponse
+import com.ems.dingdong.network.NetWorkController
+import com.ems.dingdong.utiles.Constants
+import com.ems.dingdong.utiles.SharedPref
 import retrofit2.Call
 import retrofit2.Response
 
@@ -68,7 +73,8 @@ class PaymentChiHoBtxhPresenter(containerView: ContainerView) : Presenter<Paymen
     }
 
     override fun toOtp(seaBankPaymentRequest: SeaBankPaymentRequest) {
-        OtpChiHoBtxhPresenter(mContainerView).setData(seaBankPaymentRequest, mSeaBankInquiryModel!!).pushView()
+        OtpChiHoBtxhPresenter(mContainerView).setData(seaBankPaymentRequest, mSeaBankInquiryModel!!,2).pushView()
+
     }
 
 

@@ -7,10 +7,13 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
+import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -26,9 +29,10 @@ import retrofit2.Response;
 public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, CreateBd13Contract.Interactor>
         implements CreateBd13Contract.Presenter {
 
+
+    private CreateBd13Contract.OnTabListener tabListener;
     public CreateBd13Presenter(ContainerView containerView) {
         super(containerView);
-
     }
 
     @Override
@@ -152,4 +156,32 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
         });
     }
 
+    @Override
+    public ContainerView getContainerView() {
+        return mContainerView;
+    }
+
+    @Override
+    public void onCanceled() {
+        tabListener.onCanceledDelivery();
+    }
+
+    @Override
+    public void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList) {
+
+    }
+
+    @Override
+    public void titleChanged(int quantity, int currentSetTab) {
+        tabListener.onQuantityChange(quantity, currentSetTab);
+    }
+
+    @Override
+    public int getCurrentTab() {
+        return tabListener.getCurrentTab();
+    }
+    public CreateBd13Presenter setOnTabListener(CreateBd13Contract.OnTabListener listener) {
+        this.tabListener = listener;
+        return this;
+    }
 }

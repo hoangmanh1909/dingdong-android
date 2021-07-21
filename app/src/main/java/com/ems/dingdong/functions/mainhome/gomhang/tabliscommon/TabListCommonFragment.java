@@ -58,10 +58,14 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
                     case 0:
                         mPosition = newPosition;
                         img_confirm.setVisibility(View.VISIBLE);
+//                        ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
+//                        commonFragment.refreshLayout();
                         break;
                     case 1:
                         mPosition = newPosition;
                         img_confirm.setVisibility(View.GONE);
+//                        ListCommonFragment commonFragment1 = (ListCommonFragment) tabList.get(1);
+//                        commonFragment1.refreshLayout();
                         break;
 
                     default:
@@ -85,10 +89,13 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
 
     @Override
     public void onCanceledDelivery() {
-        ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
-        ListCommonFragment commonFragment1 = (ListCommonFragment) tabList.get(1);
-        commonFragment.refreshLayout();
-        commonFragment1.refreshLayout();
+        if (mPosition == 0) {
+            ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
+            commonFragment.refreshLayout();
+        } else {
+            ListCommonFragment commonFragment1 = (ListCommonFragment) tabList.get(1);
+            commonFragment1.refreshLayout();
+        }
     }
 
     @Override

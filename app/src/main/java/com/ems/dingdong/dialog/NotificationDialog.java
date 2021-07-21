@@ -123,7 +123,6 @@ public class NotificationDialog extends Dialog {
         void onClick(NotificationDialog cancelRouteDialog);
     }
 
-
     public enum DialogType {
         NOTIFICATION_SUCCESS,
         NOTIFICATION_ERROR,

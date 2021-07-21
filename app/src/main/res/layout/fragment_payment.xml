@@ -90,6 +90,7 @@
                         android:layout_toRightOf="@+id/img_search"
                         android:inputType="textCapCharacters"
                         android:textAllCaps="true"
+
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
                         app:formHint="@string/enter_package"

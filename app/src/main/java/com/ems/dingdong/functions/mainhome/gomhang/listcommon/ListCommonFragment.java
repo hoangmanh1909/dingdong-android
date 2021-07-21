@@ -16,10 +16,13 @@ import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
+import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
+import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
@@ -76,6 +79,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     CommonObject itemAtPosition;
     ArrayList<CommonObject> mListChua;
     ArrayList<CommonObject> mListDa;
+    int type = 0;
 
     public static ListCommonFragment getInstance() {
         return new ListCommonFragment();
@@ -110,7 +114,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             itemAtPosition = mListFilter.get(position);
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
-                            mPresenter.showDetailView(mList.get(actualPosition));
+                            mPresenter.showDetailView(itemAtPosition);
+                            Log.d("asdasjdg12431723", new Gson().toJson(itemAtPosition));
                         }
                     });
                 }
@@ -129,7 +134,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             itemAtPosition = mListFilter.get(position);
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
-                            mPresenter.showDetailView(mList.get(actualPosition));
+                            mPresenter.showDetailView(itemAtPosition);
+                            Log.d("asdasjdg12431723", new Gson().toJson(itemAtPosition));
                         }
                     });
                 }
@@ -163,7 +169,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         Date today = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
-        cal.add(Calendar.DATE, -3);
+        cal.add(Calendar.DATE, -2);
 
         fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -198,7 +204,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 mAdapter.notifyDataSetChanged();
             }
         });
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -226,9 +232,9 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
                     if (mPresenter.getType() == 1) {
-                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, type);
                     } else if (mPresenter.getType() == 2) {
-                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                        mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, type);
                     }
                 }
             }).show();
@@ -240,17 +246,30 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         super.onDisplay();
     }
 
-    public void onDisPlayFake(){
-
-        if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
-            mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
-        }
-        if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
-            if (mPresenter.getType() == 1) {
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+    public void onDisPlayFake() {
+        if (mPresenter.getTab() == 0) {
+            if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
             }
-            if (mPresenter.getType() == 2) {
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+            if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
+                if (mPresenter.getType() == 1) {
+                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, 1);
+                }
+                if (mPresenter.getType() == 2) {
+                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, 1);
+                }
+            }
+        } else {
+            if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
+                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
+            }
+            if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
+                if (mPresenter.getType() == 1) {
+                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, 1);
+                }
+                if (mPresenter.getType() == 2) {
+                    mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, 1);
+                }
             }
         }
     }
@@ -261,10 +280,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         }
         if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
             if (mPresenter.getType() == 1) {
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate);
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, type);
             }
             if (mPresenter.getType() == 2) {
-                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate);
+                mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, type);
             }
         }
     }
@@ -282,8 +301,11 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 confirmAll();
                 break;
             case R.id.ll_scan_qr:
-                mPresenter.showBarcode(value -> {
-                    edtSearch.setText(value);
+                mPresenter.showBarcode(new BarCodeCallback() {
+                    @Override
+                    public void scanQrcodeResponse(String value) {
+                        edtSearch.setText(value);
+                    }
                 });
                 break;
         }
@@ -297,7 +319,6 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     list.add(item);
                 }
             }
-
             if (!list.isEmpty()) {
                 mPresenter.confirmAllOrderPostman(list);
             } else {
@@ -321,6 +342,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
+        type = 1;
         if (list == null || list.isEmpty()) {
             showDialog();
         }
@@ -394,22 +416,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
     @Override
     public void showError(String message) {
-        if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            if (mPresenter.getTab() == 0)
-                                mListChua.clear();
-                            else mListDa.clear();
-                            mAdapter.notifyDataSetChanged();
-                            sweetAlertDialog.dismiss();
-                        }
-                    }).show();
-        }
+        type = 1;
+        Toast.showToast(getViewContext(), message);
     }
 
     @Override

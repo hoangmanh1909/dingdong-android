@@ -72,7 +72,8 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
         mView.showProgress();
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
-                solutionCode, status, "", "", "", "", "0", ladingPostmanID, Constants.SHIFT, routeCode, signature, "", "N", "", 0, "");
+                solutionCode, status, "", "", "", "", "0", ladingPostmanID, Constants.SHIFT, routeCode,
+                signature, "", "N", "", 0, "",false,0,"","");
         mInteractor.pushToPNS(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
                     protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

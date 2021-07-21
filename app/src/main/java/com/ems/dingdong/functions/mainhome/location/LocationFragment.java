@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.location;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -13,20 +14,29 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
+import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.DismissDialogCallback;
+import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.callback.PhoneKhiem;
+import com.ems.dingdong.calls.IncomingCallActivity;
+import com.ems.dingdong.dialog.DialogCuocgoi;
+import com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.sip.cmc.SipCmc;
 
 import java.util.ArrayList;
 
@@ -34,6 +44,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+
+import static android.Manifest.permission.CALL_PHONE;
 
 /**
  * The Location Fragment
@@ -74,9 +86,14 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     CustomTextView tvCOD;
     @BindView(R.id.tv_fee)
     CustomTextView tvFee;
+    @BindView(R.id.tv_ReceiverPhone)
+    CustomTextView _tvReceiverPhone;
+    @BindView(R.id.tv_SenderPhone)
+    CustomTextView _tvSenderPhone;
     private ArrayList<StatusInfo> mList;
     private StatusAdapter mAdapter;
     private PublishSubject<String> subject;
+    String mPhone;
 
     public static LocationFragment getInstance() {
         return new LocationFragment();
@@ -91,6 +108,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void initLayout() {
         super.initLayout();
         checkSelfPermission();
+//        edtLadingCode.setText("CS989217589VN");
         mList = new ArrayList<>();
         mAdapter = new StatusAdapter(getViewContext(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
@@ -141,6 +159,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         tvSenderAddress.setText(commonObject.getSenderAddress());
         tvReceiverName.setText(commonObject.getReciverName());
         tvReceiverAddress.setText(commonObject.getReceiverAddress());
+
+        _tvSenderPhone.setText(commonObject.getSenderPhone());
+        _tvReceiverPhone.setText(commonObject.getReceiverMobile());
+
         if (commonObject.getFee() != null) {
             tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getFee())));
         }
@@ -163,9 +185,101 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         tvRealReceiverName.setText(commonObject.getRealReceiverName());
     }
 
-    @OnClick({R.id.img_capture})
+    @OnClick({R.id.img_capture, R.id.img_back, R.id.tv_SenderPhone, R.id.tv_ReceiverPhone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_SenderPhone:
+                new PhoneNumberUpdateDialogIcon(getViewContext(), _tvSenderPhone.getText().toString(), 2, new PhoneCallback() {
+                    @Override
+                    public void onCallSenderResponse(String phone) {
+
+                    }
+
+                    @Override
+                    public void onCallReceiverResponse(String phone) {
+                        mPhone = phone;
+                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                    }
+
+                    @Override
+                    public void onCallSenderResponse1(String phone) {
+
+                    }
+
+                    @Override
+                    public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
+                        Log.d("goiIn", phone);
+                        SipCmc.callTo(phone);
+                        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+                        intent.putExtra(Constants.CALL_TYPE, 1);
+                        intent.putExtra(Constants.KEY_CALLEE_NUMBER, phone);
+                        getViewContext().startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+
+                    }
+
+                    @Override
+                    public void onCallCSKH(String phone) {
+
+                    }
+                }).show();
+                new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
+                    @Override
+                    public void onCall(String phone) {
+                        mPhone = phone;
+                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                    }
+
+                    @Override
+                    public void onCallEdit(String phone) {
+
+                    }
+                }).show();
+                break;
+            case R.id.tv_ReceiverPhone:
+                new PhoneNumberUpdateDialogIcon(getViewContext(), _tvReceiverPhone.getText().toString(), 2, new PhoneCallback() {
+                    @Override
+                    public void onCallSenderResponse(String phone) {
+
+                    }
+
+                    @Override
+                    public void onCallReceiverResponse(String phone) {
+                        mPhone = phone;
+                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                    }
+
+                    @Override
+                    public void onCallSenderResponse1(String phone) {
+
+                    }
+
+                    @Override
+                    public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
+                        SipCmc.callTo(phone);
+                        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
+                        intent.putExtra(Constants.CALL_TYPE, 1);
+                        intent.putExtra(Constants.KEY_CALLEE_NUMBER, phone);
+                        getViewContext().startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+
+                    }
+
+                    @Override
+                    public void onCallCSKH(String phone) {
+
+                    }
+                }).show();
+                break;
+            case R.id.img_back:
+                mPresenter.back();
+                break;
             case R.id.img_capture:
                 mPresenter.showBarcode(value -> {
                     getQuery();
@@ -194,5 +308,27 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                     subject.onNext(edtLadingCode.getText());
                 });
         return subject;
+    }
+
+    @Override
+    public void showCallError(String message) {
+        if (getViewContext() != null) {
+            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
+    public void showCallSuccess() {
+        if (getViewContext() != null) {
+            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+                startActivity(intent);
+            }
+        }
     }
 }

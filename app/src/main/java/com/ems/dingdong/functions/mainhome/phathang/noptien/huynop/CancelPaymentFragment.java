@@ -104,6 +104,8 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
         return new CancelPaymentFragment();
     }
 
+
+
     @Override
     public void onDisplay() {
         super.onDisplay();
@@ -118,7 +120,6 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
         payment.setToDate(toDate);
         payment.setFromDate(fromDate);
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        layout_item_pick_all.setVisibility(View.VISIBLE);
         dataRequestPayment.setCode("COD002");
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
@@ -133,6 +134,8 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        layout_item_pick_all.setVisibility(View.VISIBLE);
+
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -303,7 +306,6 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
 
             new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod, (type, description) -> {
-//                Toast.showToast(getViewContext(),description);
                 new NotificationDialog(getViewContext())
                         .setConfirmText(getString(R.string.payment_confirn))
                         .setCancelText(getString(R.string.payment_cancel))
@@ -329,7 +331,8 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismiss();
-                        refreshLayout();
+                       mPresenter.onCanceled();
+                        mPresenter.onCanceled();
                     })
                     .setContent(message)
                     .show();

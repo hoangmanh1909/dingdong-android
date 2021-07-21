@@ -1,14 +1,19 @@
 package com.ems.dingdong.functions.login;
 
 
+import android.net.Network;
+
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Single;
 
 /**
  * The Login interactor
@@ -43,5 +48,10 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     @Override
     public void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
         NetWorkController.getVersion(code,data,signature,callback);
+    }
+
+    @Override
+    public Single<SimpleResult> getList(String data) {
+        return NetWorkController.getListBuuCucHuyen(data);
     }
 }
