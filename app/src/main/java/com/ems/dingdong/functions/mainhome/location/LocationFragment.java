@@ -189,43 +189,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_SenderPhone:
-                new PhoneNumberUpdateDialogIcon(getViewContext(), _tvSenderPhone.getText().toString(), 2, new PhoneCallback() {
-                    @Override
-                    public void onCallSenderResponse(String phone) {
-
-                    }
-
-                    @Override
-                    public void onCallReceiverResponse(String phone) {
-                        mPhone = phone;
-                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
-                    }
-
-                    @Override
-                    public void onCallSenderResponse1(String phone) {
-
-                    }
-
-                    @Override
-                    public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
-                        Log.d("goiIn", phone);
-                        SipCmc.callTo(phone);
-                        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
-                        intent.putExtra(Constants.CALL_TYPE, 1);
-                        intent.putExtra(Constants.KEY_CALLEE_NUMBER, phone);
-                        getViewContext().startActivity(intent);
-                    }
-
-                    @Override
-                    public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
-
-                    }
-
-                    @Override
-                    public void onCallCSKH(String phone) {
-
-                    }
-                }).show();
                 new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
                     @Override
                     public void onCall(String phone) {
@@ -240,39 +203,15 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                 }).show();
                 break;
             case R.id.tv_ReceiverPhone:
-                new PhoneNumberUpdateDialogIcon(getViewContext(), _tvReceiverPhone.getText().toString(), 2, new PhoneCallback() {
+                new DialogCuocgoi(getViewContext(), _tvReceiverPhone.getText().toString(), "2", new PhoneKhiem() {
                     @Override
-                    public void onCallSenderResponse(String phone) {
-
-                    }
-
-                    @Override
-                    public void onCallReceiverResponse(String phone) {
+                    public void onCall(String phone) {
                         mPhone = phone;
                         mPresenter.callForward(phone, tvParcelCode.getText().toString());
                     }
 
                     @Override
-                    public void onCallSenderResponse1(String phone) {
-
-                    }
-
-                    @Override
-                    public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
-                        SipCmc.callTo(phone);
-                        Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
-                        intent.putExtra(Constants.CALL_TYPE, 1);
-                        intent.putExtra(Constants.KEY_CALLEE_NUMBER, phone);
-                        getViewContext().startActivity(intent);
-                    }
-
-                    @Override
-                    public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
-
-                    }
-
-                    @Override
-                    public void onCallCSKH(String phone) {
+                    public void onCallEdit(String phone) {
 
                     }
                 }).show();

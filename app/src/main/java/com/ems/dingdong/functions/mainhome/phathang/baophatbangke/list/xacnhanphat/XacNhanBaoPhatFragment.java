@@ -1,10 +1,12 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -33,6 +35,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -115,6 +119,10 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.View {
 
@@ -347,7 +355,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private BuuCucHuyenMode[] buuCucHuyenMode;
     private UserInfo userInfo;
     private PostOffice postOffice;
-
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     private UploadSingleResult uploadSingleResult;
     //private ListReceiverName listReceiverName;
     private List<String> listReceiverName;
@@ -902,7 +910,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
             case R.id.img_send:
                 if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                    Toast.showToast(getViewContext(),"Bạn thao tác quá nhanh");
+                    Toast.showToast(getViewContext(), "Bạn thao tác quá nhanh");
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
@@ -1109,9 +1117,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(
-                intent,
-                OPEN_MEDIA_PICKER);
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(),
+                WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            startActivityForResult(
+                    intent,
+                    OPEN_MEDIA_PICKER);
+        }
+
+
     }
 
     public void pickImage(String type, int max) {
@@ -1381,7 +1400,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (cbSelected.isChecked()) {
                 for (int i = 0; i < mBaoPhatBangke.size(); i++) {
                     if (mBaoPhatBangke.get(i).getFeeCancelOrder() < 1000) {
-                        Toast.showToast(getViewContext(), "ạn vui lòng nhập số tiền tối thiều là >=1,000 đồng");
+                        Toast.showToast(getViewContext(), "Vui lòng nhập số tiền tối thiểu là 1,000 đồng");
                         return;
                     }
                 }
@@ -1500,8 +1519,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setImageAuthen(mFileAvatar + ";" + mFileVerify + ";" + mFileOther);
 
         request.setBatchCode(item.getBatchCode());
-        request.setIsItemReturn(item.isItemReturn());
         request.setItemsInBatch(item.getItemsInBatch());
+        request.setIsItemReturn(item.isItemReturn());
         request.setAmountForBatch(item.getAmountForBatch());
         request.setReceiverReference(edtRelationship.getText().toString());
         request.setReplaceCode(item.getReplaceCode());
@@ -1585,6 +1604,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
+
+//                Uri selectedImageUri = data.getData();
+//                String picturePath = getPath1(getActivity().getApplicationContext(), selectedImageUri);
+//                Log.d("Picture Path", picturePath);
                 attemptSendMedia(data.getData().getPath(), 0);
             }
 
@@ -1594,6 +1617,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 attemptSendMedia(getPath(selectedImageUri), 1);
             }
         }
+    }
+
+    public static String getPath1(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
     }
 
 

@@ -28,8 +28,8 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 24
-        versionName "1.1.9"
+        versionCode 27
+        versionName "1.2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

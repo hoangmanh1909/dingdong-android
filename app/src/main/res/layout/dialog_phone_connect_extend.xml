@@ -183,7 +183,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        android:visibility="visible"/>
+                        android:visibility="visible" />
 
                     <com.ems.dingdong.views.CustomMediumTextView
                         android:id="@+id/tv_phone_calling"

@@ -156,8 +156,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             /**
              * follow Hanh
              */
-            //imgCall.setVisibility(View.VISIBLE);
-//            imgTopSetting.setVisibility(View.VISIBLE);
             viewTop.setVisibility(View.VISIBLE);
         } else {
             img_notification.setVisibility(View.GONE);

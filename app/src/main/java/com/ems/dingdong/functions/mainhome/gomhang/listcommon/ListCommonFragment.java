@@ -115,7 +115,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
                             mPresenter.showDetailView(itemAtPosition);
-                            Log.d("asdasjdg12431723", new Gson().toJson(itemAtPosition));
+//                            Log.d("asdasjdg12431723", new Gson().toJson(itemAtPosition));
                         }
                     });
                 }

@@ -254,7 +254,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
             poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         }
         if (!TextUtils.isEmpty(routeInfoJson)) {
-            routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
+            routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId();
         }
 
         createOrderRequest.setRouteId(routeCode);

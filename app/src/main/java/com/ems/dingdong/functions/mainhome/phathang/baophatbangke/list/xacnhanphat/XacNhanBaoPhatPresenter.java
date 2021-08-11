@@ -325,8 +325,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setSignature(signature);
             request.setImageDelivery(deliveryImage);
             request.setBatchCode(item.getBatchCode());
-            request.setIsItemReturn(item.isItemReturn());
             request.setItemsInBatch(item.getItemsInBatch());
+
+            request.setIsItemReturn(item.isItemReturn());
             request.setAmountForBatch(item.getAmountForBatch());
             request.setReceiverReference(relationship);
             request.setPaymentPP(isPaymentPP);
