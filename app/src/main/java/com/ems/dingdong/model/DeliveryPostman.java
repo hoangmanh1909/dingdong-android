@@ -153,6 +153,8 @@ public class DeliveryPostman implements Comparable {
 
     @SerializedName("FeeCOD")
     private long feeCOD;
+    @SerializedName("FeePA")
+    private long FeePA;
     @SerializedName("FeeC")
     private long feeC;
     @SerializedName("FeePPA")
@@ -165,6 +167,14 @@ public class DeliveryPostman implements Comparable {
     private boolean isCancelOrder ;
     @SerializedName("FeeCancelOrder")
     private long FeeCancelOrder;
+
+    public long getFeePA() {
+        return FeePA;
+    }
+
+    public void setFeePA(long feePA) {
+        FeePA = feePA;
+    }
 
     public boolean isCancelOrder() {
         return isCancelOrder;

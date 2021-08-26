@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -11,6 +12,7 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
 
     ArrayList<ConfirmOrderPostman> mListRequest;
     String tenKH;
+
     public XacNhanConfirmPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -60,6 +63,10 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
     @Override
     public void confirmAllOrderPostman() {
         mView.showProgress();
+
+        Log.d ("thanhkhiemasd123123",new Gson().toJson(mListRequest));
+
+        // check log
         mInteractor.confirmAllOrderPostman(mListRequest, new CommonCallback<ConfirmAllOrderPostmanResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<ConfirmAllOrderPostmanResult> call, Response<ConfirmAllOrderPostmanResult> response) {
@@ -138,7 +145,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
                                     sweetAlertDialog.dismiss();
                                     back();
                                 }).show();
-                    }else{
+                    } else {
                         mView.showErrorToast(simpleResult.getMessage());
                     }
                 }, throwable -> {

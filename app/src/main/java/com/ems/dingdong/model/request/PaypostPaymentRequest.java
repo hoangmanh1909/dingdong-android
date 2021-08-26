@@ -95,6 +95,41 @@ public class PaypostPaymentRequest {
     @SerializedName("FeeCollectLaterPNS")
     private long feeCollectLaterPNS;
 
+    @SerializedName("FeePA")
+    private long FeePA;
+    @SerializedName("FeePAPNS")
+    private long FeePAPNS;
+
+
+    @SerializedName("IsEditCODAmount")
+    private boolean IsEditCODAmount;
+    @SerializedName("CODAmountEdit")
+    private long cODAmountEdit;
+
+    public void setEditCODAmount(boolean editCODAmount) {
+        IsEditCODAmount = editCODAmount;
+    }
+
+    public void setcODAmountEdit(long cODAmountEdit) {
+        this.cODAmountEdit = cODAmountEdit;
+    }
+
+    public long getFeePAPNS() {
+        return FeePAPNS;
+    }
+
+    public void setFeePAPNS(long feePAPNS) {
+        FeePAPNS = feePAPNS;
+    }
+
+    public long getFeePA() {
+        return FeePA;
+    }
+
+    public void setFeePA(long feePA) {
+        FeePA = feePA;
+    }
+
     public long getFeePPA() {
         return feePPA;
     }

@@ -125,7 +125,6 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
                 break;
             case R.id.op_ok:
                 type = thuGom;
-
                 op_ok.setBackgroundResource(R.drawable.bg_form_success);
                 op_reject.setBackgroundResource(R.color.color_rad_fail);
                 op_change.setBackgroundResource(R.color.color_rad_change_route);
@@ -191,7 +190,6 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
                 }).show();
                 break;
             case chuyenTuyen:
-
                 if (mPostmanInfo == null) {
                     Toast.showToast(getViewContext(), "Vui lòng chọn nhân viên thu gom");
                     return;

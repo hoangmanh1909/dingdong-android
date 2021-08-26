@@ -276,7 +276,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                                String relationship, InfoVerify infoVerify) {
+                                String relationship, InfoVerify infoVerify,boolean isCod,long codeEdit) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -347,12 +347,19 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setVATCode(item.getVatCode());
 
             request.setFeeCollectLater(item.getFeeCollectLater());
-            request.setFeePPA(item.getFeePPA());
-            request.setFeeShip(item.getFeeShip());
             request.setFeeCollectLaterPNS(item.getFeeCollectLater());
+
+            request.setFeePPA(item.getFeePPA());
             request.setFeePPAPNS(item.getFeePPA());
+
+            request.setFeeShip(item.getFeeShip());
             request.setFeeShipPNS(item.getFeeShip());
 
+            request.setEditCODAmount(isCod);
+            request.setcODAmountEdit(codeEdit);
+//
+//            request.setFeePA(item.getFeePA());
+//            request.setFeePAPNS(item.getFeePA());
             paymentRequests.add(request);
         }
         mInteractor.paymentDelivery(paymentRequests)
@@ -367,8 +374,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                 long amountPNS = 0;
                                 if (paymentResponses != null) {
                                     for (DeliveryCheckAmountPaymentResponse item : paymentResponses) {
-                                        amountPP += item.getPayPostAmount() + item.getFeeCollectLaterPP() + item.getFeePPAPNS() + item.getFeeShipPP();
-                                        amountPNS += item.getPNSAmount() + item.getFeePPAPNS() + item.getFeeShipPNS() + item.getFeeCollectLaterPNS();
+                                        amountPP += item.getPayPostAmount() + item.getFeeCollectLaterPP() + item.getFeePPAPNS() + item.getFeeShipPP() + item.getFeePA();
+                                        amountPNS += item.getPNSAmount() + item.getFeePPAPNS() + item.getFeeShipPNS() + item.getFeeCollectLaterPNS() + item.getFeePAPNS();
                                     }
                                 }
                                 mView.showCheckAmountPaymentError(

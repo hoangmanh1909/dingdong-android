@@ -48,9 +48,11 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ChonAnhCallback;
+import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PickerCallback;
 import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.DiallogChonAnh;
+import com.ems.dingdong.dialog.DialogNhaptienCOD;
 import com.ems.dingdong.dialog.DialogReason;
 import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
@@ -277,6 +279,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout _llChontuyen;
     @BindView(R.id.tv_buu_cuc)
     FormItemTextView _tvBuuCuc;
+
+    @BindView(R.id.cb_selected_edtcod)
+    CheckBox checkBoxedtCod;
+
+    @BindView(R.id.ll_tong_tien_tam_thu)
+    LinearLayout llTongTienTamThu;
+    @BindView(R.id.tv_tong_tien_nop_edit)
+    TextView tvTongTienTamthu;
+    @BindView(R.id.ll_tong_tien_tam_thu1)
+    LinearLayout ll_tong_tien_tam_thu1;
+    @BindView(R.id.tv_tong_tien_nop_edit1)
+    TextView tvTongTienTamthu1;
+    long tiem_tam = 0;
+
+    @BindView(R.id.ll_edt_cod)
+    LinearLayout lledtcod;
     String toPoCode = "";
     private Calendar calDateOfBirth = Calendar.getInstance();
     private Calendar calDateAccepted = Calendar.getInstance();
@@ -435,6 +453,35 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
 
+        if (mBaoPhatBangke.size() == 1) lledtcod.setVisibility(View.VISIBLE);
+        else lledtcod.setVisibility(View.GONE);
+        checkBoxedtCod.setOnCheckedChangeListener((v1, v2) -> {
+            if (v2) {
+                //true
+                llTongTienTamThu.setVisibility(View.VISIBLE);
+                ll_tong_tien_tam_thu1.setVisibility(View.VISIBLE);
+                new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
+                    @Override
+                    public void onResponse(String id) {
+                        if (id.equals("false")) {
+                            checkBoxedtCod.setChecked(false);
+                            tvTongTienTamthu.setText("");
+                            llTongTienTamThu.setVisibility(View.GONE);
+                            ll_tong_tien_tam_thu1.setVisibility(View.GONE);
+                        } else {
+                            tvTongTienTamthu.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id))));
+                            tvTongTienTamthu1.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id) + totalFee)));
+                        }
+                    }
+                }).show();
+            } else {
+                //flase
+                ll_tong_tien_tam_thu1.setVisibility(View.GONE);
+                llTongTienTamThu.setVisibility(View.GONE);
+            }
+        });
+
+
         if (mBaoPhatBangke.size() == 1) {
             cList = new ArrayList();
             if (mBaoPhatBangke.get(0).getFeeCOD() != 0)
@@ -444,9 +491,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (mBaoPhatBangke.get(0).getFeePPA() != 0)
                 cList.add(new ModeFee("Cước PPA: ", mBaoPhatBangke.get(0).getFeePPA()));
             if (mBaoPhatBangke.get(0).getFeeCollectLater() != 0)
-                cList.add(new ModeFee("Lệ phí thu sau (HCC): ", mBaoPhatBangke.get(0).getFeeCollectLater()));
+                cList.add(new ModeFee("Lệ phí HCC: ", mBaoPhatBangke.get(0).getFeeCollectLater()));
             if (mBaoPhatBangke.get(0).getFeeShip() != 0)
                 cList.add(new ModeFee("Phí ship: ", mBaoPhatBangke.get(0).getFeeShip()));
+
+            if (mBaoPhatBangke.get(0).getFeePA() != 0)
+                cList.add(new ModeFee("Cước thu hộ HCC: ", mBaoPhatBangke.get(0).getFeePA()));
+
 
             cAdapter = new CuocAdapter(getContext(), cList);
             RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclercuoc);
@@ -818,9 +869,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
             R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
             R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund,
-            R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc})
+            R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc, R.id.rl_e_wallet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_e_wallet:
+                new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
+                    @Override
+                    public void onResponse(String id) {
+                        tvTongTienTamthu.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id))));
+                        tvTongTienTamthu1.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id) + totalFee)));
+                    }
+                }).show();
+                break;
             case R.id.tv_buu_cuc:
                 showBuuCucden();
                 break;
@@ -830,6 +890,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 } else recyclerds.setVisibility(View.GONE);
                 break;
             case R.id.rad_success:
+                rbVerifyInfo.setChecked(false);
+                rbVerifyImage.setChecked(false);
                 mDeliveryType = 2;
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
@@ -849,6 +911,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_partial.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.rad_fail:
+                rbVerifyInfo.setChecked(false);
+                rbVerifyImage.setChecked(false);
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
@@ -868,6 +932,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_partial.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.rad_change_route:
+                rbVerifyInfo.setChecked(false);
+                rbVerifyImage.setChecked(false);
                 mDeliveryType = 3;
                 ll_partial.setVisibility(View.GONE);
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
@@ -887,6 +953,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_partial.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.rad_partial:
+                rbVerifyInfo.setChecked(false);
+                rbVerifyImage.setChecked(false);
                 mDeliveryType = 4;
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
@@ -1123,7 +1191,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
         } else {
             startActivityForResult(
                     intent,
@@ -1348,6 +1416,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             } else
                 _amountShow = totalAmount;
+            if (TextUtils.isEmpty(tvTongTienTamthu.getText().toString()))
+                tiem_tam = 0;
+            else
+                tiem_tam = Long.parseLong(tvTongTienTamthu.getText().toString().replaceAll("\\.", ""));
+            if (checkBoxedtCod.isChecked()) {
+                _amountShow = tiem_tam + totalFee;
+            }
             new ConfirmDialog(getViewContext(), listSelected.size(), _amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
@@ -1365,12 +1440,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 infoVerify.setAuthenType(authenType);
                         }
                         if (mDeliveryType == 2) {
+
                             if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                        edtOtherRelationship.getText(), infoVerify);
+                                        edtOtherRelationship.getText(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
                             } else {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                        edtRelationship.getText().toString(), infoVerify);
+                                        edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
                             }
                         } else {
                             if (totalAmount > 0) {
@@ -2041,7 +2117,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         totalFee = 0;
         for (DeliveryPostman i : getItemSelected()) {
             totalAmount += i.getAmount();
-            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeeC() + i.getFeePPA() + i.getFeeCOD();
+            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeeC() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
         }
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));

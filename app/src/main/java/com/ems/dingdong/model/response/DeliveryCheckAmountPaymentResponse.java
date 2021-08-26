@@ -31,6 +31,27 @@ public class DeliveryCheckAmountPaymentResponse {
     @SerializedName("FeeCollectLaterPNS")
     private Integer FeeCollectLaterPNS;
 
+    @SerializedName("FeePA")
+    private long FeePA;
+    @SerializedName("FeePAPNS")
+    private long FeePAPNS;
+
+    public long getFeePA() {
+        return FeePA;
+    }
+
+    public void setFeePA(long feePA) {
+        FeePA = feePA;
+    }
+
+    public long getFeePAPNS() {
+        return FeePAPNS;
+    }
+
+    public void setFeePAPNS(long feePAPNS) {
+        FeePAPNS = feePAPNS;
+    }
+
     public Integer getFeeCollectLaterPNS() {
         return FeeCollectLaterPNS;
     }

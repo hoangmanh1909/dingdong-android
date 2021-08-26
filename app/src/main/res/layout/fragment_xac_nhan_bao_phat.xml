@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
+
         <include layout="@layout/item_head_bg_common" />
 
         <RelativeLayout
@@ -40,8 +41,8 @@
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_alignParentRight="true"
-                android:padding="@dimen/dimen_5dp"
-                android:background="@drawable/ic_send_telegram" />
+                android:background="@drawable/ic_send_telegram"
+                android:padding="@dimen/dimen_5dp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -82,6 +83,7 @@
                         android:gravity="center">
 
                         <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/tv_tongmon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tổng món"
@@ -90,10 +92,11 @@
 
                         <com.ems.dingdong.views.CustomBoldTextView
                             android:id="@+id/tv_quantity"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:gravity="center"
+                            android:layout_toRightOf="@+id/tv_tongmon"
+                            android:gravity="center|right"
                             android:text="100"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16sp" />
@@ -166,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:text="Tổng tiền phải thu"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_21sp"
+                            android:textSize="16dp"
                             android:textStyle="bold" />
 
                         <com.ems.dingdong.views.CustomBoldTextView
@@ -177,7 +180,7 @@
                             android:gravity="center"
                             android:text="1000000"
                             android:textColor="@color/red_light"
-                            android:textSize="@dimen/text_size_21sp"
+                            android:textSize="16dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
 
@@ -999,6 +1002,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+
             <LinearLayout
                 android:id="@+id/ll_change_route"
                 android:layout_width="match_parent"
@@ -1115,7 +1119,118 @@
                         android:layout_height="0.5dp" />
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_edt_cod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:orientation="vertical">
 
+                <CheckBox
+                    android:id="@+id/cb_selected_edtcod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/custom_btn_radio"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:text="Thay đổi tiền COD"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:gravity="left|center"
+                    android:textSize="@dimen/_14sdp"/>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_tong_tien_tam_thu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:weightSum="2"
+                    android:visibility="gone"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="COD tạm thu:"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_tong_tien_nop_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_gravity="center|right"
+                        android:gravity="center|right"
+                        android:layout_marginRight="10dp"/>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_e_wallet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_edit_v1"
+                            android:background="@drawable/bg_persion"/>
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_tong_tien_tam_thu1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:weightSum="2"
+                    android:visibility="gone"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tổng tiền tạm thu : "
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_tong_tien_nop_edit1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/red_light"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_gravity="center|right"
+                        android:gravity="center|right"
+                        android:layout_marginRight="10dp" />
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                      />
+
+
+                </RelativeLayout>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_verify"
                 android:layout_width="match_parent"

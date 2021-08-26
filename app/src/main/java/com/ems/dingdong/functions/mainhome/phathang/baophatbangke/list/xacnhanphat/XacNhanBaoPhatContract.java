@@ -209,7 +209,7 @@ public interface XacNhanBaoPhatContract {
          * delivery success.
          */
         void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                             String relationship, InfoVerify infoVerify);
+                             String relationship, InfoVerify infoVerify,boolean isCod,long codeEdit);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);
