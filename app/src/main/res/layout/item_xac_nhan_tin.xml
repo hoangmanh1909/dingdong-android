@@ -33,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:drawableLeft="@drawable/ic_barcode"
-                android:drawablePadding="@dimen/dimen_8dp"
+                android:drawablePadding="10dp"
                 android:gravity="center|left"
-                android:paddingLeft="@dimen/dimen_8dp"
+                android:paddingLeft="@dimen/dimen_10dp"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp"
                 tools:text="1234567890" />
@@ -46,8 +46,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:drawableLeft="@drawable/ic_custom"
+                android:drawablePadding="5dp"
                 android:gravity="center|left"
-                android:paddingLeft="5dp"
+                android:paddingLeft="@dimen/dimen_10dp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_14sp"
                 tools:text="Trần Văn Anh" />
@@ -57,10 +58,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:drawableLeft="@drawable/ic_person"
+                android:drawableLeft="@drawable/ic_person_v1"
+                android:drawablePadding="@dimen/dimen_5dp"
                 android:gravity="center|left"
+                android:paddingLeft="@dimen/dimen_10dp"
                 android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_12sp"
+                android:textSize="@dimen/dimen_14dp"
                 tools:text="Trần Văn Anh" />
 
 
@@ -113,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:padding="5dp"
                 android:gravity="right|center"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/text_size_12sp"

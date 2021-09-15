@@ -39,7 +39,7 @@
                     android:id="@+id/recycler_collect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_white_v1"
                     android:scrollbars="vertical" />
 
             </LinearLayout>
@@ -65,7 +65,7 @@
                     android:id="@+id/recycler_delivery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_white_v1"
                     android:scrollbars="vertical" />
             </LinearLayout>
 
@@ -90,7 +90,7 @@
                     android:id="@+id/recycler_delivery_cod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_white_v1"
                     android:scrollbars="vertical" />
             </LinearLayout>
 
@@ -115,7 +115,7 @@
                     android:id="@+id/recycler_delivery_hcc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_white_v1"
                     android:scrollbars="vertical" />
             </LinearLayout>
 
@@ -135,10 +135,10 @@
             <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:background="@drawable/xml_border_main"
-                android:orientation="vertical"
                 android:layout_gravity="center"
+                android:background="@drawable/xml_border_main"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:padding="@dimen/dimen_5dp">
 
                 <ImageView
@@ -151,7 +151,7 @@
                     android:maxWidth="48dp"
                     android:maxHeight="48dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_btxh_01"/>
+                    android:src="@drawable/ic_btxh_01" />
 
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/title"
@@ -162,8 +162,8 @@
                     android:layout_marginRight="@dimen/dimen_5dp"
                     android:gravity="center"
                     android:paddingBottom="8dp"
-                    android:textColor="#555356"
                     android:text="Chi hộ BTXH"
+                    android:textColor="#555356"
                     android:textSize="@dimen/text_size_12sp" />
             </LinearLayout>
         </LinearLayout>

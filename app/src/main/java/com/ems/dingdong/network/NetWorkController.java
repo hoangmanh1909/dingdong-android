@@ -81,6 +81,7 @@ import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -224,6 +225,7 @@ public class NetWorkController {
                                                            String callForwardType, String hotlineNumber,
                                                            String ladingCode, CommonCallback<SimpleResult> callback) {
         String type = "1";
+        Log.d("thasndahsd12123123", Constants.HEADER_NUMBER);
         if (Constants.HEADER_NUMBER.equals("tel:159")) {
             type = "1";
         } else {
@@ -538,7 +540,7 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getHomeData(String fromDate,String toDate,String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
+    public static void getHomeData(String fromDate, String toDate, String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
         Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData(fromDate, toDate, postmanCode, routeCode);
         call.enqueue(callback);
     }

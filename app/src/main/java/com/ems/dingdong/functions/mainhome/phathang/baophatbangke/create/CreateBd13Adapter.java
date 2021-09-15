@@ -282,7 +282,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
 
 //            if (item.getTotalFee() != null)
-            tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD())));
+            tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder()+ item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD())));
 
             tvRefundPostage.setVisibility(View.GONE);
             try {

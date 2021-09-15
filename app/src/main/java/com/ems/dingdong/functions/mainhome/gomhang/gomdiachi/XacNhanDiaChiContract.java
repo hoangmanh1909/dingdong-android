@@ -31,6 +31,9 @@ public interface XacNhanDiaChiContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void vietmapSearch(String address);
+
         void searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
@@ -43,7 +46,7 @@ public interface XacNhanDiaChiContract {
 
         int getType();
 
-        void confirmAllOrderPostman(ArrayList<CommonObject> list,String tenkhachhang);
+        void confirmAllOrderPostman(ArrayList<CommonObject> list, String tenkhachhang);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
@@ -52,6 +55,7 @@ public interface XacNhanDiaChiContract {
         void showConfirmParcelAddressNoPostage(CommonObject commonObject);
 
         void showChiTietHoanThanhTin(CommonObject commonObject);
+
         int getTab();
 
         int getPositionTab();

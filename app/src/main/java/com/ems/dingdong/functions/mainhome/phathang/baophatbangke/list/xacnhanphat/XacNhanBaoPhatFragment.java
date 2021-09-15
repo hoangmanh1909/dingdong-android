@@ -183,7 +183,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_providers)
     CustomTextView tvProviders;
     @BindView(R.id.rl_relationship)
-    RelativeLayout rlRelationship;
+    LinearLayout rlRelationship;
     @BindView(R.id.layout_real_receiver_name)
     LinearLayout linearLayoutName;
     @BindView(R.id.ll_other_relationship)
@@ -455,6 +455,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         if (mBaoPhatBangke.size() == 1) lledtcod.setVisibility(View.VISIBLE);
         else lledtcod.setVisibility(View.GONE);
+
+//        lledtcod.setVisibility(View.GONE);
         checkBoxedtCod.setOnCheckedChangeListener((v1, v2) -> {
             if (v2) {
                 //true
@@ -818,14 +820,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
+                if (!cbSelected.isChecked()) {
+                    mBaoPhatBangke.get(position).setFeeCancelOrder(0);
+                    holder.tv_monney.setText("0");
+                }
+
                 holder.tv_monney.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start,
                                               int before, int count) {
                         //setting data to array, when changed
-                        if (!TextUtils.isEmpty(s.toString()))
+                        if (!TextUtils.isEmpty(s.toString())) {
                             mBaoPhatBangke.get(position).setFeeCancelOrder(Long.parseLong(s.toString().replaceAll("\\.", "")));
-                        else mBaoPhatBangke.get(position).setFeeCancelOrder(0);
+                        } else mBaoPhatBangke.get(position).setFeeCancelOrder(0);
                     }
 
                     @Override
@@ -840,8 +847,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                 });
             }
-        };
-        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerds);
+        }
+
+        ;
+        RecyclerUtils.setupVerticalRecyclerView(
+
+                getViewContext(), recyclerds);
         recyclerds.setAdapter(phiThuHoAdapter);
 
     }
@@ -887,7 +898,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             case R.id.cb_selected:
                 if (cbSelected.isChecked()) {
                     recyclerds.setVisibility(View.VISIBLE);
-                } else recyclerds.setVisibility(View.GONE);
+                } else {
+                    recyclerds.setVisibility(View.GONE);
+                    for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+                        mBaoPhatBangke.get(i).setFeeCancelOrder(0);
+                        phiThuHoAdapter.notifyDataSetChanged();
+                    }
+                }
                 break;
             case R.id.rad_success:
                 rbVerifyInfo.setChecked(false);
@@ -898,6 +915,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_partial.setVisibility(View.GONE);
                 linearLayoutName.setVisibility(View.VISIBLE);
                 llVerify.setVisibility(View.VISIBLE);
+                lledtcod.setVisibility(View.VISIBLE);
                 ll_image.setVisibility(View.VISIBLE);
 
                 rad_success.setBackgroundResource(R.drawable.bg_form_success);
@@ -920,7 +938,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 linearLayoutName.setVisibility(View.GONE);
                 llVerify.setVisibility(View.GONE);
                 ll_image.setVisibility(View.VISIBLE);
-
+                lledtcod.setVisibility(View.GONE);
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_fail.setBackgroundResource(R.drawable.bg_form_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
@@ -941,7 +959,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 linearLayoutName.setVisibility(View.GONE);
                 llVerify.setVisibility(View.GONE);
                 ll_image.setVisibility(View.VISIBLE);
-
+                lledtcod.setVisibility(View.GONE);
                 rad_fail.setBackgroundResource(R.color.color_rad_fail);
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_change_route.setBackgroundResource(R.drawable.bg_form_change_route);
@@ -961,6 +979,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_partial.setVisibility(View.VISIBLE);
                 linearLayoutName.setVisibility(View.VISIBLE);
                 llVerify.setVisibility(View.GONE);
+                lledtcod.setVisibility(View.GONE);
                 ll_image.setVisibility(View.GONE);
 
                 rad_success.setBackgroundResource(R.color.color_rad_success);
@@ -1421,7 +1440,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             else
                 tiem_tam = Long.parseLong(tvTongTienTamthu.getText().toString().replaceAll("\\.", ""));
             if (checkBoxedtCod.isChecked()) {
-                _amountShow = tiem_tam + totalFee;
+                _amountShow = tiem_tam ;
             }
             new ConfirmDialog(getViewContext(), listSelected.size(), _amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)

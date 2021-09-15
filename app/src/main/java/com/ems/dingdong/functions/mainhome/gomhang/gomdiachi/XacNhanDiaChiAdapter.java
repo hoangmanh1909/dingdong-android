@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 
 public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdapter.HolderView> implements Filterable {
 
@@ -146,7 +148,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         CustomTextView tvWeight;
         @BindView(R.id.linear_layout)
         LinearLayout linearLayout;
-
+        @BindView(R.id.img_map)
+        public ImageView imgMap;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
 
@@ -164,13 +167,19 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
         public void bindView(Object model) {
             CommonObject item = (CommonObject) model;
+
+            if (mType == 1) {
+                imgMap.setVisibility(GONE);
+            } else if (mType == 4) {
+                imgMap.setVisibility(View.VISIBLE);
+            }
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
-            tvCustomName.setText(String.format("Khách hàng: %s",item.getCustomerName()));
+            tvCustomName.setText(String.format("Khách hàng: %s", item.getCustomerName()));
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
             tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS) + ""));
 
-            cbSelected.setVisibility(View.GONE);
+            cbSelected.setVisibility(GONE);
             if (mType == 1) {
                 cbSelected.setClickable(false);
                 cbSelected.setVisibility(View.VISIBLE);
@@ -178,8 +187,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 if (item.isSelected()) {
                     cbSelected.setChecked(true);
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-                }
-                else {
+                } else {
                     cbSelected.setChecked(false);
                     linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 }
@@ -207,7 +215,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     tvStatus.setText("Chưa xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
-                    cbSelected.setVisibility(View.GONE);
+                    cbSelected.setVisibility(GONE);
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
                         tvContactName.setTypeface(typeface);

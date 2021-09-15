@@ -1,6 +1,9 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
@@ -90,6 +94,9 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     ParcelCodeInfo mParcelCodeInfo;
     CommonObject itemClick;
     int type = 0;
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+    };//, Manifest.permission.PROCESS_OUTGOING_CALLS
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
 
     public static XacNhanDiaChiFragment getInstance() {
         return new XacNhanDiaChiFragment();
@@ -100,9 +107,22 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         return R.layout.fragment_xac_nhan_tin;
     }
 
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasPermission3 != PackageManager.PERMISSION_GRANTED ||
+                    hasPermission2 != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+        }
+    }
+
     @Override
     public void initLayout() {
         super.initLayout();
+        checkPermissionCall();
         mListHoanTatNhieuTin = new ArrayList<>();
 
         if (mPresenter.getType() == 4) {
@@ -138,6 +158,14 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                         }
                     });
 
+                    holder.imgMap.setOnClickListener(v -> {
+                        if (null != mAdapter.getListFilter().get(position).getReceiverAddress().trim()) {
+                            if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverAddress().trim()))
+                                mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
+                        } else
+                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
+                    });
+
                 }
             };
         } else {
@@ -159,6 +187,13 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
 //                            edtSearch.setText("");
                         }
+                    });
+                    holder.imgMap.setOnClickListener(v -> {
+                        if (null != mAdapter.getListFilter().get(position).getReceiverAddress().trim()) {
+                            if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverAddress().trim()))
+                                mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
+                        } else
+                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
                     });
 
                 }

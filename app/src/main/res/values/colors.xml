@@ -26,6 +26,7 @@
     <color name="black_listen">#666666</color>
     <color name="blue">#0000FF</color>
     <color name="grey">#686868</color>
+    <color name="grey25">#90686868</color>
     <color name="gray_divider">#616469</color>
     <color name="home_bar">#f7941d</color>
     <color name="transparent">#00000000</color>

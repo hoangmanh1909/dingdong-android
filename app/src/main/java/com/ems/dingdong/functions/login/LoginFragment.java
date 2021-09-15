@@ -71,13 +71,15 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.initLayout();
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
+        if (BuildConfig.DEBUG) {
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0394610790;0BE19E95374396A6B4C64201E7255638ED304A0FDBEACEA542ED2A2150F4FB45");//dev EMS
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0982309296;52ABAEB8C9BC049C5B6F1E77CEE5585FD11078ACCBA8949A10F5D77898110547");// pro vinatti
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919743436;6DF63D7BFF563C2B7B5CFF2F2F20D3C230D60246E78F4628E51CCBC0817B3B26");// dev UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;7E07841110E0CFA71DA886869DE68562C1CDECF32844D48B12F99EA4FF0B9E8F");// pre UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;85F82893905E3CD675BBE371E737A45C8BB2E4A5F6CC09A88889A00B2B56581B");// dev UAT
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915158181;46BAAE42F62472F239697B54F86C0F2B3721724473047FED5E7B2B9ADFAFD051");// dev vinatti
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0915158181;46BAAE42F62472F239697B54F86C0F2B3721724473047FED5E7B2B9ADFAFD051");// dev vinatti
+        }
         checkPermissionCall();
         //mPresenter.getVersion();
         //loginSipCmc();
@@ -174,7 +176,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     if ("Y".equals(userInfo.getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
-                            Constants.HEADER_NUMBER = "tel:18002009";
+                        Constants.HEADER_NUMBER = "tel:18002009";
                     }
                     gotoHome();
                 }

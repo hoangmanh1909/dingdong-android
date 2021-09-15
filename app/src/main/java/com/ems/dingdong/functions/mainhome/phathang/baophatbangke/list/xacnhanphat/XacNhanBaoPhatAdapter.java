@@ -106,9 +106,7 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
                 amount = item.getAmount();
             }
 
-            if (item.getTotalFee() != null) {
-                fee = item.getTotalFee();
-            }
+            fee = item.getFeeCancelOrder() + item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD();
             tvMonney.setText(NumberUtils.formatPriceNumber(amount + fee));
         }
     }

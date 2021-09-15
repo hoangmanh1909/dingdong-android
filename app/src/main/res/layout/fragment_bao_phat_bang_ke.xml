@@ -218,6 +218,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/dimen_10dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_shortcut_icons8_barcode_scanner_64" />
 
         </RelativeLayout>

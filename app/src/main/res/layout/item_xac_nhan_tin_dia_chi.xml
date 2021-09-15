@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,24 +26,44 @@
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_contact_address"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/dimen_5dp"
-                    android:layout_toLeftOf="@+id/cb_selected"
+                    android:layout_toLeftOf="@+id/ll_background"
                     android:gravity="left"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_12sp"
                     tools:text="241, Xuân Thủy, Cầu Giấy" />
 
-                <CheckBox
-                    android:id="@+id/cb_selected"
-                    android:clickable="true"
+                <LinearLayout
+                    android:id="@+id/ll_background"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/dimen_5dp" />
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:id="@+id/img_map"
+                        android:layout_width="@dimen/_27sdp"
+                        android:layout_height="@dimen/_27sdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="2dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_map64" />
+
+                    <CheckBox
+                        android:id="@+id/cb_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="@dimen/dimen_5dp" />
+                </LinearLayout>
             </RelativeLayout>
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_customName"
                 android:layout_width="match_parent"
@@ -96,11 +117,11 @@
             </RelativeLayout>
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_weight"
-                android:textColor="@color/black"
-                android:text="Khối lượng: "/>
+                android:text="Khối lượng: "
+                android:textColor="@color/black" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

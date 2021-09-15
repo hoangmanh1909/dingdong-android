@@ -7,6 +7,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonContract;
@@ -256,5 +257,10 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     public XacNhanDiaChiPresenter setOnTabListener(XacNhanDiaChiContract.OnTabListener listener) {
         this.tabListener = listener;
         return this;
+    }
+
+    @Override
+    public void vietmapSearch(String address) {
+        new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
     }
 }

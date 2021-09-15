@@ -169,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:text="Tổng tiền phải thu"
                             android:textColor="@color/black"
-                            android:textSize="16dp"
+                            android:textSize="14dp"
                             android:textStyle="bold" />
 
                         <com.ems.dingdong.views.CustomBoldTextView
@@ -180,7 +180,7 @@
                             android:gravity="center"
                             android:text="1000000"
                             android:textColor="@color/red_light"
-                            android:textSize="16dp"
+                            android:textSize="14dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
 
@@ -320,8 +320,8 @@
                 style="@style/Devider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp" />
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_5dp" />
 
             <com.ems.dingdong.views.CustomTextView
                 style="@style/HeaderNews"
@@ -332,6 +332,7 @@
                 android:text="Thông tin báo phát"
                 android:textColor="@color/n_gray_text"
                 android:textSize="@dimen/text_size_16sp" />
+
 
             <LinearLayout
                 android:id="@+id/layout_real_receiver_name"
@@ -347,14 +348,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tv_receiver_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_weight="1"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
@@ -371,7 +371,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_weight="2"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -379,6 +379,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/red_light"
+                            android:gravity="right|center"
+                            android:layout_gravity="center"
                             android:textSize="@dimen/text_size_16sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -389,12 +391,12 @@
                     style="@style/Devider"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp" />
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_relationship"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
@@ -404,7 +406,8 @@
 
                     <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tv_relationship"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Mối quan hệ: "
@@ -412,39 +415,41 @@
                         android:textSize="@dimen/text_size_16sp" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true">
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content">
 
                         <com.ems.dingdong.views.CustomTextView
                             android:id="@+id/edt_relationship"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_toRightOf="@+id/tv_relationship"
+                            android:drawableRight="@drawable/ic_arrow_drop_down_v1"
                             android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center|right"
                             android:hint="Chọn mối quan hệ"
                             android:paddingRight="@dimen/_5sdp"
                             android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
 
-                        <ImageView
-                            android:layout_width="@dimen/_5sdp"
-                            android:layout_height="@dimen/_5sdp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_arrow_drop_down" />
+                        <!--                        <ImageView-->
+<!--                            android:layout_width="@dimen/_5sdp"-->
+<!--                            android:layout_height="@dimen/_5sdp"-->
+<!--                            android:layout_alignParentRight="true"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:src="@drawable/ic_arrow_drop_down" />-->
                     </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
 
 
                 <View
                     style="@style/Devider"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp" />
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp" />
 
                 <LinearLayout
                     android:id="@+id/ll_other_relationship"
@@ -455,7 +460,8 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Mối quan hệ khác: "
                         android:textColor="@color/black"
@@ -463,7 +469,8 @@
 
                     <com.ems.dingdong.views.form.FormItemEditText
                         android:id="@+id/edt_other_relationship"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:text="1000000"
@@ -477,8 +484,8 @@
                     style="@style/Devider"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp" />
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -488,7 +495,8 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Số GTTT: "
                         android:textColor="@color/black"
@@ -504,7 +512,8 @@
                     <!--                        android:textSize="@dimen/text_size_16sp" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         app:endIconMode="clear_text">
@@ -524,8 +533,8 @@
                 <View
                     style="@style/Devider"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp" />
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -535,9 +544,11 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Ghi chú: "
+                        android:gravity="center|left"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_16sp" />
 
@@ -551,10 +562,12 @@
                     <!--                        android:textSize="@dimen/text_size_16sp" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        app:endIconMode="clear_text">
+                        app:endIconMode="clear_text"
+                        android:background="@null">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edt_note"
@@ -569,7 +582,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
             <!--phat 1 phan-->
             <LinearLayout
                 android:id="@+id/ll_partial"
@@ -865,7 +877,8 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:paddingTop="@dimen/dimen_10dp"
@@ -876,7 +889,8 @@
 
                     <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_reason"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:textColor="#253854"
@@ -898,7 +912,8 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:paddingTop="@dimen/dimen_10dp"
@@ -909,7 +924,8 @@
 
                     <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_solution"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:textColor="#253854"
@@ -931,10 +947,11 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
-                        android:gravity="center"
+                        android:gravity="center|left"
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="Ghi chú"
@@ -952,7 +969,8 @@
                     <!--                        app:formShowUnderline="false" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         app:endIconMode="clear_text">
@@ -961,6 +979,7 @@
                             android:id="@+id/tv_Description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center|right"
                             android:textColor="@color/red_light"
                             android:textSize="@dimen/text_size_16sp" />
 
@@ -973,8 +992,8 @@
                     style="@style/Devider"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp" />
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1018,7 +1037,8 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:paddingTop="@dimen/dimen_10dp"
@@ -1029,7 +1049,8 @@
 
                     <com.ems.dingdong.views.form.FormItemTextView
                         android:id="@+id/tv_buu_cuc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:textColor="#253854"
@@ -1058,7 +1079,8 @@
                         android:orientation="horizontal">
 
                         <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:paddingTop="@dimen/dimen_10dp"
@@ -1069,7 +1091,8 @@
 
                         <com.ems.dingdong.views.form.FormItemTextView
                             android:id="@+id/tv_route"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:textColor="#253854"
@@ -1091,7 +1114,8 @@
                         android:orientation="horizontal">
 
                         <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:paddingTop="@dimen/dimen_10dp"
@@ -1102,7 +1126,8 @@
 
                         <com.ems.dingdong.views.form.FormItemTextView
                             android:id="@+id/tv_postman"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:textColor="#253854"
@@ -1119,57 +1144,58 @@
                         android:layout_height="0.5dp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_edt_cod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/cb_selected_edtcod"
+                    style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:button="@drawable/custom_btn_radio"
+                    android:gravity="left|center"
                     android:paddingLeft="5dp"
                     android:paddingRight="@dimen/_5sdp"
                     android:text="Thay đổi tiền COD"
-                    style="@style/CustomRadioButtonStyle"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:gravity="left|center"
-                    android:textSize="@dimen/_14sdp"/>
+                    android:textSize="@dimen/_14sdp" />
 
 
                 <LinearLayout
                     android:id="@+id/ll_tong_tien_tam_thu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_marginTop="5dp"
-                    android:weightSum="2"
                     android:visibility="gone"
-                    android:layout_margin="5dp">
+                    android:weightSum="2">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:text="COD tạm thu:"
                         android:textColor="@color/black"
-                        android:layout_marginLeft="15dp"
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
                         android:id="@+id/tv_tong_tien_nop_edit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center|right"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
                         android:gravity="center|right"
-                        android:layout_marginRight="10dp"/>
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
 
                     <RelativeLayout
                         android:id="@+id/rl_e_wallet"
@@ -1180,8 +1206,8 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_edit_v1"
-                            android:background="@drawable/bg_persion"/>
+                            android:background="@drawable/bg_persion"
+                            android:src="@drawable/ic_edit_v1" />
 
 
                     </RelativeLayout>
@@ -1191,33 +1217,34 @@
                     android:id="@+id/ll_tong_tien_tam_thu1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_marginTop="5dp"
-                    android:weightSum="2"
                     android:visibility="gone"
-                    android:layout_margin="5dp">
+                    android:weightSum="2">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:text="Tổng tiền tạm thu : "
                         android:textColor="@color/black"
-                        android:layout_marginLeft="15dp"
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
                         android:id="@+id/tv_tong_tien_nop_edit1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/red_light"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center|right"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
                         android:gravity="center|right"
-                        android:layout_marginRight="10dp" />
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -1225,12 +1252,12 @@
 
                     <ImageView
                         android:layout_width="24dp"
-                        android:layout_height="24dp"
-                      />
+                        android:layout_height="24dp" />
 
 
                 </RelativeLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_verify"
                 android:layout_width="match_parent"
@@ -1287,14 +1314,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_8dp"
                             android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="10">
+                            android:orientation="horizontal">
 
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/tv_address_user"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="5"
+                                android:layout_weight="1"
                                 android:text="Địa chỉ người sử dụng:"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
@@ -1312,7 +1338,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="5"
+                                android:layout_weight="2"
                                 android:gravity="right"
                                 app:endIconMode="clear_text">
 
@@ -1332,8 +1358,8 @@
                             style="@style/Devider"
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp" />
+                            android:layout_marginLeft="@dimen/dimen_5dp"
+                            android:layout_marginRight="@dimen/dimen_5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1342,15 +1368,17 @@
                             android:orientation="horizontal">
 
                             <com.ems.dingdong.views.CustomTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
                                 android:text="Ngày tháng năm sinh: "
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_16sp" />
 
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/edt_date_of_birth"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:foreground="?attr/selectableItemBackground"
                                 android:gravity="right"
@@ -1365,8 +1393,8 @@
                             style="@style/Devider"
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp" />
+                            android:layout_marginLeft="@dimen/dimen_5dp"
+                            android:layout_marginRight="@dimen/dimen_5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1375,7 +1403,8 @@
                             android:orientation="horizontal">
 
                             <com.ems.dingdong.views.CustomTextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:text="Ngày cấp: "
                                 android:textColor="@color/black"
@@ -1383,7 +1412,8 @@
 
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/edt_GTTT_date_accepted"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:foreground="?attr/selectableItemBackground"
                                 android:gravity="right"
@@ -1397,8 +1427,8 @@
                             style="@style/Devider"
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp" />
+                            android:layout_marginLeft="@dimen/dimen_5dp"
+                            android:layout_marginRight="@dimen/dimen_5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1408,7 +1438,8 @@
 
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/tv_providers"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:text="Nơi cấp: "
                                 android:textColor="@color/black"
@@ -1424,7 +1455,8 @@
                             <!--                                android:textSize="@dimen/text_size_16sp" />-->
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:gravity="right"
                                 app:endIconMode="clear_text">
