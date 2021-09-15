@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -10,7 +11,14 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
+import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -96,6 +104,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     public void showDetailView(CommonObject commonObject) {
         if (mType == 1) {
             new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
+           // new ListParcelPresenter(mContainerView).setList(commonObject.getListParcelCode()).pushView();
         } else if (mType == 2) {
             new HoanThanhTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
         } else if (mType == 3) {
@@ -112,5 +121,49 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     @Override
     public int getType() {
         return mType;
+    }
+
+    @Override
+    public void confirmAllOrderPostman(ArrayList<CommonObject> list) {
+        ArrayList<ConfirmOrderPostman> listRequest = new ArrayList<>();
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String user = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        if (!user.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(user, UserInfo.class);
+        }
+        if (userInfo != null) {
+            for (CommonObject item : list) {
+                ConfirmOrderPostman confirmOrderPostman = new ConfirmOrderPostman();
+                confirmOrderPostman.setConfirmReason("");
+                confirmOrderPostman.setEmployeeID(userInfo.getiD());
+                confirmOrderPostman.setOrderPostmanID(item.getOrderPostmanID());
+                confirmOrderPostman.setStatusCode("P1");
+                listRequest.add(confirmOrderPostman);
+            }
+        }
+        if(!listRequest.isEmpty())
+        {
+            mView.showProgress();
+            mInteractor.confirmAllOrderPostman(listRequest, new CommonCallback<ConfirmAllOrderPostmanResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<ConfirmAllOrderPostmanResult> call, Response<ConfirmAllOrderPostmanResult> response) {
+                    super.onSuccess(call, response);
+                    mView.hideProgress();
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showResult(response.body().getAllOrderPostman());
+                    } else {
+                        mView.showError(response.body().getMessage());
+                    }
+                }
+
+                @Override
+                protected void onError(Call<ConfirmAllOrderPostmanResult> call, String message) {
+                    super.onError(call, message);
+                    mView.hideProgress();
+                    mView.showError(message);
+                }
+            });
+        }
     }
 }

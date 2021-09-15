@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.InquiryAmountResult;
@@ -13,13 +14,15 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.SupportRequest;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.Date;
 
@@ -110,7 +113,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     @Override
     public void updateMobile(String phone) {
         mView.showProgress();
-        mInteractor.updateMobile(mBaoPhatBangke.getCode(), phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.updateMobile(mBaoPhatBangke.getCode(),"1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -146,37 +149,6 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     }
 
     @Override
-    public void addSupportType(Integer id, String description) {
-        SupportRequest request = new SupportRequest();
-        request.setLadingCode(mBaoPhatBangke.getParcelCode());
-        request.setDescription(description);
-        request.setSupportType(id);
-        SharedPref sharedPref = SharedPref.getInstance(getViewContext());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String postmanId = "";
-        if (!TextUtils.isEmpty(userJson)) {
-            postmanId = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD();
-        }
-        request.setPostmanId(postmanId);
-        mInteractor.addSupportType(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.showError(message);
-            }
-
-            @Override
-            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onResponse(call, response);
-                if (response.body() != null && response.body().getErrorCode().equals("00")) {
-                    mView.showSuccessMessage(response.body().getMessage());
-                } else
-                    mView.showError(response.message());
-            }
-        });
-    }
-
-    @Override
     public CommonObject getBaoPhatBangke() {
         return mBaoPhatBangke;
     }
@@ -206,7 +178,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     }
 
     @Override
-    public void submitToPNS(String reason, String solution, String note, String sign) {
+    public void submitToPNS(String reason, String solution, String note, String signatureCapture) {
         String postmanID = "";
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -232,29 +204,34 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        /*if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
-            paymentDeliveryPayPost(sign);
+        String shiftId = mBaoPhatBangke.getShiftId();
+        if(shiftId == null || "0".equals(shiftId))
+        {
+            shiftId = Constants.SHIFT;
         }
-        else {*/
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime,
-                receiverName, reasonCode, solutionCode, status, "", "", sign, note, amount, mBaoPhatBangke.getiD(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, "", "", signatureCapture, note,
+                amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature,
+                mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0, "");
+        mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showSuccessMessage("Cập nhật giao dịch thành công.");
 
-                        } else {
-                            mView.showError(response.body().getMessage());
-                        }
-                    }
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.showError(message);
-                    }
-                });
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.showError(message);
+            }
+        });
         //}
 
     }
@@ -300,8 +277,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    //  mListSolution = response.body().getSolutionInfos();
-                    mView.showUISolution(response.body().getSolutionInfos());
+                    mView.showSolution(response.body().getSolutionInfos());
                 }
             }
 
@@ -332,15 +308,19 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryDate = mBaoPhatBangke.getDeliveryDate();
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
-        String fileNames = mBaoPhatBangke.getFileNames();
         final String reasonCode = "";
         String solutionCode = "";
         String status = "C14";
-        final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
+        final String paymentChannel = mBaoPhatBangke.getPaymentChannel();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
         String amount = mBaoPhatBangke.getAmount();
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
+        }
+        String shiftId = mBaoPhatBangke.getShiftId();
+        if(shiftId == null || "0".equals(shiftId))
+        {
+            shiftId = Constants.SHIFT;
         }
         if ("12".equals(mBaoPhatBangke.getService())) {
             paymentDelivery(signatureCapture);
@@ -348,8 +328,13 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                 paymentDelivery(signatureCapture);
             } else {
-                mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName,
-                        reasonCode, solutionCode, status, paymentChannel, deliveryType, "", amount, signatureCapture, mBaoPhatBangke.getiD(), fileNames,
+                String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+                PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                        solutionCode, status, "", "", signatureCapture,
+                        "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(),
+                        signature, mBaoPhatBangke.getImageDelivery(), "N", "",
+                        0, "");
+                mInteractor.pushToPNSDelivery(request,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override
                             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -387,14 +372,17 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String postmanID = "";
         String mobileNumber = "";
         String deliveryPOCode = "";
+        UserInfo userInfo = null;
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
             mobileNumber = userInfo.getMobileNumber();
         }
+
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         if (!postOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
 
@@ -406,7 +394,6 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String deliveryTime = mBaoPhatBangke.getDeliveryTime();
         String receiverName = mBaoPhatBangke.getRealReceiverName();
         String receiverIDNumber = mBaoPhatBangke.getReceiverIDNumber();
-        String fileNames = mBaoPhatBangke.getFileNames();
         String reasonCode = "";
         String solutionCode = "";
         String status = "C14";
@@ -415,42 +402,53 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         if (TextUtils.isEmpty(amount) || amount.equals("0")) {
             amount = mBaoPhatBangke.getCollectAmount();
         }
-        final String paymentChannel = mBaoPhatBangke.getCurrentPaymentType();
+        final String paymentChannel = mBaoPhatBangke.getPaymentChannel();
         String deliveryType = mBaoPhatBangke.getDeliveryType();
-        mInteractor.paymentDelivery(postmanID,
+        String ladingPostmanID = mBaoPhatBangke.getiD();
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        String shiftId = mBaoPhatBangke.getShiftId();
+        if(shiftId == null || "0".equals(shiftId))
+        {
+            shiftId = Constants.SHIFT;
+        }
+        PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
-                status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, fileNames, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        mView.hideProgress();
-                        if (response.body().getErrorCode().equals("00")) {
+                status, paymentChannel, "0", signatureCapture,
+                note, amount, shiftId, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature,
+                mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null,
+                isPaymentPP, "N", "", 0);
 
-                            if (paymentChannel.equals("2")) {
-                                mView.showSuccess();
-                                try {
-                                    mView.callAppToMpost();
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            } else {
-                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+        mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
 
-                            }
-                        } else {
-                            mView.showError(response.body().getMessage());
+                    if (paymentChannel.equals("2")) {
+                        mView.showSuccess();
+                        try {
+                            mView.callAppToMpost();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                    }
-
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.hideProgress();
-                        mView.showError(message);
+                    } else {
+                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
 
                     }
-                });
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
+
+            }
+        });
 
     }
 

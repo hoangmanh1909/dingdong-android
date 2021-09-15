@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -18,9 +16,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -39,14 +41,13 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
-import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
@@ -120,9 +121,9 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
-    MaterialEditText edtReceiverName;
+    CustomEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
+    FormItemEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -281,16 +282,13 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getSenderPhone())) {
                     new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
-                        public void onCallResponse(String phone, int callType) {
-                            if (callType == Constants.CALL_SWITCH_BOARD) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone);
-                            } else
-                                Utils.call(getViewContext(), phone);
+                        public void onCallResponse(String phone) {
+                            mPhone = phone;
+                            mPresenter.callForward(phone);
                         }
 
                         @Override
-                        public void onUpdateResponse(String phone) {
+                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
 
                         }
                     }).show();
@@ -316,49 +314,49 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
                     showUISolution();
                 }
                 break;
-//            case R.id.tv_deliveryDate:
-//                String createDate = mBaoPhatBangke.getLoadDate();
-//                Calendar calendarCreate = Calendar.getInstance();
-//                if (TextUtils.isEmpty(createDate)) {
-//                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-//                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-//                    calendarCreate.set(Calendar.DATE, -1);
-//                } else {
-//                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
-//                }
-//                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
-//                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
-//                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
-//                    calendarCreate.set(Calendar.DATE, -1);
-//                }
-//                new SpinnerDatePickerDialogBuilder()
-//                        .context(getActivity())
-//                        .callback(this)
-//                        .spinnerTheme(R.style.DatePickerSpinner)
-//                        .showTitle(true)
-//                        .showDaySpinner(true)
-//                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-//                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-//                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
-//                        .build()
-//                        .show();
-//                break;
-//            case R.id.tv_deliveryTime:
-//                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(getActivity(),
-//                        android.R.style.Theme_Holo_Light_Dialog, new android.app.TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                        mHour = hourOfDay;
-//                        mMinute = minute;
-//                        if (mHour > 12) {
-//                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-//                        } else {
-//                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
-//                        }
-//                    }
-//                }, mHour, mMinute, true);
-//                timePickerDialog.show();
-//                break;
+            case R.id.tv_deliveryDate:
+                String createDate = mBaoPhatBangke.getLoadDate();
+                Calendar calendarCreate = Calendar.getInstance();
+                if (TextUtils.isEmpty(createDate)) {
+                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                    calendarCreate.set(Calendar.DATE, -1);
+                } else {
+                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
+                }
+                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
+                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
+                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
+                    calendarCreate.set(Calendar.DATE, -1);
+                }
+                new SpinnerDatePickerDialogBuilder()
+                        .context(getActivity())
+                        .callback(this)
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
+                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
+                        .build()
+                        .show();
+                break;
+            case R.id.tv_deliveryTime:
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(getActivity(),
+                        android.R.style.Theme_Holo_Light_Dialog, new android.app.TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mHour = hourOfDay;
+                        mMinute = minute;
+                        if (mHour > 12) {
+                            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
+                        } else {
+                            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
+                        }
+                    }
+                }, mHour, mMinute, true);
+                timePickerDialog.show();
+                break;
         }
     }
 
@@ -382,8 +380,8 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
             return;
         }
         mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
-        mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
-        mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll(".", ""));
+        mBaoPhatBangke.setPaymentChanel(mPaymentType + "");
+        mBaoPhatBangke.setCollectAmount(edtCollectAmount.getText().replaceAll("\\.", ""));
         mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
         mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
         mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));

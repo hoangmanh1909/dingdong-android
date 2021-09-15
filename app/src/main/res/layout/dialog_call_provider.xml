@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rey.material.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#80000000"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.cardview.widget.CardView
+        style="@style/MyCardViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/size_16dp">
+
+        <LinearLayout
+            android:id="@+id/layout_date_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f5f6fa"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Chọn nhà cung cấp"
+                android:textColor="#555356"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_16dp"
+                android:layout_marginRight="@dimen/size_16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="4"
+                        android:text=""
+                        android:textColor="#253854"
+                        android:textSize="14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_provider"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="6"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="16sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="10dp"
+                        app:formHint="Nhà cung cấp"
+                        app:formShowUnderline="false"
+
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10dp">
+
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_cancel_provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_cancel"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/dimen_40dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_40dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:textAllCaps="true" />
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_select_provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:background="@drawable/bg_button_fix_call"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/dimen_40dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_40dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="@string/confirm"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:textAllCaps="true" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</com.rey.material.widget.RelativeLayout>

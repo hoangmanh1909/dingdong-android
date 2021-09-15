@@ -1,9 +1,15 @@
 package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,6 +17,9 @@ import android.widget.TextView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.model.ConfirmAllOrderPostman;
+import com.ems.dingdong.utiles.Toast;
+import com.ems.dingdong.views.CustomEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
@@ -42,6 +51,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     TextView tvTitle;
     @BindView(R.id.img_view)
     ImageView imgView;
+    @BindView(R.id.cb_all)
+    CheckBox cbAll;
     ArrayList<CommonObject> mList;
     @BindView(R.id.tv_accept_count)
     CustomBoldTextView tvAcceptCount;
@@ -49,6 +60,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     CustomBoldTextView tvRejectCount;
     @BindView(R.id.ll_gom_hang)
     LinearLayout llGomHang;
+    @BindView(R.id.img_confirm)
+    ImageView imgConfirm;
+    @BindView(R.id.edt_search)
+    CustomEditText edtSearch;
     private ListCommonAdapter mAdapter;
     private UserInfo mUserInfo;
     private String mDate;
@@ -83,7 +98,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         mCalendar = Calendar.getInstance();
         mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mList) {
             @Override
-            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+            public void onBindViewHolder(HolderView holder, final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -103,15 +118,56 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (mPresenter.getType() == 1) {
             tvTitle.setText("Xác nhận tin");
             llGomHang.setVisibility(View.VISIBLE);
+            cbAll.setVisibility(View.VISIBLE);
+            imgConfirm.setVisibility(View.VISIBLE);
         } else if (mPresenter.getType() == 2) {
             tvTitle.setText("Hoàn tất tin");
             llGomHang.setVisibility(View.VISIBLE);
+            cbAll.setVisibility(View.GONE);
+            imgConfirm.setVisibility(View.GONE);
         } else if (mPresenter.getType() == 3) {
             tvTitle.setText("Danh sách vận đơn");
             llGomHang.setVisibility(View.GONE);
+            cbAll.setVisibility(View.GONE);
+            imgConfirm.setVisibility(View.GONE);
         }
         fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    for (CommonObject item : mList) {
+                        if ("P0".equals(item.getStatusCode()))
+                            item.setSelected(true);
+                    }
+
+                } else {
+                    for (CommonObject item : mList) {
+                        item.setSelected(false);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s.toString());
+            }
+        });
+        edtSearch.setSelected(true);
     }
 
     private void showDialog() {
@@ -160,7 +216,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_view})
+    @OnClick({R.id.img_back, R.id.img_view, R.id.img_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -169,6 +225,23 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             case R.id.img_view:
                 showDialog();
                 break;
+            case R.id.img_confirm:
+                confirmAll();
+                break;
+        }
+    }
+
+    private void confirmAll() {
+        ArrayList<CommonObject> list = new ArrayList<>();
+        for (CommonObject item : mList) {
+            if ("P0".equals(item.getStatusCode()) && item.isSelected()) {
+                list.add(item);
+            }
+        }
+        if (!list.isEmpty()) {
+            mPresenter.confirmAllOrderPostman(list);
+        } else {
+            Toast.showToast(getActivity(), "Chưa tin nào được chọn");
         }
     }
 
@@ -177,8 +250,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
-        mList = list;
-        mAdapter.refresh(list);
+        mList.clear();
+        mList.addAll(list);
+        edtSearch.setVisibility(View.VISIBLE);
+        mAdapter.notifyDataSetChanged();
         if (mPresenter.getType() == 1) {
             int countP0 = 0;
             int countP1 = 0;
@@ -213,6 +288,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void showError(String message) {
         if (getActivity() != null) {
+            edtSearch.setVisibility(View.GONE);
             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
@@ -220,7 +296,26 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            mList.clear();
+                            mAdapter.notifyDataSetChanged();
                             sweetAlertDialog.dismiss();
+                        }
+                    }).show();
+        }
+    }
+
+    @Override
+    public void showResult(ConfirmAllOrderPostman allOrderPostman) {
+        if (getActivity() != null) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            onDisplay();
                         }
                     }).show();
         }

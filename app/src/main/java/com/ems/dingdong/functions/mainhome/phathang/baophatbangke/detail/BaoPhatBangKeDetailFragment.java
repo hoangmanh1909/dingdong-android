@@ -3,16 +3,18 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,12 +24,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
-import com.ems.dingdong.callback.SignCallback;
-import com.ems.dingdong.dialog.DialogAddSupportType;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -36,10 +41,8 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.SolutionInfo;
-import com.ems.dingdong.model.SupportTypeResponse;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
@@ -48,8 +51,6 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.ems.dingdong.utiles.Utilities;
-import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
@@ -57,19 +58,17 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.reflect.TypeToken;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tsongkha.spinnerdatepicker.DatePicker;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.lang.reflect.Type;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -99,8 +98,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     CustomTextView tvSenderAddress;
     @BindView(R.id.tv_ReciverName)
     CustomBoldTextView tvReciverName;
-    @BindView(R.id.ll_contact)
-    LinearLayout llContact;
+    /*    @BindView(R.id.tv_contact)
+        TextView tvContact;*/
     @BindView(R.id.tv_ReciverAddress)
     CustomTextView tvReciverAddress;
     @BindView(R.id.tv_service)
@@ -133,18 +132,18 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     FormItemTextView tvCollectAmount;
     @BindView(R.id.edt_CollectAmount)
     FormItemEditText edtCollectAmount;
-    @BindView(R.id.rad_cash)
-    RadioButton radCash;
+    /*  @BindView(R.id.rad_cash)
+      RadioButton radCash;*/
     /*  @BindView(R.id.rad_mpos)
       RadioButton radMpos;*/
-    @BindView(R.id.radio_group_money)
-    RadioGroup radioGroupMoney;
+/*    @BindView(R.id.radio_group_money)
+    RadioGroup radioGroupMoney;*/
     @BindView(R.id.ll_pay_ment)
     LinearLayout llPayMent;
     @BindView(R.id.edt_ReceiverName)
-    MaterialEditText edtReceiverName;
+    CustomEditText edtReceiverName;
     @BindView(R.id.edt_ReceiverIDNumber)
-    MaterialEditText edtReceiverIDNumber;
+    FormItemEditText edtReceiverIDNumber;
     @BindView(R.id.tv_deliveryDate)
     FormItemTextView tvDeliveryDate;
     @BindView(R.id.tv_deliveryTime)
@@ -163,14 +162,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     ImageView imgSign;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
-    @BindView(R.id.iv_package_1)
-    SimpleDraweeView iv_package_1;
-    @BindView(R.id.iv_package_2)
-    SimpleDraweeView iv_package_2;
-    @BindView(R.id.iv_package_3)
-    SimpleDraweeView iv_package_3;
-    @BindView(R.id.tv_fee)
-    CustomTextView tvFee;
+    @BindView(R.id.iv_package)
+    SimpleDraweeView ivPackage;
+    @BindView(R.id.ll_capture)
+    View llCapture;
 
     private ArrayList<ReasonInfo> mListReason;
     private CommonObject mBaoPhatBangke;
@@ -188,9 +183,9 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     private String mPhone;
     private String mCollectAmount = "";
     private PhoneConectDialog mPhoneConectDialog;
-    private int imgPosition = 0;
     private String mFile = "";
-    private List<SupportTypeResponse> listSupportType;
+    private boolean mClickSolution = false;
+    private boolean mReloadSolution = false;
 
     public static BaoPhatBangKeDetailFragment getInstance() {
         return new BaoPhatBangKeDetailFragment();
@@ -210,22 +205,24 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         scrollView.setFocusable(true);
         scrollView.setFocusableInTouchMode(true);
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.requestFocusFromTouch();
-                return false;
-            }
+        scrollView.setOnTouchListener((v, event) -> {
+            v.requestFocusFromTouch();
+            return false;
         });
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         tvMaE.setText(mBaoPhatBangke.getCode());
-        tvWeigh.setText(String.format("%s - %s", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
+        if (TextUtils.isEmpty(mBaoPhatBangke.getNote())) {
+            tvWeigh.setText(String.format("Khối lượng %s gram", mBaoPhatBangke.getWeigh()));
+        } else {
+            tvWeigh.setText(String.format("%s - Khối lượng  %s gram", mBaoPhatBangke.getNote(), mBaoPhatBangke.getWeigh()));
+        }
+
         tvSenderName.setText(mBaoPhatBangke.getSenderName());
         tvSenderAddress.setText(mBaoPhatBangke.getSenderAddress());
         tvReciverName.setText(mBaoPhatBangke.getReciverName());
         edtReceiverName.setText(mBaoPhatBangke.getReciverName());
         tvReciverAddress.setText(mBaoPhatBangke.getReciverAddress());
-        tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(mBaoPhatBangke.getFee())));
+
         if (!TextUtils.isEmpty(mBaoPhatBangke.getAmount())) {
             mCollectAmount = mBaoPhatBangke.getAmount();
             tvCollectAmount.setText(String.format("%s VNĐ ", NumberUtils.formatPriceNumber(Long.parseLong(mBaoPhatBangke.getAmount()))));
@@ -246,17 +243,25 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         tvSenderPhone.setText(mBaoPhatBangke.getSenderPhone());
         if (!TextUtils.isEmpty(mBaoPhatBangke.getReceiverPhone())) {
             String[] phones = mBaoPhatBangke.getReceiverPhone().split(",");
+            //String phoneStrings = "";
             for (int i = 0; i < phones.length; i++) {
                 if (!phones[i].isEmpty()) {
-                    getChildFragmentManager().beginTransaction()
-                            .add(R.id.ll_contact,
-                                    new PhonePresenter((ContainerView) getActivity())
-                                            .setPhone(phones[i].trim())
-                                            .setCode(mBaoPhatBangke.getCode())
-                                            .getFragment(), TAG + i)
-                            .commit();
+                    if (NumberUtils.isNumber(phones[i])) {
+                        getChildFragmentManager().beginTransaction()
+                                .add(R.id.ll_contact,
+                                        new PhonePresenter((ContainerView) getActivity())
+                                                .setPhone(phones[i].trim())
+                                                .setCode(mBaoPhatBangke.getCode())
+                                                .getFragment(), TAG + i)
+                                .commit();
+                    }
+                    // phoneStrings += ", " + Constants.HEADER_NUMBER_LOG + "," + phones[i].trim();
                 }
             }
+           /* if (!TextUtils.isEmpty(phoneStrings)) {
+                phoneStrings = phoneStrings.substring(1);
+            }*/
+            //tvContact.setText(phoneStrings);
         } else {
             getChildFragmentManager().beginTransaction()
                     .add(R.id.ll_contact,
@@ -269,20 +274,19 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
         mPresenter.getReasons();
         checkPermissionCall();
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rad_success) {
-                    mDeliveryType = 2;
-                    mBaoPhatBangke.setDeliveryType("2");
-                    llConfirmSuccess.setVisibility(View.VISIBLE);
-                    llConfirmFail.setVisibility(View.GONE);
-                } else {
-                    mDeliveryType = 1;
-                    mBaoPhatBangke.setDeliveryType("1");
-                    llConfirmSuccess.setVisibility(View.GONE);
-                    llConfirmFail.setVisibility(View.VISIBLE);
-                }
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rad_success) {
+                mDeliveryType = 2;
+                mBaoPhatBangke.setDeliveryType("2");
+                llConfirmSuccess.setVisibility(View.VISIBLE);
+                llConfirmFail.setVisibility(View.GONE);
+                llCapture.setVisibility(View.VISIBLE);
+            } else {
+                mDeliveryType = 1;
+                mBaoPhatBangke.setDeliveryType("1");
+                llConfirmSuccess.setVisibility(View.GONE);
+                llCapture.setVisibility(View.GONE);
+                llConfirmFail.setVisibility(View.VISIBLE);
             }
         });
 
@@ -292,11 +296,6 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
             llInfoOrder.setVisibility(View.GONE);
         }
         EditTextUtils.editTextListener(edtCollectAmount.getEditText());
-        SharedPref pref = SharedPref.getInstance(getViewContext());
-        String supportString = pref.getString(Constants.KEY_SUPPORT_TYPE, "");
-        Type type = new TypeToken<List<SupportTypeResponse>>() {
-        }.getType();
-        listSupportType = NetWorkController.getGson().fromJson(supportString, type);
     }
 
     private void setupReciverPerson() {
@@ -320,7 +319,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
-        tvDeliveryTime.setText(String.format("%s:%s ", mHour, mMinute));
+        if (mHour > 12) {
+            tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, mMinute));
+        } else {
+            tvDeliveryTime.setText(String.format("%s:%s AM", mHour, mMinute));
+        }
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
        /* if (mBaoPhatBangke.getIsCOD() != null) {
             if (mBaoPhatBangke.getIsCOD().toUpperCase().equals("Y")) {
@@ -350,8 +353,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_SenderPhone, R.id.btn_sign, R.id.tv_reason, R.id.tv_solution,
-            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.iv_package_1, R.id.iv_package_2, R.id.iv_package_3,
-            R.id.iv_question})
+            R.id.tv_deliveryDate, R.id.tv_deliveryTime, R.id.iv_package})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -365,149 +367,102 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getSenderPhone())) {
                     mPhoneConectDialog = new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
-                        public void onCallResponse(String phone, int callType) {
-                            if (callType == Constants.CALL_SWITCH_BOARD) {
-                                mPhone = phone;
-                                mPresenter.callForward(phone);
-                            } else {
-                                mPhone = phone;
-                                Utils.call(getViewContext(), phone);
-                            }
+                        public void onCallResponse(String phone) {
+                            mPhone = phone;
+                            mPresenter.callForward(phone);
                         }
 
                         @Override
-                        public void onUpdateResponse(String phone) {
-                            showConfirmSaveMobile(phone);
+                        public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                            showConfirmSaveMobile(phone, callback);
                         }
                     });
                     mPhoneConectDialog.show();
                 }
                 break;
             case R.id.btn_sign:
-                String name = edtReceiverName.getText().toString();
-                String code = tvMaE.getText().toString();
-                new SignDialog(code,name, getActivity(), new SignCallback() {
-                    @Override
-                    public void onResponse(String name, String sign, Bitmap bitmap) {
-                        mSign = sign;
-                        edtReceiverName.setText(name);
-                        imgSign.setImageBitmap(bitmap);
-                        if (bitmap != null) {
-                            llSigned.setVisibility(View.VISIBLE);
-                        }
+                new SignDialog(getActivity(), (sign, bitmap) -> {
+                    mSign = sign;
+                    imgSign.setImageBitmap(bitmap);
+                    if (bitmap != null) {
+                        llSigned.setVisibility(View.VISIBLE);
                     }
                 }).show();
                 break;
             case R.id.tv_reason:
                 showUIReason();
                 break;
-            case R.id.iv_question:
-                new DialogAddSupportType(getViewContext(), listSupportType,
-                        (description, id) -> mPresenter.addSupportType(id, description)).show();
             case R.id.tv_solution:
-                if (mListSolution != null) {
+                mClickSolution = true;
+                if (mReloadSolution) {
+                    mReloadSolution = false;
+                    loadSolution();
+                } else {
                     showUISolution();
                 }
                 break;
-//            case R.id.tv_deliveryDate:
-//                String createDate = mBaoPhatBangke.getLoadDate();
-//                Calendar calendarCreate = Calendar.getInstance();
-//                if (TextUtils.isEmpty(createDate)) {
-//                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-//                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
-//                    calendarCreate.set(Calendar.DATE, -1);
-//                } else {
-//                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
-//                }
-//                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
-//                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
-//                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
-//                    calendarCreate.set(Calendar.DATE, -1);
-//                }
-//                new SpinnerDatePickerDialogBuilder()
-//                        .context(getActivity())
-//                        .callback(this)
-//                        .spinnerTheme(R.style.DatePickerSpinner)
-//                        .showTitle(true)
-//                        .showDaySpinner(true)
-//                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-//                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
-//                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
-//                        .build()
-//                        .show();
-//                break;
-//            case R.id.tv_deliveryTime:
-//                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(getActivity(),
-//                        android.R.style.Theme_Holo_Light_Dialog, new android.app.TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                        mHour = hourOfDay;
-//                        mMinute = minute;
-//                        tvDeliveryTime.setText(String.format("%s:%s", mHour, mMinute));
-//                    }
-//                }, mHour, mMinute, true);
-//                timePickerDialog.show();
-//                break;
-
-            case R.id.iv_package_1:
-                imgPosition = 1;
-                MediaUltis.captureImage(this);
+            case R.id.tv_deliveryDate:
+                String createDate = mBaoPhatBangke.getLoadDate();
+                Calendar calendarCreate = Calendar.getInstance();
+                if (TextUtils.isEmpty(createDate)) {
+                    createDate = DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                    calendarCreate.set(Calendar.DATE, -1);
+                } else {
+                    calendarCreate.setTime(DateTimeUtils.convertStringToDate(createDate, DateTimeUtils.DEFAULT_DATETIME_FORMAT4));
+                }
+                if (calDate.get(Calendar.YEAR) == calendarCreate.get(Calendar.YEAR) &&
+                        calDate.get(Calendar.MONTH) == calendarCreate.get(Calendar.MONTH) &&
+                        calDate.get(Calendar.DAY_OF_MONTH) == calendarCreate.get(Calendar.DAY_OF_MONTH)) {
+                    calendarCreate.set(Calendar.DATE, -1);
+                }
+                new SpinnerDatePickerDialogBuilder()
+                        .context(getActivity())
+                        .callback(this)
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(calDate.get(Calendar.YEAR), calDate.get(Calendar.MONTH), calDate.get(Calendar.DAY_OF_MONTH))
+                        .minDate(calendarCreate.get(Calendar.YEAR), calendarCreate.get(Calendar.MONTH), calendarCreate.get(Calendar.DAY_OF_MONTH))
+                        .build()
+                        .show();
                 break;
-            case R.id.iv_package_2:
-                imgPosition = 2;
-                MediaUltis.captureImage(this);
+            case R.id.tv_deliveryTime:
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(getActivity(),
+                        android.R.style.Theme_Holo_Light_Dialog, new android.app.TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mHour = hourOfDay;
+                        mMinute = minute;
+                        String minuteString = mMinute + "";
+                        if (mMinute < 10) {
+                            minuteString = "0" + minuteString;
+                        }
+                        if (mHour > 12) {
+                            if (mHour - 12 < 10) {
+                                tvDeliveryTime.setText(String.format("0%s:%s PM", mHour - 12, minuteString));
+                            } else {
+                                tvDeliveryTime.setText(String.format("%s:%s PM", mHour - 12, minuteString));
+                            }
+                        } else {
+                            if (mHour < 10) {
+                                tvDeliveryTime.setText(String.format("0%s:%s PM", mHour, minuteString));
+                            } else {
+                                tvDeliveryTime.setText(String.format("%s:%s PM", mHour, minuteString));
+                            }
+                        }
+                    }
+                }, mHour, mMinute, true);
+                timePickerDialog.show();
                 break;
-            case R.id.iv_package_3:
-                imgPosition = 3;
+            case R.id.iv_package:
                 MediaUltis.captureImage(this);
                 break;
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == getActivity().RESULT_OK) {
-                attemptSendMedia(data.getData().getPath());
-            }
-        }
-    }
-
-    private void attemptSendMedia(String path_media) {
-        Uri picUri = Uri.fromFile(new File(path_media));
-        if (imgPosition == 1)
-            iv_package_1.setImageURI(picUri);
-        else if (imgPosition == 2)
-            iv_package_2.setImageURI(picUri);
-        else
-            iv_package_3.setImageURI(picUri);
-
-        File file = new File(path_media);
-        Bitmap bitmap = BitmapUtils.processingBitmap(picUri, getViewContext());
-        if (bitmap != null) {
-
-            if (BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
-                String path = file.getParent() + File.separator + "Process_" + file.getName();
-                // mSignPosition = false;
-                mPresenter.postImage(path);
-                picUri = Uri.fromFile(new File(path));
-                if (imgPosition == 1)
-                    iv_package_1.setImageURI(picUri);
-                else if (imgPosition == 2)
-                    iv_package_2.setImageURI(picUri);
-                else
-                    iv_package_3.setImageURI(picUri);
-                if (file.exists())
-                    file.delete();
-            } else {
-                mPresenter.postImage(path_media);
-            }
-        } else {
-            mPresenter.postImage(path_media);
-        }
-    }
-
-    private void showConfirmSaveMobile(final String phone) {
+    private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -518,7 +473,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         mPresenter.updateMobile(phone);
                         sweetAlertDialog.dismiss();
-
+                        callback.dismissDialog();
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -531,11 +486,16 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     private void submit() {
-        if (TextUtils.isEmpty(Constants.SHIFT)) {
+       /* if (TextUtils.isEmpty(Constants.SHIFT)) {
             Toast.showToast(getActivity(), "Bạn chưa chọn ca");
             Utilities.showUIShift(getActivity());
             return;
-        }
+        }*/
+      /*  if (mBaoPhatBangke.getShiftId() == null || "0".equals(mBaoPhatBangke.getShiftId())) {
+            Toast.showToast(getActivity(), "Bạn chưa chọn ca");
+            Utilities.showUIShift(getActivity());
+            return;
+        }*/
         if (mDeliveryType == 2) {
             if (TextUtils.isEmpty(edtCollectAmount.getText())) {
                 Toast.showToast(getActivity(), "Bạn chưa nhập số tiền thực thu");
@@ -550,11 +510,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 Toast.showToast(getActivity(), "Bạn chưa nhập tên người nhận hàng");
                 return;
             }*/
-            if (TextUtils.isEmpty(mSign)) {
+           /* if (TextUtils.isEmpty(mSign)) {
                 //
                 Toast.showToast(getActivity(), "Vui lòng ký xác nhận");
                 return;
-            }
+            }*/
             final String collectAmount = edtCollectAmount.getText().replaceAll("\\.", "");
             String message = "";
           /*  if (mCollectAmount.equals(collectAmount)) {
@@ -607,15 +567,16 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     private void confirmSend(String collectAmount) {
         mBaoPhatBangke.setRealReceiverName(edtReceiverName.getText().toString());
-        mBaoPhatBangke.setCurrentPaymentType(mPaymentType + "");
+        mBaoPhatBangke.setPaymentChanel(mPaymentType + "");
         mBaoPhatBangke.setCollectAmount(collectAmount);
         mBaoPhatBangke.setUserDelivery(tvUserDelivery.getText());
         mBaoPhatBangke.setRealReceiverIDNumber(edtReceiverIDNumber.getText().toString());
         mBaoPhatBangke.setDeliveryDate(DateTimeUtils.convertDateToString(calDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
-        mBaoPhatBangke.setFileNames(mFile);
         if (!TextUtils.isEmpty(mSign)) {
             mBaoPhatBangke.setSignatureCapture(mSign);
         }
+        mBaoPhatBangke.setImageDelivery(mFile);
+
         String time = (mHour < 10 ? "0" + mHour : mHour + "") + (mMinute < 10 ? "0" + mMinute : mMinute + "") + "00";
         mBaoPhatBangke.setDeliveryTime(time);
         if (("0".equals(collectAmount) || "0".equals(mCollectAmount)) && "Y".equals(mBaoPhatBangke.getIsCOD())) {
@@ -663,6 +624,11 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     @Override
     public void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos) {
         mListReason = reasonInfos;
+        if (mListReason != null && mListReason.size() > 0) {
+            mReasonInfo = mListReason.get(0);
+            tvReason.setText(mReasonInfo.getName());
+            loadSolution();
+        }
     }
 
 
@@ -673,13 +639,10 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                     .setConfirmText("OK")
                     .setTitleText("Thông báo")
                     .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            finishView();
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        finishView();
 
-                        }
                     }).show();
             //finishView();
         }
@@ -687,7 +650,15 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void showError(String message) {
-        Toast.showToast(getActivity(), message);
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                .setConfirmText("OK")
+                .setTitleText("Thông báo")
+                .setContentText(message)
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    finishView();
+
+                }).show();
     }
 
     @Override
@@ -698,9 +669,14 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     @Override
-    public void showUISolution(ArrayList<SolutionInfo> solutionInfos) {
+    public void showSolution(ArrayList<SolutionInfo> solutionInfos) {
         mListSolution = solutionInfos;
-        showUISolution();
+        if (mListSolution != null && mListSolution.size() > 0) {
+            mSolutionInfo = mListSolution.get(0);
+            tvSolution.setText(mSolutionInfo.getName());
+        }
+        if (mClickSolution)
+            showUISolution();
     }
 
     @Override
@@ -736,10 +712,6 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void finishView() {
-        BaoPhatCallback mBaoPhatCallback = new BaoPhatCallback(Constants.SET_ORDER_AND_ROUTE);
-        mBaoPhatCallback.setRoute(mBaoPhatBangke.getRoute());
-        mBaoPhatCallback.setOrder(mBaoPhatBangke.getOrder());
-        EventBus.getDefault().post(mBaoPhatCallback);
         EventBus.getDefault().post(new BaoPhatCallback(Constants.RELOAD_LIST, mPresenter.getPosition()));
         EventBus.getDefault().post(new BaoPhatCallback(Constants.TYPE_BAO_PHAT_THANH_CONG_DETAIL, mPresenter.getPositionRow()));
         mPresenter.back();
@@ -747,28 +719,18 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
 
     @Override
     public void showView() {
-        mPhoneConectDialog.updateText();
+        mPhoneConectDialog.updateText("");
     }
 
     @Override
     public void showImage(String file) {
-        if (mFile.equals("")) {
-            mFile = file;
-        } else {
-            mFile += ";";
-            mFile += file;
-        }
+        mFile = file;
     }
 
     @Override
     public void deleteFile() {
         mFile = "";
-        if (imgPosition == 1)
-            iv_package_1.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
-        else if (imgPosition == 2)
-            iv_package_2.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
-        else
-            iv_package_3.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+        ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
     }
 
     private void showUIReason() {
@@ -778,21 +740,14 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
         }
         if (pickerUIReason == null) {
             pickerUIReason = new ItemBottomSheetPickerUIFragment(items, "Chọn lý do",
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            tvReason.setText(item.getText());
-                            mReasonInfo = mListReason.get(position);
-                            mListSolution = null;
-                            tvSolution.setText("");
-                            loadSolution();
-                          /*  if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
-                                edtReason.setVisibility(View.VISIBLE);
-                            } else {
-                                edtReason.setVisibility(View.GONE);
-                            }*/
+                    (item, position) -> {
+                        tvReason.setText(item.getText());
+                        mReasonInfo = mListReason.get(position);
+                        mListSolution = null;
+                        tvSolution.setText("");
+                        mReloadSolution = true;
+                        loadSolution();
 
-                        }
                     }, 0);
             pickerUIReason.show(getActivity().getSupportFragmentManager(), pickerUIReason.getTag());
         } else {
@@ -806,7 +761,8 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     }
 
     private void loadSolution() {
-        mPresenter.loadSolution(mReasonInfo.getCode());
+        if (mReasonInfo != null)
+            mPresenter.loadSolution(mReasonInfo.getCode());
     }
 
     private void showUISolution() {
@@ -839,5 +795,129 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
         calDate.set(year, monthOfYear, dayOfMonth);
         tvDeliveryDate.setText(TimeUtils.convertDateToString(calDate.getTime(), TimeUtils.DATE_FORMAT_5));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                attemptSendMedia(data.getData().getPath());
+            }
+        }
+    }
+
+    private void attemptSendMedia(String path_media) {
+        Uri picUri = Uri.fromFile(new File(path_media));
+        ivPackage.setImageURI(picUri);
+        File file = new File(path_media);
+        Bitmap bitmap = processingBitmap(picUri);
+        if (bitmap != null) {
+
+            if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                // mSignPosition = false;
+                mPresenter.postImage(path);
+                picUri = Uri.fromFile(new File(path));
+                ivPackage.setImageURI(picUri);
+                if (file.exists())
+                    file.delete();
+            } else {
+                mPresenter.postImage(path_media);
+            }
+        } else {
+            mPresenter.postImage(path_media);
+        }
+    }
+
+    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
+                             int quality) {
+        if (quality > 100) {
+            Log.d("saveImage", "quality cannot be greater that 100");
+            return false;
+        }
+        File file;
+        FileOutputStream out = null;
+        try {
+            switch (format) {
+                case JPEG:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                case PNG:
+                default:
+                    file = new File(filePath, filename);
+                    out = new FileOutputStream(file);
+                    return bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public Bitmap processingBitmap(Uri source) {
+        Bitmap bm1 = null;
+        Bitmap newBitmap = null;
+        try {
+            bm1 = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(source));
+            int SIZE_SCALE = 3;
+            bm1 = Bitmap.createScaledBitmap(bm1, (bm1.getWidth() / SIZE_SCALE), (bm1.getHeight() / SIZE_SCALE), true);
+
+            try {
+                newBitmap = rotateImageIfRequired(bm1, source);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return newBitmap;
+    }
+
+    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
+
+        if (selectedImage.getScheme().equals("content")) {
+            String[] projection = {MediaStore.Images.ImageColumns.ORIENTATION};
+            Cursor c = getActivity().getContentResolver().query(selectedImage, projection, null, null, null);
+            if (c.moveToFirst()) {
+                final int rotation = c.getInt(0);
+                c.close();
+                return rotateImage(img, rotation);
+            }
+            return img;
+        } else {
+            ExifInterface ei = new ExifInterface(selectedImage.getPath());
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateImage(img, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateImage(img, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateImage(img, 270);
+                default:
+                    return img;
+            }
+        }
+    }
+
+    private Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        return rotatedImg;
     }
 }

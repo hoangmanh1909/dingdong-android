@@ -7,12 +7,18 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * The CommonObject Contract
@@ -20,72 +26,219 @@ import java.util.List;
 interface ListBaoPhatBangKeContract {
 
     interface Interactor extends IInteractor<Presenter> {
+
         void searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate, CommonCallback<CommonObjectListResult> callback);
-        void searchDeliveryPostman(String postmanID,
-                                   String fromDate,
-                                   String shiftID, String chuyenthu, String tuiso, CommonCallback<CommonObjectListResult> callback);
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void pushToPNSDelivery(String postmanID, String ladingCode,
-                               String deliveryPOCode, String deliveryDate,
-                               String deliveryTime, String receiverName,
-                               String reasonCode, String solutionCode, String status,
-                               String paymentChannel, String deliveryType,
-                               String sign, String note, String amount,String ladingPostmanID , CommonCallback<SimpleResult> commonCallback);
-        void paymentDelivery(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode,
-                             String deliveryDate, String deliveryTime, String receiverName, String receiverIDNumber,
-                             String reasonCode, String solutionCode, String status, String paymentChannel, String deliveryType,
-                             String signatureCapture, String note, String collectAmount, CommonCallback<SimpleResult> commonCallback);
-        void callForwardCallCenter(String callerNumber, String calleeNumber,
+        /**
+         * This search record to display and deliver.
+         *
+         * @param postmanID  this field is postman id, it can be collect from UserInfo that have been save in share preference.
+         * @param fromDate   from date, format yyyyMMDD.
+         * @param toDate     to date, format yyyyMMDD.
+         * @param routeCode  route code, it can be collect from RouteInfo that have been save in share preference.
+         * @param searchType type record
+         *                   0 - All
+         *                   1 - COD
+         *                   2 - NORMAL
+         *                   3 - HCC
+         * @param callback   Callback retrofit.
+         */
+        Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
+                                                            String fromDate,
+                                                            String toDate,
+                                                            String routeCode,
+                                                            Integer searchType,
+                                                            CommonCallback<DeliveryPostmanResponse> callback);
+
+        /**
+         * Call to service center to connect to calleenumber.
+         *
+         * @param callerNumber  caller number.
+         * @param calleeNumber  callee number.
+         * @param hotlineNumber hotline.
+         * @param ladingCode    lading code.
+         */
+        Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
-        void updateMobile(String code, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
+        /**
+         * Update mobile of current lading code.
+         *
+         * @param code                       lading code.
+         * @param phone                      new phone number.
+         * @param simpleResultCommonCallback callback from retrofit.
+         */
+        Call<SimpleResult> updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
     }
 
     interface View extends PresentView<Presenter> {
-        void showResponseSuccess(ArrayList<CommonObject> list);
 
+        /**
+         * Show response list when get success all record
+         *
+         * @param list returned list from server.
+         * @see Interactor
+         */
+        void showListSuccess(List<DeliveryPostman> list);
+
+        /**
+         * Show error when error happen.
+         *
+         * @param message error message from server.
+         * @see Interactor
+         */
         void showError(String message);
-        void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
 
-        void showSuccessMessage(String message);
+        /**
+         * Show error when call to service center.
+         *
+         * @param message error message from server.
+         */
+        void showCallError(String message);
 
-        void showResponseSuccessEmpty();
         void showCallSuccess();
-        void showView();
+
+        void showSuccessUpdateMobile(String phone, String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void searchOrderPostmanCollect(String orderPostmanID,
+        /*void searchStatisticCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate);
+                                       String toAssignDate);*/
+
+        /**
+         * This search record to display and deliver.
+         *
+         * @param postmanID    this field is postman id, it can be collect from UserInfo that have been save in share preference.
+         * @param fromDate     from date, format yyyyMMDD.
+         * @param toDate       to date, format yyyyMMDD.
+         * @param routeCode    route code, it can be collect from RouteInfo that have been save in share preference.
+         * @param deliveryType type record
+         *                     0 - All
+         *                     1 - COD
+         *                     2 - NORMAL
+         *                     3 - HCC
+         */
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
-                                   String shiftID, String chuyenthu, String tuiso);
-        void showDetailView(CommonObject commonObject);
+                                   String toDate,
+                                   String routeCode,
+                                   Integer deliveryType
+        );
+
+        /**
+         * Add view XacNhanBaoPhatFragment to decide to deliver.
+         *
+         * @param commonObject list record chosen.
+         */
+        void showConfirmDelivery(List<DeliveryPostman> commonObject);
+
+        /**
+         * Set type tab.
+         *
+         * @param type 10 - NOT_YET_DELIVERY_TAB, 20 NOT_SUCCESSFULLY_DELIVERY_TAB
+         * @return this presenter
+         */
         ListBaoPhatBangKePresenter setType(int type);
-        void getReasons();
+
+        /**
+         * Get type tab;
+         *
+         * @return 10 or 20.
+         */
         int getType();
-        void submitToPNS(List<CommonObject> commonObjects, String reason, String solution, String note, String sign);
 
-        void nextReceverPerson(List<CommonObject> commonObjects);
+        /**
+         * Get lading code when fragment is added from notification, to point to exactly position when notification come.
+         *
+         * @return lading code.
+         */
+        String getLadingCode();
 
+        /**
+         * Get delivery type when fragment is added from main fragment.
+         *
+         * @return COD, NORMAL, HCC, ALL
+         */
+        int getDeliverType();
+
+        /**
+         * Set total record to tabtitle
+         *
+         * @param quantity quantity.
+         */
+        void setTitleTab(int quantity);
+
+        /**
+         * Change tab to point to exactly position of record when server send notification.
+         */
+        void onTabChange();
+
+        /**
+         * Synchronize nearby tab when current tab search by date.
+         */
+        void onSearched(String fromDate, String toDate, int currentPosition);
+
+        /**
+         * Synchronize list when deliver success or not.
+         *
+         * @return event when deliver success or not success.
+         */
+        ListDeliveryConstract.OnDeliveryNotSuccessfulChange getNotSuccessfulChange();
+
+        /**
+         * Show barcode scan screen.
+         *
+         * @param barCodeCallback callback when scan.
+         */
         void showBarcode(BarCodeCallback barCodeCallback);
 
         int getPositionTab();
 
-        void callForward(String phone,String code);
-        void updateMobile(String phone,String code);
-        boolean isTheSameRouteAndOrder(List<CommonObject> commonObjectList);
+        /**
+         * Call to service center to connect callee number.
+         *
+         * @param phone      callee number.
+         * @param parcelCode lading code.
+         */
+        void callForward(String phone, String parcelCode);
+
+        /**
+         * Update callee mobile number.
+         */
+        void updateMobile(String phone, String parcelCode);
+
+        /**
+         * Direction on vietmap.
+         *
+         * @param address receiver address.
+         */
+        void vietmapSearch(String address);
+
+        /**
+         * Make a call by sim card.
+         *
+         * @param calleeNumber callee number
+         */
+        void callBySimCard(String calleeNumber);
+
+
+        /**
+         * Make a call by wifi.
+         *
+         * @param calleeNumber callee number
+         */
+        void callByWifi(String calleeNumber);
     }
 
 }

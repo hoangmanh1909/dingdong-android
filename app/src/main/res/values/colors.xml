@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#82be28</color>
-    <color name="colorPrimaryDark">#82be28</color>
+    <color name="colorPrimary">#f6a71b</color>
+    <color name="colorPrimaryDark">#0e7959</color>
     <color name="colorAccent">#14648c</color>
     <color name="colorFooter">#888888</color>
     <color name="colorOpen">#0290fd</color>
@@ -16,7 +16,7 @@
     <color name="colorBackgroudGray">#efefef</color>
 
     <color name="white">#ffffff</color>
-    <color name="color_xac_nhan_tin">#ffa3ac</color>
+    <color name="primary">#f5f6fa</color>
     <color name="sub_title_white">#d6efff</color>
     <color name="white_tranparent_75">#BFffffff</color>
     <color name="white_tranparent_70">#B3ffffff</color>
@@ -47,6 +47,7 @@
     <color name="n_gray_hsd">#999999</color>
     <color name="n_green_text">#25928a</color>
     <color name="green">#5025928a</color>
+    <color name="green_text">#00ff00</color>
     <color name="black_30">#66000000</color>
     <color name="umano_dialog_text">#ff5a5a5a</color>
     <color name="umano_divider">#ffc8c8c8</color>
@@ -353,5 +354,20 @@
     <color name="md_grey_200">#EEEEEE</color>
     <color name="colorBlackTrans50">#80000000</color>
     <color name="colorBlackTrans20">#33000000</color>
-    <color name="color_bg_notifycation">#E6EBEE</color>
+    <color name="text_color_primary">#253854</color>
+    <color name="color_background_bd13">#def6ff</color>
+    <color name="color_debit_unsuccessful">#ff1100</color>
+    <color name="bg_home_yellow">#f6a71b</color>
+    <color name="bg_primary">#58a656</color>
+
+    <color name="bg_yellow_primary">#FCAF17</color>
+    <color name="bg_blue_primary">#004689</color>
+    <color name="bg_gray_primary">#939598</color>
+    <color name="bg_red_gradient">#f56358</color>
+    <color name="color_bg_tab_header">#017aff</color>
+    <color name="color_text_tab_header">#9b976d</color>
+    <color name="bg_dialog_ui_picker">#f5f6fa</color>
+    <color name="bg_color_diapad_button">#f1f1f1</color>
+    <color name="green_border">#00b5ae</color>
+    <color name="black_alpha">#90000000</color>
 </resources>

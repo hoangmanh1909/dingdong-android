@@ -5,11 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,10 +12,17 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.core.base.viper.ViewFragment;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
@@ -30,10 +32,9 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utilities;
-import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.rengwuxian.materialedittext.MaterialEditText;
+import com.ems.dingdong.views.form.FormItemEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,7 +62,7 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
     @BindView(R.id.tv_title)
     CustomTextView tvTitle;
     @BindView(R.id.edt_parcelcode)
-    MaterialEditText edtParcelcode;
+    FormItemEditText edtParcelcode;
     /*   @BindView(R.id.tv_shift)
        CustomBoldTextView tvShift;*/
     private TaoGachNoAdapter mAdapter;
@@ -125,21 +126,18 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
                         mPresenter.showDetail(mList.get(position), position);
                     }
                 });*/
-                ((HolderView) holder).tvContactPhone.setOnClickListener(new View.OnClickListener() {
+                ((HolderView) holder).imgContactPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mList.get(position).getReceiverPhone().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone, int callType) {
-                                if (callType == Constants.CALL_SWITCH_BOARD) {
-                                    mPhone = phone;
-                                    mPresenter.callForward(phone, mList.get(position).getParcelCode());
-                                } else
-                                    Utils.call(getViewContext(), phone);
+                            public void onCallResponse(String phone) {
+                                mPhone = phone;
+                                mPresenter.callForward(phone, mList.get(position).getParcelCode());
                             }
 
                             @Override
-                            public void onUpdateResponse(String phone) {
+                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
 
                             }
                         }).show();
@@ -284,6 +282,16 @@ public class TaoGachNoFragment extends ViewFragment<TaoGachNoContract.Presenter>
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        if (mList != null)
+            mList.clear();
+        if (mAdapter != null)
+            mAdapter.clear();
+        loadViewCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

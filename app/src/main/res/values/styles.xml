@@ -3,12 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/bg_yellow_primary</item>
+        <item name="colorPrimaryDark">@color/bg_yellow_primary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme_Actionbar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -20,29 +21,37 @@
         <item name="android:textColor">@drawable/my_compound_button_color_selector</item>
         <item name="buttonTint">@drawable/my_compound_button_color_selector</item>
     </style>
+
     <style name="CustomRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/custom_btn_radio</item>
     </style>
+
     <declare-styleable name="FormItem">
         <attr name="formValue" format="string" />
         <attr name="formHint" format="string" />
         <attr name="formIcon" format="reference" />
         <attr name="formAction" format="reference" />
         <attr name="android:maxLines" />
+        <attr name="android:gravity" />
+        <attr name="formDrawablePadding" format="dimension" />
         <attr name="android:minLines" />
         <attr name="android:inputType" />
+        <attr name="android:textColor" />
+        <attr name="formTextStyle" format="integer" />
+        <attr name="formText" format="string" />
         <attr name="formShowClear" format="boolean" />
+        <attr name="formLines" format="integer" />
+        <attr name="formShowUnderline" format="boolean" />
+        <attr name="formSingleLine" format="boolean" />
     </declare-styleable>
 
     <style name="FormItemLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingRight">@dimen/_5sdp</item>
         <item name="android:paddingTop">@dimen/size_12dp</item>
         <item name="android:paddingBottom">@dimen/size_12dp</item>
         <item name="android:layout_marginLeft">@dimen/size_15dp</item>
-        <item name="android:layout_marginRight">@dimen/_5sdp</item>
 
     </style>
 
@@ -79,8 +88,8 @@
     </style>
 
     <style name="FormItemValueAction">
-        <item name="android:layout_width">@dimen/size_20dp</item>
-        <item name="android:layout_height">@dimen/size_20dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
@@ -90,8 +99,8 @@
         <item name="android:background">@color/gray</item>
     </style>
 
-    <style name="DeviderVertical">
-        <item name="android:layout_width">1dp</item>
+    <style name="Devider_Vertical">
+        <item name="android:layout_width">0.5dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/gray</item>
     </style>
@@ -113,7 +122,7 @@
     </style>
 
     <style name="CustomTitleTextAppearance">
-        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:textSize">@dimen/text_size_13sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -169,6 +178,7 @@
         <item name="android:textColor">@color/color_5f2f75</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="TabLayoutTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/dimen_13dp</item>
         <item name="android:textAllCaps">true</item>
@@ -184,5 +194,56 @@
 
     <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.Light">
         <item name="colorControlNormal">@color/white</item>
+    </style>
+
+
+    <!-- set the rounded drawable as background to your bottom sheet -->
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:layout_marginLeft">@dimen/_3sdp</item>
+        <item name="android:layout_marginRight">@dimen/_3sdp</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsDividerWidth" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsPaddingMiddle" format="boolean" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsTabTextSize" format="dimension" />
+        <attr name="pstsTabTextColor" format="reference" />
+        <attr name="pstsTabTextStyle" format="reference">
+            <flag name="normal" value="0x0" />
+            <flag name="bold" value="0x1" />
+            <flag name="italic" value="0x2" />
+        </attr>
+        <attr name="pstsTabTextAllCaps" format="boolean" />
+        <attr name="pstsTabTextAlpha" format="integer" />
+        <attr name="pstsTabTextFontFamily" format="string" />
+    </declare-styleable>
+
+    <style name="keyboard_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:showDividers">beginning|middle|end</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 </resources>

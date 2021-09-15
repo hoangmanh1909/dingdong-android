@@ -6,24 +6,27 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.ems.dingdong.R;
+import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.login.LoginActivity;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
+import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.ems.dingdong.R;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
 import java.util.Map;
 
 public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
@@ -33,16 +36,42 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = DingDongFirebaseMessagingService.class.getSimpleName();
     private int numMessages = 0;
     private NotificationUtils notificationUtils;
+    private boolean isConnected = false;
+    private ApplicationController applicationController;
+
+  /*   "notification": {
+        "click_action": ".fcm.NotificationActivity",
+                "body": "Xin chào, tôi là bob!",
+                "title": "DingDong",
+                "android_channel_id":"channel_id_dingdong"
+    },
+            "data": {
+        "body": "Xin chào, tôi là bob!",
+                "title": "DingDong",
+    }*/
+
+
+    @Override
+    public void onNewToken(@NonNull String refreshedToken) {
+        super.onNewToken(refreshedToken);
+//        sendRegistrationToServer(refreshedToken);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-            sendNotification(remoteMessage.getData().get("message"));
+            if (!TextUtils.isEmpty(remoteMessage.getData().get("send_from"))) {
+                sendNotification("Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13));
+            } else if (!TextUtils.isEmpty(remoteMessage.getData().get("message"))) {
+                sendNotification(remoteMessage.getData().get("message"));
+            } else {
+                Log.d(TAG, "call id is null");
+                Log.d(TAG, remoteMessage.getData().toString());
+            }
         } else if (notification != null) {
+            Log.e(TAG, "Data is null: ");
             Map<String, String> data = remoteMessage.getData();
             sendNotification(notification, data);
         }
@@ -60,8 +89,18 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            Intent intent = new Intent(this, LoginActivity.class);
+        if (messageBody != null) {
+            Intent intent;
+            Bundle bundle = new Bundle();
+            if (messageBody.contains(Constants.GOM_HANG)) {
+                intent = new Intent(this, ListCommonActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+            } else {
+                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+            }
+            bundle.putString("message", messageBody);
+            intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
@@ -74,7 +113,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                     new NotificationCompat.Builder(this)
                             .setPriority(Notification.PRIORITY_HIGH)
                             .setWhen(System.currentTimeMillis())
-                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setSmallIcon(R.drawable.ic_notification)
                             .setContentTitle("Thông báo")
                             .setContentText(messageBody)
                             .setAutoCancel(true)
@@ -84,15 +123,16 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(
+                        getString(R.string.notification_channel_id),
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+                notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
+            }
             if (notificationManager != null)
-                notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-        } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            notificationUtils = new NotificationUtils(getApplicationContext());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            notificationUtils.showNotificationMessage("Thông báo", messageBody, new Date().getTime() + "", intent);
+                notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
         }
     }
 
@@ -115,46 +155,26 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 //.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.win))
                 .setContentIntent(pendingIntent)
                 .setContentInfo("Hello")
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification))
                 .setColor(getResources().getColor(R.color.colorAccent))
                 .setLights(Color.RED, 1000, 300)
                 // .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setVibrate(vibratePattern)
                 .setNumber(++numMessages)
-                .setSmallIcon(R.drawable.ic_launcher);
-
-        try {
-            String picture = data.get(FCM_PARAM);
-            if (picture != null && !"".equals(picture)) {
-                URL url = new URL(picture);
-                Bitmap bigPicture = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                notificationBuilder.setStyle(
-                        new NotificationCompat.BigPictureStyle().bigPicture(bigPicture).setSummaryText(notification.getBody())
-                );
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                .setSmallIcon(R.drawable.ic_notification);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    getString(R.string.notification_channel_id), CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
-            );
-            channel.setDescription(CHANNEL_DESC);
-            channel.setShowBadge(true);
-            channel.canShowBadge();
-            channel.enableLights(true);
-            channel.setLightColor(Color.RED);
-            channel.enableVibration(true);
-            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500});
-
-            assert notificationManager != null;
+                    getString(R.string.notification_channel_id),
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
+            notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
         }
 
         assert notificationManager != null;
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(1, notificationBuilder.build());
     }
 }

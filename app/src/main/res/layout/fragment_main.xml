@@ -1,135 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <!--  android:background="@drawable/bg_gradient_top"-->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/bg_gradient_top"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/_2sdp"
+        android:paddingLeft="@dimen/dimen_10dp"
         android:paddingRight="@dimen/_2sdp"
         android:paddingBottom="@dimen/_2sdp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_8dp">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <ImageView
                 android:id="@+id/img_logo_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_logo_home" />
+                android:layout_gravity="left"
+                android:src="@drawable/ic_logo_ding_dong" />
 
-            <FrameLayout
-                style="?attr/actionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@color/colorPrimaryDark"
-                android:clipToPadding="false"
-                android:focusable="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:foreground="?attr/selectableItemBackground"
-                    android:id="@+id/img_notification"
+                    android:id="@+id/img_call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_notification1" />
+                    android:layout_gravity="left"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_toLeftOf="@+id/img_top_person"
+                    android:src="@drawable/ic_call" />
 
-                <TextView
-                    android:id="@+id/notification_badge"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/badge_background"
-                    android:gravity="center"
-                    android:text="9"
-                    android:textColor="@android:color/white"
-                    android:textSize="10sp" />
-            </FrameLayout>
+                <ImageView
+                    android:id="@+id/img_top_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_toLeftOf="@+id/img_top_setting"
+                    android:src="@drawable/ic_top_person" />
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/img_top_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:src="@drawable/ic_top_setting" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:orientation="horizontal">
-
-            <com.ems.dingdong.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Hạn mức"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_AmountMax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="VNĐ"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+            </RelativeLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/view_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <com.ems.dingdong.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Số tiền đã thu"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
-
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_balance"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:gravity="right"
-                android:text="VNĐ"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_10dp">
 
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:id="@+id/first_header"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_10dp">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:id="@+id/second_header"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_10dp">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:id="@+id/thirst_header"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+            </LinearLayout>
+        </LinearLayout>
+        <com.ems.dingdong.views.MyViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"/>
 
     </LinearLayout>
-
-    <com.ems.dingdong.views.MyViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar"
-        android:layout_below="@+id/header" />
-
+    <!-- app:bb_activeTabColor="#5f3075"
+     app:bb_inActiveTabColor="#666666"-->
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="#296780"
-        app:bb_activeTabColor="@color/white"
-        app:bb_inActiveTabAlpha="0.3"
-        app:bb_inActiveTabColor="@color/white"
+        android:background="#ffffff"
+        app:bb_activeTabColor="#5f3075"
+        app:bb_inActiveTabColor="#666666"
+        app:bb_showShadow="true"
         app:bb_tabXmlResource="@xml/bottom_navigation_main"
         app:bb_titleTextAppearance="@style/CustomTitleTextAppearance"
         app:bb_titleTypeFace="fonts/Roboto-Regular.ttf" />
 
     <!--Helvetica.otf shifting-->
-</RelativeLayout>
+</LinearLayout>

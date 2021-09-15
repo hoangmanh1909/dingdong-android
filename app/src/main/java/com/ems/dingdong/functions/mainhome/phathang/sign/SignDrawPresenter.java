@@ -6,14 +6,18 @@ import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.PaymentDeviveryRequest;
+import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Utils;
 
 import java.util.List;
 
@@ -55,10 +59,11 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     public void signDataAndSubmitToPNS(String signatureCapture) {
         String postmanID = "";
         String mobileNumber = "";
+        UserInfo userInfo = null;
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
             mobileNumber = userInfo.getMobileNumber();
         }
@@ -75,34 +80,34 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String deliveryDate = item.getDeliveryDate();
             String deliveryTime = item.getDeliveryTime();
             String receiverName = item.getRealReceiverName();
-            String receiverIDNumber = item.getRealReceiverIDNumber();
-            String fileNames = item.getFileNames();
+            String receiverIDNumber = item.getReceiverIDNumber();
             final String reasonCode = "";
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            final String paymentChannel = item.getCurrentPaymentType();
+            final String paymentChannel = item.getPaymentChannel();
             String deliveryType = item.getDeliveryType();
             String amount = item.getAmount();
             if (TextUtils.isEmpty(amount) || amount.equals("0")) {
                 amount = item.getCollectAmount();
             }
+            String ladingPostmanID = item.getiD();
             if (!TextUtils.isEmpty(item.getIsCOD())) {
                 if (item.getIsCOD().toUpperCase().equals("Y")) {
                     payment(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, fileNames);
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
                 } else {
                     if (sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false)) {
                         payment(postmanID,
                                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                                 solutionCode,
                                 status, paymentChannel, deliveryType, signatureCapture,
-                                note, amount, fileNames);
+                                note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
                     } else {
-                        pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, fileNames, signatureCapture, item.getiD());
+                        pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                     }
                 }
             } else {
@@ -111,9 +116,9 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, amount, fileNames);
+                            note, amount, item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
                 } else {
-                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, fileNames, signatureCapture, item.getiD());
+                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                 }
             }
         }
@@ -121,27 +126,31 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     }
 
     private void pushToPNSDelivery(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime,
-                                   String receiverName, String reasonCode, String solutionCode, String status, final String paymentChannel, String deliveryType, String amount, String fileNames, String signatureCapture, String ladingPostmanID) {
+                                   String receiverName, String reasonCode, String solutionCode, String status, final String paymentChannel,
+                                   String deliveryType, String amount, String signatureCapture, String ladingPostmanID, String routeCode, String imageDelivery) {
         final int size = mBaoPhatCommon.size();
-        mInteractor.pushToPNSDelivery(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, amount, fileNames, signatureCapture, ladingPostmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
+                solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode, signature, imageDelivery, "N", "", 0, "");
+        mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mCount++;
                 if (mCount == size) {
                     mView.hideProgress();
-                    if (response.body().getErrorCode().equals("00")) {
-                        mView.showSuccess();
-                        if (paymentChannel.equals("2")) {
-                            mView.callAppToMpost();
-                        } else {
-                            mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                            mView.finishView();
-
-                        }
+                }
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showSuccess();
+                    if (paymentChannel.equals("2")) {
+                        mView.callAppToMpost();
                     } else {
-                        mView.showError(response.body().getMessage());
+                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                        mView.finishView();
+
                     }
+                } else {
+                    mView.showError(response.body().getMessage());
                 }
             }
 
@@ -162,10 +171,11 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         String postmanID = "";
         String mobileNumber = "";
         String deliveryPOCode = "";
+        UserInfo userInfo = null;
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             postmanID = userInfo.getiD();
             mobileNumber = userInfo.getMobileNumber();
         }
@@ -182,27 +192,32 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
             String deliveryDate = item.getDeliveryDate();
             String deliveryTime = item.getDeliveryTime();
             String receiverName = item.getRealReceiverName();
-            String receiverIDNumber = item.getRealReceiverIDNumber();
-            String fileNames = item.getFileNames();
+            String receiverIDNumber = item.getReceiverIDNumber();
             String reasonCode = "";
             String solutionCode = "";
             String status = "C14";
             String note = "";
-            final String paymentChannel = item.getCurrentPaymentType();
+            final String paymentChannel = item.getPaymentChannel();
             String deliveryType = item.getDeliveryType();
-            if (!TextUtils.isEmpty(item.getIsCOD())) {
+            String ladingPostmanID = item.getiD();
+            /*if (!TextUtils.isEmpty(item.getIsCOD())) {
                 if (item.getIsCOD().toUpperCase().equals("Y")) {
                     payment(postmanID,
                             parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
                             solutionCode,
                             status, paymentChannel, deliveryType, signatureCapture,
-                            note, item.getCollectAmount(), fileNames);
+                            note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID, item.getImageDelivery());
                 } else {
-                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), fileNames, signatureCapture, item.getiD());
+                    pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
                 }
             } else {
-                pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), fileNames, signatureCapture, item.getiD());
-            }
+                pushToPNSDelivery(postmanID, parcelCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode, solutionCode, status, paymentChannel, deliveryType, item.getCollectAmount(), signatureCapture, item.getiD(), item.getRouteCode(), item.getImageDelivery());
+            }*/
+            payment(postmanID,
+                    parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
+                    solutionCode,
+                    status, paymentChannel, deliveryType, signatureCapture,
+                    note, item.getCollectAmount(), item.getRouteCode(), ladingPostmanID, item.getImageDelivery(), userInfo.getUserName());
         }
 
     }
@@ -210,48 +225,52 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
     private void payment(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                          String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode,
                          String solutionCode, String status, final String paymentChannel, String deliveryType, String signatureCapture,
-                         String note, String amount, String fileNames) {
+                         String note, String amount, String routeCode, String ladingPostmanID, String imageDelivery, String postmanCode) {
         final int size = mBaoPhatCommon.size();
-        mInteractor.paymentDelivery(postmanID,
-                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode,
-                solutionCode,
+
+        String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
+        PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
+                parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, fileNames, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        mCount++;
-                        if (mCount == size) {
-                            mView.hideProgress();
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature, imageDelivery, postmanCode, null, isPaymentPP, "N", "", 0);
+        mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mCount++;
+                if (mCount == size) {
+                    mView.hideProgress();
+                }
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.showSuccess();
+                    if (paymentChannel.equals("2")) {
+                        try {
+                            mView.callAppToMpost();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.showSuccess();
-                            if (paymentChannel.equals("2")) {
-                                try {
-                                    mView.callAppToMpost();
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            } else {
-                                mView.showSuccessMessage("Cập nhật giao dịch thành công.");
-                                mView.finishView();
-                            }
-                        } else {
-                            mView.showError(response.body().getMessage());
-                        }
+                    } else {
+                        mView.showSuccessMessage("Cập nhật giao dịch thành công.");
+                        mView.finishView();
                     }
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mCount++;
-                        if (mCount == size) {
-                            mView.hideProgress();
-                        }
-                        mView.showError(message);
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mCount++;
+                if (mCount == size) {
+                    mView.hideProgress();
+                }
+                mView.showError(message);
 
-                    }
-                });
+            }
+        });
     }
 
     public SignDrawPresenter setBaoPhatBangKe(List<CommonObject> baoPhatBangKe) {

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.core.base.viper.ViewFragment;
-import com.ems.dingdong.utiles.Utils;
+import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
@@ -44,19 +44,14 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     public void onViewClicked() {
         mPhoneConectDialog = new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
             @Override
-            public void onCallResponse(String phone, int callType) {
-                if (callType == Constants.CALL_SWITCH_BOARD) {
-                    mPhone = phone;
-                    mPresenter.callForward(phone);
-                } else {
-                    mPhone = phone;
-                    Utils.call(getViewContext(), phone);
-                }
+            public void onCallResponse(String phone) {
+                mPhone = phone;
+                mPresenter.callForward(phone);
             }
 
             @Override
-            public void onUpdateResponse(String phone) {
-                showConfirmSaveMobile(phone);
+            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                showConfirmSaveMobile(phone, callback);
             }
         });
         mPhoneConectDialog.show();
@@ -65,7 +60,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     @Override
     public void showCallSuccess() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(Constants.HOTLINE_CALL_SHOW));
+        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
         startActivity(intent);
     }
 
@@ -84,11 +79,14 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     }
 
     @Override
-    public void showView() {
-        mPhoneConectDialog.updateText();
+    public void showView(String phone,String mes) {
+        showSuccessToast(mes);
+        if (mPhoneConectDialog != null) {
+            mPhoneConectDialog.updateText(phone);
+        }
     }
 
-    private void showConfirmSaveMobile(final String phone) {
+    private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -99,7 +97,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         mPresenter.updateMobile(phone);
                         sweetAlertDialog.dismiss();
-
+                        callback.dismissDialog();
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
