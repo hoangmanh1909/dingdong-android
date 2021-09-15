@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
@@ -173,8 +172,10 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CheckBox cb_selected;
         @BindView(R.id.tv_code)
         public CustomBoldTextView tv_code;
-        @BindView(R.id.img_ContactPhone)
-        public ImageView img_ContactPhone;
+        @BindView(R.id.img_contact_phone)
+        public ImageView img_contact_phone;
+        @BindView(R.id.img_ContactPhone_extend)
+        public ImageView img_ContactPhone_extend;
         @BindView(R.id.img_map)
         public ImageView img_map;
         @BindView(R.id.tv_sender)
@@ -210,7 +211,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
         public HolderView(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+                ButterKnife.bind(this, itemView);
         }
 
         public DeliveryPostman getItem(int position) {
@@ -226,9 +227,11 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 } else {
                     tv_code.setText(String.format("%s", item.getMaE()));
                 }
+
             } else {
                 tv_code.setText("");
             }
+
 
             String receiverName = "";
             String receiverMobile = "";
@@ -254,6 +257,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
             if (!TextUtils.isEmpty(item.getBatchCode())) {
                 tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), item.getBatchCode()));
+
             } else {
                 tvBatchCode.setText("");
                 tvBatchCode.setVisibility(View.GONE);
@@ -272,11 +276,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getTotalFee())));
 
             tvRefundPostage.setVisibility(View.GONE);
-            if (item.getIsItemReturn().equals("Y")){
-                tvRefundPostage.setText("Bưu gửi phát hoàn");
-                tvRefundPostage.setVisibility(View.VISIBLE);
+            try {
+                if (item.getIsItemReturn().equals("Y")){
+                    tvRefundPostage.setText("Bưu gửi phát hoàn");
+                    tvRefundPostage.setVisibility(View.VISIBLE);
+                }
+            }catch (NullPointerException nullPointerException){
+
             }
-            Log.d("123123", "Bưu gửi: "+item.getIsItemReturn());
 
             if (!TextUtils.isEmpty(item.getbD13CreatedDate())) {
                 tvCreateDated.setText(String.format("Được giao ngày: %s", item.getbD13CreatedDate()));
@@ -317,10 +324,12 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
             if (mTypeBD13 == TypeBD13.LIST_BD13) {
                 img_map.setVisibility(View.VISIBLE);
-                img_ContactPhone.setVisibility(View.VISIBLE);
+                //img_contact_phone.setVisibility(View.VISIBLE);
+                img_ContactPhone_extend.setVisibility(View.VISIBLE);
             } else {
                 img_map.setVisibility(View.GONE);
-                img_ContactPhone.setVisibility(View.GONE);
+                //img_contact_phone.setVisibility(View.GONE);
+                img_ContactPhone_extend.setVisibility(View.GONE);
             }
             if (item.getNewReceiverAddress() != null) {
                 tvNewReceiverAddress.setVisibility(View.VISIBLE);

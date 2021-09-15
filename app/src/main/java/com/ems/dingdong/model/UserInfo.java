@@ -42,6 +42,11 @@ public class UserInfo {
     @SerializedName("ExtensionStunServerPort")
     private String extensionStunServerPort ;
 
+    @SerializedName("POProvinceCode")
+    private String POProvinceCode ;
+    @SerializedName("PODistrictCode")
+    private String PODistrictCode ;
+
     public UserInfo(String unitCode, String iD, String fullName, String userName, String empGroupID, String unitLink, String mobileNumber, String amountMax, String balance, String isEms, String eWalletPaymentToken, String extensionUserName, String extensionPassword, String extensionDomain, String extensionServer, String extensionServerPort, String extensionStunServer, String extensionStunServerPort) {
         this.unitCode = unitCode;
         this.iD = iD;
@@ -139,5 +144,21 @@ public class UserInfo {
 
     public String getExtensionStunServerPort() {
         return extensionStunServerPort;
+    }
+
+    public String getPOProvinceCode() {
+        return POProvinceCode;
+    }
+
+    public void setPOProvinceCode(String POProvinceCode) {
+        this.POProvinceCode = POProvinceCode;
+    }
+
+    public String getPODistrictCode() {
+        return PODistrictCode;
+    }
+
+    public void setPODistrictCode(String PODistrictCode) {
+        this.PODistrictCode = PODistrictCode;
     }
 }

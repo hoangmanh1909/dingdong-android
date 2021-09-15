@@ -12,6 +12,8 @@ public class CallManager {
     public boolean regist;
     public boolean online;
     Session[] sessions;
+    public int CurrentLine;
+    public static final int MAX_LINES = 10;
 
 
     public boolean setSpeakerOn(PortSipSdk portSipSdk, boolean speakerOn) {
@@ -41,7 +43,14 @@ public class CallManager {
     }
 
     private CallManager() {
-        session = new Session();
+        CurrentLine = 0;
+        sessions = new Session[MAX_LINES];
+        for (int i = 0; i < sessions.length; i++)
+        {
+            sessions[i] = new Session();
+            sessions[i].lineName = "line - " + i;
+
+        }
 
     }
 
@@ -120,12 +129,9 @@ public class CallManager {
         }
     }
 
-    public Session findIncomingCall()
-    {
-        for(Session session :sessions)
-        {
-            if (session.sessionID != Session.INVALID_SESSION_ID&&session.state== Session.CALL_STATE_FLAG.INCOMING)
-            {
+    public Session findIncomingCall() {
+        for(Session session :sessions) {
+            if (session.sessionID != Session.INVALID_SESSION_ID&&session.state== Session.CALL_STATE_FLAG.INCOMING) {
                 return session;
             }
         }
@@ -138,6 +144,22 @@ public class CallManager {
     }
 
     public void reset() {
-        session.reset();
+        //session.reset();
+        try {
+            session.reset();
+        }catch (NullPointerException nullPointerException){
+
+        }
+    }
+
+    public Session getCurrentSession()
+    {
+        if (CurrentLine >= 0 && CurrentLine <= sessions.length)
+        {
+
+            return sessions[CurrentLine];
+
+        }
+        return null;
     }
 }

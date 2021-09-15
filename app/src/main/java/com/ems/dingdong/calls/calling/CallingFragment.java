@@ -13,24 +13,34 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
-
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.calls.CallManager;
+import com.ems.dingdong.calls.PortMessageReceiver;
 import com.ems.dingdong.calls.Ring;
 import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.calls.diapad.DiapadFragment;
+import com.ems.dingdong.functions.mainhome.profile.CustomCallerInAndSessonIdIn;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
 import com.portsip.PortSipSdk;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View {
+public class CallingFragment extends ViewFragment<CallingContract.Presenter> implements CallingContract.View, PortMessageReceiver.BroadcastListener {
 
     public static final String TAG = CallingFragment.class.getName();
 
@@ -56,6 +66,13 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     private PortSipSdk portSipSdk;
     private Session session;
     private CallingEvent callingEvent = new CallingEvent();
+    long mSessionId;
+    String xSessionIdPostmanOut = "";
+    UserInfo userInfo;
+    PostOffice postOffice;
+    RouteInfo routeInfo;
+    private TypeBD13 mTypeBD13;
+    String ladingCode = "";
 
     @Override
     protected int getLayoutId() {
@@ -69,20 +86,44 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
     @Override
     public void initLayout() {
         super.initLayout();
+
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+
         audioManager = (AudioManager) getViewContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_CALL);
 //        audioManager.setMicrophoneMute(false);
-        session = CallManager.Instance().getSession();
+        ///session = CallManager.Instance().getSession();
+        session = CallManager.Instance().getCurrentSession();
         CallManager.Instance().reset();
         ApplicationController applicationController = (ApplicationController) getViewContext().getApplication();
         portSipSdk = applicationController.portSipSdk;
         if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
             tvPhoneNumber.setText(mPresenter.getCalleeNumber());
             changeCallLayout(Constants.CALL_TYPE_CALLING);
-            session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
+            try {
+                session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
+            } catch (NullPointerException nullPointerException) {
+            }
+            ///session.sessionID = portSipSdk.call(mPresenter.getCalleeNumber(), true, false);
         } else {
-            tvPhoneNumber.setText(CallManager.Instance().getSession().phoneNumber);
-            changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+            try {
+                //tvPhoneNumber.setText(CallManager.Instance().getSession().phoneNumber);
+                changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+            } catch (NullPointerException nullPointerException) {
+            }
         }
     }
 
@@ -101,8 +142,12 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
     @OnClick({R.id.iv_call_cancel, R.id.iv_call_answer, R.id.iv_call_end, R.id.iv_hold, R.id.iv_foward, R.id.iv_mic_off})
     public void onViewClicked(View view) {
+
+        Session currentLine = CallManager.Instance().getCurrentSession();
+
         switch (view.getId()) {
             case R.id.iv_call_answer:
+                //createHistoryVHTIn();
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
                     changeCallLayout(Constants.CALL_TYPE_CALLING);
                     portSipSdk.answerCall(session.sessionID, false);
@@ -119,12 +164,16 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_call_cancel:
+                createHistoryVHTIn();
                 Log.d(TAG, "iv_speaker clicked");
                 if (mPresenter.getCallType() == Constants.CALL_TYPE_RECEIVING) {
-                    int result = portSipSdk.rejectCall(session.sessionID, 480);
-                    Log.d(TAG, "reject result: " + result);
+                    //createHistoryVHTIn();
+                    portSipSdk.rejectCall(session.sessionID, 486);
+                    portSipSdk.hangUp(session.sessionID);
                     Ring.getInstance(getViewContext()).stopRingTone();
-                    getViewContext().finish();
+                    currentLine.reset();
+                    ///getViewContext().finish();
+                    finishCall();
                 } else if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
                     if (audioManager.isSpeakerphoneOn()) {
                         audioManager.setSpeakerphoneOn(false);
@@ -137,10 +186,19 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 break;
 
             case R.id.iv_call_end:
+                Ring.getInstance(getActivity()).stop();
                 if (portSipSdk != null) {
-                    portSipSdk.hangUp(session.sessionID);
+                    try {
+                        //createHistoryVHTIn();
+                        portSipSdk.hangUp(currentLine.sessionID);
+                        portSipSdk.rejectCall(currentLine.sessionID, 486);
+                    } catch (NullPointerException nullPointerException) {
+                    }
                 }
-                getViewContext().finish();
+
+                currentLine.reset();
+                ///getViewContext().finish();
+                finishCall();
                 break;
 
             case R.id.iv_mic_off:
@@ -183,9 +241,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
             ivCallEnd.setVisibility(View.VISIBLE);
             ivMicOff.setVisibility(View.VISIBLE);
-            ivFoward.setVisibility(View.VISIBLE);
+            ivFoward.setVisibility(View.GONE);//VISIBLE
             ivHold.setVisibility(View.VISIBLE);
         } else {
+            tvPhoneNumber.setText(session.displayName);///
             ivCallAnswer.setImageResource(R.drawable.ic_call_hang_green);
             ivCallCancel.setImageResource(R.drawable.ic_call_end_red);
             ivCallEnd.setVisibility(View.INVISIBLE);
@@ -194,6 +253,44 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             ivHold.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public void onBroadcastReceiver(Intent intent) {
+        String action = intent.getAction();
+        if (PortSipService.CALL_CHANGE_ACTION.equals(action))
+        {
+            long sessionId = intent.getLongExtra(PortSipService.EXTRA_CALL_SEESIONID, Session.INVALID_SESSION_ID);
+            Session session = CallManager.Instance().findSessionBySessionID(sessionId);
+            if (session != null)
+            {
+                switch (session.state)
+                {
+                    case INCOMING:
+                        break;
+                    case TRYING:
+                        break;
+                    case CONNECTED:
+                    case FAILED:
+                    case CLOSED:
+                        Session anOthersession = CallManager.Instance().findIncomingCall();
+                        if(anOthersession==null) {
+                            ///getActivity().finish();
+                            finishCall();
+                        }/*else{
+                            sessionId = anOthersession.sessionID;
+                        }*/
+                        break;
+                    case INVITESESSION_PROGRESS:
+                        Session anOthersession1 = CallManager.Instance().findIncomingCall();
+                        if (anOthersession1 != null){
+
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
 
     class CallingEvent extends BroadcastReceiver {
         @Override
@@ -213,13 +310,16 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         tvCalling.setText("failure");
                         chronometer.stop();
                         tvCalling.setVisibility(View.VISIBLE);
+                        ///getActivity().finish();
+                        finishCall();
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_REJECT:
                         tvCalling.setText("busy");
                         break;
                     case PortSipService.CALL_EVENT_INVITE_COMMING:
-                        tvCalling.setText(session.phoneNumber);
+                        //tvCalling.setText(session.phoneNumber);
                         changeCallLayout(Constants.CALL_TYPE_RECEIVING);
+                        createHistoryVHTIn();
                         break;
                     case PortSipService.CALL_EVENT_END:
                         tvCalling.setText("call ended");
@@ -228,6 +328,10 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         chronometer.setVisibility(View.GONE);
                         changeCallLayout(Constants.CALL_TYPE_CALLING);
                         Ring.getInstance(getViewContext()).stopRingTone();
+                        ///getActivity().finish();
+                        createHistoryVHTIn();
+                        finishCall();
+
                         break;
                     case PortSipService.CALL_EVENT_ANSWER_ACCEPT:
                         tvCalling.setText("accepted");
@@ -243,10 +347,54 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                         tvCalling.setVisibility(View.GONE);
                         Ring.getInstance(getViewContext()).stopRingTone();
                         break;
+                    case PortSipService.CALL_EVENT_SESSION_PROGRESS:
+                        createHistoryVHTOut();
+                        break;
                     default:
                         throw new IllegalArgumentException("error occurred when get event");
                 }
             }
         }
     }
+
+    private void finishCall(){
+        getActivity().finish();
+        xSessionIdPostmanOut = "";
+        ladingCode = "";
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true)
+    public void onEvent(CustomItem customItem){
+        xSessionIdPostmanOut = customItem.getMessage();
+    }
+
+
+
+    private void createHistoryVHTOut(){
+        mPresenter.createCallHistoryVHTOut();
+
+    }
+
+    public void createHistoryVHTIn(){
+
+        mPresenter.createCallHistoryVHTIn();
+    }
+
+    public enum TypeBD13 {
+        CREATE_BD13,
+        LIST_BD13
+    }
+
 }

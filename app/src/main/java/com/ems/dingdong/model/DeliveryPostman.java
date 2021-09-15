@@ -128,6 +128,13 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("AuthenType")
     private Integer authenType;
 
+    public DeliveryPostman() {
+    }
+
+    public DeliveryPostman(Integer orderNumberInBD13) {
+        this.orderNumberInBD13 = orderNumberInBD13;
+    }
+
     private boolean selected;
 
     public void setSelected(boolean selected) {

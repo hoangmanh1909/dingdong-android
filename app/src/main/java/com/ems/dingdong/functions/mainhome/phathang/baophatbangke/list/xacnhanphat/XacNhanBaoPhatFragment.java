@@ -1,10 +1,8 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -12,12 +10,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +56,6 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -85,14 +80,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     CustomBoldTextView tv_quantity;
     @BindView(R.id.tv_total_amount)
     CustomBoldTextView tv_total_amount;
-    @BindView(R.id.radio_group)
-    RadioGroup radio_group;
+    /*@BindView(R.id.radio_group)
+    RadioGroup radio_group;*/
     @BindView(R.id.rad_success)
-    RadioButton rad_success;
+    TextView rad_success;
     @BindView(R.id.rad_change_route)
-    RadioButton rad_change_route;
+    TextView rad_change_route;
     @BindView(R.id.rad_fail)
-    RadioButton rad_fail;
+    TextView rad_fail;
     @BindView(R.id.ll_confirm_fail)
     LinearLayout ll_confirm_fail;
     @BindView(R.id.ll_change_route)
@@ -247,7 +242,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
-        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: " + "<font color=\"red\">*</font>"));
+        tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: "));
         tvAddressUser.setText(StringUtils.fromHtml("Địa chỉ người sử dụng: " + "<font color=\"red\">*</font>"));
         tvProviders.setText(StringUtils.fromHtml("Nơi cấp: " + "<font color=\"red\">*</font>"));
         SharedPref sharedPref = new SharedPref(getActivity());
@@ -263,7 +258,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
 
-        radio_group.setOnCheckedChangeListener((group, checkedId) -> {
+        /*radio_group.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rad_fail) {
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
@@ -283,7 +278,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 llVerify.setVisibility(View.GONE);
                 mDeliveryType = 3;
             }
-        });
+        });*/
 
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
         adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
@@ -364,12 +359,51 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         //getFileName();
     }
 
-
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
-            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other})
+            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
+            R.id.rad_success, R.id.rad_fail, R.id.rad_change_route})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rad_success:
+                mDeliveryType = 2;
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                linearLayoutName.setVisibility(View.VISIBLE);
+                llVerify.setVisibility(View.VISIBLE);
+                rad_success.setBackgroundResource(R.drawable.bg_form_success);
+                rad_fail.setBackgroundResource(R.color.color_rad_fail);
+                rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_success.setTextColor(getResources().getColor(R.color.color_yellow));
+                rad_fail.setTextColor(getResources().getColor(R.color.white));
+                rad_change_route.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.rad_fail:
+                mDeliveryType = 1;
+                ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
+                ll_change_route.setVisibility(LinearLayout.GONE);
+                linearLayoutName.setVisibility(View.GONE);
+                llVerify.setVisibility(View.GONE);
+                rad_success.setBackgroundResource(R.color.color_rad_success);
+                rad_fail.setBackgroundResource(R.drawable.bg_form_fail);
+                rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
+                rad_success.setTextColor(getResources().getColor(R.color.white));
+                rad_fail.setTextColor(getResources().getColor(R.color.color_yellow));
+                rad_change_route.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.rad_change_route:
+                mDeliveryType = 3;
+                ll_confirm_fail.setVisibility(LinearLayout.GONE);
+                ll_change_route.setVisibility(LinearLayout.VISIBLE);
+                linearLayoutName.setVisibility(View.GONE);
+                llVerify.setVisibility(View.GONE);
+                rad_fail.setBackgroundResource(R.color.color_rad_fail);
+                rad_success.setBackgroundResource(R.color.color_rad_success);
+                rad_change_route.setBackgroundResource(R.drawable.bg_form_change_route);
+                rad_success.setTextColor(getResources().getColor(R.color.white));
+                rad_fail.setTextColor(getResources().getColor(R.color.white));
+                rad_change_route.setTextColor(getResources().getColor(R.color.color_yellow));
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -550,10 +584,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
-            if (TextUtils.isEmpty(tvReceiverName.getText())) {
+            /**
+             * nghiệp vụ mới tên người nhận có thể không có cũng được
+             */
+            /*if (TextUtils.isEmpty(tvReceiverName.getText())) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_real_receiver_name));
                 return;
-            }
+            }*/
 
             new ConfirmDialog(getViewContext(), listSelected.size(), totalAmount, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
@@ -572,26 +609,30 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 infoVerify.setAuthenType(authenType);
                         }
 
+                        //nghiệp vụ mới k cần tên người nhận cũng báo phát dc
                         if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                            /**
-                             * nhớ mở lại comment
-                             */
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                                    edtOtherRelationship.getText(), infoVerify);
+                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
+
+                        } else {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
+                                    edtRelationship.getText().toString(),
+                                    infoVerify);
+                            //Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
+
+                        }
+
+                        /*if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtOtherRelationship.getText(), infoVerify);
-                            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
                         } else {
-                            /**
-                             * nhớ mở lại comment
-                             */
                             mPresenter.paymentDelivery(mFile, mFileAvatar+";"+mFileVerify+";"+mFileOther, mSign,
                                     tvReceiverName.getText().toString(),
                                     edtRelationship.getText().toString(),
                                     infoVerify);
-                            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
-
-                        }
+                        }*/
                         confirmDialog.dismiss();
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
@@ -605,9 +646,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Toast.showToast(tv_solution.getContext(), getViewContext().getString(R.string.you_have_not_chosen_solution));
                 return;
             }
-            /**
-             * nhớ mở lại comment
-             */
             mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
@@ -615,7 +653,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mFile,
                     mFileAvatar+";"+mFileVerify+";"+mFileOther,
                     mSign);
-            Log.d("1231234", "submitToPNS: " + "avatar: "+ mFileAvatar+";"+"verify: "+mFileVerify+";"+"other: "+mFileOther+";"+"gói hàng: "+mFile);
         } else if (mDeliveryType == 3){
             /**
              * mDeliveryType = 3 -> chuyển tuyến
@@ -635,7 +672,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
             mPresenter.cancelDivided(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
             ///mPresenter.cancelDivided(Integer.parseInt(mCurrentRouteInfo.getRouteId()), postmanId, mSign, mFile);
-            Log.d("123123", "cancelDivided: " + mFile);
 //            mPresenter.changeRouteInsert(Integer.parseInt(mRouteInfo.getRouteId()), postmanId, mSign, mFile);
         }
     }
@@ -687,76 +723,31 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
+                        mPresenter.postImage(path);
+                        //mPresenter.postImageAvatar(pathAvatar);
+
                         if (isCaptureAvatar){
                             mPresenter.postImageAvatar(path);
                             imageAvatarAdapter.getListFilter().add(new Item(path, ""));
                             imageAvatarAdapter.notifyDataSetChanged();
-
                         }
-                        else {
-                            mPresenter.postImage(path);
-                            if (isCaptureVerify) {
-                                imageVerifyAdapter.getListFilter().add(new Item(path, ""));
-                                imageVerifyAdapter.notifyDataSetChanged();
-                                //showSuccessToast(path);
-                            }
-                            if (isCaptureOther) {
-                                imageOtherAdapter.getListFilter().add(new Item(path, ""));
-                                imageOtherAdapter.notifyDataSetChanged();
-                            }
-                            if (isCapture) {
-                                imageAdapter.getListFilter().add(new Item(path, ""));
-                                imageAdapter.notifyDataSetChanged();
-                            }
+
+                        if (isCaptureVerify) {
+                            imageVerifyAdapter.getListFilter().add(new Item(path, ""));
+                            imageVerifyAdapter.notifyDataSetChanged();
+                        }
+                        if (isCaptureOther){
+                            imageOtherAdapter.getListFilter().add(new Item(path, ""));
+                            imageOtherAdapter.notifyDataSetChanged();
+                        }
+                        if (isCapture) {
+                            imageAdapter.getListFilter().add(new Item(path, ""));
+                            imageAdapter.notifyDataSetChanged();
                         }
                         if (file.exists())
                             file.delete();
                     } else {
                         mPresenter.postImage(path_media);
-                    }
-                },
-                onError -> Logger.e("error save image")
-        );
-    }
-
-    public void getFileName(){
-        SharedPref sharedPref = new SharedPref(getContext());
-        String uploadImageJson = sharedPref.getString(Constants.KEY_UPLOAD_IMAGE, "");
-
-        UploadSingleResult uploadSingleResult = NetWorkController.getGson().fromJson(uploadImageJson, UploadSingleResult.class);
-        uploadSingleResult.getFile();
-        showSuccessToast(uploadSingleResult.getFile());
-    }
-
-    ///
-    private void attemptSendMediaAvatar(String path_media) {
-        File file = new File(path_media);
-        Observable.fromCallable(() -> {
-            Uri uri = Uri.fromFile(new File(path_media));
-            return BitmapUtils.processingBitmap(uri, getViewContext());
-        }).subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                isSavedImage -> {
-                    if (isSavedImage) {
-                        String pathAvatar = file.getParent() + File.separator + "Process_" + file.getName();
-                        // mSignPosition = false;
-                        //mPresenter.postImage(path);
-                        //mPresenter.postImageAvatar(pathAvatar);
-
-                        if (isCaptureAvatar){
-                            mPresenter.postImageAvatar(pathAvatar);
-                            imageAvatarAdapter.getListFilter().add(new Item(pathAvatar, ""));
-                            imageAvatarAdapter.notifyDataSetChanged();
-
-                            //showSuccessToast(pathAvatar);
-                            //Log.d("123123", "path: "+ pathAvatar);
-                        }
-                        if (file.exists())
-                            file.delete();
-                    } else {
-                        mPresenter.postImageAvatar(path_media);
                     }
                 },
                 onError -> Logger.e("error save image")
@@ -925,12 +916,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file) {
         if (null != getViewContext()) {
             if (isCaptureAvatar){
-                if (mFileAvatar.equals("")) {
-                    mFileAvatar = file;
-                } else {
-                    mFileAvatar += ";";
-                    mFileAvatar += file;
-                }
+                mFileAvatar = file;
             } else if (isCaptureVerify) {
                 if (mFileVerify.equals("")) {
                     mFileVerify = file;
@@ -965,9 +951,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 imageVerifyAdapter.getListFilter().remove(imageVerifyAdapter.getListFilter().size() - 1);
                 imageVerifyAdapter.notifyDataSetChanged();
             } else if (isCaptureAvatar){
-                mFileAvatar = "";
-                imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() - 1);
-                imageAvatarAdapter.notifyDataSetChanged();
+                try {
+                    mFileAvatar = "";
+                    imageAvatarAdapter.getListFilter().remove(imageAvatarAdapter.getListFilter().size() - 1);
+                    imageAvatarAdapter.notifyDataSetChanged();
+                }catch (Exception exception){}
             } else if (isCapture){
                 mFile = "";
                 imageAdapter.getListFilter().remove(imageAdapter.getListFilter().size() - 1);
@@ -978,7 +966,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 imageOtherAdapter.notifyDataSetChanged();
             }
         }catch (Error error){
-            showError("Vui long chup lai");
+            showError("Vui lòng chụp lại");
 
         }
     }
@@ -1129,20 +1117,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             if (isSameAuthenType) {
-                Log.d("123123", "getAuthenType: "+ firstItem.getAuthenType());
                 return firstItem.getAuthenType();
             } else return -1;
         } else if (list.size() == 1) {
             DeliveryPostman firstItem = getItemSelected().get(0);
-            Log.d("123123", "getAuthenType: "+ firstItem.getAuthenType());
             return firstItem.getAuthenType();
         } else return -2;
     }
 
     private void checkVerify() {
         authenType = getAuthenType();
-        Log.d("1231234", "authenType: " + authenType);
-        if (authenType == 0) {
+          if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
@@ -1204,11 +1189,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return false;
         }
 
-        if (TextUtils.isEmpty(tvReceiverName.getText())) {
+        /*if (TextUtils.isEmpty(tvReceiverName.getText())) {
             if (authenType != 0)
                 showErrorToast(getViewContext().getString(R.string.you_have_not_inputed_receiver_name));
             return false;
-        }
+        }*/
 
         if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
             if (authenType != 0)

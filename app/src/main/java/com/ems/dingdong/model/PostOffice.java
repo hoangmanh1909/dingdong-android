@@ -27,6 +27,12 @@ public class PostOffice {
         return Routes;
     }
 
+    List<CallProvider> callProviders;
+
+    public List<CallProvider> getProvide() {
+        return callProviders;
+    }
+
     public void setRoutes(List<RouteInfo> routes) {
         Routes = routes;
     }

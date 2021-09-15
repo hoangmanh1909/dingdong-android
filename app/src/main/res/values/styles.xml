@@ -246,4 +246,14 @@
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
+
+    <style name="TextViewSuccess">
+        <item name="android:background">@drawable/bg_form_success</item>
+    </style>
+    <style name="TextViewFail">
+        <item name="android:background">@color/color_rad_fail</item>
+    </style>
+    <style name="TextViewChangeRoute">
+        <item name="android:background">@color/color_rad_change_route</item>
+    </style>
 </resources>

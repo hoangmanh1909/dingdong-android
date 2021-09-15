@@ -1,11 +1,25 @@
 package com.ems.dingdong.dialog;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.views.CustomMediumTextView;
+import com.ems.dingdong.views.CustomTextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -14,6 +28,12 @@ public class PhoneDecisionDialog extends Dialog {
 
     private Context mContext;
     private OnClickListener callback;
+    @BindView(R.id.tv_implement_call)
+    CustomTextView tv_implement_call;
+    @BindView(R.id.tv_call_by_vht)
+    CustomMediumTextView tv_call_by_vht;
+    @BindView(R.id.tv_call_by_sim)
+    CustomMediumTextView tv_call_by_sim;
 
     public PhoneDecisionDialog(Context context, OnClickListener callback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -48,4 +68,5 @@ public class PhoneDecisionDialog extends Dialog {
 
         void onCallByVHTClicked(PhoneDecisionDialog dialog);
     }
+
 }

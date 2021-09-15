@@ -23,6 +23,8 @@ import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.CreateBangKeSearchDialog;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
+import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
@@ -43,11 +45,9 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -182,21 +182,49 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         cbPickAll.setChecked(true);
                     }
                 });
-                holder.img_ContactPhone.setOnClickListener(new View.OnClickListener() {
+                holder.img_ContactPhone_extend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         new PhoneConectDialog(getActivity(), mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), new PhoneCallback() {
                             @Override
-                            public void onCallResponse(String phone) {
+                            public void onCallSenderResponse(String phone) {
                                 mPhone = phone;
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
 
+
                             @Override
-                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+                            public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
                                 showConfirmSaveMobile(phone, mAdapter.getListFilter().get(position).getMaE(), callback);
                             }
+
+                            @Override
+                            public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
+
+                            }
+
+                            @Override
+                            public void onCallCSKH(String phone) {
+
+                            }
                         }).show();
+                    }
+                });
+
+                ///
+                holder.img_contact_phone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        new PhoneCallback(){
+//                            @Override
+//                            public void onCallResponse(String phone) {
+//                                mPhone = phone;
+//                                mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+//                            }
+//                            @Override
+//                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
+//                            }
+//                        };
                     }
                 });
             }

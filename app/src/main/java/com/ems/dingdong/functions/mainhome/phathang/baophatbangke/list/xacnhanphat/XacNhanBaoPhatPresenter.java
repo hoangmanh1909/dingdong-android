@@ -137,16 +137,18 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null) {
                     mView.showImage(response.body().getFile());
-                    Log.d("123123", "showImage Success: => "+"getName: "+ response.body().getFile());
+                    //Log.d("123123", "postImage Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
-                Log.d("123123", "showImage Fail image: => "+ message);
-                mView.showAlertDialog("Không kết nối được với hệ thống");
-                mView.deleteFile();
+                try {
+                    //Log.d("123123", "showImage Fail image: => "+ message);
+                    mView.showAlertDialog("Không kết nối được với hệ thống");
+                    mView.deleteFile();
+                }catch (Exception exception){}
             }
         });
     }
@@ -160,15 +162,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body() != null){
                     mView.showImage(response.body().getFile());
-
-                    Log.d("123123", "postImageAvatar Success: => "+"getName: "+ response.body().getFile());
                 }
             }
 
             @Override
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
-                Log.d("123123", "postImageAvatar Fail image: => "+ message);
                 mView.showAlertDialog("Không kết nối được với hệ thống");
                 mView.deleteFile();
             }
@@ -203,7 +202,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     deliveryPOCode,
                     deliveryDate,
                     deliveryTime,
-                    receiverName,
+                    //receiverName,
                     reasonCode,
                     solutionCode,
                     status,
@@ -240,9 +239,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         }
     }
 
+    //nghiệp vụ mới k cần tên người nhận cũng báo phát dc (CHƯA SỬA)
     @Override
-    public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                                String relationship, InfoVerify infoVerify) {
+    public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture,
+                                String relationship, InfoVerify infoVerify) {//, String newReceiverName
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
         String mobileNumber = userInfo.getMobileNumber();
@@ -253,8 +253,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mView.getItemSelected()) {
-            String receiverName;
-            receiverName = newReceiverName;
+            /*String receiverName;
+            receiverName = newReceiverName;*/
             String parcelCode = item.getMaE();
             String reasonCode = "";
             String solutionCode = "";
@@ -272,7 +272,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setDeliveryPOCode(deliveryPOCode);
             request.setDeliveryDate(deliveryDate);
             request.setDeliveryTime(deliveryTime);
-            request.setReceiverName(receiverName);
+            ///request.setReceiverName(receiverName);
             request.setReasonCode(reasonCode);
             request.setSolutionCode(solutionCode);
             request.setStatus(status);

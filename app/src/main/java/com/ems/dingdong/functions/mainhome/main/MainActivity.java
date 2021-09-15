@@ -7,6 +7,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
 
 public class MainActivity extends DingDongActivity {
+
     @Override
     public ViewFragment onCreateFirstFragment() {
         return (ViewFragment) new MainPresenter(this).getFragment();

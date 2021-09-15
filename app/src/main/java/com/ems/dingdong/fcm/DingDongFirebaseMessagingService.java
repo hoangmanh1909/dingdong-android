@@ -23,6 +23,7 @@ import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
+import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -54,7 +55,14 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String refreshedToken) {
         super.onNewToken(refreshedToken);
-//        sendRegistrationToServer(refreshedToken);
+        sendRegistrationToServer(refreshedToken);
+    }
+
+    private void sendRegistrationToServer(String token) {
+        Intent intent = new Intent(this, PortSipService.class);
+        intent.setAction(PortSipService.ACTION_PUSH_TOKEN );
+        intent.putExtra(PortSipService.EXTRA_PUSHTOKEN,token);
+        startService(intent);
     }
 
     @Override

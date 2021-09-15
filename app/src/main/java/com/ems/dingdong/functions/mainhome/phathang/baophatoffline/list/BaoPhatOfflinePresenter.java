@@ -125,13 +125,14 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 String shiftId = item.getShiftId();
                 String signature = Utils.SHA256(ladingCode + deliveryPOSCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
+                //Nghiệp vụ mới, không cần tên người nhận cũng báo phát được
                 PushToPnsRequest request = new PushToPnsRequest(
                         postmanID,
                         ladingCode,
                         deliveryPOSCode,
                         deliveryDate,
                         deliveryTime,
-                        receiverName,
+                        //receiverName,
                         reasonCode,
                         solutionCode,
                         status,

@@ -18,6 +18,9 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
+import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
+import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
 import com.ems.dingdong.model.PostOffice;
@@ -32,6 +35,9 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
 import com.roughike.bottombar.BottomBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -67,6 +73,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private UserInfo userInfo;
     private PostOffice postOffice;
     private RouteInfo routeInfo;
+    String callProviderHome = "CTEL";
+    String provide = "";
 
 
     public static MainFragment getInstance() {
@@ -81,6 +89,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void initLayout() {
         super.initLayout();
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String callProvider = sharedPref.getString(Constants.KEY_CALL_PROVIDER_HOME, callProviderHome);
+
         updateUserHeader();
         setupAdapter();
 
@@ -114,6 +125,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
+                removeHeader();
                 if (mPresenter != null)
                     mPresenter.getBalance();
             } else if (tabId == R.id.action_location) {
@@ -254,7 +266,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 updateUserHeader();
                 break;
             case 2:
+                try {
                     mPresenter.getBalance();
+                }catch (NullPointerException nullPointerException){
+
+                }
                 break;
             default:
                 removeHeader();
@@ -329,4 +345,5 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         thirstHeader.setText("");
         viewTop.setVisibility(View.GONE);
     }
+
 }

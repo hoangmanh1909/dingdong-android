@@ -4,12 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -18,6 +20,9 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -66,6 +71,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     @Override
     public void initLayout() {
         super.initLayout();
+
         homeViewChangeListerner = new HomeViewChangeListerner();
         getViewContext().registerReceiver(homeViewChangeListerner, new IntentFilter(ACTION_HOME_VIEW_CHANGE));
         homeCollectAdapter = new HomeCollectAdapter(getContext(), mListCollect);
@@ -244,4 +250,5 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             }
         }
     }
+
 }

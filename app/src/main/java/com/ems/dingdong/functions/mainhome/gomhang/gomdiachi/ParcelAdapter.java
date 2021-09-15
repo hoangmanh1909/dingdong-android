@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -30,8 +31,10 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
 
         @BindView(R.id.tv_code)
         CustomTextView tvCode;
-        @BindView(R.id.cb_selected)
-        public CheckBox cbSelected;
+        @BindView(R.id.cb_selected_parcel)
+        public CheckBox cbSelectedParcel;
+        @BindView(R.id.img_remove_address)
+        ImageView imgRemoveAddress;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -41,6 +44,8 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
             tvCode.setText(item.getParcelCode());
+
+            cbSelectedParcel.setChecked(true);
 
         }
     }

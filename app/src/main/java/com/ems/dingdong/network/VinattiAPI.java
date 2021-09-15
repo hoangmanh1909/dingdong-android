@@ -1,10 +1,9 @@
 package com.ems.dingdong.network;
 
 
-import android.view.View;
-
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CallHistoryVHT;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -147,6 +146,18 @@ public interface VinattiAPI {
                                                         @Field("RouteCode") String routeCode,
                                                         @Field("SearchType") Integer searchType);
 
+   /* @FormUrlEncoded
+    @POST("api/Delivery/DeliveryPostman")
+    Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
+                                                        @Field("FromDate") String fromDate,
+                                                        @Field("ToDate") String toDate,
+                                                        @Field("ShiftID") String shiftID,
+                                                        @Field("Status") String status,
+                                                        @Field("ChThu") String chThu,
+                                                        @Field("TuiSo") String tuiSo,
+                                                        @Field("RouteCode") String routeCode,
+                                                        @Field("SearchType") Integer searchType);
+*/
 
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")
@@ -256,6 +267,9 @@ public interface VinattiAPI {
 
     @POST("api/DingDong/CreateBD13")
     Call<SimpleResult> addNewBD13(@Body Bd13Create taskRequest);
+
+    @POST("api/DingDong/Bussiness")
+    Call<SimpleResult> createCallHistoryVHT(@Body CallHistoryVHT taskRequest);
 
     @FormUrlEncoded
     @POST("api/BD13/Search")

@@ -42,6 +42,7 @@
     <string name="no">Không</string>
     <string name="notification">Thông báo</string>
     <string name="chon_tuyen">Chọn tuyến</string>
+    <string name="select_provider">Chọn nhà cung cấp</string>
     <string name="chon_tui">Chọn túi</string>
     <string name="update_phone_number">Bạn có muốn cập nhật số điện thoại lên hệ thống không?</string>
     <string name="fee">Cước:</string>
@@ -235,5 +236,7 @@
     <string name="str_fwtokey">Forwardto</string>
     <string name="str_pracktitle">Enable PRACK</string>
     <string name="str_resolution">Resolution</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

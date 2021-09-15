@@ -203,8 +203,12 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery success.
          */
-        void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
+        //nghiệp vụ mới k cần tên người nhận cũng báo phát dc
+        void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture,
                              String relationship, InfoVerify infoVerify);
+        /*void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
+                             String relationship, InfoVerify infoVerify);*/
+
 
         void paymentV2(boolean isAutoUpdateCODAmount);
 

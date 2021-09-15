@@ -77,7 +77,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 /**
                  * update tạm thời chưa cần nộp tiền
                  */
-                //homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
+                homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
         }
