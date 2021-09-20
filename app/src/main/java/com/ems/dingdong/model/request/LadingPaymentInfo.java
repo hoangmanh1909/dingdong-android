@@ -15,6 +15,24 @@ public class LadingPaymentInfo {
 
     @SerializedName("VATFeeCOD")
     String vatFeeCOD;
+    @SerializedName("FeeType")
+    String feeType;
+
+    public String getVatFeeCOD() {
+        return vatFeeCOD;
+    }
+
+    public void setVatFeeCOD(String vatFeeCOD) {
+        this.vatFeeCOD = vatFeeCOD;
+    }
+
+    public String getFeeType() {
+        return feeType;
+    }
+
+    public void setFeeType(String feeType) {
+        this.feeType = feeType;
+    }
 
     public String getLadingCode() {
         return ladingCode;
@@ -24,7 +42,7 @@ public class LadingPaymentInfo {
         this.ladingCode = ladingCode;
     }
 
-    public Integer  getCodAmount() {
+    public Integer getCodAmount() {
         return codAmount;
     }
 

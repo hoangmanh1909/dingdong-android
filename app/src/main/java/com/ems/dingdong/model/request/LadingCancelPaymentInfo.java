@@ -16,6 +16,26 @@ public class LadingCancelPaymentInfo {
     @SerializedName("Fee")
     int fee;
 
+    @SerializedName("FeeType")
+    int FeeType;
+    @SerializedName("EWalletTransId")
+    String EWalletTransId;
+
+    public String getEWalletTransId() {
+        return EWalletTransId;
+    }
+
+    public void setEWalletTransId(String EWalletTransId) {
+        this.EWalletTransId = EWalletTransId;
+    }
+    public int getFeeType() {
+        return FeeType;
+    }
+
+    public void setFeeType(int feeType) {
+        FeeType = feeType;
+    }
+
     public int getFee() {
         return fee;
     }

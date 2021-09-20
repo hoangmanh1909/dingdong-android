@@ -35,6 +35,37 @@ public class EWalletDataResponse extends SimpleResult {
     @SerializedName("TransDate")
     String transDate;
 
+    @SerializedName("FeeType")
+    String FeeType;
+
+    @SerializedName("ServiceCode")
+    String ServiceCode;
+    @SerializedName("EWalletTransId")
+    String EWalletTransId;
+
+    public String getEWalletTransId() {
+        return EWalletTransId;
+    }
+
+    public void setEWalletTransId(String EWalletTransId) {
+        this.EWalletTransId = EWalletTransId;
+    }
+    public String getServiceCode() {
+        return ServiceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        ServiceCode = serviceCode;
+    }
+
+    public String getFeeType() {
+        return FeeType;
+    }
+
+    public void setFeeType(String feeType) {
+        FeeType = feeType;
+    }
+
     int getPositionTab;
 
     public int getGetPositionTab() {

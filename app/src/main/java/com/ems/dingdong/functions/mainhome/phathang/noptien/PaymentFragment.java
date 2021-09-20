@@ -107,8 +107,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         super.onDisplay();
     }
 
-    public void onDisplayFake(){
-        mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
+    public void onDisplayFake() {
+        if (mPresenter.getPositionTab() == 0)
+            mPresenter.getDataPayment("2104", poCode, routeCode, postmanCode, fromDate, toDate);
+        else if (mPresenter.getPositionTab() == 4)
+            mPresenter.getDataPayment("2105", poCode, routeCode, postmanCode, fromDate, toDate);
     }
 
     @Override
@@ -191,7 +194,10 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     }
 
     public void refreshLayout() {
-        mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
+        if (mPresenter.getPositionTab() == 0)
+            mPresenter.getDataPayment("2104", poCode, routeCode, postmanCode, fromDate, toDate);
+        else if (mPresenter.getPositionTab() == 4)
+            mPresenter.getDataPayment("2105", poCode, routeCode, postmanCode, fromDate, toDate);
     }
 
     @Override
@@ -206,7 +212,10 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     if (item.getFee() != null)
                         fee += item.getFee();
                 }
-                mPresenter.titleChanged(eWalletDataResponses.size(), 0);
+                if (mPresenter.getPositionTab() == 0)
+                    mPresenter.titleChanged(eWalletDataResponses.size(), 0);
+                else if (mPresenter.getPositionTab() == 4)
+                    mPresenter.titleChanged(eWalletDataResponses.size(), 1);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(eWalletDataResponses.size())));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
@@ -358,6 +367,54 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         }
     }
 
+    public void setSendFee() {
+        SharedPref pref = SharedPref.getInstance(getViewContext());
+        if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
+            new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getString(R.string.notification))
+                    .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
+                    .setCancelText(getString(R.string.payment_cancel))
+                    .setConfirmText(getString(R.string.payment_confirn))
+                    .setCancelClickListener(sweetAlertDialog -> {
+                        mPresenter.back();
+                        sweetAlertDialog.dismiss();
+                    })
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.showLinkWalletFragment();
+                        sweetAlertDialog.dismiss();
+                    })
+                    .show();
+        } else {
+            if (mAdapter.getItemsSelected().size() == 0) {
+                showErrorToast("Bạn chưa chọn bưu gửi nào");
+                return;
+            }
+            long cod = 0;
+            long fee = 0;
+            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+                cod += item.getCodAmount();
+                fee += item.getFee();
+            }
+            String codAmount = NumberUtils.formatPriceNumber(cod);
+            String feeAmount = NumberUtils.formatPriceNumber(fee);
+            String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
+                    mAdapter.getItemsSelected().size() + "</font>" + " khoản thu với tổng số tiền : " +
+                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, qua ví bưu điện MB?";
+
+            new NotificationDialog(getViewContext())
+                    .setConfirmText(getString(R.string.payment_confirn))
+                    .setCancelText(getString(R.string.payment_cancel))
+                    .setHtmlContent(content)
+                    .setCancelClickListener(Dialog::dismiss)
+                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.requestPayment(mAdapter.getItemsSelected(), poCode, routeCode, postmanCode);
+                        sweetAlertDialog.dismiss();
+                    })
+                    .show();
+        }
+    }
+
     public void deleteSend() {
         SharedPref pref = SharedPref.getInstance(getViewContext());
         if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
@@ -390,7 +447,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             String feeAmount = NumberUtils.formatPriceNumber(fee);
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
-                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ cước: " +
                     "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
 
             new NotificationDialog(getViewContext())
@@ -410,7 +467,10 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-        mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
+        if (mPresenter.getPositionTab() == 0)
+            mPresenter.getDataPayment("2104", poCode, routeCode, postmanCode, fromDate, toDate);
+        else if (mPresenter.getPositionTab() == 4)
+            mPresenter.getDataPayment("2105", poCode, routeCode, postmanCode, fromDate, toDate);
         stopRefresh();
     }
 }

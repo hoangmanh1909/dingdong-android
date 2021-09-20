@@ -28,8 +28,8 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 28
-        versionName "1.2.3"
+        versionCode 29
+        versionName "1.2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -39,6 +39,7 @@ android {
             keyPassword '123456'
             storeFile file("../keystore/keystore_vnpost.jks")
             storePassword 'Vinatti123456'
+
         }
         release {
             keyAlias 'DingDong'

@@ -23,6 +23,17 @@ public class PaymentRequestModel {
     @SerializedName("Signature")
     String signature;
 
+    @SerializedName("ServiceCode")
+    String ServiceCode;
+
+    public String getServiceCode() {
+        return ServiceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        ServiceCode = serviceCode;
+    }
+
     public void setPostmanCode(String postmanCode) {
         this.postmanCode = postmanCode;
     }

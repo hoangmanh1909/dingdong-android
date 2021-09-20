@@ -29,6 +29,38 @@ public class PaymentCancelRequestModel {
     @SerializedName("RouteId")
     String routeId;
 
+    @SerializedName("ServiceCode")
+    String ServiceCode;
+
+    @SerializedName("RetRefNumber")
+    String RetRefNumber;
+    @SerializedName("EWalletTransId")
+    String EWalletTransId;
+
+    public String getEWalletTransId() {
+        return EWalletTransId;
+    }
+
+    public void setEWalletTransId(String EWalletTransId) {
+        this.EWalletTransId = EWalletTransId;
+    }
+
+    public String getRetRefNumber() {
+        return RetRefNumber;
+    }
+
+    public void setRetRefNumber(String retRefNumber) {
+        RetRefNumber = retRefNumber;
+    }
+
+    public String getServiceCode() {
+        return ServiceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        ServiceCode = serviceCode;
+    }
+
     public String getRouteId() {
         return routeId;
     }

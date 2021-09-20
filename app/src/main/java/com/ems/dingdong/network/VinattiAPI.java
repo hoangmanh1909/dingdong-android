@@ -523,7 +523,8 @@ public interface VinattiAPI {
     Single<SimpleResult> confirmPayment(@Body PaymentConfirmModel paymentConfirmModel);
 
     @GET("api/EWallet/GetDataPayment")
-    Single<EWalletDataResult> getDataPayment(@Query("fromDate") String fromDate,
+    Single<EWalletDataResult> getDataPayment(@Query("ServiceCode") String serviceCode,
+                                             @Query("fromDate") String fromDate,
                                              @Query("toDate") String toDate,
                                              @Query("poCode") String poCode,
                                              @Query("routeCode") String routeCode,

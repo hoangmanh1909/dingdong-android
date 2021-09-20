@@ -99,12 +99,22 @@ public class PaypostPaymentRequest {
     private long FeePA;
     @SerializedName("FeePAPNS")
     private long FeePAPNS;
+    @SerializedName("ServiceCode ")
+    private String ServiceCode;
 
 
     @SerializedName("IsEditCODAmount")
     private boolean IsEditCODAmount;
     @SerializedName("CODAmountEdit")
     private long cODAmountEdit;
+
+    public String getServiceCode() {
+        return ServiceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        ServiceCode = serviceCode;
+    }
 
     public void setEditCODAmount(boolean editCODAmount) {
         IsEditCODAmount = editCODAmount;

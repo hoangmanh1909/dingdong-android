@@ -745,10 +745,10 @@ public class NetWorkController {
                 request.getCallee());
     }
 
-    public static Single<EWalletDataResult> getDataPayment(String fromDate, String toDate,
+    public static Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate,
                                                            String poCode, String routeCode,
                                                            String postmanCode) {
-        return getAPIRxBuilder().getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode);
+        return getAPIRxBuilder().getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
     public static Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {

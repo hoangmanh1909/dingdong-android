@@ -22,11 +22,32 @@ public class EWalletRemoveRequest {
     @SerializedName("PostmanTel")
     String postmanTel;
 
+    @SerializedName("ServiceCode")
+    String ServiceCode;
+
     @SerializedName("Amount")
     long amount;
+    @SerializedName("FeeType")
+    int FeeType;
 
     @SerializedName("Ladings")
     List<LadingCancelPaymentInfo> ladingPaymentInfoList;
+
+    public int getFeeType() {
+        return FeeType;
+    }
+
+    public void setFeeType(int feeType) {
+        FeeType = feeType;
+    }
+
+    public String getServiceCode() {
+        return ServiceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        ServiceCode = serviceCode;
+    }
 
     public List<LadingCancelPaymentInfo> getLadingPaymentInfoList() {
         return ladingPaymentInfoList;

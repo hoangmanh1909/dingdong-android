@@ -146,7 +146,7 @@ public class HistoryPaymentPresenter extends Presenter<HistoryPaymentContract.Vi
                         mView.showListSuccess(list1);
                         if (type == 1) {
                             if (list1.size() == 0) {
-                                titleChanged(list1.size(), 2);
+                                titleChanged(list1.size(), 3);
                                 mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                             }
                         }

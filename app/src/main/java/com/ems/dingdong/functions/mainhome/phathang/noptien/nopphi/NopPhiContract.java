@@ -1,4 +1,4 @@
-package com.ems.dingdong.functions.mainhome.phathang.noptien;
+package com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi;
 
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
@@ -6,10 +6,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.model.DataRequestPayment;
-import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
-import com.ems.dingdong.model.EWalletRemoveDataRequest;
-import com.ems.dingdong.model.EWalletRemoveRequest;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
@@ -21,9 +18,9 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public interface PaymentContract {
+public interface NopPhiContract {
     interface Interactor extends IInteractor<Presenter> {
-        Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode,
+        Single<EWalletDataResult> getDataPayment(String fromDate, String toDate, String poCode,
                                                  String routeCode, String postmanCode);
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
@@ -55,7 +52,7 @@ public interface PaymentContract {
 
         void showLinkWalletFragment();
 
-        void getDataPayment(String serviceCode,String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
+        void getDataPayment(String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
 
         void requestPayment(List<EWalletDataResponse> list, String poCode, String routeCode, String postmanCode);
 

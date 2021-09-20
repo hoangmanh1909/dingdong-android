@@ -1435,13 +1435,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             } else
                 _amountShow = totalAmount;
+
             if (TextUtils.isEmpty(tvTongTienTamthu.getText().toString()))
                 tiem_tam = 0;
             else
                 tiem_tam = Long.parseLong(tvTongTienTamthu.getText().toString().replaceAll("\\.", ""));
+
             if (checkBoxedtCod.isChecked()) {
                 _amountShow = tiem_tam ;
-            }
+            }else tiem_tam =0;
             new ConfirmDialog(getViewContext(), listSelected.size(), _amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
@@ -1459,7 +1461,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 infoVerify.setAuthenType(authenType);
                         }
                         if (mDeliveryType == 2) {
-
                             if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
                                         edtOtherRelationship.getText(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);

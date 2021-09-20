@@ -1,10 +1,8 @@
-package com.ems.dingdong.functions.mainhome.phathang.noptien;
+package com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.model.DataRequestPayment;
-import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
-import com.ems.dingdong.model.EWalletRemoveDataRequest;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
@@ -13,15 +11,15 @@ import com.ems.dingdong.network.NetWorkController;
 
 import io.reactivex.Single;
 
-public class PaymentInteractor extends Interactor<PaymentContract.Presenter> implements PaymentContract.Interactor {
+public class NopPhiInteractor extends Interactor<NopPhiContract.Presenter> implements NopPhiContract.Interactor {
 
-    public PaymentInteractor(PaymentContract.Presenter presenter) {
+    public NopPhiInteractor(NopPhiContract.Presenter presenter) {
         super(presenter);
     }
 
     @Override
-    public Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
-        return NetWorkController.getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
+    public Single<EWalletDataResult> getDataPayment(String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
+        return null;
     }
 
     @Override

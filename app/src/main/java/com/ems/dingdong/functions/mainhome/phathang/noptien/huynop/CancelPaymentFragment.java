@@ -30,6 +30,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -105,14 +106,13 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
     }
 
 
-
     @Override
     public void onDisplay() {
         super.onDisplay();
 
     }
 
-    public void onDisplayFake(){
+    public void onDisplayFake() {
         DataHistoryPayment payment = new DataHistoryPayment();
         payment.setRouteCode(routeCode);
         payment.setPostmanCode(postmanCode);
@@ -237,7 +237,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     if (item.getFee() != null)
                         fee += item.getFee();
                 }
-                mPresenter.titleChanged(eWalletDataResponses.size(), 1);
+                mPresenter.titleChanged(eWalletDataResponses.size(), 2);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(eWalletDataResponses.size())));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
@@ -247,7 +247,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
 //                    showErrorToast("Không tìm thấy dữ liệu phù hợp");
                 }
 
-                mPresenter.titleChanged(eWalletDataResponses.size(), 1);
+                mPresenter.titleChanged(eWalletDataResponses.size(), 2);
                 mAdapter.setListFilter(eWalletDataResponses);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), "0"));
@@ -305,6 +305,15 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
                     "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
 
+            for (int i = 0; i < mAdapter.getItemsSelected().size(); i++) {
+                for (int j = i + 1; j < mAdapter.getItemsSelected().size(); j++) {
+                    if (!mAdapter.getItemsSelected().get(i).getRetRefNumber().equals(mAdapter.getItemsSelected().get(j).getRetRefNumber())) {
+                        Toast.showToast(getViewContext(), "Vui lòng chọn các bưu gửi có cùng mã tham chiếu");
+                        return;
+                    }
+                }
+            }
+
             new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod, (type, description) -> {
                 new NotificationDialog(getViewContext())
                         .setConfirmText(getString(R.string.payment_confirn))
@@ -331,7 +340,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismiss();
-                       mPresenter.onCanceled();
+                        mPresenter.onCanceled();
                         mPresenter.onCanceled();
                     })
                     .setContent(message)

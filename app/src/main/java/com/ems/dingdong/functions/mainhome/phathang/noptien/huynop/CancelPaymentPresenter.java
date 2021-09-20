@@ -37,6 +37,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
     private List<LadingPaymentInfo> ladingPaymentInfoList;
     private List<LadingCancelPaymentInfo> cancelRequests;
     private CancelPaymentContract.OnTabListener tabListener;
+
     public CancelPaymentPresenter(ContainerView containerView) {
         super(containerView);
     }
@@ -67,7 +68,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
     }
 
     @Override
-    public void cancelPayment(List<EWalletDataResponse> list,int type,String lydo) {
+    public void cancelPayment(List<EWalletDataResponse> list, int type, String lydo) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         cancelRequests = new ArrayList<>();
         cancelRequests.clear();
@@ -95,6 +96,8 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
             info.setRetRefNumber(item.getRetRefNumber());
             info.setAmount(item.getCodAmount());
             info.setFee(item.getFee());
+            info.setEWalletTransId(item.getEWalletTransId());
+            info.setFeeType(Integer.parseInt(item.getFeeType()));
             cancelRequests.add(info);
         }
         PaymentCancelRequestModel paymentCancelRequestModel = new PaymentCancelRequestModel();
@@ -105,6 +108,9 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
         paymentCancelRequestModel.setPostmanCode(postmanTel);
         paymentCancelRequestModel.setLadingPaymentInfoList(cancelRequests);
         paymentCancelRequestModel.setRouteId(routeInfo);
+        paymentCancelRequestModel.setRetRefNumber(list.get(0).getRetRefNumber());
+        paymentCancelRequestModel.setEWalletTransId(list.get(0).getEWalletTransId());
+        paymentCancelRequestModel.setServiceCode(list.get(0).getServiceCode());
         String dataJson = NetWorkController.getGson().toJson(paymentCancelRequestModel);
         dataRequestPayment.setData(dataJson);
         dataRequestPayment.setCode("EWL003");
@@ -116,7 +122,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showConfirmSuccess(simpleResult.getMessage());
-                    } else  {
+                    } else {
                         mView.showConfirmError(simpleResult.getMessage());
                     }
                     mView.hideProgress();
@@ -132,7 +138,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
     }
 
     @Override
-    public void getHistoryPayment(DataRequestPayment dataRequestPayment,int type) {
+    public void getHistoryPayment(DataRequestPayment dataRequestPayment, int type) {
         mView.showProgress();
         mInteractor.getHistoryPayment(dataRequestPayment)
                 .subscribeOn(Schedulers.io())
@@ -151,7 +157,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
                         mView.showListSuccess(list1);
                         if (type == 1) {
                             if (list1.size() == 0) {
-                                titleChanged(list1.size(), 1);
+                                titleChanged(list1.size(), 2);
                                 mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                             }
                         }
@@ -182,7 +188,6 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
     public int getCurrentTab() {
         return tabListener.getCurrentTab();
     }
-
 
 
     public CancelPaymentPresenter setTypeTab(int position) {

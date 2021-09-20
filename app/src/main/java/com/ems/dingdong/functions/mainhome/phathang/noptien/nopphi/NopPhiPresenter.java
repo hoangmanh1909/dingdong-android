@@ -1,17 +1,13 @@
-package com.ems.dingdong.functions.mainhome.phathang.noptien;
+package com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi;
 
 import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabContract;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.model.DataRequestPayment;
-import com.ems.dingdong.model.EWalletRemoveDataRequest;
 import com.ems.dingdong.model.EWalletRemoveRequest;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
@@ -22,19 +18,17 @@ import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentContract.Interactor>
-        implements PaymentContract.Presenter {
+public class NopPhiPresenter extends Presenter<NopPhiContract.View, NopPhiContract.Interactor>
+        implements NopPhiContract.Presenter {
 
     private int mPos;
     String id = "";
@@ -44,9 +38,9 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     String Mess = "";
     private List<LadingPaymentInfo> ladingPaymentInfoList;
     private List<EWalletRemoveRequest> removeRequests;
-    private PaymentContract.OnTabListener tabListener;
+    private NopPhiContract.OnTabListener tabListener;
 
-    public PaymentPresenter(ContainerView containerView) {
+    public NopPhiPresenter(ContainerView containerView) {
         super(containerView);
     }
 
@@ -56,13 +50,13 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     }
 
     @Override
-    public PaymentContract.Interactor onCreateInteractor() {
-        return new PaymentInteractor(this);
+    public NopPhiContract.Interactor onCreateInteractor() {
+        return new NopPhiInteractor(this);
     }
 
     @Override
-    public PaymentContract.View onCreateView() {
-        return PaymentFragment.getInstance();
+    public NopPhiContract.View onCreateView() {
+        return NopPhiFragment.getInstance();
     }
 
     @Override
@@ -76,9 +70,9 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     }
 
     @Override
-    public void getDataPayment(String serviceCode, String poCode, String routeCode, String postmanCode, String fromDate, String toDate) {
+    public void getDataPayment(String poCode, String routeCode, String postmanCode, String fromDate, String toDate) {
         mView.showProgress();
-        mInteractor.getDataPayment(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode)
+        mInteractor.getDataPayment(fromDate, toDate, poCode, routeCode, postmanCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eWalletDataResult -> {
@@ -86,10 +80,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         mView.showListSuccess(eWalletDataResult.getListEWalletData());
                         mView.hideProgress();
                         if (eWalletDataResult.getListEWalletData().size() == 0) {
-                            if (getPositionTab() == 0)
-                                titleChanged(eWalletDataResult.getListEWalletData().size(), 0);
-                            else if (getPositionTab() == 4)
-                                titleChanged(eWalletDataResult.getListEWalletData().size(), 1);
+                            titleChanged(eWalletDataResult.getListEWalletData().size(), 0);
                             mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                         }
                     }
@@ -111,7 +102,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
             info.setCodAmount(item.getCodAmount());
             info.setFeeCod(item.getFee());
             info.setLadingCode(item.getLadingCode());
-            info.setFeeType(item.getFeeType());
             ladingPaymentInfoList.add(info);
         }
         requestModel.setLadingPaymentInfoList(ladingPaymentInfoList);
@@ -119,10 +109,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         requestModel.setPoCode(poCode);
         requestModel.setPostmanCode(postmanCode);
         requestModel.setRouteCode(routeCode);
-        if (getPositionTab() == 0)
-            requestModel.setServiceCode("2104");
-        else if (getPositionTab() == 4)
-            requestModel.setServiceCode("2105");
         mView.showProgress();
         mInteractor.requestPayment(requestModel)
                 .subscribeOn(Schedulers.io())
@@ -168,13 +154,8 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 info.setRetRefNumber("");
             else
                 info.setRetRefNumber(item.getRetRefNumber());
+//            Log.d("thanhkhiempy", info.getRetRefNumber());
             info.setRemoveBy(id);
-            if (getPositionTab() == 0)
-                info.setServiceCode("2104");
-            else if (getPositionTab() == 4)
-                info.setServiceCode("2105");
-
-            info.setFeeType(Integer.parseInt(item.getFeeType()));
             info.setPOCode(poCode);
             removeRequests.add(info);
         }
@@ -276,12 +257,12 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     }
 
 
-    public PaymentPresenter setTypeTab(int position) {
+    public NopPhiPresenter setTypeTab(int position) {
         mPos = position;
         return this;
     }
 
-    public PaymentPresenter setOnTabListener(PaymentContract.OnTabListener listener) {
+    public NopPhiPresenter setOnTabListener(NopPhiContract.OnTabListener listener) {
         this.tabListener = listener;
         return this;
     }
