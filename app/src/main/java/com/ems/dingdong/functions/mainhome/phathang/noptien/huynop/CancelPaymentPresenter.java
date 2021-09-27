@@ -18,6 +18,7 @@ import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,6 +163,9 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
                             }
                         }
                         mView.hideProgress();
+                    } else {
+                        mView.hideProgress();
+                        Toast.showToast(getViewContext(), walletDataHistoryResult.getMessage());
                     }
                 }, throwable -> {
                     mView.showErrorToast(throwable.getMessage());

@@ -56,8 +56,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
             android:inputType="textMultiLine"
-            android:hint="Nhập địa chỉ"
-            />
+            android:hint="Nhập địa chỉ" />
 
         <ImageView
             android:id="@+id/img_search"

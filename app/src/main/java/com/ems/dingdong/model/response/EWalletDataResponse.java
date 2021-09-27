@@ -43,6 +43,17 @@ public class EWalletDataResponse extends SimpleResult {
     @SerializedName("EWalletTransId")
     String EWalletTransId;
 
+    @SerializedName("FeeTypeName")
+    String FeeTypeName;
+
+    public String getFeeTypeName() {
+        return FeeTypeName;
+    }
+
+    public void setFeeTypeName(String feeTypeName) {
+        FeeTypeName = feeTypeName;
+    }
+
     public String getEWalletTransId() {
         return EWalletTransId;
     }
@@ -50,6 +61,7 @@ public class EWalletDataResponse extends SimpleResult {
     public void setEWalletTransId(String EWalletTransId) {
         this.EWalletTransId = EWalletTransId;
     }
+
     public String getServiceCode() {
         return ServiceCode;
     }

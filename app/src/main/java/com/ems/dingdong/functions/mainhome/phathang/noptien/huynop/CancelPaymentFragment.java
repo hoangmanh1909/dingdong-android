@@ -314,7 +314,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                 }
             }
 
-            new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod, (type, description) -> {
+            new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod + fee, (type, description) -> {
                 new NotificationDialog(getViewContext())
                         .setConfirmText(getString(R.string.payment_confirn))
                         .setCancelText(getString(R.string.payment_cancel))
@@ -432,7 +432,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
             String codAmount = NumberUtils.formatPriceNumber(cod);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
-                    mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                    mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền : " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
                     "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
 

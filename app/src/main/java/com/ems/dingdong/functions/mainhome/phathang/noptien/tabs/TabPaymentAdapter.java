@@ -28,8 +28,8 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
         this.tabs = tabs;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mTitleString[0] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"12dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
-            mTitleString[1] = Html.fromHtml("Nộp phí " + "<font color=\"red\", size=\"12dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            mTitleString[0] = Html.fromHtml("Nộp 2104 " + "<font color=\"red\", size=\"12dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+            mTitleString[1] = Html.fromHtml("Nộp 2105 " + "<font color=\"red\", size=\"12dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
 
             mTitleString[2] = Html.fromHtml("Hủy nộp " + "<font color=\"red\", size=\"12dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             mTitleString[3] = Html.fromHtml("Lịch sử " + "<font color=\"red\", size=\"12dp\">" + "(" + 0 + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
@@ -62,9 +62,9 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
     void setTittle(int quantity, int positionTab) {
         if (positionTab == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[positionTab] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[positionTab] = Html.fromHtml("Nộp 2104 " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[positionTab] = Html.fromHtml("Nộp tiền " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[positionTab] = Html.fromHtml("Nộp 2104 " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>");
             }
         } else if (positionTab == 2) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -80,9 +80,9 @@ public class TabPaymentAdapter extends FragmentStatePagerAdapter {
             }
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTitleString[1] = Html.fromHtml("Nộp phí " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
+                mTitleString[1] = Html.fromHtml("Nộp 2105 " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>", Html.FROM_HTML_MODE_COMPACT);
             } else {
-                mTitleString[1] = Html.fromHtml("Nộp phí " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>");
+                mTitleString[1] = Html.fromHtml("Nộp 2105 " + "<font color=\"red\", size=\"10dp\">" + "(" + quantity + ")" + "</font>");
             }
         }
     }

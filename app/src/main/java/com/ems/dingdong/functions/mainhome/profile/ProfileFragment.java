@@ -122,7 +122,6 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             switchPayPos.setChecked(true);
         }
 
-
         switchPayPos.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isChecked);
         });

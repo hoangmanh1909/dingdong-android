@@ -88,7 +88,6 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
     }
 
 
-
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -168,6 +167,11 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
         LinearLayout ll_radio;
 
 
+        @BindView(R.id.tv_cod_amount)
+        CustomTextView tvCod;
+        @BindView(R.id.tv_fee)
+        CustomTextView tvFee;
+
         public HolderView(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -179,6 +183,17 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
 
         public void bindView(EWalletDataResponse model, int position) {
             index.setText((position + 1) + " - ");
+
+            if (model.getCodAmount() != null)
+                tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), NumberUtils.formatPriceNumber(model.getCodAmount())));
+            else
+                tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), "0"));
+
+            if (model.getFee() != null)
+                tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), NumberUtils.formatPriceNumber(model.getFee())));
+            else
+                tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), "0"));
+
             if (model.getGetPositionTab() == 2)
                 ll_radio.setVisibility(View.GONE);
             else
@@ -199,10 +214,11 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
             else
                 tvThoigiannoptien.setText("");
 
-            if (model.getCodAmount() != null)
-                tv_tongTienNop.setText(String.format("%s: %s", mContext.getString(R.string.tong_tien_nop), NumberUtils.formatPriceNumber(model.getCodAmount() + model.getFee())));
-            else
-                tv_tongTienNop.setText("");
+//            if (model.getCodAmount() != null)
+//                tv_tongTienNop.setText(String.format("%s: %s", mContext.getString(R.string.tong_tien_nop), NumberUtils.formatPriceNumber(model.getCodAmount() + model.getFee())));
+//            else
+//                tv_tongTienNop.setText("");
+
 
             if (!TextUtils.isEmpty(model.getStatusName())) {
                 if (model.getStatusCode().equals("S"))

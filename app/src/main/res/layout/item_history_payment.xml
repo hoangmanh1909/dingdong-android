@@ -63,12 +63,12 @@
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_trang_thai"
-                    android:layout_toLeftOf="@+id/tv_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/tv_code"
                     android:background="@drawable/bg_button_yellow"
                     android:gravity="center|right"
                     android:paddingLeft="15dp"
@@ -84,14 +84,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
+
                 <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_tong_tien_nop"
+                    android:id="@+id/tv_cod_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp"
+                    android:layout_toLeftOf="@+id/tv_thoi_gian_nop_tien"
                     android:text=""
-                    android:layout_toLeftOf="@+id/tv_thoi_gian_nop_tien"/>
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+
                 <com.ems.dingdong.views.CustomBoldTextView
                     android:id="@+id/tv_thoi_gian_nop_tien"
                     android:layout_width="wrap_content"
@@ -107,6 +109,22 @@
             </RelativeLayout>
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_tong_tien_nop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                android:visibility="gone" />
+
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_so_tham_chieu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,7 +132,11 @@
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
-
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray"/>
 </LinearLayout>

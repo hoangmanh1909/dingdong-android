@@ -32,12 +32,14 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
     private List<EWalletDataResponse> mList;
     private final PaymentAdapter.FilterDone mFilterDone;
     private final Context mContext;
+    String mType;
 
-    public PaymentAdapter(Context context, List<EWalletDataResponse> list, FilterDone filterDone) {
+    public PaymentAdapter(Context context, List<EWalletDataResponse> list, String type, FilterDone filterDone) {
         this.mFilterDone = filterDone;
         mListFilter = list;
         mList = list;
         mContext = context;
+        mType = type;
     }
 
     @Override
@@ -173,16 +175,28 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
             else
                 tvLadingCode.setText("");
 
-            if (model.getCodAmount() != null)
-                tvCod.setText(String.format("%s: %s", mContext.getString(R.string.cod_amount), NumberUtils.formatPriceNumber(model.getCodAmount())));
-            else
-                tvCod.setText(String.format("%s: %s", mContext.getString(R.string.cod_amount), "0"));
 
-            if (model.getFee() != null)
-                tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), NumberUtils.formatPriceNumber(model.getFee())));
-            else
-                tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), "0"));
+            if (mType.equals("2104")) {
+                if (model.getCodAmount() != null)
+                    tvCod.setText(String.format("%s: %s", mContext.getString(R.string.cod_amount), NumberUtils.formatPriceNumber(model.getCodAmount())));
+                else
+                    tvCod.setText(String.format("%s: %s", mContext.getString(R.string.cod_amount), "0"));
 
+                if (model.getFee() != null)
+                    tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), NumberUtils.formatPriceNumber(model.getFee())));
+                else
+                    tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), "0"));
+            } else {
+                if (model.getCodAmount() != null)
+                    tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), NumberUtils.formatPriceNumber(model.getCodAmount())));
+                else
+                    tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), "0"));
+
+                if (model.getFee() != null)
+                    tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), NumberUtils.formatPriceNumber(model.getFee())));
+                else
+                    tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), "0"));
+            }
             if (!TextUtils.isEmpty(model.getReceiverName()))
                 tvReceiverName.setText(String.format("%s: %s", mContext.getString(R.string.receiver_name), model.getReceiverName()));
             else
@@ -198,7 +212,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.HolderVi
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_green);
                 else if (model.getStatusCode().equals("C"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_red);
-                else if (model.getStatusCode().equals("A") ||model.getStatusCode().equals("E") )
+                else if (model.getStatusCode().equals("A") || model.getStatusCode().equals("E"))
                     tv_trang_thai.setBackgroundResource(R.drawable.bg_button_yellow);
                 tv_trang_thai.setText(model.getStatusName());
             } else

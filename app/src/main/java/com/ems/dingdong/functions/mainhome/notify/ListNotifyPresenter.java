@@ -56,7 +56,10 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                         this.list1 = list1;
                         mView.hideProgress();
                         mView.showListNotifi(list1);
-                    } else mView.hideProgress();
+                    }  else {
+                        mView.hideProgress();
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
                 });
     }
 

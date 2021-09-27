@@ -68,7 +68,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     private String routeCode = "";
     private String fromDate = "";
     private String toDate = "";
-
+    String type;
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,15 +108,23 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     }
 
     public void onDisplayFake() {
-        if (mPresenter.getPositionTab() == 0)
+        if (mPresenter.getPositionTab() == 0) {
             mPresenter.getDataPayment("2104", poCode, routeCode, postmanCode, fromDate, toDate);
-        else if (mPresenter.getPositionTab() == 4)
+            type = "2104";
+        } else if (mPresenter.getPositionTab() == 4) {
+            type = "2105";
             mPresenter.getDataPayment("2105", poCode, routeCode, postmanCode, fromDate, toDate);
+        }
     }
 
     @Override
     public void initLayout() {
         super.initLayout();
+        if (mPresenter.getPositionTab() == 0) {
+            type = "2104";
+        } else if (mPresenter.getPositionTab() == 4) {
+            type = "2105";
+        }
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
@@ -144,7 +152,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter = new PaymentAdapter(getViewContext(), mList, (count, amount, fee) -> new Handler().postDelayed(() -> {
+        mAdapter = new PaymentAdapter(getViewContext(), mList,type,  (count, amount, fee) -> new Handler().postDelayed(() -> {
             tvAmount.setText(String.format("%s %s", getViewContext().getString(R.string.amount), String.valueOf(count)));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
             tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(amount)));
@@ -395,11 +403,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 cod += item.getCodAmount();
                 fee += item.getFee();
             }
-            String codAmount = NumberUtils.formatPriceNumber(cod);
+            String codAmount = NumberUtils.formatPriceNumber(cod + fee);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
             String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " khoản thu với tổng số tiền : " +
-                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, qua ví bưu điện?";
 
             new NotificationDialog(getViewContext())
                     .setConfirmText(getString(R.string.payment_confirn))
@@ -448,7 +456,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện ?";
 
             new NotificationDialog(getViewContext())
                     .setConfirmText(getString(R.string.payment_confirn))

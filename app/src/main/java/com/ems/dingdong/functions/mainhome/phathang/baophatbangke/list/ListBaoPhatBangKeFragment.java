@@ -222,68 +222,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             POCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         }
 
-//        img_ContactPhone_extend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (ContextCompat.checkSelfPermission(getContext(),
-//                        Manifest.permission.CALL_PHONE)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(getActivity(),
-//                            new String[]{Manifest.permission.CALL_PHONE},
-//                            00);
-//                } else {
-//                    try {
-//                        mPhoneConectDialogExtend = new PhoneConectDialogExtend(getActivity(), "0983391992", new PhoneCallback() {
-//                            @Override
-//                            public void onCallSenderResponse(String phone) {
-//                                mPhone = phone;
-//                                EventBus.getDefault().postSticky(new CustomLadingCode(choosenLadingCode));
-//                                EventBus.getDefault().postSticky(new CustomToNumber(mPhone));
-//                                callProvidertoSender();
-//                            }
-//
-//                            @Override
-//                            public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
-//                                showConfirmSaveMobileReceiver(phone, mAdapter.getListFilter().get(0).getMaE(), callback);
-//                            }
-//
-//                            @Override
-//                            public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
-//                                showConfirmSaveMobileSender(phone, mAdapter.getListFilter().get(0).getMaE(), callback);
-//                            }
-//
-//                            @Override
-//                            public void onCallCSKH(String phone) {
-//                                callProvidertoCSKH();
-//                            }
-//
-//                            @Override
-//                            public void onCallReceiverResponse(String phone) {
-//                                mPresenter.updateMobile(phone, choosenLadingCode);
-//                                mPresenter.callForward(phone, choosenLadingCode);
-//                            }
-//
-//                            @Override
-//                            public void onCallSenderResponse1(String phone) {
-//                                mPresenter.updateMobileSender(phone, choosenLadingCode);
-//                                mPresenter.callForward(phone, choosenLadingCode);
-//                            }
-//                        });
-//                        mPhoneConectDialogExtend.show();
-//                    } catch (SecurityException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                try {
-//                    mSenderPhone = mAdapter.getListFilter().get(0).getSenderMobile();
-//                    choosenLadingCode = mAdapter.getListFilter().get(0).getMaE();
-//                    EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
-//                } catch (IndexOutOfBoundsException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
         if (mPresenter != null) {
             if (mPresenter.getPositionTab() == Constants.DI_PHAT) {
                 checkSelfPermission();

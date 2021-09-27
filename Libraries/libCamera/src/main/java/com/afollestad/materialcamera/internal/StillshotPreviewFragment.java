@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialcamera.R;
-import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.Glide;
 public class StillshotPreviewFragment extends BaseGalleryFragment {
 
     private ImageView mImageView;

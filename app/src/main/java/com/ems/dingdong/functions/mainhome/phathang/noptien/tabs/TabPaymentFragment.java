@@ -76,6 +76,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         tabList.add((HistoryPaymentFragment) new HistoryPaymentPresenter(mPresenter.getContainerView()).setTypeTab(2).setOnTabListener(this).getFragment());
         mAdapter = new TabPaymentAdapter(getChildFragmentManager(), getContext(), tabList);
         pager.setAdapter(mAdapter);
+        tabs.setShouldExpand(true);
         pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
             @Override
             public void onCustomPageSelected(int newPosition) {
@@ -86,23 +87,16 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
                         imgSend.setVisibility(View.VISIBLE);
                         imgDelete.setVisibility(View.VISIBLE);
                         imgDelete.setImageResource(R.drawable.ic_remove);
-                        imgSend.setImageResource(R.drawable.ic_confirm);
+                        imgSend.setImageResource(R.drawable.telegram);
                         break;
-//                        mPosition = newPosition;
-//                        imgSend.setVisibility(View.VISIBLE);
-//                        imgDelete.setVisibility(View.VISIBLE);
-//                        imgDelete.setImageResource(R.drawable.ic_remove);
-//                        imgSend.setImageResource(R.drawable.ic_confirm);
-//                        break;
                     case 2:
                         mPosition = newPosition;
                         imgSend.setVisibility(View.GONE);
                         imgDelete.setVisibility(View.GONE);
-//                         hủy nộp tiền  chưa triển khai nên ẩn đi
                         mPosition = newPosition;
                         imgSend.setVisibility(View.VISIBLE);
                         imgDelete.setVisibility(View.GONE);
-                        imgSend.setImageResource(R.drawable.close);
+                        imgSend.setImageResource(R.drawable.ic_close);
                         break;
                     case 3:
                         mPosition = newPosition;
@@ -122,6 +116,8 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
     public void onCanceledDelivery() {
         PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
         paymentFragment1.onDisplayFake();
+        PaymentFragment paymentFragment2 = (PaymentFragment) tabList.get(1);
+        paymentFragment2.onDisplayFake();
         CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(2);
         cancelPaymentFragment.onDisplayFake();
         HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(3);

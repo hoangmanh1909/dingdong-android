@@ -41,7 +41,7 @@
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/img_send"
-                android:padding="@dimen/_10sdp"
+                android:padding="10dp"
                 android:src="@drawable/ic_remove" />
 
             <ImageView
@@ -50,8 +50,8 @@
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_confirm" />
+                android:padding="10dp"
+                android:src="@drawable/telegram" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -64,16 +64,18 @@
         <com.astuetz.PagerSlidingTabStrip
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:pstsDividerColor="@color/text_color_primary"
+            android:layout_height="48dp"
+            app:pstsDividerColor="@color/green"
+            app:pstsDividerPadding="@dimen/dimen_10dp"
             app:pstsDividerWidth="1dp"
-            app:pstsIndicatorColor="#0e7959"
+            app:pstsIndicatorColor="@color/colorPrimary"
+            app:pstsScrollOffset="10dp"
             app:pstsShouldExpand="true"
             app:pstsTabBackground="@drawable/bg_tabs"
             app:pstsTabTextAllCaps="false"
-            app:pstsTabTextAlpha="100"
+            app:pstsTabTextAlpha="@integer/google_play_services_version"
             app:pstsTabTextColor="@color/black"
-            app:pstsTabTextSize="12dp"
+            app:pstsTabTextSize="11dp"
             app:pstsTabTextStyle="bold"
             app:pstsUnderlineColor="@color/colorWhite" />
     </androidx.cardview.widget.CardView>

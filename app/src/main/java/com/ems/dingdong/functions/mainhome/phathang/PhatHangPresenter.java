@@ -23,6 +23,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -80,6 +81,9 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
                         mView.hideProgress();
 
+                    } else {
+                        mView.hideProgress();
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
                 });
     }

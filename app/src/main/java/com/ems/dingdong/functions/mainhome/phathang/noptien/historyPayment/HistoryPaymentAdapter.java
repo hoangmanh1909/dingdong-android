@@ -26,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class  HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAdapter.HolderView> implements Filterable {
+public class HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAdapter.HolderView> implements Filterable {
 
     private List<EWalletDataResponse> mListFilter;
     private List<EWalletDataResponse> mList;
@@ -166,7 +166,10 @@ public class  HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentA
 
         @BindView(R.id.ll_radio)
         LinearLayout ll_radio;
-
+        @BindView(R.id.tv_cod_amount)
+        CustomTextView tvCod;
+        @BindView(R.id.tv_fee)
+        CustomTextView tvFee;
 
         public HolderView(@NonNull View itemView) {
             super(itemView);
@@ -180,6 +183,18 @@ public class  HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentA
         public void bindView(EWalletDataResponse model, int position) {
             index.setText((position + 1) + " - ");
             ll_radio.setVisibility(View.GONE);
+
+            if (model.getCodAmount() != null)
+                tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), NumberUtils.formatPriceNumber(model.getCodAmount())));
+            else
+                tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), "0"));
+
+            if (model.getFee() != null)
+                tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), NumberUtils.formatPriceNumber(model.getFee())));
+            else
+                tvFee.setText(String.format("%s: %s", mContext.getString(R.string.fee_money), "0"));
+
+
             if (!TextUtils.isEmpty(model.getLadingCode()))
                 tvLadingCode.setText(model.getLadingCode());
             else

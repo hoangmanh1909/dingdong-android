@@ -176,11 +176,14 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <View style="@style/Devider" />
+            <View
+                style="@style/Devider"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rl_paypost"
-                style="@style/RelativeLayoutPersonal">
+                style="@style/RelativeLayoutPersonal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

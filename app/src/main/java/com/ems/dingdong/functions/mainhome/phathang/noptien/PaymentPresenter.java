@@ -92,6 +92,9 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                                 titleChanged(eWalletDataResult.getListEWalletData().size(), 1);
                             mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                         }
+                    } else {
+                        mView.hideProgress();
+                        Toast.showToast(getViewContext(), eWalletDataResult.getMessage());
                     }
                 }, throwable -> {
                     mView.showErrorToast(throwable.getMessage());
