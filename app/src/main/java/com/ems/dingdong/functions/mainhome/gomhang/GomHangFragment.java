@@ -98,9 +98,9 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                             Intent intent = new Intent(getActivity(), RouteTabsActivity.class);
                             intent.putExtra(Constants.ROUTE_CHANGE_MODE, Constants.ROUTE_CHANGE_ORDER);
                             startActivity(intent);
-                        }else if (homeInfo.getId() == 8) {
+                        } else if (homeInfo.getId() == 8) {
                             mPresenter.showTaoTinmoi();
-                        }  else if (homeInfo.getId() == 5) {
+                        } else if (homeInfo.getId() == 5) {
                             mPresenter.showListStatistic();
                         }
                     }

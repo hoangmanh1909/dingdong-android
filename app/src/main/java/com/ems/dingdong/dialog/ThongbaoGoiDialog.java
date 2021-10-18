@@ -20,7 +20,7 @@ import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

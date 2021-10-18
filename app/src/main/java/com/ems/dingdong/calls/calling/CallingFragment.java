@@ -48,8 +48,8 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
-import com.sip.cmc.SipCmc;
-import com.sip.cmc.callback.PhoneCallback;
+//import com.sip.cmc.SipCmc;
+//import com.sip.cmc.callback.PhoneCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -137,7 +137,7 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
             mNotificationManager.createNotificationChannel(callChannel);
         }
         apptoapp = mPresenter.getAppToApp();
-        SipCmc.toggleSpeaker(isSpeaker);
+//        SipCmc.toggleSpeaker(isSpeaker);
         CallManager.Instance().reset();
         _tvPhone.setText(mPresenter.getCalleeNumber());
         if (mPresenter.getCallType() == Constants.CALL_TYPE_CALLING) {
@@ -200,20 +200,20 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
                 isMute = !isMute;
                 if (isMute) {
                     _btnMic.setImageResource(R.drawable.ic_mute_on);
-                    SipCmc.toggleMicro(true);
+//                    SipCmc.toggleMicro(true);
                 } else {
                     _btnMic.setImageResource(R.drawable.ic_mute_off);
-                    SipCmc.toggleMicro(false);
+//                    SipCmc.toggleMicro(false);
                 }
 
                 break;
             case R.id.btn_speaker:
                 isSpeaker = !isSpeaker;
                 if (isSpeaker) {
-                    SipCmc.toggleSpeaker(true);
+//                    SipCmc.toggleSpeaker(true);
                     _btnLoa.setImageResource(R.drawable.ic_speaker_on);
                 } else {
-                    SipCmc.toggleSpeaker(false);
+//                    SipCmc.toggleSpeaker(false);
                     _btnLoa.setImageResource(R.drawable.ic_speaker_off);
                 }
                 break;
@@ -292,14 +292,14 @@ public class CallingFragment extends ViewFragment<CallingContract.Presenter> imp
 
     private void acceptCallCtel() {
         try {
-            SipCmc.acceptCall();
+//            SipCmc.acceptCall();
         } catch (NullPointerException nullPointerException) {
         }
     }
 
     private void endCallCtel() {
         try {
-            SipCmc.hangUp();
+//            SipCmc.hangUp();
         } catch (NullPointerException nullPointerException) {
         }
     }

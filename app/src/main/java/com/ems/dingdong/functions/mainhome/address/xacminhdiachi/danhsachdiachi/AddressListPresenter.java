@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi
 
 import android.app.Activity;
 import android.location.Location;
+import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -9,8 +10,13 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.model.AddressListModel;
+import com.ems.dingdong.model.ResultModel;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -20,6 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -31,6 +39,10 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     private double longitude;
     private double latitude;
     private Location mCurrentLocation;
+    List<VpostcodeModel> getListVpost;
+    List<VpostcodeModel> getListVpostV1;
+    List<AddressListModel> getListSearch;
+    List<AddressListModel> getListSearchV1;
 
     public AddressListPresenter(ContainerView containerView) {
         super(containerView);
@@ -38,7 +50,8 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
     @Override
     public void start() {
-
+        getListSearch = new ArrayList<>();
+        getListVpostV1 = new ArrayList<>();
     }
 
     public AddressListPresenter setAddress(String address) {
@@ -57,42 +70,30 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
         return this;
     }
 
+
     @Override
-    public void showAddressDetail(AddressListModel addressListModel) {
-        if (mType == Constants.TYPE_DETAIL_ADDRESS) {
-            new ChiTietDiaChiPresenter(mContainerView).setChiTietDiaChi(addressListModel).setOnCloseListener(this).pushView();
-        } else {
-            new TimDuongDiPresenter(mContainerView).setChiTietDiaChi(addressListModel).pushView();
-        }
+    public void showAddressDetail(List<VpostcodeModel> addressListModel) {
+        Log.d("asdhjagsdhj23123", new Gson().toJson(addressListModel));
+        new TimDuongDiPresenter(mContainerView).setType(mType).setListVposcode(addressListModel).pushView();
     }
 
     @Override
     public void vietmapSearch(String address, Location location) {
         mView.showProgress();
         mAddress = address;
-        mInteractor.vietmapSearchByAddress(address, location.getLongitude(), location.getLatitude(), new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
-                super.onSuccess(call, response);
-                if (response.body().getErrorCode().equals("00")) {
-                    try {
-                        mView.showAddressList(handleObjectList(response.body().getResponseLocation()));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-                mView.hideProgress();
-            }
 
-            @Override
-            protected void onError(Call<XacMinhDiaChiResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
+        mInteractor.vietmapSearchByAddress(address, location.getLongitude(), location.getLatitude())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        try {
+                            getListSearch.addAll(handleObjectList(simpleResult.getResponseLocation()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                });
     }
 
     @Override
@@ -144,6 +145,53 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     }
 
     @Override
+    public List<VpostcodeModel> getListVpost() {
+        return getListVpost;
+    }
+
+
+    @Override
+    public List<AddressListModel> getListSearch() {
+        mView.hideProgress();
+        return getListSearch;
+
+    }
+
+    @Override
+    public void getMapVitri(Double v1,Double v2) {
+        mView.showProgress();
+//        Double v1 = location.getLongitude();
+//        Double v2 = location.getLatitude();
+        mInteractor.vietmapSearchViTri(v1, v2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        Object data = simpleResult.getResponseLocation();
+                        String dataJson = NetWorkController.getGson().toJson(data);
+                        XacMinhDiaChiResult resultModel = NetWorkController.getGson().fromJson(dataJson, XacMinhDiaChiResult.class);
+                        getListSearchV1 = new ArrayList<>();
+                        VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                        vpostcodeModel.setMaE("");
+                        vpostcodeModel.setId(0);
+                        if (mType == 99)
+                            vpostcodeModel.setReceiverVpostcode(resultModel.getResult().getSmartCode());
+                        else
+                            vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
+                        vpostcodeModel.setFullAdress("Vị trí hiện tại");
+                        getListVpostV1.add(vpostcodeModel);
+                        mView.showList(vpostcodeModel);
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
+    public AddressListPresenter setListVpost(List<VpostcodeModel> vpost) {
+        this.getListVpost = vpost;
+        return this;
+    }
+
+    @Override
     public void closeAuthorise() {
         getViewContext().finish();
     }
@@ -182,6 +230,12 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                 listObject.add(addressListModel);
             }
         }
+        return listObject;
+    }
+
+    private List<AddressListModel> handleObjectListV1(Object object) throws JSONException {
+        List<AddressListModel> listObject = new ArrayList<>();
+
         return listObject;
     }
 }

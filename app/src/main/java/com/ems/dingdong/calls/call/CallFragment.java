@@ -32,7 +32,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomImageView;
 import com.ems.dingdong.views.CustomTextView;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -165,7 +165,7 @@ public class CallFragment extends ViewFragment<CallContract.Presenter> implement
             case R.id.iv_call_end:
                 Ring.getInstance(getActivity()).stop();
                 currentLine.reset();
-                SipCmc.hangUp();
+//                SipCmc.hangUp();
                 finishCall();
                 break;
 
@@ -299,7 +299,7 @@ public class CallFragment extends ViewFragment<CallContract.Presenter> implement
                             chronometer.setVisibility(View.GONE);
                             changeCallLayout(Constants.CALL_TYPE_CALLING);
                             Ring.getInstance(getViewContext()).stopRingTone();
-                            SipCmc.hangUp();
+//                            SipCmc.hangUp();
                             finishCall();
                         } catch (NullPointerException nullPointerException) {
                             showErrorToast("Lỗi cuộc gọi");
@@ -343,11 +343,11 @@ public class CallFragment extends ViewFragment<CallContract.Presenter> implement
     private void toggleSpeakerCtel() {
         ivCallCancel.setOnClickListener(v -> {
             if (isSpeak == 10) {
-                SipCmc.toggleSpeaker(true);
+//                SipCmc.toggleSpeaker(true);
                 ivCallCancel.setImageResource(R.drawable.ic_speaker_green);
                 isSpeak++;
             } else if (isSpeak == 11) {
-                SipCmc.toggleSpeaker(false);
+//                SipCmc.toggleSpeaker(false);
                 ivCallCancel.setImageResource(R.drawable.ic_button_speaker);
                 isSpeak = 10;
             }
@@ -356,14 +356,14 @@ public class CallFragment extends ViewFragment<CallContract.Presenter> implement
 
     private void acceptCallCtel() {
         try {
-            SipCmc.acceptCall();
+//            SipCmc.acceptCall();
         } catch (NullPointerException nullPointerException) {
         }
     }
 
     private void endCallCtel() {
         try {
-            SipCmc.hangUp();
+//            SipCmc.hangUp();
         } catch (NullPointerException nullPointerException) {
         }
     }

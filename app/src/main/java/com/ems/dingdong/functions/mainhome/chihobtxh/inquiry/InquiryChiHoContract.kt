@@ -14,7 +14,10 @@ import com.ems.dingdong.model.response.SeaBankInquiryResponse
 interface InquiryChiHoContract {
 
     interface Interactor : IInteractor<Presenter> {
-        fun seaBankInquiry(seaBankInquiryRequest: SeaBankInquiryRequest, callback: CommonCallback<SeaBankInquiryResponse>)
+        fun seaBankInquiry(
+            seaBankInquiryRequest: SeaBankInquiryRequest,
+            callback: CommonCallback<SeaBankInquiryResponse>
+        )
     }
 
     interface View : PresentView<Presenter>

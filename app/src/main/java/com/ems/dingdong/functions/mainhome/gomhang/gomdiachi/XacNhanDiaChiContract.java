@@ -8,9 +8,11 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface XacNhanDiaChiContract {
 
@@ -32,7 +34,7 @@ public interface XacNhanDiaChiContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
 
-        void vietmapSearch(String address);
+        void vietmapSearch(List<VpostcodeModel> vpostcodeModels);
 
         void searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,

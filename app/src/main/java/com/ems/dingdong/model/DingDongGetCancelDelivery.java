@@ -53,6 +53,47 @@ public class DingDongGetCancelDelivery {
     @SerializedName("FeePPA")
     @Expose
     private Integer FeePPA;
+    @SerializedName("FeePA")
+    @Expose
+    private Integer FeePA;
+    @SerializedName("FeeCOD")
+    private long feeCOD;
+    @SerializedName("FeeCancelOrder")
+    private long FeeCancelOrder;
+    @SerializedName("FeeC")
+    private long feeC;
+
+    public long getFeeC() {
+        return feeC;
+    }
+
+    public void setFeeC(long feeC) {
+        this.feeC = feeC;
+    }
+
+    public long getFeeCOD() {
+        return feeCOD;
+    }
+
+    public void setFeeCOD(long feeCOD) {
+        this.feeCOD = feeCOD;
+    }
+
+    public long getFeeCancelOrder() {
+        return FeeCancelOrder;
+    }
+
+    public void setFeeCancelOrder(long feeCancelOrder) {
+        FeeCancelOrder = feeCancelOrder;
+    }
+
+    public Integer getFeePA() {
+        return FeePA;
+    }
+
+    public void setFeePA(Integer feePA) {
+        FeePA = feePA;
+    }
 
     public Integer getFeeShip() {
         return FeeShip;

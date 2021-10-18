@@ -73,17 +73,13 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-//                    Log.d("SML001", new Gson().toJson(simpleResult.getData()));
                     if (simpleResult.getErrorCode().equals("00")) {
-//                        ModeTu[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), ModeTu[].class);
-//                        List<ModeTu> list1 = Arrays.asList(list);
                         sharedPref.putString(Constants.KEY_MODE_TU, simpleResult.getData());
-
                         mView.hideProgress();
 
                     } else {
                         mView.hideProgress();
-                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+//                        Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
                 });
     }

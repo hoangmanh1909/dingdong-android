@@ -1,5 +1,6 @@
 package com.ems.dingdong.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -14,8 +15,28 @@ public class CommonObject extends RealmObject {
 
 
     @SerializedName("CustomerName")
-    String customerName;
+    String customerName= "";
+    @SerializedName("SenderVpostcode")
+    String SenderVpostcode;
+    @SerializedName("ReferenceCode")
+    @Expose
+    private String ReferenceCode;
 
+    public String getReferenceCode() {
+        return ReferenceCode;
+    }
+
+    public void setReferenceCode(String referenceCode) {
+        ReferenceCode = referenceCode;
+    }
+
+    public String getSenderVpostcode() {
+        return SenderVpostcode;
+    }
+
+    public void setSenderVpostcode(String senderVpostcode) {
+        SenderVpostcode = senderVpostcode;
+    }
 
     public String getCustomerName() {
         return customerName;
@@ -53,6 +74,10 @@ public class CommonObject extends RealmObject {
     //region hoantattin
     @SerializedName("TrackingCode")
     String trackingCode;
+    @SerializedName("ListLading")
+    String ListLading;
+    @SerializedName("ListOrderNumber")
+    String ListOrderNumber;
 
     public void setTrackingCode(String trackingCode) {
         this.trackingCode = trackingCode;
@@ -69,24 +94,24 @@ public class CommonObject extends RealmObject {
 
     @PrimaryKey
     @SerializedName(value = "Code", alternate = {"MaE", "ParcelCode"})
-    String code;
+    String code= "";
 
     @SerializedName(value = "ID", alternate = {"Id"})
     String iD;
     @SerializedName(value = "ContactName", alternate = {"ReciverName", "ReceiverName"})
     String receiverName;
     @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile", "ReceiverPhone"})
-    String receiverPhone;
+    String receiverPhone="";
     @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress", "ReceiverAddress"})
-    String receiverAddress;
+    String receiverAddress="";
     @SerializedName(value = "Weigh", alternate = {"Weight"})
-    String weigh;
+    String weigh="";
     //endregion
     //region baophatbangke
     @SerializedName("SenderName")
     String senderName;
     @SerializedName(value = "SenderPhone", alternate = {"SenderMobile"})
-    String senderPhone;
+    String senderPhone = "";
     @SerializedName("SenderAddress")
     String senderAddress;
     @SerializedName("PoCode")
@@ -123,6 +148,21 @@ public class CommonObject extends RealmObject {
     @SerializedName("OrderId")
     private String orderId;
 
+    public String getListLading() {
+        return ListLading;
+    }
+
+    public void setListLading(String listLading) {
+        ListLading = listLading;
+    }
+
+    public String getListOrderNumber() {
+        return ListOrderNumber;
+    }
+
+    public void setListOrderNumber(String listOrderNumber) {
+        ListOrderNumber = listOrderNumber;
+    }
 
     @SerializedName("FeePPA")
     private long feePPA;
@@ -691,7 +731,7 @@ public class CommonObject extends RealmObject {
     }
 
     public String getOrderNumber() {
-        return orderNumber;
+        return orderNumber="";
     }
 
     public String getRouteCode() {

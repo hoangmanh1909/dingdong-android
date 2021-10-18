@@ -21,6 +21,9 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("SenderMobile")
     @Expose
     private String senderMobile;
+    @SerializedName("ReferenceCode")
+    @Expose
+    private String ReferenceCode;
     @SerializedName("SenderAddress")
     @Expose
     private String senderAddress;
@@ -33,8 +36,6 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("ReceiverEmail")
     @Expose
     private String receiverEmail;
-
-
     @SerializedName("ReciverMobile")
     @Expose
     private String reciverMobile;
@@ -167,6 +168,34 @@ public class DeliveryPostman implements Comparable {
     private boolean isCancelOrder ;
     @SerializedName("FeeCancelOrder")
     private long FeeCancelOrder;
+    @SerializedName("ReceiverVpostcode")
+    String ReceiverVpostcode;
+    @SerializedName("SenderVpostcode")
+    String SenderVpostcode;
+
+    public String getReferenceCode() {
+        return ReferenceCode;
+    }
+
+    public void setReferenceCode(String referenceCode) {
+        ReferenceCode = referenceCode;
+    }
+
+    public String getReceiverVpostcode() {
+        return ReceiverVpostcode;
+    }
+
+    public void setReceiverVpostcode(String receiverVpostcode) {
+        ReceiverVpostcode = receiverVpostcode;
+    }
+
+    public String getSenderVpostcode() {
+        return SenderVpostcode;
+    }
+
+    public void setSenderVpostcode(String senderVpostcode) {
+        SenderVpostcode = senderVpostcode;
+    }
 
     public long getFeePA() {
         return FeePA;

@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.utiles.Constants;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,7 +24,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (Constants.YES_ACTION.equals(action)) {
             //Toast.makeText(context, "YES CALLED", Toast.LENGTH_SHORT).show();
-            SipCmc.acceptCall();
+//            SipCmc.acceptCall();
 
             Intent i = new Intent(context, IncomingCallActivity.class);
             i.putExtra(Constants.CALL_TYPE, 1);
@@ -34,7 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
         else  if (Constants.STOP_ACTION.equals(action)) {
             //Toast.makeText(context, "STOP CALLED", Toast.LENGTH_SHORT).show();
-            SipCmc.hangUp();
+//            SipCmc.hangUp();
         }
 
     }

@@ -111,28 +111,41 @@
                 android:textSize="@dimen/text_size_14sp" />
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layout_item_pick_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp">
 
-            <CheckBox
-                android:id="@+id/cb_pick_all"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/custom_btn_radio"
-                android:clickable="false" />
+                android:layout_height="wrap_content">
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/pick_all" />
+                <CheckBox
+                    android:id="@+id/cb_pick_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/custom_btn_radio"
+                    android:clickable="false" />
 
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/pick_all" />
+            </LinearLayout>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/img_map"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="2dp"
+                android:padding="3dp"
+                android:src="@drawable/ic_map64" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -218,8 +231,8 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/dimen_10dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_shortcut_icons8_barcode_scanner_64" />
+                android:src="@drawable/ic_shortcut_icons8_barcode_scanner_64"
+                android:visibility="gone" />
 
         </RelativeLayout>
     </LinearLayout>

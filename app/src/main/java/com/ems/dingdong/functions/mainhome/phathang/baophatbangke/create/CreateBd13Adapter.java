@@ -113,6 +113,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                         if (mTypeBD13 == TypeBD13.LIST_BD13) {
                             if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
                                     || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReferenceCode().toLowerCase().contains(charString.toLowerCase())
                                     || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
                                     || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
                                     || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
@@ -131,6 +132,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                         } else {
                             if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
                                     || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
+                                    || row.getReferenceCode().toLowerCase().contains(charString.toLowerCase())
                                     || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
                                     || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
                                     || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
@@ -218,6 +220,10 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public CustomTextView tvRefundPostage;
         @BindView(R.id.img_sml)
         public ImageView imgSml;
+        @BindView(R.id.iv_status)
+        public ImageView ivStatus;
+        @BindView(R.id.tv_sodonhang)
+        public CustomTextView tvSodonhang;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -242,6 +248,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_code.setText("");
             }
 
+            if (item.getReceiverVpostcode() == null || item.getReceiverVpostcode().isEmpty())
+                ivStatus.setVisibility(View.GONE);
+            else ivStatus.setVisibility(View.VISIBLE);
 
             String receiverName = "";
             String receiverMobile = "";
@@ -272,18 +281,26 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvBatchCode.setText("");
                 tvBatchCode.setVisibility(View.GONE);
             }
+
+            if (TextUtils.isEmpty(item.getReferenceCode())) {
+                tvSodonhang.setVisibility(View.GONE);
+            } else {
+                tvSodonhang.setVisibility(View.VISIBLE);
+                tvSodonhang.setText("Số đơn hàng: " + item.getReferenceCode());
+            }
+
             tv_receiver.setText(String.format("Người nhận: %s - %s - %s", receiverName, receiverMobile, receiverAddress));
             tv_sender.setText("Người gửi: " + item.getSenderName() + " - " + senderMobile + " - " + senderAddress);
 
             if (item.getWeight() != null)
                 tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
 
+            int fee = (int) (item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD());
             if (item.getAmount() != null)
-                tv_COD.setText("Số tiền COD: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+                tv_COD.setText("Tổng thu (PTC):  " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount() + fee)));
 
 //            if (item.getTotalFee() != null)
-            tv_fee.setText("Số tiền cước: " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder()+ item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD())));
-
+            tv_fee.setText("Tổng thu (PKTC): " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
             tvRefundPostage.setVisibility(View.GONE);
             try {
                 if (item.getIsItemReturn().equals("Y")) {
@@ -373,7 +390,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_sml_status.setText("Trạng thái SML: " + item.getsMLStatusName());
             } else tv_sml_status.setVisibility(View.GONE);
 
-
+            img_map.setVisibility(View.GONE);
         }
     }
 

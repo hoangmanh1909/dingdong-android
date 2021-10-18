@@ -13,44 +13,49 @@
             android:id="@+id/ll_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/dimen_30dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tên"
+                android:id="@+id/tv_stt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center|left"
+                android:text="1"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_16sp" />
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="bold" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_address"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:text="Địa chỉ"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Địa chỉ"
-                android:textSize="@dimen/text_size_14sp" />
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_check_v2" />
 
             <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_smart_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/smart_code"
+                android:id="@+id/tv_sua"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="right|center"
+                android:text="Sửa"
+                android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_14sp" />
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_flag" />
     </RelativeLayout>
 
-    <View
-        style="@style/Devider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="@dimen/dimen_10dp" />
 </LinearLayout>

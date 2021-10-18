@@ -20,9 +20,12 @@ import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.PushOnClickParcelAdapter;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
 
@@ -60,6 +63,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
     @Override
     public int getItemCount() {
+        if (mListFilter == null)
+            mListFilter = new ArrayList<>();
         return mListFilter.size();
     }
 
@@ -91,18 +96,19 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                                 || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCode().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())
-                                || row.getWeigh().toLowerCase().contains(charString.toLowerCase())) {
+                                || row.getWeigh().toLowerCase().contains(charString.toLowerCase())
+                                || row.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
-                        } else for (ParcelCodeInfo item : row.getListParcelCode()) {
-                            if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
-                                filteredList.add(row);
+                        } else if (row.getListParcelCode().size() > 0)
+                            for (ParcelCodeInfo item : row.getListParcelCode()) {
+                                if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
+                                        item.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
+                                    filteredList.add(row);
+                                }
                             }
-                        }
                     }
-
                     mListFilter = filteredList;
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mListFilter;
                 return filterResults;
@@ -113,7 +119,20 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 mListFilter = (ArrayList<CommonObject>) filterResults.values;
                 notifyDataSetChanged();
             }
+
         };
+    }
+
+    public List<CommonObject> getItemsSelected() {
+        List<CommonObject> commonObjectsSelected = new ArrayList<>();
+        List<CommonObject> items = mList;
+        for (CommonObject item : items) {
+            if (item.isSelected()) {
+                commonObjectsSelected.add(item);
+            }
+        }
+        Log.d("thanhkhiem1997", commonObjectsSelected.size() + "");
+        return commonObjectsSelected;
     }
 
     public void setListFilter(ArrayList<CommonObject> list) {
@@ -133,7 +152,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
     class HolderView extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_contact_address)
-        CustomTextView tvContactAddress;
+        public CustomBoldTextView tvContactAddress;
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
         @BindView(R.id.tv_contactName)
@@ -150,6 +169,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         LinearLayout linearLayout;
         @BindView(R.id.img_map)
         public ImageView imgMap;
+        @BindView(R.id.iv_status)
+        public ImageView ivStatus;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
 
@@ -167,19 +188,16 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
         public void bindView(Object model) {
             CommonObject item = (CommonObject) model;
-
-            if (mType == 1) {
-                imgMap.setVisibility(GONE);
-            } else if (mType == 4) {
-                imgMap.setVisibility(View.VISIBLE);
-            }
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
             tvCustomName.setText(String.format("Khách hàng: %s", item.getCustomerName()));
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
             tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS) + ""));
 
-            cbSelected.setVisibility(GONE);
+            if (item.getSenderVpostcode().isEmpty())
+                ivStatus.setVisibility(GONE);
+            else ivStatus.setVisibility(View.VISIBLE);
+
             if (mType == 1) {
                 cbSelected.setClickable(false);
                 cbSelected.setVisibility(View.VISIBLE);
@@ -235,34 +253,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 cbSelected.setChecked(item.isSelected());
 
             } else if (mType == 4) {
-                cbSelected.setClickable(false);
-
-                //chọn 1 item
-//                if (checkedPosition == -1) {
-//                    cbSelected.setChecked(false);
-//                    item.setSelected(false);
-//                    //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                } else {
-//                    if (checkedPosition == getAdapterPosition()) {
-//                        /*cbSelected.setChecked(true);
-//                        item.setSelected(true);
-//                        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));*/
-//                        if (cbSelected.isChecked()) {
-//                            cbSelected.setChecked(false);
-//                            item.setSelected(false);
-//                            //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                        } else {
-//                            cbSelected.setChecked(true);
-//                            item.setSelected(true);
-//                            //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-//                        }
-//                    } else {
-//                        cbSelected.setChecked(false);
-//                        item.setSelected(false);
-//                        //linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                    }
-//                }
-
                 //chọn tất cả list parcel code và bỏ chọn tất cả
                 cbSelected.setOnCheckedChangeListener((v1, v2) -> {
                     if (v2) {
@@ -320,19 +310,12 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             }
             if (mType == 4) {//2
                 // trong đoan này à
-                cbSelected.setVisibility(GONE);
-                cbSelected.setClickable(false);
+                cbSelected.setVisibility(View.VISIBLE);
+                cbSelected.setClickable(true);
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
-                if (parcelCodeSearch.equals("")) {
-                    filteredList = item.getListParcelCode();
-                } else {
-                    for (ParcelCodeInfo row : item.getListParcelCode()) {
-                        if (row.getTrackingCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
-                            filteredList.add(row);
-                        }
-                    }
+                for (ParcelCodeInfo row : item.getListParcelCode()) {
+                    filteredList.add(row);
                 }
-
                 binParcelCode(filteredList);
                 tvParcelCode.setOnClickListener(view -> {
                     if (recycler.getVisibility() == View.GONE) {

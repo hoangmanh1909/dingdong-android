@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -36,27 +36,36 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18sp" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img_next"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center|right"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/dimen_10dp"
+            app:srcCompat="@drawable/telegram" />
     </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/layout_change_route"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_5dp"
         android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
         android:background="@drawable/bg_radius_search"
-        android:layout_marginLeft="@dimen/dimen_5dp"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/edt_search_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/img_search"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14sp"
+            android:hint="Nhập địa chỉ"
             android:inputType="textMultiLine"
-            android:hint="Nhập địa chỉ" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp" />
 
         <ImageView
             android:id="@+id/img_search"
@@ -72,9 +81,6 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_5dp" />
+        android:padding="10dp" />
 
 </LinearLayout>

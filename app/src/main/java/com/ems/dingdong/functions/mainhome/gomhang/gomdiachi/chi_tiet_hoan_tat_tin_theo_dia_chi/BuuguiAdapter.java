@@ -88,7 +88,7 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
                         if (row.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
-                                row.getOrderCode().toLowerCase().contains(charString.toLowerCase())) {
+                                row.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -115,6 +115,8 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
         TextView tvMabuugui;
         @BindView(R.id.tv_matin)
         TextView tvMatin;
+        @BindView(R.id.tv_sodonhang)
+        TextView tvSodonhang;
         @BindView(R.id.radio_btn)
         public CheckBox radioBtn;
 
@@ -134,6 +136,11 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
             ParcelCodeInfo item = (ParcelCodeInfo) model;
             tvMabuugui.setText(item.getTrackingCode());
             tvMatin.setText(item.getOrderCode());
+
+            if (item.getOrderNumber() == null || item.getOrderNumber().isEmpty())
+                tvSodonhang.setVisibility(View.GONE);
+            else tvSodonhang.setVisibility(View.VISIBLE);
+            tvSodonhang.setText(item.getOrderNumber());
             radioBtn.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
                     ll_backgroundl.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));

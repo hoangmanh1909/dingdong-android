@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,9 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.ReasonCallback;
+import com.ems.dingdong.callback.VposcodeCallback;
+import com.ems.dingdong.dialog.TimDuongDiDialog;
 import com.ems.dingdong.model.AddressListModel;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,21 +53,18 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     CustomBoldTextView tvTitle;
 
     private AddressListAdapter addressListAdapter;
+    private AddressListAdapterV12 addressListAdapterV12;
     private boolean isBack = false;
     private String mAddress;
     private LocationManager mLocationManager;
     private Location mLocation;
-
-    @Override
-    public void onDisplay() {
-        super.onDisplay();
-        if (isBack && mLocation != null) {
-            isBack = false;
-            initData(mLocation);
-        }
-    }
+    Location gps_loc, network_loc, final_loc;
+    double longitude;
+    double latitude;
 
     private List<AddressListModel> mListObject = new ArrayList<>();
+    private List<VpostcodeModel> mListObjectV12 = new ArrayList<>();
+    private List<VpostcodeModel> mListObjectVNext;
 
     public static AddressListFragment getInstance() {
         return new AddressListFragment();
@@ -73,6 +78,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
+        mLocation = getLastKnownLocation();
         if (mPresenter != null)
             checkSelfPermission();
         else
@@ -87,30 +93,50 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
             edtSearchAddress.setVisibility(View.GONE);
             tvTitle.setText("Xác minh địa chỉ");
         }
-        addressListAdapter = new AddressListAdapter(getContext(), mListObject) {
+
+        mListObjectV12 = mPresenter.getListVpost();
+        addressListAdapterV12 = new AddressListAdapterV12(getContext(), mListObjectV12) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-
-                holder.itemView.setOnClickListener(v -> {
-                    mPresenter.showAddressDetail(mListObject.get(position));
-                    isBack = true;
+                holder.tvSsua.setOnClickListener(v -> {
+                    new TimDuongDiDialog(getViewContext(), mListObjectV12.get(position), mPresenter.getType(), (AddressListPresenter) mPresenter, new VposcodeCallback() {
+                        @Override
+                        public void onVposcodeResponse(VpostcodeModel reason) {
+                            mListObjectV12.set(position, reason);
+                            addressListAdapterV12.notifyDataSetChanged();
+                        }
+                    }).show();
                 });
             }
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
-        recycler.setAdapter(addressListAdapter);
-        mLocation = getLastKnownLocation();
-        initData(mLocation);
-
+        recycler.setAdapter(addressListAdapterV12);
     }
 
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        mListObjectVNext = new ArrayList<>();
+
+        if (mLocation == null) {
+            Toast.showToast(getContext(), "Vui lòng ở vị trí định vị trên điện thoại của bạn");
+            mPresenter.back();
+            return;
+        }
+        mLocation = getLastKnownLocation();
+        mPresenter.getMapVitri(mLocation.getLongitude(), mLocation.getLatitude());
+    }
+
+    @SuppressLint("MissingPermission")
     private Location getLastKnownLocation() {
+        Location l = null;
         mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
-            Location l = mLocationManager.getLastKnownLocation(provider);
+            l = mLocationManager.getLastKnownLocation(provider);
             if (l == null) {
                 continue;
             }
@@ -137,9 +163,28 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_search})
+    @OnClick({R.id.img_back, R.id.img_search, R.id.img_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_next:
+                if (mPresenter.getType() == 99) {
+                    for (int i = 0; i < mListObjectV12.size(); i++) {
+                        if (mListObjectV12.get(i).getReceiverVpostcode().equals("")) {
+                            Toast.showToast(getViewContext(), "Vui lòng xác thực toàn bộ địa chỉ ");
+                            return;
+                        }
+                    }
+                    mPresenter.showAddressDetail(mListObjectVNext);
+                } else if (mPresenter.getType() == 98) {
+                    for (int i = 0; i < mListObjectV12.size(); i++) {
+                        if (mListObjectV12.get(i).getSenderVpostcode().equals("")) {
+                            Toast.showToast(getViewContext(), "Vui lòng xác thực toàn bộ địa chỉ ");
+                            return;
+                        }
+                    }
+                    mPresenter.showAddressDetail(mListObjectVNext);
+                }
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -155,9 +200,9 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
         if (listAddress.isEmpty()) {
             showSuccessToast(getString(R.string.not_found_any_address));
         }
-        mListObject.clear();
-        mListObject.addAll(listAddress);
-        addressListAdapter.notifyDataSetChanged();
+//        mListObject.clear();
+//        mListObject.addAll(listAddress);
+//        addressListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -165,6 +210,14 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
         mListObject.clear();
         addressListAdapter.notifyDataSetChanged();
         showErrorToast(message);
+    }
+
+    @Override
+    public void showList(VpostcodeModel getListVpostV1) {
+        mListObjectVNext = new ArrayList<>();
+        mListObjectVNext.add(getListVpostV1);
+        mListObjectVNext.addAll(mListObjectV12);
+        Log.d("asdjkl1212391723172", new Gson().toJson(mListObjectV12));
     }
 
     private void checkSelfPermission() {

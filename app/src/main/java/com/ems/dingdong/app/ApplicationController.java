@@ -18,8 +18,8 @@ import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.sip.cmc.SipCmc;
-import com.sip.cmc.network.UserDataManager;
+//import com.sip.cmc.SipCmc;
+//import com.sip.cmc.network.UserDataManager;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -57,7 +57,7 @@ public class ApplicationController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        SipCmc.initPrefs(this);
+//        SipCmc.initPrefs(this);
         if (!BuildConfig.DEBUG)
             Fabric.with(this, new Crashlytics());
         Fresco.initialize(this);

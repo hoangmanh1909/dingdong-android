@@ -16,6 +16,7 @@ import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
@@ -23,7 +24,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import java.util.List;
 
@@ -308,8 +309,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void vietmapSearch(String address) {
-        new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
+    public void vietmapSearch(List<VpostcodeModel> vpostcodeModels) {
+        new AddressListPresenter(mContainerView).setType(99).setListVpost(vpostcodeModels).pushView();
     }
 
     @Override
@@ -330,7 +331,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void callByCtellFree(String calleeNumber) {
-        SipCmc.callTo(calleeNumber);
+//        SipCmc.callTo(calleeNumber);
         Intent intent = new Intent(getViewContext(), IncomingCallActivity.class);
         intent.putExtra(Constants.CALL_TYPE, 1);
         intent.putExtra(Constants.KEY_CALLEE_NUMBER, calleeNumber);

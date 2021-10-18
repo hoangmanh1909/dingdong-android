@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="@dimen/dimen_5dp">
 
@@ -13,20 +13,50 @@
         <CheckBox
             android:id="@+id/cb_selected"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center|left" />
 
-        <com.ems.dingdong.views.CustomTextView
-            android:id="@+id/tv_code"
-            android:layout_toRightOf="@+id/cb_selected"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_5dp"
-            android:gravity="center|left"
-            android:paddingLeft="@dimen/dimen_8dp"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/text_size_14sp"
-            tools:text="1234567890" />
+            android:layout_toRightOf="@+id/cb_selected"
+            android:orientation="vertical">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:gravity="center|left"
+                android:paddingLeft="@dimen/dimen_8dp"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/text_size_14sp"
+                tools:text="1234567890" />
+
+            <TextView
+                android:id="@+id/tv_sodonhang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4.5"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_8dp"
+                android:text=""
+                android:textColor="@color/black" />
+        </LinearLayout>
+        <!--        <com.ems.dingdong.views.CustomTextView-->
+        <!--            android:id="@+id/tv_code"-->
+        <!--            android:layout_toRightOf="@+id/cb_selected"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="@dimen/dimen_5dp"-->
+        <!--            android:gravity="center|left"-->
+        <!--            android:paddingLeft="@dimen/dimen_8dp"-->
+        <!--            android:textColor="@color/blue"-->
+        <!--            android:textSize="@dimen/text_size_14sp"-->
+        <!--            tools:text="1234567890" />-->
     </RelativeLayout>
+
     <View
         style="@style/Devider"
         android:layout_marginTop="@dimen/dimen_5dp"

@@ -24,7 +24,7 @@ import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -101,7 +101,7 @@ public class PhoneConectDialogIcon extends Dialog {
                         Toast.showToast(mContext, "Số điện thoại không hợp lệ.");
                         return;
                     }
-                    SipCmc.callTo(phone);
+//                    SipCmc.callTo(phone);
                     Intent intent1 = new Intent(getContext(), IncomingCallActivity.class);
                     intent1.putExtra(Constants.CALL_TYPE, 1);
                     intent1.putExtra(Constants.KEY_CALLEE_NUMBER, phone);

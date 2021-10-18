@@ -102,7 +102,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.ByteArrayOutputStream;
@@ -192,9 +192,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
     FormItemEditText edtOtherRelationship;
-    ///
-    /*@BindView(R.id.rl_image_capture_avatar)
-    RelativeLayout rlImageCaptureAvatar;*/
     @BindView(R.id.recycler_image_verify_avatar)
     RecyclerView recyclerImageVerifyAvatar;
     @BindView(R.id.recycler_image)
@@ -1442,8 +1439,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 tiem_tam = Long.parseLong(tvTongTienTamthu.getText().toString().replaceAll("\\.", ""));
 
             if (checkBoxedtCod.isChecked()) {
-                _amountShow = tiem_tam ;
-            }else tiem_tam =0;
+                _amountShow = tiem_tam;
+            } else tiem_tam = 0;
             new ConfirmDialog(getViewContext(), listSelected.size(), _amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {

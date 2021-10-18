@@ -51,9 +51,6 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 } else {
                     List<DingDongGetCancelDelivery> filteredList = new ArrayList<>();
                     for (DingDongGetCancelDelivery row : mList) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (row.getLadingCode().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -154,12 +151,13 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 tv_code.setText("");
 
             if (item.getAmount() != null)
-                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getAmount())));
+                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getFeePPA()
+                        + item.getFee() + item.getFeeC() + item.getFeeCancelOrder() + item.getFeePA())));
             else
                 tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money)));
 
             if (item.getFee() != null)
-                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee() + item.getFeeCollectLater()+item.getFeeShip())));
+                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getAmount() + item.getFeeCollectLater())));
             else
                 tvFee.setText(String.format(mContext.getString(R.string.fee)));
 

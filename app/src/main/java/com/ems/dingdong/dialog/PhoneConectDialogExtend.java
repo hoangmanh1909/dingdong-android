@@ -34,8 +34,8 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Logger;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
-import com.sip.cmc.SipCmc;
-import com.sip.cmc.network.Account;
+//import com.sip.cmc.SipCmc;
+//import com.sip.cmc.network.Account;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -123,7 +123,7 @@ public class PhoneConectDialogExtend extends Dialog {
                     }).show();
                     return;
                 }
-                SipCmc.callTo(phone1);
+//                SipCmc.callTo(phone1);
                 Intent intent1 = new Intent(getContext(), IncomingCallActivity.class);
                 intent1.putExtra(Constants.CALL_TYPE, 1);
                 intent1.putExtra(Constants.KEY_CALLEE_NUMBER, phone1);
@@ -180,7 +180,7 @@ public class PhoneConectDialogExtend extends Dialog {
                 if (TextUtils.isEmpty(edt_call_ctel_app_to_app.getText().toString().trim())) {
                     Toast.showToast(getContext(), "Vui lòng nhập số");
                 } else {
-                    SipCmc.callTo(edt_call_ctel_app_to_app.getText().toString().trim());
+//                    SipCmc.callTo(edt_call_ctel_app_to_app.getText().toString().trim());
                     Intent intent = new Intent(getContext(), IncomingCallActivity.class);
                     intent.putExtra(Constants.CALL_TYPE, 1);
                     intent.putExtra(Constants.APP_TO_APP, 5);

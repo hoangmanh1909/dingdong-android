@@ -28,9 +28,11 @@ import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.ReceiverVpostcodeMode;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
 import com.ems.dingdong.model.SearchMode;
+import com.ems.dingdong.model.SenderVpostcodeMode;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -161,6 +163,21 @@ public class NetWorkController {
                     .create();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.API_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient(120, 120))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiRxBuilder = retrofit.create(VinattiAPI.class);
+        }
+        return apiRxBuilder;
+    }
+
+    private static VinattiAPI getAPIRxBuilderMap() {
+        if (apiRxBuilder == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(getUnsafeOkHttpClient(120, 120))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -601,13 +618,22 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void vietmapSearch(String text, Double longitude, Double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
-        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text, longitude, latitude);
-        call.enqueue(callback);
+    public static Single<XacMinhDiaChiResult> vietmapSearch(String text, Double longitude, Double latitude) {
+//        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text, longitude, latitude);
+//        call.enqueue(callback);
+        return getAPIRxBuilder().vietmapSearch(text, longitude, latitude);
     }
 
-    public static void vietmapRoute(List<RouteRequest> request, CommonCallback<XacMinhDiaChiResult> callback) {
-        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRoute(request);
+    public static Single<XacMinhDiaChiResult> vietmapVitri(String text) {
+        return getAPIRxBuilderMap().vietmapVitri(text);
+    }
+
+    public static Single<XacMinhDiaChiResult> vietmapVitriEndCode(Double longitude, Double latitude) {
+        return getAPIRxBuilder().vietmapSearchEncode(longitude, latitude);
+    }
+
+    public static void vietmapRoute(List<String> request, CommonCallback<XacMinhDiaChiResult> callback) {
+        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRouteV2(request);
         call.enqueue(callback);
     }
 
@@ -745,14 +771,23 @@ public class NetWorkController {
                 request.getCallee());
     }
 
-    public static Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate,
+    public static Single<EWalletDataResult> getDataPayment(String serviceCode, String fromDate, String toDate,
                                                            String poCode, String routeCode,
                                                            String postmanCode) {
-        return getAPIRxBuilder().getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
+        return getAPIRxBuilder().getDataPayment(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
     public static Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
         return getAPIRxBuilder().getHistoryPayment(dataRequestPayment);
+    }
+
+
+    public static Single<SimpleResult> saveToaDoGom(List<SenderVpostcodeMode> request) {
+        return getAPIRxBuilder().saveToaDoGom(request);
+    }
+
+    public static Single<SimpleResult> saveToaDoPhat(List<ReceiverVpostcodeMode> request) {
+        return getAPIRxBuilder().saveToaDoPhat(request);
     }
 
     public static Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {

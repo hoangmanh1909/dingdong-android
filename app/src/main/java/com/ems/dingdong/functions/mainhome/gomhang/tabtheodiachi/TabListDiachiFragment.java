@@ -85,7 +85,8 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
             img_confirm.setVisibility(View.VISIBLE);
         } else if (mPresenter.getType() == 4) {
             tvTitle.setText("Hoàn tất tin theo địa chỉ");
-            img_confirm.setVisibility(View.GONE);
+            img_confirm.setVisibility(View.VISIBLE);
+            img_confirm.setImageResource(R.drawable.ic_map);
         }
     }
 
@@ -129,11 +130,10 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
                 break;
             case R.id.img_confirm:
                 XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-
                 if (mPresenter.getType() == 1) {
                     commonFragment.confirmAll();
                 } else if (mPresenter.getType() == 4) {
-                    commonFragment.confirmParcelCode();
+                    commonFragment.showMap();
                 }
                 break;
         }

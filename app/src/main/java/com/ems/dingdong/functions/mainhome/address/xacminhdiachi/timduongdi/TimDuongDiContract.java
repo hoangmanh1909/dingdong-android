@@ -5,25 +5,45 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.AddressListModel;
+import com.ems.dingdong.model.ReceiverVpostcodeMode;
+import com.ems.dingdong.model.SenderVpostcodeMode;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface TimDuongDiContract {
     interface Interactor extends IInteractor<Presenter> {
-        void getPoint(List<RouteRequest> request, CommonCallback<XacMinhDiaChiResult> callback);
+        void getPoint(List<String> request, CommonCallback<XacMinhDiaChiResult> callback);
+
+        Single<SimpleResult> saveToaDoGom(List<SenderVpostcodeMode> request);
+
+        Single<SimpleResult> saveToaDoPhat(List<ReceiverVpostcodeMode> request);
     }
 
     interface View extends PresentView<Presenter> {
         void showListSuccess(Object object);
 
         void showError(String mes);
+
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
         AddressListModel getAddressListModel();
 
-        void getPoint(List<RouteRequest> request);
+        List<VpostcodeModel> getListVpostcodeModell();
+
+        void getPoint(List<String> request);
+
+        int getType();
+
+        void saveToaDoGom(List<SenderVpostcodeMode> request);
+
+        void saveToaDoPhat(List<ReceiverVpostcodeMode> request);
     }
 }

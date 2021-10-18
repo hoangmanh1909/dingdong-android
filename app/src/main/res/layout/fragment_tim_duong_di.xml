@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-        <include layout="@layout/item_head_bg_common" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,28 +20,47 @@
 
             <ImageView
                 android:id="@+id/img_back"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Tìm đường đi"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_18sp" />
+                android:orientation="vertical">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_above="@+id/tv_themdiemdung"
+                    android:layout_marginLeft="44dp"
+                    android:background="@color/white"
+                    android:scrollX="2dp"
+                    android:scrollbars="vertical" />
+
+                <TextView
+                    android:id="@+id/tv_themdiemdung"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="44dp"
+                    android:drawableLeft="@drawable/ic_add_v1"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Thêm điểm dừng"
+                    android:textColor="@color/blue" />
+            </LinearLayout>
         </RelativeLayout>
     </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9">
+        android:layout_height="match_parent">
 
         <com.mapbox.mapboxsdk.maps.MapView
             android:id="@+id/mapView"
@@ -50,33 +68,41 @@
             android:layout_height="match_parent"
             mapbox:mapbox_cameraZoom="12" />
 
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rll_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_weight="1">
-
-        <ImageView
-            android:id="@+id/img_to"
+        <LinearLayout
+            android:id="@+id/rll_footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_pin32" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="#00000000"
+            android:gravity="center|right">
 
-        <com.ems.dingdong.views.CustomTextView
-            android:id="@+id/tv_address_to"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_toRightOf="@+id/img_to"
-            android:text="241 xuân thủy cầu giấy hà nội"
-            android:textSize="@dimen/text_size_16sp" />
+            <Button
+                android:id="@+id/btn_dong"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_red"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="Đóng"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_luutoado"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/bg_button_blue"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="Lưu tọa độ"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
     </RelativeLayout>
 

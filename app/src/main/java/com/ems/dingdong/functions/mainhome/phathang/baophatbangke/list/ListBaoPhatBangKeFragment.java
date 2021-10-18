@@ -57,6 +57,7 @@ import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.model.TreeNote;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -69,8 +70,8 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.sip.cmc.SipCmc;
-import com.sip.cmc.callback.RegistrationCallback;
+//import com.sip.cmc.SipCmc;
+//import com.sip.cmc.callback.RegistrationCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -97,7 +98,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @BindView(R.id.tv_amount)
     CustomBoldTextView tvAmount;
     @BindView(R.id.layout_item_pick_all)
-    LinearLayout pickAll;
+    RelativeLayout pickAll;
     @BindView(R.id.cb_pick_all)
     CheckBox cbPickAll;
     @BindView(R.id.layout_swipe_refresh)
@@ -108,7 +109,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     RelativeLayout relativeLayout;
     @BindView(R.id.img_ContactPhone_extend)
     ImageView img_ContactPhone_extend;
-
+    @BindView(R.id.img_map)
+    ImageView imgMap;
     private ArrayList<DeliveryPostman> mList;
     private CreateBd13Adapter mAdapter;
     private UserInfo mUserInfo;
@@ -289,7 +291,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
                                     smlRequest.setPostmanId(PostmanId);
                                     smlRequest.setPOCode(POCode);
-
                                     mPresenter._huySml(smlRequest);
                                 }
                             }).show();
@@ -401,11 +402,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
 
                 holder.img_map.setOnClickListener(v -> {
-                    if (null != mAdapter.getListFilter().get(position).getNewReceiverAddress()) {
-                        if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress()))
-                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress());
-                    } else
-                        mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReciverAddress());
+//                    if (null != mAdapter.getListFilter().get(position).getNewReceiverAddress()) {
+//                        if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress()))
+//                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress());
+//                    } else
+//                        mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReciverAddress());
                 });
             }
         };
@@ -450,7 +451,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     }
 
-
     private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
         mPresenter.updateMobile(phone, parcelCode);
         initSearch();
@@ -467,7 +467,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     public void callByCtellFree(String calleeNumber) {
-
     }
 
     private void showConfirmSaveMobileSender(final String phoneSender, String parcelCode, DismissDialogCallback callback) {
@@ -586,11 +585,41 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected})
+    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected, R.id.img_map})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_map:
+                List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
+                List<VpostcodeModel> vpostcodeModels = new ArrayList<>();
+                if (commonObjects.isEmpty()) {
+                    Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
+                    return;
+                } else {
+                    for (int i = 0; i < commonObjects.size(); i++) {
+                        VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                        vpostcodeModel.setMaE(commonObjects.get(i).getMaE());
+                        vpostcodeModel.setId(commonObjects.get(i).getId());
+                        vpostcodeModel.setReceiverVpostcode(commonObjects.get(i).getReceiverVpostcode());
+                        vpostcodeModel.setSenderVpostcode("");
+                        if (null != commonObjects.get(i).getNewReceiverAddress()) {
+                            if (!TextUtils.isEmpty(commonObjects.get(i).getNewReceiverAddress().getFullAdress()))
+                                vpostcodeModel.setFullAdress(commonObjects.get(i).getNewReceiverAddress().getFullAdress());
+                        } else
+                            vpostcodeModel.setFullAdress(commonObjects.get(i).getReciverAddress());
+                        vpostcodeModels.add(vpostcodeModel);
+                    }
+                }
+
+                if (vpostcodeModels.size() > 20) {
+                    Toast.showToast(getViewContext(), "Vui lòng chọn ít hơn 20 bưu gửi");
+                    return;
+                }
+                mPresenter.vietmapSearch(vpostcodeModels);
+
+                break;
             case R.id.ll_scan_qr:
             case R.id.tv_additional_barcode:
+                checkSelfPermission();
                 mPresenter.showBarcode(v -> edtSearch.setText(v));
                 break;
             case R.id.tv_search:

@@ -12,7 +12,9 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.views.CustomTextView;
+
 import java.util.List;
+
 import butterknife.BindView;
 
 public class ParcelAddressAdapter extends RecyclerBaseAdapter {
@@ -34,6 +36,8 @@ public class ParcelAddressAdapter extends RecyclerBaseAdapter {
 
         @BindView(R.id.tv_code)
         CustomTextView tvCode;
+        @BindView(R.id.tv_sodonhang)
+        CustomTextView tvSodonhang;
         @BindView(R.id.cb_selected_parcel)
         public CheckBox cbSelectedParcel;
         @BindView(R.id.img_remove_lading_code)
@@ -49,6 +53,7 @@ public class ParcelAddressAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
             tvCode.setText(item.getTrackingCode());
+            tvSodonhang.setText(item.getOrderNumber());
         }
 
         public ParcelCodeInfo getItem(int position) {

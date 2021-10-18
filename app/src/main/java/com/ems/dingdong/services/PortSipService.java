@@ -46,7 +46,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
 import org.linphone.core.LinphoneCall;
@@ -64,9 +64,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import com.sip.cmc.callback.PhoneCallback;
-import com.sip.cmc.callback.RegistrationCallback;
-import com.sip.cmc.network.Account;
+//import com.sip.cmc.callback.PhoneCallback;
+//import com.sip.cmc.callback.RegistrationCallback;
+//import com.sip.cmc.network.Account;
 
 public class PortSipService extends Service implements NetWorkReceiver.NetWorkListener {
 
@@ -219,7 +219,7 @@ public class PortSipService extends Service implements NetWorkReceiver.NetWorkLi
 
     @Override
     public void onDestroy() {
-        SipCmc.stopService(this);
+//        SipCmc.stopService(this);
         unregisterReceiver();
         if (mCpuLock != null) {
             mCpuLock.release();
@@ -398,147 +398,147 @@ public class PortSipService extends Service implements NetWorkReceiver.NetWorkLi
         SharedPref sharedPref = new SharedPref(this);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        SipCmc.startService(this);
-        SipCmc.addCallback(new RegistrationCallback() {
-            @Override
-            public void registrationOk() {
-                super.registrationOk();
-                Log.d("registrationOk", "login ctel registrationOk");
-            }
-
-            @Override
-            public void registrationFailed() {
-                super.registrationFailed();
-                Log.d("registrationFailed", "login ctel failed");
-            }
-
-            @Override
-            public void registrationNone() {
-                super.registrationNone();
-                Log.d("registrationNone", "login ctel registrationNone");
-            }
-
-            @Override
-            public void registrationProgress() {
-                super.registrationProgress();
-                Log.d("registrationProgress", "login ctel registrationProgress");
-            }
-
-            @Override
-            public void registrationCleared() {
-                super.registrationCleared();
-                Log.d("123123", "login ctel registrationCleared");
-            }
-        }, null);
-
-        SipCmc.addCallback(null, new PhoneCallback() {
-            @Override
-            public void incomingCall(LinphoneCall linphoneCall) {
-                super.incomingCall(linphoneCall);
-                Log.d("123123khiem", "incomingCall 1234: ");
-                Intent activityIntent = new Intent(getApplicationContext(), IncomingCallActivity.class);
-                activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (isForeground()) {
-                startActivity(activityIntent);
-                } else {
-                    showPendingCallNotification(getApplicationContext(), "Cuộc gọi Ctel", linphoneCall.toString(), activityIntent);
-                }
-
-            }
-
-            @Override
-            public void outgoingInit() {
-                super.outgoingInit();
-                Log.d("123123khiem", "outgoingInit");
-            }
-
-            @Override
-            public void callConnected(LinphoneCall linphoneCall) {
-                super.callConnected(linphoneCall);
-                Intent intent = new Intent(ACTION_CALL_EVENT);
-                intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_CONNECTED);
-                sendBroadcast(intent);
-                mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
-            }
-
-            @Override
-            public void callEnd(LinphoneCall linphoneCall) {
-                super.callEnd(linphoneCall);
-                Log.d("123123khiem", "callEnd");
-                //Toast.makeText(getApplicationContext(), "callEnd", Toast.LENGTH_SHORT).show();
-                try {
-                    Intent intent = new Intent(ACTION_CALL_EVENT);
-                    intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
-                    sendBroadcast(intent);
-                } catch (NullPointerException nullPointerException) {
-                }
-
-                mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
-
-            }
-
-            @Override
-            public void callReleased() {
-                super.callReleased();
-                Log.d("123123khiem", "callReleased");
-                //Toast.makeText(getApplicationContext(), "callReleased", Toast.LENGTH_SHORT).show();
-                try {
-                    Intent intent = new Intent(ACTION_CALL_EVENT);
-                    intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
-                    sendBroadcast(intent);
-                } catch (NullPointerException nullPointerException) {
-                }
-            }
-
-            @Override
-            public void error() {
-                super.error();
-                Log.d("123123khiem", "error");
-            }
-
-            @Override
-            public void callStatus(int status) {
-                super.callStatus(status);
-                Log.d("123123khiem", "callStatus: " + status);
-            }
-
-            @Override
-            public void callTimeRing(String time) {
-                super.callTimeRing(time);
-                Log.d("123123khiem", "callTimeRing");
-            }
-
-            @Override
-            public void callTimeAnswer(String time) {
-                super.callTimeAnswer(time);
-                Log.d("123123khiem", "callTimeAnswer");
-            }
-
-            @Override
-            public void callTimeEnd(String time) {
-                super.callTimeEnd(time);
-                Log.d("123123khiem", "callTimeEnd");
-            }
-
-            @Override
-            public void callId(String callId) {
-                super.callId(callId);
-                Log.d("123123khiem", "callId");
-            }
-
-            @Override
-            public void callPhoneNumber(String phoneNumber) {
-                super.callPhoneNumber(phoneNumber);
-                Log.d("123123khiem", "callPhoneNumber: " + phoneNumber);
-            }
-
-            @Override
-            public void callDuration(long duration) {
-                super.callDuration(duration);
-                Log.d("123123khiem", "callDuration: " + duration);
-            }
-        });
-        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL, BuildConfig.AUTH_CTEL);
+//        SipCmc.startService(this);
+//        SipCmc.addCallback(new RegistrationCallback() {
+//            @Override
+//            public void registrationOk() {
+//                super.registrationOk();
+//                Log.d("registrationOk", "login ctel registrationOk");
+//            }
+//
+//            @Override
+//            public void registrationFailed() {
+//                super.registrationFailed();
+//                Log.d("registrationFailed", "login ctel failed");
+//            }
+//
+//            @Override
+//            public void registrationNone() {
+//                super.registrationNone();
+//                Log.d("registrationNone", "login ctel registrationNone");
+//            }
+//
+//            @Override
+//            public void registrationProgress() {
+//                super.registrationProgress();
+//                Log.d("registrationProgress", "login ctel registrationProgress");
+//            }
+//
+//            @Override
+//            public void registrationCleared() {
+//                super.registrationCleared();
+//                Log.d("123123", "login ctel registrationCleared");
+//            }
+//        }, null);
+//
+//        SipCmc.addCallback(null, new PhoneCallback() {
+//            @Override
+//            public void incomingCall(LinphoneCall linphoneCall) {
+//                super.incomingCall(linphoneCall);
+//                Log.d("123123khiem", "incomingCall 1234: ");
+//                Intent activityIntent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+//                activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                if (isForeground()) {
+//                startActivity(activityIntent);
+//                } else {
+//                    showPendingCallNotification(getApplicationContext(), "Cuộc gọi Ctel", linphoneCall.toString(), activityIntent);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void outgoingInit() {
+//                super.outgoingInit();
+//                Log.d("123123khiem", "outgoingInit");
+//            }
+//
+//            @Override
+//            public void callConnected(LinphoneCall linphoneCall) {
+//                super.callConnected(linphoneCall);
+//                Intent intent = new Intent(ACTION_CALL_EVENT);
+//                intent.putExtra(TYPE_ACTION, CALL_EVENT_INVITE_CONNECTED);
+//                sendBroadcast(intent);
+//                mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
+//            }
+//
+//            @Override
+//            public void callEnd(LinphoneCall linphoneCall) {
+//                super.callEnd(linphoneCall);
+//                Log.d("123123khiem", "callEnd");
+//                //Toast.makeText(getApplicationContext(), "callEnd", Toast.LENGTH_SHORT).show();
+//                try {
+//                    Intent intent = new Intent(ACTION_CALL_EVENT);
+//                    intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
+//                    sendBroadcast(intent);
+//                } catch (NullPointerException nullPointerException) {
+//                }
+//
+//                mNotificationManager.cancel(PENDINGCALL_NOTIFICATION);
+//
+//            }
+//
+//            @Override
+//            public void callReleased() {
+//                super.callReleased();
+//                Log.d("123123khiem", "callReleased");
+//                //Toast.makeText(getApplicationContext(), "callReleased", Toast.LENGTH_SHORT).show();
+//                try {
+//                    Intent intent = new Intent(ACTION_CALL_EVENT);
+//                    intent.putExtra(TYPE_ACTION, CALL_EVENT_END);
+//                    sendBroadcast(intent);
+//                } catch (NullPointerException nullPointerException) {
+//                }
+//            }
+//
+//            @Override
+//            public void error() {
+//                super.error();
+//                Log.d("123123khiem", "error");
+//            }
+//
+//            @Override
+//            public void callStatus(int status) {
+//                super.callStatus(status);
+//                Log.d("123123khiem", "callStatus: " + status);
+//            }
+//
+//            @Override
+//            public void callTimeRing(String time) {
+//                super.callTimeRing(time);
+//                Log.d("123123khiem", "callTimeRing");
+//            }
+//
+//            @Override
+//            public void callTimeAnswer(String time) {
+//                super.callTimeAnswer(time);
+//                Log.d("123123khiem", "callTimeAnswer");
+//            }
+//
+//            @Override
+//            public void callTimeEnd(String time) {
+//                super.callTimeEnd(time);
+//                Log.d("123123khiem", "callTimeEnd");
+//            }
+//
+//            @Override
+//            public void callId(String callId) {
+//                super.callId(callId);
+//                Log.d("123123khiem", "callId");
+//            }
+//
+//            @Override
+//            public void callPhoneNumber(String phoneNumber) {
+//                super.callPhoneNumber(phoneNumber);
+//                Log.d("123123khiem", "callPhoneNumber: " + phoneNumber);
+//            }
+//
+//            @Override
+//            public void callDuration(long duration) {
+//                super.callDuration(duration);
+//                Log.d("123123khiem", "callDuration: " + duration);
+//            }
+//        });
+//        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL, BuildConfig.AUTH_CTEL);
 
     }
 

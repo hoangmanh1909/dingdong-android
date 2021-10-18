@@ -67,7 +67,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     ImageView imgConfirm;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
-    private ListCommonAdapter mAdapter;
+    private ListCommonAdapter mAdapterChua, mAdapterDa;
     private UserInfo mUserInfo;
     private String mDate;
     private String mOrder;
@@ -93,7 +93,6 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void initLayout() {
         super.initLayout();
-
         if (mPresenter == null) {
             if (getActivity() != null) {
                 Intent intent = getActivity().getIntent();
@@ -102,9 +101,11 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }
             return;
         }
+        mListChua = new ArrayList<>();
+        mListDa = new ArrayList<>();
         if (mPresenter.getTab() == 0) {
             mListChua = new ArrayList<>();
-            mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListChua) {
+            mAdapterChua = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListChua) {
                 @Override
                 public void onBindViewHolder(HolderView holder, final int position) {
                     super.onBindViewHolder(holder, position);
@@ -115,16 +116,18 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
                             mPresenter.showDetailView(itemAtPosition);
-//                            Log.d("asdasjdg12431723", new Gson().toJson(itemAtPosition));
                         }
                     });
                 }
+
             };
+            RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+            recycler.setAdapter(mAdapterChua);
         } else {
             mListDa = new ArrayList<>();
             mListFilter = new ArrayList<>();
             mCalendar = Calendar.getInstance();
-            mAdapter = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListDa) {
+            mAdapterDa = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListDa) {
                 @Override
                 public void onBindViewHolder(HolderView holder, final int position) {
                     super.onBindViewHolder(holder, position);
@@ -135,14 +138,14 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
                             mPresenter.showDetailView(itemAtPosition);
-                            Log.d("asdasjdg12431723", new Gson().toJson(itemAtPosition));
                         }
                     });
                 }
             };
+            RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+            recycler.setAdapter(mAdapterDa);
         }
-        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
-        recycler.setAdapter(mAdapter);
+
 
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -188,6 +191,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             item.setSelected(false);
                         }
                     }
+                    mAdapterChua.notifyDataSetChanged();
+
                 } else {
                     if (isChecked) {
                         for (CommonObject item : mListDa) {
@@ -200,8 +205,9 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             item.setSelected(false);
                         }
                     }
+                    mAdapterDa.notifyDataSetChanged();
+
                 }
-                mAdapter.notifyDataSetChanged();
             }
         });
         edtSearch.getEditText().addTextChangedListener(new TextWatcher() {
@@ -217,16 +223,18 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
             @Override
             public void afterTextChanged(Editable s) {
-                mAdapter.getFilter().filter(s.toString());
+                if (mPresenter.getTab() == 0)
+                    mAdapterChua.getFilter().filter(s.toString());
+                else mAdapterDa.getFilter().filter(s.toString());
+
             }
         });
         edtSearch.setSelected(true);
-
     }
 
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 2) {
-            new EditDayDialog(getActivity(), new OnChooseDay() {
+            new EditDayDialog(getActivity(), 101, new OnChooseDay() {
                 @Override
                 public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -371,6 +379,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
                 tvRejectCount.setVisibility(View.VISIBLE);
                 tvAcceptCount.setVisibility(View.GONE);
+                mAdapterChua.notifyDataSetChanged();
+
             } else {
                 mListDa.clear();
                 mListDa.addAll(mListDatam);
@@ -378,8 +388,9 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 tvRejectCount.setVisibility(View.GONE);
                 tvAcceptCount.setVisibility(View.VISIBLE);
                 mPresenter.titleChanged(mListDa.size(), 1);
+                mAdapterDa.notifyDataSetChanged();
+
             }
-            mAdapter.notifyDataSetChanged();
         } else if (mPresenter.getType() == 2 || mPresenter.getType() == 4) {
             int countP1 = 0;
             int countP4P5 = 0;
@@ -401,6 +412,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 tvAcceptCount.setVisibility(View.GONE);
                 tvRejectCount.setVisibility(View.VISIBLE);
                 mPresenter.titleChanged(mListChua.size(), 0);
+                mAdapterChua.notifyDataSetChanged();
+
             } else {
                 mListDa.clear();
                 mListDa.addAll(mListDatam);
@@ -408,8 +421,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 tvRejectCount.setVisibility(View.GONE);
                 tvAcceptCount.setVisibility(View.VISIBLE);
                 mPresenter.titleChanged(mListDa.size(), 1);
+                mAdapterDa.notifyDataSetChanged();
             }
-            mAdapter.notifyDataSetChanged();
         }
 
     }

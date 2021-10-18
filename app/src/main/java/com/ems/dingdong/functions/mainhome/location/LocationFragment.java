@@ -36,7 +36,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import java.util.ArrayList;
 

@@ -39,12 +39,13 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     @BindView(R.id.layout_trang_thai)
     View layout_trang_thai;
 
-
     @BindView(R.id.tv_trang_thai)
     protected CustomTextView tvTrangThai;
 
     OnChooseDay delegate;
 
+
+    int mType = 0;
 
     public EditDayDialog(Context context, OnChooseDay delegate) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -53,6 +54,16 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         tvDateEnd.setText(TimeUtils.convertDateToString(calTo.getTime(), TimeUtils.DATE_FORMAT_5));
         setListener();
     }
+
+    public EditDayDialog(Context context, int type, OnChooseDay delegate) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.delegate = delegate;
+        mType = type;
+        tvDateStart.setText(TimeUtils.convertDateToString(calFrom.getTime(), TimeUtils.DATE_FORMAT_5));
+        tvDateEnd.setText(TimeUtils.convertDateToString(calTo.getTime(), TimeUtils.DATE_FORMAT_5));
+        setListener();
+    }
+
 
     public EditDayDialog(Context context, String fromDateString, String toDateString, int type, OnChooseDay delegate) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -105,7 +116,20 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
 
             case R.id.layout_date_start:
                 typeDate = 0;
-                new SpinnerDatePickerDialogBuilder()
+
+                if (mType == 101) {
+                    new SpinnerDatePickerDialogBuilder()
+                            .context(mActivity)
+                            .callback(this)
+                            .spinnerTheme(R.style.DatePickerSpinner)
+                            .showTitle(true)
+                            .showDaySpinner(true)
+                            .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
+                            .maxDate(3000, maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
+                            .minDate(1979, 0, 1)
+                            .build()
+                            .show();
+                } else new SpinnerDatePickerDialogBuilder()
                         .context(mActivity)
                         .callback(this)
                         .spinnerTheme(R.style.DatePickerSpinner)
@@ -119,17 +143,30 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                 break;
             case R.id.layout_date_end:
                 typeDate = 1;
-                new SpinnerDatePickerDialogBuilder()
-                        .context(mActivity)
-                        .callback(this)
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calTo.get(Calendar.YEAR), calTo.get(Calendar.MONTH), calTo.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(maxToStart.get(Calendar.YEAR), maxToStart.get(Calendar.MONTH), maxToStart.get(Calendar.DAY_OF_MONTH))
-                        .minDate(1979, 0, 1)
-                        .build()
-                        .show();
+                if (mType == 101) {
+                    new SpinnerDatePickerDialogBuilder()
+                            .context(mActivity)
+                            .callback(this)
+                            .spinnerTheme(R.style.DatePickerSpinner)
+                            .showTitle(true)
+                            .showDaySpinner(true)
+                            .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
+                            .maxDate(3000, maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
+                            .minDate(1979, 0, 1)
+                            .build()
+                            .show();
+                } else
+                    new SpinnerDatePickerDialogBuilder()
+                            .context(mActivity)
+                            .callback(this)
+                            .spinnerTheme(R.style.DatePickerSpinner)
+                            .showTitle(true)
+                            .showDaySpinner(true)
+                            .defaultDate(calTo.get(Calendar.YEAR), calTo.get(Calendar.MONTH), calTo.get(Calendar.DAY_OF_MONTH))
+                            .maxDate(maxToStart.get(Calendar.YEAR), maxToStart.get(Calendar.MONTH), maxToStart.get(Calendar.DAY_OF_MONTH))
+                            .minDate(1979, 0, 1)
+                            .build()
+                            .show();
                 break;
             case R.id.layout_trang_thai:
                 showUICancelType();

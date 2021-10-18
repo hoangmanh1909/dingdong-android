@@ -12,7 +12,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.utiles.Constants;
-import com.sip.cmc.SipCmc;
+//import com.sip.cmc.SipCmc;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +48,7 @@ public class DialoggoiLai extends Dialog {
                 break;
             case R.id.tv_dongy:
                 idCallback.onResponse("1");
-                SipCmc.callTo(sdt);
+//                SipCmc.callTo(sdt);
                 Intent intent1 = new Intent(getContext(), IncomingCallActivity.class);
                 intent1.putExtra(Constants.CALL_TYPE, 1);
                 intent1.putExtra(Constants.KEY_CALLEE_NUMBER, sdt);

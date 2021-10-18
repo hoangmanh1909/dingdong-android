@@ -26,8 +26,10 @@ import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.ReceiverVpostcodeMode;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.RouteResult;
+import com.ems.dingdong.model.SenderVpostcodeMode;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
@@ -151,19 +153,6 @@ public interface VinattiAPI {
                                                         @Field("RouteCode") String routeCode,
                                                         @Field("SearchType") Integer searchType);
 
-   /* @FormUrlEncoded
-    @POST("api/Delivery/DeliveryPostman")
-    Call<DeliveryPostmanResponse> searchDeliveryPostman(@Field("PostmanId") String postmanID,
-                                                        @Field("FromDate") String fromDate,
-                                                        @Field("ToDate") String toDate,
-                                                        @Field("ShiftID") String shiftID,
-                                                        @Field("Status") String status,
-                                                        @Field("ChThu") String chThu,
-                                                        @Field("TuiSo") String tuiSo,
-                                                        @Field("RouteCode") String routeCode,
-                                                        @Field("SearchType") Integer searchType);
-*/
-
     @FormUrlEncoded
     @POST("api/Collect/ConfirmOrderPostman")
     Call<SimpleResult> confirmOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
@@ -174,33 +163,28 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/Authorized/Validation")
     Call<SimpleResult> validationAuthorized(@Field("MobileNumber") String mobileNumber,
-                                            @Field("Signature") String signature
-    );
+                                            @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/CheckLadingCode")
     Call<SimpleResult> checkLadingCode(@Field("ParcelCode") String mobileNumber,
-                                       @Field("Signature") String signature
-    );
+                                       @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/Inquiry")
     Call<CommonObjectResult> searchParcelCodeDelivery(@Field("ParcelCode") String parcelCode,
-                                                      @Field("Signature") String signature
-    );
+                                                      @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/InquiryAmount")
     Call<InquiryAmountResult> getInquiryAmount(@Field("ParcelCode") String parcelCode,
-                                               @Field("Signature") String signature
-    );
+                                               @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/TrackTrace/Lading")
     Observable<CommonObjectResult> findLocation(@Field("LadingCode") String ladingCode,
                                                 @Field("POCode") String poCode,
-                                                @Field("Signature") String signature
-    );
+                                                @Field("Signature") String signature);
 
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Body PushToPnsRequest request);
@@ -238,6 +222,10 @@ public interface VinattiAPI {
     @GET("api/Delivery/GetPaypostError")
     Call<GachNoResult> deliveryGetPaypostError(@Query("fromDate") String fromDate,
                                                @Query("toDate") String toDate);
+
+//    @GET("api/Delivery/GetPaypostError")
+//    Call<> getViTriMap(@Query("fromDate") String fromDate,
+//                                               @Query("toDate") String toDate);
 
     @GET("api/Dictionary/GetPostmanShift")
     Call<ShiftResult> getPostmanShift(@Query("poCode") String poCode);
@@ -313,6 +301,12 @@ public interface VinattiAPI {
 
     @POST("api/Collect/ConfirmAllOrderPostman")
     Call<ConfirmAllOrderPostmanResult> confirmAllOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
+
+    @POST("api/Collect/UpdateSenderVpostcode")
+    Single<SimpleResult> saveToaDoGom(@Body List<SenderVpostcodeMode> request);
+
+    @POST(" api/Delivery/ReceiverVpostcode")
+    Single<SimpleResult> saveToaDoPhat(@Body List<ReceiverVpostcodeMode> request);
 
     @POST("api/Collect/ConfirmOrderPostman")
     Call<ConfirmOrderPostmanResult> confirmOrderPostman(@Body ArrayList<ConfirmOrderPostman> request);
@@ -434,12 +428,23 @@ public interface VinattiAPI {
                                                               @Field("RouteCode") String routeCode);
 
     @GET("api/VietMap/Search")
-    Call<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text,
-                                            @Query("longitude") Double longitude,
-                                            @Query("latitude") Double latitude);
+    Single<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text,
+                                              @Query("longitude") Double longitude,
+                                              @Query("latitude") Double latitude);
+
+    @GET("api/VietMap/Encode")
+    Single<XacMinhDiaChiResult> vietmapSearchEncode(
+            @Query("longitude") Double longitude,
+            @Query("latitude") Double latitude);
+
+    @GET("https://maps.vnpost.vn/vpostcode/api/encode")
+    Single<XacMinhDiaChiResult> vietmapVitri(@Query("location") String location);
 
     @POST("api/VietMap/Route")
     Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
+
+    @POST("api/VietMap/Route_V2")
+    Call<XacMinhDiaChiResult> vietmapRouteV2(@Body List<String> taskRequest);
 
     @FormUrlEncoded
     @POST("api/Statistic/Payment")
@@ -448,7 +453,6 @@ public interface VinattiAPI {
                                                   @Field("PostmanMobileNumber") String phoneNumber,
                                                   @Field("FromDate") String fromDate,
                                                   @Field("ToDate") String toDate);
-
 
     @FormUrlEncoded
     @POST("api/ChangeRoute/SearchForCancel")

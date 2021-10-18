@@ -2,8 +2,11 @@ package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.MapResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Single;
 
 public class AddressListInteractor extends Interactor<AddressListContract.Presenter> implements AddressListContract.Interactor {
 
@@ -12,8 +15,13 @@ public class AddressListInteractor extends Interactor<AddressListContract.Presen
     }
 
     @Override
-    public void vietmapSearchByAddress(String address, Double longitude, Double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
-        NetWorkController.vietmapSearch(address, longitude, latitude, callback);
+    public Single<XacMinhDiaChiResult> vietmapSearchByAddress(String address, Double longitude, Double latitude) {
+        return NetWorkController.vietmapSearch(address, longitude, latitude);
+    }
+
+    @Override
+    public Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude) {
+        return NetWorkController.vietmapVitriEndCode(longitude,latitude);
     }
 
     @Override

@@ -36,10 +36,12 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     public static ScannerCodeFragment getInstance() {
         return new ScannerCodeFragment();
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_scanner_code;
     }
+
 
     @Override
     public void onDisplay() {
@@ -67,7 +69,12 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
                 mPresenter.back();
             }
         });
+
+        cameraView.setFormats(BarcodeFormat.ALL_FORMATS);
+        cameraView.setResultHandler(this); // Register ourselves as a handler for scan results.
+        cameraView.startCamera();
     }
+
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
@@ -77,6 +84,7 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
 
         }
     }
+
     @Override
     public void handleResult(Result result) {
         mPresenter.getDelegate().scanQrcodeResponse(result.getContents());

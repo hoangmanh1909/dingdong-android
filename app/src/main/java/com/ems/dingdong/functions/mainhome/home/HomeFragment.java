@@ -132,7 +132,6 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
             }
         }
 
-
         adapter = new HomeGroupAdapter(mList) {
             @Override
             public void onBindItemViewHolder(ItemViewHolder viewHolder, final int section, final int position) {

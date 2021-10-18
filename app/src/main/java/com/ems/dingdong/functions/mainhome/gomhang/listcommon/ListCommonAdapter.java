@@ -9,19 +9,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.L;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +52,8 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
 
     @Override
     public int getItemCount() {
+        if (mListFilter == null)
+            mListFilter = new ArrayList<>();
         return mListFilter.size();
     }
 
@@ -79,18 +85,22 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                                 || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCode().toLowerCase().contains(charString.toLowerCase())
-                                || row.getWeigh().toLowerCase().contains(charString.toLowerCase())) {
+                                || row.getSenderPhone().toLowerCase().contains(charString.toLowerCase())
+                                || row.getListLading().toLowerCase().contains(charString.toLowerCase())
+                                || row.getListOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
-                        } else {
-                            for (ParcelCodeInfo item : row.getListParcelCode()) {
-                                if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase())) {
-                                    filteredList.add(row);
-                                }
-                            }
                         }
+//                        else if (row.getListParcelCode().size() > 0)
+//                            for (ParcelCodeInfo item : row.getListParcelCode()) {
+//                                if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
+//                                        item.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
+//                                    filteredList.add(row);
+//                                }
+//                            }
                     }
                     mListFilter = filteredList;
                 }
+
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mListFilter;
                 return filterResults;
@@ -124,10 +134,16 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         @BindView(R.id.cb_selected)
         CheckBox cbSelected;
         @BindView(R.id.tv_thoi_gian)
-        CustomBoldTextView tvThoiGian;
+        CustomTextView tvThoiGian;
         ParcelAdapter adapter;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
+        @BindView(R.id.tv_sodonhang)
+        CustomTextView tvSodonhang;
+        @BindView(R.id.tv_recycler)
+        CustomTextView tvRecycler;
+        @BindView(R.id.iv_status)
+        public ImageView ivStatus;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -140,6 +156,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(item.getReceiverAddress().trim());
+
+            tvSodonhang.setVisibility(View.GONE);
+
 
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
@@ -201,6 +220,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
             } else if (mType == 2) {
+                if (item.getSenderVpostcode().equals("")) {
+                    ivStatus.setVisibility(View.GONE);
+                } else ivStatus.setVisibility(View.VISIBLE);
                 if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
                     tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
                     Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
@@ -237,36 +259,45 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     filteredList = item.getListParcelCode();
                 } else {
                     for (ParcelCodeInfo row : item.getListParcelCode()) {
-                        if (row.getTrackingCode().toLowerCase().contains(parcelCodeSearch.toLowerCase())) {
-                            filteredList.add(row);
-                        }
+                        filteredList.add(row);
                     }
                 }
+                tvRecycler.setVisibility(View.GONE);
 
-                binParcelCode(filteredList);
-                tvParcelCode.setOnClickListener(new View.OnClickListener() {
+                adapter = new ParcelAdapter(mContext, item.getListParcelCode()) {
                     @Override
-                    public void onClick(View view) {
-                        if (recycler.getVisibility() == View.GONE) {
-                            recycler.setVisibility(View.VISIBLE);
-                        } else {
-                            recycler.setVisibility(View.GONE);
-                        }
+                    public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                        super.onBindViewHolder(holder, position);
+                        ((HolderView) holder).cbSelected.setVisibility(View.GONE);
                     }
-                });
-                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
-                    if (item.getListParcelCode().size() == 1) {
-                        recycler.setVisibility(View.VISIBLE);
-                        tvParcelCode.setVisibility(View.GONE);
-                    } else {
-                        recycler.setVisibility(View.GONE);
-                        tvParcelCode.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    tvParcelCode.setVisibility(View.GONE);
-                }
-            }
+                };
+                RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
+                recycler.setVisibility(View.VISIBLE);
+                recycler.setAdapter(adapter);
 
+//                binParcelCode(filteredList);
+//                tvParcelCode.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (recycler.getVisibility() == View.GONE) {
+//                            recycler.setVisibility(View.VISIBLE);
+//                        } else {
+//                            recycler.setVisibility(View.GONE);
+//                        }
+//                    }
+//                });
+//                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
+//                    if (item.getListParcelCode().size() == 1) {
+//                        recycler.setVisibility(View.VISIBLE);
+//                        tvParcelCode.setVisibility(View.GONE);
+//                    } else {
+//                        recycler.setVisibility(View.GONE);
+//                        tvParcelCode.setVisibility(View.VISIBLE);
+//                    }
+//                } else {
+//                    tvParcelCode.setVisibility(View.GONE);
+//                }
+            }
             currentItem = (CommonObject) model;
         }
 

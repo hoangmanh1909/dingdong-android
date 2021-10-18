@@ -357,13 +357,13 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
             commonObject = new CommonObject();
             commonObject.setReceiverName(tv_receiver.getText());
             commonObject.setCollectAmount(tv_collect_amount_cod.getText().toString().replace(",", ""));
-            commonObject.setFeePPA(Long.parseLong(tv_phi_ppa.getText().toString().replace(",", "")));
-            commonObject.setFeeShip(Long.parseLong(tv_phi_ship.getText().toString().replace(",", "")));
-            commonObject.setFeeCollectLater(Long.parseLong(tv_le_phi_sao_thu.getText().toString().replace(",", "")));
+//            commonObject.setFeePPA(Long.parseLong(tv_phi_ppa.getText().toString().replace(",", "")));
+//            commonObject.setFeeShip(Long.parseLong(tv_phi_ship.getText().toString().replace(",", "")));
+//            commonObject.setFeeCollectLater(Long.parseLong(tv_le_phi_sao_thu.getText().toString().replace(",", "")));
 
-            commonObject.setFeePPAPNS(Long.parseLong(tv_phi_ppa.getText().toString().replace(",", "")));
-            commonObject.setFeeShipPNS(Long.parseLong(tv_phi_ship.getText().toString().replace(",", "")));
-            commonObject.setFeeCollectLaterPNS(Long.parseLong(tv_le_phi_sao_thu.getText().toString().replace(",", "")));
+//            commonObject.setFeePPAPNS(Long.parseLong(tv_phi_ppa.getText().toString().replace(",", "")));
+//            commonObject.setFeeShipPNS(Long.parseLong(tv_phi_ship.getText().toString().replace(",", "")));
+//            commonObject.setFeeCollectLaterPNS(Long.parseLong(tv_le_phi_sao_thu.getText().toString().replace(",", "")));
         } else {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(getViewContext(), "Xin vui lòng chọn lý do");

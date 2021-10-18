@@ -363,7 +363,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             tvNameReceiver.setText(mHoanThanhTin.getReceiverName());
             tvAddressReceiver.setText(mHoanThanhTin.getReceiverAddress());
             tvCustomerName.setText(mHoanThanhTin.getCustomerName());
-
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.tv_phone_receiver,
                             new PhonePresenter((ContainerView) getActivity())

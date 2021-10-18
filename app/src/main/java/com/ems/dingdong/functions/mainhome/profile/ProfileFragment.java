@@ -36,9 +36,9 @@ import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.sip.cmc.SipCmc;
-import com.sip.cmc.callback.LogOutCallBack;
-import com.sip.cmc.network.Account;
+//import com.sip.cmc.SipCmc;
+//import com.sip.cmc.callback.LogOutCallBack;
+//import com.sip.cmc.network.Account;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -98,9 +98,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         }
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
 
-        if (SipCmc.getAccountInfo() != null) {
-            tvCtel.setText("Số máy lẻ : " + SipCmc.getAccountInfo().getName());
-        }
+//        if (SipCmc.getAccountInfo() != null) {
+//            tvCtel.setText("Số máy lẻ : " + SipCmc.getAccountInfo().getName());
+//        }
 
         if (!postOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
@@ -138,19 +138,19 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 mPresenter.back();
                 break;
             case R.id.rl_logout:
-                SipCmc.logOut(new LogOutCallBack() {
-                    @Override
-                    public void logoutSuccess() {
-                        Log.d("logoutSuccess", " thanh cong");
-                        super.logoutSuccess();
-                    }
-
-                    @Override
-                    public void logoutFailed() {
-                        Log.d("logoutFailed", " that bai");
-                        super.logoutFailed();
-                    }
-                });
+//                SipCmc.logOut(new LogOutCallBack() {
+//                    @Override
+//                    public void logoutSuccess() {
+//                        Log.d("logoutSuccess", " thanh cong");
+//                        super.logoutSuccess();
+//                    }
+//
+//                    @Override
+//                    public void logoutFailed() {
+//                        Log.d("logoutFailed", " that bai");
+//                        super.logoutFailed();
+//                    }
+//                });
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

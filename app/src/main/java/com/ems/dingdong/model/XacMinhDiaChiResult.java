@@ -11,6 +11,17 @@ public class XacMinhDiaChiResult extends SimpleResult {
     @SerializedName("Value")
     private Object object;
 
+    @SerializedName("result")
+    private ResultModel result;
+
+    public ResultModel getResult() {
+        return result;
+    }
+
+    public void setResult(ResultModel result) {
+        this.result = result;
+    }
+
     public Object getResponseLocation() {
         return object;
     }

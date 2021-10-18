@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 
@@ -74,9 +75,9 @@ interface ListBaoPhatBangKeContract {
 
         Call<SimpleResult> updateMobileSender(String code, String type, String phoneSender, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
-        Single<SimpleResult> _phatSml (SMLRequest smlRequest);
+        Single<SimpleResult> _phatSml(SMLRequest smlRequest);
 
-        Single<SimpleResult> _huySml (SMLRequest smlRequest);
+        Single<SimpleResult> _huySml(SMLRequest smlRequest);
 
     }
 
@@ -112,7 +113,7 @@ interface ListBaoPhatBangKeContract {
         void showSuccessUpdateMobileSender(String phoneSender, String message);
 
 
-        void showThongBao (String mess);
+        void showThongBao(String mess);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -125,7 +126,7 @@ interface ListBaoPhatBangKeContract {
 
         void _phatSml(SMLRequest smlRequest);
 
-        void _huySml (SMLRequest smlRequest);
+        void _huySml(SMLRequest smlRequest);
 
         /**
          * This search record to display and deliver.
@@ -234,9 +235,9 @@ interface ListBaoPhatBangKeContract {
         /**
          * Direction on vietmap.
          *
-         * @param address receiver address.
+         * @param vpostcodeModels receiver address.
          */
-        void vietmapSearch(String address);
+        void vietmapSearch(List<VpostcodeModel> vpostcodeModels);
 
         /**
          * Make a call by sim card.

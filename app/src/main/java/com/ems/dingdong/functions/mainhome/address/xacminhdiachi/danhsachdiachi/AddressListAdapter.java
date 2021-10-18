@@ -48,12 +48,12 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
     class HolderView extends BaseViewHolder {
 
-        @BindView(R.id.tv_name)
-        CustomBoldTextView tv_name;
+        @BindView(R.id.tv_stt)
+        CustomBoldTextView tvStt;
         @BindView(R.id.tv_address)
         CustomTextView tv_address;
-        @BindView(R.id.tv_smart_code)
-        CustomTextView tvSmartCode;
+        @BindView(R.id.tv_sua)
+        public CustomTextView tvSsua;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -62,13 +62,9 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
         public void bindView(Object model, int position) {
             AddressListModel item = (AddressListModel) model;
-            if (!TextUtils.isEmpty(item.getSmartCode())) {
-                tvSmartCode.setText(String.format(mContext.getString(R.string.smart_code) + " %s", item.getSmartCode()));
-            }
-            if (!TextUtils.isEmpty(item.getName()))
-                tv_name.setText(item.getName());
-
-            tv_address.setText(Float.toString(item.getConfidence()) + "km - " + item.getLabel());
+            tvStt.setText(getAdapterPosition() + 1 + "");
+            tv_address.setText(item.getLabel());
+            tv_address.setCompoundDrawables(null, null, null, null);
         }
     }
 }

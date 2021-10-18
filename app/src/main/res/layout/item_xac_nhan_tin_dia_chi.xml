@@ -24,19 +24,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_contact_address"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/dimen_5dp"
                     android:layout_toLeftOf="@+id/ll_background"
-                    android:gravity="left"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_12sp"
-                    tools:text="241, Xuân Thủy, Cầu Giấy" />
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_contact_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_12sp"
+                        tools:text="241, Xuân Thủy, Cầu Giấy" />
+
+                    <ImageView
+                        android:id="@+id/iv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_check_v2"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_background"
@@ -53,7 +70,8 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="2dp"
                         android:padding="3dp"
-                        android:src="@drawable/ic_map64" />
+                        android:src="@drawable/ic_map64"
+                        android:visibility="gone" />
 
                     <CheckBox
                         android:id="@+id/cb_selected"
@@ -138,7 +156,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
     <View
         style="@style/Devider"

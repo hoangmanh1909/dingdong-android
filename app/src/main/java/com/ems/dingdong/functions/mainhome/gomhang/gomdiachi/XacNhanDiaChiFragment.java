@@ -27,10 +27,12 @@ import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.PushOnClickParcelAdapter;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -40,6 +42,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.google.common.collect.Iterables;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -144,26 +147,15 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 @Override
                 public void onBindViewHolder(@NonNull HolderView holder, int position) {
                     super.onBindViewHolder(holder, position);
-                    holder.itemView.setOnClickListener(v -> {
-                       /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
+                    holder.tvContactAddress.setOnClickListener(v -> {
                         if (mPresenter.getType() == 1) {
-                            //holder.itemView.setOnClickListener(view -> {
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                            //});
                         } else {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
-//                            edtSearch.setText("");
                         }
-                    });
-
-                    holder.imgMap.setOnClickListener(v -> {
-                        if (null != mAdapter.getListFilter().get(position).getReceiverAddress().trim()) {
-                            if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverAddress().trim()))
-                                mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
-                        } else
-                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
                     });
 
                 }
@@ -174,28 +166,19 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 @Override
                 public void onBindViewHolder(@NonNull HolderView holder, int position) {
                     super.onBindViewHolder(holder, position);
-                    holder.itemView.setOnClickListener(v -> {
+                    holder.tvContactAddress.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
 
                         if (mPresenter.getType() == 1) {
-                            //holder.itemView.setOnClickListener(view -> {
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-                            //});
                         } else {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
-//                            edtSearch.setText("");
                         }
                     });
-                    holder.imgMap.setOnClickListener(v -> {
-                        if (null != mAdapter.getListFilter().get(position).getReceiverAddress().trim()) {
-                            if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverAddress().trim()))
-                                mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
-                        } else
-                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReceiverAddress().trim());
-                    });
-
                 }
             };
         }
@@ -276,6 +259,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     }
 
+
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
             new EditDayDialog(getActivity(), new OnChooseDay() {
@@ -350,6 +334,55 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         } else {
             Toast.showToast(getActivity(), "Chưa tin nào được chọn");
         }
+    }
+
+    public void showMap() {
+        if (mPresenter.getTab() == 0) {
+            for (CommonObject commonObject : mListChua) {
+                if (commonObject.isSelected()) {
+                    itemAtPosition = commonObject;
+                    break;
+                }
+            }
+        } else {
+            for (CommonObject commonObject : mListDa) {
+                if (commonObject.isSelected()) {
+                    itemAtPosition = commonObject;
+                    break;
+                }
+            }
+        }
+        if (itemAtPosition == null) {
+            for (CommonObject commonObject : mAdapter.mListFilter) {
+                if (commonObject.isSelected()) {
+                    itemAtPosition = commonObject;
+                    break;
+                }
+            }
+            if (itemAtPosition == null) {
+                Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ trước khi hoàn tất");
+                return;
+            }
+        }
+        List<CommonObject> commonObjects = mAdapter.getItemsSelected();
+
+        List<VpostcodeModel> vpostcodeModels = new ArrayList<>();
+
+        for (int i = 0; i < commonObjects.size(); i++) {
+            VpostcodeModel vpostcodeModel = new VpostcodeModel();
+            vpostcodeModel.setMaE(commonObjects.get(i).getCode());
+            vpostcodeModel.setId(Integer.parseInt(commonObjects.get(i).getiD()));
+            vpostcodeModel.setSenderVpostcode(commonObjects.get(i).getSenderVpostcode());
+            vpostcodeModel.setReceiverVpostcode("");
+            vpostcodeModel.setFullAdress(commonObjects.get(i).getReceiverAddress().trim());
+            vpostcodeModels.add(vpostcodeModel);
+        }
+        if (vpostcodeModels.isEmpty()) {
+            Toast.showToast(getActivity(), "Chưa chọn giá trị nào để xác nhận");
+            return;
+        }
+        mPresenter.vietmapSearch(vpostcodeModels);
+
     }
 
     public void confirmParcelCode() {

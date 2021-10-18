@@ -18,6 +18,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -30,6 +31,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -260,7 +262,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     }
 
     @Override
-    public void vietmapSearch(String address) {
-        new AddressListPresenter(mContainerView).setAddress(address).setType(Constants.TYPE_ROUTE).pushView();
+    public void vietmapSearch(List<VpostcodeModel> vpostcodeModels) {
+        new AddressListPresenter(mContainerView).setListVpost(vpostcodeModels).setType(98).pushView();
     }
 }

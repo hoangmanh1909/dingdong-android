@@ -1,5 +1,6 @@
 package com.ems.dingdong.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
@@ -21,6 +22,13 @@ public class ParcelCodeInfo extends RealmObject {
     private String orderPostmanId;
     @SerializedName("OrderCode")
     private String orderCode;
+    @SerializedName("ReferenceCode")
+    @Expose
+    private String ReferenceCode;
+
+    public String getReferenceCode() {
+        return ReferenceCode;
+    }
 
     int status;
 
@@ -35,8 +43,6 @@ public class ParcelCodeInfo extends RealmObject {
     public void setStatus(int status) {
         this.status = status;
     }
-
-
 
 
     public String getOrderCode() {

@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:weightSum="10"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="10">
 
 
         <LinearLayout
@@ -26,11 +26,11 @@
 
             <CheckBox
                 android:id="@+id/cb_selected"
-                android:button="@drawable/custom_btn_radio"
-                android:paddingRight="@dimen/_5sdp"
-                android:clickable="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_btn_radio"
+                android:clickable="false"
+                android:paddingRight="@dimen/_5sdp" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,6 +81,7 @@
                     android:layout_marginEnd="2dp"
                     android:padding="3dp"
                     android:src="@drawable/ic_map64"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/img_contact_phone"
                     app:layout_constraintEnd_toStartOf="@+id/img_contact_phone"
                     app:layout_constraintTop_toTopOf="@+id/img_contact_phone" />
@@ -94,21 +95,20 @@
                     android:padding="3dp"
                     android:src="@drawable/ic_sml"
                     app:layout_constraintBottom_toBottomOf="@+id/img_map"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_code"
                     app:layout_constraintEnd_toStartOf="@+id/img_map"
-                    app:layout_constraintTop_toTopOf="@+id/img_map"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_code" />
-
+                    app:layout_constraintTop_toTopOf="@+id/img_map" />
 
 
                 <!--temporary gone-->
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/img_contact_phone_ctel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="3dp"
                     android:src="@drawable/ic_call"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/img_map"
                     app:layout_constraintEnd_toEndOf="@+id/tv_code"
                     app:layout_constraintTop_toTopOf="@+id/img_map" />
@@ -142,6 +142,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_sodonhang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_batch_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,12 +169,31 @@
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_receiver"
+            <LinearLayout
+                android:id="@+id/ll_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp" />
+                android:orientation="horizontal">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_receiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="123123123"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_check_v2"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sender"
@@ -197,6 +223,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_COD"
                 android:layout_width="match_parent"
@@ -210,6 +237,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_gtgt"
                 android:layout_width="match_parent"
@@ -219,21 +247,20 @@
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_refund_postage"
-                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
-                android:visibility="gone"
                 android:id="@+id/tv_sml_status"
-                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text=""
                 android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
                 android:textStyle="bold"
-                android:textSize="@dimen/text_size_14sp" />
+                android:visibility="gone" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_create_dated"

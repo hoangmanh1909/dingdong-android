@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,8 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
 
         @BindView(R.id.tv_code)
         CustomTextView tvCode;
+        @BindView(R.id.tv_sodonhang)
+        TextView tvSodonhang;
         @BindView(R.id.cb_selected)
         public CheckBox cbSelected;
 
@@ -47,7 +50,7 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
             tvCode.setText(item.getTrackingCode());
-
+            tvSodonhang.setText(item.getOrderNumber());
         }
     }
 }
