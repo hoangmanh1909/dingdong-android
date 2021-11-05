@@ -116,11 +116,9 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             }
                         }
                     }
-
                     mView.showResponseSuccess(listG);
                 } else {
-                    if (type == 0)
-                        mView.showError(response.body().getMessage());
+                    mView.showError(response.body().getMessage());
                 }
             }
 

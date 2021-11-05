@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ems.dingdong"
     android:installLocation="preferExternal">
 
     <dist:module dist:instant="true" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,7 +17,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- tools:overrideLibrary="com.tsongkha.spinnerdatepicker" -->
     <!-- for audio access -->
 
@@ -51,11 +52,11 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:icon,android:allowBackup"
-        android:requestLegacyExternalStorage="true">
+        tools:replace="android:icon,android:allowBackup">
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -149,6 +150,26 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_Actionbar" />
+
+        <activity
+            android:name=".functions.mainhome.scannerv1.QrCodeScanner"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:exported="false"
+            android:label="DingDong"
+            android:launchMode="singleTask"
+            android:noHistory="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".functions.mainhome.scannerv1.QrCodeScannerV1"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:exported="false"
+            android:label="DingDong"
+            android:launchMode="singleTask"
+            android:noHistory="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".functions.mainhome.phathang.thongke.tabs.StatictisActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -363,11 +384,10 @@
 
         <receiver android:name=".calls.calling.NotificationReceiver">
             <intent-filter>
-                <action android:name="YES_ACTION"/>
-                <action android:name="STOP_ACTION"/>
+                <action android:name="YES_ACTION" />
+                <action android:name="STOP_ACTION" />
             </intent-filter>
         </receiver>
-
 
 
     </application>

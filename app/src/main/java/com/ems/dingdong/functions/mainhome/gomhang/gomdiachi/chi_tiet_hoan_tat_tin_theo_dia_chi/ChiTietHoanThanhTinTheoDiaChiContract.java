@@ -13,6 +13,7 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback);
 
+        void callForwardCallCenter(String callerNumber, String calleeNumber,
+                                   String callForwardType, String hotlineNumber,
+                                   String ladingCode, CommonCallback<SimpleResult> callback);
+
+        void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<ChiTietHoanThanhTinTheoDiaChiContract.Presenter> {
@@ -37,7 +43,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void showError(String message);
 
-        void showImage(String file,String path);
+        void showImage(String file, String path);
 
         void deleteFile();
 
@@ -64,5 +70,8 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
+//        void callForward(String phone);
+//
+//        void updateMobile(String phone);
     }
 }

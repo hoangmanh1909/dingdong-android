@@ -113,11 +113,8 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         //  maxStart.add(Calendar.DATE,-1);
         Calendar maxToStart = Calendar.getInstance();
         switch (v.getId()) {
-
             case R.id.layout_date_start:
                 typeDate = 0;
-
-                if (mType == 101) {
                     new SpinnerDatePickerDialogBuilder()
                             .context(mActivity)
                             .callback(this)
@@ -129,21 +126,20 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                             .minDate(1979, 0, 1)
                             .build()
                             .show();
-                } else new SpinnerDatePickerDialogBuilder()
-                        .context(mActivity)
-                        .callback(this)
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(maxStart.get(Calendar.YEAR), maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
-                        .minDate(1979, 0, 1)
-                        .build()
-                        .show();
+//                } else new SpinnerDatePickerDialogBuilder()
+//                        .context(mActivity)
+//                        .callback(this)
+//                        .spinnerTheme(R.style.DatePickerSpinner)
+//                        .showTitle(true)
+//                        .showDaySpinner(true)
+//                        .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
+//                        .maxDate(maxStart.get(Calendar.YEAR), maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
+//                        .minDate(1979, 0, 1)
+//                        .build()
+//                        .show();
                 break;
             case R.id.layout_date_end:
                 typeDate = 1;
-                if (mType == 101) {
                     new SpinnerDatePickerDialogBuilder()
                             .context(mActivity)
                             .callback(this)
@@ -155,18 +151,18 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                             .minDate(1979, 0, 1)
                             .build()
                             .show();
-                } else
-                    new SpinnerDatePickerDialogBuilder()
-                            .context(mActivity)
-                            .callback(this)
-                            .spinnerTheme(R.style.DatePickerSpinner)
-                            .showTitle(true)
-                            .showDaySpinner(true)
-                            .defaultDate(calTo.get(Calendar.YEAR), calTo.get(Calendar.MONTH), calTo.get(Calendar.DAY_OF_MONTH))
-                            .maxDate(maxToStart.get(Calendar.YEAR), maxToStart.get(Calendar.MONTH), maxToStart.get(Calendar.DAY_OF_MONTH))
-                            .minDate(1979, 0, 1)
-                            .build()
-                            .show();
+//                } else
+//                    new SpinnerDatePickerDialogBuilder()
+//                            .context(mActivity)
+//                            .callback(this)
+//                            .spinnerTheme(R.style.DatePickerSpinner)
+//                            .showTitle(true)
+//                            .showDaySpinner(true)
+//                            .defaultDate(calTo.get(Calendar.YEAR), calTo.get(Calendar.MONTH), calTo.get(Calendar.DAY_OF_MONTH))
+//                            .maxDate(maxToStart.get(Calendar.YEAR), maxToStart.get(Calendar.MONTH), maxToStart.get(Calendar.DAY_OF_MONTH))
+//                            .minDate(1979, 0, 1)
+//                            .build()
+//                            .show();
                 break;
             case R.id.layout_trang_thai:
                 showUICancelType();

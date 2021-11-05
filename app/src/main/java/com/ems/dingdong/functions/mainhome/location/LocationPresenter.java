@@ -102,7 +102,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 mView.hideProgress();
                 if (response.body() != null) {
                     if (response.body().getErrorCode().equals("00")) {
-                        mView.showCallSuccess();
+                        mView.showCallSuccess(response.body().getData());
                     } else {
                         mView.showCallError(response.body().getMessage());
                     }

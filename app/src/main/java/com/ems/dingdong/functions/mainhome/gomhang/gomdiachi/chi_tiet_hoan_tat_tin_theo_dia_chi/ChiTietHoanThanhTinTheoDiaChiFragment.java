@@ -29,6 +29,8 @@ import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiAdapte
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
+import com.ems.dingdong.functions.mainhome.scannerv1.QrCodeScanner;
+import com.ems.dingdong.functions.mainhome.scannerv1.QrCodeScannerV1;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -71,10 +73,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietHoanThanhTinTheoDiaChiContract.Presenter> implements ChiTietHoanThanhTinTheoDiaChiContract.View {
 
     private static final String TAG = ChiTietHoanThanhTinTheoDiaChiFragment.class.getSimpleName();
-
 
     @BindView(R.id.tv_name_receiver)
     CustomTextView tvNameReceiver;
@@ -191,12 +195,16 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             }
         };
         commonObjects = new ArrayList<>();
+        for (int i = 0; i < mListCommonObject.getListParcelCode().size(); i++) {
+            mListCommonObject.getListParcelCode().get(i).setSelected(false);
+        }
         commonObjects.addAll(mListCommonObject.getListParcelCode());
         if (commonObjects.size() == 0) {
             commonObjects = new ArrayList<>();
             for (int i = 0; i < mListCommonObject.getCodeS().size(); i++) {
                 ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
                 parcelCodeInfo.setTrackingCode("");
+                parcelCodeInfo.setSelected(false);
                 parcelCodeInfo.setOrderCode(mListCommonObject.getCodeS().get(i));
                 parcelCodeInfo.setOrderId(mListCommonObject.getCodeS1().get(i));
                 parcelCodeInfo.setOrderPostmanId(mListCommonObject.getOrderPostmanIDS().get(i));
@@ -219,6 +227,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         tvTotalParcelCodes.setText("Số lượng bưu gửi: " + soluongbuugui);
 
 
+        Log.d("thnahkhiemeeee", new Gson().toJson(mListCommonObject.getListParcelCode()));
         buuguiAdapter = new BuuguiAdapter(getViewContext(), commonObjects) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -272,11 +281,10 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                     }
 
                     for (int k = 0; k < commonObjects.size(); k++) {
-                        if (commonObjects.get(k).isSelected() == true) {
+                        if (commonObjects.get(k).isSelected()) {
                             dem[0] = dem[0] + 1;
                         }
                     }
-
                     tv_soluongclick.setText("Tổng bưu gửi đã chọn: " + dem[0]);
                 });
                 holder.radioBtn.setOnClickListener(v -> {
@@ -415,10 +423,25 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_scan_qr:
-                scanBarcode = true;
-                mPresenter.showBarcode(value -> {
-                    edtSearch.setText(value);
-                });
+//                mPresenter.showBarcode(value -> {
+//                    edtSearch.setText(value);
+//                });
+                Intent intent = new Intent(getViewContext(), QrCodeScannerV1.class);
+                startActivityForResult(intent, 1000);
+////                });
+////                try {
+////
+////                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+////                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+////
+////                    startActivityForResult(intent, 0);
+////
+////                } catch (Exception e) {
+////
+////                    Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+////                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+////                    startActivity(marketIntent);
+////                }
                 break;
             case R.id.radio_btn:
                 setAllCheckBox();
@@ -758,6 +781,17 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             if (resultCode == getActivity().RESULT_OK) {
                 attemptSendMedia(data.getData().getPath());
             }
+        }
+
+        switch (requestCode) {
+            case 1000: {
+                if (resultCode == RESULT_OK) {
+//                    tvData.setText(data.getStringExtra(EasyQR.DATA));
+                    edtSearch.setText(data.getStringExtra("100"));
+//                    Log.d("thanhasdasdasd", data.getStringExtra("100"));
+                }
+            }
+            break;
         }
     }
 

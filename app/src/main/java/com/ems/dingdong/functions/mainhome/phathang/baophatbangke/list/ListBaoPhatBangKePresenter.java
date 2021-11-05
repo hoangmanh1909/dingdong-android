@@ -226,7 +226,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void callForward(String phone, String parcelCode) {
-//        updateMobile(phone, parcelCode);
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -236,14 +235,14 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        addCallback(mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body() != null) {
                     if (response.body().getErrorCode().equals("00")) {
-                        mView.showCallSuccess();
+                        mView.showCallSuccess(response.body().getData());
                     } else {
                         mView.showCallError(response.body().getMessage());
                     }
@@ -262,7 +261,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 super.onFailure(call, error);
                 mView.showCallError("Lỗi kết nối đến tổng đài");
             }
-        }));
+        });
 
     }
 

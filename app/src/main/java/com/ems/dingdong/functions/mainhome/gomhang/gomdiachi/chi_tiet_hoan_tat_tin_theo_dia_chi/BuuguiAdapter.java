@@ -61,6 +61,8 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
 
     @Override
     public int getItemCount() {
+        if (mListFilter == null)
+            mListFilter = new ArrayList<>();
         return mListFilter.size();
     }
 

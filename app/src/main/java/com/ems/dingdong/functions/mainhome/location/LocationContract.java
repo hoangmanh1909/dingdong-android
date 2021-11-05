@@ -35,7 +35,7 @@ interface LocationContract {
 
         void showCallError(String message);
 
-        void showCallSuccess();
+        void showCallSuccess(String phone);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

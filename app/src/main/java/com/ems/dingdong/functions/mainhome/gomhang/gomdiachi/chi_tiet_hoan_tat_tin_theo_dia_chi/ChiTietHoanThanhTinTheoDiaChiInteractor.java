@@ -39,5 +39,14 @@ public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietH
     public void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
         NetWorkController.collectOrderPostmanCollect(hoanTatTinRequest, callback);
     }
+    @Override
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                ladingCode, callback);
+    }
 
+    @Override
+    public void updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.updateMobile(code,type, mobileNumber, commonCallback);
+    }
 }

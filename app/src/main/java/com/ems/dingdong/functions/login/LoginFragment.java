@@ -77,8 +77,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919743436;6DF63D7BFF563C2B7B5CFF2F2F20D3C230D60246E78F4628E51CCBC0817B3B26");// dev UAT
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;0773F4E99887C41785CF062706FF4179E52390670EDC0693F196747CC674CDA7");// pre UAT
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev UAT
-          // dev vinatti
+            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;68DD5B9A9D0EF797275CFF4129D161E7E37475E1C67FE7F846C82AB6FB71C848");// dev UAT
+            // dev vinatti
         }
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969479103;769358EDB74E113A14A02A045B8DF176340CAD8D32396A53B4353CF2068CB685");
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;6AD27AD2F41E994D0D999989604D7D9DDCBEFC9B6FF93A5D05D123F97B024322"); // pro
@@ -184,23 +184,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 }
             }
         } else {
-            String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
-            if (TextUtils.isEmpty(values)) {
-                mPresenter.gotoValidation();
-            } else {
-                String mobileNumber = values.split(";")[0];
-                String signCode = values.split(";")[1];
-                if (TextUtils.isEmpty(mobileNumber)) {
-                    showError("Không tìm thấy thông tin số điện thoại.");
-                    return;
-                }
-                if (!NumberUtils.checkMobileNumber(mobileNumber)) {
-                    showError("Số điện thoại không hợp lệ.");
-                    return;
-                }
-                showProgress();
-                mPresenter.login(mobileNumber, signCode);
-            }
+            showThanhCong();
         }
     }
 
@@ -239,6 +223,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+        return;
     }
 
     @Override
@@ -294,6 +279,27 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 getActivity().finish();
                 getActivity().startActivity(intent);
             }
+        }
+    }
+
+    @Override
+    public void showThanhCong() {
+        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+        if (TextUtils.isEmpty(values)) {
+            mPresenter.gotoValidation();
+        } else {
+            String mobileNumber = values.split(";")[0];
+            String signCode = values.split(";")[1];
+            if (TextUtils.isEmpty(mobileNumber)) {
+                showError("Không tìm thấy thông tin số điện thoại.");
+                return;
+            }
+            if (!NumberUtils.checkMobileNumber(mobileNumber)) {
+                showError("Số điện thoại không hợp lệ.");
+                return;
+            }
+            showProgress();
+            mPresenter.login(mobileNumber, signCode);
         }
     }
 

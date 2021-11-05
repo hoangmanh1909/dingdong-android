@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.scanner;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     @Override
     public void onDisplay() {
         super.onDisplay();
+        checkSelfPermission();
         cameraView.setFormats(BarcodeFormat.ALL_FORMATS);
         cameraView.setResultHandler(this); // Register ourselves as a handler for scan results.
         cameraView.startCamera();          // Start camera on resume
@@ -54,8 +56,24 @@ public class ScannerCodeFragment extends ViewFragment<ScannerCodeContract.Presen
     @Override
     public void onPause() {
         super.onPause();
-        cameraView.stopCamera();           // Stop camera on pause
+        cameraView.stopCamera();
+//        cameraView.stopCameraPreview();// Stop camera on pause
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("OnResume","OnResume");
+        cameraView.resumeCameraPreview(this);
+        cameraView.startCamera();          // Start camera on resume
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        cameraView.setResultHandler(this);
+    }
+
 
     @Override
     public void initLayout() {

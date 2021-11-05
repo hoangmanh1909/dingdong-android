@@ -15,6 +15,7 @@ import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.response.ResponseObject;
@@ -110,9 +111,10 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void getVersion() {
-        mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION", "", "", new CommonCallback<ResponseObject>((Activity) mContainerView) {
+        mView.showProgress();
+        mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION", "", "", new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ResponseObject> call, Response<ResponseObject> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
@@ -122,13 +124,11 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                         JSONObject jsonObject = new JSONObject(response.body().getData());
                         String version = jsonObject.getString("Version");
                         String urlDowload = jsonObject.getString("UrlDownload");
-
                         String versionApp = BuildConfig.VERSION_NAME;
-
-                        if (!version.equals(versionApp)) {
-                            mView.showVersion(version, urlDowload);
-                        }
-
+//                        if (!version.equals(versionApp)) {
+//                            mView.showVersion(version, urlDowload);
+//                        } else
+                        mView.showThanhCong();
                     } catch (JSONException err) {
                         Log.d("Error", err.toString());
                         mView.showError("Lỗi xử lý dữ liệu");
@@ -139,7 +139,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<ResponseObject> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);

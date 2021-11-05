@@ -75,7 +75,7 @@ public class DialogCuocgoi extends Dialog {
                     phoneKhiem.onCall(tvSodienthoai.getText().toString());
                     dismiss();
                 } else {
-                    phoneKhiem.onCallEdit(tvSodienthoai.getText().toString());
+                    phoneKhiem.onCallEdit(tvSodienthoai.getText().toString(),0);
                     dismiss();
                 }
 

@@ -28,7 +28,7 @@ interface LoginContract {
 
         void getReasons(CommonCallback<ReasonResult> commonCallback);
 
-        void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback);
+        void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getList(String data);
     }
@@ -41,6 +41,8 @@ interface LoginContract {
         void showVersion(String version, String urlDownload);
 
         void gotoHome();
+
+        void showThanhCong();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -49,7 +51,6 @@ interface LoginContract {
         void gotoValidation();
 
         void getVersion();
-
 
         void getList(String data);
     }

@@ -262,7 +262,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
-            new EditDayDialog(getActivity(), new OnChooseDay() {
+            new EditDayDialog(getActivity(),101, new OnChooseDay() {
                 @Override
                 public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);

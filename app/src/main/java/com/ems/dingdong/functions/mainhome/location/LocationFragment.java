@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
@@ -24,6 +25,7 @@ import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.callback.PhoneKhiem;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.dialog.DialogCuocgoi;
+import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.StatusInfo;
@@ -33,6 +35,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -189,32 +192,120 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_SenderPhone:
-                new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
+//                new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
+//                    @Override
+//                    public void onCallTongDai(String phone) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCall(String phone) {
+//                        mPhone = phone;
+//                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
+//                    }
+//
+//                    @Override
+//                    public void onCallEdit(String phone,int type) {
+//
+//                    }
+//                }).show();
+                new DialogCuocgoiNew(getViewContext(), _tvReceiverPhone.getText().toString(), 4, new PhoneKhiem() {
                     @Override
-                    public void onCall(String phone) {
-                        mPhone = phone;
+                    public void onCallTongDai(String phone) {
                         mPresenter.callForward(phone, tvParcelCode.getText().toString());
                     }
 
                     @Override
-                    public void onCallEdit(String phone) {
+                    public void onCall(String phone) {
+                        Intent intent1 = new Intent(Intent.ACTION_CALL);
+                        intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                        if (ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.CALL_PHONE)
+                                != PackageManager.PERMISSION_GRANTED) {
 
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                        } else {
+                            startActivity(intent1);
+                        }
+                    }
+
+                    @Override
+                    public void onCallEdit(String phone, int type) {
+                        if (type == 1) {
+                            Intent intent1 = new Intent(Intent.ACTION_CALL);
+                            intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                            if (ContextCompat.checkSelfPermission(getActivity(),
+                                    Manifest.permission.CALL_PHONE)
+                                    != PackageManager.PERMISSION_GRANTED) {
+
+                                ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                            } else {
+                                startActivity(intent1);
+                            }
+                        } else {
+                            mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                        }
+//                        mPresenter.updateMobile(phone, choosenLadingCode);
                     }
                 }).show();
                 break;
             case R.id.tv_ReceiverPhone:
-                new DialogCuocgoi(getViewContext(), _tvReceiverPhone.getText().toString(), "2", new PhoneKhiem() {
+                new DialogCuocgoiNew(getViewContext(), _tvReceiverPhone.getText().toString(), 3, new PhoneKhiem() {
                     @Override
-                    public void onCall(String phone) {
-                        mPhone = phone;
+                    public void onCallTongDai(String phone) {
                         mPresenter.callForward(phone, tvParcelCode.getText().toString());
                     }
 
                     @Override
-                    public void onCallEdit(String phone) {
+                    public void onCall(String phone) {
+                        Intent intent1 = new Intent(Intent.ACTION_CALL);
+                        intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                        if (ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.CALL_PHONE)
+                                != PackageManager.PERMISSION_GRANTED) {
 
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                        } else {
+                            startActivity(intent1);
+                        }
+                    }
+
+                    @Override
+                    public void onCallEdit(String phone, int type) {
+                        if (type == 1) {
+                            Intent intent1 = new Intent(Intent.ACTION_CALL);
+                            intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                            if (ContextCompat.checkSelfPermission(getActivity(),
+                                    Manifest.permission.CALL_PHONE)
+                                    != PackageManager.PERMISSION_GRANTED) {
+
+                                ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                            } else {
+                                startActivity(intent1);
+                            }
+                        } else {
+                            mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                        }
+//                        mPresenter.updateMobile(phone, choosenLadingCode);
                     }
                 }).show();
+//                new DialogCuocgoi(getViewContext(), _tvReceiverPhone.getText().toString(), "2", new PhoneKhiem() {
+//                    @Override
+//                    public void onCallTongDai(String phone) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCall(String phone) {
+//                        mPhone = phone;
+//                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
+//                    }
+//
+//                    @Override
+//                    public void onCallEdit(String phone,int type) {
+//
+//                    }
+//                }).show();
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -251,23 +342,20 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
     @Override
     public void showCallError(String message) {
-        if (getViewContext() != null) {
-            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
-                startActivity(intent);
-            }
-        }
+        Toast.showToast(getViewContext(), message);
     }
 
     @Override
-    public void showCallSuccess() {
-        if (getViewContext() != null) {
-            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse(Constants.HEADER_NUMBER));
-                startActivity(intent);
-            }
+    public void showCallSuccess(String phone) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phone));
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            startActivity(intent);
         }
     }
 }

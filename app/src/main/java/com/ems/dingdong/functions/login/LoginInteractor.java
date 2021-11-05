@@ -46,7 +46,7 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
+    public void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
         NetWorkController.getVersion(code,data,signature,callback);
     }
 

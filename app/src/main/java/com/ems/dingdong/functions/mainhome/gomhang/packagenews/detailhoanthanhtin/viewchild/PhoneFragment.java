@@ -12,6 +12,7 @@ import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneKhiem;
 import com.ems.dingdong.dialog.DialogCuocgoi;
+import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
@@ -51,67 +52,33 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @OnClick(R.id.tv_ContactPhone)
     public void onViewClicked() {
-        new DialogCuocgoi(getViewContext(),  mPresenter.getPhone(), "Thực hiện cuộc gọi", new PhoneKhiem() {
+        new DialogCuocgoiNew(getViewContext(), mPresenter.getPhone(), 2, new PhoneKhiem() {
             @Override
-            public void onCall(String phone) {
-                mPhone = phone;
+            public void onCallTongDai(String phone) {
                 mPresenter.callForward(phone);
             }
 
             @Override
-            public void onCallEdit(String phone) {
+            public void onCall(String phone) {
                 mPhone = phone;
-                mPresenter.callForward(phone);
+                showCallSuccess(phone);
+            }
+
+            @Override
+            public void onCallEdit(String phone, int type) {
+                mPhone = phone;
+                if (type == 1) {
+                    showCallSuccess(phone);
+                } else {
+                    mPresenter.callForward(phone);
+                }
+                mPresenter.updateMobile(phone);
             }
         }).show();
-//        mPhoneConectDialog = new PhoneConectDialog(getActivity(), mPresenter.getPhone(), new PhoneCallback() {
-//            @Override
-//            public void onCallSenderResponse(String phone) {
-//                mPhone = phone;
-//                mPresenter.callForward(phone);
-//            }
-//
-//            @Override
-//            public void onCallReceiverResponse(String phone) {
-//                mPhone = phone;
-//                mPresenter.callForward(phone);
-//            }
-//
-//            @Override
-//            public void onCallSenderResponse1(String phone) {
-//
-//            }
-//
-//            @Override
-//            public void onUpdateNumberReceiverResponse(String phone, DismissDialogCallback callback) {
-//                showConfirmSaveMobile(phone, callback);
-//            }
-//
-//            @Override
-//            public void onUpdateNumberSenderResponse(String phone, DismissDialogCallback callback) {
-//
-//            }
-//
-//            @Override
-//            public void onCallCSKH(String phone) {
-//
-//            }
-//        });
-//        mPhoneConectDialog.show();
     }
 
     @Override
     public void showCallSuccess(String phone) {
-//        Intent intent = new Intent(Intent.ACTION_CALL);
-//        intent.setData(Uri.parse(Constants.HEADER_NUMBER));
-//        if (ActivityCompat.checkSelfPermission(getActivity(),
-//                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//            return;
-//        }
-//        Intent callintent = new Intent(Intent.ACTION_CALL);
-//        callintent.setData(Uri.parse(phone));
-//        startActivity(callintent);
-
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phone));
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -150,7 +117,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     }
 
-    private void showConfirmSaveMobile(final String phone, DismissDialogCallback callback) {
+    private void showConfirmSaveMobile(final String phone) {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("Có")
                 .setTitleText("Thông báo")
@@ -161,7 +128,6 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         mPresenter.updateMobile(phone);
                         sweetAlertDialog.dismiss();
-                        callback.dismissDialog();
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {

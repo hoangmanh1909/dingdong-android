@@ -391,13 +391,13 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getVersion(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
-        Call<ResponseObject> call = getAPIBuilder().Bussiness(code, data, signature);
+    public static void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().Bussiness(code, data, signature);
         call.enqueue(callback);
     }
 
-    public static void createCallHistoryVHT(String code, String data, String signature, CommonCallback<ResponseObject> callback) {
-        Call<ResponseObject> call = getAPIBuilder().Bussiness(code, data, signature);
+    public static void createCallHistoryVHT(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().Bussiness(code, data, signature);
         call.enqueue(callback);
     }
 

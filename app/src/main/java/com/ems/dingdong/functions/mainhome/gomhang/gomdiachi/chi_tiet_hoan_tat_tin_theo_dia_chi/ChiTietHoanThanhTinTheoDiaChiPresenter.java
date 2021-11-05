@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_
 
 import android.app.Activity;
 import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
@@ -15,8 +16,10 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -116,7 +119,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
         mView.showProgress();
         String quantity = "0";
         hoanTatTinRequest.setQuantity(quantity);
-        mInteractor.collectOrderPostmanCollect(hoanTatTinRequest,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.collectOrderPostmanCollect(hoanTatTinRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -144,7 +147,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body() != null) {
-                    mView.showImage(response.body().getFile(),path);
+                    mView.showImage(response.body().getFile(), path);
                 }
             }
 

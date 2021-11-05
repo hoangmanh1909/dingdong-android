@@ -245,7 +245,7 @@ public interface VinattiAPI {
 
     @FormUrlEncoded
     @POST("api/DingDong/Bussiness")
-    Call<ResponseObject> Bussiness(@Field("Code") String code,
+    Call<SimpleResult> Bussiness(@Field("Code") String code,
                                    @Field("Data") String data,
                                    @Field("Signature") String signature);
 

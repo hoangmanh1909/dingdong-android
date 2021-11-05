@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.dialog.DialogCuocgoi;
+import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.DialogSML;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialogExtend;
@@ -352,6 +354,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 //Button ...
+
+                // goi cho nguoi gui
                 holder.img_ContactPhone_extend.setOnClickListener(v -> {
                     try {
                         mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
@@ -360,20 +364,30 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
-                    new DialogCuocgoi(getViewContext(), mSenderPhone, "Gọi người gửi", new PhoneKhiem() {
+                    new DialogCuocgoiNew(getViewContext(), mSenderPhone, 2, new PhoneKhiem() {
+                        @Override
+                        public void onCallTongDai(String phone) {
+                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                        }
+
                         @Override
                         public void onCall(String phone) {
                             callProvidertoCSKH(phone);
                         }
 
                         @Override
-                        public void onCallEdit(String phone) {
-                            callProvidertoCSKH(phone);
-                            mPresenter.updateMobile(phone, choosenLadingCode);
+                        public void onCallEdit(String phone, int type) {
+//                            callProvidertoCSKH(phone);
+                            if (type == 1) {
+                                callProvidertoCSKH(phone);
+                            } else {
+                                mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            }
+                            mPresenter.updateMobileSender(phone, choosenLadingCode);
                         }
                     }).show();
                 });
-
+                // goi cho nguoi nhan
                 holder.img_contact_phone.setOnClickListener(v -> {
                     try {
                         phoneReceiver = mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", "");
@@ -382,15 +396,24 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
-                    new DialogCuocgoi(getViewContext(), phoneReceiver, "Gọi người nhận", new PhoneKhiem() {
+                    new DialogCuocgoiNew(getViewContext(), phoneReceiver, 1, new PhoneKhiem() {
+                        @Override
+                        public void onCallTongDai(String phone) {
+                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                        }
+
                         @Override
                         public void onCall(String phone) {
                             callProvidertoCSKH(phone);
                         }
 
                         @Override
-                        public void onCallEdit(String phone) {
-                            callProvidertoCSKH(phone);
+                        public void onCallEdit(String phone, int type) {
+                            if (type == 1) {
+                                callProvidertoCSKH(phone);
+                            } else {
+                                mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            }
                             mPresenter.updateMobile(phone, choosenLadingCode);
                         }
                     }).show();
@@ -735,24 +758,26 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showCallError(String message) {
-        if (getViewContext() != null) {
-            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
-                startActivity(intent);
-            }
-        }
+//        if (getViewContext() != null) {
+//            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+//                Intent intent = new Intent(Intent.ACTION_CALL);
+//                intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
+//                startActivity(intent);
+//            }
+//        }
+        Toast.showToast(getViewContext(),message);
     }
 
     @Override
-    public void showCallSuccess() {
-        if (getViewContext() != null) {
-            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse(Constants.HEADER_NUMBER));
-                startActivity(intent);
-            }
-        }
+    public void showCallSuccess(String phone) {
+//        if (getViewContext() != null) {
+//            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
+//                Intent intent = new Intent(Intent.ACTION_CALL);
+//                intent.setData(Uri.parse(Constants.HEADER_NUMBER));
+//                startActivity(intent);
+//            }
+//        }
+        callProvidertoCSKH(phone);
     }
 
     public List<DeliveryPostman> getItemSelected() {

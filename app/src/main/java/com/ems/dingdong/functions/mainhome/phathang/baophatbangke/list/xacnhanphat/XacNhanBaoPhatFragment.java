@@ -511,7 +511,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rad_dop2.setChecked(true);
             rad_dop1.setChecked(false);
         }
-        adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
+        adapter = new  XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -1371,6 +1371,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 return;
             }
 
+
+            if (!tvGTTT.getText().toString().equals("") && tvGTTT.getText().toString().length() < 8) {
+                Toast.showToast(getViewContext(), "Vui lòng nhập số GTTT tối thiểu 8 ký tự");
+                return;
+            }
             // 0 ko chon gi // 1 thong tin // 2 hinh anh / 3 ca haim
             if (rbVerifyImage.isChecked() && rbVerifyInfo.isChecked()) authenType = 3;
             else if (rbVerifyInfo.isChecked()) authenType = 1;

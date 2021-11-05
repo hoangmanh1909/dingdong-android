@@ -106,7 +106,7 @@ interface ListBaoPhatBangKeContract {
          */
         void showCallError(String message);
 
-        void showCallSuccess();
+        void showCallSuccess(String phone);
 
         void showSuccessUpdateMobile(String phone, String message);
 
