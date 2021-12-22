@@ -3,8 +3,10 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +44,7 @@ import com.ems.dingdong.calls.Session;
 import com.ems.dingdong.dialog.DialogCuocgoi;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.DialogSML;
+import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialogExtend;
 import com.ems.dingdong.dialog.PhoneConectDialogIcon;
@@ -71,6 +75,10 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.rengwuxian.materialedittext.MaterialEditText;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.RegistrationCallback;
@@ -78,6 +86,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
@@ -121,7 +130,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private String mDate;
     private Calendar mCalendar;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private int mCountSearch = 0;
     private boolean isLoading = false;
     private String mFromDate = "";
@@ -139,6 +147,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     String phoneReceiver = "";
     String POCode;
     String PostmanId;
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
+            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+    private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
+
+
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
         public void onLeafClick(Leaf leaf) {
@@ -216,6 +231,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void initLayout() {
         super.initLayout();
+
+
         SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -472,6 +489,62 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             initSearch();
         });
 
+        checkPermissionCall();
+        if (!checkPermissionForReadExtertalStorage()) {
+            try {
+                requestPermissionForReadExtertalStorage();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean checkPermissionForReadExtertalStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int result = getActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
+    }
+
+    public void requestPermissionForReadExtertalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions(getViewContext(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
+            int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
+            int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+            int hasPermission5 = getActivity().checkSelfPermission(Manifest.permission.MODIFY_AUDIO_SETTINGS);
+            int hasPermission6 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE);
+            int hasPermission7 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
+            int hasPermission8 = getActivity().checkSelfPermission(Manifest.permission.INTERNET);
+            int hasPermission9 = getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO);
+            int hasPermission10 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int hasPermission11 = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            if (hasPermission1 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission2 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission3 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission4 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission5 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission6 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission7 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission8 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission9 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission10 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission11 != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+        }
     }
 
     private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
@@ -533,6 +606,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         showSuccessToast(mess);
         initSearch();
 //        onDisplay();
+
+//        if (checkPlayServices()) {
+//            // Building the GoogleApi client
+//            buildGoogleApiClient();
+//        }
+//        getLocation();
     }
 
     private void showDialog() {
@@ -765,7 +844,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //                startActivity(intent);
 //            }
 //        }
-        Toast.showToast(getViewContext(),message);
+        Toast.showToast(getViewContext(), message);
     }
 
     @Override
@@ -937,4 +1016,62 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         //android.util.Log.d("123123", "provider = customItem.getMessage(); ListBaoPhat "+provider);
     }
 
+//    private GoogleApiClient gac;
+//    private Location location;
+
+//    @Override
+//    public void onConnected(@Nullable @org.jetbrains.annotations.Nullable Bundle bundle) {
+//        getLocation();
+//    }
+//
+//    @Override
+//    public void onConnectionSuspended(int i) {
+//        gac.connect();
+//    }
+//
+//    @Override
+//    public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
+//        Toast.showToast(getViewContext(), "Lỗi kết nối: " + connectionResult.getErrorMessage());
+//    }
+//
+//    private void getLocation() {
+//        if (ActivityCompat.checkSelfPermission(getViewContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // Kiểm tra quyền hạn
+//            ActivityCompat.requestPermissions(getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+//        } else {
+//            location = LocationServices.FusedLocationApi.getLastLocation(gac);
+//            if (location != null) {
+//
+//            } else {
+//                new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
+////                Toast.showToast(getViewContext(), "(Không thể hiển thị vị trí. " +
+////                        "Bạn đã kích hoạt location trên thiết bị chưa?)");
+//            }
+//        }
+//    }
+//
+//    protected synchronized void buildGoogleApiClient() {
+//        if (gac == null) {
+//            gac = new GoogleApiClient.Builder(getViewContext())
+//                    .addConnectionCallbacks(this)
+//                    .addOnConnectionFailedListener(this)
+//                    .addApi(LocationServices.API).build();
+//        }
+//    }
+//
+//    private boolean checkPlayServices() {
+//        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getViewContext());
+//        if (resultCode != ConnectionResult.SUCCESS) {
+//            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+//                GooglePlayServicesUtil.getErrorDialog(resultCode, getViewContext(), 1000).show();
+//            } else {
+//                new DialogText(getContext(), "Thiết bị này không hỗ trợ.").show();
+////                Toast.showToast(getViewContext(), "Thiết bị này không hỗ trợ.");
+//                return false;
+//            }
+//            return false;
+//        }
+//        return true;
+//    }
 }

@@ -108,7 +108,7 @@
             android:textSize="@dimen/text_size_18sp" />
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -123,807 +123,812 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
+                android:padding="5dp"
+                android:weightSum="10">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_total_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text=""
+                    android:textColor="@color/text_da_dong"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_total_parcel_codes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="5"
+                    android:text=""
+                    android:textColor="@color/text_da_dong"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                style="@style/HeaderNews"
+                android:layout_width="match_parent"
+                android:background="@drawable/bg_header_common"
+                android:padding="@dimen/dimen_10dp"
+                android:text="Địa chỉ thu gom"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_radius_bottom_common"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:weightSum="10">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_total_code"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text=""
-                        android:textColor="@color/text_da_dong"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="bold" />
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight="0.7"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Khách hàng"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
-                    <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/tv_total_parcel_codes"
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_customer_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_weight="5"
-                        android:text=""
-                        android:textColor="@color/text_da_dong"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="bold" />
-
+                        android:layout_weight="1.3"
+                        android:gravity="right|center"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
 
                 </LinearLayout>
-
-
-                <com.ems.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Địa chỉ thu gom"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight="0.7"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Người liên hệ"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_name_receiver"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:gravity="end"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <!--                    &lt;!&ndash;<LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:orientation="horizontal"-->
+                <!--                        android:weightSum="2">-->
+                <!--    -->
+                <!--                        <com.ems.dingdong.views.CustomTextView-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_marginRight="@dimen/_10sdp"-->
+                <!--                            android:layout_weight="0.7"-->
+                <!--                            android:paddingTop="@dimen/dimen_10dp"-->
+                <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
+                <!--                            android:text="Số điện thoại"-->
+                <!--                            android:textColor="@color/black"-->
+                <!--                            android:textSize="14dp" />-->
+                <!--    -->
+                <!--                        <com.ems.dingdong.views.CustomTextView-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_weight="0.3"-->
+                <!--                            android:paddingTop="@dimen/dimen_10dp"-->
+                <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
+                <!--                            android:text=""-->
+                <!--                            android:textColor="@color/black"-->
+                <!--                            android:textSize="14dp" />-->
+                <!--    -->
+                <!--    -->
+                <!--                        &lt;!&ndash;tv_phone_receiver&ndash;&gt;-->
+                <!--                        <LinearLayout-->
+                <!--                            android:id="@+id/tv_phone_receiver"-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_weight="1"-->
+                <!--                            android:orientation="vertical">-->
+                <!--    -->
+                <!--                        </LinearLayout>-->
+                <!--    -->
+                <!--                    </LinearLayout>&ndash;&gt;-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight="0.7"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Số điện thoại"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_phone_receiver"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dimen_10dp"></LinearLayout>
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:layout_weight="0.7"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Khách hàng"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                </LinearLayout>
 
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            android:id="@+id/tv_customer_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.3"
-                            android:gravity="right"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
 
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight="0.7"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Địa chỉ"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:layout_weight="0.7"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Người liên hệ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_address_receiver"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:gravity="right|center"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/tv_name_receiver"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.3"
-                            android:gravity="end"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                </LinearLayout>
 
-                    </LinearLayout>
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
 
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+            </LinearLayout>
 
-                    <!--                    &lt;!&ndash;<LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:orientation="horizontal"-->
-                    <!--                        android:weightSum="2">-->
-                    <!--    -->
+            <com.ems.dingdong.views.CustomBoldTextView
+                style="@style/HeaderNews"
+                android:layout_width="match_parent"
+                android:background="@drawable/bg_header_common"
+                android:padding="@dimen/dimen_10dp"
+                android:text="Hình thức thu gom"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
                     <!--                        <com.ems.dingdong.views.CustomTextView-->
-                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:id="@+id/tv_total_code"-->
+                    <!--                            android:layout_width="wrap_content"-->
                     <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:layout_marginRight="@dimen/_10sdp"-->
-                    <!--                            android:layout_weight="0.7"-->
-                    <!--                            android:paddingTop="@dimen/dimen_10dp"-->
-                    <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
-                    <!--                            android:text="Số điện thoại"-->
-                    <!--                            android:textColor="@color/black"-->
-                    <!--                            android:textSize="@dimen/_14sdp" />-->
-                    <!--    -->
-                    <!--                        <com.ems.dingdong.views.CustomTextView-->
-                    <!--                            android:layout_width="0dp"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:layout_weight="0.3"-->
                     <!--                            android:paddingTop="@dimen/dimen_10dp"-->
                     <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
                     <!--                            android:text=""-->
-                    <!--                            android:textColor="@color/black"-->
-                    <!--                            android:textSize="@dimen/_14sdp" />-->
-                    <!--    -->
-                    <!--    -->
-                    <!--                        &lt;!&ndash;tv_phone_receiver&ndash;&gt;-->
-                    <!--                        <LinearLayout-->
-                    <!--                            android:id="@+id/tv_phone_receiver"-->
-                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:textColor="@color/red_light"-->
+                    <!--                            android:textSize="14dp"-->
+                    <!--                            android:visibility="gone" />-->
+
+                    <!--                        <com.ems.dingdong.views.CustomTextView-->
+                    <!--                            android:id="@+id/tv_total_parcel_codes"-->
+                    <!--                            android:layout_width="wrap_content"-->
                     <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:layout_weight="1"-->
-                    <!--                            android:orientation="vertical">-->
-                    <!--    -->
-                    <!--                        </LinearLayout>-->
-                    <!--    -->
-                    <!--                    </LinearLayout>&ndash;&gt;-->
+                    <!--                            android:paddingTop="@dimen/dimen_10dp"-->
+                    <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
+                    <!--                            android:text=""-->
+                    <!--                            android:textColor="@color/red_light"-->
+                    <!--                            android:textSize="14dp" />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:layout_weight="0.7"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Số điện thoại"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                        <LinearLayout
-                            android:id="@+id/tv_phone_receiver"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/dimen_10dp"></LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:layout_weight="0.7"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="Địa chỉ"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            android:id="@+id/tv_address_receiver"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.3"
-                            android:gravity="end"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:paddingBottom="@dimen/dimen_10dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/Devider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp" />
+                    <!--                        <com.ems.dingdong.views.CustomTextView-->
+                    <!--                            android:id="@+id/tv_parcel_codes"-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:paddingTop="@dimen/dimen_10dp"-->
+                    <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
+                    <!--                            android:text=""-->
+                    <!--                            android:textColor="@color/red_light"-->
+                    <!--                            android:textSize="14dp" />-->
 
                 </LinearLayout>
 
-                <com.ems.dingdong.views.CustomBoldTextView
-                    style="@style/HeaderNews"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Hình thức thu gom"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_radius_search">
+
+                    <LinearLayout
+                        android:id="@+id/ll_scan_qr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/dimen_20dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/img_capture"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_qr" />
+                    </LinearLayout>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/ll_scan_qr"
+                        android:hint="Nhập bưu gửi"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapCharacters"
+                        android:textColorHint="@color/colorBlackTrans20"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:met_bottomTextSize="@dimen/text_size_sub"
+                        app:met_clearButton="true"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="@color/black"
+                        app:met_textColor="@color/black"
+                        app:met_textColorHint="@color/colorBlackTrans20"
+                        app:met_underlineColor="@color/transparent">
+
+                        <requestFocus />
+                    </com.rengwuxian.materialedittext.MaterialEditText>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_header_common"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Danh sách bưu gửi"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_white_radius_bottom_common"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:weightSum="10">
+
+                            <CheckBox
+                                android:id="@+id/radio_btn"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/custom_btn_radio" />
+
+                            <TextView
+                                android:id="@+id/tv_mabuugui"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4.5"
+                                android:gravity="center"
+                                android:text="Mã Bưu gửi"
+                                android:textColor="@color/text_blue_bank"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_matin"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4.5"
+                                android:gravity="center"
+                                android:text="Mã tin"
+                                android:textColor="@color/text_blue_bank"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        style="@style/HeaderNews"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_header_common"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Hình thức thu gom"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_soluongclick"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Tổng bưu gửi đã chọn: 0"
+                        android:textColor="@color/red_light"
+                        android:textStyle="bold" />
+                    <!--gone-->
+                    <RadioGroup
+                        android:id="@+id/radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:layout_weight="1.3"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <RadioButton
+                            android:id="@+id/rad_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:checked="true"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="Thu gom thành công"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/rad_unsuccess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="Thu gom không thành công"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/rad_failure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="Lấy hàng thất bại"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                    </RadioGroup>
+
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ll_success"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/btn_sign"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@drawable/bg_gradient_radius_5"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/dimen_20dp"
+                        android:paddingTop="@dimen/dimen_5dp"
+                        android:paddingRight="@dimen/dimen_20dp"
+                        android:paddingBottom="@dimen/dimen_5dp"
+                        android:text="Ký gửi"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_signed"
+                        android:layout_width="0dp"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_sign"
+                        app:layout_constraintStart_toStartOf="@+id/btn_sign"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_sign"
+                        tools:ignore="MissingConstraints">
+
+
+                        <ImageView
+                            android:id="@+id/img_sign"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dimen_20dp"
+                            android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingRight="@dimen/dimen_20dp"
+                            android:paddingBottom="@dimen/dimen_5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="124dp"
+                            android:layout_marginLeft="124dp"
+                            android:layout_marginTop="268dp">
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_6sdp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="@+id/btn_sign"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_signed"
+                        tools:ignore="MissingConstraints">
 
-                        <!--                        <com.ems.dingdong.views.CustomTextView-->
-                        <!--                            android:id="@+id/tv_total_code"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:paddingTop="@dimen/dimen_10dp"-->
-                        <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
-                        <!--                            android:text=""-->
-                        <!--                            android:textColor="@color/red_light"-->
-                        <!--                            android:textSize="@dimen/_14sdp"-->
-                        <!--                            android:visibility="gone" />-->
+                        <ImageView
+                            android:id="@+id/iv_camera_thu_gom"
+                            android:layout_width="@dimen/dimen_70dp"
+                            android:layout_height="@dimen/dimen_70dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_camera_plus" />
 
-                        <!--                        <com.ems.dingdong.views.CustomTextView-->
-                        <!--                            android:id="@+id/tv_total_parcel_codes"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:paddingTop="@dimen/dimen_10dp"-->
-                        <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
-                        <!--                            android:text=""-->
-                        <!--                            android:textColor="@color/red_light"-->
-                        <!--                            android:textSize="@dimen/_14sdp" />-->
-
-                        <!--                        <com.ems.dingdong.views.CustomTextView-->
-                        <!--                            android:id="@+id/tv_parcel_codes"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:paddingTop="@dimen/dimen_10dp"-->
-                        <!--                            android:paddingBottom="@dimen/dimen_10dp"-->
-                        <!--                            android:text=""-->
-                        <!--                            android:textColor="@color/red_light"-->
-                        <!--                            android:textSize="@dimen/_14sdp" />-->
-
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_radius_search">
-
-                        <LinearLayout
-                            android:id="@+id/ll_scan_qr"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/dimen_20dp"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:id="@+id/img_capture"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_qr" />
-                        </LinearLayout>
-
-                        <com.rengwuxian.materialedittext.MaterialEditText
-                            android:id="@+id/edt_search"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toLeftOf="@+id/ll_scan_qr"
-                            android:hint="Nhập bưu gửi"
-                            android:imeOptions="actionDone"
-                            android:inputType="textCapCharacters"
-                            android:textColorHint="@color/colorBlackTrans20"
-                            android:textSize="@dimen/text_size_14sp"
-                            app:met_bottomTextSize="@dimen/text_size_sub"
-                            app:met_clearButton="true"
-                            app:met_floatingLabel="highlight"
-                            app:met_primaryColor="@color/black"
-                            app:met_textColor="@color/black"
-                            app:met_textColorHint="@color/colorBlackTrans20"
-                            app:met_underlineColor="@color/transparent">
-
-                            <requestFocus />
-                        </com.rengwuxian.materialedittext.MaterialEditText>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
-
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            style="@style/HeaderNews"
-                            android:layout_width="match_parent"
-                            android:background="@drawable/bg_header_common"
-                            android:padding="@dimen/dimen_10dp"
-                            android:text="Danh sách bưu gửi"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_white_radius_bottom_common"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="10dp"
-                                android:weightSum="10">
-
-                                <CheckBox
-                                    android:id="@+id/radio_btn"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:button="@drawable/custom_btn_radio" />
-
-                                <TextView
-                                    android:id="@+id/tv_mabuugui"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="4.5"
-                                    android:gravity="center"
-                                    android:text="Mã Bưu gửi"
-                                    android:textColor="@color/text_blue_bank"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_matin"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="4.5"
-                                    android:gravity="center"
-                                    android:text="Mã tin"
-                                    android:textColor="@color/text_blue_bank"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
-
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            style="@style/HeaderNews"
-                            android:layout_width="match_parent"
-                            android:background="@drawable/bg_header_common"
-                            android:padding="@dimen/dimen_10dp"
-                            android:text="Hình thức thu gom"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            android:id="@+id/tv_soluongclick"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="Tổng bưu gửi đã chọn: 0"
-                            android:textColor="@color/red_light"
-                            android:textStyle="bold" />
-                        <!--gone-->
-                        <RadioGroup
-                            android:id="@+id/radio_group"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/_6sdp"
-                            android:layout_weight="1.3"
-                            android:orientation="vertical"
-                            android:visibility="visible">
-
-                            <RadioButton
-                                android:id="@+id/rad_success"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:checked="true"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="Thu gom thành công"
-                                android:textSize="@dimen/_14sdp"
-                                android:textStyle="bold" />
-
-                            <RadioButton
-                                android:id="@+id/rad_unsuccess"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="Thu gom không thành công"
-                                android:textSize="@dimen/_14sdp"
-                                android:textStyle="bold" />
-
-                            <RadioButton
-                                android:id="@+id/rad_failure"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="Lấy hàng thất bại"
-                                android:textSize="@dimen/_14sdp"
-                                android:textStyle="bold" />
-
-                        </RadioGroup>
-
-
-                    </LinearLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ll_success"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.ems.dingdong.views.CustomTextView
-                            android:id="@+id/btn_sign"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="24dp"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:background="@drawable/bg_gradient_radius_5"
-                            android:gravity="center"
-                            android:paddingLeft="@dimen/dimen_20dp"
-                            android:paddingTop="@dimen/dimen_5dp"
-                            android:paddingRight="@dimen/dimen_20dp"
-                            android:paddingBottom="@dimen/dimen_5dp"
-                            android:text="Ký gửi"
-                            android:textAllCaps="true"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <LinearLayout
-                            android:id="@+id/ll_signed"
-                            android:layout_width="0dp"
-                            android:layout_height="300dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="16dp"
                             android:orientation="horizontal"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/btn_sign"
-                            app:layout_constraintStart_toStartOf="@+id/btn_sign"
-                            app:layout_constraintTop_toBottomOf="@+id/btn_sign"
-                            tools:ignore="MissingConstraints">
+                            android:padding="@dimen/_5sdp" />
 
-
-                            <ImageView
-                                android:id="@+id/img_sign"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingLeft="@dimen/dimen_20dp"
-                                android:paddingTop="@dimen/dimen_5dp"
-                                android:paddingRight="@dimen/dimen_20dp"
-                                android:paddingBottom="@dimen/dimen_5dp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="124dp"
-                                android:layout_marginLeft="124dp"
-                                android:layout_marginTop="268dp">
-
-                            </LinearLayout>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/_6sdp"
-                            android:layout_marginTop="16dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintStart_toStartOf="@+id/btn_sign"
-                            app:layout_constraintTop_toBottomOf="@+id/ll_signed"
-                            tools:ignore="MissingConstraints">
-
-                            <ImageView
-                                android:id="@+id/iv_camera_thu_gom"
-                                android:layout_width="@dimen/dimen_70dp"
-                                android:layout_height="@dimen/dimen_70dp"
-                                android:layout_gravity="center_vertical"
-                                android:src="@drawable/ic_camera_plus" />
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_image"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="16dp"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/_5sdp" />
-
-                        </LinearLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layout_reason_un_success"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:orientation="vertical"
-                        android:padding="@dimen/size_16dp"
-                        android:visibility="visible">
-
-
-                        <com.ems.dingdong.views.CustomBoldTextView
+                        <ImageView
+                            android:id="@+id/ivPreview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lý do"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                            android:layout_marginTop="7dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_package"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="@+id/iv_package"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
 
-                        <com.ems.dingdong.views.form.FormItemTextView
-                            android:id="@+id/tv_reason_un_success"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down"
-                            app:formHint="Chọn lý do" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/layout_reason_failure"
-                        android:layout_width="match_parent"
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_reason_un_success"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size_16dp"
+                    android:visibility="visible">
+
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:orientation="vertical"
-                        android:padding="@dimen/size_16dp"
-                        android:visibility="visible">
-
-
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lý do"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                        <com.ems.dingdong.views.form.FormItemTextView
-                            android:id="@+id/tv_reason_failure"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp"
-                            app:formAction="@drawable/ic_arrow_down"
-                            app:formHint="Chọn lý do" />
-                    </LinearLayout>
-
-                    <com.ems.dingdong.views.CustomEditText
-                        android:id="@+id/edt_noidungtin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:background="@drawable/bg_radius_content"
-                        android:gravity="top"
-                        android:hint="Nhập ghi chú"
-                        android:inputType="textMultiLine"
-                        android:lines="8"
-                        android:maxLines="10"
-                        android:minLines="5"
-                        android:padding="@dimen/dimen_5dp"
-                        android:scrollbars="vertical"
+                        android:text="Lý do"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14sp" />
+                        android:textSize="14dp" />
 
-                    <LinearLayout
-                        android:id="@+id/ll_unsuccess"
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_reason_un_success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formHint="Chọn lý do" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chọn lý do"
-                            android:textColor="@color/text_color_total_theme1"
-                            android:textSize="@dimen/_14sdp"
-                            android:textStyle="bold" />
-
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_weight="1.3"
-                            android:orientation="vertical">
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="1. Khách hàng hẹn lại ngày lấy"
-                                android:textSize="@dimen/_14sdp" />
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="2. Khách hàng đi vắng"
-                                android:textSize="@dimen/_14sdp" />
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="3. Khách hàng chuyển đi nơi khác"
-                                android:textSize="@dimen/_14sdp" />
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="4. Hàng bị lỗi không giao"
-                                android:textSize="@dimen/_14sdp" />
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="5. Hàng chưa chuẩn bị xong"
-                                android:textSize="@dimen/_14sdp" />
-
-                        </RadioGroup>
+                <LinearLayout
+                    android:id="@+id/layout_reason_failure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size_16dp"
+                    android:visibility="visible">
 
 
-                    </LinearLayout>
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lý do"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
-                    <LinearLayout
-                        android:id="@+id/ll_failure"
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_reason_failure"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formHint="Chọn lý do" />
+                </LinearLayout>
 
-                        <TextView
+                <com.ems.dingdong.views.CustomEditText
+                    android:id="@+id/edt_noidungtin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:background="@drawable/bg_radius_content"
+                    android:gravity="top"
+                    android:hint="Nhập ghi chú"
+                    android:inputType="textMultiLine"
+                    android:lines="8"
+                    android:maxLines="10"
+                    android:minLines="5"
+                    android:padding="@dimen/dimen_5dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_unsuccess"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chọn lý do"
+                        android:textColor="@color/text_color_total_theme1"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1.3"
+                        android:orientation="vertical">
+
+                        <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Chọn lý do"
-                            android:textColor="@color/text_color_total_theme1"
-                            android:textSize="@dimen/_14sdp"
-                            android:textStyle="bold" />
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="1. Khách hàng hẹn lại ngày lấy"
+                            android:textSize="14dp" />
 
-                        <RadioGroup
-                            android:layout_width="match_parent"
+                        <RadioButton
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_weight="1.3"
-                            android:orientation="vertical">
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="2. Khách hàng đi vắng"
+                            android:textSize="14dp" />
 
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="1. hủy tin do lấy quá 3 lần không thành công"
-                                android:textSize="@dimen/_14sdp" />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="3. Khách hàng chuyển đi nơi khác"
+                            android:textSize="14dp" />
 
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="2. Hủy tin do bưu cục không thu gom"
-                                android:textSize="@dimen/_14sdp" />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="4. Hàng bị lỗi không giao"
+                            android:textSize="14dp" />
 
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="3. Hủy tin theo yêu cầu từ đối tác"
-                                android:textSize="@dimen/_14sdp" />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="5. Hàng chưa chuẩn bị xong"
+                            android:textSize="14dp" />
 
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="4. Hủy tin theo quy định"
-                                android:textSize="@dimen/_14sdp" />
+                    </RadioGroup>
 
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left|center"
-                                android:paddingLeft="@dimen/dimen_5dp"
-                                android:text="5. Khác"
-                                android:textSize="@dimen/_14sdp" />
-
-                        </RadioGroup>
-
-
-                    </LinearLayout>
-
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_marginTop="@dimen/_15sdp"-->
-                    <!--                        android:layout_marginBottom="@dimen/dimen_10dp"-->
-                    <!--                        android:gravity="right"-->
-                    <!--                        android:orientation="horizontal"-->
-                    <!--                        android:padding="@dimen/dimen_10dp">-->
-
-                    <!--                        <com.ems.dingdong.views.CustomTextView-->
-                    <!--                            android:id="@+id/btn_confirms"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:background="@drawable/bg_confirm_continue"-->
-                    <!--                            android:drawableLeft="@drawable/ic_done"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:paddingLeft="@dimen/dimen_20dp"-->
-                    <!--                            android:paddingTop="@dimen/dimen_5dp"-->
-                    <!--                            android:paddingRight="@dimen/dimen_20dp"-->
-                    <!--                            android:paddingBottom="@dimen/dimen_5dp"-->
-                    <!--                            android:text="hoàn tất tin"-->
-                    <!--                            android:textAllCaps="true"-->
-                    <!--                            android:textColor="@color/white"-->
-                    <!--                            android:textSize="@dimen/text_size_18sp"-->
-                    <!--                            android:textStyle="bold" />-->
-
-
-                    <!--                    </LinearLayout>-->
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_failure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chọn lý do"
+                        android:textColor="@color/text_color_total_theme1"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1.3"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="1. hủy tin do lấy quá 3 lần không thành công"
+                            android:textSize="14dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="2. Hủy tin do bưu cục không thu gom"
+                            android:textSize="14dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="3. Hủy tin theo yêu cầu từ đối tác"
+                            android:textSize="14dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="4. Hủy tin theo quy định"
+                            android:textSize="14dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:text="5. Khác"
+                            android:textSize="14dp" />
+
+                    </RadioGroup>
+
+
+                </LinearLayout>
+
+
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="@dimen/_15sdp"-->
+                <!--                        android:layout_marginBottom="@dimen/dimen_10dp"-->
+                <!--                        android:gravity="right"-->
+                <!--                        android:orientation="horizontal"-->
+                <!--                        android:padding="@dimen/dimen_10dp">-->
+
+                <!--                        <com.ems.dingdong.views.CustomTextView-->
+                <!--                            android:id="@+id/btn_confirms"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:background="@drawable/bg_confirm_continue"-->
+                <!--                            android:drawableLeft="@drawable/ic_done"-->
+                <!--                            android:gravity="center"-->
+                <!--                            android:paddingLeft="@dimen/dimen_20dp"-->
+                <!--                            android:paddingTop="@dimen/dimen_5dp"-->
+                <!--                            android:paddingRight="@dimen/dimen_20dp"-->
+                <!--                            android:paddingBottom="@dimen/dimen_5dp"-->
+                <!--                            android:text="hoàn tất tin"-->
+                <!--                            android:textAllCaps="true"-->
+                <!--                            android:textColor="@color/white"-->
+                <!--                            android:textSize="@dimen/text_size_18sp"-->
+                <!--                            android:textStyle="bold" />-->
+
+
+                <!--                    </LinearLayout>-->
+
+
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import io.reactivex.Single;
 public interface TimDuongDiContract {
     interface Interactor extends IInteractor<Presenter> {
         void getPoint(List<String> request, CommonCallback<XacMinhDiaChiResult> callback);
+
+        Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request);
 
         Single<SimpleResult> saveToaDoGom(List<SenderVpostcodeMode> request);
 
@@ -39,6 +42,10 @@ public interface TimDuongDiContract {
         List<VpostcodeModel> getListVpostcodeModell();
 
         void getPoint(List<String> request);
+
+        void vietmapTravelSalesmanProblem(TravelSales request);
+
+        TravelSales getApiTravel();
 
         int getType();
 

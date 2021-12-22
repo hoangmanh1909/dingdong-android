@@ -9,9 +9,20 @@ public class RouteInfo {
     @SerializedName("RouteName")
     private String RouteName;
     @SerializedName("RouteId")
-    private  String RouteId;
+    private String RouteId;
     @SerializedName("RouteType")
-    private  String RouteType;
+    private String RouteType;
+
+    @SerializedName("TransportType")
+    private int TransportType;
+
+    public int getTransportType() {
+        return TransportType;
+    }
+
+    public void setTransportType(int transportType) {
+        TransportType = transportType;
+    }
 
     public String getRouteType() {
         return RouteType;
@@ -37,7 +48,6 @@ public class RouteInfo {
     public void setRouteName(String routeName) {
         RouteName = routeName;
     }
-
 
 
     public String getRouteId() {

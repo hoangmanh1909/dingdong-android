@@ -61,8 +61,8 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
                 if (position != mList.size() - 1) {
                     ((HolderView) holder).tvCount.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COUNT));
                     ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD));
-                    ((HolderView) holder).tvMoneyC.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C));
-                    ((HolderView) holder).tvMoneyPpa.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA));
+//                    ((HolderView) holder).tvMoneyC.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C));
+                    ((HolderView) holder).tvMoneyCuoc.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA));
                 }
             }
         };

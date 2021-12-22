@@ -7,6 +7,7 @@ import com.ems.dingdong.model.SenderVpostcodeMode;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.network.NetWorkController;
 
 import java.util.List;
@@ -22,6 +23,11 @@ public class TimDuongDiInteractor extends Interactor<TimDuongDiContract.Presente
     @Override
     public void getPoint(List<String> request, CommonCallback<XacMinhDiaChiResult> callback) {
         NetWorkController.vietmapRoute(request, callback);
+    }
+
+    @Override
+    public Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
+        return NetWorkController.vietmapTravelSalesmanProblem(request);
     }
 
     @Override

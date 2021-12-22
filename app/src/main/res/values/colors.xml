@@ -14,7 +14,20 @@
     <color name="colorBlue">#0000FF</color>
     <color name="colorUnSelect">#bebebe</color>
     <color name="colorBackgroudGray">#efefef</color>
-
+    <color name="md_amber_100">#ffecb3</color>
+    <color name="md_amber_200">#ffe082</color>
+    <color name="md_amber_300">#ffd54f</color>
+    <color name="md_amber_400">#ffca28</color>
+    <color name="md_amber_50">#fff8e1</color>
+    <color name="md_amber_500">#ffc107</color>
+    <color name="md_amber_600">#ffb300</color>
+    <color name="md_amber_700">#ffa000</color>
+    <color name="md_amber_800">#ff8f00</color>
+    <color name="md_amber_900">#ff6f00</color>
+    <color name="md_amber_a100">#ffe57f</color>
+    <color name="md_amber_a200">#ffd740</color>
+    <color name="md_amber_a400">#ffc400</color>
+    <color name="md_amber_a700">#ffab00</color>
     <color name="white">#ffffff</color>
     <color name="primary">#f5f6fa</color>
     <color name="sub_title_white">#d6efff</color>

@@ -1,8 +1,12 @@
 package com.ems.dingdong.functions.mainhome.gomhang;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +44,8 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
     RecyclerView recycler;
     private HomeGroupAdapter adapter;
     ArrayList<GroupInfo> mList;
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
 
     @Override
     protected int getLayoutId() {
@@ -118,5 +124,23 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
         });
         recycler.setLayoutManager(mLayoutManager);
         recycler.setAdapter(adapter);
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        checkPermissionCall();
+    }
+
+    private void checkPermissionCall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasPermission1 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission3 != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+        }
     }
 }

@@ -182,7 +182,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="123123123"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
@@ -249,7 +248,8 @@
                 android:id="@+id/tv_refund_postage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/red_light"
+                android:textAllCaps="true"
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView

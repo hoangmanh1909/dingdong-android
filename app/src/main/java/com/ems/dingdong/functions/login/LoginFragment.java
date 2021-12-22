@@ -73,19 +73,17 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         mSharedPref = new SharedPref(getActivity());
         if (BuildConfig.DEBUG) {
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0394610790;0BE19E95374396A6B4C64201E7255638ED304A0FDBEACEA542ED2A2150F4FB45");//dev EMS
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0982309296;52ABAEB8C9BC049C5B6F1E77CEE5585FD11078ACCBA8949A10F5D77898110547");// pro vinatti
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0973222902;A0F0033A62B4FB523F85F25C0469F41F35AABCCE42165823EB9E11D42C91D427");// pro vinatti
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919743436;6DF63D7BFF563C2B7B5CFF2F2F20D3C230D60246E78F4628E51CCBC0817B3B26");// dev UAT
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;0773F4E99887C41785CF062706FF4179E52390670EDC0693F196747CC674CDA7");// pre UAT
-            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;68DD5B9A9D0EF797275CFF4129D161E7E37475E1C67FE7F846C82AB6FB71C848");// dev UAT
+            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// pre UAT
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936479444;13B05C2CE53C7883339C6478DF2BA7B11D4765402D971AE990D913670B9BB934");// dev UAT
             // dev vinatti
         }
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969479103;769358EDB74E113A14A02A045B8DF176340CAD8D32396A53B4353CF2068CB685");
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;6AD27AD2F41E994D0D999989604D7D9DDCBEFC9B6FF93A5D05D123F97B024322"); // pro
         checkPermissionCall();
-        //mPresenter.getVersion();
         //loginSipCmc();
-
     }
 /*    private void loginSipCmc() {
         SharedPref sharedPref = new SharedPref(getContext());
@@ -184,7 +182,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 }
             }
         } else {
-            showThanhCong();
+            mPresenter.getVersion();
         }
     }
 
@@ -207,11 +205,10 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @Override
     public void showVersion(String version, String urlDownload) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Đã có phiên bản mới, vui lòng cập nhật ứng dụng trước khi sử dụng.");
+        builder1.setMessage("Đã có phiên bản mới " + version + " vui lòng cập nhật ứng dụng.");
         builder1.setCancelable(false);
-
         builder1.setPositiveButton(
-                "Cập nhật ứng dụng",
+                "Cập nhật",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent viewIntent =
@@ -220,7 +217,11 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                         startActivity(viewIntent);
                     }
                 });
-
+        builder1.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                showThanhCong();
+            }
+        });
         AlertDialog alert11 = builder1.create();
         alert11.show();
         return;
@@ -358,7 +359,6 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     getActivity().startActivity(intent);
 
                 }
-
             }
         }).show();
     }

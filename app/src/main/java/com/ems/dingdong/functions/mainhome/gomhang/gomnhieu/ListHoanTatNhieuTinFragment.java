@@ -1,7 +1,10 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomnhieu;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -17,11 +20,13 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -47,6 +52,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * The CommonObject Fragment
@@ -77,6 +84,11 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     private String mToDate;
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ReasonInfo mReason;
+    private LocationManager mLocationManager;
+    private Location mLocation;
+
+    String senderLat;
+    String senderLon;
 
     public static ListHoanTatNhieuTinFragment getInstance() {
         return new ListHoanTatNhieuTinFragment();
@@ -93,7 +105,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         if (mPresenter == null) {
             return;
         }
-
+        mLocation = getLastKnownLocation();
         mList = new ArrayList<>();
         mCalendar = Calendar.getInstance();
         mAdapter = new ListHoanTatNhieuTinAdapter(getActivity(), mList) {
@@ -163,13 +175,22 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         }).show();
     }
 
-    @Override
-    public void onDisplay() {
-        super.onDisplay();
-    }
 
     private void initSearch() {
         mPresenter.searchAllOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", mFromDate, mToDate);
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+
+        mLocation = getLastKnownLocation();
+        if (mLocation == null) {
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
+            mPresenter.back();
+            return;
+        }
+
     }
 
     @OnClick({R.id.img_confirm, R.id.ll_scan_qr, R.id.img_back, R.id.img_view, R.id.tv_reason})
@@ -246,6 +267,8 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
             Toast.showToast(getActivity(), "Chưa có giá trị nào để xác nhận");
             return;
         }
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         List<HoanTatTinRequest> list = new ArrayList<>();
         boolean checkKhongThanhCong = false;
         for (ItemHoanTatNhieuTin it : mList) {
@@ -254,7 +277,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 rq.setEmployeeID(it.getEmployeeId());
                 rq.setOrderPostmanID(it.getOrderPostmanId());
                 rq.setOrderID(it.getOrderId());
-                rq.setShipmentCode(it.getShipmentCode());
+                rq.setShipmentCodev1(it.getShipmentCode());
                 rq.setNoteReason(edtGhichu.getText().toString().trim());
                 if (it.getStatus() == Constants.GREEN) {
                     rq.setStatusCode(Constants.GOM_HANG_THANH_CONG);
@@ -265,6 +288,21 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                         rq.setReasonCode(mReason.getCode());
                     }
                 }
+                //vi tri hien tai
+                String setCollectLat = "";
+                String setCollectLon = "";
+                if (mLocation != null) {
+                    setCollectLat = String.valueOf(mLocation.getLatitude());
+                    setCollectLon = String.valueOf(mLocation.getLongitude());
+                }
+                rq.setCollectLat(setCollectLat);
+                rq.setCollectLon(setCollectLon);
+
+                rq.setSenderLat(senderLat);
+                rq.setSenderLon(senderLon);
+
+                rq.setCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+                rq.setCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
                 list.add(rq);
             }
         }
@@ -287,6 +325,8 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 mList.add(tin);
             }
         }
+        if (!list.get(0).getSenderVpostcode().equals(""))
+            mPresenter.vietmapDecode(list.get(0).getSenderVpostcode());
         mAdapter.setItems(mList);
         showCount();
     }
@@ -319,4 +359,29 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         mListReason = reasonInfos;
     }
 
+    @Override
+    public void showVitringuoinhan(String lat, String lon) {
+        senderLat = lat;
+        senderLon = lon;
+    }
+
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation() {
+        Location l = null;
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
 }

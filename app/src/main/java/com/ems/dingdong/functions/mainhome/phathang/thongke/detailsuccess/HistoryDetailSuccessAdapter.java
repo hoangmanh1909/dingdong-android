@@ -8,6 +8,7 @@ import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -37,10 +38,10 @@ public class HistoryDetailSuccessAdapter extends RecyclerBaseAdapter {
         public CustomTextView tvCount;
         @BindView(R.id.tv_money_cod)
         public CustomTextView tvMoneyCod;
-        @BindView(R.id.tv_money_c)
-        public CustomTextView tvMoneyC;
-        @BindView(R.id.tv_money_ppa)
-        public CustomTextView tvMoneyPpa;
+        //        @BindView(R.id.tv_money_c)
+//        public CustomTextView tvMoneyC;
+        @BindView(R.id.tv_money_cuoc)
+        public CustomTextView tvMoneyCuoc;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -51,9 +52,38 @@ public class HistoryDetailSuccessAdapter extends RecyclerBaseAdapter {
             StatisticDeliveryGeneralResponse item = (StatisticDeliveryGeneralResponse) model;
             tvService.setText(item.getServiceName());
             tvCount.setText(item.getQuantity());
+
+            // tien cod
             tvMoneyCod.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getQuantityCOD()))));
-            tvMoneyC.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getQuantityC()))));
-            tvMoneyPpa.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getQuantityPPA()))));
+
+
+//            // tien c
+//            tvMoneyC.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getQuantityC()))));
+
+
+            // tien ppa
+
+            int tienCuoc = 0;
+            if (item.getFeePPA() > 0) {
+                tienCuoc += item.getFeePPA();
+            }
+            if (item.getFeeCollectLater() > 0) {
+                tienCuoc += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                tienCuoc += item.getFeePA();
+            }
+            if (item.getFeeShip() > 0) {
+
+                tienCuoc += item.getFeeShip();
+            }
+            if (item.getFeeCancelOrder() > 0) {
+                tienCuoc += item.getFeeCancelOrder();
+            }
+            if (item.getReceiveCollectFee() != null) {
+                tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
+            }
+            tvMoneyCuoc.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(tienCuoc)))));
         }
     }
 }

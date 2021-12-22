@@ -73,13 +73,13 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
             }
 
             if (item.getFee() != null) {
-                tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getFee())));
+                tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getCollectFeeCOD() + item.getFeePA())));
             } else {
                 tvFee.setText("0 đ");
             }
 
             if (item.getcODAmount() != null) {
-                tvCod.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getcODAmount())));
+                tvCod.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getcODAmount() + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip())));
             } else {
                 tvCod.setText("0 đ");
             }

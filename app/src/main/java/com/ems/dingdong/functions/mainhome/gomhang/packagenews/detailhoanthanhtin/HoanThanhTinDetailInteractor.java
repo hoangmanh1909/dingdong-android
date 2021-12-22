@@ -2,11 +2,14 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Single;
 
 /**
  * The XacNhanTinDetail interactor
@@ -18,7 +21,10 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
         super(presenter);
     }
 
-
+    @Override
+    public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
+        return NetWorkController.vietmapSearchDecode(Decode);
+    }
 
 
     @Override

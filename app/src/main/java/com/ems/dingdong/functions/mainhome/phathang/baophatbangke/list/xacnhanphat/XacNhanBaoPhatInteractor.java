@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.ReasonResult;
@@ -79,7 +80,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.cancelDivided(request,callback);
+        NetWorkController.cancelDivided(request, callback);
     }
 
     @Override
@@ -90,5 +91,10 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     @Override
     public void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
         NetWorkController.deliveryPartial(request, callback);
+    }
+
+    @Override
+    public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
+        return NetWorkController.vietmapSearchDecode(Decode);
     }
 }

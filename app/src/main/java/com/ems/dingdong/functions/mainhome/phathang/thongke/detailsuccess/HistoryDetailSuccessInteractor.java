@@ -24,7 +24,6 @@ class HistoryDetailSuccessInteractor extends Interactor<HistoryDetailSuccessCont
             case CONTINUOUS_DELIVERY:
                 NetWorkController.getLadingStatusGeneral(postmanID, fromDate, toDate, Constants.CONTINUOUS_DELIVERY_CODE, routeCode, callback);
                 break;
-
             case SUCCESS_DELIVERY:
                 NetWorkController.statisticDeliveryGeneral(postmanID, fromDate, toDate, true, routeCode, callback);
                 break;

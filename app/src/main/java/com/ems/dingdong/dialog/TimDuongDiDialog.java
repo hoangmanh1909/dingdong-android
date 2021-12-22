@@ -86,6 +86,8 @@ public class TimDuongDiDialog extends Dialog {
                         else
                             vpostcodeModel.setSenderVpostcode(listModels.get(position).getSmartCode());
                         vpostcodeModel.setFullAdress(listModels.get(position).getLabel());
+                        vpostcodeModel.setLatitude(listModels.get(position).getLatitude());
+                        vpostcodeModel.setLongitude(listModels.get(position).getLongitude());
                         mDelegate.onVposcodeResponse(vpostcodeModel);
                         dismiss();
                     }
@@ -117,6 +119,8 @@ public class TimDuongDiDialog extends Dialog {
                                                 else
                                                     vpostcodeModel.setSenderVpostcode(listModels.get(position).getSmartCode());
                                                 vpostcodeModel.setFullAdress(listModels.get(position).getLabel());
+                                                vpostcodeModel.setLatitude(listModels.get(position).getLatitude());
+                                                vpostcodeModel.setLongitude(listModels.get(position).getLongitude());
                                                 mDelegate.onVposcodeResponse(vpostcodeModel);
                                                 dismiss();
                                             }
@@ -187,6 +191,8 @@ public class TimDuongDiDialog extends Dialog {
                                                 else
                                                     vpostcodeModel.setSenderVpostcode(listModels.get(position).getSmartCode());
                                                 vpostcodeModel.setFullAdress(listModels.get(position).getLabel());
+                                                vpostcodeModel.setLatitude(listModels.get(position).getLatitude());
+                                                vpostcodeModel.setLongitude(listModels.get(position).getLongitude());
                                                 mDelegate.onVposcodeResponse(vpostcodeModel);
                                                 dismiss();
                                             }
@@ -258,6 +264,8 @@ public class TimDuongDiDialog extends Dialog {
                                                     else
                                                         vpostcodeModel.setSenderVpostcode(listModels.get(position).getSmartCode());
                                                     vpostcodeModel.setFullAdress(listModels.get(position).getLabel());
+                                                    vpostcodeModel.setLatitude(listModels.get(position).getLatitude());
+                                                    vpostcodeModel.setLongitude(listModels.get(position).getLongitude());
                                                     mDelegate.onVposcodeResponse(vpostcodeModel);
                                                     dismiss();
                                                 }

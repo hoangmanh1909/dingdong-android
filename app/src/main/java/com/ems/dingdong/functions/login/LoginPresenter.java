@@ -3,8 +3,6 @@ package com.ems.dingdong.functions.login;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -18,7 +16,6 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
-import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -125,10 +122,10 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                         String version = jsonObject.getString("Version");
                         String urlDowload = jsonObject.getString("UrlDownload");
                         String versionApp = BuildConfig.VERSION_NAME;
-//                        if (!version.equals(versionApp)) {
-//                            mView.showVersion(version, urlDowload);
-//                        } else
-                        mView.showThanhCong();
+                        if (!version.equals(versionApp)) {
+                            mView.showVersion(version, urlDowload);
+                        } else
+                            mView.showThanhCong();
                     } catch (JSONException err) {
                         Log.d("Error", err.toString());
                         mView.showError("Lỗi xử lý dữ liệu");

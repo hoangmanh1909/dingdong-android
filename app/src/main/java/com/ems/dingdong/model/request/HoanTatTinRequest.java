@@ -2,7 +2,10 @@ package com.ems.dingdong.model.request;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.annotations.Ignore;
 
 public class HoanTatTinRequest {
     @SerializedName("EmployeeID")
@@ -23,8 +26,8 @@ public class HoanTatTinRequest {
     String pickUpTime;
     @SerializedName("OrderImage")
     String file;
-    @SerializedName("ShipmentCode")
-    String shipmentCode;
+//    @SerializedName("ShipmentCode")
+//    List<String> shipmentCode;
     @SerializedName("ReasonCode")
     String reasonCode;
     @SerializedName("ShipmentIds")
@@ -38,6 +41,188 @@ public class HoanTatTinRequest {
 
     @SerializedName("NoteReason")
     String NoteReason;
+    @SerializedName("ShipmentCode")
+    String shipmentCodev1;
+
+    public String getShipmentCodev1() {
+        return shipmentCodev1;
+    }
+
+    public void setShipmentCodev1(String shipmentCodev1) {
+        this.shipmentCodev1 = shipmentCodev1;
+    }
+
+    @SerializedName("CollectLat")
+    private String CollectLat;
+    @SerializedName("CollectLon")
+    private String CollectLon;
+    @SerializedName("SenderLat")
+    private String SenderLat;
+    @SerializedName("SenderLon")
+    private String SenderLon;
+    @SerializedName("POCollectLat")
+    private String POCollectLat;
+    @SerializedName("POCollectLon")
+    private String POCollectLon;
+    @SerializedName("OrderCode")
+    private String orderCode;
+
+    @Ignore
+    List<String> shipmentCodeV1List;
+    @Ignore
+    List<Integer> shipmentIdsV1List;
+
+    public List<Integer> getShipmentIdsV1() {
+        return shipmentIdsV1List;
+    }
+
+    public void setShipmentIdsV1(List<Integer> shipmentIdsV1) {
+        shipmentIdsV1List = shipmentIdsV1;
+    }
+
+    public List<String> getShipmentCodeV1List() {
+        return shipmentCodeV1List;
+    }
+
+    public void setShipmentCodeV1List(List<String> shipmentCodeV1List) {
+        this.shipmentCodeV1List = shipmentCodeV1List;
+    }
+
+    public List<Integer> getShipmentIdsV1List() {
+        return shipmentIdsV1List;
+    }
+
+    public void setShipmentIdsV1List(List<Integer> shipmentIdsV1List) {
+        this.shipmentIdsV1List = shipmentIdsV1List;
+    }
+
+    public void addShipmentCodeV1(String code) {
+        if (shipmentCodeV1List == null) {
+            shipmentCodeV1List = new ArrayList<>();
+        }
+        shipmentCodeV1List.add(code);
+    }
+
+    public void addShipmentIdsV1(Integer code) {
+        if (shipmentIdsV1List == null) {
+            shipmentIdsV1List = new ArrayList<>();
+        }
+        shipmentIdsV1List.add(code);
+    }
+
+
+//    public void setShipmentCode(List<String> shipmentCode) {
+//        this.shipmentCode = shipmentCode;
+//    }
+
+    public String getEmployeeID() {
+        return employeeID;
+    }
+
+    public String getOrderID() {
+        return orderID;
+    }
+
+    public String getOrderPostmanID() {
+        return orderPostmanID;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public String getCollectReason() {
+        return collectReason;
+    }
+
+    public String getPickUpDate() {
+        return pickUpDate;
+    }
+
+    public String getPickUpTime() {
+        return pickUpTime;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+
+    public String getReasonCode() {
+        return reasonCode;
+    }
+
+    public List<Integer> getShipmentIds() {
+        return shipmentIds;
+    }
+
+    public String getConfirmContent() {
+        return confirmContent;
+    }
+
+    public String getConfirmQuantity() {
+        return confirmQuantity;
+    }
+
+    public String getConfirmSignature() {
+        return confirmSignature;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getCollectLat() {
+        return CollectLat;
+    }
+
+    public void setCollectLat(String collectLat) {
+        CollectLat = collectLat;
+    }
+
+    public String getCollectLon() {
+        return CollectLon;
+    }
+
+    public void setCollectLon(String collectLon) {
+        CollectLon = collectLon;
+    }
+
+    public String getSenderLat() {
+        return SenderLat;
+    }
+
+    public void setSenderLat(String senderLat) {
+        SenderLat = senderLat;
+    }
+
+    public String getSenderLon() {
+        return SenderLon;
+    }
+
+    public void setSenderLon(String senderLon) {
+        SenderLon = senderLon;
+    }
+
+    public String getPOCollectLat() {
+        return POCollectLat;
+    }
+
+    public void setPOCollectLat(String POCollectLat) {
+        this.POCollectLat = POCollectLat;
+    }
+
+    public String getPOCollectLon() {
+        return POCollectLon;
+    }
+
+    public void setPOCollectLon(String POCollectLon) {
+        this.POCollectLon = POCollectLon;
+    }
 
     public String getNoteReason() {
         return NoteReason;
@@ -83,9 +268,6 @@ public class HoanTatTinRequest {
         this.file = file;
     }
 
-    public void setShipmentCode(String shipmentCode) {
-        this.shipmentCode = shipmentCode;
-    }
 
     public void setReasonCode(String reasonCode) {
         this.reasonCode = reasonCode;

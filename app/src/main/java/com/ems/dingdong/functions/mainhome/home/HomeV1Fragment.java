@@ -165,7 +165,6 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         mListDelivery.clear();
         mListDeliveryCOD.clear();
         mListDeliveryPA.clear();
-
         /**
          * Gom hàng
          */

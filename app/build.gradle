@@ -28,8 +28,8 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 35
-        versionName "1.2.8"
+        versionCode 40
+        versionName "1.2.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -104,6 +104,8 @@ android {
             buildConfigField("String", "API_URL", API_URL)
             def DOMAIN_CTEL = '"https://dev.api-connect.io"'
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
+            def URL_IMAGE = '"http://172.16.132.102:1233/Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
             buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
             buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
@@ -118,6 +120,8 @@ android {
             def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
             def DOMAIN_CTEL = '"https://dev.api-connect.io"'
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
+            def URL_IMAGE = '"http://118.70.72.107:1233/Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
             buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
             buildConfigField("String", "API_URL", API_URL)
@@ -150,6 +154,8 @@ android {
             def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
             def DOMAIN_CTEL = '"https://dev.api-connect.io/"'
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
+            def URL_IMAGE = '"https://pre-pns.vnpost.vn/imageapi//Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
             buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
             buildConfigField("String", "API_URL", API_URL)
@@ -175,6 +181,8 @@ android {
             def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
             def DOMAIN_CTEL = '"https://api-connect.io/"'
             def AUTH_CTEL = '"Basic NjA2NzJkMGRkNzNiNjQwMDA3ZWQ4OTQ4OmdsTFhHZlFKckoxOWZ4SVFmRlZrcGROSA=="'
+            def URL_IMAGE = '"https://pns.vnpost.vn/Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
             buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
             buildConfigField("String", "API_URL", API_URL)
@@ -233,6 +241,7 @@ dependencies {
 //    implementation files('src\\libs\\portsipvoipsdk.jar')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation files('libs\\poi-3.17.jar')
     configurations {
         all*.exclude group: 'com.android.support', module: 'support-v13'
     }
@@ -302,9 +311,11 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.7'
     implementation 'com.airbnb.android:lottie:3.4.0'
 
     implementation 'com.budiyev.android:code-scanner:2.1.0'
+
+//    implementation 'com.afollestad:material-camera:0.4.4'
 }
 apply plugin: 'com.google.gms.google-services'

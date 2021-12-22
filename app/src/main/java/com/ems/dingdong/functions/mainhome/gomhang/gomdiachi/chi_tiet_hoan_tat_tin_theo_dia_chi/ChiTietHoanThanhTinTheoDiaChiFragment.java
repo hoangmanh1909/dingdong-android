@@ -1,8 +1,18 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,28 +25,39 @@ import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.ChonAnhCallback;
+import com.ems.dingdong.dialog.DialogExcel;
+import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.camera.Camera2Activity;
+import com.ems.dingdong.functions.mainhome.camera.CameraPreview;
+import com.ems.dingdong.functions.mainhome.camera.ImagePro;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomCode;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomListHoanTatNhieuTin;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiAdapter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
+import com.ems.dingdong.functions.mainhome.hinhanh.ImageAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
 import com.ems.dingdong.functions.mainhome.scannerv1.QrCodeScanner;
 import com.ems.dingdong.functions.mainhome.scannerv1.QrCodeScannerV1;
+import com.ems.dingdong.functions.mainhome.xuatfile.XuatFileExcel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -54,8 +75,10 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.L;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -63,9 +86,17 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -75,6 +106,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
 
 public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietHoanThanhTinTheoDiaChiContract.Presenter> implements ChiTietHoanThanhTinTheoDiaChiContract.View {
 
@@ -136,12 +168,14 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     private boolean scanBarcode = false;
 
     List<ParcelCodeInfo> commonObjects;
+    List<ParcelCodeInfo> mListSoluongtin;
     private ArrayList<ConfirmOrderPostman> mListRequest;
     private ArrayList<ItemHoanTatNhieuTin> mListHoanTatNhieuTin;
     private CommonObject mListCommonObject;
     private String mSign = "";
     private List<Item> listImage;
-    private ImageCaptureAdapter imageAdapter;
+    //    private ImageCaptureAdapter imageAdapter;
+    private ImageAdapter imageAdapter;
     private BuuguiAdapter buuguiAdapter;
     private CommonObject mHoanThanhTin;
     private boolean isImage = false;
@@ -159,8 +193,37 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     private String matin = "";
     private UserInfo mUserInfo;
 
+    private LocationManager mLocationManager;
+    private Location mLocation;
+    private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
+    String senderLat = "";
+    String senderLon = "";
+
+    public final String APP_TAG = "DingDong";
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public String photoFileName = "photo.jpg";
+    File photoFile;
+    private Camera mCamera;
+    private CameraPreview mPreview;
+
     public static ChiTietHoanThanhTinTheoDiaChiFragment getInstance() {
         return new ChiTietHoanThanhTinTheoDiaChiFragment();
+    }
+
+    public static final int MEDIA_TYPE_IMAGE = 1;
+
+
+    String currenImaPath = null;
+
+
+    private File getImageFile() throws IOException {
+        String timeStr = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageName = "jpg_" + timeStr + "_";
+        File stora = Objects.requireNonNull(getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File imageFile = File.createTempFile(imageName, ".jpg", stora);
+        currenImaPath = imageFile.getAbsolutePath();
+        return imageFile;
     }
 
     @Override
@@ -168,9 +231,51 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         return R.layout.fragment_chi_tiet_hoan_tat_tin_theo_dia_chi;
     }
 
+    private static Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    private static File getOutputMediaFile(int type) {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_" + timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+    ImagePro imagePro;
+
     @Override
     public void initLayout() {
         super.initLayout();
+//        mCamera = getCameraInstance();
+        // Create our Preview view and set it as the content of our activity.
+//        mPreview = new CameraPreview(getViewContext(), mCamera);
+//        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+//        preview.addView(mPreview);
+        imagePro = new ImagePro(getViewContext());
         radioBtn.setChecked(false);
         llUnsuccess.setVisibility(View.GONE);
         llFailure.setVisibility(View.GONE);
@@ -182,8 +287,9 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         if (!parcels.isEmpty()) {
             parcels = parcels.substring(0, parcels.length() - 2);
         }
+        mLocation = getLastKnownLocation();
         listImage = new ArrayList<>();
-        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImage) {
+        imageAdapter = new ImageAdapter(getViewContext(), listImage) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -212,22 +318,44 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             }
         }
         int soluongbuugui = 0;
-        int soluongtin = 1;
         for (ParcelCodeInfo info : commonObjects) {
             if (!TextUtils.isEmpty(info.getTrackingCode()))
                 soluongbuugui++;
         }
+
+        int soluongtin = 1;
         for (int i = 1; i < commonObjects.size(); i++) {
             ParcelCodeInfo info = commonObjects.get(i - 1);
             String prevDate = info.getOrderCode().split("\\s")[0];
             if (compareMatin(commonObjects.get(i).getOrderCode(), prevDate) != 1)
                 soluongtin++;
         }
+//        mListSoluongtin = commonObjects;
+//        int h = 1;
+//        while (h < mListSoluongtin.size()) {
+//            ParcelCodeInfo info = mListSoluongtin.get(h - 1);
+//            String prevDate = info.getOrderCode().split("\\s")[0];
+//            if (compareMatin(mListSoluongtin.get(h).getOrderCode(), prevDate) != 1)
+//                mListSoluongtin.remove(h - 1);
+//            else h++;
+//
+//        }
+
+
         tvTotalCode.setText("Số lượng tin: " + soluongtin);
         tvTotalParcelCodes.setText("Số lượng bưu gửi: " + soluongbuugui);
 
+        ParcelCodeInfo temp = new ParcelCodeInfo();
+        for (int i = 0; i < commonObjects.size(); i++) {
+            for (int j = i + 1; j < commonObjects.size(); j++) {
+                if (commonObjects.get(i).getOrderCode().compareTo(commonObjects.get(j).getOrderCode()) > 0) {
+                    temp = commonObjects.get(i);
+                    commonObjects.set(i, commonObjects.get(j));
+                    commonObjects.set(j, temp);
+                }
+            }
+        }
 
-        Log.d("thnahkhiemeeee", new Gson().toJson(mListCommonObject.getListParcelCode()));
         buuguiAdapter = new BuuguiAdapter(getViewContext(), commonObjects) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -281,7 +409,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                     }
 
                     for (int k = 0; k < commonObjects.size(); k++) {
-                        if (commonObjects.get(k).isSelected()) {
+                        if (commonObjects.get(k).isSelected() && !commonObjects.get(k).getTrackingCode().isEmpty()) {
                             dem[0] = dem[0] + 1;
                         }
                     }
@@ -306,7 +434,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                         radioBtn.setChecked(true);
                     }
                     for (int k = 0; k < commonObjects.size(); k++) {
-                        if (commonObjects.get(k).isSelected() == true) {
+                        if (commonObjects.get(k).isSelected() == true && !commonObjects.get(k).getTrackingCode().isEmpty()) {
                             dem[0] = dem[0] + 1;
                         }
                     }
@@ -382,6 +510,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
     }
 
+
     private int compareMatin(String matin1, String matin2) {
         int tam = 0;
         if (matin1.equals(matin2))
@@ -417,6 +546,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         buuguiAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("SimpleDateFormat")
     @OnClick({R.id.img_back, R.id.btn_confirms, R.id.btn_reject, R.id.rad_success, R.id.rad_unsuccess,
             R.id.rad_failure, R.id.btn_sign, R.id.iv_camera_thu_gom, R.id.tv_reason_un_success,
             R.id.tv_reason_failure, R.id.radio_btn, R.id.ll_scan_qr})
@@ -502,6 +632,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 if (imageAdapter.getListFilter().size() < 3) {
                     isImage = true;
                     MediaUltis.captureImage(this);
+
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_three_photos));
                 }
@@ -514,6 +645,17 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 break;
         }
     }
+
+    public static Camera getCameraInstance() {
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+        } catch (Exception e) {
+            // Camera is not available (in use or does not exist)
+        }
+        return c; // returns null if camera is unavailable
+    }
+
 
     @Override
     public void getReasonUnSuccess(ArrayList<ReasonInfo> reasonInfos) {
@@ -599,11 +741,10 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
             if (checkUnSuccess && mReason == null) {
                 Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi không thành công");
-
                 return;
-            } else if (checkFailure && mReason == null) {
+            }
+            if (checkFailure && mReason == null) {
                 Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi thất bại");
-
                 return;
             }
             mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
@@ -615,33 +756,40 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         List<HoanTatTinRequest> list = new ArrayList<>();
 
         SharedPref sharedPref = new SharedPref(getActivity());
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
             mUserInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
+        List<ParcelCodeInfo> parcelCodeInfoList = new ArrayList<>();
         for (ParcelCodeInfo info : commonObjects) {
+            if (info.isSelected())
+                parcelCodeInfoList.add(info);
+        }
+        for (ParcelCodeInfo info : parcelCodeInfoList) {
             HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
-            if (info.isSelected()) {
-                hoanTatTinRequest.setEmployeeID(mUserInfo.getiD());
-                hoanTatTinRequest.setOrderPostmanID(info.getOrderPostmanId());
-                hoanTatTinRequest.setOrderID(info.getOrderId());
-                hoanTatTinRequest.setFile(mFile);
-                hoanTatTinRequest.setConfirmSignature(mSign);
-                String tempShipmentCode = "";
-                List<Integer> tempShipmentIds = new ArrayList<>();
+            hoanTatTinRequest.setEmployeeID(mUserInfo.getiD());
+            hoanTatTinRequest.setOrderPostmanID(info.getOrderPostmanId());
+            hoanTatTinRequest.setOrderID(info.getOrderId());
+            hoanTatTinRequest.setFile(mFile);
+            hoanTatTinRequest.setOrderCode(info.getOrderCode());
+            hoanTatTinRequest.setConfirmSignature(mSign);
 
-                int temp = info.getShipmentID();
-                tempShipmentIds.add(temp);
-                if (tempShipmentCode.equals("")) {
-                    tempShipmentCode = info.getTrackingCode();
-                } else {
-                    tempShipmentCode += ";";
-                    tempShipmentCode += info.getTrackingCode();
-                }
-                hoanTatTinRequest.setShipmentCode(tempShipmentCode);
-                hoanTatTinRequest.setShipmentIds(tempShipmentIds);
-                hoanTatTinRequest.setNoteReason(edtGhichu.getText().toString().trim());
-            }
+            //chua hieu///////////////
+            List<Integer> tempShipmentIds = new ArrayList<>();
+            int temp = info.getShipmentID();
+            tempShipmentIds.add(temp);
+//            String tempShipmentCode = "";
+//            if (tempShipmentCode.equals("")) {
+//                tempShipmentCode = parcelCodeInfoList.get(i).getTrackingCode();
+//            } else {
+//                tempShipmentCode += ";";
+//                tempShipmentCode += parcelCodeInfoList.get(i).getTrackingCode();
+//            }
+            hoanTatTinRequest.setShipmentCodev1(info.getTrackingCode());
+            hoanTatTinRequest.setShipmentIds(tempShipmentIds);
+            /////////////////////////
+            hoanTatTinRequest.setNoteReason(edtGhichu.getText().toString().trim());
             int tamStatus = 0;
             if (radSuccess.isChecked()) {
                 tamStatus = Constants.ADDRESS_SUCCESS;
@@ -665,16 +813,76 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                     hoanTatTinRequest.setReasonCode(mReason.getCode());
                 }
             }
-            if (checkUnSuccess && mReason == null) {
+
+
+            //vi tri hien tai
+            String setCollectLat = "";
+            String setCollectLon = "";
+            if (mLocation != null) {
+                setCollectLat = String.valueOf(mLocation.getLatitude());
+                setCollectLon = String.valueOf(mLocation.getLongitude());
+            }
+
+            hoanTatTinRequest.setCollectLat(setCollectLat);
+            hoanTatTinRequest.setCollectLon(setCollectLon);
+//            Log.d("ttqweqweqweqwe",hoanTatTinRequest.getCollectLon());
+
+            hoanTatTinRequest.setSenderLat(senderLat);
+            hoanTatTinRequest.setSenderLon(senderLon);
+            hoanTatTinRequest.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+            hoanTatTinRequest.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+            if (radUnSuccess.isChecked() && mReason == null) {
                 Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi không thành công");
                 return;
-            } else if (checkFailure && mReason == null) {
+            } else if (radFailure.isChecked() && mReason == null) {
                 Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi thất bại");
                 return;
             }
             list.add(hoanTatTinRequest);
         }
+
+
+//        List<HoanTatTinRequest> listG = new ArrayList<>();
+//        for (HoanTatTinRequest item : list) {
+//            HoanTatTinRequest itemExists = Iterables.tryFind(listG,
+//                    input -> (item.getOrderCode().equals(input != null ? input.getOrderCode() : ""))
+//            ).orNull();
+//
+//            itemExists.addShipmentCodeV1(item.getShipmentCodev1());
+//            itemExists.addShipmentIdsV1(item.getShipmentIds().get(0));
+//        }
+//
+        Log.d("asdasdasd2qqweqwe", new Gson().toJson(list));
+
+        int i = 1;
+        while (i < list.size()) {
+            HoanTatTinRequest info = list.get(i - 1);
+            String prevDate = info.getOrderCode().split("\\s")[0];
+            if (compareMatin(list.get(i).getOrderCode(), prevDate) == 1) {
+                String tempShipmentCode = list.get(i).getShipmentCodev1();
+                if (tempShipmentCode.equals("")) {
+                    tempShipmentCode += list.get(i - 1).getShipmentCodev1();
+                } else {
+                    tempShipmentCode += ";";
+                    tempShipmentCode += list.get(i - 1).getShipmentCodev1();
+                }
+                list.get(i).setShipmentCodev1(tempShipmentCode);
+                list.get(i).getShipmentIds().addAll(list.get(i - 1).getShipmentIds());
+                list.remove(i - 1);
+            } else i++;
+
+        }
+
+
+        for (int k = 0; k < list.size(); k++) {
+            for (int j = 0; j < list.get(k).getShipmentIds().size(); j++)
+                if (list.get(k).getShipmentIds().get(j) == 0)
+                    list.get(k).getShipmentIds().remove(j);
+        }
+//        xuatfile();
         mPresenter.collectAllOrderPostman(list);
+
+
     }
 
     private void showUIReasonUnSuccess() {
@@ -728,18 +936,71 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
     @Override
     public void showMessage(String message) {
-        if (getActivity() != null)
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            mPresenter.back();
+        if (getActivity() != null) {
+            String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(Calendar.getInstance().getTime());
+            String ten = "/VNP_" + mListCommonObject.getReceiverPhone() + "_" + timeStamp + ".xls";
+
+
+            if (radSuccess.isChecked())
+                new DialogExcel(getViewContext(), ten, new ChonAnhCallback() {
+                    @Override
+                    public void onResponse(int type) {
+                        if (type == 1) {
+                            xuatfile(timeStamp);
                         }
-                    }).show();
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                .setConfirmText("OK")
+                                .setTitleText("Thông báo")
+                                .setContentText(message)
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismiss();
+                                        mPresenter.back();
+                                    }
+                                }).show();
+                    }
+                }).show();
+            else
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setConfirmText("OK")
+                        .setTitleText("Thông báo")
+                        .setContentText(message)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                                mPresenter.back();
+                            }
+                        }).show();
+
+        }
+    }
+
+
+    void xuatfile(String tenfile) {
+        XuatFileExcel fileExcel = new XuatFileExcel();
+        List<Item> title = new ArrayList<>();
+        List<Item> noidung = new ArrayList<>();
+        Item itemV1 = new Item(1 + "", "STT ");
+        title.add(itemV1);
+        itemV1 = new Item(2 + "", "Mã tin ");
+        title.add(itemV1);
+        itemV1 = new Item(3 + "", "Số hiệu bưu gửi ");
+        title.add(itemV1);
+        itemV1 = new Item(4 + "", "Số đơn hàng");
+        title.add(itemV1);
+
+        for (int i = 0; i < buuguiAdapter.getListFilter().size(); i++) {
+            if (buuguiAdapter.getListFilter().get(i).isSelected()) {
+                Item item = new Item((i + 1),
+                        buuguiAdapter.getListFilter().get(i).getOrderCode(),
+                        buuguiAdapter.getListFilter().get(i).getTrackingCode(),
+                        buuguiAdapter.getListFilter().get(i).getOrderNumber());
+                noidung.add(item);
+            }
+        }
+        fileExcel.XuatFileExcel("/VNP_" + mListCommonObject.getReceiverPhone() + "_" + tenfile + ".xls", 4, title, noidung, getViewContext());
     }
 
     @Override
@@ -757,11 +1018,14 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     public void showImage(String file, String path) {
         if (null != getViewContext()) {
             if (isImage) {
-                for (int i = 0; i < listImage.size(); i++) {
-                    if (listImage.get(i).getValue().equals(path)) {
-                        listImage.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImage.size(); i++) {
+//                    if (listImage.get(i).getValue().equals(path)) {
+//                        listImage.get(i).setText(file);
+//                    }
+//                }
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImage.add(item);
+                imageAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -775,24 +1039,86 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         }
     }
 
+    private void TakePictureIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public void uploadBitmap(Context mContext, Bitmap bitmap) {
+        String imagePath = null;
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        Uri uri;
+        Cursor cursor = mContext.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.ORIENTATION}, MediaStore.Images.Media.DATE_ADDED, null, "date_added DESC");
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                uri = Uri.parse(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)));
+                imagePath = uri.toString();
+                Log.d("pathatka", uri.toString());
+                mPresenter.postImage(imagePath);
+                break;
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
-                attemptSendMedia(data.getData().getPath());
-            }
-        }
+//                android.util.Log.d("RESULT_OK", imgPosition + " s ");
+//                if (imgPosition < 4)
 
-        switch (requestCode) {
-            case 1000: {
-                if (resultCode == RESULT_OK) {
-//                    tvData.setText(data.getStringExtra(EasyQR.DATA));
-                    edtSearch.setText(data.getStringExtra("100"));
-//                    Log.d("thanhasdasdasd", data.getStringExtra("100"));
-                }
+                mPresenter.postImage(data.getData().getPath());
+//                    attemptSendMedia(data.getData().getPath(), 0);
+//                else attemptSendMedia1(data.getData().getPath(), 0);
             }
-            break;
-        }
+        } else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                try {
+                    mPresenter.postImage(savebitmap(photo).getPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                mPresenter.postImage(currenImaPath);
+
+
+            } else { // Result was a failure
+                Toast.showToast(getViewContext(), "Picture wasn't taken!");
+            }
+        } else
+            switch (requestCode) {
+                case 1000: {
+                    if (resultCode == RESULT_OK) {
+                        edtSearch.setText(data.getStringExtra("100"));
+                    }
+                }
+                break;
+            }
+    }
+
+    public static File savebitmap(Bitmap bmp) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File f = new File(Environment.getExternalStorageDirectory()
+                + File.separator + imageFileName + ".jpg");
+        f.createNewFile();
+        FileOutputStream fo = new FileOutputStream(f);
+        fo.write(bytes.toByteArray());
+        fo.close();
+        return f;
     }
 
     private void showView(CommonObject commonObject) {
@@ -804,6 +1130,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
     private void attemptSendMedia(String path_media) {
         File file = new File(path_media);
+        Log.d("thanhhkiqw1231231", path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
             return BitmapUtils.processingBitmap(uri, getViewContext());
@@ -815,7 +1142,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         mPresenter.postImage(path);
-
                         if (isImage) {
                             mPresenter.postImage(path);
                             imageAdapter.getListFilter().add(new Item(path, ""));
@@ -831,12 +1157,32 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         );
     }
 
+
+    @Override
+    public void showVitringuoinhan(String lat, String lon) {
+        senderLat = lat;
+        senderLon = lon;
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        mLocation = getLastKnownLocation();
+        if (mLocation == null) {
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
+            mPresenter.back();
+            return;
+        }
+
     }
 
     @Override
@@ -856,10 +1202,27 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         /*for (int i = 0; i < mListCode.size(); i++) {
             code += mListCode.get(i) + ", ";
         }*/
-
-
     }
 
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation() {
+        Location l = null;
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
     /*@Subscribe(sticky = true)
     public void */
 

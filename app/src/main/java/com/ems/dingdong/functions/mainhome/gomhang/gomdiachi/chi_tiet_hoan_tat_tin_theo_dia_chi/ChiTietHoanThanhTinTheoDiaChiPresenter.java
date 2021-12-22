@@ -16,10 +16,13 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.utiles.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -101,7 +104,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showMessage(response.body().getMessage());
                 } else {
-                    mView.showMessage(response.body().getMessage());
+                    mView.showError(response.body().getMessage());
                 }
             }
 
@@ -147,6 +150,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body() != null) {
+                    Log.d("pathatka1111", response.body().getFile());
                     mView.showImage(response.body().getFile(), path);
                 }
             }
@@ -172,6 +176,8 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     public void start() {
         getReasons();
         getReasonFailure();
+        if (!commonObject.getSenderVpostcode().equals(""))
+            vietmapDecode(commonObject.getSenderVpostcode());
     }
 
     @Override
@@ -204,4 +210,20 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
         return this;
     }
 
+    @Override
+    public void vietmapDecode(String decode) {
+        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
+                                String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+//                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
+//                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
+                    } else {
+//                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
 }

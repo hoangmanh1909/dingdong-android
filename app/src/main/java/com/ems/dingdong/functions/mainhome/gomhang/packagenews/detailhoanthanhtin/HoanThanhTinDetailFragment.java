@@ -1,12 +1,15 @@
 package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -28,15 +31,19 @@ import com.core.base.viper.ViewFragment;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.HoanThanhTinCallback;
 import com.ems.dingdong.callback.SignCallback;
+import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.HoanTatTinDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ScanItem;
 import com.ems.dingdong.model.UserInfo;
@@ -69,6 +76,8 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * The XacNhanTinDetail Fragment
@@ -133,6 +142,11 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     private ItemScanAdapter mAdapter;
     private String mSign = "";
     private boolean mSignPosition = false;
+    private LocationManager mLocationManager;
+    private Location mLocation;
+
+    String senderLat;
+    String senderLon;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -149,6 +163,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         SharedPref sharedPref = new SharedPref(getActivity());
         mUser = sharedPref.getString(Constants.KEY_USER_INFO, "");
         checkPermission();
+        mLocation = getLastKnownLocation();
+
         mList = new ArrayList<>();
         mAdapter = new ItemScanAdapter(getActivity(), mList) {
             @Override
@@ -212,7 +228,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
-                attemptSendMedia(data.getData().getPath());
+                mPresenter.postImage(data.getData().getPath());
             }
         }
     }
@@ -333,17 +349,28 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     @Override
     public void showImage(String file) {
-        if (!file.isEmpty()) {
-            if (!mSignPosition) {
-                mFile = file;
-            }
-        }
+//        if (!file.isEmpty()) {
+//            if (!mSignPosition) {
+//                mFile = file;
+//            }
+//        }
+
+//        Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+        mFile = file;
+        ivPackage.setImageURI(BuildConfig.URL_IMAGE + file, file);
     }
 
     @Override
     public void deleteFile() {
         mFile = "";
         ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+    }
+
+    @Override
+    public void showVitringuoinhan(String lat, String lon) {
+        senderLat = lat;
+        senderLon = lon;
+
     }
 
     @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture, R.id.btn_sign})
@@ -366,6 +393,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                             if (getActivity() != null) {
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                                String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
                                 if (!userJson.isEmpty()) {
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                                     HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
@@ -380,11 +408,28 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setConfirmSignature(mSign);
                                     hoanTatTinRequest.setConfirmContent(edtDescription.getText().toString());
                                     hoanTatTinRequest.setConfirmQuantity(edtQuantity.getText().toString());
-                                    hoanTatTinRequest.setShipmentCode(scans.toString());
+                                    hoanTatTinRequest.setShipmentCodev1(scans.toString());
                                     hoanTatTinRequest.setReasonCode(reasonInfo != null ? reasonInfo.getCode() : "");
                                     hoanTatTinRequest.setShipmentIds(ShipmentID);
                                     hoanTatTinRequest.setNoteReason(noidung);
-                                    com.ems.dingdong.utiles.Log.d("asdasjdg12431723", new Gson().toJson(hoanTatTinRequest));
+                                    //vi tri hien tai
+                                    String setCollectLat = "";
+                                    String setCollectLon = "";
+                                    if (mLocation != null) {
+                                        setCollectLat = String.valueOf(mLocation.getLatitude());
+                                        setCollectLon = String.valueOf(mLocation.getLongitude());
+                                    }
+                                    hoanTatTinRequest.setCollectLat(setCollectLat);
+                                    hoanTatTinRequest.setCollectLon(setCollectLon);
+
+                                    hoanTatTinRequest.setSenderLat(senderLat);
+                                    hoanTatTinRequest.setSenderLon(senderLon);
+
+                                    hoanTatTinRequest.setCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+                                    hoanTatTinRequest.setCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+
+                                    Log.d("asdasjdg12431723", new Gson().toJson(hoanTatTinRequest));
+
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
                                 }
                             }
@@ -561,5 +606,36 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         btnConfirm.setEnabled(false);
     }
 
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
 
+        mLocation = getLastKnownLocation();
+        if (mLocation == null) {
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
+            mPresenter.back();
+            return;
+        }
+
+    }
+
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation() {
+        Location l = null;
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
 }

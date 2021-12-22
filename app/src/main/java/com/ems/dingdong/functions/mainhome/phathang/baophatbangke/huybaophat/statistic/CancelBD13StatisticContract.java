@@ -14,15 +14,16 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public interface CancelBD13StatisticContract {
+    interface Interactor extends IInteractor<Presenter> {
+        Observable<CancelDeliveryResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request);
+    }
+
     interface View extends PresentView<Presenter> {
         void showListSuccess(List<CancelStatisticItem> resultList);
 
         void showError(String message);
     }
 
-    interface Interactor extends IInteractor<Presenter> {
-        Observable<CancelDeliveryResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request);
-    }
 
     interface Presenter extends IPresenter<View, Interactor> {
         void getCancelDeliveryStatic(String poCode, String postmanCode, String routeCode, Integer fromDate, Integer toDate, String statusCode);
@@ -32,6 +33,7 @@ public interface CancelBD13StatisticContract {
         void showBarcode(BarCodeCallback barCodeCallback);
 
         void titleChanged(int quantity, int currentSetTab);
+
 
         List<CancelStatisticItem> getListFromMap(String ladingCode);
 

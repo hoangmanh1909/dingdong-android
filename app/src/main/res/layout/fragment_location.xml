@@ -170,34 +170,39 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
+                        <!--                        <LinearLayout-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:orientation="horizontal"-->
+                        <!--                            android:weightSum="2">-->
+
+                        <!--                            <com.ems.dingdong.views.CustomTextView-->
+                        <!--                                android:layout_width="0dp"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_weight="0.8"-->
+                        <!--                                android:paddingTop="@dimen/dimen_10dp"-->
+                        <!--                                android:paddingBottom="@dimen/dimen_10dp"-->
+                        <!--                                android:text="@string/fee_collected"-->
+                        <!--                                android:textColor="@color/black"-->
+                        <!--                                android:textSize="@dimen/text_size_14sp" />-->
+
+                        <!--                            <com.ems.dingdong.views.CustomTextView-->
+                        <!--                                android:id="@+id/tv_fee"-->
+                        <!--                                android:layout_width="0dp"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_weight="1.2"-->
+                        <!--                                android:layout_gravity="center"-->
+                        <!--                                android:paddingTop="@dimen/dimen_10dp"-->
+                        <!--                                android:paddingBottom="@dimen/dimen_10dp"-->
+                        <!--                                android:textColor="@color/black"-->
+                        <!--                                android:textSize="@dimen/text_size_14sp" />-->
+
+                        <!--                        </LinearLayout>-->
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView_cuoc"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <com.ems.dingdong.views.CustomTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.8"
-                                android:paddingTop="@dimen/dimen_10dp"
-                                android:paddingBottom="@dimen/dimen_10dp"
-                                android:text="@string/fee_collected"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp" />
-
-                            <com.ems.dingdong.views.CustomTextView
-                                android:id="@+id/tv_fee"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.2"
-                                android:paddingTop="@dimen/dimen_10dp"
-                                android:paddingBottom="@dimen/dimen_10dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp" />
-
-                        </LinearLayout>
-
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -265,29 +270,29 @@
                             <com.ems.dingdong.views.CustomTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_weight="0.8"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="Số điện thoại"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp"
-                                android:layout_gravity="center"/>
+                                android:textSize="@dimen/text_size_14sp" />
 
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/tv_SenderPhone"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_weight="1.2"
+                                android:background="@drawable/bg_gradient_search"
+                                android:drawableLeft="@drawable/ic_tel"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_16sp"
-                                android:background="@drawable/bg_gradient_search"
-                                android:paddingLeft="@dimen/dimen_10dp"
-                                android:drawableLeft="@drawable/ic_tel"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
@@ -391,29 +396,29 @@
                             <com.ems.dingdong.views.CustomTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_weight="0.8"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="Số điện thoại"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_14sp"
-                                android:layout_gravity="center"/>
+                                android:textSize="@dimen/text_size_14sp" />
 
                             <com.ems.dingdong.views.CustomTextView
                                 android:id="@+id/tv_ReceiverPhone"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_weight="1.2"
+                                android:background="@drawable/bg_gradient_search"
+                                android:drawableLeft="@drawable/ic_tel"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/dimen_10dp"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_14sp"
-                                android:background="@drawable/bg_gradient_search"
-                                android:paddingLeft="@dimen/dimen_10dp"
-                                android:drawableLeft="@drawable/ic_tel"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
@@ -509,13 +514,13 @@
                                 android:id="@+id/img_sign"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/_120sdp"
+                                android:layout_gravity="center"
                                 android:layout_weight="1.2"
+                                android:gravity="center"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/text_size_16sp"
-                                android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:textSize="@dimen/text_size_16sp" />
 
                         </LinearLayout>
 

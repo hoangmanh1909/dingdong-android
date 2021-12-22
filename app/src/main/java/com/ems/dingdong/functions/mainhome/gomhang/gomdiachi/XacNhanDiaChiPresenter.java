@@ -92,19 +92,26 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                                         && item.getCustomerName().equals(input != null ? input.getCustomerName() : "")
                                         && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
                         ).orNull();
-
                         if (itemExists == null) {
                             item.addOrderPostmanID(item.getOrderPostmanID());
                             item.addCode(item.getCode());
                             item.addCode1(item.getiD());
-                            //
                             try {
                                 item.weightS += Integer.parseInt(item.getWeigh());
                             } catch (Exception e) {
                             }
                             listG.add(item);
                         } else {
-                            for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
+
+
+                            if (item.getListParcelCode().size() == 0) {
+                                ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
+                                parcelCodeInfo.setOrderCode(item.getCode());
+                                parcelCodeInfo.setOrderId(item.getiD());
+                                parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
+                                parcelCodeInfo.setTrackingCode("");
+                                itemExists.getListParcelCode().add(parcelCodeInfo);
+                            } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
                             }
                             itemExists.addOrderPostmanID(item.getOrderPostmanID());
@@ -116,6 +123,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             }
                         }
                     }
+
+
                     mView.showResponseSuccess(listG);
                 } else {
                     mView.showError(response.body().getMessage());

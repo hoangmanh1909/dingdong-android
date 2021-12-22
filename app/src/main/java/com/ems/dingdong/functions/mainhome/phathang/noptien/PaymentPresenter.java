@@ -29,6 +29,7 @@ import com.ems.dingdong.utiles.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -80,6 +81,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         mView.showProgress();
         mInteractor.getDataPayment(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode)
                 .subscribeOn(Schedulers.io())
+                .delay(1500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eWalletDataResult -> {
                     if (eWalletDataResult != null && eWalletDataResult.getErrorCode().equals("00")) {
@@ -103,21 +105,22 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     }
 
     @Override
-    public void requestPayment(List<EWalletDataResponse> list, String poCode, String routeCode, String postmanCode) {
+    public void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode) {
         PaymentRequestModel requestModel = new PaymentRequestModel();
         SharedPref pref = SharedPref.getInstance(getViewContext());
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         ladingPaymentInfoList = new ArrayList<>();
-        ladingPaymentInfoList.clear();
-        for (EWalletDataResponse item : list) {
-            LadingPaymentInfo info = new LadingPaymentInfo();
-            info.setCodAmount(item.getCodAmount());
-            info.setFeeCod(item.getFee());
-            info.setLadingCode(item.getLadingCode());
-            info.setFeeType(item.getFeeType());
-            ladingPaymentInfoList.add(info);
-        }
-        requestModel.setLadingPaymentInfoList(ladingPaymentInfoList);
+        ladingPaymentInfoList = list;
+//        ladingPaymentInfoList.clear();
+//        for (EWalletDataResponse item : list) {
+//            LadingPaymentInfo info = new LadingPaymentInfo();
+//            info.setCodAmount(item.getCodAmount());
+//            info.setFeeCod(item.getFee());
+//            info.setLadingCode(item.getLadingCode());
+//            info.setFeeType(item.getFeeType());
+//            ladingPaymentInfoList.add(info);
+//        }
+        requestModel.setLadingPaymentInfoList(list);
         requestModel.setPaymentToken(token);
         requestModel.setPoCode(poCode);
         requestModel.setPostmanCode(postmanCode);
@@ -132,7 +135,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
-                        mView.showRequestSuccess(simpleResult.getMessage(),
+                        mView.showRequestSuccess(list, simpleResult.getMessage(),
                                 simpleResult.getListEWalletResponse().getTranid(),
                                 simpleResult.getListEWalletResponse().getRetRefNumber());
                         Tranid = simpleResult.getListEWalletResponse().getTranid();
@@ -205,7 +208,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     }
 
     @Override
-    public void confirmPayment(String otp, String requestId, String retRefNumber, String poCode,
+    public void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
                                String routeCode, String postmanCode) {
         PaymentConfirmModel model = new PaymentConfirmModel();
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
@@ -222,7 +225,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         model.setPoCode(poCode);
         model.setRouteCode(routeCode);
         model.setPostmanCode(postmanCode);
-        model.setLadingPaymentInfoList(ladingPaymentInfoList);
+        model.setLadingPaymentInfoList(list);
         model.setPostmanTel(mobileNumber);
         mView.showProgress();
         mInteractor.confirmPayment(model)
@@ -233,7 +236,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         mView.showConfirmSuccess(simpleResult.getMessage());
                     } else if (simpleResult != null && simpleResult.getErrorCode().equals("101")) {
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        mView.showRequestSuccess(Mess,
+                        mView.showRequestSuccess(list, Mess,
                                 Tranid,
                                 RetRefNumber);
                     } else if (simpleResult != null) {

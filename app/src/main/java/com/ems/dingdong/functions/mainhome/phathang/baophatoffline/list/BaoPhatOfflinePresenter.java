@@ -139,7 +139,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         reasonCode,
                         solutionCode,
                         status,
-                        "",
+                        "3",
                         "1",
                         item.getSignatureCapture(),
                         item.getNote(),
@@ -152,7 +152,9 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         "N",
                         "",
                         0,
-                        "", item.isCancelOrder(), item.getFeeCancelOrder(), postManTel1, postManCode1);
+                        "", item.isCancelOrder(), item.getFeeCancelOrder(), postManTel1, postManCode1,
+
+                        "", "", "", "", "", "");
                 List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     mView.showProgress();
@@ -195,7 +197,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 String solutionCode = item.getSolutionCode();
                 String status = "C14";
                 String note = "";
-                final String paymentChannel = "1";
+                final String paymentChannel = "3";
                 String deliveryType = "2";
                 String amount = item.getCollectAmount();
                 if (TextUtils.isEmpty(amount)) {
@@ -235,7 +237,8 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         item.getFeeCollectLater(),
                         item.getFeePPAPNS(),
                         item.getFeeShipPNS(),
-                        item.getFeeCollectLaterPNS()
+                        item.getFeeCollectLaterPNS(),
+                        0, 0, 0, 0, "", ""
                 );
 
                 //  this.feePPA = feePPA;

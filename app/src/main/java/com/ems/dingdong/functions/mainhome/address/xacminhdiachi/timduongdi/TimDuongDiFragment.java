@@ -12,8 +12,10 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -35,9 +37,17 @@ import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.vietmap.Geometry;
 import com.ems.dingdong.model.request.vietmap.MathchedRoute;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
+import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomTextView;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
@@ -72,7 +82,12 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -81,6 +96,7 @@ import java.util.Scanner;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.google.android.gms.maps.model.BitmapDescriptorFactory.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
@@ -91,6 +107,10 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 //    CustomTextView tv_address_from;
     @BindView(R.id.mapView)
     MapView mapView;
+    @BindView(R.id.tv_km)
+    TextView tvKm;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -108,7 +128,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 //    MarkerView markerView;
     LatLng mLatLng;
 
-
+    TravelSales mApiTravel;
     private TimDuongDiFragment.MainActivityLocationCallback mCallback = new TimDuongDiFragment.MainActivityLocationCallback(this);
 
     public static TimDuongDiFragment getInstance() {
@@ -127,6 +147,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         super.initLayout();
         mList = new ArrayList<>();
         mList = mPresenter.getListVpostcodeModell();
+        mApiTravel = mPresenter.getApiTravel();
         mAdapter = new TimDuongDiAdapter(getViewContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull @NotNull HolderView holder, int position) {
@@ -149,6 +170,8 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                                         mList.remove(position);
                                         mAdapter.notifyDataSetChanged();
                                         mapboxMap.removeAnnotations();
+                                        if (mPresenter.getApiTravel() != null)
+                                            mApiTravel.getPoints().remove(position);
                                         mapView.getMapAsync(TimDuongDiFragment.this);
                                         hideProgress();
 
@@ -168,7 +191,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerView);
         recyclerView.setAdapter(mAdapter);
-
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(mAdapter) {
                     @Override
@@ -259,7 +281,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
      */
     @SuppressLint("MissingPermission")
     private void initLocationEngine() {
-        Log.d("ThKhiem5", "initLayout");
         locationEngine = LocationEngineProvider.getBestLocationEngine(getContext());
         locationEngine.getLastLocation(mCallback);
     }
@@ -330,6 +351,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         }
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void showListSuccess(Object object) {
         // new DrawGeoJson(TimDuongDiFragment.this).execute();
@@ -343,14 +365,35 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
             if (paths.length() > 0) {
                 JSONObject path = paths.getJSONObject(0);
                 JSONObject points = path.getJSONObject("points");
+                DecimalFormat f = new DecimalFormat("##.00");
+                DecimalFormat f1 = new DecimalFormat("##");
+                String time = path.getString("time");
+                Double millis = Double.parseDouble(time) % 1000;
+                Double second = (Double.parseDouble(time) / 1000) % 60;
+                Double minute = (Double.parseDouble(time) / (1000 * 60)) % 60;
+                Double hour = (Double.parseDouble(time) / (1000 * 60 * 60)) % 24;
+
+                tvKm.setText("Số km: " + f.format(Double.parseDouble(path.getString("distance")) / 1000));
+//                String.format("%s đ", NumberUtils.formatPriceNumber(amountCOD))
+                tvTime.setText("Thời gian: " + f1.format(hour) + "h" + f1.format(minute) + "p");
                 JSONArray coordinates = points.getJSONArray("coordinates");
+                if (mPresenter.getApiTravel() != null) {
+                    JSONObject waypointOrder = path.getJSONObject("waypointOrder");
+                    for (int i = 0; i < waypointOrder.length(); i++) {
+                        mList.get(i).setValue(waypointOrder.getInt(String.valueOf(i)));
+                    }
+                }
 
+                Collections.sort(mList, new Comparator<VpostcodeModel>() {
+                    @Override
+                    public int compare(VpostcodeModel o1, VpostcodeModel o2) {
+                        return String.valueOf(o1.getValue()).compareTo(String.valueOf(o2.getValue()));
+                    }
+                });
+                mAdapter.notifyDataSetChanged();
                 if (coordinates.length() > 0) {
-
                     List<com.ems.dingdong.model.request.vietmap.Feature> features = new ArrayList<>();
                     com.ems.dingdong.model.request.vietmap.Feature feature = new com.ems.dingdong.model.request.vietmap.Feature();
-
-
                     Geometry geometry = new Geometry();
                     List<List<Double>> drawCoordinatess = new ArrayList<>();
 
@@ -361,23 +404,16 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                         drawCoordinates.add(element.getDouble(1));
                         drawCoordinatess.add(drawCoordinates);
                     }
-
                     geometry.setCoordinates(drawCoordinatess);
                     geometry.setType("LineString");
-
                     feature.setType("Feature");
                     feature.setProperties(new Object());
                     feature.setGeometry(geometry);
-
                     features.add(feature);
-
                     mathchedRoute.setType("FeatureCollection");
                     mathchedRoute.setFeatures(features);
-
-
                     List<Double> endPoint = new ArrayList<>();
                     JSONArray element = coordinates.getJSONArray(coordinates.length() - 1);
-
                     new DrawGeoJson(TimDuongDiFragment.this, mathchedRoute).execute();
                 }
             }
@@ -387,6 +423,20 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         }
 
     }
+
+//    public static void sortASC(List<Double> arr) {
+//        double temp = arr.get(0);
+//        for (int i = 0; i < arr.size(); i++) {
+//            for (int j = i + 1; j < arr.size(); j++) {
+//                if (arr.get(i) > arr.get(j)) {
+//                    temp = j;
+//                    j = i;
+//                    i = temp;
+//                }
+//            }
+//        }
+//    }
+
 
     public void getRoutes() {
         Log.d("ThKhiem6", "initLayout");
@@ -398,13 +448,21 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                 else requests.add(mList.get(i).getSenderVpostcode());
             }
 
-            mPresenter.getPoint(requests);
+
+            if (mPresenter.getApiTravel() != null)
+                mPresenter.vietmapTravelSalesmanProblem(mApiTravel);
+            else
+                mPresenter.getPoint(requests);
+//            mPresenter.vietmapTravelSalesmanProblem(requests);
         }
     }
 
     @Override
     public void showError(String mes) {
         Toast.makeText(getContext(), "Không lấy được thông tin lịch trình", Toast.LENGTH_LONG).show();
+        tvKm.setText("Số km: " + 0);
+//                String.format("%s đ", NumberUtils.formatPriceNumber(amountCOD))
+        tvTime.setText("Thời gian: 00h00p");
     }
 
     private static class MainActivityLocationCallback
@@ -515,9 +573,9 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         List<Point> points = ((LineString) Objects.requireNonNull(feature.geometry())).coordinates();
         Point point = points.get(points.size() - 1);
         List<Point> after = PolylineUtils.simplify(points, 0.001);
-        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude(), point.longitude())));
+        mapboxMap.addMarker(new MarkerOptions()
+                .position(new LatLng(point.latitude(), point.longitude())).snippet("hello"));
         Random generator = new Random(19900828);
-
         addLine("rawLine" + generator, Feature.fromGeometry(LineString.fromLngLats(after)), "#1E90FF");
     }
 

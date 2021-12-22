@@ -18,12 +18,20 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ReasonCallback;
+import com.ems.dingdong.callback.SapXepCallback;
 import com.ems.dingdong.callback.VposcodeCallback;
+import com.ems.dingdong.dialog.DialogText;
+import com.ems.dingdong.dialog.DigLogChiDanDuong;
 import com.ems.dingdong.dialog.TimDuongDiDialog;
 import com.ems.dingdong.model.AddressListModel;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.VpostcodeModel;
+import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.google.gson.Gson;
@@ -65,6 +73,9 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     private List<AddressListModel> mListObject = new ArrayList<>();
     private List<VpostcodeModel> mListObjectV12 = new ArrayList<>();
     private List<VpostcodeModel> mListObjectVNext;
+    String routeInfoJson;
+    SharedPref sharedPref;
+    private int transportType = 0;
 
     public static AddressListFragment getInstance() {
         return new AddressListFragment();
@@ -78,6 +89,9 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
+        sharedPref = new SharedPref(getActivity());
+        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        transportType = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getTransportType();
         mLocation = getLastKnownLocation();
         if (mPresenter != null)
             checkSelfPermission();
@@ -93,8 +107,16 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
             edtSearchAddress.setVisibility(View.GONE);
             tvTitle.setText("Xác minh địa chỉ");
         }
-
         mListObjectV12 = mPresenter.getListVpost();
+        if (mListObjectV12 != null)
+            for (int i = 0; i < mListObjectV12.size(); i++) {
+                if (!mListObjectV12.get(i).getReceiverVpostcode().equals("")) {
+                    mPresenter.vietmapDecode(mListObjectV12.get(i).getReceiverVpostcode(), i);
+                }
+                if (!mListObjectV12.get(i).getSenderVpostcode().equals("")) {
+                    mPresenter.vietmapDecode(mListObjectV12.get(i).getSenderVpostcode(), i);
+                }
+            }
         addressListAdapterV12 = new AddressListAdapterV12(getContext(), mListObjectV12) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -118,13 +140,12 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     public void onDisplay() {
         super.onDisplay();
         mListObjectVNext = new ArrayList<>();
-
+        mLocation = getLastKnownLocation();
         if (mLocation == null) {
-            Toast.showToast(getContext(), "Vui lòng ở vị trí định vị trên điện thoại của bạn");
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
             mPresenter.back();
             return;
         }
-        mLocation = getLastKnownLocation();
         mPresenter.getMapVitri(mLocation.getLongitude(), mLocation.getLatitude());
     }
 
@@ -174,7 +195,25 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                             return;
                         }
                     }
-                    mPresenter.showAddressDetail(mListObjectVNext);
+                    new DigLogChiDanDuong(getContext(), new SapXepCallback() {
+                        @Override
+                        public void onResponse(int type) {
+                            if (type == 2) {
+                                List<RouteRequest> list = new ArrayList<>();
+                                TravelSales travelSales = new TravelSales();
+                                travelSales.setTransportType(transportType);
+                                for (int i = 0; i < mListObjectVNext.size(); i++) {
+                                    RouteRequest routeRequest = new RouteRequest();
+                                    routeRequest.setLat(mListObjectVNext.get(i).getLatitude());
+                                    routeRequest.setLon(mListObjectVNext.get(i).getLongitude());
+                                    list.add(routeRequest);
+                                }
+                                travelSales.setPoints(list);
+                                mPresenter.showAddressDetail(mListObjectVNext, travelSales);
+                            } else
+                                mPresenter.showAddressDetail(mListObjectVNext, null);
+                        }
+                    }).show();
                 } else if (mPresenter.getType() == 98) {
                     for (int i = 0; i < mListObjectV12.size(); i++) {
                         if (mListObjectV12.get(i).getSenderVpostcode().equals("")) {
@@ -182,7 +221,26 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                             return;
                         }
                     }
-                    mPresenter.showAddressDetail(mListObjectVNext);
+
+                    new DigLogChiDanDuong(getContext(), new SapXepCallback() {
+                        @Override
+                        public void onResponse(int type) {
+                            if (type == 2) {
+                                List<RouteRequest> list = new ArrayList<>();
+                                TravelSales travelSales = new TravelSales();
+                                travelSales.setTransportType(transportType);
+                                for (int i = 0; i < mListObjectVNext.size(); i++) {
+                                    RouteRequest routeRequest = new RouteRequest();
+                                    routeRequest.setLat(mListObjectVNext.get(i).getLatitude());
+                                    routeRequest.setLon(mListObjectVNext.get(i).getLongitude());
+                                    list.add(routeRequest);
+                                }
+                                travelSales.setPoints(list);
+                                mPresenter.showAddressDetail(mListObjectVNext, travelSales);
+                            } else
+                                mPresenter.showAddressDetail(mListObjectVNext, null);
+                        }
+                    }).show();
                 }
                 break;
             case R.id.img_back:
@@ -214,10 +272,19 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
     @Override
     public void showList(VpostcodeModel getListVpostV1) {
+
         mListObjectVNext = new ArrayList<>();
         mListObjectVNext.add(getListVpostV1);
         mListObjectVNext.addAll(mListObjectV12);
-        Log.d("asdjkl1212391723172", new Gson().toJson(mListObjectV12));
+    }
+
+    @Override
+    public void showLongLat(double log, double lat, int pos) {
+        VpostcodeModel vpostcodeModel = mListObjectV12.get(pos);
+        vpostcodeModel.setLatitude(lat);
+        vpostcodeModel.setLongitude(log);
+        mListObjectV12.set(pos, vpostcodeModel);
+
     }
 
     private void checkSelfPermission() {

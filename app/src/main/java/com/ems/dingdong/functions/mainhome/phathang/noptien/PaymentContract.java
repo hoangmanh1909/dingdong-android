@@ -13,6 +13,7 @@ import com.ems.dingdong.model.EWalletRemoveRequest;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
+import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
@@ -39,7 +40,7 @@ public interface PaymentContract {
     interface View extends PresentView<Presenter> {
         void showListSuccess(List<EWalletDataResponse> eWalletDataResponses);
 
-        void showRequestSuccess(String message, String requestId, String retRefNumber);
+        void showRequestSuccess(List<LadingPaymentInfo> list,String message, String requestId, String retRefNumber);
 
         void showConfirmSuccess(String message);
 
@@ -57,11 +58,11 @@ public interface PaymentContract {
 
         void getDataPayment(String serviceCode,String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
 
-        void requestPayment(List<EWalletDataResponse> list, String poCode, String routeCode, String postmanCode);
+        void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode);
 
         void deletePayment(List<EWalletDataResponse> list);
 
-        void confirmPayment(String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode);
+        void confirmPayment(List<LadingPaymentInfo> list,String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode);
 
         int getPositionTab();
 

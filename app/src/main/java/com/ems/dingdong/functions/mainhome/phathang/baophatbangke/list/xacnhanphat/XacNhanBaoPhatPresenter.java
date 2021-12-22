@@ -90,6 +90,23 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
+    public void vietmapDecode(String decode, int posi) {
+        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mBaoPhatBangke.get(posi).setReceiverLat(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()));
+                        mBaoPhatBangke.get(posi).setReceiverLon(String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+                    } else {
+                        mBaoPhatBangke.get(posi).setReceiverLat("");
+                        mBaoPhatBangke.get(posi).setReceiverLon("");
+//                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
     public List<DeliveryPostman> getBaoPhatBangke() {
         return mBaoPhatBangke;
     }
@@ -182,7 +199,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
-
+        SharedPref sharedPref = new SharedPref(getViewContext());
         String postManCode1 = userInfo.getUserName();
         String postManTel1 = userInfo.getMobileNumber();
 
@@ -199,7 +216,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String shiftId = Integer.toString(item.getShiftId());
             boolean isCancle = false;
             long feeCancle = item.getFeeCancelOrder();
-
+            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
             if (feeCancle != 0) isCancle = true;
             else isCancle = false;
             String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
@@ -231,7 +248,14 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     isCancle,
                     feeCancle,
                     postManTel1,
-                    postManCode1);
+                    postManCode1,
+                    item.getDeliveryLat(),
+                    item.getDeliveryLon(),
+                    item.getReceiverLat(),
+                    item.getReceiverLon(),
+                    NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
+                    NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
             mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
@@ -276,7 +300,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                                String relationship, InfoVerify infoVerify,boolean isCod,long codeEdit) {
+                                String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -300,11 +324,17 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String solutionCode = "";
             String status = "C14";
             String note = "";
-
+            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
             final String paymentChannel = "1";
             String deliveryType = "";
             String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
             PaypostPaymentRequest request = new PaypostPaymentRequest();
+            request.setDeliveryLat(item.getDeliveryLat());
+            request.setDeliveryLon(item.getDeliveryLon());
+            request.setReceiverLat(item.getReceiverLat());
+            request.setReceiverLon(item.getReceiverLon());
+            request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+            request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
             request.setPostmanID(postmanID);
             request.setParcelCode(parcelCode);
             request.setMobileNumber(mobileNumber);
@@ -345,6 +375,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setReceiverIDNumber(infoVerify.getGtgt());
             request.setImageAuthen(imageAuthen);
             request.setVATCode(item.getVatCode());
+
 
             request.setFeeCollectLater(item.getFeeCollectLater());
             request.setFeeCollectLaterPNS(item.getFeeCollectLater());
@@ -514,7 +545,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void start() {
-
+        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+            if (!mBaoPhatBangke.get(i).getReceiverVpostcode().equals(""))
+                vietmapDecode(mBaoPhatBangke.get(i).getReceiverVpostcode(), i);
+        }
     }
 
     public XacNhanBaoPhatPresenter setOnTabChangeListener(ListDeliveryConstract.OnTabsListener listener) {

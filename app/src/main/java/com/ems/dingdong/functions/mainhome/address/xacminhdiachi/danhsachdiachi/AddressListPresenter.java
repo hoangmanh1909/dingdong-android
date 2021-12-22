@@ -13,6 +13,7 @@ import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.ResultModel;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -72,16 +73,28 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
 
 
     @Override
-    public void showAddressDetail(List<VpostcodeModel> addressListModel) {
-        Log.d("asdhjagsdhj23123", new Gson().toJson(addressListModel));
-        new TimDuongDiPresenter(mContainerView).setType(mType).setListVposcode(addressListModel).pushView();
+    public void vietmapTravelSalesmanProblem(TravelSales request) {
+        mInteractor.vietmapTravelSalesmanProblem(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+//                        mView.showListSuccess(simpleResult.getResponseLocation());
+                    } else {
+                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel) {
+        new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setListVposcode(addressListModel).pushView();
     }
 
     @Override
     public void vietmapSearch(String address, Location location) {
         mView.showProgress();
         mAddress = address;
-
         mInteractor.vietmapSearchByAddress(address, location.getLongitude(), location.getLatitude())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -93,6 +106,21 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                             e.printStackTrace();
                         }
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                });
+    }
+
+    @Override
+    public void vietmapDecode(String decode, int posi) {
+        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        Log.d(":asdgajshd123132", new Gson().toJson(simpleResult));
+                        mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
+                    } else {
+                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
                 });
     }
 
@@ -158,7 +186,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     }
 
     @Override
-    public void getMapVitri(Double v1,Double v2) {
+    public void getMapVitri(Double v1, Double v2) {
         mView.showProgress();
 //        Double v1 = location.getLongitude();
 //        Double v2 = location.getLatitude();
@@ -179,6 +207,8 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                         else
                             vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
                         vpostcodeModel.setFullAdress("Vị trí hiện tại");
+                        vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
+                        vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
                         getListVpostV1.add(vpostcodeModel);
                         mView.showList(vpostcodeModel);
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());

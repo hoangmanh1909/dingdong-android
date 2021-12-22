@@ -4,6 +4,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

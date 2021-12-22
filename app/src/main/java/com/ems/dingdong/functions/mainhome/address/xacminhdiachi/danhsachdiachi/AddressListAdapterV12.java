@@ -22,6 +22,7 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,7 +53,9 @@ public class AddressListAdapterV12 extends RecyclerView.Adapter<AddressListAdapt
 
     @Override
     public int getItemCount() {
-        return addressListModelList.size();
+        if (addressListModelList != null)
+            return addressListModelList.size();
+        else return 0;
     }
 
     class HolderView extends BaseViewHolder {

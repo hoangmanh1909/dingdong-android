@@ -1,9 +1,13 @@
 package com.ems.dingdong.functions.mainhome.gomhang.tabtheodiachi;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -18,6 +22,23 @@ import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
 import com.ems.dingdong.views.OnCustomPageChangeListener;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFShape;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,16 +136,19 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
-            XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-            commonFragment.onDisPlayFaKe();
-            commonFragment.onDisPlayFaKe();
-            XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
-            commonFragment1.onDisPlayFaKe();
+        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
+        commonFragment.onDisPlayFaKe();
+        commonFragment.onDisPlayFaKe();
+        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
+        commonFragment1.onDisPlayFaKe();
+
+
     }
 
     @OnClick({R.id.img_back, R.id.img_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -138,4 +162,6 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
                 break;
         }
     }
+
+
 }

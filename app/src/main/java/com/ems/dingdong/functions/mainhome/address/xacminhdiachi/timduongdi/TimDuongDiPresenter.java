@@ -19,6 +19,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.utiles.Toast;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
     AddressListModel addressListModel;
     List<VpostcodeModel> list;
     private int mType;
+    private TravelSales getApiTravel;
 
     public TimDuongDiPresenter(ContainerView containerView) {
         super(containerView);
@@ -56,6 +58,11 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
 
     public TimDuongDiPresenter setType(int type) {
         this.mType = type;
+        return this;
+    }
+
+    public TimDuongDiPresenter setApiTravel(TravelSales getApiTravel) {
+        this.getApiTravel = getApiTravel;
         return this;
     }
 
@@ -91,6 +98,41 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
             }
         });
     }
+
+    @Override
+    public void vietmapTravelSalesmanProblem(TravelSales request) {
+        mInteractor.vietmapTravelSalesmanProblem(request).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showListSuccess(simpleResult.getResponseLocation());
+                    } else {
+                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public TravelSales getApiTravel() {
+        return getApiTravel;
+    }
+
+
+//            @Override
+//            protected void onSuccess
+//            (Call < XacMinhDiaChiResult > call, Response < XacMinhDiaChiResult > response){
+//                super.onSuccess(call, response);
+//
+//            }
+//
+//            @Override
+//            protected void onError (Call < XacMinhDiaChiResult > call, String message){
+//                super.onError(call, message);
+//
+//                mView.showError(message);
+//            }
+//        });
 
     public int getType() {
         return mType;

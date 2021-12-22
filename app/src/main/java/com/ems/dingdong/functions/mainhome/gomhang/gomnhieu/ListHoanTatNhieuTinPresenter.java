@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomnhieu;
 
 import android.app.Activity;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
@@ -10,7 +11,11 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -110,4 +115,20 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
         });
     }
 
+    @Override
+    public void vietmapDecode(String decode) {
+        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
+                                String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+//                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
+//                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
+                    } else {
+//                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
 }

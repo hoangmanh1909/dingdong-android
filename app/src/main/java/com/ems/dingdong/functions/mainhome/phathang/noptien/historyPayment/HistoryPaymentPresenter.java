@@ -28,6 +28,7 @@ import com.ems.dingdong.utiles.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -137,6 +138,7 @@ public class HistoryPaymentPresenter extends Presenter<HistoryPaymentContract.Vi
         mView.showProgress();
         mInteractor.getHistoryPayment(dataRequestPayment)
                 .subscribeOn(Schedulers.io())
+                .delay(1500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(walletDataHistoryResult -> {
                     if (walletDataHistoryResult != null && walletDataHistoryResult.getErrorCode().equals("00")) {

@@ -7,12 +7,15 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
 
 /**
  * The CommonObject Contract
@@ -29,12 +32,16 @@ interface ListHoanTatNhieuTinContract {
         void getReasonsHoanTat(CommonCallback<ReasonResult> commonCallback);
 
         void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback);
+
+        Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode);
     }
 
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<CommonObject> list);
 
         void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
+
+        void showVitringuoinhan(String lat, String lon);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -48,6 +55,8 @@ interface ListHoanTatNhieuTinContract {
         void showBarcode(BarCodeCallback barCodeCallback);
 
         void collectAllOrderPostman(List<HoanTatTinRequest> list);
+
+        void vietmapDecode(String decode);
     }
 }
 

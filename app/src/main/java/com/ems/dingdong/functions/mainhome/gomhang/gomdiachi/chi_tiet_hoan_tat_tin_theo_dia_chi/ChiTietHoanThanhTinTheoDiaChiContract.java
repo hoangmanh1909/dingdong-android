@@ -7,6 +7,7 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
@@ -16,6 +17,8 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
 
 public interface ChiTietHoanThanhTinTheoDiaChiContract {
     interface Interactor extends IInteractor<ChiTietHoanThanhTinTheoDiaChiContract.Presenter> {
@@ -35,6 +38,8 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
         void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
+
+        Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode);
     }
 
     interface View extends PresentView<ChiTietHoanThanhTinTheoDiaChiContract.Presenter> {
@@ -50,6 +55,8 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
         void getReasonUnSuccess(ArrayList<ReasonInfo> reasonInfos);
 
         void getReasonFailure(ArrayList<ReasonInfo> reasonInfos);
+
+        void showVitringuoinhan(String lat, String lon);
 
     }
 
@@ -70,6 +77,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
+        void vietmapDecode(String decode);
 //        void callForward(String phone);
 //
 //        void updateMobile(String phone);

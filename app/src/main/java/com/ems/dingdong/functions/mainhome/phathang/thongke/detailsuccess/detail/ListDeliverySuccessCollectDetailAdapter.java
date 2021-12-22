@@ -49,7 +49,27 @@ public class ListDeliverySuccessCollectDetailAdapter extends RecyclerBaseAdapter
             } else {
                 tvSoTt.setText(String.format("%s", position + 1));
             }
-            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getAmount()))));
+            int tienCuoc = 0;
+            if (item.getFeePPA() > 0) {
+                tienCuoc += item.getFeePPA();
+            }
+            if (item.getFeeCollectLater() > 0) {
+                tienCuoc += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                tienCuoc += item.getFeePA();
+            }
+            if (item.getFeeShip() > 0) {
+
+                tienCuoc += item.getFeeShip();
+            }
+            if (item.getFeeCancelOrder() > 0) {
+                tienCuoc += item.getFeeCancelOrder();
+            }
+            if (item.getReceiveCollectFee() != null) {
+                tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
+            }
+            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(tienCuoc)))));
         }
     }
 }

@@ -2,12 +2,15 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import java.util.List;
+
+import io.reactivex.Single;
 
 public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietHoanThanhTinTheoDiaChiContract.Presenter> implements ChiTietHoanThanhTinTheoDiaChiContract.Interactor {
 
@@ -48,5 +51,10 @@ public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietH
     @Override
     public void updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.updateMobile(code,type, mobileNumber, commonCallback);
+    }
+
+    @Override
+    public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
+        return NetWorkController.vietmapSearchDecode(Decode);
     }
 }

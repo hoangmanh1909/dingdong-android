@@ -68,16 +68,16 @@
                 android:id="@+id/tv_accept_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
                 android:text="0"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_16sp" />
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_accept_reject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_000080"
                 android:text="0"
+                android:textColor="@color/color_000080"
                 android:textSize="@dimen/text_size_16sp" />
         </LinearLayout>
 
@@ -104,6 +104,18 @@
                 android:hint="Nhập bưu gửi để tìm kiếm nhanh"
                 android:padding="@dimen/dimen_10dp" />
         </FrameLayout>-->
+    <TextView
+        android:id="@+id/tv_xuatfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
+        android:drawableLeft="@drawable/ic_excel"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:visibility = "gone"
+        android:padding="10dp"
+        android:text="Xuất file"
+        android:textColor="@color/black" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -132,9 +144,9 @@
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapCharacters"
             android:layout_marginEnd="7dp"
             android:layout_toLeftOf="@+id/ll_scan_qr"
+            android:inputType="textCapCharacters"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
@@ -168,9 +180,9 @@
             android:id="@+id/img_view"
             android:layout_width="@dimen/size_50dp"
             android:layout_height="@dimen/size_50dp"
-            android:layout_margin="@dimen/_10sdp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_10sdp"
             android:src="@drawable/ic_choose_calendar" />
     </RelativeLayout>
 </LinearLayout>

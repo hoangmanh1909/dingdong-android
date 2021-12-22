@@ -28,6 +28,7 @@ import com.ems.dingdong.dialog.DialogCuocgoi;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -42,6 +43,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 //import com.sip.cmc.SipCmc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -87,8 +89,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     LinearLayout llLocation;
     @BindView(R.id.tv_COD)
     CustomTextView tvCOD;
-    @BindView(R.id.tv_fee)
-    CustomTextView tvFee;
+    //    @BindView(R.id.tv_fee)
+//    CustomTextView tvFee;
     @BindView(R.id.tv_ReceiverPhone)
     CustomTextView _tvReceiverPhone;
     @BindView(R.id.tv_SenderPhone)
@@ -97,6 +99,12 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     private StatusAdapter mAdapter;
     private PublishSubject<String> subject;
     String mPhone;
+
+
+    @BindView(R.id.recyclerView_cuoc)
+    RecyclerView recyclerView_cuoc;
+    TienCuocApdapter mAdapterCuoc;
+    List<Item> mListCuoc;
 
     public static LocationFragment getInstance() {
         return new LocationFragment();
@@ -111,7 +119,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void initLayout() {
         super.initLayout();
         checkSelfPermission();
-//        edtLadingCode.setText("CS989217589VN");
+        edtLadingCode.setText("CQ138038913VN");
         mList = new ArrayList<>();
         mAdapter = new StatusAdapter(getViewContext(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
@@ -127,6 +135,11 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                 llLocation.setVisibility(View.GONE);
             }
         }
+
+        mListCuoc = new ArrayList<>();
+        mAdapterCuoc = new TienCuocApdapter(getViewContext(), mListCuoc);
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView_cuoc);
+        recyclerView_cuoc.setAdapter(mAdapterCuoc);
         mPresenter.findLocation();
     }
 
@@ -166,9 +179,33 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         _tvSenderPhone.setText(commonObject.getSenderPhone());
         _tvReceiverPhone.setText(commonObject.getReceiverMobile());
 
-        if (commonObject.getFee() != null) {
-            tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getFee())));
+//        if (commonObject.getFee() != null) {
+//            tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getFee())));
+//        }
+
+        mListCuoc.clear();
+
+        if (commonObject.getFeePPA() > 0) {
+            mListCuoc.add(new Item("Phí PPA", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeePPA()))))));
         }
+        if (commonObject.getFeeCollectLater() > 0) {
+            mListCuoc.add(new Item("Lệ phí HCC", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeCollectLater()))))));
+        }
+        if (commonObject.getFeePA() > 0) {
+            mListCuoc.add(new Item("Cước thu hộ HCC", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeePA()))))));
+        }
+        if (commonObject.getFeeShip() > 0) {
+            mListCuoc.add(new Item("Phí ship", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeShip()))))));
+        }
+        if (commonObject.getFeeCancelOrder() > 0) {
+            mListCuoc.add(new Item("Phí hủy đơn hàng", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeCancelOrder()))))));
+        }
+        if (commonObject.getReceiveCollectFee() != null) {
+            mListCuoc.add(new Item("Cước COD thu người nhận", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getReceiveCollectFee()))))));
+        }
+
+        mAdapterCuoc.notifyDataSetChanged();
+
         if (commonObject.getCod() != null) {
             tvCOD.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getCod())));
         }
@@ -188,9 +225,20 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         tvRealReceiverName.setText(commonObject.getRealReceiverName());
     }
 
-    @OnClick({R.id.img_capture, R.id.img_back, R.id.tv_SenderPhone, R.id.tv_ReceiverPhone})
+    @OnClick({R.id.img_capture, R.id.img_back, R.id.tv_SenderPhone, R.id.tv_ReceiverPhone, R.id.img_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_search:
+                subject = PublishSubject.create();
+                imgSearch.setOnClickListener(
+                        v -> {
+                            if (TextUtils.isEmpty(edtLadingCode.getText())) {
+                                showErrorToast("Vui lòng nhập mã");
+                                return;
+                            }
+                            subject.onNext(edtLadingCode.getText());
+                        });
+                break;
             case R.id.tv_SenderPhone:
 //                new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
 //                    @Override

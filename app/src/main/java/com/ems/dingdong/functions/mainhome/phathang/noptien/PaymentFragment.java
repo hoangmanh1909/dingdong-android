@@ -23,6 +23,7 @@ import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -151,7 +152,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter = new PaymentAdapter(getViewContext(), mList,type,  (count, amount, fee) -> new Handler().postDelayed(() -> {
+        mAdapter = new PaymentAdapter(getViewContext(), mList, type, (count, amount, fee) -> new Handler().postDelayed(() -> {
             tvAmount.setText(String.format("%s %s", getViewContext().getString(R.string.amount), String.valueOf(count)));
             tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
             tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(amount)));
@@ -241,9 +242,9 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     }
 
     @Override
-    public void showRequestSuccess(String message, String requestId, String retRefNumber) {
+    public void showRequestSuccess(List<LadingPaymentInfo> list, String message, String requestId, String retRefNumber) {
         if (null != getViewContext()) {
-            OtpDialog otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(otp,
+            OtpDialog otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(list, otp,
                     requestId, retRefNumber, poCode, routeCode, postmanCode), message);
             otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -355,8 +356,17 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             }
             String codAmount = NumberUtils.formatPriceNumber(cod);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
+            List<LadingPaymentInfo> list = new ArrayList<>();
+            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+                LadingPaymentInfo info = new LadingPaymentInfo();
+                info.setCodAmount(item.getCodAmount());
+                info.setFeeCod(item.getFee());
+                info.setLadingCode(item.getLadingCode());
+                info.setFeeType(item.getFeeType());
+                list.add(info);
+            }
             String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                    mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                    list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
                     "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
 
@@ -367,7 +377,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.requestPayment(mAdapter.getItemsSelected(), poCode, routeCode, postmanCode);
+                        mPresenter.requestPayment(list, poCode, routeCode, postmanCode);
                         sweetAlertDialog.dismiss();
                     })
                     .show();
@@ -402,10 +412,19 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 cod += item.getCodAmount();
                 fee += item.getFee();
             }
+            List<LadingPaymentInfo> list = new ArrayList<>();
+            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+                LadingPaymentInfo info = new LadingPaymentInfo();
+                info.setCodAmount(item.getCodAmount());
+                info.setFeeCod(item.getFee());
+                info.setLadingCode(item.getLadingCode());
+                info.setFeeType(item.getFeeType());
+                list.add(info);
+            }
             String codAmount = NumberUtils.formatPriceNumber(cod + fee);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
             String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                    mAdapter.getItemsSelected().size() + "</font>" + " khoản thu với tổng số tiền : " +
+                    list.size() + "</font>" + " khoản thu với tổng số tiền : " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, qua ví bưu điện?";
 
             new NotificationDialog(getViewContext())
@@ -415,7 +434,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.requestPayment(mAdapter.getItemsSelected(), poCode, routeCode, postmanCode);
+                        mPresenter.requestPayment(list, poCode, routeCode, postmanCode);
                         sweetAlertDialog.dismiss();
                     })
                     .show();

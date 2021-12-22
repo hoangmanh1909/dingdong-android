@@ -62,7 +62,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         mFromDate = DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mList = new ArrayList<>();
-        mAdapter = new StatictisAdapter(getActivity(), mList) {
+        mAdapter = new StatictisAdapter(getActivity(), mList,mPresenter.getStatus()) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);

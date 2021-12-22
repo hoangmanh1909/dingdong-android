@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -9,10 +10,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -37,10 +41,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.afollestad.materialcamera.MaterialCamera;
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
@@ -50,12 +56,16 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ChonAnhCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PickerCallback;
+import com.ems.dingdong.callback.SapXepCallback;
 import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.DiallogChonAnh;
 import com.ems.dingdong.dialog.DialogNhaptienCOD;
 import com.ems.dingdong.dialog.DialogReason;
+import com.ems.dingdong.dialog.DialogText;
+import com.ems.dingdong.dialog.DigLogPhathoan;
 import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
+import com.ems.dingdong.functions.mainhome.hinhanh.ImageAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.CustomGallery;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CreateDeliveryParialDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CuocAdapter;
@@ -108,12 +118,18 @@ import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -125,6 +141,8 @@ import io.reactivex.schedulers.Schedulers;
 import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
 
 public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.View {
 
@@ -175,9 +193,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.edt_GTTT)
     TextInputEditText tvGTTT;
     @BindView(R.id.edt_relationship)
-    CustomTextView edtRelationship;
+    TextView edtRelationship;
     @BindView(R.id.tv_receiver_name)
-    CustomTextView tvRealReceiverName;
+    TextView tvRealReceiverName;
     @BindView(R.id.tv_address_user)
     CustomTextView tvAddressUser;
     @BindView(R.id.tv_providers)
@@ -191,7 +209,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
-    FormItemEditText edtOtherRelationship;
+    TextInputEditText edtOtherRelationship;
     @BindView(R.id.recycler_image_verify_avatar)
     RecyclerView recyclerImageVerifyAvatar;
     @BindView(R.id.recycler_image)
@@ -279,6 +297,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @BindView(R.id.cb_selected_edtcod)
     CheckBox checkBoxedtCod;
+    @BindView(R.id.cb_selected_phathoan)
+    CheckBox cbSelectedPhathoan;
 
     @BindView(R.id.ll_tong_tien_tam_thu)
     LinearLayout llTongTienTamThu;
@@ -343,10 +363,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private List<Item> listImagesAvatar;//
     private List<Item> listImageVerify;
     private List<Item> listImageOther;
-    private ImageCaptureAdapter imageAvatarAdapter;
-    private ImageCaptureAdapter imageAdapter;
-    private ImageCaptureAdapter imageVerifyAdapter;
-    private ImageCaptureAdapter imageOtherAdapter;
+    private ImageAdapter imageAvatarAdapter;
+    private ImageAdapter imageAdapter;
+    private ImageAdapter imageVerifyAdapter;
+    private ImageAdapter imageOtherAdapter;
 
     private List<Item> listImageDelivery;
     private List<Item> listImageRefund;
@@ -354,8 +374,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private List<PhithuhoModel> phithuhoModelList;
     private PhiThuHoAdapter phiThuHoAdapter;
 
-    private ImageCaptureAdapter imageDeliveryAdapter;
-    private ImageCaptureAdapter imageRefundAdapter;
+    private ImageAdapter imageDeliveryAdapter;
+    private ImageAdapter imageRefundAdapter;
 
     List<ProductModel> listProductDelivery;
 
@@ -382,6 +402,24 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private long lastClickTime = 0;
     List<BuuCucHuyenMode> list1 = new ArrayList<>();
 
+    private LocationManager mLocationManager;
+    private Location mLocation;
+    public final String APP_TAG = "DingDong";
+
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public String photoFileName = "photo.jpg";
+    String currenImaPath = null;
+
+    private File getImageFile() throws IOException {
+        String timeStr = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageName = "jpg_" + timeStr + "_";
+        File stora = Objects.requireNonNull(getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File imageFile = File.createTempFile(imageName, ".jpg", stora);
+        currenImaPath = imageFile.getAbsolutePath();
+        return imageFile;
+    }
+
     public static XacNhanBaoPhatFragment getInstance() {
         return new XacNhanBaoPhatFragment();
     }
@@ -392,9 +430,38 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
+    public void onDisplay() {
+        super.onDisplay();
+
+        mLocation = getLastKnownLocation();
+        if (mLocation == null) {
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
+            mPresenter.back();
+            return;
+        }
+
+        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+            String setDeliveryLat = "";
+            String setDeliveryLon = "";
+            if (mLocation != null) {
+                setDeliveryLat = String.valueOf(mLocation.getLatitude());
+                setDeliveryLon = String.valueOf(mLocation.getLongitude());
+            }
+            mBaoPhatBangke.get(i).setDeliveryLat(setDeliveryLat);
+            mBaoPhatBangke.get(i).setDeliveryLon(setDeliveryLon);
+        }
+    }
+
+    @Override
     public void initLayout() {
         super.initLayout();
-
+        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+        }
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         }
@@ -405,6 +472,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             v.requestFocusFromTouch();
             return false;
         });
+        mLocation = getLastKnownLocation();
 
         tvRealReceiverName.setText(StringUtils.fromHtml("Tên người nhận: "));
         tvAddressUser.setText(StringUtils.fromHtml("Địa chỉ người sử dụng: " + "<font color=\"red\">*</font>"));
@@ -447,12 +515,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
         ll_partial.setVisibility(View.GONE);
-
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
 
         if (mBaoPhatBangke.size() == 1) lledtcod.setVisibility(View.VISIBLE);
         else lledtcod.setVisibility(View.GONE);
-
 //        lledtcod.setVisibility(View.GONE);
         checkBoxedtCod.setOnCheckedChangeListener((v1, v2) -> {
             if (v2) {
@@ -511,7 +577,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rad_dop2.setChecked(true);
             rad_dop1.setChecked(false);
         }
-        adapter = new  XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
+        adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -681,7 +747,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         }
 
-        imageAvatarAdapter = new ImageCaptureAdapter(getViewContext(), listImagesAvatar) {
+        imageAvatarAdapter = new ImageAdapter(getViewContext(), listImagesAvatar) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -697,7 +763,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 });
             }
         };
-        imageAdapter = new ImageCaptureAdapter(getViewContext(), listImages) {
+        imageAdapter = new ImageAdapter(getViewContext(), listImages) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -713,7 +779,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 });
             }
         };
-        imageVerifyAdapter = new ImageCaptureAdapter(getViewContext(), listImageVerify) {
+        imageVerifyAdapter = new ImageAdapter(getViewContext(), listImageVerify) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -730,7 +796,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         };
 
-        imageOtherAdapter = new ImageCaptureAdapter(getViewContext(), listImageOther) {
+        imageOtherAdapter = new ImageAdapter(getViewContext(), listImageOther) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -745,7 +811,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 });
             }
         };
-        imageDeliveryAdapter = new ImageCaptureAdapter(getViewContext(), listImageDelivery) {
+        imageDeliveryAdapter = new ImageAdapter(getViewContext(), listImageDelivery) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -761,7 +827,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 });
             }
         };
-        imageRefundAdapter = new ImageCaptureAdapter(getViewContext(), listImageRefund) {
+        imageRefundAdapter = new ImageAdapter(getViewContext(), listImageRefund) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -852,6 +918,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 getViewContext(), recyclerds);
         recyclerds.setAdapter(phiThuHoAdapter);
 
+//        if (mBaoPhatBangke.size() > 1)
+//            cbSelectedPhathoan.setVisibility(View.GONE);
+//        else {
+//            cbSelectedPhathoan.setVisibility(View.VISIBLE);
+//            if (mBaoPhatBangke.get(0).getIsItemReturn().equals("Y")) {
+//                cbSelectedPhathoan.setChecked(true);
+//                cbSelectedPhathoan.setEnabled(false);
+//                checkBoxedtCod.setEnabled(false);
+//                cbSelectedPhathoan.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(android.R.color.holo_red_light));
+//            }
+//        }
+        cbSelectedPhathoan.setVisibility(View.GONE);
     }
 
     private void showBuuCucden() {
@@ -928,6 +1006,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             case R.id.rad_fail:
                 rbVerifyInfo.setChecked(false);
                 rbVerifyImage.setChecked(false);
+                cbSelectedPhathoan.setVisibility(View.GONE);
+                cbSelectedPhathoan.setChecked(false);
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
@@ -940,7 +1020,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_fail.setBackgroundResource(R.drawable.bg_form_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
                 rad_partial.setBackgroundResource(R.color.color_rad_partial);
-
                 rad_success.setTextColor(getResources().getColor(R.color.white));
                 rad_fail.setTextColor(getResources().getColor(R.color.color_yellow));
                 rad_change_route.setTextColor(getResources().getColor(R.color.white));
@@ -1201,18 +1280,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(),
-                WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
-        } else {
-            startActivityForResult(
-                    intent,
-                    OPEN_MEDIA_PICKER);
-        }
+//        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+//                ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+//                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+//                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE,
+//                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+//        } else {
+        startActivityForResult(
+                intent,
+                OPEN_MEDIA_PICKER);
+//        }
 
 
     }
@@ -1220,7 +1299,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void pickImage(String type, int max) {
 //        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 //        intent.setType("image/*");
-
 
         switch (type) {
             case "AVATAR":
@@ -1283,6 +1361,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     }
 
+    private final static int CAMERA_RQ = 6969;
+
     void setIsCapture(String type) {
         switch (type) {
             case "AVATAR":
@@ -1334,7 +1414,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureOther = false;
                 break;
         }
+//        TakePictureIntent();
         MediaUltis.captureImage(this);
+//        new MaterialCamera(this)
+//                .start(CAMERA_RQ);
     }
 
     void productAdd(String type) {
@@ -1446,7 +1529,57 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (checkBoxedtCod.isChecked()) {
                 _amountShow = tiem_tam;
             } else tiem_tam = 0;
-            new ConfirmDialog(getViewContext(), listSelected.size(), _amountShow, totalFee)
+
+            long final_amountShow = _amountShow;
+//            if (cbSelectedPhathoan.isChecked())
+//                new DigLogPhathoan(getViewContext(), new SapXepCallback() {
+//                    @Override
+//                    public void onResponse(int type) {
+////                        mBaoPhatBangke.get(0).setItemReturn("Y");
+//                        new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
+//                                .setOnCancelListener(Dialog::dismiss)
+//                                .setOnOkListener(confirmDialog -> {
+//                                    confirmDialog.dismiss();
+//                                    InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
+//                                    if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
+//                                        infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
+//                                        infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
+//                                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
+//                                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
+//                                        infoVerify.setGtgt(tvGTTT.getText().toString());
+//                                        if (authenType == 0)
+//                                            infoVerify.setAuthenType(3);
+//                                        else
+//                                            infoVerify.setAuthenType(authenType);
+//                                    }
+//                                    if (mDeliveryType == 2) {
+//                                        if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+//                                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
+//                                                    edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
+//                                        } else {
+//                                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
+//                                                    edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
+//                                        }
+//                                    } else {
+//                                        if (totalAmount > 0) {
+//                                            int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
+//                                            if (!TextUtils.isEmpty(et_pt_amount.getText())) {
+//                                                if (amount <= totalAmount)
+//                                                    deliveryPartial(infoVerify, amount);
+//                                                else
+//                                                    Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+//                                            } else
+//                                                Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
+//                                        } else deliveryPartial(infoVerify, 0);
+//                                    }
+//                                })
+//                                .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
+//                                .show();
+//                    }
+//                }).show();
+//            else {
+////                mBaoPhatBangke.get(0).setItemReturn("N");
+            new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         confirmDialog.dismiss();
@@ -1465,7 +1598,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         if (mDeliveryType == 2) {
                             if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                        edtOtherRelationship.getText(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
+                                        edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
                             } else {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
                                         edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
@@ -1485,6 +1618,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
                     .show();
+//            }
+
 
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
@@ -1503,7 +1638,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                 }
             }
-
+//            if (cbSelectedPhathoan.isChecked()) {
+//                mBaoPhatBangke.get(0).setItemReturn("Y");
+//                new DigLogPhathoan(getViewContext(), new SapXepCallback() {
+//                    @Override
+//                    public void onResponse(int type) {
+//                        mPresenter.submitToPNS(
+//                                mReasonInfo.getCode(),
+//                                mSolutionInfo.getCode(),
+//                                tv_Description.getText().toString(),
+//                                mFile,
+//                                mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
+//                                mSign);
+//                    }
+//                }).show();
+//            } else {
             mPresenter.submitToPNS(
                     mReasonInfo.getCode(),
                     mSolutionInfo.getCode(),
@@ -1511,6 +1660,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mFile,
                     mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                     mSign);
+//            }
+
         } else if (mDeliveryType == 3) {
             /**
              * mDeliveryType = 3 -> chuyển tuyến
@@ -1587,9 +1738,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         String note = "";
 
         final String paymentChannel = "1";
-
+        SharedPref sharedPref = new SharedPref(getActivity());
         String signature = Utils.SHA256(parcelCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         request.setCollectAmount((int) totalAmount);
         request.setDeliveryAmount(amount);
         request.setReturnAmount((int) totalAmount - amount);
@@ -1633,6 +1784,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setVATCode(item.getVatCode());
         request.setIsDOP(item.getIsDOP());
 
+        request.setDeliveryLat(item.getDeliveryLat());
+        request.setDeliveryLon(item.getDeliveryLon());
+        request.setReceiverLat(item.getReceiverLat());
+        request.setReceiverLon(item.getReceiverLon());
+
+        request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+        request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
         ///// bor sung them LadingToPostmanId ,LadingCode, PODeliveryCode  an toan cho tung san pham phat hoan
 
         for (ProductModel productModel : listProductRefund) {
@@ -1698,56 +1856,141 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         return uri.getPath();
     }
 
+    private void TakePictureIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
+    private Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    private File getOutputMediaFile(int type) {
+        File _mediaFile = null;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        return _mediaFile;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == getActivity().RESULT_OK) {
+//                android.util.Log.d("RESULT_OK", imgPosition + " s ");
+//                if (imgPosition < 4)
 
-//                Uri selectedImageUri = data.getData();
-//                String picturePath = getPath1(getActivity().getApplicationContext(), selectedImageUri);
-//                Log.d("Picture Path", picturePath);
-                attemptSendMedia(data.getData().getPath(), 0);
+                if (isCaptureAvatar) {
+                    mPresenter.postImageAvatar(data.getData().getPath());
+                } else {
+                    mPresenter.postImage(data.getData().getPath());
+                }
+//                    attemptSendMedia(data.getData().getPath(), 0);
+//                else attemptSendMedia1(data.getData().getPath(), 0);
             }
-
         } else if (requestCode == 1) {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
-                attemptSendMedia(getPath(selectedImageUri), 1);
+//                Log.d("asdasdasd123123", selectedImageUri.getPath());
+//                attemptSendMedia(getPath(selectedImageUri), 1);
+                mPresenter.postImage(getPath(selectedImageUri));
+            }
+        } else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+
+                try {
+                    if (!savebitmap(photo).getPath().equals("")) {
+                        if (isCaptureAvatar) {
+                            mPresenter.postImageAvatar(savebitmap(photo).getPath());
+                        } else {
+                            mPresenter.postImage(savebitmap(photo).getPath());
+                        }
+                    } else {
+                        Toast.showToast(getViewContext(), "Không tải được ảnh");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else { // Result was a failure
+                Toast.showToast(getViewContext(), "Picture wasn't taken!");
             }
         }
     }
 
-    public static String getPath1(Context context, Uri uri) {
-        String result = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
-                result = cursor.getString(column_index);
-            }
-            cursor.close();
-        }
-        if (result == null) {
-            result = "Not found";
-        }
-        return result;
-    }
-
-
-    private Uri getImageUri1(Bitmap photo) {
+    public static File savebitmap(Bitmap bmp) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(getViewContext().getContentResolver(), photo, "Title", null);
-        return Uri.parse(path);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File f = new File(Environment.getExternalStorageDirectory()
+                + File.separator + imageFileName + ".jpg");
+        f.createNewFile();
+        FileOutputStream fo = new FileOutputStream(f);
+        fo.write(bytes.toByteArray());
+        fo.close();
+        return f;
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getViewContext().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
+    String currentPhotoPath;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getViewContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
+
+//    private void dispatchTakePictureIntent() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getViewContext().getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(getViewContext(),
+//                        BuildConfig.APPLICATION_ID + ".provider",
+//                        photoFile);
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//            }
+//        }
+//    }
+//
+//    public static String getPath1(Context context, Uri uri) {
+//        String result = null;
+//        String[] proj = {MediaStore.Images.Media.DATA};
+//        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+//        if (cursor != null) {
+//            if (cursor.moveToFirst()) {
+//                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+//                result = cursor.getString(column_index);
+//            }
+//            cursor.close();
+//        }
+//        if (result == null) {
+//            result = "Not found";
+//        }
+//        return result;
+//    }
+
 
     private void attemptSendMedia(String path_media, int type) {
         File file = new File(path_media);
@@ -1967,51 +2210,70 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file, String path) {
         if (null != getViewContext()) {
             if (isCaptureAvatar) {
-                for (int i = 0; i < listImagesAvatar.size(); i++) {
-                    if (listImagesAvatar.get(i).getValue().equals(path)) {
-                        listImagesAvatar.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImagesAvatar.size(); i++) {
+//                    if (listImagesAvatar.get(i).getValue().equals(path)) {
+//                        listImagesAvatar.get(i).setText(file);
+//                    }
+//                }
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImagesAvatar.add(item);
+                imageAvatarAdapter.notifyDataSetChanged();
             }
 
             if (isCaptureVerify) {
-                for (int i = 0; i < listImageVerify.size(); i++) {
-                    if (listImageVerify.get(i).getValue().equals(path)) {
-                        listImageVerify.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImageVerify.size(); i++) {
+//                    if (listImageVerify.get(i).getValue().equals(path)) {
+//                        listImageVerify.get(i).setText(file);
+//                    }
+//                }
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImageVerify.add(item);
+                imageVerifyAdapter.notifyDataSetChanged();
             }
 
             if (isCapture) {
-                for (int i = 0; i < listImages.size(); i++) {
-                    if (listImages.get(i).getValue().equals(path)) {
-                        listImages.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImages.size(); i++) {
+//                    if (listImages.get(i).getValue().equals(path)) {
+//                        listImages.get(i).setText(file);
+//                    }
+//                }
+
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImages.add(item);
+                imageAdapter.notifyDataSetChanged();
             }
 
             if (isCaptureOther) {
-                for (int i = 0; i < listImageOther.size(); i++) {
-                    if (listImageOther.get(i).getValue().equals(path)) {
-                        listImageOther.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImageOther.size(); i++) {
+//                    if (listImageOther.get(i).getValue().equals(path)) {
+//                        listImageOther.get(i).setText(file);
+//                    }
+//                }
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImageOther.add(item);
+                imageOtherAdapter.notifyDataSetChanged();
             }
 
             if (isCaptureDelivery) {
-                for (int i = 0; i < listImageDelivery.size(); i++) {
-                    if (listImageDelivery.get(i).getValue().equals(path)) {
-                        listImageDelivery.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImageDelivery.size(); i++) {
+//                    if (listImageDelivery.get(i).getValue().equals(path)) {
+//                        listImageDelivery.get(i).setText(file);
+//                    }
+//                }
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImageDelivery.add(item);
+                imageDeliveryAdapter.notifyDataSetChanged();
             }
 
             if (isCaptureRefund) {
-                for (int i = 0; i < listImageRefund.size(); i++) {
-                    if (listImageRefund.get(i).getValue().equals(path)) {
-                        listImageRefund.get(i).setText(file);
-                    }
-                }
+//                for (int i = 0; i < listImageRefund.size(); i++) {
+//                    if (listImageRefund.get(i).getValue().equals(path)) {
+//                        listImageRefund.get(i).setText(file);
+//                    }
+//                }
+                Item item = new Item(BuildConfig.URL_IMAGE + file, file);
+                listImageRefund.add(item);
+                imageRefundAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -2139,7 +2401,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         totalFee = 0;
         for (DeliveryPostman i : getItemSelected()) {
             totalAmount += i.getAmount();
-            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeeC() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
+            totalFee += i.getFeeShip() + i.getFeeCollectLater()+ i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
         }
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
@@ -2348,6 +2610,26 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
         }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation() {
+        Location l = null;
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
 }

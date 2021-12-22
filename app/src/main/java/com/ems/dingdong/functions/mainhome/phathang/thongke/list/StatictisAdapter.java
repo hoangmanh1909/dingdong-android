@@ -18,9 +18,11 @@ import java.util.List;
 import butterknife.BindView;
 
 public class StatictisAdapter extends RecyclerBaseAdapter {
+    String mtype = "";
 
-    public StatictisAdapter(Context context, List<CommonObject> items) {
+    public StatictisAdapter(Context context, List<CommonObject> items, String mYpte) {
         super(context, items);
+        mtype = mYpte;
     }
 
     @Override
@@ -126,16 +128,22 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                     tvReason.setText(String.format("%s", item.getReasonName()));
                 }
             }
-
-            if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()) + Long.parseLong(item.getReceiveCollectFee()))));
-            } else if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getCollectAmount()))));
-            } else if (!TextUtils.isEmpty(item.getReceiveCollectFee())) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(item.getReceiveCollectFee()))));
+            if (mtype.equals("C14") || mtype.equals("C44")) {
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(
+                        Long.parseLong(item.getCollectAmount())
+                                + Long.parseLong(item.getReceiveCollectFee()) + item.getFeePPA() +
+                                item.getFeeShip() + item.getFeePA() +
+                                item.getFeeCollectLater())));
             } else {
-                tvAmount.setText("0 VNĐ");
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
+
             }
+//            if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
+//
+//            } else if (!TextUtils.isEmpty(String.valueOf(item.getFeeCancelOrder()))) {
+//            } else {
+//                tvAmount.setText("0 VNĐ");
+//            }
         }
     }
 }

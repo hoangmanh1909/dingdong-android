@@ -17,6 +17,8 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -39,8 +41,9 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
 
     @Override
     public void start() {
-        // Start getting data here
-       // searchOrderPostman();
+
+        if (!commonObject.getSenderVpostcode().equals(""))
+            vietmapDecode(commonObject.getSenderVpostcode());
     }
 
     @Override
@@ -75,7 +78,6 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                 });
 
     }*/
-
 
 
     @Override
@@ -117,24 +119,24 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
         mView.showProgress();
         String quantity = "0";
         hoanTatTinRequest.setQuantity(quantity);
-        mInteractor.collectOrderPostmanCollect(hoanTatTinRequest,new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        super.onSuccess(call, response);
-                        if (response.body().getErrorCode().equals("00")) {
-                            mView.hideProgress();
-                            mView.controlViews();
-                        }
-                        mView.showMessage(response.body().getMessage());
-                    }
+        mInteractor.collectOrderPostmanCollect(hoanTatTinRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                if (response.body().getErrorCode().equals("00")) {
+                    mView.hideProgress();
+                    mView.controlViews();
+                }
+                mView.showMessage(response.body().getMessage());
+            }
 
-                    @Override
-                    protected void onError(Call<SimpleResult> call, String message) {
-                        super.onError(call, message);
-                        mView.hideProgress();
-                        mView.showError(message);
-                    }
-                });
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
+            }
+        });
     }
 
     public HoanThanhTinDetailPresenter setCommonObject(CommonObject commonObject) {
@@ -142,5 +144,21 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
         return this;
     }
 
+    @Override
+    public void vietmapDecode(String decode) {
+        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
+                                String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+//                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
+//                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
+                    } else {
+//                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
 
 }

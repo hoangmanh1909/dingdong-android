@@ -14,8 +14,18 @@ import io.realm.annotations.PrimaryKey;
 public class CommonObject extends RealmObject {
 
 
+    String mType = "";
+
+    public String getmType() {
+        return mType;
+    }
+
+    public void setmType(String mType) {
+        this.mType = mType;
+    }
+
     @SerializedName("CustomerName")
-    String customerName= "";
+    String customerName = "";
     @SerializedName("SenderVpostcode")
     String SenderVpostcode;
     @SerializedName("ReferenceCode")
@@ -60,6 +70,8 @@ public class CommonObject extends RealmObject {
     //region xacnhantin
     @SerializedName("OrderPostmanID")
     String orderPostmanID;
+    @SerializedName("CustomerCode")
+    String CustomerCode;
     @SerializedName("Count")
     String count;
     @SerializedName("Description")
@@ -79,6 +91,14 @@ public class CommonObject extends RealmObject {
     @SerializedName("ListOrderNumber")
     String ListOrderNumber;
 
+    public String getCustomerCode() {
+        return CustomerCode;
+    }
+
+    public void setCustomerCode(String customerCode) {
+        CustomerCode = customerCode;
+    }
+
     public void setTrackingCode(String trackingCode) {
         this.trackingCode = trackingCode;
     }
@@ -94,18 +114,18 @@ public class CommonObject extends RealmObject {
 
     @PrimaryKey
     @SerializedName(value = "Code", alternate = {"MaE", "ParcelCode"})
-    String code= "";
+    String code = "";
 
     @SerializedName(value = "ID", alternate = {"Id"})
     String iD;
     @SerializedName(value = "ContactName", alternate = {"ReciverName", "ReceiverName"})
     String receiverName;
     @SerializedName(value = "ContactPhone", alternate = {"ReciverMobile", "ReceiverPhone"})
-    String receiverPhone="";
+    String receiverPhone = "";
     @SerializedName(value = "ContactAddress", alternate = {"ReciverAddress", "ReceiverAddress"})
-    String receiverAddress="";
+    String receiverAddress = "";
     @SerializedName(value = "Weigh", alternate = {"Weight"})
-    String weigh="";
+    String weigh = "";
     //endregion
     //region baophatbangke
     @SerializedName("SenderName")
@@ -164,30 +184,33 @@ public class CommonObject extends RealmObject {
         ListOrderNumber = listOrderNumber;
     }
 
+
     @SerializedName("FeePPA")
     private long feePPA;
-
+    @SerializedName("FeePA")
+    private long FeePA;
     @SerializedName("FeeShip")
     private long feeShip;
-
     @SerializedName("FeeCollectLater")
     private long feeCollectLater;
-
     @SerializedName("FeePPAPNS")
     private long feePPAPNS;
-
     @SerializedName("FeeShipPNS")
     private long feeShipPNS;
-
     @SerializedName("FeeCollectLaterPNS")
     private long feeCollectLaterPNS;
-
     @SerializedName("IsCancelOrder")
     private boolean isCancelOrder;
-
     @SerializedName("FeeCancelOrder")
     private long feeCancelOrder;
 
+    public long getFeePA() {
+        return FeePA;
+    }
+
+    public void setFeePA(long feePA) {
+        FeePA = feePA;
+    }
 
     public boolean isCancelOrder() {
         return isCancelOrder;
@@ -731,7 +754,7 @@ public class CommonObject extends RealmObject {
     }
 
     public String getOrderNumber() {
-        return orderNumber="";
+        return orderNumber = "";
     }
 
     public String getRouteCode() {

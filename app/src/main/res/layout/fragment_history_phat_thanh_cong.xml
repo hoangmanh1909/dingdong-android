@@ -82,16 +82,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_16sp" />
 
-        <com.ems.dingdong.views.CustomMediumTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.17"
-            android:background="@drawable/textlines"
-            android:gravity="center"
-            android:text="Tiền C"
-            android:padding="@dimen/dimen_5dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp" />
+<!--        <com.ems.dingdong.views.CustomMediumTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1.17"-->
+<!--            android:background="@drawable/textlines"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Tiền C"-->
+<!--            android:padding="@dimen/dimen_5dp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="@dimen/text_size_16sp" />-->
 
         <com.ems.dingdong.views.CustomMediumTextView
             android:layout_width="0dp"
@@ -99,7 +99,7 @@
             android:layout_weight="1.17"
             android:background="@drawable/textlines"
             android:gravity="center"
-            android:text="Tiền PPA"
+            android:text="Số tiền cước"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_16sp" />

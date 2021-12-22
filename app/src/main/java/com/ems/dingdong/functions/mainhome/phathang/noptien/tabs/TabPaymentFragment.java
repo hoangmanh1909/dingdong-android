@@ -82,12 +82,17 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
             public void onCustomPageSelected(int newPosition) {
                 switch (newPosition) {
                     case 0:
+                        PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
+                        paymentFragment1.onDisplayFake();
                     case 1:
                         mPosition = newPosition;
                         imgSend.setVisibility(View.VISIBLE);
                         imgDelete.setVisibility(View.VISIBLE);
                         imgDelete.setImageResource(R.drawable.ic_remove);
                         imgSend.setImageResource(R.drawable.telegram);
+                        PaymentFragment paymentFragment2 = (PaymentFragment) tabList.get(1);
+                        paymentFragment2.onDisplayFake();
+
                         break;
                     case 2:
                         mPosition = newPosition;
@@ -97,11 +102,16 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
                         imgSend.setVisibility(View.VISIBLE);
                         imgDelete.setVisibility(View.GONE);
                         imgSend.setImageResource(R.drawable.ic_close);
+                        CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(2);
+                        cancelPaymentFragment.onDisplayFake();
+
                         break;
                     case 3:
                         mPosition = newPosition;
                         imgSend.setVisibility(View.GONE);
                         imgDelete.setVisibility(View.GONE);
+                        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(3);
+                        historyPaymentFragment.onDisplayFake();
                         break;
                     default:
                         throw new IllegalArgumentException("can not find any tab!");
@@ -114,14 +124,19 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
 
     @Override
     public void onCanceledDelivery() {
-        PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
-        paymentFragment1.onDisplayFake();
-        PaymentFragment paymentFragment2 = (PaymentFragment) tabList.get(1);
-        paymentFragment2.onDisplayFake();
-        CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(2);
-        cancelPaymentFragment.onDisplayFake();
-        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(3);
-        historyPaymentFragment.onDisplayFake();
+        if (mPosition == 0) {
+            PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
+            paymentFragment1.onDisplayFake();
+        } else if (mPosition == 1) {
+            PaymentFragment paymentFragment2 = (PaymentFragment) tabList.get(1);
+            paymentFragment2.onDisplayFake();
+        } else if (mPosition == 2) {
+            CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(2);
+            cancelPaymentFragment.onDisplayFake();
+        } else if (mPosition == 3) {
+            HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(3);
+            historyPaymentFragment.onDisplayFake();
+        }
     }
 
     @Override
@@ -142,12 +157,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         super.onDisplay();
         PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
         paymentFragment1.onDisplayFake();
-        PaymentFragment paymentFragment2 = (PaymentFragment) tabList.get(1);
-        paymentFragment2.onDisplayFake();
-        CancelPaymentFragment cancelPaymentFragment = (CancelPaymentFragment) tabList.get(2);
-        cancelPaymentFragment.onDisplayFake();
-        HistoryPaymentFragment historyPaymentFragment = (HistoryPaymentFragment) tabList.get(3);
-        historyPaymentFragment.onDisplayFake();
+
     }
 
     @OnClick({R.id.img_back, R.id.img_send, R.id.img_delete})

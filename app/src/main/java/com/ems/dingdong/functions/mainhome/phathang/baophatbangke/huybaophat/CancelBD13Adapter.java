@@ -149,17 +149,23 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 tv_code.setText(item.getLadingCode());
             else
                 tv_code.setText("");
-
+// if (item.getcODAmount() != null) {
+//                cod = item.getcODAmount() + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip();
+//            }
+//            if (item.getFee() != null) {
+//                fee = item.getCollectFeeCOD() + item.getFeePA(); // cuoc thu ho;
+//            }
             if (item.getAmount() != null)
-                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getFeePPA()
-                        + item.getFee() + item.getFeeC() + item.getFeeCancelOrder() + item.getFeePA())));
+                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getAmount()
+                        + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip())));
             else
                 tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money)));
 
             if (item.getFee() != null)
-                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getAmount() + item.getFeeCollectLater())));
+                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee() + item.getFeePA())));
             else
                 tvFee.setText(String.format(mContext.getString(R.string.fee)));
+
 
             if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
                 if (!TextUtils.isEmpty(item.getReceiverAddress())) {

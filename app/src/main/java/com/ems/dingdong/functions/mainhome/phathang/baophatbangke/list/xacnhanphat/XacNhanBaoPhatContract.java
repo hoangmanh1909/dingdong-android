@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ThuPhiMode;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
@@ -98,6 +99,8 @@ public interface XacNhanBaoPhatContract {
         void changeRouteInsert(ChangeRouteRequest requests, CommonCallback<SimpleResult> callback);
 
         void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback);
+
+        Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode);
     }
 
     interface View extends PresentView<Presenter> {
@@ -172,6 +175,9 @@ public interface XacNhanBaoPhatContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void vietmapDecode(String decode, int posi);
+
         /**
          * Get list chosen from ListBaoPhatBangKeFragment.
          *
@@ -209,7 +215,7 @@ public interface XacNhanBaoPhatContract {
          * delivery success.
          */
         void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                             String relationship, InfoVerify infoVerify,boolean isCod,long codeEdit);
+                             String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);
@@ -227,7 +233,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * @see Interactor
          */
-        void cancelDivided(String toPOCode,int toRouteId, int toPostmanId, String signCapture, String fileImg);
+        void cancelDivided(String toPOCode, int toRouteId, int toPostmanId, String signCapture, String fileImg);
 
         void changeRouteInsert(int toRouteId, int toPostmanId, String signCapture, String fileImg);
 

@@ -117,7 +117,6 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
     }
 
     class HolderView extends RecyclerView.ViewHolder {
-
         @BindView(R.id.tv_parcel_code)
         CustomBoldTextView tvParcelCode;
         @BindView(R.id.tv_date_time)
@@ -156,10 +155,24 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             Integer cod = 0;
             Integer fee = 0;
             if (item.getcODAmount() != null) {
-                cod = item.getcODAmount();
+                if (item.getFeePPA() != null)
+                    cod += item.getFeePPA();
+                if (item.getFeeCollectLater() != null)
+                    cod += item.getFeeCollectLater();
+                if (item.getFeeShip() != null)
+                    cod += item.getFeeShip();
+                if (item.getcODAmount() != null)
+                    cod += item.getcODAmount();
+
+//                cod = item.getcODAmount() + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip();
             }
+
             if (item.getFee() != null) {
-                fee = item.getFee();
+                if (item.getCollectFeeCOD() != null)
+                    fee += item.getCollectFeeCOD();
+                if (item.getFeePA() != null)
+                    fee += item.getFeePA();
+//                fee = item.getCollectFeeCOD() + item.getFeePA(); // cuoc thu ho;
             }
             tvCod.setVisibility(View.VISIBLE);
             tvFee.setVisibility(View.VISIBLE);

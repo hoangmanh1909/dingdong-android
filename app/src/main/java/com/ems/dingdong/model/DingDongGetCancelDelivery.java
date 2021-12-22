@@ -46,7 +46,9 @@ public class DingDongGetCancelDelivery {
 
     @SerializedName("FeeShip")
     @Expose
-    private Integer FeeShip;
+    private Integer FeeShip;   @SerializedName("CollectAmount")
+    @Expose
+    private Integer CollectAmount;
     @SerializedName("FeeCollectLater")
     @Expose
     private Integer FeeCollectLater;
@@ -62,6 +64,14 @@ public class DingDongGetCancelDelivery {
     private long FeeCancelOrder;
     @SerializedName("FeeC")
     private long feeC;
+
+    public Integer getCollectAmount() {
+        return CollectAmount;
+    }
+
+    public void setCollectAmount(Integer collectAmount) {
+        CollectAmount = collectAmount;
+    }
 
     public long getFeeC() {
         return feeC;

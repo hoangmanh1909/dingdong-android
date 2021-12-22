@@ -15,6 +15,7 @@ import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.CreateOrderRequest;
 import com.ems.dingdong.model.DataRequestPayment;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -74,6 +75,7 @@ import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
@@ -465,6 +467,8 @@ public class NetWorkController {
         return getAPIRxBuilder().postImageObservable(body);
     }
 
+
+
     //Thu ho BTXH
 
     public static void getBankAccountNumber(BankAccountNumberRequest bankAccountNumberRequest, CommonCallback<BankAccountNumberResponse> callback) {
@@ -632,10 +636,21 @@ public class NetWorkController {
         return getAPIRxBuilder().vietmapSearchEncode(longitude, latitude);
     }
 
+    public static Single<DecodeDiaChiResult> vietmapSearchDecode(String decode) {
+        return getAPIRxBuilder().vietmapSearchDecode(decode);
+    }
+
     public static void vietmapRoute(List<String> request, CommonCallback<XacMinhDiaChiResult> callback) {
         Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRouteV2(request);
         call.enqueue(callback);
     }
+
+//    public static void vietmapTravelSalesmanProblem( List<RouteRequest> request, CommonCallback<XacMinhDiaChiResult> callback) {
+//        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapTravelSalesmanProblem(request);
+//        call.enqueue(callback);
+//    }
+
+
 
     public static void getLadingStatusGeneral(String postmanID, String fromDate, String toDate,
                                               int ladingType, String routeCode,
@@ -753,6 +768,9 @@ public class NetWorkController {
                 + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
         payLinkConfirm.setSignature(signature);
         return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
+    }
+    public static Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
+        return getAPIRxBuilder().vietmapTravelSalesmanProblemV1(request);
     }
 
     public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {

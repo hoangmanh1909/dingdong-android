@@ -155,6 +155,67 @@ public class DeliveryProductRequest {
     @SerializedName("FeeCollectLaterPNS")
     private long feeCollectLaterPNS;
 
+    @SerializedName("DeliveryLat")
+    private String DeliveryLat;
+    @SerializedName("DeliveryLon")
+    private String DeliveryLon;
+    @SerializedName("ReceiverLat")
+    private String ReceiverLat;
+    @SerializedName("ReceiverLon")
+    private String ReceiverLon;
+    @SerializedName("PODeliveryLat")
+    private String PODeliveryLat;
+    @SerializedName("PODeliveryLon")
+    private String PODeliveryLon;
+
+    public String getDeliveryLat() {
+        return DeliveryLat;
+    }
+
+    public void setDeliveryLat(String deliveryLat) {
+        DeliveryLat = deliveryLat;
+    }
+
+    public String getDeliveryLon() {
+        return DeliveryLon;
+    }
+
+    public void setDeliveryLon(String deliveryLon) {
+        DeliveryLon = deliveryLon;
+    }
+
+    public String getReceiverLat() {
+        return ReceiverLat;
+    }
+
+    public void setReceiverLat(String receiverLat) {
+        ReceiverLat = receiverLat;
+    }
+
+    public String getReceiverLon() {
+        return ReceiverLon;
+    }
+
+    public void setReceiverLon(String receiverLon) {
+        ReceiverLon = receiverLon;
+    }
+
+    public String getPODeliveryLat() {
+        return PODeliveryLat;
+    }
+
+    public void setPODeliveryLat(String PODeliveryLat) {
+        this.PODeliveryLat = PODeliveryLat;
+    }
+
+    public String getPODeliveryLon() {
+        return PODeliveryLon;
+    }
+
+    public void setPODeliveryLon(String PODeliveryLon) {
+        this.PODeliveryLon = PODeliveryLon;
+    }
+
     public Boolean getPaymentPP() {
         return isPaymentPP;
     }

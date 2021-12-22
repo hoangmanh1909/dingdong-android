@@ -132,7 +132,9 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         PushToPnsRequest request = new PushToPnsRequest(postmanID, ladingCode, deliveryPOCode, deliveryDate, deliveryTime, receiverName, reasonCode,
                 solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode,
-                signature, imageDelivery, "N", "", 0, "",false,0,"","");
+                signature, imageDelivery, "N", "", 0, "", false, 0,
+                "", "",
+                "", "", "", "", "", "");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -235,7 +237,9 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
                 parcelCode, mobileNumber, deliveryPOCode, deliveryDate, deliveryTime, receiverName, receiverIDNumber, reasonCode, solutionCode,
                 status, paymentChannel, deliveryType, signatureCapture,
-                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature, imageDelivery, postmanCode, null, isPaymentPP, "N", "", 0,0,0,0,0,0,0);
+                note, amount, Constants.SHIFT, routeCode, ladingPostmanID, signature, imageDelivery, postmanCode, null, isPaymentPP, "N", "",
+                0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, "", "");
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

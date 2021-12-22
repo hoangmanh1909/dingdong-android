@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.response.RouteResponse;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -158,7 +159,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                 }
 
                 if (!TextUtils.isEmpty(item.getToPOName())) {
-                    tvStartEndRoute.setText(item.getToPOCode() + " - "+item.getToPOName());
+                    tvStartEndRoute.setText(item.getToPOCode() + " - " + item.getToPOName());
                     tvStartEndPostman.setVisibility(View.GONE);
                 }
 
@@ -169,14 +170,32 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
             }
 
             long cod = 0;
-            long fee = 0;
             if (item.getCodAmount() != null) {
                 cod = item.getCodAmount();
             }
-            if (item.getCodAmount() != null) {
-                fee = item.getFee();
+            if (item.getReceiveCollectFee() > 0) {
+                cod = item.getReceiveCollectFee();
             }
-            tvTotalAmount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(cod + fee)));
+            if (item.getFeeCollectLater() > 0) {
+                cod = item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                cod = item.getFeePA();
+            }
+
+            if (item.getFeePPA() > 0) {
+                cod = item.getFeePPA();
+            }
+
+            if (item.getFeeShip() > 0) {
+                cod = item.getFeeShip();
+            }
+
+
+//            if (item.getCodAmount() != null) {
+//                fee = item.getFee();
+//            }
+            tvTotalAmount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(cod)));
 
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusRoute.setVisibility(View.VISIBLE);

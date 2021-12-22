@@ -66,6 +66,18 @@ public class PushToPnsRequest {
 
     @SerializedName("FeeCancelOrder")
     private long feeCancelOrder;
+    @SerializedName("DeliveryLat")
+    private String DeliveryLat;
+    @SerializedName("DeliveryLon")
+    private String DeliveryLon;
+    @SerializedName("ReceiverLat")
+    private String ReceiverLat;
+    @SerializedName("ReceiverLon")
+    private String ReceiverLon;
+    @SerializedName("PODeliveryLat")
+    private String PODeliveryLat;
+    @SerializedName("PODeliveryLon")
+    private String PODeliveryLon;
 
     public boolean isCancelOrder() {
         return isCancelOrder;
@@ -87,7 +99,13 @@ public class PushToPnsRequest {
                             String reasonCode, String solutionCode, String status, String paymentChannel,
                             String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID,
                             String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn, String batchCode,
-                            Integer itemsInBatch, String amountForBatch, boolean isCancelOrder, long feeCancelOrder, String postmanTel, String postmanCode) {
+                            Integer itemsInBatch, String amountForBatch, boolean isCancelOrder, long feeCancelOrder, String postmanTel, String postmanCode,
+                            String DeliveryLat,
+                            String DeliveryLon,
+                            String ReceiverLat,
+                            String ReceiverLon,
+                            String PODeliveryLat,
+                            String PODeliveryLon) {
         this.postmanID = postmanID;
         this.ladingCode = ladingCode;
         this.deliveryPOCode = deliveryPOCode;
@@ -115,6 +133,12 @@ public class PushToPnsRequest {
         this.feeCancelOrder = feeCancelOrder;
         this.PostmanTel = postmanTel;
         this.PostmanCode = postmanCode;
+        this.DeliveryLat = DeliveryLat;
+        this.DeliveryLon = DeliveryLon;
+        this.ReceiverLat = ReceiverLat;
+        this.ReceiverLon = ReceiverLon;
+        this.PODeliveryLat = PODeliveryLat;
+        this.PODeliveryLon = PODeliveryLon;
     }
 
 

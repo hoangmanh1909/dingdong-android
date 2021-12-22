@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.SystemClock;
 import android.view.View;
 
 import com.ems.dingdong.R;
@@ -22,6 +23,7 @@ public class OtpDialog extends Dialog {
 
     private OnPaymentCallback callback;
     private Context context;
+    private long lastClickTime = 0;
 
     public OtpDialog(Context context, OnPaymentCallback callback, String message) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -40,6 +42,10 @@ public class OtpDialog extends Dialog {
                 dismiss();
                 break;
             case R.id.tv_pay:
+                if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
                 if (optEditText.getText().length() != 8) {
                     Toast.showToast(context, "Chưa nhập OTP hoặc OTP chưa đúng định dạng");
                     return;

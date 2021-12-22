@@ -240,9 +240,9 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/gray"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp"/>
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:background="@color/gray" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class BitmapUtils {
 
@@ -67,6 +68,28 @@ public class BitmapUtils {
             }
         }
     }
+
+//    public static Bitmap decodeBitmap(Context context, Uri uri, int maxWidth, int maxHeight) throws IOException {
+//
+//        // First decode with inJustDecodeBounds=true to check dimensions
+//        final BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        InputStream imageStream = context.getContentResolver().openInputStream(uri);
+//        BitmapFactory.decodeStream(imageStream, null, options);
+//        if (imageStream != null)
+//            imageStream.close();
+//
+//        // Calculate inSampleSize
+//        options.inSampleSize = calculateSize(options, maxWidth, maxHeight);
+//
+//        // Decode bitmap with inSampleSize set
+//        options.inJustDecodeBounds = false;
+//        imageStream = context.getContentResolver().openInputStream(uri);
+//        Bitmap img = BitmapFactory.decodeStream(imageStream, null, options);
+//
+//        img = rotateImageIfRequired(context, img, uri);
+//        return img;
+//    }
 
     public static boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
                                     int quality) {

@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,7 +192,12 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             tvContactName.setText(String.format("Người gửi : %s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
             tvCustomName.setText(String.format("Khách hàng: %s", item.getCustomerName()));
-            tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", item.getListParcelCode().size()));
+            int soluongbuugui = 0;
+            for (ParcelCodeInfo info : item.getListParcelCode()) {
+                if (!TextUtils.isEmpty(info.getTrackingCode()))
+                    soluongbuugui++;
+            }
+            tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", soluongbuugui));
             tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS) + ""));
 
             if (item.getSenderVpostcode().isEmpty())

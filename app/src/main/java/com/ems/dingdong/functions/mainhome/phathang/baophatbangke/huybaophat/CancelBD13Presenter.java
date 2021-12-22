@@ -12,6 +12,8 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -64,6 +66,7 @@ public class CancelBD13Presenter extends Presenter<CancelBD13Contract.View, Canc
                     mView.showListSuccess(response.body().getDeliveryPostmens());
                 } else {
                     mView.showErrorToast(response.body().getMessage());
+                    mView.showListSuccess(new ArrayList<>());
                 }
 
             }

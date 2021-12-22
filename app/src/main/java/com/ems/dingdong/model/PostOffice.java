@@ -16,12 +16,32 @@ public class PostOffice {
     String ParentCode;
     @SerializedName("HolineNumber")
     String HolineNumber;
-//    @SerializedName("RouteCode")
+    @SerializedName("POLat")
+    String POLat;
+    @SerializedName("POLon")
+    String POLon;
+    //    @SerializedName("RouteCode")
 //    String RouteCode;
 //    @SerializedName("RouteName")
 //    String RouteName;
     @SerializedName("Routes")
     List<RouteInfo> Routes;
+
+    public String getPOLat() {
+        return POLat;
+    }
+
+    public void setPOLat(String POLat) {
+        this.POLat = POLat;
+    }
+
+    public String getPOLon() {
+        return POLon;
+    }
+
+    public void setPOLon(String POLon) {
+        this.POLon = POLon;
+    }
 
     public List<RouteInfo> getRoutes() {
         return Routes;

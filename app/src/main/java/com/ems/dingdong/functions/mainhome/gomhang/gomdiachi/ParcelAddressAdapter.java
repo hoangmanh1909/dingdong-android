@@ -44,6 +44,8 @@ public class ParcelAddressAdapter extends RecyclerBaseAdapter {
         ImageView imgRemoveLadingCode;
         @BindView(R.id.layout_parcel_code)
         RelativeLayout layoutParcelCode;
+        @BindView(R.id.ll_view)
+        View llView;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -52,8 +54,16 @@ public class ParcelAddressAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
-            tvCode.setText(item.getTrackingCode());
-            tvSodonhang.setText(item.getOrderNumber());
+            if (item.getTrackingCode().isEmpty() || item.getTrackingCode().equals("")) {
+                llView.setVisibility(View.GONE);
+                layoutParcelCode.setVisibility(View.GONE);
+            } else {
+                llView.setVisibility(View.VISIBLE);
+                layoutParcelCode.setVisibility(View.VISIBLE);
+                tvCode.setText(item.getTrackingCode());
+                tvSodonhang.setText(item.getOrderNumber());
+            }
+
         }
 
         public ParcelCodeInfo getItem(int position) {

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -25,9 +26,11 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.functions.mainhome.xuatfile.XuatFileExcel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.PushOnClickParcelAdapter;
@@ -45,9 +48,20 @@ import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -111,11 +125,16 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     }
 
     private void checkPermissionCall() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
             int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
             if (hasPermission3 != PackageManager.PERMISSION_GRANTED ||
-                    hasPermission2 != PackageManager.PERMISSION_GRANTED
+                    hasPermission2 != PackageManager.PERMISSION_GRANTED ||
+                    hasPermission1 != PackageManager.PERMISSION_GRANTED ||
+                    hasPermission4 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
@@ -155,6 +174,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                            Log.d("thanhgkiew1231231",new Gson().toJson(holder.getItem(position)));
                         }
                     });
 
@@ -169,7 +189,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     holder.tvContactAddress.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
-
                         if (mPresenter.getType() == 1) {
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
@@ -262,7 +281,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     private void showDialog() {
         if (mPresenter.getType() == 1 || mPresenter.getType() == 4) {//2
-            new EditDayDialog(getActivity(),101, new OnChooseDay() {
+            new EditDayDialog(getActivity(), 101, new OnChooseDay() {
                 @Override
                 public void onChooseDay(Calendar calFrom, Calendar calTo, int s) {
                     fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -296,9 +315,25 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_view, R.id.ll_scan_qr, R.id.img_confirm})
+    @OnClick({R.id.img_back, R.id.img_view, R.id.ll_scan_qr, R.id.img_confirm, R.id.tv_xuatfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_xuatfile:
+                XuatFileExcel fileExcel = new XuatFileExcel();
+                List<Item> title = new ArrayList<>();
+                List<Item> noidung = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    Item item = new Item(i + "", "Java " + i);
+                    title.add(item);
+                }
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        Item item = new Item(i + "", "Code ");
+                        noidung.add(item);
+                    }
+                }
+//                fileExcel.XuatFileExcel("/Thanhkhiem.xls", 4, title, noidung);
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -321,6 +356,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 break;
         }
     }
+
 
     public void confirmAll() {
         ArrayList<CommonObject> list = new ArrayList<>();

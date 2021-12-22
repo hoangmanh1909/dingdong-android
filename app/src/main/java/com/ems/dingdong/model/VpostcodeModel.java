@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class VpostcodeModel {
 
     int id;
+    int value;
     String smartCode;
 
     public String getSmartCode() {
@@ -23,6 +24,14 @@ public class VpostcodeModel {
         this.id = id;
     }
 
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     @SerializedName("FullAddress")
     String fullAdress;
     @SerializedName("ReceiverVpostcode")
@@ -31,6 +40,26 @@ public class VpostcodeModel {
     String SenderVpostcode;
     @SerializedName("MaE")
     String MaE;
+    @SerializedName("latitude")
+    double latitude;
+    @SerializedName("longitude")
+    double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getFullAdress() {
         return fullAdress;

@@ -12,6 +12,7 @@ import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DataRequestPayment;
+import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
@@ -61,6 +62,7 @@ import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
@@ -246,8 +248,8 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/DingDong/Bussiness")
     Call<SimpleResult> Bussiness(@Field("Code") String code,
-                                   @Field("Data") String data,
-                                   @Field("Signature") String signature);
+                                 @Field("Data") String data,
+                                 @Field("Signature") String signature);
 
     @GET("api/Dictionary/GetPickUpReasons")
     Call<ReasonResult> getReasonsHoanTat();
@@ -437,6 +439,9 @@ public interface VinattiAPI {
             @Query("longitude") Double longitude,
             @Query("latitude") Double latitude);
 
+    @GET("api/VietMap/Decode")
+    Single<DecodeDiaChiResult> vietmapSearchDecode(@Query("vpostcode") String vpostcode);
+
     @GET("https://maps.vnpost.vn/vpostcode/api/encode")
     Single<XacMinhDiaChiResult> vietmapVitri(@Query("location") String location);
 
@@ -445,6 +450,13 @@ public interface VinattiAPI {
 
     @POST("api/VietMap/Route_V2")
     Call<XacMinhDiaChiResult> vietmapRouteV2(@Body List<String> taskRequest);
+
+//    @POST("api/VietMap/TravelSalesmanProblem")
+//    Call<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(@Body List<RouteRequest> taskRequest);
+
+
+    @POST("api/VietMap/TravelSalesmanProblem")
+    Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblemV1(@Body TravelSales taskRequest);
 
     @FormUrlEncoded
     @POST("api/Statistic/Payment")

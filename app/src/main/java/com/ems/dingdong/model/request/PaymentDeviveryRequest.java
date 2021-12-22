@@ -75,13 +75,32 @@ public class PaymentDeviveryRequest {
     @SerializedName("FeeCollectLaterPNS")
     private long feeCollectLaterPNS;
 
+    @SerializedName("DeliveryLat")
+    private double DeliveryLat;
+    @SerializedName("DeliveryLon")
+    private double DeliveryLon;
+    @SerializedName("ReceiverLat")
+    private double ReceiverLat;
+    @SerializedName("ReceiverLon")
+    private double ReceiverLon;
+    @SerializedName("PODeliveryLat")
+    private String PODeliveryLat;
+    @SerializedName("PODeliveryLon")
+    private String PODeliveryLon;
+
 
     public PaymentDeviveryRequest(String postmanID, String parcelCode, String mobileNumber, String deliveryPOCode, String deliveryDate,
                                   String deliveryTime, String receiverName, String receiverIDNumber, String reasonCode, String solutionCode,
                                   String status, String paymentChannel, String deliveryType, String signatureCapture, String note, String collectAmount,
                                   String shiftID, String routeCode, String ladingPostmanID, String signature, String imageDelivery, String postmanCode,
                                   String batchCode, boolean isPaymentPP, String isItemReturn, String amountForBatch, Integer itemsInBatch, long feePPA
-            , long feeShip, long feeCollectLater, long feePPAPNS, long feeShipPNS, long feeCollectLaterPNS) {
+            , long feeShip, long feeCollectLater, long feePPAPNS, long feeShipPNS, long feeCollectLaterPNS,
+                                  double DeliveryLat,
+                                  double DeliveryLon,
+                                  double ReceiverLat,
+                                  double ReceiverLon,
+                                  String PODeliveryLat,
+                                  String PODeliveryLon) {
         this.postmanID = postmanID;
         this.parcelCode = parcelCode;
         this.mobileNumber = mobileNumber;
@@ -116,6 +135,12 @@ public class PaymentDeviveryRequest {
         this.feePPAPNS = feePPAPNS;
         this.feeShipPNS = feeShipPNS;
         this.feeCollectLaterPNS = feeCollectLaterPNS;
+        this.DeliveryLat = DeliveryLat;
+        this.DeliveryLon = DeliveryLon;
+        this.ReceiverLat = ReceiverLat;
+        this.ReceiverLon = ReceiverLon;
+        this.PODeliveryLat = PODeliveryLat;
+        this.PODeliveryLon = PODeliveryLon;
     }
 
     public void setReceiverReference(String receiverReference) {
