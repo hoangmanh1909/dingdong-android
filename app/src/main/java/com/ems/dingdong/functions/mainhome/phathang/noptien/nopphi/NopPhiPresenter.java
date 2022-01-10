@@ -219,6 +219,7 @@ public class NopPhiPresenter extends Presenter<NopPhiContract.View, NopPhiContra
                     } else {
                         mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
+                    mView.dongdialog();
                     mView.hideProgress();
                 }, throwable -> {
                     mView.showConfirmError(throwable.getMessage());

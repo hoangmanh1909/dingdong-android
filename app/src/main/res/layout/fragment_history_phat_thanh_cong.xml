@@ -99,7 +99,7 @@
             android:layout_weight="1.17"
             android:background="@drawable/textlines"
             android:gravity="center"
-            android:text="Số tiền cước"
+            android:text="Khoản thu khác"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_16sp" />

@@ -37,6 +37,17 @@ public class StatisticDeliveryGeneralResponse {
     @SerializedName("ReceiveCollectFee")
     private String receiveCollectFee;
 
+
+    long tongtien ;
+
+    public long getTongtien() {
+        return tongtien;
+    }
+
+    public void setTongtien(long tongtien) {
+        this.tongtien = tongtien;
+    }
+
     public String getReceiveCollectFee() {
         return receiveCollectFee;
     }

@@ -61,7 +61,7 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
     private String routeCode = "";
     private String fromDate = "";
     private String toDate = "";
-
+    OtpDialog otpDialog;
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -186,7 +186,10 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
     public void refreshLayout() {
         mPresenter.getDataPayment(poCode, routeCode, postmanCode, fromDate, toDate);
     }
-
+    @Override
+    public void dongdialog() {
+        otpDialog.dismiss();
+    }
     @Override
     public void showListSuccess(List<EWalletDataResponse> eWalletDataResponses) {
         if (null != getViewContext()) {
@@ -220,7 +223,7 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
     @Override
     public void showRequestSuccess(String message, String requestId, String retRefNumber) {
         if (null != getViewContext()) {
-            OtpDialog otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(otp,
+            otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(otp,
                     requestId, retRefNumber, poCode, routeCode, postmanCode), message);
             otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -335,7 +338,7 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
             String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
             new NotificationDialog(getViewContext())
                     .setConfirmText(getString(R.string.payment_confirn))
@@ -384,7 +387,7 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
             new NotificationDialog(getViewContext())
                     .setConfirmText(getString(R.string.payment_confirn))

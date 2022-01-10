@@ -114,13 +114,15 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
         mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        Log.d(":asdgajshd123132", new Gson().toJson(simpleResult));
-                        mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
-                    } else {
-                        mView.showError(simpleResult.getMessage());
-                        mView.hideProgress();
-                    }
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            if (simpleResult.getObject().getResult() != null)
+                                mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
+                            else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                        } else {
+                            mView.showError(simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+
                 });
     }
 
@@ -195,22 +197,24 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        Object data = simpleResult.getResponseLocation();
-                        String dataJson = NetWorkController.getGson().toJson(data);
-                        XacMinhDiaChiResult resultModel = NetWorkController.getGson().fromJson(dataJson, XacMinhDiaChiResult.class);
-                        getListSearchV1 = new ArrayList<>();
-                        VpostcodeModel vpostcodeModel = new VpostcodeModel();
-                        vpostcodeModel.setMaE("");
-                        vpostcodeModel.setId(0);
-                        if (mType == 99)
-                            vpostcodeModel.setReceiverVpostcode(resultModel.getResult().getSmartCode());
-                        else
-                            vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
-                        vpostcodeModel.setFullAdress("Vị trí hiện tại");
-                        vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
-                        vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
-                        getListVpostV1.add(vpostcodeModel);
-                        mView.showList(vpostcodeModel);
+                        if (simpleResult.getResponseLocation() != null) {
+                            Object data = simpleResult.getResponseLocation();
+                            String dataJson = NetWorkController.getGson().toJson(data);
+                            XacMinhDiaChiResult resultModel = NetWorkController.getGson().fromJson(dataJson, XacMinhDiaChiResult.class);
+                            getListSearchV1 = new ArrayList<>();
+                            VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                            vpostcodeModel.setMaE("");
+                            vpostcodeModel.setId(0);
+                            if (mType == 99)
+                                vpostcodeModel.setReceiverVpostcode(resultModel.getResult().getSmartCode());
+                            else
+                                vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
+                            vpostcodeModel.setFullAdress("Vị trí hiện tại");
+                            vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
+                            vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
+                            getListVpostV1.add(vpostcodeModel);
+                            mView.showList(vpostcodeModel);
+                        } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
                 });

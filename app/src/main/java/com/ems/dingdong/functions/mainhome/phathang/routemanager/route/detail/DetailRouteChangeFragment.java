@@ -78,23 +78,24 @@ public class DetailRouteChangeFragment extends ViewFragment<DetailRouteChangeCon
 
             long cod = 0;
             if (item.getReceiveCollectFee() > 0) {
-                cod = item.getReceiveCollectFee();
+                cod += item.getReceiveCollectFee();
             }
 
             if (item.getFeePA() > 0) {
-                cod = item.getFeePA();
+                cod += item.getFeePA();
             }
             if (item.getFeeCollectLater() > 0) {
-                cod = item.getFeeCollectLater();
+                cod += item.getFeeCollectLater();
             }
 
             if (item.getFeePPA() > 0) {
-                cod = item.getFeePPA();
+                cod += item.getFeePPA();
             }
 
             if (item.getFeeShip() > 0) {
-                cod = item.getFeeShip();
+                cod += item.getFeeShip();
             }
+
 
             tvFee.setText(NumberUtils.formatPriceNumber(cod));
 

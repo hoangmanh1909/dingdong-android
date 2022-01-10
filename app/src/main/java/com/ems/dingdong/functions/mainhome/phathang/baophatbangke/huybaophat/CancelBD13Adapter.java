@@ -155,16 +155,39 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
 //            if (item.getFee() != null) {
 //                fee = item.getCollectFeeCOD() + item.getFeePA(); // cuoc thu ho;
 //            }
+
+            long cod = 0;
+            if (item.getAmount() != null) {
+                cod += item.getAmount();
+            }
+            if (item.getReceiveCollectFee() > 0) {
+                cod += item.getReceiveCollectFee();
+            }
+            if (item.getFeeCollectLater() > 0) {
+                cod += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                cod += item.getFeePA();
+            }
+
+            if (item.getFeePPA() > 0) {
+                cod += item.getFeePPA();
+            }
+
+            if (item.getFeeShip() > 0) {
+                cod += item.getFeeShip();
+            }
+
+
             if (item.getAmount() != null)
-                tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(item.getAmount()
-                        + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip())));
+                tv_amount.setText(String.format("Tổng thu người nhận" + ": %s đ", NumberUtils.formatPriceNumber(cod)));
             else
                 tv_amount.setText(String.format(mContext.getString(R.string.amount_of_money)));
 
-            if (item.getFee() != null)
-                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee() + item.getFeePA())));
-            else
-                tvFee.setText(String.format(mContext.getString(R.string.fee)));
+//            if (item.getFee() != null)
+//                tvFee.setText(String.format(mContext.getString(R.string.fee) + " %s đ", NumberUtils.formatPriceNumber(item.getFee() + item.getFeePA())));
+//            else
+//                tvFee.setText(String.format(mContext.getString(R.string.fee)));
 
 
             if (!TextUtils.isEmpty(item.getReceiverName()) || TextUtils.isEmpty(item.getReceiverAddress())) {
@@ -202,6 +225,7 @@ public class CancelBD13Adapter extends RecyclerView.Adapter<CancelBD13Adapter.Ho
                 }
             });
             cb_selected.setChecked(item.isSelected());
+            tv_status_paypost.setVisibility(View.GONE);
         }
     }
 

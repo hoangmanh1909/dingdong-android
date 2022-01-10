@@ -15,11 +15,11 @@ import com.ems.dingdong.R;
 
 import java.io.File;
 
-public class MediaUltis {
+public class MediaUltisV1 {
     public static void captureImage(Fragment fragment) {
         File saveDir = null;
         if (ContextCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            saveDir = new File(Environment.getExternalStorageDirectory(), "MaterialCamera");
+            saveDir = new File(Environment.getExternalStorageDirectory(), "DingDongImg");
             saveDir.mkdirs();
         }
         MaterialCamera materialCamera = new MaterialCamera(fragment)

@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,9 +62,9 @@ public class HistoryDetailSuccessFragment extends ViewFragment<HistoryDetailSucc
                 super.onBindViewHolder(holder, position);
                 if (position != mList.size() - 1) {
                     ((HolderView) holder).tvCount.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COUNT));
-                    ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD));
+//                    ((HolderView) holder).tvMoneyCod.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_COD));
 //                    ((HolderView) holder).tvMoneyC.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_C));
-                    ((HolderView) holder).tvMoneyCuoc.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA));
+//                    ((HolderView) holder).tvMoneyCuoc.setOnClickListener(v -> mPresenter.showDetail(mList.get(position).getServiceCode(), mList.get(position).getServiceName(), Constants.TYPE_DELIVERY_PPA));
                 }
             }
         };

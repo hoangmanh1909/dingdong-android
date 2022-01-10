@@ -33,8 +33,7 @@ public class RouteResponse {
 
     @SerializedName("StatusDate")
     String statusDate;
-    @SerializedName("CODAmount")
-    Integer codAmount;
+
     @SerializedName("Fee")
     Integer fee;
 
@@ -65,7 +64,8 @@ public class RouteResponse {
     private long feeCancelOrder;
     @SerializedName("ReceiveCollectFee")
     private long receiveCollectFee;
-
+    @SerializedName("CODAmount")
+    Integer codAmount;
     public long getReceiveCollectFee() {
         return receiveCollectFee;
     }

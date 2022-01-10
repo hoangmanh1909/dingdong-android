@@ -60,16 +60,18 @@ public class ListDeliverySuccessCollectDetailAdapter extends RecyclerBaseAdapter
                 tienCuoc += item.getFeePA();
             }
             if (item.getFeeShip() > 0) {
-
                 tienCuoc += item.getFeeShip();
-            }
-            if (item.getFeeCancelOrder() > 0) {
-                tienCuoc += item.getFeeCancelOrder();
             }
             if (item.getReceiveCollectFee() != null) {
                 tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
             }
+            if (item.getAmount() != null) {
+                tienCuoc += Integer.parseInt(item.getAmount());
+            }
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(tienCuoc)))));
+
+            if (item.getTongtien() > 0)
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(item.getTongtien())))));
         }
     }
 }

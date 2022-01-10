@@ -217,7 +217,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_sml_status)
         CustomTextView tv_sml_status;
         @BindView(R.id.tv_refund_postage)
-        public CustomTextView tvRefundPostage;
+        public TextView tvRefundPostage;
         @BindView(R.id.img_sml)
         public ImageView imgSml;
         @BindView(R.id.iv_status)

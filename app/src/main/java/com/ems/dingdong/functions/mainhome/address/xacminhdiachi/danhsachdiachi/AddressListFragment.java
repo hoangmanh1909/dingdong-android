@@ -265,14 +265,13 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
     @Override
     public void showError(String message) {
-        mListObject.clear();
-        addressListAdapter.notifyDataSetChanged();
+//        mListObject.clear();
+//        addressListAdapter.notifyDataSetChanged();
         showErrorToast(message);
     }
 
     @Override
     public void showList(VpostcodeModel getListVpostV1) {
-
         mListObjectVNext = new ArrayList<>();
         mListObjectVNext.add(getListVpostV1);
         mListObjectVNext.addAll(mListObjectV12);

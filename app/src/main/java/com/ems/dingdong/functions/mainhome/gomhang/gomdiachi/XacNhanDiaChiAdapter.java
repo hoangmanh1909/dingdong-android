@@ -64,8 +64,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 
     @Override
     public int getItemCount() {
-        if (mListFilter == null)
-            mListFilter = new ArrayList<>();
         return mListFilter.size();
     }
 
@@ -103,7 +101,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         } else if (row.getListParcelCode().size() > 0)
                             for (ParcelCodeInfo item : row.getListParcelCode()) {
                                 if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
-                                        item.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
+                                        ( item.getOrderNumber()!=null &&item.getOrderNumber().toLowerCase().contains(charString.toLowerCase()))) {
                                     filteredList.add(row);
                                 }
                             }
@@ -120,7 +118,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 mListFilter = (ArrayList<CommonObject>) filterResults.values;
                 notifyDataSetChanged();
             }
-
         };
     }
 
@@ -132,7 +129,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 commonObjectsSelected.add(item);
             }
         }
-        Log.d("thanhkhiem1997", commonObjectsSelected.size() + "");
         return commonObjectsSelected;
     }
 
@@ -198,14 +194,18 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     soluongbuugui++;
             }
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", soluongbuugui));
-            tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS) + ""));
+
+//            int tam = 0;
+//            for (int i = 0; i < item.getKhoiluong().size(); i++)
+//                tam += Integer.parseInt(item.getKhoiluong().get(i));
+            tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS)));
 
             if (item.getSenderVpostcode().isEmpty())
                 ivStatus.setVisibility(GONE);
             else ivStatus.setVisibility(View.VISIBLE);
 
             if (mType == 1) {
-                cbSelected.setClickable(false);
+//                cbSelected.setClickable(false);
                 cbSelected.setVisibility(View.VISIBLE);
                 cbSelected.setOnCheckedChangeListener(null);
                 if (item.isSelected()) {

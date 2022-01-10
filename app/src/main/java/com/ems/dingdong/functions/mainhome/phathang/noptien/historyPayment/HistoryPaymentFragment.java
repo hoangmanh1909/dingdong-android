@@ -370,7 +370,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
 //            new NotificationDialog(getViewContext())
 //                    .setConfirmText(getString(R.string.payment_confirn))

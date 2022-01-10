@@ -111,15 +111,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         ladingPaymentInfoList = new ArrayList<>();
         ladingPaymentInfoList = list;
-//        ladingPaymentInfoList.clear();
-//        for (EWalletDataResponse item : list) {
-//            LadingPaymentInfo info = new LadingPaymentInfo();
-//            info.setCodAmount(item.getCodAmount());
-//            info.setFeeCod(item.getFee());
-//            info.setLadingCode(item.getLadingCode());
-//            info.setFeeType(item.getFeeType());
-//            ladingPaymentInfoList.add(info);
-//        }
         requestModel.setLadingPaymentInfoList(list);
         requestModel.setPaymentToken(token);
         requestModel.setPoCode(poCode);
@@ -129,7 +120,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
             requestModel.setServiceCode("2104");
         else if (getPositionTab() == 4)
             requestModel.setServiceCode("2105");
-        mView.showProgress();
         mInteractor.requestPayment(requestModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -142,8 +132,10 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
                         Mess = simpleResult.getMessage();
                     } else if (simpleResult != null) {
+                        mView.dongdialog();
                         mView.showConfirmError(simpleResult.getMessage());
                     } else {
+                        mView.dongdialog();
                         mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
                     mView.hideProgress();
@@ -152,6 +144,9 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                     mView.hideProgress();
                 });
     }
+
+
+
 
     @Override
     public void deletePayment(List<EWalletDataResponse> list) {
@@ -241,9 +236,12 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                                 RetRefNumber);
                     } else if (simpleResult != null) {
                         mView.showConfirmError(simpleResult.getMessage());
+                        mView.dongdialog();
                     } else {
                         mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
+                    mView.dongdialog();
+
                     mView.hideProgress();
                 }, throwable -> {
                     mView.showConfirmError(throwable.getMessage());

@@ -128,12 +128,29 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                     tvReason.setText(String.format("%s", item.getReasonName()));
                 }
             }
+
+            int tienCuoc = 0;
+            if (item.getCollectAmount() != null) {
+                tienCuoc += Integer.parseInt(item.getCollectAmount());
+            }
+            if (item.getReceiveCollectFee() != null) {
+                tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
+            }
+            if (item.getFeeCollectLater() > 0) {
+                tienCuoc += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                tienCuoc += item.getFeePA();
+            }
+            if (item.getFeePPA() > 0) {
+                tienCuoc += item.getFeePPA();
+            }
+            if (item.getFeeShip() > 0) {
+                tienCuoc += item.getFeeShip();
+            }
+
             if (mtype.equals("C14") || mtype.equals("C44")) {
-                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(
-                        Long.parseLong(item.getCollectAmount())
-                                + Long.parseLong(item.getReceiveCollectFee()) + item.getFeePPA() +
-                                item.getFeeShip() + item.getFeePA() +
-                                item.getFeeCollectLater())));
+                tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(tienCuoc)));
             } else {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
 

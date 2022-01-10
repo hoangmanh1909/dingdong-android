@@ -152,20 +152,43 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
                 tvParcelCode.setVisibility(View.GONE);
             }
 
-            Integer cod = 0;
+//            Integer cod = 0;
             Integer fee = 0;
-            if (item.getcODAmount() != null) {
-                if (item.getFeePPA() != null)
-                    cod += item.getFeePPA();
-                if (item.getFeeCollectLater() != null)
-                    cod += item.getFeeCollectLater();
-                if (item.getFeeShip() != null)
-                    cod += item.getFeeShip();
-                if (item.getcODAmount() != null)
-                    cod += item.getcODAmount();
+//            if (item.getcODAmount() != null) {
+//                if (item.getFeePPA() != null)
+//                    cod += item.getFeePPA();
+//                if (item.getFeeCollectLater() != null)
+//                    cod += item.getFeeCollectLater();
+//                if (item.getFeeShip() != null)
+//                    cod += item.getFeeShip();
+//                if (item.getcODAmount() != null)
+//                    cod += item.getcODAmount();
+//
+////                cod = item.getcODAmount() + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip();
+//            }
 
-//                cod = item.getcODAmount() + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip();
+            long cod = 0;
+            if (item.getCodAmount() != null) {
+                cod += item.getCodAmount();
             }
+            if (item.getCollectFeeCOD() > 0) {
+                cod += item.getCollectFeeCOD();
+            }
+            if (item.getFeeCollectLater() > 0) {
+                cod += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                cod += item.getFeePA();
+            }
+
+            if (item.getFeePPA() > 0) {
+                cod += item.getFeePPA();
+            }
+
+            if (item.getFeeShip() > 0) {
+                cod += item.getFeeShip();
+            }
+
 
             if (item.getFee() != null) {
                 if (item.getCollectFeeCOD() != null)
@@ -175,9 +198,9 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
 //                fee = item.getCollectFeeCOD() + item.getFeePA(); // cuoc thu ho;
             }
             tvCod.setVisibility(View.VISIBLE);
-            tvFee.setVisibility(View.VISIBLE);
-            tvCod.setText(String.format(mContext.getString(R.string.cod) + ": %s đ", NumberUtils.formatPriceNumber(cod)));
-            tvFee.setText(String.format(mContext.getString(R.string.fee_money) + ": %s đ", NumberUtils.formatPriceNumber(fee)));
+            tvFee.setVisibility(View.GONE);
+            tvCod.setText(String.format("Tổng thu người nhận : %s đ", NumberUtils.formatPriceNumber(cod)));
+//            tvFee.setText(String.format(mContext.getString(R.string.fee_money) + ": %s đ", NumberUtils.formatPriceNumber(fee)));
 
             if (!TextUtils.isEmpty(item.getPaymentPayPostStatus())) {
                 if (item.getPaymentPayPostStatus().equals("Y")) {
@@ -225,7 +248,7 @@ public class CancelBD13StatisticAdapter extends RecyclerView.Adapter<CancelBD13S
             } else {
                 tvDeliveryDate.setVisibility(View.GONE);
             }
-
+            tvDebitStatus.setText("");
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.view.View;
 
 import com.ems.dingdong.R;
+import com.ems.dingdong.utiles.DialogUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.OtpEditText;
@@ -24,7 +25,6 @@ public class OtpDialog extends Dialog {
     private OnPaymentCallback callback;
     private Context context;
     private long lastClickTime = 0;
-
     public OtpDialog(Context context, OnPaymentCallback callback, String message) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         View view = View.inflate(getContext(), R.layout.dialog_otp, null);
@@ -51,7 +51,6 @@ public class OtpDialog extends Dialog {
                     return;
                 }
                 callback.onPaymentClick(optEditText.getText().toString());
-                dismiss();
                 break;
         }
     }

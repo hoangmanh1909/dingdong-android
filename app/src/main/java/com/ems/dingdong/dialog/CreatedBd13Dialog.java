@@ -47,8 +47,11 @@ public class CreatedBd13Dialog extends Dialog {
     FormItemEditText tv_Description;
 
     private ItemBottomSheetPickerUIFragment cancelType;
+    private ItemBottomSheetPickerUIFragment lydo;
     ArrayList<Item> items = new ArrayList<>();
     private Item mItem;
+   ArrayList<Item> itemsLydo = new ArrayList<>();
+    private Item mItemLydo;
 
     public CreatedBd13Dialog(Context context, int type, long quantity, long totalAmount, CreatedBD13Callback confirmCallback) {
 
@@ -75,11 +78,13 @@ public class CreatedBd13Dialog extends Dialog {
         cancelTypeBD13Info.setId("1");
         cancelTypeBD13Info.setName("1. Do khách hàng");
         list.add(cancelTypeBD13Info);
-
         cancelTypeBD13Info = new CancelTypeBD13Info();
         cancelTypeBD13Info.setId("2");
         cancelTypeBD13Info.setName("2. Do bưu điện");
         list.add(cancelTypeBD13Info);
+
+
+
 
         for (CancelTypeBD13Info item : list) {
             items.add(new Item(item.getId(), item.getName()));
@@ -104,6 +109,7 @@ public class CreatedBd13Dialog extends Dialog {
             case R.id.tv_cancel_type:
                 showUICancelType();
                 break;
+
             case R.id.tv_close:
                 dismiss();
                 break;
@@ -111,7 +117,6 @@ public class CreatedBd13Dialog extends Dialog {
     }
 
     private void showUICancelType() {
-
         if (cancelType == null) {
             cancelType = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {

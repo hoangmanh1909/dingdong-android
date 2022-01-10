@@ -119,7 +119,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void initLayout() {
         super.initLayout();
         checkSelfPermission();
-        edtLadingCode.setText("CQ138038913VN");
+//        edtLadingCode.setText("EJ423686407VN");
         mList = new ArrayList<>();
         mAdapter = new StatusAdapter(getViewContext(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);

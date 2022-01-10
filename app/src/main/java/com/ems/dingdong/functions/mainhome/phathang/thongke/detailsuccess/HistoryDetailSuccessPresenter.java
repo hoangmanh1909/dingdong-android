@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -8,6 +9,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detail.ListDeliverySuccessDetailPresenter;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -57,6 +59,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showListSuccess(Utils.getGeneralList(response.body().getStatisticDeliveryGeneralResponses()));
+
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }

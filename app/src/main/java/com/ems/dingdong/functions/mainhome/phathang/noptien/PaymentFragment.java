@@ -31,6 +31,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -70,6 +71,14 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     private String fromDate = "";
     private String toDate = "";
     String type;
+    OtpDialog otpDialog;
+    String mOtp = "";
+    List<LadingPaymentInfo> listRequest = new ArrayList<>();
+    String messageKq;
+    String requestIdKq;
+
+    int ketquaINT = 0;
+    String retRefNumberKq;
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -244,14 +253,25 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void showRequestSuccess(List<LadingPaymentInfo> list, String message, String requestId, String retRefNumber) {
         if (null != getViewContext()) {
-            OtpDialog otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(list, otp,
-                    requestId, retRefNumber, poCode, routeCode, postmanCode), message);
-            otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            otpDialog.show();
+            ketquaINT = 1;
+            listRequest = new ArrayList<>();
+            listRequest = list;
+            messageKq = message;
+            requestIdKq = requestId;
+            retRefNumberKq = retRefNumber;
+//            otpDialog = new OtpDialog(getViewContext(), otp -> mPresenter.confirmPayment(list, otp,
+//                    requestId, retRefNumber, poCode, routeCode, postmanCode), message);
+//            otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//            otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+//            otpDialog.show();
         } else {
             showToastWhenContextIsEmpty(message);
         }
+    }
+
+    @Override
+    public void showPaymenConfirmSuccess(String message) {
+
     }
 
     @Override
@@ -262,6 +282,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
                     .setConfirmClickListener(sweetAlertDialog -> {
                         mPresenter.onCanceled();
+                        ketquaINT = 0;
+                        listRequest = new ArrayList<>();
+                        messageKq = "";
+                        requestIdKq = "";
+                        retRefNumberKq = "";
                         sweetAlertDialog.dismiss();
                     })
                     .setContent(message)
@@ -274,6 +299,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void showConfirmError(String message) {
         if (null != getViewContext()) {
+            ketquaINT = 0;
+            listRequest = new ArrayList<>();
+            messageKq = "";
+            requestIdKq = "";
+            retRefNumberKq = "";
             new NotificationDialog(getViewContext())
                     .setConfirmText(getString(R.string.confirm))
                     .setConfirmClickListener(Dialog::dismiss)
@@ -288,6 +318,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void stopRefresh() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void dongdialog() {
+        otpDialog.dismiss();
     }
 
     private void showDialog() {
@@ -368,7 +403,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
                     list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
             new NotificationDialog(getViewContext())
                     .setConfirmText(getString(R.string.payment_confirn))
@@ -379,6 +414,23 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setConfirmClickListener(sweetAlertDialog -> {
                         mPresenter.requestPayment(list, poCode, routeCode, postmanCode);
                         sweetAlertDialog.dismiss();
+                        otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
+                            @Override
+                            public void onPaymentClick(String otp) {
+                                if (ketquaINT == 1)
+                                    mPresenter.confirmPayment(list, otp,
+                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
+                                else {
+                                    Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
+                                }
+                            }
+                        }, messageKq);
+
+
+                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        otpDialog.show();
+                        showProgress();
                     })
                     .show();
         }
@@ -436,6 +488,21 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setConfirmClickListener(sweetAlertDialog -> {
                         mPresenter.requestPayment(list, poCode, routeCode, postmanCode);
                         sweetAlertDialog.dismiss();
+                        otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
+                            @Override
+                            public void onPaymentClick(String otp) {
+                                if (ketquaINT == 1)
+                                    mPresenter.confirmPayment(list, otp,
+                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
+                                else {
+                                    Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
+                                }
+                            }
+                        }, messageKq);
+                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        otpDialog.show();
+                        showProgress();
                     })
                     .show();
         }

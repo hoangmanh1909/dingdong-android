@@ -46,7 +46,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
-import com.ems.dingdong.utiles.MediaUltis;
+import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
@@ -467,7 +467,7 @@ public class BaoPhatBangKeDetailFragment extends ViewFragment<BaoPhatBangKeDetai
                 timePickerDialog.show();
                 break;
             case R.id.iv_package:
-                MediaUltis.captureImage(this);
+                MediaUltisV1.captureImage(this);
                 break;
         }
     }

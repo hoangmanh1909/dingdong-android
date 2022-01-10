@@ -14,8 +14,6 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -41,8 +39,6 @@ import com.ems.dingdong.dialog.HoanTatTinDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.Item;
-import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ScanItem;
@@ -50,14 +46,13 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.MediaUltis;
+import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -145,8 +140,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     private LocationManager mLocationManager;
     private Location mLocation;
 
-    String senderLat;
-    String senderLon;
+    String senderLat="";
+    String senderLon="";
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -170,7 +165,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
             @Override
             public void onBindViewHolder(BaseViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
-
                 ((HolderView) holder).iv_delete.setOnClickListener(v -> {
                     mList.remove(position);
                     mAdapter.removeItem(position);
@@ -239,7 +233,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         File file = new File(path_media);
         Bitmap bitmap = processingBitmap(picUri);
         if (bitmap != null) {
-
             if (saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50)) {
                 String path = file.getParent() + File.separator + "Process_" + file.getName();
                 mSignPosition = false;
@@ -439,7 +432,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 }
                 break;
             case R.id.iv_package:
-                MediaUltis.captureImage(this);
+                MediaUltisV1.captureImage(this);
                 break;
             case R.id.img_search:
                 addItem(edtCode.getText().toString());

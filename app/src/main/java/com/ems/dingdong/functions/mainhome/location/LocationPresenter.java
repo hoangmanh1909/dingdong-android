@@ -79,7 +79,6 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                         },
                         throwable -> {
                             mView.hideProgress();
-                            mView.showErrorToast(throwable.getMessage());
                         }
                 );
     }

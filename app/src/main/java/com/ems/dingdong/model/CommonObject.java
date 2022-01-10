@@ -364,9 +364,26 @@ public class CommonObject extends RealmObject {
 
     @Ignore
     List<String> codeS1;
+    @Ignore
+    List<String> khoiluong;
+
+    public List<String> getKhoiluong() {
+        return khoiluong;
+    }
+
+    public void setKhoiluong(List<String> khoiluong) {
+        this.khoiluong = khoiluong;
+    }
 
     @Ignore
-    public int weightS = 0;
+    public int weightS;
+
+    public void addKhoiluong(String id) {
+        if (khoiluong == null) {
+            khoiluong = new ArrayList<>();
+        }
+        khoiluong.add(id);
+    }
 
     public void addOrderPostmanID(String id) {
         if (orderPostmanIDS == null) {

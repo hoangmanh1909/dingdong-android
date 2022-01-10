@@ -28,8 +28,8 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 40
-        versionName "1.2.9"
+        versionCode 42
+        versionName "1.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -71,6 +71,8 @@ android {
             buildConfigField("String", "API_URL", API_URL)
             def DOMAIN_CTEL = '"https://dev.api-connect.io"'
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
+            def URL_IMAGE = '"http://124.158.6.19:6880/ddsmartpos/Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
             buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
             buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)

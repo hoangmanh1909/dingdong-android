@@ -2,9 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,10 +20,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -46,58 +41,46 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.afollestad.materialcamera.MaterialCamera;
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
-import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ChonAnhCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PickerCallback;
-import com.ems.dingdong.callback.SapXepCallback;
 import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.DiallogChonAnh;
 import com.ems.dingdong.dialog.DialogNhaptienCOD;
 import com.ems.dingdong.dialog.DialogReason;
 import com.ems.dingdong.dialog.DialogText;
-import com.ems.dingdong.dialog.DigLogPhathoan;
 import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.hinhanh.ImageAdapter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.CustomGallery;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CreateDeliveryParialDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CuocAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.DeliveryPartialAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ModeFee;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.PhiThuHoAdapter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ThuPhiMode;
 import com.ems.dingdong.model.BuuCucHuyenMode;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.Item;
-import com.ems.dingdong.model.ItemHoanTatNhieuTin;
-import com.ems.dingdong.model.ModeTu;
 import com.ems.dingdong.model.PhithuhoModel;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ProductModel;
-import com.ems.dingdong.model.ProvinceModels;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
-import com.ems.dingdong.model.request.PaypostPaymentRequest;
-import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
-import com.ems.dingdong.utiles.Log;
-import com.ems.dingdong.utiles.MediaUltis;
+import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
@@ -105,32 +88,24 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.common.collect.ImmutableList;
-import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 //import com.sip.cmc.SipCmc;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -138,7 +113,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
@@ -873,20 +847,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         recyclerds.setVisibility(View.GONE);
         for (int i = 0; i < mBaoPhatBangke.size(); i++) {
             if (mBaoPhatBangke.get(i).getFeeCancelOrder() != 0) {
-                cbSelected.isChecked();
                 cbSelected.setChecked(true);
+                mBaoPhatBangke.get(i).setCheck(true);
                 recyclerds.setVisibility(View.VISIBLE);
-                break;
-            }
+//                break;
+            } else mBaoPhatBangke.get(i).setCheck(false);
         }
         phiThuHoAdapter = new PhiThuHoAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-                if (!cbSelected.isChecked()) {
-                    mBaoPhatBangke.get(position).setFeeCancelOrder(0);
-                    holder.tv_monney.setText("0");
-                }
+//                if (!cbSelected.isChecked()) {
+//                    mBaoPhatBangke.get(position).setFeeCancelOrder(0);
+//                    holder.tv_monney.setText("0");
+//                }
+
 
                 holder.tv_monney.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -910,12 +885,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                 });
             }
-        }
-
-        ;
-        RecyclerUtils.setupVerticalRecyclerView(
-
-                getViewContext(), recyclerds);
+        };
+        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerds);
         recyclerds.setAdapter(phiThuHoAdapter);
 
 //        if (mBaoPhatBangke.size() > 1)
@@ -972,14 +943,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
             case R.id.cb_selected:
                 if (cbSelected.isChecked()) {
+                    for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+                        if (mBaoPhatBangke.get(i).getFeeCancelOrder() != 0) {
+                            mBaoPhatBangke.get(i).setCheck(true);
+                        } else mBaoPhatBangke.get(i).setCheck(false);
+                    }
+                    phiThuHoAdapter.notifyDataSetChanged();
                     recyclerds.setVisibility(View.VISIBLE);
                 } else {
                     recyclerds.setVisibility(View.GONE);
                     for (int i = 0; i < mBaoPhatBangke.size(); i++) {
-                        mBaoPhatBangke.get(i).setFeeCancelOrder(0);
-                        phiThuHoAdapter.notifyDataSetChanged();
+                        mBaoPhatBangke.get(i).setCheck(false);
                     }
+                    phiThuHoAdapter.notifyDataSetChanged();
                 }
+
                 break;
             case R.id.rad_success:
                 rbVerifyInfo.setChecked(false);
@@ -1275,19 +1253,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     }
 
+    @SuppressLint("IntentReset")
     private void chooseFromGallery() {
-        Intent intent = new Intent(
+        @SuppressLint("IntentReset") Intent intent = new Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-//        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-//                ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-//                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-//                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE,
-//                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
-//        } else {
         startActivityForResult(
                 intent,
                 OPEN_MEDIA_PICKER);
@@ -1415,9 +1386,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
         }
 //        TakePictureIntent();
-        MediaUltis.captureImage(this);
-//        new MaterialCamera(this)
-//                .start(CAMERA_RQ);
+        MediaUltisV1.captureImage(this);
+//        dispatchTakePictureIntent();
     }
 
     void productAdd(String type) {
@@ -1861,16 +1831,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
-    private Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(getOutputMediaFile(type));
-    }
-
-    private File getOutputMediaFile(int type) {
-        File _mediaFile = null;
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        return _mediaFile;
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1886,38 +1846,38 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
 //                    attemptSendMedia(data.getData().getPath(), 0);
 //                else attemptSendMedia1(data.getData().getPath(), 0);
+            } else {
+                Toast.showToast(getViewContext(), resultCode + "");
             }
         } else if (requestCode == 1) {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
-//                Log.d("asdasdasd123123", selectedImageUri.getPath());
-//                attemptSendMedia(getPath(selectedImageUri), 1);
                 mPresenter.postImage(getPath(selectedImageUri));
             }
-        } else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-
-                try {
-                    if (!savebitmap(photo).getPath().equals("")) {
-                        if (isCaptureAvatar) {
-                            mPresenter.postImageAvatar(savebitmap(photo).getPath());
-                        } else {
-                            mPresenter.postImage(savebitmap(photo).getPath());
-                        }
-                    } else {
-                        Toast.showToast(getViewContext(), "Không tải được ảnh");
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else { // Result was a failure
-                Toast.showToast(getViewContext(), "Picture wasn't taken!");
-            }
         }
+//        else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+//            if (resultCode == RESULT_OK) {
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                try {
+//                    if (!savebitmap(photo).getPath().equals("")) {
+//                        if (isCaptureAvatar) {
+//                            mPresenter.postImageAvatar(savebitmap(photo).getPath());
+//                        } else {
+//                            mPresenter.postImage(savebitmap(photo).getPath());
+//                        }
+//                    } else {
+//                        Toast.showToast(getViewContext(), "Không tải được ảnh");
+//                    }
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } else { // Result was a failure
+//                Toast.showToast(getViewContext(), "Picture wasn't taken!");
+//            }
+//        }
     }
+
 
     public static File savebitmap(Bitmap bmp) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -1933,63 +1893,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         return f;
     }
 
-    String currentPhotoPath;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getViewContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-//    private void dispatchTakePictureIntent() {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getViewContext().getPackageManager()) != null) {
-//            // Create the File where the photo should go
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                Uri photoURI = FileProvider.getUriForFile(getViewContext(),
-//                        BuildConfig.APPLICATION_ID + ".provider",
-//                        photoFile);
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        }
-//    }
-//
-//    public static String getPath1(Context context, Uri uri) {
-//        String result = null;
-//        String[] proj = {MediaStore.Images.Media.DATA};
-//        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
-//        if (cursor != null) {
-//            if (cursor.moveToFirst()) {
-//                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
-//                result = cursor.getString(column_index);
-//            }
-//            cursor.close();
-//        }
-//        if (result == null) {
-//            result = "Not found";
-//        }
-//        return result;
-//    }
 
 
     private void attemptSendMedia(String path_media, int type) {
@@ -2221,11 +2125,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
             if (isCaptureVerify) {
-//                for (int i = 0; i < listImageVerify.size(); i++) {
-//                    if (listImageVerify.get(i).getValue().equals(path)) {
-//                        listImageVerify.get(i).setText(file);
-//                    }
-//                }
+
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageVerify.add(item);
                 imageVerifyAdapter.notifyDataSetChanged();
@@ -2401,7 +2301,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         totalFee = 0;
         for (DeliveryPostman i : getItemSelected()) {
             totalAmount += i.getAmount();
-            totalFee += i.getFeeShip() + i.getFeeCollectLater()+ i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
+            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
         }
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));

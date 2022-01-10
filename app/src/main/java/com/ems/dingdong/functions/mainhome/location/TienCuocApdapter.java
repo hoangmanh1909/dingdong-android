@@ -63,9 +63,9 @@ public class TienCuocApdapter extends RecyclerView.Adapter<TienCuocApdapter.Hold
             return mListFilter.get(position);
         }
 
-        @BindView(R.id.tv_title)
+        @BindView(R.id.tv_lading)
         CustomTextView tvTitle;
-        @BindView(R.id.tv_fee)
+        @BindView(R.id.tv_monney)
         CustomTextView tvFee;
 
 
@@ -73,8 +73,8 @@ public class TienCuocApdapter extends RecyclerView.Adapter<TienCuocApdapter.Hold
         public void bindView(Object model) {
             Item item = (Item) model;
 
-            tvTitle.setText(item.getValue());
-            tvFee.setText(item.getText());
+            tvTitle.setText(item.getValue()+"");
+            tvFee.setText(item.getText()+"");
         }
     }
 }

@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dimen_5dp"
-                android:text="Số tiền COD:"
+                android:text="Tổng thu người nhận:"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -76,13 +76,15 @@
                 android:paddingBottom="@dimen/dimen_5dp"
                 android:text="Cước:"
                 android:textColor="@color/red_light"
-                android:textSize="@dimen/text_size_14sp" />
+                android:textSize="@dimen/text_size_14sp"
+                android:visibility="gone" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_status_paypost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dimen_5dp"
+                android:visibility="gone"
                 android:textColor="@color/background_blue"
                 android:textSize="@dimen/text_size_14sp" />
         </LinearLayout>

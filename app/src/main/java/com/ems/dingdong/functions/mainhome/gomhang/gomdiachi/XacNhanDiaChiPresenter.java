@@ -84,6 +84,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     ArrayList<CommonObject> list = response.body().getList();
                     ArrayList<CommonObject> listG = new ArrayList<>();
                     for (CommonObject item : list) {
+                        int tam = 0;
                         if (item.getStatusCode().equals("P5")) item.setStatusCode("P1");
                         if (item.getStatusCode().equals("P6")) item.setStatusCode("P4");
 
@@ -102,8 +103,6 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             }
                             listG.add(item);
                         } else {
-
-
                             if (item.getListParcelCode().size() == 0) {
                                 ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
                                 parcelCodeInfo.setOrderCode(item.getCode());
@@ -114,13 +113,16 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
                             }
+
                             itemExists.addOrderPostmanID(item.getOrderPostmanID());
                             itemExists.addCode(item.getCode());
                             itemExists.addCode1(item.getiD());
-                            try {
-                                itemExists.weightS += Integer.parseInt(item.getWeigh());
-                            } catch (Exception e) {
-                            }
+                            itemExists.addKhoiluong(item.getWeigh());
+//                            if (item.getWeigh() != null && item.getWeigh().isEmpty())
+                            itemExists.weightS += Integer.parseInt(item.getWeigh());
+                            tam += Integer.parseInt(item.getWeigh());
+//                            itemExists.setWeightS(); = tam;
+                            Log.d("asdahsjd123123", itemExists.weightS+"");
                         }
                     }
 

@@ -62,7 +62,7 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         mFromDate = DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(calendarDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mList = new ArrayList<>();
-        mAdapter = new StatictisAdapter(getActivity(), mList,mPresenter.getStatus()) {
+        mAdapter = new StatictisAdapter(getActivity(), mList, mPresenter.getStatus()) {
             @Override
             public void onBindViewHolder(BaseViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
@@ -103,24 +103,40 @@ public class StatisticFragment extends ViewFragment<StatisticContract.Presenter>
         tvNodata.setVisibility(View.GONE);
         int successCount = 0;
         int failCount = 0;
-        long successAmount = 0;
+        int tienCuoc = 0;
+
         long failAmount = 0;
         for (CommonObject item : list) {
             if (item.getStatus().equals("C14") || item.getStatus().equals("C44")) {
                 successCount++;
-                if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                    successAmount += Long.parseLong(item.getCollectAmount());
+                if (item.getCollectAmount() != null) {
+                    tienCuoc += Integer.parseInt(item.getCollectAmount());
+                }
+                if (item.getReceiveCollectFee() != null) {
+                    tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
+                }
+                if (item.getFeeCollectLater() > 0) {
+                    tienCuoc += item.getFeeCollectLater();
+                }
+                if (item.getFeePA() > 0) {
+                    tienCuoc += item.getFeePA();
+                }
+                if (item.getFeePPA() > 0) {
+                    tienCuoc += item.getFeePPA();
+                }
+                if (item.getFeeShip() > 0) {
+                    tienCuoc += item.getFeeShip();
                 }
             } else {
                 failCount++;
                 if (!TextUtils.isEmpty(item.getCollectAmount())) {
-                    failAmount += Long.parseLong(item.getCollectAmount());
+                    failAmount += item.getFeeCancelOrder();
                 }
             }
         }
         if (mPresenter.getStatus().equals("C14") || mPresenter.getStatus().equals("C44")) {
             mPresenter.setCount(successCount);
-            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(successAmount)));
+            tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(tienCuoc)));
         } else {
             mPresenter.setCount(failCount);
             tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(failAmount)));

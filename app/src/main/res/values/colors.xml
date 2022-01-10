@@ -288,8 +288,10 @@
     <color name="color_334A4A4A">#334A4A4A</color>
     <color name="color_323232">#323232</color>
     <color name="color_1a9ea6">#1a9ea6</color>
+    <color name="greem">#9cff57</color>
     <color name="bg_orange">#ff7000</color>
     <color name="bg_b8b8b8">#b8b8b8</color>
+    <color name="md_green_700">#388e3c</color>
     <color name="color_dbd9e0">#dbd9e0</color>
     <color name="color_ff8d33">#ff8d33</color>
     <color name="color_605e60">#605e60</color>

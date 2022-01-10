@@ -171,30 +171,26 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
 
             long cod = 0;
             if (item.getCodAmount() != null) {
-                cod = item.getCodAmount();
+                cod += item.getCodAmount();
             }
             if (item.getReceiveCollectFee() > 0) {
-                cod = item.getReceiveCollectFee();
+                cod += item.getReceiveCollectFee();
             }
             if (item.getFeeCollectLater() > 0) {
-                cod = item.getFeeCollectLater();
+                cod += item.getFeeCollectLater();
             }
             if (item.getFeePA() > 0) {
-                cod = item.getFeePA();
+                cod += item.getFeePA();
             }
 
             if (item.getFeePPA() > 0) {
-                cod = item.getFeePPA();
+                cod += item.getFeePPA();
             }
 
             if (item.getFeeShip() > 0) {
-                cod = item.getFeeShip();
+                cod += item.getFeeShip();
             }
 
-
-//            if (item.getCodAmount() != null) {
-//                fee = item.getFee();
-//            }
             tvTotalAmount.setText(String.format(mContext.getString(R.string.amount_of_money) + ": %s đ", NumberUtils.formatPriceNumber(cod)));
 
             if (!TextUtils.isEmpty(item.getStatusName())) {

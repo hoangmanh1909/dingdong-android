@@ -186,6 +186,17 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
 
+
+    boolean isCheck;
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
     public String getDeliveryLat() {
         return DeliveryLat;
     }

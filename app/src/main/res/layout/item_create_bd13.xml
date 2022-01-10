@@ -141,6 +141,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/tv_refund_postage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textColor="@color/green_border"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sodonhang"
                 android:layout_width="match_parent"
@@ -244,13 +255,6 @@
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_refund_postage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/red_light"
-                android:textAllCaps="true"
-                android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sml_status"

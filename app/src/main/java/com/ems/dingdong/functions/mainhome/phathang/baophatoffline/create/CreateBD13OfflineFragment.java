@@ -32,7 +32,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
-import com.ems.dingdong.utiles.MediaUltis;
+import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.RealmUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -329,7 +329,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 break;
             case R.id.rl_image_capture_verify:
                 if (imageVerifyAdapter.getListFilter().size() < 3) {
-                    MediaUltis.captureImage(this);
+                    MediaUltisV1.captureImage(this);
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_three_photos));
                 }

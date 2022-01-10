@@ -43,6 +43,7 @@ import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -216,16 +217,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                                 sweetAlertDialog.dismiss();
                             }).show();
                 } else {
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
-                            .setConfirmText("OK")
-                            .setCancelText("Đóng")
-                            .setTitleText("Thông báo")
-                            .setContentText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()) + ". "
-                                    + String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()))
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                sweetAlertDialog.dismiss();
-                                submit();
-                            }).show();
+                    submit();
                 }
                 break;
             case R.id.img_back:
@@ -270,15 +262,20 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
         SharedPref sharedPref = new SharedPref(getActivity());
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         List<HoanTatTinRequest> list = new ArrayList<>();
+        List<HoanTatTinRequest> listKoHoan = new ArrayList<>();
         boolean checkKhongThanhCong = false;
+        int tinGReen = 0;
+        int tinGrey = 0;
         for (ItemHoanTatNhieuTin it : mList) {
-            if (it.getStatus() == Constants.GREEN || it.getStatus() == Constants.GREY) {
+            if (it.getStatus() == Constants.GREEN) {
+//                    || it.getStatus() == Constants.GREY) {
                 HoanTatTinRequest rq = new HoanTatTinRequest();
                 rq.setEmployeeID(it.getEmployeeId());
                 rq.setOrderPostmanID(it.getOrderPostmanId());
                 rq.setOrderID(it.getOrderId());
                 rq.setShipmentCodev1(it.getShipmentCode());
                 rq.setNoteReason(edtGhichu.getText().toString().trim());
+                tinGReen++;
                 if (it.getStatus() == Constants.GREEN) {
                     rq.setStatusCode(Constants.GOM_HANG_THANH_CONG);
                 } else {
@@ -301,16 +298,76 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 rq.setSenderLat(senderLat);
                 rq.setSenderLon(senderLon);
 
-                rq.setCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
-                rq.setCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+                rq.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+                rq.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
                 list.add(rq);
             }
         }
-        if (checkKhongThanhCong && mReason == null) {
-            Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi không thành công");
-            return;
+
+        for (ItemHoanTatNhieuTin it : mList) {
+            if (it.getStatus() == Constants.GREY) {
+                HoanTatTinRequest rq = new HoanTatTinRequest();
+                rq.setEmployeeID(it.getEmployeeId());
+                rq.setOrderPostmanID(it.getOrderPostmanId());
+                rq.setOrderID(it.getOrderId());
+                rq.setShipmentCodev1(it.getShipmentCode());
+                rq.setNoteReason(edtGhichu.getText().toString().trim());
+                if (it.getStatus() == Constants.GREEN) {
+                    rq.setStatusCode(Constants.GOM_HANG_THANH_CONG);
+                } else {
+                    checkKhongThanhCong = true;
+                    rq.setStatusCode(Constants.GOM_HANG_KHONG_THANH_CONG);
+                    if (mReason != null) {
+                        tinGrey++;
+                        rq.setReasonCode(mReason.getCode());
+                    }
+                }
+                //vi tri hien tai
+                String setCollectLat = "";
+                String setCollectLon = "";
+                if (mLocation != null) {
+                    setCollectLat = String.valueOf(mLocation.getLatitude());
+                    setCollectLon = String.valueOf(mLocation.getLongitude());
+                }
+                rq.setCollectLat(setCollectLat);
+                rq.setCollectLon(setCollectLon);
+
+                rq.setSenderLat(senderLat);
+                rq.setSenderLon(senderLon);
+
+                rq.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+                rq.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+                listKoHoan.add(rq);
+            }
         }
-        mPresenter.collectAllOrderPostman(list);
+        Log.d("asd123123123",new Gson().toJson(listKoHoan));
+        if (tinGrey == 0)
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                    .setConfirmText("OK")
+                    .setCancelText("Đóng")
+                    .setTitleText("Thông báo")
+                    .setContentText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()))
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.collectAllOrderPostman(list);
+                        sweetAlertDialog.dismiss();
+                    }).show();
+//        if (checkKhongThanhCong && mReason == null) {
+//            Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi không thành công");
+//            return;
+//        }
+        else {
+            list.addAll(listKoHoan);
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                    .setConfirmText("OK")
+                    .setCancelText("Đóng")
+                    .setTitleText("Thông báo")
+                    .setContentText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()) + ". "
+                            + String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()))
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        mPresenter.collectAllOrderPostman(list);
+                        sweetAlertDialog.dismiss();
+                    }).show();
+        }
 
     }
 
@@ -350,7 +407,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
 
     private void showCount() {
         tvSuccessCount.setText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()));
-        tvFailCount.setText(String.format("Số tin cần hoàn tất không thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()));
+        tvFailCount.setText(String.format("Số tin còn lại cần hoàn tất: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREY).toList().size()));
         tvInvalidateCount.setText(String.format("Chưa xác định: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.RED).toList().size()));
     }
 

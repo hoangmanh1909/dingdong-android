@@ -44,6 +44,8 @@ public interface NopPhiContract {
 
         void stopRefresh();
 
+        void dongdialog();
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

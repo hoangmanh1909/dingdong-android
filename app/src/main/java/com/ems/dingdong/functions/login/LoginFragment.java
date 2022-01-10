@@ -53,7 +53,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
             Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
-            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,  Manifest.permission.READ_EXTERNAL_STORAGE,};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -77,7 +78,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919743436;6DF63D7BFF563C2B7B5CFF2F2F20D3C230D60246E78F4628E51CCBC0817B3B26");// dev UAT
             mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// pre UAT
-//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0936479444;13B05C2CE53C7883339C6478DF2BA7B11D4765402D971AE990D913670B9BB934");// dev UAT
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0329053323;15B46B6A82D636F25BE56977990220E1E143F8A0A204C79FC312EB0A39193BD4");// dev UAT
             // dev vinatti
         }
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969479103;769358EDB74E113A14A02A045B8DF176340CAD8D32396A53B4353CF2068CB685");
@@ -124,6 +125,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             int hasPermission9 = getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO);
             int hasPermission10 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int hasPermission11 = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
+            int hasPermission12 = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
             if (hasPermission1 != PackageManager.PERMISSION_GRANTED
                     || hasPermission2 != PackageManager.PERMISSION_GRANTED
                     || hasPermission3 != PackageManager.PERMISSION_GRANTED
@@ -135,6 +137,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                     || hasPermission9 != PackageManager.PERMISSION_GRANTED
                     || hasPermission10 != PackageManager.PERMISSION_GRANTED
                     || hasPermission11 != PackageManager.PERMISSION_GRANTED
+                    || hasPermission12 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }

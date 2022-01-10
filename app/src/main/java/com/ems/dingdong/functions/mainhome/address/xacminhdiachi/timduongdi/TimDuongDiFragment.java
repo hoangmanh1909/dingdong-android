@@ -416,8 +416,10 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                     JSONArray element = coordinates.getJSONArray(coordinates.length() - 1);
                     new DrawGeoJson(TimDuongDiFragment.this, mathchedRoute).execute();
                 }
+            } else {
+                tvKm.setText("Số km: " + 0);
+                tvTime.setText("Thời gian: 00h00p");
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -461,7 +463,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     public void showError(String mes) {
         Toast.makeText(getContext(), "Không lấy được thông tin lịch trình", Toast.LENGTH_LONG).show();
         tvKm.setText("Số km: " + 0);
-//                String.format("%s đ", NumberUtils.formatPriceNumber(amountCOD))
         tvTime.setText("Thời gian: 00h00p");
     }
 

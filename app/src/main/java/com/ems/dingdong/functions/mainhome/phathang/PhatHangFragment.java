@@ -68,7 +68,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(11, R.drawable.ic_thong_ke_bao_phat, "Thống kê gạch nợ"));
                 //  homeInfos.add(new HomeInfo(2, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
                 // homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
-                homeInfos.add(new HomeInfo(5, R.drawable.analytics, "Thống kê chi tiết PTC"));
+                    homeInfos.add(new HomeInfo(5, R.drawable.analytics, "Thống kê chi tiết PTC"));
                 homeInfos.add(new HomeInfo(6, R.drawable.graph_bar, "Thống kê chi tiết PKTC"));
                 homeInfos.add(new HomeInfo(13, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển hoàn"));
                 homeInfos.add(new HomeInfo(14, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển tiếp"));

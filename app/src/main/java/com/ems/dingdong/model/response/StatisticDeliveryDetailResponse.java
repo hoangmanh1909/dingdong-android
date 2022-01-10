@@ -7,7 +7,6 @@ public class StatisticDeliveryDetailResponse {
     private String ladingCode;
     @SerializedName("Amount")
     private String amount;
-
     @SerializedName("FeePPA")
     private long feePPA;
     @SerializedName("FeePA")
@@ -26,8 +25,19 @@ public class StatisticDeliveryDetailResponse {
     private boolean isCancelOrder;
     @SerializedName("FeeCancelOrder")
     private long feeCancelOrder;
+
     @SerializedName("ReceiveCollectFee")
     private String receiveCollectFee;
+
+    long tongtien ;
+
+    public long getTongtien() {
+        return tongtien;
+    }
+
+    public void setTongtien(long tongtien) {
+        this.tongtien = tongtien;
+    }
 
     public void setLadingCode(String ladingCode) {
         this.ladingCode = ladingCode;

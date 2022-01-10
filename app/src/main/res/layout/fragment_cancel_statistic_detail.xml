@@ -246,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_5dp"
                     android:layout_weight="3"
-                    android:text="Số tiền cước: "
+                    android:text="Khoản thu khác: "
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
 

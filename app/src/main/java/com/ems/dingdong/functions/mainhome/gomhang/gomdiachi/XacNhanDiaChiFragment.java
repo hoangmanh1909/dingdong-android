@@ -125,7 +125,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     }
 
     private void checkPermissionCall() {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int hasPermission4 = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -186,7 +185,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 @Override
                 public void onBindViewHolder(@NonNull HolderView holder, int position) {
                     super.onBindViewHolder(holder, position);
-                    holder.tvContactAddress.setOnClickListener(v -> {
+                    holder.itemView.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
                         if (mPresenter.getType() == 1) {
@@ -196,6 +195,18 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                        }
+                    });
+                    holder.cbSelected.setOnClickListener(v -> {
+                       /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                        holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
+                        if (mPresenter.getType() == 1) {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                        } else {
+//                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+//                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+//                            mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
                         }
                     });
                 }

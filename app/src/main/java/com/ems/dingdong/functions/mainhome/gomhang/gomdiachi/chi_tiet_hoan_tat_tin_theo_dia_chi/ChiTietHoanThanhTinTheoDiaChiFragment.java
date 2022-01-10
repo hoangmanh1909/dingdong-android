@@ -1,12 +1,13 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.location.Location;
 import android.location.LocationManager;
@@ -25,7 +26,7 @@ import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
@@ -34,26 +35,17 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
-import com.ems.dingdong.callback.ChonAnhCallback;
-import com.ems.dingdong.dialog.DialogExcel;
 import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.SignDialog;
-import com.ems.dingdong.functions.mainhome.camera.Camera2Activity;
 import com.ems.dingdong.functions.mainhome.camera.CameraPreview;
 import com.ems.dingdong.functions.mainhome.camera.ImagePro;
-import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomCode;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.CustomListHoanTatNhieuTin;
-import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiAdapter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.functions.mainhome.hinhanh.ImageAdapter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
-import com.ems.dingdong.functions.mainhome.scannerv1.QrCodeScanner;
 import com.ems.dingdong.functions.mainhome.scannerv1.QrCodeScannerV1;
 import com.ems.dingdong.functions.mainhome.xuatfile.XuatFileExcel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
@@ -65,20 +57,16 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
-import com.ems.dingdong.utiles.MediaUltis;
+import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.L;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -88,7 +76,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -104,7 +91,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -144,6 +130,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     RadioButton radSuccess;
     @BindView(R.id.rad_unsuccess)
     RadioButton radUnSuccess;
+    @BindView(R.id.radio_excel)
+    CheckBox radioExcel;
     @BindView(R.id.rad_failure)
     RadioButton radFailure;
     @BindView(R.id.tv_customer_name)
@@ -330,17 +318,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             if (compareMatin(commonObjects.get(i).getOrderCode(), prevDate) != 1)
                 soluongtin++;
         }
-//        mListSoluongtin = commonObjects;
-//        int h = 1;
-//        while (h < mListSoluongtin.size()) {
-//            ParcelCodeInfo info = mListSoluongtin.get(h - 1);
-//            String prevDate = info.getOrderCode().split("\\s")[0];
-//            if (compareMatin(mListSoluongtin.get(h).getOrderCode(), prevDate) != 1)
-//                mListSoluongtin.remove(h - 1);
-//            else h++;
-//
-//        }
-
 
         tvTotalCode.setText("Số lượng tin: " + soluongtin);
         tvTotalParcelCodes.setText("Số lượng bưu gửi: " + soluongbuugui);
@@ -507,9 +484,28 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                                     .getFragment(), TAG)
                     .commit();
         }
-
+        verifyStoragePermissions(getViewContext());
     }
 
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
 
     private int compareMatin(String matin1, String matin2) {
         int tam = 0;
@@ -595,6 +591,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
                 edtGhichu.setVisibility(View.GONE);
+                radioExcel.setVisibility(View.VISIBLE);
                 break;
             case R.id.rad_unsuccess:
                 layoutReasonUnSuccess.setVisibility(View.VISIBLE);
@@ -606,6 +603,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
                 edtGhichu.setVisibility(View.VISIBLE);
+                radioExcel.setVisibility(View.GONE);
                 break;
             case R.id.rad_failure:
                 layoutReasonFailure.setVisibility(View.VISIBLE);
@@ -617,6 +615,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 llUnsuccess.setVisibility(View.GONE);
                 llFailure.setVisibility(View.GONE);
                 edtGhichu.setVisibility(View.VISIBLE);
+                radioExcel.setVisibility(View.GONE);
                 break;
 
             case R.id.btn_sign:
@@ -631,7 +630,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             case R.id.iv_camera_thu_gom:
                 if (imageAdapter.getListFilter().size() < 3) {
                     isImage = true;
-                    MediaUltis.captureImage(this);
+                    MediaUltisV1.captureImage(this);
 
                 } else {
                     showErrorToast(getString(R.string.do_not_allow_take_over_three_photos));
@@ -941,38 +940,40 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             String ten = "/VNP_" + mListCommonObject.getReceiverPhone() + "_" + timeStamp + ".xls";
 
 
-            if (radSuccess.isChecked())
-                new DialogExcel(getViewContext(), ten, new ChonAnhCallback() {
-                    @Override
-                    public void onResponse(int type) {
-                        if (type == 1) {
-                            xuatfile(timeStamp);
+//
+//                new DialogExcel(getViewContext(), ten, new ChonAnhCallback() {
+//                    @Override
+//                    public void onResponse(int type) {
+//                        if (type == 1) {
+//                            xuatfile(timeStamp);
+//                        }
+//                        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+//                                .setConfirmText("OK")
+//                                .setTitleText("Thông báo")
+//                                .setContentText(message)
+//                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                    @Override
+//                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                        sweetAlertDialog.dismiss();
+//                                        mPresenter.back();
+//                                    }
+//                                }).show();
+//                    }
+//                }).show();
+//            else
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setConfirmText("OK")
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            if (radSuccess.isChecked() && radioExcel.isChecked())
+                                xuatfile(timeStamp);
+                            sweetAlertDialog.dismiss();
+                            mPresenter.back();
                         }
-                        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                                .setConfirmText("OK")
-                                .setTitleText("Thông báo")
-                                .setContentText(message)
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.dismiss();
-                                        mPresenter.back();
-                                    }
-                                }).show();
-                    }
-                }).show();
-            else
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                        .setConfirmText("OK")
-                        .setTitleText("Thông báo")
-                        .setContentText(message)
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                                mPresenter.back();
-                            }
-                        }).show();
+                    }).show();
 
         }
     }
@@ -1075,9 +1076,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
-//                android.util.Log.d("RESULT_OK", imgPosition + " s ");
-//                if (imgPosition < 4)
-
                 mPresenter.postImage(data.getData().getPath());
 //                    attemptSendMedia(data.getData().getPath(), 0);
 //                else attemptSendMedia1(data.getData().getPath(), 0);

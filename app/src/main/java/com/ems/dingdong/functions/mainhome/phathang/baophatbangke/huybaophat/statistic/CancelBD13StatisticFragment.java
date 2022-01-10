@@ -134,7 +134,7 @@ public class CancelBD13StatisticFragment extends ViewFragment<CancelBD13Statisti
             long totalAmount = 0;
             if (resultList != null && !resultList.isEmpty()) {
                 for (CancelStatisticItem item : resultList) {
-                    totalAmount += (item.getcODAmount() + item.getFee());
+                    totalAmount += (item.getCodAmount() + item.getFee());
                     mList.add(item);
                 }
             } else if (mPresenter.getCurrentTab() == 1) {

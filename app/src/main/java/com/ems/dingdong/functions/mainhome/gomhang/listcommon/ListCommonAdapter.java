@@ -90,13 +90,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                                 || row.getListOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
-//                        else if (row.getListParcelCode().size() > 0)
-//                            for (ParcelCodeInfo item : row.getListParcelCode()) {
-//                                if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
-//                                        item.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
-//                                    filteredList.add(row);
-//                                }
-//                            }
+
                     }
                     mListFilter = filteredList;
                 }

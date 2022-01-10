@@ -18,8 +18,6 @@ public class CancelStatisticItem {
     @SerializedName("ReceiverAddress")
     private String receiverAddress;
 
-    @SerializedName("CODAmount")
-    private Integer cODAmount;
     @SerializedName("CollectFeeCOD")
     private Integer CollectFeeCOD;
     @SerializedName("FeeCollectLater")
@@ -48,6 +46,29 @@ public class CancelStatisticItem {
 
     @SerializedName("ReasonTypeName")
     private String reasonTypeName;
+
+    @SerializedName("ReceiveCollectFee")
+    private long receiveCollectFee;
+    @SerializedName("CODAmount")
+    Integer codAmount;
+
+    public Integer getCodAmount() {
+        return codAmount;
+    }
+
+    public void setCodAmount(Integer codAmount) {
+        this.codAmount = codAmount;
+    }
+
+
+
+    public long getReceiveCollectFee() {
+        return receiveCollectFee;
+    }
+
+    public void setReceiveCollectFee(long receiveCollectFee) {
+        this.receiveCollectFee = receiveCollectFee;
+    }
 
     public Integer getFeePPA() {
         return FeePPA;
@@ -115,9 +136,6 @@ public class CancelStatisticItem {
         return receiverAddress;
     }
 
-    public Integer getcODAmount() {
-        return cODAmount;
-    }
 
     public Integer getFee() {
         return fee;

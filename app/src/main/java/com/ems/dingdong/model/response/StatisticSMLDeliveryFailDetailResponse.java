@@ -25,9 +25,118 @@ public class StatisticSMLDeliveryFailDetailResponse {
     @SerializedName("SMLHubCode")
     @Expose
     private String sMLHubCode;
+ @SerializedName("ExpirationDate")
+    @Expose
+    private String ExpirationDate;
 
+    @SerializedName("FeePA")
+    private long FeePA;
+    @SerializedName("FeeShip")
+    private long feeShip;
+    @SerializedName("FeeCollectLater")
+    private long feeCollectLater;
+    @SerializedName("FeePPAPNS")
+    private long feePPAPNS;
+    @SerializedName("FeeShipPNS")
+    private long feeShipPNS;
+    @SerializedName("FeeCollectLaterPNS")
+    private long feeCollectLaterPNS;
+    @SerializedName("IsCancelOrder")
+    private boolean isCancelOrder;
+    @SerializedName("FeeCancelOrder")
+    private long feeCancelOrder;
+    @SerializedName("ReceiveCollectFee")
+    private String receiveCollectFee;
     public String getServiceCode() {
         return serviceCode;
+    }
+
+    public String getExpirationDate() {
+        return ExpirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        ExpirationDate = expirationDate;
+    }
+
+    public String getsMLHubCode() {
+        return sMLHubCode;
+    }
+
+    public void setsMLHubCode(String sMLHubCode) {
+        this.sMLHubCode = sMLHubCode;
+    }
+
+    public long getFeePA() {
+        return FeePA;
+    }
+
+    public void setFeePA(long feePA) {
+        FeePA = feePA;
+    }
+
+    public long getFeeShip() {
+        return feeShip;
+    }
+
+    public void setFeeShip(long feeShip) {
+        this.feeShip = feeShip;
+    }
+
+    public long getFeeCollectLater() {
+        return feeCollectLater;
+    }
+
+    public void setFeeCollectLater(long feeCollectLater) {
+        this.feeCollectLater = feeCollectLater;
+    }
+
+    public long getFeePPAPNS() {
+        return feePPAPNS;
+    }
+
+    public void setFeePPAPNS(long feePPAPNS) {
+        this.feePPAPNS = feePPAPNS;
+    }
+
+    public long getFeeShipPNS() {
+        return feeShipPNS;
+    }
+
+    public void setFeeShipPNS(long feeShipPNS) {
+        this.feeShipPNS = feeShipPNS;
+    }
+
+    public long getFeeCollectLaterPNS() {
+        return feeCollectLaterPNS;
+    }
+
+    public void setFeeCollectLaterPNS(long feeCollectLaterPNS) {
+        this.feeCollectLaterPNS = feeCollectLaterPNS;
+    }
+
+    public boolean isCancelOrder() {
+        return isCancelOrder;
+    }
+
+    public void setCancelOrder(boolean cancelOrder) {
+        isCancelOrder = cancelOrder;
+    }
+
+    public long getFeeCancelOrder() {
+        return feeCancelOrder;
+    }
+
+    public void setFeeCancelOrder(long feeCancelOrder) {
+        this.feeCancelOrder = feeCancelOrder;
+    }
+
+    public String getReceiveCollectFee() {
+        return receiveCollectFee;
+    }
+
+    public void setReceiveCollectFee(String receiveCollectFee) {
+        this.receiveCollectFee = receiveCollectFee;
     }
 
     public void setServiceCode(String serviceCode) {

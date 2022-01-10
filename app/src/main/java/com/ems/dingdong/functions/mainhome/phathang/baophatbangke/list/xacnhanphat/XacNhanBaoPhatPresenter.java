@@ -187,7 +187,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             protected void onError(Call<UploadSingleResult> call, String message) {
                 super.onError(call, message);
                 mView.showAlertDialog("Không kết nối được với hệ thống");
-                mView.deleteFile();
+//                mView.deleteFile();
             }
         });
     }
@@ -214,11 +214,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String status = "C18";
             String amount = Integer.toString(item.getAmount());
             String shiftId = Integer.toString(item.getShiftId());
-            boolean isCancle = false;
+            boolean isCancle = item.isCheck();
             long feeCancle = item.getFeeCancelOrder();
             String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-            if (feeCancle != 0) isCancle = true;
-            else isCancle = false;
+            if (isCancle) feeCancle = item.getFeeCancelOrder();
+            else feeCancle = 0;
             String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
 
             PushToPnsRequest request = new PushToPnsRequest(

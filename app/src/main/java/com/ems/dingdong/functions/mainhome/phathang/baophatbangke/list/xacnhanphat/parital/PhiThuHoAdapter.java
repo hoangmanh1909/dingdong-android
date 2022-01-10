@@ -76,6 +76,9 @@ public class PhiThuHoAdapter extends RecyclerView.Adapter<PhiThuHoAdapter.Holder
 
             tv_lading.setText(item.getMaE());
 
+            if (item.isCheck())
+                tv_monney.setEnabled(false);
+
             tv_monney.setText(String.format("%s", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
             if (item.getFeeCancelOrder() != 0) {
                 tv_monney.setEnabled(false);

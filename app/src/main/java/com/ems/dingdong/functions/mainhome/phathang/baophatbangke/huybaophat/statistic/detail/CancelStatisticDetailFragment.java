@@ -72,14 +72,36 @@ public class CancelStatisticDetailFragment extends ViewFragment<CancelStatisticD
                 tvSenderAddress.setText(item.getSenderAddress());
             }
 
-            if (item.getFee() != null) {
-                tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getCollectFeeCOD() + item.getFeePA())));
-            } else {
-                tvFee.setText("0 đ");
+            long cod = 0;
+            if (item.getCollectFeeCOD() > 0) {
+                cod += item.getCollectFeeCOD();
             }
 
-            if (item.getcODAmount() != null) {
-                tvCod.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getcODAmount() + item.getFeePPA() + item.getFeeCollectLater() + item.getFeeShip())));
+            if (item.getFeePA() > 0) {
+                cod += item.getFeePA();
+            }
+            if (item.getFeeCollectLater() > 0) {
+                cod += item.getFeeCollectLater();
+            }
+
+            if (item.getFeePPA() > 0) {
+                cod += item.getFeePPA();
+            }
+
+            if (item.getFeeShip() > 0) {
+                cod += item.getFeeShip();
+            }
+
+
+            tvFee.setText(NumberUtils.formatPriceNumber(cod));
+//            if (item.getFee() != null) {
+//                tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getCollectFeeCOD() + item.getFeePA())));
+//            } else {
+//                tvFee.setText("0 đ");
+//            }
+
+            if (item.getCodAmount() != null) {
+                tvCod.setText(String.format("%s đ", NumberUtils.formatPriceNumber(item.getCodAmount())));
             } else {
                 tvCod.setText("0 đ");
             }

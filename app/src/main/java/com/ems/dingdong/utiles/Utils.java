@@ -826,11 +826,29 @@ public class Utils {
         long moneyCod = 0;
         long moneyC = 0;
         long moneyPPA = 0;
+        int tienCuoc = 0;
+
         for (StatisticDeliveryGeneralResponse item : statisticList) {
             quantity += Long.parseLong(item.getQuantity());
             moneyCod += Long.parseLong(item.getQuantityCOD());
             moneyC += Long.parseLong(item.getQuantityC());
             moneyPPA += Long.parseLong(item.getQuantityPPA());
+
+            if (item.getReceiveCollectFee() != null) {
+                tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
+            }
+            if (item.getFeeCollectLater() > 0) {
+                tienCuoc += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                tienCuoc += item.getFeePA();
+            }
+            if (item.getFeePPA() > 0) {
+                tienCuoc += item.getFeePPA();
+            }
+            if (item.getFeeShip() > 0) {
+                tienCuoc += item.getFeeShip();
+            }
         }
         StatisticDeliveryGeneralResponse total = new StatisticDeliveryGeneralResponse();
         total.setServiceName(service);
@@ -838,17 +856,36 @@ public class Utils {
         total.setQuantityC(String.valueOf(moneyC));
         total.setQuantityCOD(String.valueOf(moneyCod));
         total.setQuantityPPA(String.valueOf(moneyPPA));
+        total.setTongtien(tienCuoc);
         statisticList.add(total);
         return statisticList;
     }
 
     public static ArrayList<StatisticDeliveryDetailResponse> getGeneralDeliveryDetailList(ArrayList<StatisticDeliveryDetailResponse> statisticList) {
-        long totalAmount = 0;
+        int tienCuoc = 0;
+
         for (StatisticDeliveryDetailResponse item : statisticList) {
-            totalAmount += Long.parseLong(item.getAmount());
+            if (item.getFeePPA() > 0) {
+                tienCuoc += item.getFeePPA();
+            }
+            if (item.getFeeCollectLater() > 0) {
+                tienCuoc += item.getFeeCollectLater();
+            }
+            if (item.getFeePA() > 0) {
+                tienCuoc += item.getFeePA();
+            }
+            if (item.getFeeShip() > 0) {
+                tienCuoc += item.getFeeShip();
+            }
+            if (item.getReceiveCollectFee() != null) {
+                tienCuoc += Integer.parseInt(item.getReceiveCollectFee());
+            }
+            if (item.getAmount() != null) {
+                tienCuoc += Integer.parseInt(item.getAmount());
+            }
         }
         StatisticDeliveryDetailResponse totalStatistic = new StatisticDeliveryDetailResponse();
-        totalStatistic.setAmount(String.valueOf(totalAmount));
+        totalStatistic.setTongtien(tienCuoc);
         statisticList.add(totalStatistic);
         return statisticList;
     }

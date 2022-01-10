@@ -150,10 +150,13 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
-                                String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
-//                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
-//                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
+                        try {
+                            mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
+                                    String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+                        } catch (Exception e) {
+
+                        }
+
                     } else {
 //                        mView.showError(simpleResult.getMessage());
                         mView.hideProgress();

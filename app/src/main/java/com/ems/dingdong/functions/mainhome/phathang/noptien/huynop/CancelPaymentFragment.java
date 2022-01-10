@@ -303,7 +303,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
             for (int i = 0; i < mAdapter.getItemsSelected().size(); i++) {
                 for (int j = i + 1; j < mAdapter.getItemsSelected().size(); j++) {
@@ -434,7 +434,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền : " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua ví bưu điện MB?";
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
 //            new NotificationDialog(getViewContext())
 //                    .setConfirmText(getString(R.string.payment_confirn))

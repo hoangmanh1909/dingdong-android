@@ -32,8 +32,6 @@ public interface TimDuongDiContract {
         void showListSuccess(Object object);
 
         void showError(String mes);
-
-
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

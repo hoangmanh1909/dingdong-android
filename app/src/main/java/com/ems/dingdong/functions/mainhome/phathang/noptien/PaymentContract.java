@@ -42,11 +42,15 @@ public interface PaymentContract {
 
         void showRequestSuccess(List<LadingPaymentInfo> list,String message, String requestId, String retRefNumber);
 
+        void showPaymenConfirmSuccess(String message);
+
         void showConfirmSuccess(String message);
 
         void showConfirmError(String message);
 
         void stopRefresh();
+
+        void dongdialog();
 
     }
 
