@@ -220,6 +220,12 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
             Toast.showToast(getViewContext(), "Vui lòng nhập giờ yêu cầu");
             return;
         }
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";// cấu trúc 1 email thông thườn
+        if (!TextUtils.isEmpty(edt_diachimail.getText().toString().trim()) && !edt_diachimail.getText().toString().matches(EMAIL_PATTERN)) {
+            Toast.showToast(getViewContext(), "Email không hợp lệ");
+            return;
+        }
         if (TextUtils.isEmpty(tinhThanhpho)) {
             Toast.showToast(getViewContext(), "Vui lòng nhập tỉnh thành phố");
             return;
@@ -360,12 +366,16 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     public void showQuanHuyen(List<DistrictModels> list) {
         mListQuanHuyen = new ArrayList<>();
         mListQuanHuyen = list;
+        mListXaPhuong = new ArrayList<>();
+        edt_quanhuyen.setText("");
+        edt_xaphuong.setText("");
     }
 
     @Override
     public void showXaPhuong(List<WardModels> list) {
         mListXaPhuong = new ArrayList<>();
         mListXaPhuong = list;
+        edt_xaphuong.setText("");
     }
 
     @Override

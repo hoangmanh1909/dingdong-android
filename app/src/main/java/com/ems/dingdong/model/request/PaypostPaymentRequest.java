@@ -97,6 +97,8 @@ public class PaypostPaymentRequest {
 
     @SerializedName("FeePA")
     private long FeePA;
+    @SerializedName("FeeCOD")
+    private long FeeCOD;
     @SerializedName("FeePAPNS")
     private long FeePAPNS;
     @SerializedName("ServiceCode ")
@@ -119,6 +121,14 @@ public class PaypostPaymentRequest {
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
+
+    public long getFeeCOD() {
+        return FeeCOD;
+    }
+
+    public void setFeeCOD(long feeCOD) {
+        FeeCOD = feeCOD;
+    }
 
     public String getDeliveryLat() {
         return DeliveryLat;

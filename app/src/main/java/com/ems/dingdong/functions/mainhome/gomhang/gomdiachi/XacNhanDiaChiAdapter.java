@@ -29,6 +29,7 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -88,6 +89,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                 if (charString.isEmpty()) {
                     mListFilter = mList;
                 } else {
+//                    Log.d();
                     List<CommonObject> filteredList = new ArrayList<>();
                     for (CommonObject row : mList) {
                         if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
@@ -101,7 +103,7 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         } else if (row.getListParcelCode().size() > 0)
                             for (ParcelCodeInfo item : row.getListParcelCode()) {
                                 if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
-                                        ( item.getOrderNumber()!=null &&item.getOrderNumber().toLowerCase().contains(charString.toLowerCase()))) {
+                                        (item.getOrderNumber() != null && item.getOrderNumber().toLowerCase().contains(charString.toLowerCase()))) {
                                     filteredList.add(row);
                                 }
                             }
@@ -170,6 +172,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         public ImageView ivStatus;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
+        @BindView(R.id.tv_Description)
+        CustomTextView tvDescription;
 
         public ParcelAddressAdapter adapter;
         ParcelConfirmsAdapter confirmsAdapter;
@@ -189,11 +193,13 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
             tvContactAddress.setText(String.format("Địa chỉ: %s", item.getReceiverAddress().trim()));
             tvCustomName.setText(String.format("Khách hàng: %s", item.getCustomerName()));
             int soluongbuugui = 0;
+            Log.d("soluongbuu", new Gson().toJson(item.getListParcelCode()));
             for (ParcelCodeInfo info : item.getListParcelCode()) {
                 if (!TextUtils.isEmpty(info.getTrackingCode()))
                     soluongbuugui++;
             }
             tvParcelCode.setText(String.format("Số lượng bưu gửi: %s", soluongbuugui));
+            tvDescription.setText(item.getDescription());
 
 //            int tam = 0;
 //            for (int i = 0; i < item.getKhoiluong().size(); i++)
@@ -257,7 +263,11 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     }
                 });
                 cbSelected.setChecked(item.isSelected());
-
+                List<ParcelCodeInfo> filteredList = new ArrayList<>();
+                for (ParcelCodeInfo row : item.getListParcelCode()) {
+                    filteredList.add(row);
+                }
+                binParcelCode(filteredList);
             } else if (mType == 4) {
                 //chọn tất cả list parcel code và bỏ chọn tất cả
                 cbSelected.setOnCheckedChangeListener((v1, v2) -> {
@@ -352,13 +362,17 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                         }
                     }
                 }
-
+                Log.d("thasndhasd123123123", new Gson().toJson(filteredList));
                 binParcelCodeConfirms(filteredList);
                 tvParcelCode.setOnClickListener(view -> {
-                    if (recycler.getVisibility() == View.GONE) {
-                        recycler.setVisibility(View.VISIBLE);
+                    if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
+                        if (recycler.getVisibility() == View.GONE) {
+                            recycler.setVisibility(View.VISIBLE);
+                        } else {
+                            recycler.setVisibility(View.GONE);
+                        }
                     } else {
-                        recycler.setVisibility(View.GONE);
+                        tvParcelCode.setVisibility(View.VISIBLE);
                     }
                 });
                 if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
@@ -395,21 +409,6 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                     } else {
                         ((HolderView) holder).cbSelectedParcel.setChecked(false);
                     }
-
-//                    ((HolderView) holder).itemView.setOnClickListener(v -> {
-//                        if (!((HolderView) holder).cbSelectedParcel.isChecked()) {
-//                            ((HolderView) holder).cbSelectedParcel.setChecked(true);
-//                            ((HolderView) holder).getItem(position).setSelected(true);
-//                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
-//                            EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
-//                        } else {
-//                            ((HolderView) holder).cbSelectedParcel.setChecked(false);
-//                            ((HolderView) holder).getItem(position).setSelected(false);
-//                            ((HolderView) holder).layoutParcelCode.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-//                        }
-//                        EventBus.getDefault().postSticky(new PushOnClickParcelAdapter(mList.get(0)));
-//                    });
-
                     ((HolderView) holder).cbSelectedParcel.setOnCheckedChangeListener((v1, v2) -> {
                         if (v2) {
                             ((HolderView) holder).cbSelectedParcel.setChecked(true);

@@ -37,14 +37,6 @@
         </RelativeLayout>
     </FrameLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:visibility="visible" />
-
     <TextView
         android:id="@+id/tv_lienket"
         android:layout_width="match_parent"
@@ -57,5 +49,13 @@
         android:text="+ Thêm liên kết"
         android:textColor="@color/md_amber_900"
         android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:visibility="visible" />
+
 
 </LinearLayout>

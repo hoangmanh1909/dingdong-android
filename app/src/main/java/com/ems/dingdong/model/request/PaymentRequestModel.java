@@ -25,6 +25,26 @@ public class PaymentRequestModel {
 
     @SerializedName("ServiceCode")
     String ServiceCode;
+    @SerializedName("BankCode")
+    String BankCode;
+    @SerializedName("PostmanTel")
+    String PostmanTel;
+
+    public String getBankCode() {
+        return BankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        BankCode = bankCode;
+    }
+
+    public String getPostmanTel() {
+        return PostmanTel;
+    }
+
+    public void setPostmanTel(String postmanTel) {
+        PostmanTel = postmanTel;
+    }
 
     public String getServiceCode() {
         return ServiceCode;

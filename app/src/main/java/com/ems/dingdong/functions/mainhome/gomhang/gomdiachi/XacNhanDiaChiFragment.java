@@ -173,10 +173,20 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                             mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
-                            Log.d("thanhgkiew1231231",new Gson().toJson(holder.getItem(position)));
+                            Log.d("thanhgkiew1231231", new Gson().toJson(holder.getItem(position)));
                         }
                     });
-
+                    holder.cbSelected.setOnClickListener(v -> {
+                        if (mPresenter.getType() == 1) {
+                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                        } else {
+//                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
+//                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+//                            mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                            Log.d("thanhgkiew1231231", new Gson().toJson(holder.getItem(position)));
+                        }
+                    });
                 }
             };
         } else {

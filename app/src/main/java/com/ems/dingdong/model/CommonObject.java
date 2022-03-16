@@ -90,6 +90,16 @@ public class CommonObject extends RealmObject {
     String ListLading;
     @SerializedName("ListOrderNumber")
     String ListOrderNumber;
+    @SerializedName("DivideByName")
+    String DivideByName;
+
+    public String getDivideByName() {
+        return DivideByName;
+    }
+
+    public void setDivideByName(String divideByName) {
+        DivideByName = divideByName;
+    }
 
     public String getCustomerCode() {
         return CustomerCode;

@@ -8,7 +8,7 @@ public class LadingCancelPaymentInfo {
     String ladingCode;
 
     @SerializedName("Amount")
-    Integer amount ;
+    Integer amount;
 
     @SerializedName("RetRefNumber")
     String retRefNumber;
@@ -20,6 +20,16 @@ public class LadingCancelPaymentInfo {
     int FeeType;
     @SerializedName("EWalletTransId")
     String EWalletTransId;
+    @SerializedName("CashinChannel")
+    String CashinChannel;
+
+    public String getCashinChannel() {
+        return CashinChannel;
+    }
+
+    public void setCashinChannel(String cashinChannel) {
+        CashinChannel = cashinChannel;
+    }
 
     public String getEWalletTransId() {
         return EWalletTransId;
@@ -28,6 +38,7 @@ public class LadingCancelPaymentInfo {
     public void setEWalletTransId(String EWalletTransId) {
         this.EWalletTransId = EWalletTransId;
     }
+
     public int getFeeType() {
         return FeeType;
     }

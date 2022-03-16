@@ -7,6 +7,15 @@
 
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:text="Tài khoản thấu chi NHTM"
+        android:textColor="@color/bg_blue_primary"
+        android:textStyle="bold" />
+
     <RelativeLayout
         android:id="@+id/ll_seabank_motaikhoan"
         android:layout_width="match_parent"
@@ -24,37 +33,26 @@
             android:src="@drawable/seabank" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
+        <TextView
+            android:id="@+id/tv_sotaikhoan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/img_motaikhoan"
-            android:orientation="vertical">
+            android:gravity="center|left"
+            android:text="xxxx xxxx xxxx 9999"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_tennganhang"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|left"
-                android:text="SeABank"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_lienket"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|left"
-                android:text="Chua lien ket"
-                android:textColor="@color/red_light" />
-        </LinearLayout>
-
-        <ImageView
+        <TextView
+            android:id="@+id/tv_matdinh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_next_v1" />
+            android:text="Đã liên kết"
+            android:textColor="@color/green_border"
+            android:textStyle="italic" />
     </RelativeLayout>
 </LinearLayout>

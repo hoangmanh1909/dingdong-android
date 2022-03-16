@@ -25,6 +25,9 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.Gson;
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,7 +95,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                                 titleChanged(eWalletDataResult.getListEWalletData().size(), 0);
                             else if (getPositionTab() == 4)
                                 titleChanged(eWalletDataResult.getListEWalletData().size(), 1);
-                            mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
+//                            mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                         }
                     } else {
                         mView.hideProgress();
@@ -105,7 +108,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     }
 
     @Override
-    public void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode) {
+    public void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode, int type, String bankcode, String posmanTel) {
         PaymentRequestModel requestModel = new PaymentRequestModel();
         SharedPref pref = SharedPref.getInstance(getViewContext());
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
@@ -116,23 +119,31 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         requestModel.setPoCode(poCode);
         requestModel.setPostmanCode(postmanCode);
         requestModel.setRouteCode(routeCode);
+        requestModel.setBankCode(bankcode);
+        requestModel.setPostmanTel(posmanTel);
         if (getPositionTab() == 0)
             requestModel.setServiceCode("2104");
         else if (getPositionTab() == 4)
             requestModel.setServiceCode("2105");
+
         mInteractor.requestPayment(requestModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
-                        mView.showRequestSuccess(list, simpleResult.getMessage(),
-                                simpleResult.getListEWalletResponse().getTranid(),
-                                simpleResult.getListEWalletResponse().getRetRefNumber());
-                        Tranid = simpleResult.getListEWalletResponse().getTranid();
-                        RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
-                        Mess = simpleResult.getMessage();
+                        if (type == 2) {
+                            mView.showRequestSuccess(list, simpleResult.getMessage(),
+                                    simpleResult.getListEWalletResponse().getTranid(),
+                                    simpleResult.getListEWalletResponse().getRetRefNumber());
+                            Tranid = simpleResult.getListEWalletResponse().getTranid();
+                            RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
+                            Mess = simpleResult.getMessage();
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.showThanhCong();
+                        }
                     } else if (simpleResult != null) {
-                        mView.dongdialog();
+//                        mView.dongdialog();
                         mView.showConfirmError(simpleResult.getMessage());
                     } else {
                         mView.dongdialog();
@@ -144,8 +155,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                     mView.hideProgress();
                 });
     }
-
-
 
 
     @Override
@@ -229,11 +238,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showConfirmSuccess(simpleResult.getMessage());
-                    } else if (simpleResult != null && simpleResult.getErrorCode().equals("101")) {
-                        Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        mView.showRequestSuccess(list, Mess,
-                                Tranid,
-                                RetRefNumber);
                     } else if (simpleResult != null) {
                         mView.showConfirmError(simpleResult.getMessage());
                         mView.dongdialog();
@@ -241,7 +245,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
                     mView.dongdialog();
-
                     mView.hideProgress();
                 }, throwable -> {
                     mView.showConfirmError(throwable.getMessage());

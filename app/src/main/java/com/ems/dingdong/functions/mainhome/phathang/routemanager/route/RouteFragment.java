@@ -96,8 +96,7 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
 
         mode = mPresenter.getMode();
         if (mode.equals(Constants.ROUTE_CHANGE_ORDER)) {
-            edtSearch.setHintText("Nhập mã tin, tên, sđt");
-
+            edtSearch.setHintText("Nhập điều kiện tìm kiếm");
             if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
                 mAdapterOrder = new RouteOrderAdapter(getViewContext(), mListOrder, Constants.ROUTE_RECEIVED);
                 mAdapterOrder.setOnItenClickListener(new RouteConstract.OnItemOrderClickListenner() {

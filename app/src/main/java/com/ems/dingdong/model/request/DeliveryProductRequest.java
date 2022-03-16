@@ -167,6 +167,16 @@ public class DeliveryProductRequest {
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
+    @SerializedName("PaymentBankCode")
+    private String PaymentBankCode;
+
+    public String getPaymentBankCode() {
+        return PaymentBankCode;
+    }
+
+    public void setPaymentBankCode(String paymentBankCode) {
+        PaymentBankCode = paymentBankCode;
+    }
 
     public String getDeliveryLat() {
         return DeliveryLat;

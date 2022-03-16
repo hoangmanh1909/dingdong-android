@@ -90,7 +90,6 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
 
                         CommonObject itemExists = Iterables.tryFind(listG,
                                 input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
-                                        && item.getCustomerName().equals(input != null ? input.getCustomerName() : "")
                                         && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
                         ).orNull();
                         if (itemExists == null) {
@@ -113,7 +112,6 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
                             }
-
                             itemExists.addOrderPostmanID(item.getOrderPostmanID());
                             itemExists.addCode(item.getCode());
                             itemExists.addCode1(item.getiD());

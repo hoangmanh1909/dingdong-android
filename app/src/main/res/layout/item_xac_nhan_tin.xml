@@ -25,6 +25,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"
+
+                android:paddingLeft="5dp"
                 tools:text="1" />
 
             <com.ems.dingdong.views.CustomTextView
@@ -105,10 +107,12 @@
                     android:textSize="@dimen/text_size_12sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
+
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_ParcelCode"
                     android:layout_marginLeft="@dimen/dimen_5dp"
                     android:layout_toRightOf="@+id/cb_selected"
                     android:gravity="center"
@@ -118,16 +122,15 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_12sp"
                     android:visibility="gone"
-                    android:layout_below="@+id/tv_ParcelCode"
                     tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_ParcelCode"
-                    android:layout_toRightOf="@+id/cb_selected" />
+                    android:layout_toRightOf="@+id/cb_selected"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 
@@ -147,7 +150,7 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="right|center"
                 android:padding="5dp"
-                android:textColor="@color/grey"
+                android:textColor="@color/red_light"
                 android:textSize="12dp"
                 tools:text="Mô tả" />
 

@@ -46,6 +46,17 @@ public class EWalletDataResponse extends SimpleResult {
     @SerializedName("FeeTypeName")
     String FeeTypeName;
 
+    @SerializedName("CashinChannel")
+    String CashinChannel;
+
+    public String getCashinChannel() {
+        return CashinChannel;
+    }
+
+    public void setCashinChannel(String cashinChannel) {
+        CashinChannel = cashinChannel;
+    }
+
     public String getFeeTypeName() {
         return FeeTypeName;
     }

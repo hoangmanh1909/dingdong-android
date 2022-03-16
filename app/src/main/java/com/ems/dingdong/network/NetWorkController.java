@@ -17,6 +17,7 @@ import com.ems.dingdong.model.CreateOrderRequest;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
+import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
@@ -51,10 +52,13 @@ import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.CallHistoryRequest;
+import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
+import com.ems.dingdong.model.request.DanhSachTaiKhoanRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
+import com.ems.dingdong.model.request.DeliveryUnSuccessRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -73,6 +77,7 @@ import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.request.SeaBankInquiryRequest;
 import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
+import com.ems.dingdong.model.request.TaiKhoanMatDinh;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
@@ -84,6 +89,11 @@ import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
+import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
+import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
+import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
+import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
+import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Utils;
@@ -468,7 +478,6 @@ public class NetWorkController {
     }
 
 
-
     //Thu ho BTXH
 
     public static void getBankAccountNumber(BankAccountNumberRequest bankAccountNumberRequest, CommonCallback<BankAccountNumberResponse> callback) {
@@ -524,6 +533,11 @@ public class NetWorkController {
 
     public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
         Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
+        call.enqueue(callback);
+    }
+
+    public static void pushToPNSDeliveryUnSuccess(DeliveryUnSuccessRequest request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().pushToPNSDeliveryUnSuccess(request);
         call.enqueue(callback);
     }
 
@@ -651,7 +665,6 @@ public class NetWorkController {
 //    }
 
 
-
     public static void getLadingStatusGeneral(String postmanID, String fromDate, String toDate,
                                               int ladingType, String routeCode,
                                               CommonCallback<StatisticDeliveryGeneralResult> callback) {
@@ -769,13 +782,17 @@ public class NetWorkController {
         payLinkConfirm.setSignature(signature);
         return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
     }
+
     public static Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
         return getAPIRxBuilder().vietmapTravelSalesmanProblemV1(request);
     }
 
     public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
         return getAPIRxBuilder().checkAmountPayment(request);
+    }
 
+    public static Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request) {
+        return getAPIRxBuilder().checkDeliverySuccess(request);
     }
 
     public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
@@ -989,4 +1006,66 @@ public class NetWorkController {
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
+    public static Single<SimpleResult> getDanhSachNganHang() {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB001");
+        dataRequestPayment.setData(getGson().toJson(""));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getDanhSachTaiKhoan(DanhSachTaiKhoanRequest danhSachTaiKhoanRequest) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB007");
+        dataRequestPayment.setData(getGson().toJson(danhSachTaiKhoanRequest));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> yeuCauLienKet(YeuCauLienKetRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB002");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB003");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> smartBankRequestCancelLinkRequest(SmartBankRequestCancelLinkRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB004");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> SmartBankConfirmCancelLinkRequest(SmartBankConfirmCancelLinkRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB005");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> ddTruyVanSodu(SmartBankInquiryBalanceRequest request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB006");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> ddCallOTP(CallOTP request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB008");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB009");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
 }

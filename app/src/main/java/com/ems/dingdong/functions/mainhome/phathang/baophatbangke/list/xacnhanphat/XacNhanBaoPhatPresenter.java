@@ -9,6 +9,7 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
@@ -23,6 +24,7 @@ import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
+import com.ems.dingdong.model.request.DeliveryUnSuccessRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
@@ -258,7 +260,20 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
-            mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+
+            DeliveryUnSuccessRequest deliveryUnSuccessRequest = new DeliveryUnSuccessRequest();
+            deliveryUnSuccessRequest.setData(request);
+            String bankCode = new String();
+            for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                    if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
+                        bankCode = userInfo.getSmartBankLink().get(i).getBankCode();
+                    }
+                }
+            }
+            deliveryUnSuccessRequest.setPaymentBankCode(bankCode);
+
+            mInteractor.pushToDeliveryUnSuccess(deliveryUnSuccessRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
@@ -388,12 +403,30 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
             request.setEditCODAmount(isCod);
             request.setcODAmountEdit(codeEdit);
-//
+            request.setFeeCOD(item.getFeeCOD());
+            request.setFeePA(item.getFeePA());
 //            request.setFeePA(item.getFeePA());
 //            request.setFeePAPNS(item.getFeePA());
             paymentRequests.add(request);
         }
-        mInteractor.paymentDelivery(paymentRequests)
+
+
+        DeliverySuccessRequest deliverySuccessRequest = new DeliverySuccessRequest();
+
+        String bankCode = new String();
+        if (userInfo.getSmartBankLink() != null)
+            for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                    if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
+                        bankCode = userInfo.getSmartBankLink().get(i).getBankCode();
+                    }
+                }
+            }
+        deliverySuccessRequest.setPaymentBankCode(bankCode);
+        deliverySuccessRequest.setPaypostPaymentRequests(paymentRequests);
+
+//        Log.d("asdhg12312312312123", new Gson().toJson(paymentRequests));
+        mInteractor.checkDeliverySuccess(deliverySuccessRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

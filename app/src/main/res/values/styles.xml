@@ -132,6 +132,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="LightGrayDevider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
@@ -256,9 +257,11 @@
     <style name="TextViewSuccess">
         <item name="android:background">@drawable/bg_form_success</item>
     </style>
+
     <style name="TextViewFail">
         <item name="android:background">@color/color_rad_fail</item>
     </style>
+
     <style name="TextViewChangeRoute">
         <item name="android:background">@color/color_rad_change_route</item>
     </style>
@@ -295,4 +298,11 @@
         <item name="android:src">@drawable/ic_arrow_right_v1</item>
     </style>
 
+    <style name="popupMenuStyle" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
+        <item name="android:listPreferredItemHeightSmall">40dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:itemBackground">@color/white</item>
+    </style>
 </resources>

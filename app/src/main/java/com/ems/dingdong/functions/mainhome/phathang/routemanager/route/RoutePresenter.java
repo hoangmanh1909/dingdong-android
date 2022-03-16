@@ -115,6 +115,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         commonObject.setQuantity(Integer.toString(item.getQuantity()));
         commonObject.setWeigh(Integer.toString(item.getWeight()));
         commonObject.setCode(item.getOrderCode());
+        commonObject.setDivideByName(item.getDivideByName());
         new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).setMode("VIEW").pushView();
     }
 

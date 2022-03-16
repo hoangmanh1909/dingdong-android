@@ -214,7 +214,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     TextInputEditText edtGTTTLocatedAccepted;
     @BindView(R.id.edt_user_address)
     TextInputEditText edtUserAddress;
-
     @BindView(R.id.tv_pt_des)
     TextView tv_pt_des;
     @BindView(R.id.et_pt_amount)
@@ -233,7 +232,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     TextView rad_partial;
     @BindView(R.id.ll_partial)
     LinearLayout ll_partial;
-
     @BindView(R.id.tv_pt_amount_r)
     TextView tv_pt_amount_r;
     @BindView(R.id.recycler_refund_partial)
@@ -242,15 +240,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     ImageView iv_camera_partial_r;
     @BindView(R.id.recycler_image_partial_r)
     RecyclerView recycler_image_partial_r;
-
-
     @BindView(R.id.rl_image_partial_d)
     RelativeLayout rl_image_partial_d;
     @BindView(R.id.rl_image_partial_r)
     RelativeLayout rl_image_partial_r;
     @BindView(R.id.ll_image)
     LinearLayout ll_image;
-
     @BindView(R.id.rad_dop1)
     RadioButton rad_dop1;
     @BindView(R.id.rad_dop2)
@@ -263,17 +258,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recyclerds;
     @BindView(R.id.recyclercuoc)
     RecyclerView recyclercuoc;
-
     @BindView(R.id.ll_chontuyen)
     LinearLayout _llChontuyen;
     @BindView(R.id.tv_buu_cuc)
     FormItemTextView _tvBuuCuc;
-
     @BindView(R.id.cb_selected_edtcod)
     CheckBox checkBoxedtCod;
     @BindView(R.id.cb_selected_phathoan)
     CheckBox cbSelectedPhathoan;
-
     @BindView(R.id.ll_tong_tien_tam_thu)
     LinearLayout llTongTienTamThu;
     @BindView(R.id.tv_tong_tien_nop_edit)
@@ -283,7 +275,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_tong_tien_nop_edit1)
     TextView tvTongTienTamthu1;
     long tiem_tam = 0;
-
     @BindView(R.id.ll_edt_cod)
     LinearLayout lledtcod;
     String toPoCode = "";
@@ -484,7 +475,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
         }
-
 
         ll_change_route.setVisibility(LinearLayout.GONE);
         ll_confirm_fail.setVisibility(LinearLayout.GONE);
@@ -1032,9 +1022,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 ll_partial.setVisibility(View.VISIBLE);
                 linearLayoutName.setVisibility(View.VISIBLE);
-                llVerify.setVisibility(View.GONE);
+
+
+                // hinh anh vaf thong tin
+                llVerify.setVisibility(View.VISIBLE);
+                ll_image.setVisibility(View.VISIBLE);
+
                 lledtcod.setVisibility(View.GONE);
-                ll_image.setVisibility(View.GONE);
 
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_fail.setBackgroundResource(R.color.color_rad_fail);
@@ -1777,6 +1771,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         request.setReturnProducts(listProductRefund);
         request.setDeliveryProducts(listProductDeliveryRequest);
+        String bankCode = new String();
+
+        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
+                    bankCode = userInfo.getSmartBankLink().get(i).getBankCode();
+                }
+            }
+        }
+        request.setPaymentBankCode(bankCode);
         mPresenter.deliveryPartial(request);
     }
 

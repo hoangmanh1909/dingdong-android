@@ -14,6 +14,7 @@ import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
+import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -50,6 +51,7 @@ import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
+import com.ems.dingdong.model.request.DeliveryUnSuccessRequest;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
@@ -190,6 +192,9 @@ public interface VinattiAPI {
 
     @POST("api/Delivery/PushToPNS")
     Call<SimpleResult> pushToPNSDelivery(@Body PushToPnsRequest request);
+
+    @POST("api/Delivery/DeliveryUnSuccess")
+    Call<SimpleResult> pushToPNSDeliveryUnSuccess(@Body DeliveryUnSuccessRequest request);
 
     @POST("api/Delivery/PushToPNS")
     Single<SimpleResult> pushToPNSDeliveryObservable(@Body PushToPnsRequest request);
@@ -548,6 +553,9 @@ public interface VinattiAPI {
 
     @POST("api/Delivery/CheckAmountPayment")
     Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);
+
+    @POST("api/Delivery/DeliverySuccess")
+    Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(@Body DeliverySuccessRequest request);
 
     @POST("api/Delivery/Payment_V2")
     Single<SimpleResult> paymentV2(@Body DeliveryPaymentV2 request);

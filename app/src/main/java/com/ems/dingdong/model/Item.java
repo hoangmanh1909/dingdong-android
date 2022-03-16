@@ -10,6 +10,7 @@ public class Item {
     String matin;
     String mabuugui;
     String sohoadon;
+    String sotaikhoan;
 
     public Item(String value, String text) {
         this.value = value;
@@ -23,13 +24,21 @@ public class Item {
         this.addrest = addrest;
     }
 
-    public Item(String value, String text, boolean isLienket, int img) {
+    public Item(String value, String text, boolean isLienket, int img,String sotaikhoan) {
         this.value = value;
         this.text = text;
         this.isLienket = isLienket;
         this.img = img;
+        this.sotaikhoan = sotaikhoan;
     }
 
+    public String getSotaikhoan() {
+        return sotaikhoan;
+    }
+
+    public void setSotaikhoan(String sotaikhoan) {
+        this.sotaikhoan = sotaikhoan;
+    }
 
     public Item(int stt, String matin, String mabuugui, String sohoadon) {
         this.stt = stt;

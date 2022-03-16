@@ -8,6 +8,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanph
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.ReasonInfo;
@@ -23,6 +24,7 @@ import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
+import com.ems.dingdong.model.request.DeliveryUnSuccessRequest;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
@@ -64,14 +66,17 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery success.
          */
-        Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request);
+//        Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request);
+
+        Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request);
 
         Single<SimpleResult> paymentV2(DeliveryPaymentV2 request);
 
         /**
          * delivery not success.
          */
-        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+//        void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback);
+        void pushToDeliveryUnSuccess(DeliveryUnSuccessRequest request, CommonCallback<SimpleResult> callback);
 
         /**
          * Get all route by Post code.

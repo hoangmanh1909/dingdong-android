@@ -573,11 +573,12 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     private void drawSimplify(@NonNull Feature feature) {
         List<Point> points = ((LineString) Objects.requireNonNull(feature.geometry())).coordinates();
         Point point = points.get(points.size() - 1);
+        Log.d("thansdasda",new Gson().toJson(point));
         List<Point> after = PolylineUtils.simplify(points, 0.001);
         mapboxMap.addMarker(new MarkerOptions()
-                .position(new LatLng(point.latitude(), point.longitude())).snippet("hello"));
+                .position(new LatLng(point.latitude(), point.longitude())));
         Random generator = new Random(19900828);
-        addLine("rawLine" + generator, Feature.fromGeometry(LineString.fromLngLats(after)), "#1E90FF");
+        addLine("rawLine" +generator, Feature.fromGeometry(LineString.fromLngLats(after)), "#1E90FF");
     }
 
     private void addLine(String layerId, Feature feature, String lineColorHex) {

@@ -20,8 +20,8 @@
                 android:id="@+id/img_back"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:layout_centerVertical="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
@@ -51,10 +51,10 @@
             android:orientation="vertical">
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_info_link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:id="@+id/tv_info_link"
                 android:text="@string/not_link_to_e_wallet"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -67,18 +67,18 @@
                 android:src="@drawable/ic_wallet_80" />
 
             <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/btn_link_wallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/dimen_30dp"
                 android:layout_marginRight="@dimen/_30sdp"
-                android:foreground="?attr/selectableItemBackground"
                 android:background="@drawable/bg_gradient_radius_5"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/link_to_e_wallet"
                 android:textColor="@color/black"
-                android:id="@+id/btn_link_wallet"
                 android:textSize="@dimen/_14sdp" />
         </LinearLayout>
     </RelativeLayout>

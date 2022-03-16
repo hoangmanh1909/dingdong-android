@@ -37,7 +37,8 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
 
     @Override
     public void moveToEWallet() {
-        new EWalletPresenter(mContainerView).pushView();
+        new ListBankPresenter(mContainerView).pushView();
+//        new EWalletPresenter(mContainerView).pushView();
     }
 
     @Override

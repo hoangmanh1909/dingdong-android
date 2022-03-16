@@ -100,6 +100,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
             info.setFee(item.getFee());
             info.setEWalletTransId(item.getEWalletTransId());
             info.setFeeType(Integer.parseInt(item.getFeeType()));
+            info.setCashinChannel(item.getCashinChannel());
             cancelRequests.add(info);
         }
         PaymentCancelRequestModel paymentCancelRequestModel = new PaymentCancelRequestModel();

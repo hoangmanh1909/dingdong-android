@@ -48,7 +48,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void start() {
-        // Start getting data here
+        // Start getting data hereSmartBankLink
     }
 
     @Override
@@ -66,6 +66,9 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     getSolutions();
                     getReasons();
                     getList(response.body().getUserInfo().getUnitCode());
+//                    response.body().getUserInfo().setPIDNumber("154554454444");
+//                    response.body().getUserInfo().setPIDType("CMND");
+
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
                     sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, response.body().getUserInfo().geteWalletPaymentToken());
@@ -170,7 +173,6 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_HOTLINE_NUMBER, response.body().getPostOffice().getHolineNumber());
                     sharedPref.putString(Constants.KEY_POST_OFFICE, NetWorkController.getGson().toJson(response.body().getPostOffice()));
-
                     mView.gotoHome();
                 } else {
                     mView.showError(response.body().getMessage());

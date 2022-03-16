@@ -1,6 +1,9 @@
 package com.ems.dingdong.model;
 
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class UserInfo {
 
@@ -30,22 +33,52 @@ public class UserInfo {
     @SerializedName("ExtensionUserName")
     private String extensionUserName;
     @SerializedName("ExtensionPassword")
-    private String extensionPassword ;
+    private String extensionPassword;
     @SerializedName("ExtensionDomain")
-    private String extensionDomain ;
+    private String extensionDomain;
     @SerializedName("ExtensionServer")
-    private String extensionServer ;
+    private String extensionServer;
     @SerializedName("ExtensionServerPort")
-    private String extensionServerPort ;
+    private String extensionServerPort;
     @SerializedName("ExtensionStunServer")
-    private String extensionStunServer ;
+    private String extensionStunServer;
     @SerializedName("ExtensionStunServerPort")
-    private String extensionStunServerPort ;
+    private String extensionStunServerPort;
 
     @SerializedName("POProvinceCode")
-    private String POProvinceCode ;
+    private String POProvinceCode;
     @SerializedName("PODistrictCode")
-    private String PODistrictCode ;
+    private String PODistrictCode;
+    @SerializedName("SmartBankLink")
+    private List<SmartBankLink> smartBankLink;
+    @SerializedName("PIDType")
+    private String PIDType;
+    @SerializedName("PIDNumber")
+    private String PIDNumber;
+
+    public List<SmartBankLink> getSmartBankLink() {
+        return smartBankLink;
+    }
+
+    public void setSmartBankLink(List<SmartBankLink> smartBankLink) {
+        this.smartBankLink = smartBankLink;
+    }
+
+    public String getPIDType() {
+        return PIDType;
+    }
+
+    public void setPIDType(String PIDType) {
+        this.PIDType = PIDType;
+    }
+
+    public String getPIDNumber() {
+        return PIDNumber;
+    }
+
+    public void setPIDNumber(String PIDNumber) {
+        this.PIDNumber = PIDNumber;
+    }
 
     public UserInfo(String unitCode, String iD, String fullName, String userName, String empGroupID, String unitLink, String mobileNumber, String amountMax, String balance, String isEms, String eWalletPaymentToken, String extensionUserName, String extensionPassword, String extensionDomain, String extensionServer, String extensionServerPort, String extensionStunServer, String extensionStunServerPort) {
         this.unitCode = unitCode;

@@ -54,7 +54,6 @@ public class EWalletFragment extends ViewFragment<EWalletContract.Presenter> imp
             case R.id.img_back:
                 mPresenter.back();
                 break;
-
             case R.id.btn_link_wallet:
                 mPresenter.showLinkEWalletFragment();
                 break;

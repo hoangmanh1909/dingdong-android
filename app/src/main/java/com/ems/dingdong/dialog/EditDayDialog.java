@@ -29,6 +29,8 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
 
     @BindView(R.id.tvShowChargre)
     TextView tvShow;
+    @BindView(R.id.tv_title_nganhang)
+    TextView tvTitleNganhang;
 
     @BindView(R.id.layout_date_end)
     View layoutDateEnd;
@@ -95,6 +97,12 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         if (type == 2)
             layout_trang_thai.setVisibility(View.VISIBLE);
         else layout_trang_thai.setVisibility(View.GONE);
+
+        if (type == 1001) {
+            layout_trang_thai.setVisibility(View.VISIBLE);
+            tvTitleNganhang.setText("Kênh nộp");
+        }
+        mType = type;
         setListener();
 
     }
@@ -115,17 +123,17 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         switch (v.getId()) {
             case R.id.layout_date_start:
                 typeDate = 0;
-                    new SpinnerDatePickerDialogBuilder()
-                            .context(mActivity)
-                            .callback(this)
-                            .spinnerTheme(R.style.DatePickerSpinner)
-                            .showTitle(true)
-                            .showDaySpinner(true)
-                            .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
-                            .maxDate(3000, maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
-                            .minDate(1979, 0, 1)
-                            .build()
-                            .show();
+                new SpinnerDatePickerDialogBuilder()
+                        .context(mActivity)
+                        .callback(this)
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(3000, maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
+                        .minDate(1979, 0, 1)
+                        .build()
+                        .show();
 //                } else new SpinnerDatePickerDialogBuilder()
 //                        .context(mActivity)
 //                        .callback(this)
@@ -140,17 +148,17 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                 break;
             case R.id.layout_date_end:
                 typeDate = 1;
-                    new SpinnerDatePickerDialogBuilder()
-                            .context(mActivity)
-                            .callback(this)
-                            .spinnerTheme(R.style.DatePickerSpinner)
-                            .showTitle(true)
-                            .showDaySpinner(true)
-                            .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
-                            .maxDate(3000, maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
-                            .minDate(1979, 0, 1)
-                            .build()
-                            .show();
+                new SpinnerDatePickerDialogBuilder()
+                        .context(mActivity)
+                        .callback(this)
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calFrom.get(Calendar.YEAR), calFrom.get(Calendar.MONTH), calFrom.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(3000, maxStart.get(Calendar.MONTH), maxStart.get(Calendar.DAY_OF_MONTH))
+                        .minDate(1979, 0, 1)
+                        .build()
+                        .show();
 //                } else
 //                    new SpinnerDatePickerDialogBuilder()
 //                            .context(mActivity)
@@ -165,7 +173,10 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
 //                            .show();
                 break;
             case R.id.layout_trang_thai:
-                showUICancelType();
+                if (mType == 1001) {
+                    showUIKenhNop();
+                } else
+                    showUICancelType();
                 break;
             case R.id.tvShowChargre:
                 delegate.onChooseDay(calFrom, calTo, status);
@@ -194,5 +205,18 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                 }).show();
     }
 
+    private void showUIKenhNop() {
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item("0", "Tất cả"));
+        items.add(new Item("1", "1. Ví điện tử PostPay"));
+        items.add(new Item("2", "2. Tài khoản thấu chi NHTM"));
+
+        new PickerLichSuNopDialog(getContext(), "Chọn kênh nộp", items,
+                item -> {
+                    mItem = item;
+                    tvTrangThai.setText(item.getText());
+                    status = Integer.parseInt(mItem.getValue());
+                }).show();
+    }
 
 }

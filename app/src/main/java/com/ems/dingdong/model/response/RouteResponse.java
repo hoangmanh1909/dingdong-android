@@ -42,6 +42,8 @@ public class RouteResponse {
     String ToPOCode;
     @SerializedName("ToPOName")
     String ToPOName;
+    @SerializedName("DivideByName")
+    String DivideByName;
 
 
     @SerializedName("FeePPA")
@@ -66,6 +68,8 @@ public class RouteResponse {
     private long receiveCollectFee;
     @SerializedName("CODAmount")
     Integer codAmount;
+
+
     public long getReceiveCollectFee() {
         return receiveCollectFee;
     }

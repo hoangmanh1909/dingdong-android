@@ -11,9 +11,11 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ReasonCallback;
@@ -259,6 +261,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
 
     @Override
     public void showView(CommonObject commonObject) {
+        Log.d ("thanhkeieme",new Gson().toJson(commonObject));
         if (mPresenter.getMode().equals("ADD")) {
             if (commonObject.getStatusCode().equals("P0")) {
 //            btnConfirm.setEnabled(true);

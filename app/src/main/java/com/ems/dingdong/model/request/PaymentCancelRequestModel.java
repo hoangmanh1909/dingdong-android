@@ -35,7 +35,16 @@ public class PaymentCancelRequestModel {
     @SerializedName("RetRefNumber")
     String RetRefNumber;
     @SerializedName("EWalletTransId")
-    String EWalletTransId;
+    String EWalletTransId;  @SerializedName("CashinChannel")
+    String CashinChannel;
+
+    public String getCashinChannel() {
+        return CashinChannel;
+    }
+
+    public void setCashinChannel(String cashinChannel) {
+        CashinChannel = cashinChannel;
+    }
 
     public String getEWalletTransId() {
         return EWalletTransId;

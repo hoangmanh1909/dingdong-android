@@ -52,6 +52,8 @@ public interface PaymentContract {
 
         void dongdialog();
 
+        void showThanhCong();
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -62,7 +64,7 @@ public interface PaymentContract {
 
         void getDataPayment(String serviceCode,String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
 
-        void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode);
+        void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode,int type,String bankcode,String posmanTel);
 
         void deletePayment(List<EWalletDataResponse> list);
 

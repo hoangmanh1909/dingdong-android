@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.NotificationDialog;
 import com.ems.dingdong.model.DataHistoryPayment;
@@ -79,6 +80,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
     int ketquaINT = 0;
     String retRefNumberKq;
+
+    private UserInfo userInfo;
+    String userJson;
+    SharedPref sharedPref;
+
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -134,6 +140,12 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         } else if (mPresenter.getPositionTab() == 4) {
             type = "2105";
         }
+        sharedPref = new SharedPref(getActivity());
+        userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
@@ -325,6 +337,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         otpDialog.dismiss();
     }
 
+    @Override
+    public void showThanhCong() {
+        refreshLayout();
+    }
+
     private void showDialog() {
         new EditDayDialog(getActivity(), fromDate, toDate, 0, (calFrom, calTo, status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -363,7 +380,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
     public void setSend() {
         SharedPref pref = SharedPref.getInstance(getViewContext());
-        if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
+        if (userInfo.getSmartBankLink() == null && userInfo.getSmartBankLink().size() == 0) {
             new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                     .setTitleText(getString(R.string.notification))
                     .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
@@ -400,45 +417,78 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 info.setFeeType(item.getFeeType());
                 list.add(info);
             }
-            String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                    list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
-                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua Ví điện tử PostPay?";
 
-            new NotificationDialog(getViewContext())
-                    .setConfirmText(getString(R.string.payment_confirn))
-                    .setCancelText(getString(R.string.payment_cancel))
-                    .setHtmlContent(content)
-                    .setCancelClickListener(Dialog::dismiss)
-                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.requestPayment(list, poCode, routeCode, postmanCode);
-                        sweetAlertDialog.dismiss();
-                        otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
-                            @Override
-                            public void onPaymentClick(String otp) {
-                                if (ketquaINT == 1)
-                                    mPresenter.confirmPayment(list, otp,
-                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
-                                else {
-                                    Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
+
+            new DiaLogOption(getViewContext(), new IdCallback() {
+                @Override
+                public void onResponse(String id) {
+                    String con = "";
+                    if (id.equals("1"))
+                        con = "Tài khoản thấu chi NHTM SeABank?";
+                    else con = "Ví điện tử PostPay?";
+
+                    String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
+                            list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                            "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                            "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + con;
+
+                    new NotificationDialog(getViewContext())
+                            .setConfirmText(getString(R.string.payment_confirn))
+                            .setCancelText(getString(R.string.payment_cancel))
+                            .setHtmlContent(content)
+                            .setCancelClickListener(Dialog::dismiss)
+                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                            .setConfirmClickListener(sweetAlertDialog -> {
+                                String bankcode = "";
+                                String posmanTel = "";
+                                if (id.equals("1"))
+                                    bankcode = "SeABank";
+                                else bankcode = "EW";
+
+
+                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                                    if (id.equals("1") && userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank"))
+                                        posmanTel = userInfo.getMobileNumber();
+                                    else if (id.equals("2") && userInfo.getSmartBankLink().get(i).getBankCode().equals("EW"))
+                                        posmanTel = userInfo.getMobileNumber();
+
                                 }
-                            }
-                        }, messageKq);
+
+                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel);
+                                sweetAlertDialog.dismiss();
+
+                                if (id.equals("2")) {
+                                    otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
+                                        @Override
+                                        public void onPaymentClick(String otp) {
+                                            if (ketquaINT == 1)
+                                                mPresenter.confirmPayment(list, otp,
+                                                        requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
+                                            else {
+                                                Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
+                                            }
+                                        }
+                                    }, messageKq);
+
+                                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                                    otpDialog.show();
+                                }
+                                showProgress();
+
+                            })
+                            .show();
+                }
+
+            }).show();
 
 
-                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                        otpDialog.show();
-                        showProgress();
-                    })
-                    .show();
         }
     }
 
     public void setSendFee() {
         SharedPref pref = SharedPref.getInstance(getViewContext());
-        if (TextUtils.isEmpty(pref.getString(Constants.KEY_PAYMENT_TOKEN, ""))) {
+        if (userInfo.getSmartBankLink() == null && userInfo.getSmartBankLink().size() == 0) {
             new SweetAlertDialog(getViewContext(), SweetAlertDialog.WARNING_TYPE)
                     .setTitleText(getString(R.string.notification))
                     .setContentText(getString(R.string.please_link_to_e_post_wallet_first))
@@ -475,36 +525,62 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             }
             String codAmount = NumberUtils.formatPriceNumber(cod + fee);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
-            String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                    list.size() + "</font>" + " khoản thu với tổng số tiền : " +
-                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, qua ví bưu điện?";
 
-            new NotificationDialog(getViewContext())
-                    .setConfirmText(getString(R.string.payment_confirn))
-                    .setCancelText(getString(R.string.payment_cancel))
-                    .setHtmlContent(content)
-                    .setCancelClickListener(Dialog::dismiss)
-                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.requestPayment(list, poCode, routeCode, postmanCode);
-                        sweetAlertDialog.dismiss();
-                        otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
-                            @Override
-                            public void onPaymentClick(String otp) {
-                                if (ketquaINT == 1)
-                                    mPresenter.confirmPayment(list, otp,
-                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
-                                else {
-                                    Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
+
+            new DiaLogOption(getViewContext(), new IdCallback() {
+                @Override
+                public void onResponse(String id) {
+                    String con = "";
+                    if (id.equals("1"))
+                        con = "Tài khoản thấu chi NHTM SeABank?";
+                    else con = "Ví điện tử PostPay?";
+                    String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
+                            list.size() + "</font>" + " khoản thu với tổng số tiền : " +
+                            "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, " + con;
+                    new NotificationDialog(getViewContext())
+                            .setConfirmText(getString(R.string.payment_confirn))
+                            .setCancelText(getString(R.string.payment_cancel))
+                            .setHtmlContent(content)
+                            .setCancelClickListener(Dialog::dismiss)
+                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                            .setConfirmClickListener(sweetAlertDialog -> {
+                                String bankcode = "";
+                                String posmanTel = "";
+                                if (id.equals("1"))
+                                    bankcode = "SeABank";
+                                else bankcode = "EW";
+
+                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                                    if (id.equals("1") && userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank"))
+                                        posmanTel = userInfo.getMobileNumber();
+                                    else if (id.equals("2") && userInfo.getSmartBankLink().get(i).getBankCode().equals("EW"))
+                                        posmanTel = userInfo.getMobileNumber();
+
                                 }
-                            }
-                        }, messageKq);
-                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                        otpDialog.show();
-                        showProgress();
-                    })
-                    .show();
+                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel);
+                                sweetAlertDialog.dismiss();
+                                if (id.equals("2")) {
+                                    otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
+                                        @Override
+                                        public void onPaymentClick(String otp) {
+                                            if (ketquaINT == 1)
+                                                mPresenter.confirmPayment(list, otp,
+                                                        requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
+                                            else {
+                                                Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
+                                            }
+                                        }
+                                    }, messageKq);
+                                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                                    otpDialog.show();
+                                }
+                                showProgress();
+                            })
+                            .show();
+                }
+
+            }).show();
         }
     }
 

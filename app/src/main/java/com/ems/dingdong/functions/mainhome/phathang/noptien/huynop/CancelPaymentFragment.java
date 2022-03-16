@@ -28,6 +28,7 @@ import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -68,6 +69,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
     private String fromDate = "";
     private String toDate = "";
     private int status = 0;
+    int mType = 0;
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -198,7 +200,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                 break;
             case R.id.tv_search:
                 if (mPresenter.getPositionTab() == 1)
-                    showDialog(1);
+                    showDialog(1001);
                 else if (mPresenter.getPositionTab() == 2) showDialog(2);
                 break;
             case R.id.layout_item_pick_all:
@@ -237,16 +239,35 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     if (item.getFee() != null)
                         fee += item.getFee();
                 }
-                mPresenter.titleChanged(eWalletDataResponses.size(), 2);
+
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), String.valueOf(eWalletDataResponses.size())));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), NumberUtils.formatPriceNumber(fee)));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), NumberUtils.formatPriceNumber(cod)));
-                mAdapter.setListFilter(eWalletDataResponses);
+                List<EWalletDataResponse> mList = new ArrayList<>();
+
+                if (status == 0) {
+                    mList.addAll(eWalletDataResponses);
+                } else if (status == 1) {
+                    for (int i = 0; i < eWalletDataResponses.size(); i++) {
+                        if (eWalletDataResponses.get(i).getCashinChannel().equals("EW"))
+                            mList.add(eWalletDataResponses.get(i));
+                    }
+                } else {
+                    for (int i = 0; i < eWalletDataResponses.size(); i++) {
+                        if (eWalletDataResponses.get(i).getCashinChannel().equals("SeABank"))
+                            mList.add(eWalletDataResponses.get(i));
+                    }
+                }
+                mAdapter.setListFilter(mList);
+                mPresenter.titleChanged(mList.size(), 2);
+                Log.d("asdâăâêâêăâê",mList.size()+"");
+                if (mList.size()==0){
+                    Toast.showToast(getViewContext(),"Không tìm thấy thông tin dữ liệu phù hợp");
+                }
             } else if (eWalletDataResponses.isEmpty()) {
                 if (mPresenter.getCurrentTab() == 0) {
 //                    showErrorToast("Không tìm thấy dữ liệu phù hợp");
                 }
-
                 mPresenter.titleChanged(eWalletDataResponses.size(), 2);
                 mAdapter.setListFilter(eWalletDataResponses);
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
@@ -365,6 +386,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
     }
 
     private void showDialog(int type) {
+        Log.d("asdasdasd", type + "");
         new EditDayDialog(getActivity(), fromDate, toDate, status, type, (calFrom, calTo, statu) -> {
             status = statu;
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -453,7 +475,6 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-
         DataHistoryPayment payment = new DataHistoryPayment();
         payment.setRouteCode(routeCode);
         payment.setPostmanCode(postmanCode);
@@ -466,7 +487,6 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
         mPresenter.getHistoryPayment(dataRequestPayment, 1);
-
         stopRefresh();
     }
 

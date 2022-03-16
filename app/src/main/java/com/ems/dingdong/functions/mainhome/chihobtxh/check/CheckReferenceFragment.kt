@@ -190,7 +190,7 @@ class CheckReferenceFragment : ViewFragment<CheckReferenceContract.Presenter>(),
     private fun pickFilter(anchor: View) {
         val list: MutableList<ItemMode> = ArrayList<ItemMode>()
         list.add(ItemMode(1, "2110", "Chi hộ đối tượng BTXH SeaBank"))
-//        list.add(ItemMode(2, "2205", "Chi hộ đối tượng BTXH VietinBank"))
+        list.add(ItemMode(2, "2205", "Chi hộ đối tượng BTXH VietinBank"))
         if (list != null) {
             val popupMenu = PopupMenu(activity!!, anchor)
             popupMenu.menu.add(1, 1, 2110, "2110 - Chi hộ đối tượng BTXH SeaBank")

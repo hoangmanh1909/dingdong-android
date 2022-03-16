@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.utiles.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +62,13 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
         @BindView(R.id.img_motaikhoan)
         ImageView imgMotaikhoan;
-        @BindView(R.id.tv_tennganhang)
-        TextView tvTennganhang;
-        @BindView(R.id.tv_lienket)
-        TextView tvLienket;
+        @BindView(R.id.tv_sotaikhoan)
+        TextView tvSotaikhoan;
+        @BindView(R.id.tv_title)
+        TextView tvTitle;
+        @BindView(R.id.tv_matdinh)
+        TextView tvMatdinh;
+
 
         HolderView(View itemView) {
             super(itemView);
@@ -73,16 +77,18 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
         public void bindView(Object model) {
             Item item = (Item) model;
-//            tvReason.setText(item.getText());
             imgMotaikhoan.setImageResource(item.getImg());
-            tvTennganhang.setText(item.getText());
+            tvTitle.setText(item.getText());
+
+            tvSotaikhoan.setText(item.getSotaikhoan());
             if (item.isLienket())
-                tvLienket.setText("Đã liên kết");
-            else {
-                if (item.getValue().equals("1")) {
-                    tvLienket.setText(mContext.getString(R.string.not_link_to_e_wallet));
-                } else
-                    tvLienket.setText("Chưa liên kết");
+                tvMatdinh.setText("Đã liên kết");
+            else tvMatdinh.setText("Chờ xác nhận");
+
+            if (NumberUtils.isNumber(item.getSotaikhoan())) {
+                String mahoa = item.getSotaikhoan().substring(item.getSotaikhoan().length() - 4, item.getSotaikhoan().length());
+                mahoa = "xxxx xxxx " + mahoa;
+                tvSotaikhoan.setText(mahoa);
             }
 
         }

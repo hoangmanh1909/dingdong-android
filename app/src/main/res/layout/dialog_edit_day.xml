@@ -119,6 +119,7 @@
                     android:orientation="horizontal">
 
                     <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_title_nganhang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Trạng Thái"

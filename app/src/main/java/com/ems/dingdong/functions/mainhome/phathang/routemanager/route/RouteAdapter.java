@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.response.RouteResponse;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -142,6 +145,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
             } else {
                 tvParcelCode.setText("");
             }
+
 
             if (typeRoute == Constants.ROUTE_RECEIVED) {
                 if (!TextUtils.isEmpty(item.getFromRouteName())) {

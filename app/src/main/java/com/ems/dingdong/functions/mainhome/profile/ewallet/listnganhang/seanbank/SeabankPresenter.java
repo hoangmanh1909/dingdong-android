@@ -1,7 +1,34 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankActivite;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
+import com.ems.dingdong.model.ProvinceModels;
+import com.ems.dingdong.model.SMB002Mode;
+import com.ems.dingdong.model.request.CallOTP;
+import com.ems.dingdong.model.request.DanhSachTaiKhoanRequest;
+import com.ems.dingdong.model.response.DanhSachTaiKhoanRespone;
+import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
+import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
+import com.ems.dingdong.model.thauchi.ThonTinSoTaiKhoanRespone;
+import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class SeabankPresenter extends Presenter<SeabankContract.View, SeabankContract.Interactor> implements SeabankContract.Presenter {
 
@@ -11,7 +38,10 @@ public class SeabankPresenter extends Presenter<SeabankContract.View, SeabankCon
 
     @Override
     public void start() {
-
+        try {
+            getDanhSachNganHang();
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -22,5 +52,125 @@ public class SeabankPresenter extends Presenter<SeabankContract.View, SeabankCon
     @Override
     public SeabankContract.View onCreateView() {
         return SeabankFragment.getInstance();
+    }
+
+    @Override
+    public void getDanhSachNganHang() {
+        mView.showProgress();
+        mInteractor.getDanhSachNganHang()
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            DanhSachNganHangRepsone[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DanhSachNganHangRepsone[].class);
+                            List<DanhSachNganHangRepsone> list1 = Arrays.asList(list);
+                            mView.showDanhSach(list1);
+                            mView.hideProgress();
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void yeuCauLienKet(YeuCauLienKetRequest request) {
+//        mView.showProgress();
+        mInteractor.yeuCauLienKet(request)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            SMB002Mode thonTinSoTaiKhoanRespone = NetWorkController.getGson().fromJson(simpleResult.getData(), SMB002Mode.class);
+                            SmartBankLink smartBankLink = new SmartBankLink();
+                            smartBankLink.setBankAccountLimitExpired(thonTinSoTaiKhoanRespone.getAccountLimitExpired());
+                            smartBankLink.setBankAccountLimit(thonTinSoTaiKhoanRespone.getAccountLimit());
+                            smartBankLink.setBankAccountNumber(thonTinSoTaiKhoanRespone.getAccountNumber());
+                            smartBankLink.setStatus(thonTinSoTaiKhoanRespone.getStatus());
+                            smartBankLink.setBankAccountName(thonTinSoTaiKhoanRespone.getAccountName());
+                            smartBankLink.setPIDNumber(thonTinSoTaiKhoanRespone.getPIDNumber());
+                            smartBankLink.setPIDType(thonTinSoTaiKhoanRespone.getPIDType());
+                            smartBankLink.setPOCode(thonTinSoTaiKhoanRespone.getPOCode());
+                            smartBankLink.setPostmanCode(thonTinSoTaiKhoanRespone.getPostmanCode());
+                            smartBankLink.setPostmanTel(thonTinSoTaiKhoanRespone.getPostmanTel());
+                            smartBankLink.setIsDefaultPayment(false);
+                            mView.showThongTinTaiKhoan(smartBankLink);
+                            mView.hideProgress();
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        }
+                        mView.hideProgress();
+                    }
+                });
+
+    }
+
+    @Override
+    public void smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
+        mView.showProgress();
+        mInteractor.smartBankConfirmLinkRequest(request)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+//                            Intent intent = new Intent(getViewContext(), ProfileActivity.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            getViewContext().startActivity(intent);
+                            mView.showMain();
+//                            Intent intent = new Intent(getViewContext(), ListBankActivite.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            getViewContext().startActivity(intent);
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void getDanhSachTaiKhoan(DanhSachTaiKhoanRequest danhSachTaiKhoanRequest) {
+        mView.showProgress();
+        mInteractor.getDanhSachTaiKhoan(danhSachTaiKhoanRequest)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            DanhSachTaiKhoanRespone[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DanhSachTaiKhoanRespone[].class);
+                            List<DanhSachTaiKhoanRespone> list1 = Arrays.asList(list);
+                            mView.showDanhSachTaiKhoan(list1);
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void moveToEWallet() {
+        new ListBankPresenter(mContainerView).pushView();
+//        new EWalletPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void ddCallOTP(CallOTP request) {
+        mView.showProgress();
+        mInteractor.vnpCallOTP(request)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            Toast.showToast(getViewContext(), "Yêu cầu gửi lại OTP thành công");
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
     }
 }

@@ -418,10 +418,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setSenderLat(senderLat);
                                     hoanTatTinRequest.setSenderLon(senderLon);
 
-                                    hoanTatTinRequest.setCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
-                                    hoanTatTinRequest.setCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+                                    hoanTatTinRequest.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
+                                    hoanTatTinRequest.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
 
-                                    Log.d("asdasjdg12431723", new Gson().toJson(hoanTatTinRequest));
 
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
                                 }

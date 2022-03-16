@@ -11,7 +11,6 @@ public class CreateOrderRequest {
     public String RouteId;
     @SerializedName("POCode")
     public String POCode;
-
     /// <summary>
     /// Mã khách hàng
     /// </summary>
@@ -23,8 +22,6 @@ public class CreateOrderRequest {
     public String CustomeEmail;
     @SerializedName("CustomePhone")
     public String CustomePhone;
-
-
     @SerializedName("Contents")
     public String Contents;
     @SerializedName("Quantity")
@@ -37,13 +34,11 @@ public class CreateOrderRequest {
     /// </summary>
     @SerializedName("PickupDate")
     public String PickupDate;
-
     /// <summary>
     /// Giờ yêu cầu HH24MI
     /// </summary>
     @SerializedName("PickupHours")
     public int PickupHours;
-
     /// <summary>
     /// Id tỉnh lấy hàng
     /// </summary>

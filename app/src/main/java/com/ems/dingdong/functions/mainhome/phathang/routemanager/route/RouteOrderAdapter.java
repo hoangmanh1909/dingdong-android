@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.OrderChangeRouteModel;
+import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -70,8 +73,12 @@ public class RouteOrderAdapter extends RecyclerView.Adapter<RouteOrderAdapter.Ho
                         // here we are looking for name or phone number match
                         if (row.getOrderCode().toLowerCase().contains(charString.toLowerCase())
                                 || row.getContactName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getRouteName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getContactPhone().toLowerCase().contains(charString.toLowerCase())
-                                || row.getContactAddress().toLowerCase().contains(charString.toLowerCase())) {
+                                || row.getDivideDate().toLowerCase().contains(charString.toLowerCase())
+                                || row.getContactAddress().toLowerCase().contains(charString.toLowerCase())
+                                || row.getStatusName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getPostmanName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -134,8 +141,16 @@ public class RouteOrderAdapter extends RecyclerView.Adapter<RouteOrderAdapter.Ho
             } else {
                 tvParcelCode.setText("");
             }
+            SharedPref sharedPref = new SharedPref(mContext);
+            RouteInfo routeInfo;
+            String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+            if (!routeInfoJson.isEmpty()) {
+                routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+                tv_start_route.setText(routeInfo.getRouteName());
+            }
+            if (!item.getRouteName().isEmpty())
+                tv_start_route.setText(item.getRouteName());
 
-            tv_start_route.setText(item.getRouteName());
             tv_start_postman.setText(item.getPostmanName());
             tvTime.setText(item.getDivideDate());
             tv_status.setText(item.getStatusName());
