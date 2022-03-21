@@ -17,8 +17,10 @@ import com.ems.dingdong.model.OrderChangeRouteModel;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.VNCharacterUtils;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 
@@ -68,7 +70,8 @@ public class RouteOrderAdapter extends RecyclerView.Adapter<RouteOrderAdapter.Ho
                 } else {
                     List<OrderChangeRouteModel> filteredList = new ArrayList<>();
                     for (OrderChangeRouteModel row : mItems) {
-
+                        Log.d("thanhghkasasdasdasd",VNCharacterUtils.removeAccent(row.getStatusName().toLowerCase() + "  ==  "
+                        +VNCharacterUtils.removeAccent(charString.toLowerCase())));
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
                         if (row.getOrderCode().toLowerCase().contains(charString.toLowerCase())
@@ -77,7 +80,8 @@ public class RouteOrderAdapter extends RecyclerView.Adapter<RouteOrderAdapter.Ho
                                 || row.getContactPhone().toLowerCase().contains(charString.toLowerCase())
                                 || row.getDivideDate().toLowerCase().contains(charString.toLowerCase())
                                 || row.getContactAddress().toLowerCase().contains(charString.toLowerCase())
-                                || row.getStatusName().toLowerCase().contains(charString.toLowerCase())
+                                || VNCharacterUtils.removeAccent(row.getStatusName().toLowerCase())
+                                .contains(VNCharacterUtils.removeAccent(charString.toLowerCase()))
                                 || row.getPostmanName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }

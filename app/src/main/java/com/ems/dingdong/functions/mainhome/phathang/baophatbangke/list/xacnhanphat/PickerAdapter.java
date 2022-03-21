@@ -12,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.VNCharacterUtils;
 import com.ems.dingdong.views.CustomTextView;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,15 +54,12 @@ public class PickerAdapter extends RecyclerView.Adapter<PickerAdapter.HolderView
                 } else {
                     List<Item> filteredList = new ArrayList<>();
                     for (Item row : mList) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if (row.getText().toLowerCase().contains(charString.toLowerCase())
-                                || row.getValue().toLowerCase().contains(charString.toLowerCase())) {
+                        Log.d("asdasdasdas",StringEscapeUtils.unescapeJava(row.getText().toLowerCase()));
+                        if (StringEscapeUtils.unescapeJava(row.getText().toLowerCase()).contains(charString.toLowerCase())
+                                || StringEscapeUtils.unescapeJava(row.getValue().toLowerCase()).contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
-
                     mListFilter = filteredList;
                 }
 

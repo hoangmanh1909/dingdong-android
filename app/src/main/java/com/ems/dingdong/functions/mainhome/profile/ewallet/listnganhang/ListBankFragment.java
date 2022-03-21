@@ -45,7 +45,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     private UserInfo userInfo;
     String userJson;
     SharedPref sharedPref;
-
+    DialogOTP otpDialog;
     public static ListBankFragment getInstance() {
         return new ListBankFragment();
     }
@@ -151,7 +151,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                             } else is = true;
 
                             if (is) mPresenter.taikhoanthauchi();
-                            if (userInfo.getSmartBankLink().size() == 0)
+                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
                                 mPresenter.taikhoanthauchi();
                         }
                     }
@@ -177,13 +177,14 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 smartBankConfirmLinkRequest.setPOCode(userInfo.getUnitCode());
                 smartBankConfirmLinkRequest.setPostmanCode(userInfo.getUserName());
                 smartBankConfirmLinkRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                DialogOTP otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber(),
+                otpDialog= new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber(),
                         new DialogOTP.OnPaymentCallback() {
                             @Override
                             public void onPaymentClick(String otp, int type) {
                                 smartBankConfirmLinkRequest.setOTP(otp);
                                 mPresenter.smartBankConfirmLinkRequest(smartBankConfirmLinkRequest);
                             }
+
                             @Override
                             public void onCallOTP() {
                                 for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
@@ -209,6 +210,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 userInfo.getSmartBankLink().get(i).setStatus("ACTIVE");
+                otpDialog.dismiss();
                 sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
             }
         }

@@ -1023,7 +1023,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_partial.setVisibility(View.VISIBLE);
                 linearLayoutName.setVisibility(View.VISIBLE);
 
-
                 // hinh anh vaf thong tin
                 llVerify.setVisibility(View.VISIBLE);
                 ll_image.setVisibility(View.VISIBLE);

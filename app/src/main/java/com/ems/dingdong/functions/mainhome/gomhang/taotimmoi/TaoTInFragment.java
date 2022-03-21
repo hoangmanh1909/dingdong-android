@@ -33,6 +33,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
@@ -156,7 +157,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     public void anhxa() {
         maKhachhang = edt_makhachhang.getText();
         tenKhachhang = edt_tenkhachhang.getText();
-        sodienthoaiKhachhang = edt_sodienthoai.getText();
+        sodienthoaiKhachhang = edt_sodienthoai.getText().trim();
         emailKhachhang = edt_diachimail.getText();
         noiDungtin = edt_noidungtin.getText().toString();
         if (TextUtils.isEmpty(edt_soluong.getText()))
@@ -171,7 +172,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         tinhThanhpho = edt_tinhthanhpho.getText();
         Quanhuyen = edt_quanhuyen.getText();
         xaphuong = edt_xaphuong.getText();
-        phone = edt_phone.getText();
+        phone = edt_phone.getText().trim();
         nguoilienhe = edt_nguoilienhe.getText();
     }
 
@@ -183,8 +184,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         edt_noidungtin.setText("");
         edt_soluong.setText("");
         edt_khoiluong.setText("");
-        edt_ngayyeucau.setText("");
-        edt_gioyeucau.setText("");
+//        a sp
         edt_tinhthanhpho.setText("");
         edt_quanhuyen.setText("");
         edt_xaphuong.setText("");
@@ -208,6 +208,11 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
             Toast.showToast(getViewContext(), "Vui lòng nhập số điện thoại khách hàng");
             return;
         }
+        if (!NumberUtils.isNumber(sodienthoaiKhachhang)) {
+            Toast.showToast(getViewContext(), "Vui lòng kiểm tra số điện thoại khách hàng");
+            edt_sodienthoai.requestFocus();
+            return;
+        }
         if (TextUtils.isEmpty(noiDungtin)) {
             Toast.showToast(getViewContext(), "Vui lòng nhập nội dung tin");
             return;
@@ -226,6 +231,11 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
             Toast.showToast(getViewContext(), "Email không hợp lệ");
             return;
         }
+
+        if (!TextUtils.isEmpty(edt_khoiluong.getText().toString().trim()) && Integer.parseInt(edt_khoiluong.getText().trim()) <= 0) {
+            Toast.showToast(getViewContext(), "Vui lòng kiểm tra lại khối lượng đã nhập");
+            return;
+        }
         if (TextUtils.isEmpty(tinhThanhpho)) {
             Toast.showToast(getViewContext(), "Vui lòng nhập tỉnh thành phố");
             return;
@@ -240,6 +250,12 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         }
         if (TextUtils.isEmpty(phone)) {
             Toast.showToast(getViewContext(), "Vui lòng nhập số điện thoại");
+            return;
+        }
+
+        if (!NumberUtils.isNumber(phone)) {
+            Toast.showToast(getViewContext(), "Vui lòng kiểm tra số điện thoại đã nhập");
+            edt_phone.requestFocus();;
             return;
         }
         if (TextUtils.isEmpty(nguoilienhe)) {
@@ -360,6 +376,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     public void showTinhThanhPho(List<ProvinceModels> list) {
         mListTinhThanhPho = new ArrayList<>();
         mListTinhThanhPho = list;
+        edt_sonha.setText("");
     }
 
     @Override
@@ -369,12 +386,14 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         mListXaPhuong = new ArrayList<>();
         edt_quanhuyen.setText("");
         edt_xaphuong.setText("");
+        edt_sonha.setText("");
     }
 
     @Override
     public void showXaPhuong(List<WardModels> list) {
         mListXaPhuong = new ArrayList<>();
         mListXaPhuong = list;
+        edt_sonha.setText("");
         edt_xaphuong.setText("");
     }
 
@@ -470,6 +489,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
                 edt_tinhthanhpho.setText(item.getText().trim());
                 idTinh = Integer.parseInt(item.getValue());
                 mPresenter.getQuanHuyen(idTinh);
+                edt_sonha.setText("");
             }
         }).show();
     }
@@ -487,6 +507,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
                 edt_quanhuyen.setText(item.getText());
                 idQuuanhuyen = Integer.parseInt(item.getValue());
                 mPresenter.getXaPhuong(idQuuanhuyen);
+                edt_sonha.setText("");
             }
         }).show();
     }

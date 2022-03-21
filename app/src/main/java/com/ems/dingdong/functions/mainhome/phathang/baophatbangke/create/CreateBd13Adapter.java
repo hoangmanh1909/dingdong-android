@@ -276,9 +276,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 
             if (!TextUtils.isEmpty(item.getBatchCode())) {
                 tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), item.getBatchCode()));
-
+                tvBatchCode.setVisibility(View.VISIBLE);
             } else {
-                tvBatchCode.setText("");
+                tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), ""));
                 tvBatchCode.setVisibility(View.GONE);
             }
 

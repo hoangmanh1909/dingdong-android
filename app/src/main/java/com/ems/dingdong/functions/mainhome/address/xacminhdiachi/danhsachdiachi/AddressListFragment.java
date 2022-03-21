@@ -274,7 +274,8 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     public void showList(VpostcodeModel getListVpostV1) {
         mListObjectVNext = new ArrayList<>();
         mListObjectVNext.add(getListVpostV1);
-        mListObjectVNext.addAll(mListObjectV12);
+        if (mListObjectVNext != null)
+            mListObjectVNext.addAll(mListObjectV12);
     }
 
     @Override

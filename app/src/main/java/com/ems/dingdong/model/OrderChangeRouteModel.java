@@ -61,10 +61,28 @@ public class OrderChangeRouteModel {
     @SerializedName("PostmanName")
     @Expose
     private String postmanName;
+  @SerializedName("AssignFullName")
+    @Expose
+    private String AssignFullName;
+@SerializedName("CustomerName")
+    @Expose
+    private String CustomerName;
 
+    public String getCustomerName() {
+        return CustomerName;
+    }
 
+    public void setCustomerName(String customerName) {
+        CustomerName = customerName;
+    }
 
+    public String getAssignFullName() {
+        return AssignFullName;
+    }
 
+    public void setAssignFullName(String assignFullName) {
+        AssignFullName = assignFullName;
+    }
 
     public int getOrderChangeRouteId() {
         return orderChangeRouteId;

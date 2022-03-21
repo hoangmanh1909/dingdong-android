@@ -112,7 +112,6 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
                         OrderChangeRouteRequest request = new OrderChangeRouteRequest();
                         request.setPostmanId(Integer.parseInt(mUserInfo.getiD()));
                         request.setOrderChangeRouteIds(longs);
-
                         mPresenter.rejectOrder(request);
                     }
 
@@ -124,7 +123,6 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
                         OrderChangeRouteRequest request = new OrderChangeRouteRequest();
                         request.setPostmanId(Integer.parseInt(mUserInfo.getiD()));
                         request.setOrderChangeRouteIds(longs);
-
                         mPresenter.approveOrder(request);
                     }
 

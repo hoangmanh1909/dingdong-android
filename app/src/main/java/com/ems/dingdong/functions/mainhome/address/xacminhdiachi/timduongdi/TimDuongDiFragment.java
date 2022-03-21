@@ -396,7 +396,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                     com.ems.dingdong.model.request.vietmap.Feature feature = new com.ems.dingdong.model.request.vietmap.Feature();
                     Geometry geometry = new Geometry();
                     List<List<Double>> drawCoordinatess = new ArrayList<>();
-
                     for (int i = 0; i < coordinates.length(); i++) {
                         List<Double> drawCoordinates = new ArrayList<>();
                         JSONArray element = coordinates.getJSONArray(i);
@@ -449,7 +448,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                     requests.add(mList.get(i).getReceiverVpostcode());
                 else requests.add(mList.get(i).getSenderVpostcode());
             }
-
 
             if (mPresenter.getApiTravel() != null)
                 mPresenter.vietmapTravelSalesmanProblem(mApiTravel);

@@ -264,13 +264,14 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             DeliveryUnSuccessRequest deliveryUnSuccessRequest = new DeliveryUnSuccessRequest();
             deliveryUnSuccessRequest.setData(request);
             String bankCode = new String();
-            for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                    if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
-                        bankCode = userInfo.getSmartBankLink().get(i).getBankCode();
+            if (userInfo.getSmartBankLink() != null)
+                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                        if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
+                            bankCode = userInfo.getSmartBankLink().get(i).getBankCode();
+                        }
                     }
                 }
-            }
             deliveryUnSuccessRequest.setPaymentBankCode(bankCode);
 
             mInteractor.pushToDeliveryUnSuccess(deliveryUnSuccessRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {

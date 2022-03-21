@@ -135,6 +135,7 @@
     <string name="not_link_to_e_wallet">Bạn chưa liên kết với Ví điện tử PostPay</string>
     <string name="linked_to_e_wallet">Đã liên kết, bạn có thể thực hiện nộp tiền thông qua Ví điện tử PostPay</string>
     <string name="please_link_to_e_post_wallet_first">Vui lòng liên kết Ví điện tử PostPay trước.</string>
+    <string name="please_link_to_e_post_wallet">Bạn chưa liên kết tài khoản!</string>
     <string name="payment_cancel">Thoát</string>
     <string name="payment_confirn">Đồng ý</string>
     <string name="find_package_quickly">Tìm kiếm nhanh bưu gửi</string>

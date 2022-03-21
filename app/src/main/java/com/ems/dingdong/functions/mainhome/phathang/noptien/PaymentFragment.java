@@ -444,8 +444,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                                 if (id.equals("1"))
                                     bankcode = "SeABank";
                                 else bankcode = "EW";
-
-
                                 for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
                                     if (id.equals("1") && userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank"))
                                         posmanTel = userInfo.getMobileNumber();
@@ -481,8 +479,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 }
 
             }).show();
-
-
         }
     }
 

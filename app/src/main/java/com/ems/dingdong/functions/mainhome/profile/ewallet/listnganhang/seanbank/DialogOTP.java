@@ -67,7 +67,6 @@ public class DialogOTP extends Dialog {
                     return;
                 }
                 callback.onPaymentClick(optEditText.getText().toString(), 0);
-                dismiss();
                 break;
         }
     }

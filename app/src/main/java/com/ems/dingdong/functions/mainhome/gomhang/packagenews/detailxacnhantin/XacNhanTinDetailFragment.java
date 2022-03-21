@@ -12,6 +12,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
@@ -261,7 +262,6 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
 
     @Override
     public void showView(CommonObject commonObject) {
-        Log.d ("thanhkeieme",new Gson().toJson(commonObject));
         if (mPresenter.getMode().equals("ADD")) {
             if (commonObject.getStatusCode().equals("P0")) {
 //            btnConfirm.setEnabled(true);
@@ -291,7 +291,7 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
             tvDescription.setText(commonObject.getDescription() + " , " + commonObject.getNote());
 
         tvQuantity.setText(commonObject.getQuantity());
-        tvWeigh.setText(commonObject.getWeigh());
+        tvWeigh.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(commonObject.getWeigh()))));
         tvTitle.setText(String.format("Mã tin %s", commonObject.getCode()));
         tvReceiverName.setText(commonObject.getReceiverName());
         tvTrackingCode.setText(commonObject.getTrackingCode());

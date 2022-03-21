@@ -107,7 +107,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
     public void showDetailOrder(OrderChangeRouteModel item) {
         CommonObject commonObject = new CommonObject();
         commonObject.setAssignDateTime(item.getDivideDate());
-        commonObject.setAssignFullName(item.getContactName());
+        commonObject.setAssignFullName(item.getDivideByName());
         commonObject.setReceiverAddress(item.getContactAddress());
         commonObject.setReceiverName(item.getContactName());
         commonObject.setReceiverPhone(item.getContactPhone());
@@ -115,7 +115,8 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         commonObject.setQuantity(Integer.toString(item.getQuantity()));
         commonObject.setWeigh(Integer.toString(item.getWeight()));
         commonObject.setCode(item.getOrderCode());
-        commonObject.setDivideByName(item.getDivideByName());
+//        commonObject.setDivideByName(item.getDivideByName());
+        commonObject.setCustomerName(item.getCustomerName());
         new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).setMode("VIEW").pushView();
     }
 

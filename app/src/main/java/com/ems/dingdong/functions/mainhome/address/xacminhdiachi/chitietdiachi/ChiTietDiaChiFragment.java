@@ -75,7 +75,6 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     NestedScrollView scrollView;
     @BindView(R.id.mapViewDetail)
     MapView mapView;
-
     @BindView(R.id.edt_name)
     EditText edt_name;
     @BindView(R.id.edt_street)
@@ -94,10 +93,8 @@ public class ChiTietDiaChiFragment extends ViewFragment<ChiTietDiaChiContract.Pr
     CustomMediumTextView tv_verify;
     @BindView(R.id.select_location_button)
     Button selectLocationButton;
-
     private UserInfo userInfo;
     private AddressListModel addressListModel;
-
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
     private Location mLocation;

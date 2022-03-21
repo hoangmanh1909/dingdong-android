@@ -196,7 +196,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                         tvContactAddress.setTypeface(typeface);
                         tvContactDescription.setTypeface(typeface);
                     }
-                    tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     tvStatus.setText("Chưa xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {

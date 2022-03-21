@@ -22,7 +22,9 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -111,6 +113,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
 
     @Override
     public void showDetailView(CommonObject commonObject) {
+        Log.d ("thanhkeieme",new Gson().toJson(commonObject));
+
         if (mType == 1) {
             new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
             // new ListParcelPresenter(mContainerView).setList(commonObject.getListParcelCode()).pushView();
