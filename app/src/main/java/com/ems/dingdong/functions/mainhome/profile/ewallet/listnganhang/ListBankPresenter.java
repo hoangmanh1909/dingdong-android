@@ -65,7 +65,13 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
                             mView.showOTP();
-                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        } else if (simpleResult.getErrorCode().equals("101"))
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.dissmisOTP();
+                        }
                         mView.hideProgress();
                     }
                 });

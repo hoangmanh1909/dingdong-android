@@ -30,11 +30,10 @@
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/notification"
                         android:textColor="@color/black"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:textSize="@dimen/text_size_18sp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -87,6 +86,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_thongtin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

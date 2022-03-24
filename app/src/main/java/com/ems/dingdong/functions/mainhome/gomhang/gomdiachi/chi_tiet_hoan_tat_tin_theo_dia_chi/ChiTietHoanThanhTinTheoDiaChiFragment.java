@@ -828,6 +828,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
             hoanTatTinRequest.setSenderLat(senderLat);
             hoanTatTinRequest.setSenderLon(senderLon);
+            hoanTatTinRequest.setSourceChanel("DD_ANDROID");
             hoanTatTinRequest.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
             hoanTatTinRequest.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
             if (radUnSuccess.isChecked() && mReason == null) {

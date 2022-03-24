@@ -121,6 +121,16 @@ public class PaypostPaymentRequest {
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
+    @SerializedName("SourceChanel")
+    private String SourceChanel = "DD_ANDROID";
+
+    public String getSourceChanel() {
+        return SourceChanel;
+    }
+
+    public void setSourceChanel(String sourceChanel) {
+        SourceChanel = sourceChanel;
+    }
 
     public long getFeeCOD() {
         return FeeCOD;

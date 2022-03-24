@@ -169,6 +169,16 @@ public class DeliveryProductRequest {
     private String PODeliveryLon;
     @SerializedName("PaymentBankCode")
     private String PaymentBankCode;
+   @SerializedName("SourceChanel")
+    private String SourceChanel;
+
+    public String getSourceChanel() {
+        return SourceChanel;
+    }
+
+    public void setSourceChanel(String sourceChanel) {
+        SourceChanel = sourceChanel;
+    }
 
     public String getPaymentBankCode() {
         return PaymentBankCode;

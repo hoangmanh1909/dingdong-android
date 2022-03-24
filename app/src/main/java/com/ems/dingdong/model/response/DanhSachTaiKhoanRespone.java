@@ -5,8 +5,28 @@ import com.google.gson.annotations.SerializedName;
 public class DanhSachTaiKhoanRespone {
     @SerializedName("AccountNumber")
     private String AccountNumber;
+    @SerializedName("AccountName")
+    private String AccountName;
+    @SerializedName("AccountLimit")
+    private String AccountLimit;
     @SerializedName("AccountLimitExpired")
     private String AccountLimitExpired;
+
+    public String getAccountName() {
+        return AccountName;
+    }
+
+    public void setAccountName(String accountName) {
+        AccountName = accountName;
+    }
+
+    public String getAccountLimit() {
+        return AccountLimit;
+    }
+
+    public void setAccountLimit(String accountLimit) {
+        AccountLimit = accountLimit;
+    }
 
     boolean ischeck = false;
 

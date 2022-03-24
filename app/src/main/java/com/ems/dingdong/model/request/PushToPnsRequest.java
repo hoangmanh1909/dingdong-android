@@ -54,16 +54,12 @@ public class PushToPnsRequest {
     private String customerCode;
     @SerializedName("VATCode")
     private String VATCode;
-
-
     @SerializedName("PostmanTel")
     private String PostmanTel;
     @SerializedName("PostmanCode")
     private String PostmanCode;
-
     @SerializedName("IsCancelOrder")
     private boolean isCancelOrder;
-
     @SerializedName("FeeCancelOrder")
     private long feeCancelOrder;
     @SerializedName("DeliveryLat")
@@ -78,6 +74,18 @@ public class PushToPnsRequest {
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
+    @SerializedName("EstimateProcessTime")
+    private String EstimateProcessTime;
+    @SerializedName("SourceChanel")
+    private String SourceChanel;
+
+    public String getEstimateProcessTime() {
+        return EstimateProcessTime;
+    }
+
+    public void setEstimateProcessTime(String estimateProcessTime) {
+        EstimateProcessTime = estimateProcessTime;
+    }
 
     public boolean isCancelOrder() {
         return isCancelOrder;
@@ -105,7 +113,11 @@ public class PushToPnsRequest {
                             String ReceiverLat,
                             String ReceiverLon,
                             String PODeliveryLat,
-                            String PODeliveryLon) {
+                            String PODeliveryLon,
+                            String EstimateProcessTime,
+                            String SourceChanel) {
+        this.EstimateProcessTime = EstimateProcessTime;
+        this.SourceChanel = SourceChanel;
         this.postmanID = postmanID;
         this.ladingCode = ladingCode;
         this.deliveryPOCode = deliveryPOCode;

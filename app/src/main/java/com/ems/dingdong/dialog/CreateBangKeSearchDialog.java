@@ -119,26 +119,12 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                         .show();
                 break;
             case R.id.tv_search:
-//                if (TextUtils.isEmpty(tvShift.getText())) {
-//                    Toast.showToast(mActivity, "Phải chọn ca");
-//                    return;
-//                }
-//                if (TextUtils.isEmpty(tvBag.getText())) {
-//                    Toast.showToast(mActivity, "Phải chọn túi số");
-//                    return;
-//                }
                 if (calFromCreate.after(calToCreate) || calToCreate.after(Calendar.getInstance()))
                     mDelegate.onResponse(null, null, null, Constants.ERROR_TIME_CODE);
                 else
                     mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), DateTimeUtils.convertDateToString(calToCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mChuyenThu, Constants.SUCCESS_TIME_CODE);
                 dismiss();
                 break;
-//            case R.id.tv_shift:
-//                showUIShift();
-//                break;
-//            case R.id.tv_bag:
-//                showUIBag();
-//                break;
             case R.id.btnBack:
                 dismiss();
                 break;

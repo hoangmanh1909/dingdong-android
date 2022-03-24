@@ -415,7 +415,7 @@ public class NetWorkController {
 
     public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                                   String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason);
+        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason,"DD_ANDROID");
         call.enqueue(callback);
     }
 

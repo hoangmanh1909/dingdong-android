@@ -20,6 +20,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.model.response.DanhSachTaiKhoanRespone;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -76,11 +77,17 @@ public class SeabankAdapter extends RecyclerView.Adapter<SeabankAdapter.HolderVi
         TextView tvSotaikhoanthauchi;
         @BindView(R.id.tv_ngayhethan)
         TextView tvNgayhethan;
+        @BindView(R.id.tv_hovaten)
+        TextView tvHovaten;
+        @BindView(R.id.tv_hanmuc)
+        TextView tvHanmuc;
 
         @SuppressLint("SetTextI18n")
         public void bindView(Object item, int position) {
             DanhSachTaiKhoanRespone model = (DanhSachTaiKhoanRespone) item;
             tvSotaikhoanthauchi.setText(model.getAccountNumber());
+            tvHovaten.setText(model.getAccountName());
+            tvHanmuc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(model.getAccountLimit())))));
             String nam = model.getAccountLimitExpired().substring(0, 4);
             String thang = model.getAccountLimitExpired().substring(4, 6);
             String ngay = model.getAccountLimitExpired().substring(6, 8);

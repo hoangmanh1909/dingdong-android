@@ -65,7 +65,6 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
         mView.showProgress();
 
         Log.d ("thanhkhiemasd123123",new Gson().toJson(mListRequest));
-
         // check log
         mInteractor.confirmAllOrderPostman(mListRequest, new CommonCallback<ConfirmAllOrderPostmanResult>((Activity) mContainerView) {
             @Override

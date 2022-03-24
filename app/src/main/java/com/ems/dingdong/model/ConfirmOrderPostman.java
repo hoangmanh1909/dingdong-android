@@ -17,6 +17,16 @@ public class ConfirmOrderPostman {
     String weigh;
     @SerializedName("AssignDateTime")
     String assignDateTime;
+    @SerializedName("SourceChanel")
+    String SourceChanel = "DD_ANDROID";
+
+    public String getSourceChanel() {
+        return SourceChanel;
+    }
+
+    public void setSourceChanel(String sourceChanel) {
+        SourceChanel = sourceChanel;
+    }
 
     public String getStatusCode() {
         return statusCode;

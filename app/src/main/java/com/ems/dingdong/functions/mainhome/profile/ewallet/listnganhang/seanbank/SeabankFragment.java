@@ -118,6 +118,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
 
     List<DanhSachTaiKhoanRespone> mList;
     SeabankAdapter mAdapter;
+    DialogOTP otpDialog;
 
     @Override
     protected int getLayoutId() {
@@ -281,17 +282,12 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
             if (mList.get(i).isIscheck())
                 account = mList.get(i).getAccountNumber();
         }
-//        respone.setBankAccountNumber(account);
-//        respone.setBankAccountLimit("0");
-//        respone.setBankAccountLimitExpired("0");
-//        links.add(respone);
         if (userInfo.getSmartBankLink() == null) {
             List<SmartBankLink> links = new ArrayList<>();
             userInfo.setSmartBankLink(links);
         }
         userInfo.getSmartBankLink().add(respone);
         sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-
         SmartBankConfirmLinkRequest smartBankConfirmLinkRequest = new SmartBankConfirmLinkRequest();
         smartBankConfirmLinkRequest.setBankCode(maNganHang);
         smartBankConfirmLinkRequest.setPIDNumber(userInfo.getPIDNumber());
@@ -299,14 +295,12 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         smartBankConfirmLinkRequest.setPOCode(userInfo.getUnitCode());
         smartBankConfirmLinkRequest.setPostmanCode(userInfo.getUserName());
         smartBankConfirmLinkRequest.setSeABankAccount(account);
-        DialogOTP otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + respone.getPostmanTel(),
+        otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + respone.getPostmanTel(),
                 new DialogOTP.OnPaymentCallback() {
                     @Override
                     public void onPaymentClick(String otp, int type) {
-
                         smartBankConfirmLinkRequest.setOTP(otp);
                         mPresenter.smartBankConfirmLinkRequest(smartBankConfirmLinkRequest);
-
                     }
 
                     @Override
@@ -325,6 +319,45 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         otpDialog.show();
+    }
+
+    @Override
+    public void showOTP() {
+        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                SmartBankConfirmLinkRequest smartBankConfirmLinkRequest = new SmartBankConfirmLinkRequest();
+                smartBankConfirmLinkRequest.setBankCode(maNganHang);
+                smartBankConfirmLinkRequest.setPIDNumber(userInfo.getPIDNumber());
+                smartBankConfirmLinkRequest.setPIDType(userInfo.getPIDType());
+                smartBankConfirmLinkRequest.setPOCode(userInfo.getUnitCode());
+                smartBankConfirmLinkRequest.setPostmanCode(userInfo.getUserName());
+                smartBankConfirmLinkRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
+                otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber(),
+                        new DialogOTP.OnPaymentCallback() {
+                            @Override
+                            public void onPaymentClick(String otp, int type) {
+                                smartBankConfirmLinkRequest.setOTP(otp);
+                                mPresenter.smartBankConfirmLinkRequest(smartBankConfirmLinkRequest);
+                            }
+
+                            @Override
+                            public void onCallOTP() {
+                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                                        CallOTP callOTP = new CallOTP();
+                                        callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
+                                        callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
+                                        callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
+                                        mPresenter.ddCallOTP(callOTP);
+                                    }
+                                }
+                            }
+                        });
+                otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                otpDialog.show();
+            }
+        }
     }
 
     @Override
@@ -371,12 +404,24 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     public void showMain() {
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                otpDialog.dismiss();
                 userInfo.getSmartBankLink().get(i).setStatus("ACTIVE");
                 sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
                 Intent intent = new Intent(getViewContext(), ProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
+        }
+    }
+
+    @Override
+    public void dissmisOTP() {
+        try {
+            otpDialog.dismiss();
+            mPresenter.back();
+
+        } catch (Exception e) {
+
         }
     }
 }

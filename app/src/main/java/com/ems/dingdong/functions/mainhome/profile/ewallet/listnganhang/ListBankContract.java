@@ -24,6 +24,8 @@ public interface ListBankContract {
         void showOTP();
 
         void showThanhCong();
+
+        void dissmisOTP();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -23,6 +24,8 @@ public class ConfirmDialog extends Dialog {
     CustomBoldTextView totalRecord;
     @BindView(R.id.total_amount)
     CustomBoldTextView totalAmount;
+    @BindView(R.id.ll_thongtin)
+    LinearLayout llThongtin;
     private long lastClickTime = 0;
     private OnCancelClickListener cancelClickListener;
     private OnOkClickListener okClickListener;
@@ -34,6 +37,16 @@ public class ConfirmDialog extends Dialog {
         ButterKnife.bind(this, view);
         totalRecord.setText(String.valueOf(quantity));
         totalAmount.setText(String.format("%s đ", NumberUtils.formatPriceNumber(amount + fee)));
+    }
+
+
+    public ConfirmDialog(Context context, int quantity) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        View view = View.inflate(getContext(), R.layout.dialog_confirm, null);
+        setContentView(view);
+        ButterKnife.bind(this, view);
+        totalRecord.setText(String.valueOf(quantity));
+        llThongtin.setVisibility(View.GONE);
     }
 
     @Override
@@ -50,7 +63,7 @@ public class ConfirmDialog extends Dialog {
 
             case R.id.tv_ok_dialog:
                 if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                    Toast.showToast(getContext(),"Bạn thao tác quá nhanh");
+                    Toast.showToast(getContext(), "Bạn thao tác quá nhanh");
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();

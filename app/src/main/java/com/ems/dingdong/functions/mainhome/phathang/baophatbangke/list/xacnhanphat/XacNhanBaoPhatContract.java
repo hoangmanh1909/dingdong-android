@@ -214,7 +214,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery not success.
          */
-        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture);
+        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture,String EstimateProcessTime);
 
         /**
          * delivery success.

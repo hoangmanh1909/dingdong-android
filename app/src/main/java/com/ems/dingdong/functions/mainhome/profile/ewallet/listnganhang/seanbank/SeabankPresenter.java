@@ -119,14 +119,13 @@ public class SeabankPresenter extends Presenter<SeabankContract.View, SeabankCon
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
-//                            Intent intent = new Intent(getViewContext(), ProfileActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            getViewContext().startActivity(intent);
                             mView.showMain();
-//                            Intent intent = new Intent(getViewContext(), ListBankActivite.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            getViewContext().startActivity(intent);
-                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        } else if (simpleResult.getErrorCode().equals("101")) {
+                            Toast.showToast(getViewContext(), "Bạn đã nhập sai OTP! Vui lòng nhập đúng OTP.");
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.dissmisOTP();
+                        }
                         mView.hideProgress();
                     }
                 });

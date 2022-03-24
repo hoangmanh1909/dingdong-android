@@ -46,6 +46,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     String userJson;
     SharedPref sharedPref;
     DialogOTP otpDialog;
+
     public static ListBankFragment getInstance() {
         return new ListBankFragment();
     }
@@ -177,7 +178,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 smartBankConfirmLinkRequest.setPOCode(userInfo.getUnitCode());
                 smartBankConfirmLinkRequest.setPostmanCode(userInfo.getUserName());
                 smartBankConfirmLinkRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                otpDialog= new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber(),
+                otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber(),
                         new DialogOTP.OnPaymentCallback() {
                             @Override
                             public void onPaymentClick(String otp, int type) {
@@ -189,6 +190,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                             public void onCallOTP() {
                                 for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
                                     if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                                        otpDialog.dismiss();
                                         CallOTP callOTP = new CallOTP();
                                         callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
                                         callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
@@ -220,6 +222,16 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 mList.get(i).setLienket(true);
                 mAdapter.notifyDataSetChanged();
             }
+        }
+    }
+
+    @Override
+    public void dissmisOTP() {
+        try {
+            otpDialog.dismiss();
+
+        } catch (Exception e) {
+
         }
     }
 }

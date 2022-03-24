@@ -66,8 +66,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     getSolutions();
                     getReasons();
                     getList(response.body().getUserInfo().getUnitCode());
-//                    response.body().getUserInfo().setPIDNumber("154554454444");
-//                    response.body().getUserInfo().setPIDType("CMND");
+                    response.body().getUserInfo().setPIDNumber("154554454444");
+                    response.body().getUserInfo().setPIDType("CMND");
 
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));

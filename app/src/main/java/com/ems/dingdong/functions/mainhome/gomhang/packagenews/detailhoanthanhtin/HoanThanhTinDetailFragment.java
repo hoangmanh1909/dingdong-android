@@ -417,6 +417,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
                                     hoanTatTinRequest.setSenderLat(senderLat);
                                     hoanTatTinRequest.setSenderLon(senderLon);
+                                    hoanTatTinRequest.setSourceChanel("DD_ANDROID");
 
                                     hoanTatTinRequest.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
                                     hoanTatTinRequest.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());

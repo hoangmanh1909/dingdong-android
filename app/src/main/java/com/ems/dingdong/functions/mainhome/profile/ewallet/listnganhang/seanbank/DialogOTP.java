@@ -49,7 +49,6 @@ public class DialogOTP extends Dialog {
                 break;
             case R.id.tv_guilai_otp:
                 callback.onCallOTP();
-                dismiss();
                 break;
             case R.id.tv_pay:
                 if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {

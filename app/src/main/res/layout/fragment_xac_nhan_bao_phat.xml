@@ -1170,10 +1170,40 @@
                         android:layout_weight="2"
                         android:gravity="right"
                         android:textColor="#253854"
-                        android:textSize="@dimen/text_size_14sp"
+                        android:textSize="14dp"
                         app:formAction="@drawable/ic_arrow_down"
                         app:formDrawablePadding="@dimen/dimen_10dp"
                         app:formHint="Chọn phương án" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Thời gian dự kiến nhập kho"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        android:textColor="#253854"
+                        android:textSize="14dp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn thời gian" />
 
                 </LinearLayout>
 

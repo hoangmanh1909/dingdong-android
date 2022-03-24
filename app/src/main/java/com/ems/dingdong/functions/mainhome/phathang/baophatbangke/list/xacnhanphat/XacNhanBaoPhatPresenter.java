@@ -196,7 +196,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
 
     @Override
-    public void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture) {
+    public void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture, String EstimateProcessTime) {
         mView.showProgress();
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
@@ -222,7 +222,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             if (isCancle) feeCancle = item.getFeeCancelOrder();
             else feeCancle = 0;
             String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-
             PushToPnsRequest request = new PushToPnsRequest(
                     postmanID,
                     ladingCode,
@@ -256,7 +255,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.getReceiverLat(),
                     item.getReceiverLon(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
-                    NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+                    NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
+                    EstimateProcessTime,"DD_ANDROID");
 
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
@@ -406,6 +406,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setcODAmountEdit(codeEdit);
             request.setFeeCOD(item.getFeeCOD());
             request.setFeePA(item.getFeePA());
+            request.setSourceChanel("DD_ANDROID");
 //            request.setFeePA(item.getFeePA());
 //            request.setFeePAPNS(item.getFeePA());
             paymentRequests.add(request);

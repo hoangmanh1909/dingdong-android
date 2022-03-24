@@ -30,7 +30,17 @@ public class CommonObject extends RealmObject {
     String SenderVpostcode;
     @SerializedName("ReferenceCode")
     @Expose
-    private String ReferenceCode;
+    private String ReferenceCode; @SerializedName("SourceChanel")
+    @Expose
+    private String SourceChanel;
+
+    public String getSourceChanel() {
+        return SourceChanel;
+    }
+
+    public void setSourceChanel(String sourceChanel) {
+        SourceChanel = sourceChanel;
+    }
 
     public String getReferenceCode() {
         return ReferenceCode;

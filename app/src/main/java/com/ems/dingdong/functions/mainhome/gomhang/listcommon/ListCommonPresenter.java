@@ -152,6 +152,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                 confirmOrderPostman.setEmployeeID(userInfo.getiD());
                 confirmOrderPostman.setOrderPostmanID(item.getOrderPostmanID());
                 confirmOrderPostman.setStatusCode("P1");
+                confirmOrderPostman.setSourceChanel("DD_ANDROID");
                 listRequest.add(confirmOrderPostman);
             }
         }

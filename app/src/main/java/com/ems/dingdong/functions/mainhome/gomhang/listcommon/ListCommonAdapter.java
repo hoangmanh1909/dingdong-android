@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -136,6 +137,8 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         CustomTextView tvSodonhang;
         @BindView(R.id.tv_recycler)
         CustomTextView tvRecycler;
+        @BindView(R.id.ll_background)
+        LinearLayout llBackground;
         @BindView(R.id.iv_status)
         public ImageView ivStatus;
 
@@ -169,10 +172,14 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
             if (mType == 1) {
                 cbSelected.setVisibility(View.VISIBLE);
                 cbSelected.setOnCheckedChangeListener(null);
-                if (item.isSelected())
+                if (item.isSelected()) {
                     cbSelected.setChecked(true);
-                else {
-                    cbSelected.setChecked(false);
+                    llBackground.setBackgroundResource(R.color.color_background_bd13);
+                } else {
+                    {
+                        cbSelected.setChecked(false);
+                        llBackground.setBackgroundResource(R.color.white);
+                    }
                 }
 
                 cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -180,7 +187,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             item.setSelected(true);
+                            llBackground.setBackgroundResource(R.color.color_background_bd13);
                         } else {
+                            llBackground.setBackgroundResource(R.color.white);
                             item.setSelected(false);
                         }
                     }
@@ -196,12 +205,12 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                         tvContactAddress.setTypeface(typeface);
                         tvContactDescription.setTypeface(typeface);
                     }
-                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+//                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     tvStatus.setText("Chưa xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
                     cbSelected.setVisibility(View.GONE);
-                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+//                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
                         tvStt.setTypeface(typeface);
@@ -234,7 +243,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
-                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+//                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
                         tvStt.setTypeface(typeface);

@@ -66,6 +66,16 @@ public class HoanTatTinRequest {
     private String POCollectLon;
     @SerializedName("OrderCode")
     private String orderCode;
+ @SerializedName("SourceChanel")
+    private String SourceChanel;
+
+    public String getSourceChanel() {
+        return SourceChanel;
+    }
+
+    public void setSourceChanel(String sourceChanel) {
+        SourceChanel = sourceChanel;
+    }
 
     @Ignore
     List<String> shipmentCodeV1List;

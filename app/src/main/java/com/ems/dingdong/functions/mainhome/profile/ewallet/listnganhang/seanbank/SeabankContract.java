@@ -43,6 +43,10 @@ public interface SeabankContract {
 
         void showMain();
 
+        void dissmisOTP();
+
+        void showOTP();
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

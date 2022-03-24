@@ -449,9 +449,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                                         posmanTel = userInfo.getMobileNumber();
                                     else if (id.equals("2") && userInfo.getSmartBankLink().get(i).getBankCode().equals("EW"))
                                         posmanTel = userInfo.getMobileNumber();
-
                                 }
-
                                 mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel);
                                 sweetAlertDialog.dismiss();
 

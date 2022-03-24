@@ -25,7 +25,8 @@ public interface ListCommonContract {
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate, CommonCallback<CommonObjectListResult> callback);
+                                       String toAssignDate,
+                                       CommonCallback<CommonObjectListResult> callback);
 
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,

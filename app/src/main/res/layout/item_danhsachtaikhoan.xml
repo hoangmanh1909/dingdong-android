@@ -31,6 +31,25 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Họ và tên:"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_hovaten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/home_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Số tài khoản thấu chi: "
                     android:textColor="@color/black" />
 
@@ -38,14 +57,30 @@
                     android:id="@+id/tv_sotaikhoanthauchi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="asd"
+                    android:text="Ten"
                     android:textColor="@color/home_line" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hạn mức: "
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_hanmuc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/red_light" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
                 <TextView

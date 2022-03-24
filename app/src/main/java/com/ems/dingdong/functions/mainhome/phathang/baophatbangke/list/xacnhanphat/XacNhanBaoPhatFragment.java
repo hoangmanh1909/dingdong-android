@@ -84,6 +84,7 @@ import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
+import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -274,11 +275,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout ll_tong_tien_tam_thu1;
     @BindView(R.id.tv_tong_tien_nop_edit1)
     TextView tvTongTienTamthu1;
+    @BindView(R.id.tv_time)
+    FormItemTextView tvTime;
     long tiem_tam = 0;
     @BindView(R.id.ll_edt_cod)
     LinearLayout lledtcod;
     String toPoCode = "";
     private Calendar calDateOfBirth = Calendar.getInstance();
+    private Calendar calendar = Calendar.getInstance();
+    private Calendar calendarmin = Calendar.getInstance();
     private Calendar calDateAccepted = Calendar.getInstance();
     private XacNhanBaoPhatAdapter adapter;
     private CuocAdapter cAdapter;
@@ -916,7 +921,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
             R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
             R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund,
-            R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc, R.id.rl_e_wallet})
+            R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc, R.id.rl_e_wallet, R.id.tv_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_e_wallet:
@@ -1189,6 +1194,28 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 calDateOfBirth.get(Calendar.MONTH),
                                 calDateOfBirth.get(Calendar.DAY_OF_MONTH))
                         .minDate(1600, 0, 1)
+                        .build()
+                        .show();
+                break;
+            case R.id.tv_time:
+                new SpinnerDatePickerDialogBuilder()
+                        .context(getViewContext())
+                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            tvTime.setText(DateTimeUtils
+                                    .convertDateToString(calendar.getTime(),
+                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
+                        })
+                        .spinnerTheme(R.style.DatePickerSpinner)
+                        .showTitle(true)
+                        .showDaySpinner(true)
+                        .defaultDate(calendar.get(Calendar.YEAR),
+                                calendar.get(Calendar.MONTH),
+                                calendar.get(Calendar.DAY_OF_MONTH))
+                        .maxDate(6000, 12, 31)
+                        .minDate(calendarmin.get(Calendar.YEAR),
+                                calendarmin.get(Calendar.MONTH),
+                                calendarmin.get(Calendar.DAY_OF_MONTH))
                         .build()
                         .show();
                 break;
@@ -1494,54 +1521,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             } else tiem_tam = 0;
 
             long final_amountShow = _amountShow;
-//            if (cbSelectedPhathoan.isChecked())
-//                new DigLogPhathoan(getViewContext(), new SapXepCallback() {
-//                    @Override
-//                    public void onResponse(int type) {
-////                        mBaoPhatBangke.get(0).setItemReturn("Y");
-//                        new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
-//                                .setOnCancelListener(Dialog::dismiss)
-//                                .setOnOkListener(confirmDialog -> {
-//                                    confirmDialog.dismiss();
-//                                    InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
-//                                    if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
-//                                        infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
-//                                        infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
-//                                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
-//                                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
-//                                        infoVerify.setGtgt(tvGTTT.getText().toString());
-//                                        if (authenType == 0)
-//                                            infoVerify.setAuthenType(3);
-//                                        else
-//                                            infoVerify.setAuthenType(authenType);
-//                                    }
-//                                    if (mDeliveryType == 2) {
-//                                        if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-//                                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-//                                                    edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
-//                                        } else {
-//                                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-//                                                    edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
-//                                        }
-//                                    } else {
-//                                        if (totalAmount > 0) {
-//                                            int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
-//                                            if (!TextUtils.isEmpty(et_pt_amount.getText())) {
-//                                                if (amount <= totalAmount)
-//                                                    deliveryPartial(infoVerify, amount);
-//                                                else
-//                                                    Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
-//                                            } else
-//                                                Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
-//                                        } else deliveryPartial(infoVerify, 0);
-//                                    }
-//                                })
-//                                .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
-//                                .show();
-//                    }
-//                }).show();
-//            else {
-////                mBaoPhatBangke.get(0).setItemReturn("N");
             new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
@@ -1593,6 +1572,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Toast.showToast(tv_solution.getContext(), getViewContext().getString(R.string.you_have_not_chosen_solution));
                 return;
             }
+            if (TextUtils.isEmpty(tvTime.getText())) {
+                Toast.showToast(tvTime.getContext(), getViewContext().getString(R.string.you_have_not_time));
+                return;
+            }
             if (cbSelected.isChecked()) {
                 for (int i = 0; i < mBaoPhatBangke.size(); i++) {
                     if (mBaoPhatBangke.get(i).getFeeCancelOrder() < 1000) {
@@ -1601,35 +1584,30 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                 }
             }
-//            if (cbSelectedPhathoan.isChecked()) {
-//                mBaoPhatBangke.get(0).setItemReturn("Y");
-//                new DigLogPhathoan(getViewContext(), new SapXepCallback() {
-//                    @Override
-//                    public void onResponse(int type) {
-//                        mPresenter.submitToPNS(
-//                                mReasonInfo.getCode(),
-//                                mSolutionInfo.getCode(),
-//                                tv_Description.getText().toString(),
-//                                mFile,
-//                                mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-//                                mSign);
-//                    }
-//                }).show();
-//            } else {
-            mPresenter.submitToPNS(
-                    mReasonInfo.getCode(),
-                    mSolutionInfo.getCode(),
-                    tv_Description.getText().toString(),
-                    mFile,
-                    mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                    mSign);
+            String time = TimeUtils.convertDateToString(calendar.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
+
+            new ConfirmDialog(getViewContext(), listSelected.size())
+                    .setOnCancelListener(Dialog::dismiss)
+                    .setOnOkListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                        mPresenter.submitToPNS(
+                                mReasonInfo.getCode(),
+                                mSolutionInfo.getCode(),
+                                tv_Description.getText().toString(),
+                                mFile,
+                                mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
+                                mSign, time);
+                    })
+                    .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
+                    .show();
 //            }
 
+
+//            }
         } else if (mDeliveryType == 3) {
             /**
              * mDeliveryType = 3 -> chuyển tuyến
              */
-
             if (_llChontuyen.getVisibility() == View.VISIBLE) {
                 if (TextUtils.isEmpty(tv_route.getText())) {
                     Toast.showToast(tv_route.getContext(), getViewContext().getString(R.string.you_have_not_pick_route));
@@ -1751,6 +1729,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setDeliveryLon(item.getDeliveryLon());
         request.setReceiverLat(item.getReceiverLat());
         request.setReceiverLon(item.getReceiverLon());
+        request.setSourceChanel("DD_ANDROID");
 
         request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
         request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
