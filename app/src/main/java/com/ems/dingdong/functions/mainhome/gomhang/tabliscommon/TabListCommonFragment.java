@@ -12,7 +12,11 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonContract;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
+import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.OnCustomPageChangeListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,5 +134,27 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
                 commonFragment.confirmAll();
                 break;
         }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
+
+
+    }
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof  String){
+            String message = (String) event;
+            if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG)){
+                pager.setCurrentItem(1);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

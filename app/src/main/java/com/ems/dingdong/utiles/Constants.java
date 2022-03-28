@@ -138,5 +138,7 @@ public class Constants {
     public static final String YES_ACTION = "YES_ACTION";
     public static final String STOP_ACTION = "STOP_ACTION";
 
+    public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG = "HOAN_THANH_TIN_THANH_CONG";
+
 
 }

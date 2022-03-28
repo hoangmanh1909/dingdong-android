@@ -74,6 +74,8 @@ import butterknife.OnClick;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * The XacNhanTinDetail Fragment
  */
@@ -571,6 +573,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG);
                             sweetAlertDialog.dismiss();
                             btnConfirm.setEnabled(false);
                             if (mPresenter != null)
