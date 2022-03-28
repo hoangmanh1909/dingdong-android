@@ -18,7 +18,7 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presenter>
+public class  LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presenter>
         implements LinkEWalletContract.View {
 
     @BindView(R.id.tv_info_link)

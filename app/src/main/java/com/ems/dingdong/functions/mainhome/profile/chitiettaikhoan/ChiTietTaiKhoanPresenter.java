@@ -72,7 +72,12 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
                         if (simpleResult.getErrorCode().equals("00")) {
                             mView.huyLKThanhCong();
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        } else if (simpleResult.getErrorCode().equals("101")) {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.dissOTP();
+                        }
                         mView.hideProgress();
                     }
                 });

@@ -64,7 +64,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     private UserInfo userInfo;
     String userJson;
     SharedPref sharedPref;
-
+    DialogOTP otpDialog;
     int type = 0;
 
     @Override
@@ -133,37 +133,37 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
                     if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                         String title = "";
                         String tilteMess = "";
-                        if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING_CANCEL")) {
-                            CallOTP callOTP = new CallOTP();
-                            callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                            callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                            callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                            mPresenter.ddCallOTP(callOTP);
-                        } else {
-                            SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
-                            smartBankRequestCancelLinkRequest.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                            smartBankRequestCancelLinkRequest.setPIDNumber(userInfo.getSmartBankLink().get(i).getPIDNumber());
-                            smartBankRequestCancelLinkRequest.setPIDType(userInfo.getSmartBankLink().get(i).getPIDType());
-                            smartBankRequestCancelLinkRequest.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                            smartBankRequestCancelLinkRequest.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                            smartBankRequestCancelLinkRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                            smartBankRequestCancelLinkRequest.setSeABankAccountLimit(userInfo.getSmartBankLink().get(i).getBankAccountLimit());
+//                        if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING_CANCEL")) {
+//                            CallOTP callOTP = new CallOTP();
+//                            callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
+//                            callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
+//                            callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
+//                            mPresenter.ddCallOTP(callOTP);
+//                        } else {
+                        SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
+                        smartBankRequestCancelLinkRequest.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
+                        smartBankRequestCancelLinkRequest.setPIDNumber(userInfo.getSmartBankLink().get(i).getPIDNumber());
+                        smartBankRequestCancelLinkRequest.setPIDType(userInfo.getSmartBankLink().get(i).getPIDType());
+                        smartBankRequestCancelLinkRequest.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
+                        smartBankRequestCancelLinkRequest.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
+                        smartBankRequestCancelLinkRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
+                        smartBankRequestCancelLinkRequest.setSeABankAccountLimit(userInfo.getSmartBankLink().get(i).getBankAccountLimit());
 
-                            title = "HỦY LIÊN KẾT";
-                            tilteMess = "Bạn có chắc chắn muốn hủy liên kết tài khoản không?";
+                        title = "HỦY LIÊN KẾT";
+                        tilteMess = "Bạn có chắc chắn muốn hủy liên kết tài khoản không?";
 
-                            DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
-                                    tilteMess, title
-                                    , new DiaLogMatDinh.OnPaymentCallback() {
-                                @Override
-                                public void onPaymentClick(String otp) {
-                                    mPresenter.ddHuyLienKet(smartBankRequestCancelLinkRequest);
-                                }
-                            });
-                            otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                            otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                            otpDialog.show();
-                        }
+                        DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
+                                tilteMess, title
+                                , new DiaLogMatDinh.OnPaymentCallback() {
+                            @Override
+                            public void onPaymentClick(String otp) {
+                                mPresenter.ddHuyLienKet(smartBankRequestCancelLinkRequest);
+                            }
+                        });
+                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        otpDialog.show();
+//                        }
                     }
                 }
                 break;
@@ -229,7 +229,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
                 smartBankConfirmLinkRequest.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
                 smartBankConfirmLinkRequest.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
                 smartBankConfirmLinkRequest.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                DialogOTP otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber()
+                otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber()
                         , new DialogOTP.OnPaymentCallback() {
                     @Override
                     public void onPaymentClick(String otp, int type) {
@@ -254,6 +254,15 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
                 otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 otpDialog.show();
             }
+        }
+    }
+
+    @Override
+    public void dissOTP() {
+        try {
+            otpDialog.dismiss();
+
+        } catch (Exception e) {
         }
     }
 

@@ -59,6 +59,8 @@ public interface CancelPaymentContract {
 
         void onCanceled();
 
+        void showLienket();
+
     }
     interface OnTabListener {
         /**

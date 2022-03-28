@@ -143,7 +143,6 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-
         mList = new ArrayList<>();
         mAdapter = new SeabankAdapter(getViewContext(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView);
@@ -190,7 +189,6 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
                     }
                     yeuCauLienKetRequest.setSeABankAccount(account);
                     mPresenter.yeuCauLienKet(yeuCauLienKetRequest);
-
                     thonTinSoTaiKhoanRespone = new SmartBankLink();
 
                     showProgress();
@@ -218,14 +216,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
 
 
     private void guiYeuCauLienKet() {
-        TypeGTTT gttt = new TypeGTTT();
-        int typegttt;
         DanhSachTaiKhoanRequest danhSachTaiKhoanRequest = new DanhSachTaiKhoanRequest();
-//        /// Mã bc của bưu tá
-//        yeuCauLienKetRequest.setPOCode(postOffice.getCode());
-//        /// Mã bưu tá
-//        yeuCauLienKetRequest.setPostmanCode(userInfo.getUserName());
-
         if (userInfo.getPIDNumber().isEmpty()) {
             Toast.showToast(getViewContext(), "Vui lòng khai báo số GTTT");
             return;
@@ -264,8 +255,6 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     public void showDanhSach(List<DanhSachNganHangRepsone> list) {
         danhSachNganHangRepsone = new ArrayList<>();
         danhSachNganHangRepsone = list;
-
-//        Glide.with(this).load(danhSachNganHangRepsone.get).into(imgLogo);
     }
 
     @Override
@@ -287,7 +276,6 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
             userInfo.setSmartBankLink(links);
         }
         userInfo.getSmartBankLink().add(respone);
-        sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
         SmartBankConfirmLinkRequest smartBankConfirmLinkRequest = new SmartBankConfirmLinkRequest();
         smartBankConfirmLinkRequest.setBankCode(maNganHang);
         smartBankConfirmLinkRequest.setPIDNumber(userInfo.getPIDNumber());

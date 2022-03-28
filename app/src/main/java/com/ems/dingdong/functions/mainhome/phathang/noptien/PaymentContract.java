@@ -72,6 +72,7 @@ public interface PaymentContract {
 
         int getPositionTab();
 
+        void showLienket();
         ContainerView getContainerView();
 
         /**

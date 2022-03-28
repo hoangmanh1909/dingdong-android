@@ -84,10 +84,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                             filteredList.add(row);
                         }
                     }
-
                     mListFilter = filteredList;
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mListFilter;
                 return filterResults;

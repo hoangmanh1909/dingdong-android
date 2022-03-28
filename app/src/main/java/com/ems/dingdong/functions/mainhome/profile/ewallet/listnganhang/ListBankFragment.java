@@ -79,9 +79,9 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         if (userInfo.getSmartBankLink() != null)
             for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
                 if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
-                        mList.add(new Item(2 + "", "SeaBank", false, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
-                    } else
+//                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
+//                        mList.add(new Item(2 + "", "SeaBank", false, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
+//                    } else
                         mList.add(new Item(2 + "", "SeaBank", true, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
 
                 } else
@@ -99,21 +99,21 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                         if (mList.get(position).getValue().equals("1")) {
                             mPresenter.showEwallet();
                         } else {
-                            for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                                if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
-                                        CallOTP callOTP = new CallOTP();
-                                        callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                                        callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                                        callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                                        mPresenter.ddCallOTP(callOTP);
-                                        break;
-                                    } else
-                                        mPresenter.showSeaBank();
-                                }
-                            }
+//                            for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+//                                if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+//                                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
+//                                        CallOTP callOTP = new CallOTP();
+//                                        callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
+//                                        callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
+//                                        callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
+//                                        mPresenter.ddCallOTP(callOTP);
+//                                        break;
+//                                    } else
+//                                        mPresenter.showSeaBank();
+//                                }
+//                            }
 
-                            if (userInfo.getSmartBankLink().size() == 0)
+//                            if (userInfo.getSmartBankLink().size() == 0)
                                 mPresenter.showSeaBank();
                         }
                     }

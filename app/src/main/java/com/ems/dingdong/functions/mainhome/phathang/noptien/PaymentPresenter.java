@@ -10,6 +10,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.Can
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.EWalletRemoveDataRequest;
 import com.ems.dingdong.model.EWalletRemoveRequest;
@@ -255,6 +256,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     @Override
     public int getPositionTab() {
         return mPos;
+    }
+
+    @Override
+    public void showLienket() {
+        new ListBankPresenter(mContainerView).pushView();
     }
 
     @Override

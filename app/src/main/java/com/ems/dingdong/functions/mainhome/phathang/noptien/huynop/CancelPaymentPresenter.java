@@ -7,6 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
@@ -135,6 +136,10 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
                 });
     }
 
+    @Override
+    public void showLienket() {
+        new ListBankPresenter(mContainerView).pushView();
+    }
     @Override
     public int getPositionTab() {
         return mPos;

@@ -28,8 +28,6 @@ public class DialogOTP extends Dialog {
     private OnPaymentCallback callback;
     private Context context;
     private long lastClickTime = 0;
-    private UserInfo userInfo;
-    private SharedPref sharedPref;
 
     public DialogOTP(Context context, String message, OnPaymentCallback callback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -48,6 +46,7 @@ public class DialogOTP extends Dialog {
                 dismiss();
                 break;
             case R.id.tv_guilai_otp:
+                optEditText.setText("");
                 callback.onCallOTP();
                 break;
             case R.id.tv_pay:
@@ -61,10 +60,12 @@ public class DialogOTP extends Dialog {
                     return;
                 }
 
-                if (optEditText.getText().toString().length() != 6) {
-                    Toast.showToast(context, "Vui lòng nhập đúng số ký tự OTP!");
+                if (optEditText.getText().toString().length() < 6) {
+                    Toast.showToast(context, "OTP phải từ 6 ký tự trở lên");
+                    optEditText.setText("");
                     return;
                 }
+
                 callback.onPaymentClick(optEditText.getText().toString(), 0);
                 break;
         }

@@ -61,10 +61,10 @@ public class OrderChangeRouteModel {
     @SerializedName("PostmanName")
     @Expose
     private String postmanName;
-  @SerializedName("AssignFullName")
+    @SerializedName("AssignFullName")
     @Expose
     private String AssignFullName;
-@SerializedName("CustomerName")
+    @SerializedName("CustomerName")
     @Expose
     private String CustomerName;
 

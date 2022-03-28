@@ -273,8 +273,6 @@ public class RouteFragment extends ViewFragment<RouteConstract.Presenter> implem
     public void showListOrderSucces(OrderChangeRouteDingDongManagementResponse responseList) {
         hideProgress();
         if (null != getViewContext()) {
-
-
             if (mPresenter.getTypeRoute() == Constants.ROUTE_RECEIVED) {
                 mListOrder.clear();
                 if (null == responseList.getToOrders() || responseList.getToOrders().size() == 0) {
