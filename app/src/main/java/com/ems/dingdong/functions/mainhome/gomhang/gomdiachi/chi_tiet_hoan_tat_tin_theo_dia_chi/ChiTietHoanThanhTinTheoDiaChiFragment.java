@@ -1161,7 +1161,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     public void showVitringuoinhan(String lat, String lon) {
         senderLat = lat;
         senderLon = lon;
-
     }
 
     @Override

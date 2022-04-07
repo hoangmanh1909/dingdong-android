@@ -76,13 +76,14 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
 
 //        if (isKietta)
 //        mList.add(new Item(2 + "", "SeaBank", isKietta, R.drawable.seabank));
-        if (userInfo.getSmartBankLink() != null)
+//        userInfo.setSmartBankLink(new ArrayList<>());
+        if (userInfo.getSmartBankLink().size() > 0 || userInfo.getSmartBankLink() != null)
             for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
                 if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
 //                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
 //                        mList.add(new Item(2 + "", "SeaBank", false, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
 //                    } else
-                        mList.add(new Item(2 + "", "SeaBank", true, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
+                    mList.add(new Item(2 + "", "SeaBank", true, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
 
                 } else
                     mList.add(new Item(1 + "", "Ví điện tử PostPay", isKietta, R.drawable.postpay, "Ví điện tử PostPay"));
@@ -114,7 +115,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
 //                            }
 
 //                            if (userInfo.getSmartBankLink().size() == 0)
-                                mPresenter.showSeaBank();
+                            mPresenter.showSeaBank();
                         }
                     }
                 });

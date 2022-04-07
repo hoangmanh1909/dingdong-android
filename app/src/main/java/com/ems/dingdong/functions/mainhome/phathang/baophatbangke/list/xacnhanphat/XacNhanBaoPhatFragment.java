@@ -515,7 +515,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         });
 
-
+        tvTime.setText(DateTimeUtils
+                .convertDateToString(calendar.getTime(),
+                        DateTimeUtils.SIMPLE_DATE_FORMAT));
         if (mBaoPhatBangke.size() == 1) {
             cList = new ArrayList();
             if (mBaoPhatBangke.get(0).getFeeCOD() != 0)
@@ -1596,7 +1598,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 tv_Description.getText().toString(),
                                 mFile,
                                 mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                                mSign, time);
+                                mSign,
+                                time);
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
                     .show();

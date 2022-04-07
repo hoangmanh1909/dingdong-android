@@ -233,7 +233,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
 
     private void pickFilter(View anchor) {
         PopupMenu popupMenu = new PopupMenu(requireContext(), anchor);
-        if (danhSachNganHangRepsone.size() >= 0) {
+        if (danhSachNganHangRepsone.size() > 0) {
             for (int i = 0; i < danhSachNganHangRepsone.size(); i++) {
                 popupMenu.getMenu().add(0, i, i, danhSachNganHangRepsone.get(i).getBankName());
             }
@@ -254,7 +254,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     @Override
     public void showDanhSach(List<DanhSachNganHangRepsone> list) {
         danhSachNganHangRepsone = new ArrayList<>();
-        danhSachNganHangRepsone = list;
+        danhSachNganHangRepsone.addAll(list);
     }
 
     @Override

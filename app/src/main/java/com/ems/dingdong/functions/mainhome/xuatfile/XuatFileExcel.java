@@ -64,11 +64,11 @@ public class XuatFileExcel extends ApplicationController {
                 fileOutputStream.close();
             }
             Toast.makeText(mconx, "Xuất file thành công " + filename, Toast.LENGTH_SHORT).show();
-            Log.e("thanhkhiem1111", "Writing file" + file_path);
+//            Log.e("thanhkhiem1111", "Writing file" + file_path);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(mconx, "Xuất file Thất bại " + filename, Toast.LENGTH_SHORT).show();
-            Log.e("thanhkhiem1111", file_path + "Error writing Exception: ", e);
+//            Log.e("thanhkhiem1111", file_path + "Error writing Exception: ", e);
         }
     }
 

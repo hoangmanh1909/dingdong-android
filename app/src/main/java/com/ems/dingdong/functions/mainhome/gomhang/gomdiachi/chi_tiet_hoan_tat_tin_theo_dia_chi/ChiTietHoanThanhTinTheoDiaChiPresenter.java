@@ -17,9 +17,11 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.utiles.Log;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -176,8 +178,10 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     public void start() {
         getReasons();
         getReasonFailure();
-        if (!commonObject.getSenderVpostcode().equals(""))
+        if (!commonObject.getSenderVpostcode().equals("")) {
             vietmapDecode(commonObject.getSenderVpostcode());
+            Log.d("thans dasdasd", commonObject.getSenderVpostcode());
+        }
     }
 
     @Override
@@ -212,7 +216,9 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
 
     @Override
     public void vietmapDecode(String decode) {
-        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
+        mInteractor.vietmapSearchDecode(decode)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
@@ -221,7 +227,6 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
 //                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
 //                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
                     } else {
-//                        mView.showError(simpleResult.getMessage());
                         mView.hideProgress();
                     }
                 });
