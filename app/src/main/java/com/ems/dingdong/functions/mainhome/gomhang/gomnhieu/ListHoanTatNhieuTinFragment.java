@@ -187,7 +187,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
 
         mLocation = getLastKnownLocation();
         if (mLocation == null) {
-            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã kích hoạt location trên thiết bị chưa?)").show();
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã đã bật định vị trên thiết bị chưa?)").show();
             mPresenter.back();
             return;
         }

@@ -330,12 +330,12 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                 }
             }
 
-            new DiaLogOption(getViewContext(), new IdCallback() {
-                @Override
-                public void onResponse(String id) {
-                    if (id.equals("3")) {
-                        mPresenter.showLienket();
-                    } else {
+//            new DiaLogOption(getViewContext(), new IdCallback() {
+//                @Override
+//                public void onResponse(String id) {
+//                    if (id.equals("3")) {
+//                        mPresenter.showLienket();
+//                    } else {
                         String con = "";
                         long cod = 0;
                         long fee = 0;
@@ -346,9 +346,9 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                         String codAmount = NumberUtils.formatPriceNumber(cod);
                         String feeAmount = NumberUtils.formatPriceNumber(fee);
 
-                        if (id.equals("1"))
-                            con = "Tài khoản thấu chi NHTM SeABank?";
-                        else con = "Ví điện tử PostPay?";
+//                        if (id.equals("1"))
+//                            con = "Tài khoản thấu chi NHTM SeABank?";
+//                        else con = "Ví điện tử PostPay?";
 
                         String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                                 mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
@@ -356,17 +356,17 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                                 "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ " + con + "?";
 
                         new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod + fee, (type, description) -> {
-                            new NotificationDialog(getViewContext())
-                                    .setConfirmText(getString(R.string.payment_confirn))
-                                    .setCancelText(getString(R.string.payment_cancel))
-                                    .setHtmlContent(content)
-                                    .setCancelClickListener(Dialog::dismiss)
-                                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                                    .setConfirmClickListener(sweetAlertDialog -> {
+//                            new NotificationDialog(getViewContext())
+//                                    .setConfirmText(getString(R.string.payment_confirn))
+//                                    .setCancelText(getString(R.string.payment_cancel))
+//                                    .setHtmlContent(content)
+//                                    .setCancelClickListener(Dialog::dismiss)
+//                                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+//                                    .setConfirmClickListener(sweetAlertDialog -> {
                                         mPresenter.cancelPayment(mAdapter.getItemsSelected(), Integer.parseInt(type), description);
-                                        sweetAlertDialog.dismiss();
-                                    })
-                                    .show();
+//                                        sweetAlertDi?al?og.dismiss();
+//                                    })
+//                                    .show();
                         }).show();
 
 //                    new NotificationDialog(getViewContext())
@@ -413,9 +413,9 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
 //
 //                            })
 //                            .show();
-                    }
-                }
-            }).show();
+//                    }
+//                }
+//            }).show();
 
         }
 
