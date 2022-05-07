@@ -158,6 +158,14 @@ public class PushToPnsRequest {
         return ladingCode;
     }
 
+    public String getLadingPostmanID() {
+        return ladingPostmanID;
+    }
+
+    public void setLadingPostmanID(String ladingPostmanID) {
+        this.ladingPostmanID = ladingPostmanID;
+    }
+
     public void setLadingCode(String ladingCode) {
         this.ladingCode = ladingCode;
     }

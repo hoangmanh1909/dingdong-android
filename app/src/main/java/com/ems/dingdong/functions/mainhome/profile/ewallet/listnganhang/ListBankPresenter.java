@@ -5,8 +5,10 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankPresenter;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.response.DanhSachTaiKhoanRespone;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
@@ -50,8 +52,8 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     }
 
     @Override
-    public void showSeaBank() {
-        new ChiTietTaiKhoanPresenter(mContainerView).pushView();
+    public void showSeaBank(SmartBankLink s) {
+        new ChiTietTaiKhoanPresenter(mContainerView).setSmartBankLink(s).pushView();
     }
 
     @Override
@@ -89,6 +91,24 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
                         if (simpleResult.getErrorCode().equals("00")) {
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.showThanhCong();
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void getDDsmartBankConfirmLinkRequest(BaseRequestModel x) {
+        mView.showProgress();
+        mInteractor.getDDsmartBankConfirmLinkRequest(x)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+//                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.setsmartBankConfirmLink(simpleResult.getData());
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }

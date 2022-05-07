@@ -190,8 +190,6 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     @Override
     public void getMapVitri(Double v1, Double v2) {
         mView.showProgress();
-//        Double v1 = location.getLongitude();
-//        Double v2 = location.getLatitude();
         mInteractor.vietmapSearchViTri(v1, v2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

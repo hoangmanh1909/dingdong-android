@@ -15,6 +15,7 @@ public class LadingPaymentInfo {
 
     @SerializedName("VATFeeCOD")
     String vatFeeCOD;
+
     @SerializedName("FeeType")
     String feeType;
 

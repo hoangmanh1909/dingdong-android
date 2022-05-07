@@ -5,14 +5,27 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.AddressModel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.CreateVietMapRequest;
+import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PhoneNumber;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.Values;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VpostcodeModel;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.XacMinhRespone;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
+import com.ems.dingdong.model.response.VerifyAddressRespone;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
 
 public interface XacNhanDiaChiContract {
 
@@ -24,12 +37,27 @@ public interface XacNhanDiaChiContract {
                                        String fromAssignDate,
                                        String toAssignDate, CommonCallback<CommonObjectListResult> callback);
 
+        Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress verifyAddress);
+
+        Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest createVietMapRequest);
+
+        Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment);
+
+        Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude);
     }
 
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<CommonObject> list);
 
         void showError(String message);
+
+        void showAddress(Values x);
+
+        void shoSucces(String mess);
+
+        void showDiachi(String x);
+
+        void showList(VpostcodeModel getListVpostV1);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -90,6 +118,16 @@ public interface XacNhanDiaChiContract {
 
         int getCurrentTab();
 
+
+        void getDDVeryAddress(VerifyAddress verifyAddress);
+
+        void ddCreateVietMap(CreateVietMapRequest createVietMapRequest);
+
+        void ddSreachPhone(PhoneNumber dataRequestPayment);
+
+        void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel);
+
+        void getMapVitri(Double v1, Double v2);
     }
 
     interface OnTabListener {
@@ -104,6 +142,7 @@ public interface XacNhanDiaChiContract {
         void onQuantityChange(int quantity, int currentSetTab);
 
         int getCurrentTab();
+
     }
 }
 

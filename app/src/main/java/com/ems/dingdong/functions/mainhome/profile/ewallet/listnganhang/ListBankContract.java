@@ -4,9 +4,11 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.DanhSachTaiKhoanRequest;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 
@@ -18,6 +20,8 @@ public interface ListBankContract {
         Single<SimpleResult> vnpCallOTP(CallOTP callOTP);
 
         Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request);
+
+        Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request);
     }
 
     interface View extends PresentView<Presenter> {
@@ -26,6 +30,9 @@ public interface ListBankContract {
         void showThanhCong();
 
         void dissmisOTP();
+
+
+        void setsmartBankConfirmLink(String x);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -34,10 +41,12 @@ public interface ListBankContract {
 
         void taikhoanthauchi();
 
-        void showSeaBank();
+        void showSeaBank(SmartBankLink s);
 
         void ddCallOTP(CallOTP request);
 
         void smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request);
+
+        void getDDsmartBankConfirmLinkRequest(BaseRequestModel x);
     }
 }

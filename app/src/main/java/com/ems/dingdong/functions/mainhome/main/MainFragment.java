@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.main;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -27,6 +28,8 @@ import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.location.CheckLocationService;
+import com.ems.dingdong.model.BalanceModel;
+import com.ems.dingdong.model.BalanceRespone;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
@@ -34,6 +37,7 @@ import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
@@ -46,6 +50,8 @@ import com.roughike.bottombar.BottomBar;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.linphone.core.LinphoneCall;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -85,6 +91,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private RouteInfo routeInfo;
     String callProviderHome = "CTEL";
     String provide = "";
+    String userJson;
+    String postOfficeJson;
+    String routeInfoJson;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -100,18 +109,30 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.initLayout();
         SharedPref sharedPref = new SharedPref(getActivity());
         String callProvider = sharedPref.getString(Constants.KEY_CALL_PROVIDER_HOME, callProviderHome);
-        updateUserHeader();
+        userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!postOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+        }
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
         setupAdapter();
 
 
         bottomBar.setOnTabSelectListener(tabId -> {
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
-                updateUserHeader();
-                if (homeFragment != null) {
-                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
-                    v1Fragment.updateHomeView();
-                }
+                getBalance();
+//                if (homeFragment != null) {
+//                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
+//                    v1Fragment.updateHomeView();
+//                }
             } else if (tabId == R.id.action_cart) {
                 viewPager.setCurrentItem(1);
                 removeHeader();
@@ -176,133 +197,27 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 //        ApplicationController.getInstance().initPortSipService();
     }
 
+
+    private void getBalance() {
+        String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        BalanceModel v = new BalanceModel();
+        v.setToDate(Integer.parseInt(toDate));
+        v.setFromDate(Integer.parseInt(fromDate));
+        v.setPOProvinceCode(userInfo.getPOProvinceCode());
+        v.setPODistrictCode(userInfo.getPODistrictCode());
+        v.setPOCode(postOffice.getCode());
+        v.setPostmanCode(userInfo.getUserName());
+        v.setPostmanId(userInfo.getiD());
+        v.setRouteCode(routeInfo.getRouteCode());
+        v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
+        mPresenter.ddGetBalance(v);
+    }
+
     private void eventLoginAndCallCtel() {
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        ///
-//        SipCmc.startService(getActivity());
-//
-//        SipCmc.loginAccount(userInfo.getUserName(), BuildConfig.DOMAIN_CTEL, BuildConfig.AUTH_CTEL);
-//        SipCmc.addCallback(null, new PhoneCallback() {
-//            @Override
-//            public void incomingCall(LinphoneCall linphoneCall) {
-//                super.incomingCall(linphoneCall);
-//                Log.d("123123khiem", "incomingCall: ");
-//                Session session = CallManager.Instance().findIdleSession();
-//                session.state = Session.CALL_STATE_FLAG.INCOMING;
-//                Intent activityIntent = new Intent(getActivity(), IncomingCallActivity.class);
-//                activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(activityIntent);
-//            }
-//
-//            @Override
-//            public void outgoingInit() {
-//                super.outgoingInit();
-//                Log.d("123123khiem", "outgoingInit");
-//            }
-//
-//            @Override
-//            public void callConnected(LinphoneCall linphoneCall) {
-//                super.callConnected(linphoneCall);
-//
-//            }
-//
-//            @Override
-//            public void callEnd(LinphoneCall linphoneCall) {
-//                super.callEnd(linphoneCall);
-//                Log.d("123123khiem", "callEnd");
-//                //Toast.makeText(getApplicationContext(), "callEnd", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//            public void callReleased() {
-//                super.callReleased();
-//                Log.d("123123khiem", "callReleased");
-//                //Toast.makeText(getApplicationContext(), "callReleased", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void error() {
-//                super.error();
-//                Log.d("123123khiem", "error");
-//            }
-//
-//            @Override
-//            public void callStatus(int status) {
-//                super.callStatus(status);
-//                Log.d("123123khiem", "callStatus: " + status);
-//            }
-//
-//            @Override
-//            public void callTimeRing(String time) {
-//                super.callTimeRing(time);
-//                Log.d("123123khiem", "callTimeRing");
-//            }
-//
-//            @Override
-//            public void callTimeAnswer(String time) {
-//                super.callTimeAnswer(time);
-//                Log.d("123123khiem", "callTimeAnswer");
-//            }
-//
-//            @Override
-//            public void callTimeEnd(String time) {
-//                super.callTimeEnd(time);
-//                Log.d("123123khiem", "callTimeEnd");
-//            }
-//
-//            @Override
-//            public void callId(String callId) {
-//                super.callId(callId);
-//                Log.d("123123khiem", "callId");
-//            }
-//
-//            @Override
-//            public void callPhoneNumber(String phoneNumber) {
-//                super.callPhoneNumber(phoneNumber);
-//                Log.d("123123khiem", "callPhoneNumber: " + phoneNumber);
-//            }
-//
-//            @Override
-//            public void callDuration(long duration) {
-//                super.callDuration(duration);
-//                Log.d("123123khiem", "callDuration: " + duration);
-//            }
-//        });
-//        SipCmc.addCallback(new RegistrationCallback() {
-//            @Override
-//            public void registrationOk() {
-//                super.registrationOk();
-//                android.util.Log.d("registrationOk", "login ctel registrationOk");
-//            }
-//
-//            @Override
-//            public void registrationFailed() {
-//                super.registrationFailed();
-//                android.util.Log.d("registrationFailed", "login ctel failed");
-//            }
-//
-//            @Override
-//            public void registrationNone() {
-//                super.registrationNone();
-//                android.util.Log.d("registrationNone", "login ctel registrationNone");
-//            }
-//
-//            @Override
-//            public void registrationProgress() {
-//                super.registrationProgress();
-//                android.util.Log.d("registrationProgress", "login ctel registrationProgress");
-//            }
-//
-//            @Override
-//            public void registrationCleared() {
-//                super.registrationCleared();
-//                android.util.Log.d("123123", "login ctel registrationCleared");
-//            }
-//        }, null);
-
     }
 
     @Override
@@ -390,7 +305,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         super.onDisplay();
         switch (viewPager.getCurrentItem()) {
             case 0:
-                updateUserHeader();
+                getBalance();
                 break;
             case 2:
                 try {
@@ -424,30 +339,18 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
     }
 
-    @SuppressLint("SetTextI18n")
-    private void updateUserHeader() {
+    @Override
+    public void setBalance(String x) {
+        BalanceRespone balance = NetWorkController.getGson().fromJson(x, BalanceRespone.class);
         viewTop.setVisibility(View.VISIBLE);
-        SharedPref sharedPref = new SharedPref(getViewContext());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
 
-        if (!userJson.isEmpty()) {
-            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        if (!postOfficeJson.isEmpty()) {
-            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-        }
-        if (!routeInfoJson.isEmpty()) {
-            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
-        }
         String accInfo = "";
         if (userInfo != null) {
             if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
                 secondHeader.setText(getResources().getString(R.string.amount_max) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
             }
-            if (!TextUtils.isEmpty(userInfo.getBalance())) {
-                thirstHeader.setText(getResources().getString(R.string.so_tien_da_thu) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getBalance()))));
+            if (!TextUtils.isEmpty(x)) {
+                thirstHeader.setText(getResources().getString(R.string.so_tien_da_thu) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(balance.getBalance()))));
             }
             if (!TextUtils.isEmpty(userInfo.getFullName())) {
                 accInfo = userInfo.getFullName();
@@ -464,6 +367,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             }
         }
         firstHeader.setText(accInfo);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateUserHeader() {
+
     }
 
     private void removeHeader() {

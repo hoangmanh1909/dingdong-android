@@ -53,25 +53,43 @@
                     android:gravity="left"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_code"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_code"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_code" />
+                    app:layout_constraintTop_toTopOf="@+id/ll_code" />
 
-
-                <com.ems.dingdong.views.CustomBoldTextView
-                    android:id="@+id/tv_code"
+                <LinearLayout
+                    android:id="@+id/ll_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tv_index"
-                    android:text="COD2018041"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_sml"
-                    app:layout_constraintEnd_toStartOf="@+id/img_sml"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_address"
+                    app:layout_constraintEnd_toStartOf="@+id/img_address"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/tv_index"
-                    app:layout_constraintTop_toTopOf="@+id/img_sml" />
+                    app:layout_constraintTop_toTopOf="@+id/img_address"
+                    tools:ignore="MissingConstraints">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_index"
+                        android:text="COD2018041"
+                        android:textColor="@color/blue"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/tv_xacminhdiachi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/hyperlink_underline_red"
+                        android:text="Chưa xác thực địa chỉ "
+                        android:textColor="@color/red_light"
+                        android:textSize="12dp"
+                        android:textStyle="italic"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/img_map"
@@ -95,9 +113,22 @@
                     android:padding="3dp"
                     android:src="@drawable/ic_sml"
                     app:layout_constraintBottom_toBottomOf="@+id/img_map"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_code"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
                     app:layout_constraintEnd_toStartOf="@+id/img_map"
                     app:layout_constraintTop_toTopOf="@+id/img_map" />
+
+                <ImageView
+                    android:id="@+id/img_address"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_navigate_circle"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_sml"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
+                    app:layout_constraintEnd_toStartOf="@+id/img_sml"
+                    app:layout_constraintTop_toTopOf="@+id/img_sml" />
 
 
                 <!--temporary gone-->
@@ -110,7 +141,7 @@
                     android:src="@drawable/ic_call"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/img_map"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_code"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
                     app:layout_constraintTop_toTopOf="@+id/img_map" />
 
                 <!--icon_extend_menu-->
@@ -145,12 +176,20 @@
                 android:id="@+id/tv_refund_postage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
-                android:textColor="@color/green_border"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="@dimen/text_size_14sp"
+                android:textAllCaps="true"
+                android:textColor="@color/green_border"
+                android:textSize="14dp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_tien_phathoan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@color/red_light"
+                android:textSize="14dp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sodonhang"
@@ -205,6 +244,17 @@
                     android:visibility="gone" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_goiy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:drawableRight="@drawable/ic_map_v1"
+                android:gravity="center|left"
+                android:text="Gợi ý địa chỉ "
+                android:textColor="#0290fd"
+                android:textSize="14dp" />
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sender"
                 android:layout_width="match_parent"
@@ -234,14 +284,14 @@
                 android:textSize="@dimen/text_size_14sp" />
 
 
-            <com.ems.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_COD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomTextView
+            <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

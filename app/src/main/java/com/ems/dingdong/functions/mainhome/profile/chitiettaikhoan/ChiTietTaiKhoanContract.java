@@ -6,6 +6,7 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
@@ -55,6 +56,8 @@ public interface ChiTietTaiKhoanContract {
         void ddTaiKhoanMacDinh(TaiKhoanMatDinh request);
 
         void moveToEWallet();
+
+        SmartBankLink getSmartBankLink();
 
     }
 }

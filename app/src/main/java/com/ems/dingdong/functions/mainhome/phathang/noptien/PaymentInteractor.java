@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import com.core.base.viper.Interactor;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -42,5 +43,10 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     @Override
     public Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
         return NetWorkController.confirmPayment(paymentConfirmModel);
+    }
+
+    @Override
+    public Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
+        return NetWorkController.getDDsmartBankConfirmLinkRequest(request);
     }
 }

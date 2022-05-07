@@ -11,11 +11,15 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.chihobtxh.BtxhActivity;
+import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.HomeInfo;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.ThuGomRespone;
+import com.ems.dingdong.model.ThuGomResponeValue;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -23,6 +27,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -93,7 +98,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeInfos.add(new HomeInfo(16, R.drawable.ic_btxh_01, "Chi hộ BTXH"));
                 linearLayoutHome.setVisibility(View.VISIBLE);
                 ll_main.setVisibility(View.GONE);
-            }else {
+            } else {
                 linearLayoutHome.setVisibility(View.GONE);
                 ll_main.setVisibility(View.VISIBLE);
                 homeViewChangeListerner = new HomeViewChangeListerner();
@@ -153,8 +158,26 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
         String fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        if (mPresenter != null && userInfo != null && routeInfo != null)
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        PostOffice postOffice = null;
+        if (!posOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+        }
+        if (mPresenter != null && userInfo != null && routeInfo != null) {
             mPresenter.getHomeView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode());
+            BalanceModel v = new BalanceModel();
+            v.setToDate(Integer.parseInt(toDate));
+            v.setFromDate(Integer.parseInt(fromDate));
+            v.setPOProvinceCode(userInfo.getPOProvinceCode());
+            v.setPODistrictCode(userInfo.getPODistrictCode());
+            v.setPOCode(postOffice.getCode());
+            v.setPostmanCode(userInfo.getUserName());
+            v.setPostmanId(userInfo.getiD());
+            v.setRouteCode(routeInfo.getRouteCode());
+            v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
+            mPresenter.getDDThugom(v);
+        }
+
     }
 
     @Override
@@ -168,31 +191,6 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         /**
          * Gom hàng
          */
-        for (int i = 0; i < 4; i++) {
-            homeCollectInfo = new HomeCollectInfo();
-            homeCollectInfo.setType(0);
-            if (i == 0) {
-                homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
-                homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
-            } else if (i == 1) {
-                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
-                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressCollect()))));
-                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressNotCollect()))));
-            } else if (i == 2) {
-                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
-                homeCollectInfo.setTotalLadingCollect(resInfo.getTotalLadingCollect());
-                homeCollectInfo.setTotalLadingNotCollect(resInfo.getTotalLadingNotCollect());
-            } else {
-                homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
-                homeCollectInfo.setTotalWeightCollect(resInfo.getTotalWeightCollect());
-                homeCollectInfo.setTotalWeightNotCollect(resInfo.getTotalWeightNotCollect());
-            }
-            mListCollect.add(homeCollectInfo);
-        }
-        homeAdapter.clear();
-        homeAdapter.addItems(mListCollect);
-        homeAdapter.notifyDataSetChanged();
-
         /**
          * Phát hàng (thường)
          */
@@ -275,6 +273,40 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
     }
 
+    @Override
+    public void showThuGom(ThuGomResponeValue v) {
+        HomeCollectInfo homeCollectInfo = null;
+//        HomeCollectInfo resInfo = NetWorkController.getGson().fromJson(v, HomeCollectInfo.class);
+        mListCollect = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(0);
+            if (i == 0) {
+                homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
+                homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
+                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(v.getTotalAddressCollect())));
+                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(v.getTotalAddressNotCollect())));
+            } else if (i == 2) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
+                homeCollectInfo.setTotalLadingCollect(Integer.valueOf(v.getTotalLadingCollect()));
+                homeCollectInfo.setTotalLadingNotCollect(Integer.valueOf(v.getTotalLadingNotCollect()));
+            } else if (i == 3) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
+                homeCollectInfo.setTotalWeightCollect(Integer.valueOf(v.getTotalWeightCollect()));
+                homeCollectInfo.setTotalWeightNotCollect(Integer.valueOf(v.getTotalWeightNotCollect()));
+            }
+            mListCollect.add(homeCollectInfo);
+        }
+        homeAdapter.setItems(new ArrayList());
+        homeAdapter.addItems(mListCollect);
+        Log.d("thanhasdasd231", new Gson().toJson(mListCollect));
+        homeAdapter.notifyDataSetChanged();
+
+
+    }
+
     private class HomeViewChangeListerner extends BroadcastReceiver {
 
         @Override
@@ -289,10 +321,17 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
     }
 
-    @OnClick(R.id.linearLayoutHome)
-    public void onViewClicked() {
-        Intent intent = new Intent(getActivity(), BtxhActivity.class);
-        startActivity(intent);
+    @OnClick({R.id.linearLayoutHome, R.id.img_refesh})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.linearLayoutHome:
+                Intent intent = new Intent(getActivity(), BtxhActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.img_refesh:
+                updateHomeView();
+                break;
+        }
     }
 
 }

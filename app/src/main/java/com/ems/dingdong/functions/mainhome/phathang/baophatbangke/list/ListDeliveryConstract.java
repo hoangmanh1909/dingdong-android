@@ -52,7 +52,7 @@ public interface ListDeliveryConstract {
         /**
          * Event refresh when deliver success or not.
          */
-        void onDelivered();
+        void onDelivered(String data,int mType);
 
         /**
          * Event synchronize tab when search by date.

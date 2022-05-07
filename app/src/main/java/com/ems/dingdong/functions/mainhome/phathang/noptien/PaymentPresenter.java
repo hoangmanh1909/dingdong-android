@@ -11,6 +11,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPh
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.EWalletRemoveDataRequest;
 import com.ems.dingdong.model.EWalletRemoveRequest;
@@ -214,14 +215,13 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
     @Override
     public void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
-                               String routeCode, String postmanCode) {
+                               String routeCode, String postmanCode, String mobileNumber) {
         PaymentConfirmModel model = new PaymentConfirmModel();
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String values = sharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
-        String mobileNumber = "";
-        if (!TextUtils.isEmpty(values)) {
-            mobileNumber = values.split(";")[0];
-        }
+//        if (!TextUtils.isEmpty(values)) {
+//            mobileNumber = values.split(";")[0];
+//        }
         String token = sharedPref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         model.setOtpCode(otp);
         model.setPaymentToken(token);
@@ -299,4 +299,21 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         return this;
     }
 
+    @Override
+    public void getDDsmartBankConfirmLinkRequest(BaseRequestModel x) {
+        mView.showProgress();
+        mInteractor.getDDsmartBankConfirmLinkRequest(x)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+//                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.setsmartBankConfirmLink(simpleResult.getData());
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
 }

@@ -99,7 +99,6 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                     tv_column_2.setText(homeInfo.getTotalAddressNotCollect());
                     tv_column_1.setTypeface(null, Typeface.BOLD);
                     tv_column_2.setTypeface(null, Typeface.BOLD);
-
                 } else if (position == 1) {
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(homeInfo.getTotalAddressCollect());
@@ -110,7 +109,7 @@ public class HomeDeliveryAdapter extends RecyclerBaseAdapter {
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalLadingCollect())));
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalLadingNotCollect())));
-                } else {
+                } else if (position == 3) {
                     tv_label.setText(homeInfo.getLabelCollect());
                     tv_column_1.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalWeightCollect())));
                     tv_column_2.setText(String.format("%s", NumberUtils.formatPriceNumber(homeInfo.getTotalWeightNotCollect())));

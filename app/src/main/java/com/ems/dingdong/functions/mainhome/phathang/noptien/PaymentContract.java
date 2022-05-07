@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
@@ -24,7 +25,7 @@ import io.reactivex.Single;
 
 public interface PaymentContract {
     interface Interactor extends IInteractor<Presenter> {
-        Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode,
+        Single<EWalletDataResult> getDataPayment(String serviceCode, String fromDate, String toDate, String poCode,
                                                  String routeCode, String postmanCode);
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
@@ -35,12 +36,14 @@ public interface PaymentContract {
 
         Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel);
 
+        Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request);
+
     }
 
     interface View extends PresentView<Presenter> {
         void showListSuccess(List<EWalletDataResponse> eWalletDataResponses);
 
-        void showRequestSuccess(List<LadingPaymentInfo> list,String message, String requestId, String retRefNumber);
+        void showRequestSuccess(List<LadingPaymentInfo> list, String message, String requestId, String retRefNumber);
 
         void showPaymenConfirmSuccess(String message);
 
@@ -54,25 +57,29 @@ public interface PaymentContract {
 
         void showThanhCong();
 
+        void setsmartBankConfirmLink(String x);
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void getDDsmartBankConfirmLinkRequest(BaseRequestModel x);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
         void showLinkWalletFragment();
 
-        void getDataPayment(String serviceCode,String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
+        void getDataPayment(String serviceCode, String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
 
-        void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode,int type,String bankcode,String posmanTel);
+        void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode, int type, String bankcode, String posmanTel);
 
         void deletePayment(List<EWalletDataResponse> list);
 
-        void confirmPayment(List<LadingPaymentInfo> list,String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode);
+        void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode, String mobileNumber);
 
         int getPositionTab();
 
         void showLienket();
+
         ContainerView getContainerView();
 
         /**

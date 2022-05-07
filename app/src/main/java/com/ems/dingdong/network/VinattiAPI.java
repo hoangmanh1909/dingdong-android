@@ -2,6 +2,7 @@ package com.ems.dingdong.network;
 
 
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CallHistoryVHT;
 import com.ems.dingdong.model.CancelDeliveryResult;
@@ -11,6 +12,7 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
+import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
@@ -41,12 +43,15 @@ import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.ThuGomRespone;
 import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.XacMinhRespone;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
@@ -69,6 +74,7 @@ import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.ResponseObject;
+import com.ems.dingdong.model.response.VerifyAddressRespone;
 import com.google.android.gms.vision.L;
 
 import java.util.ArrayList;
@@ -97,8 +103,7 @@ public interface VinattiAPI {
                                       @Field("SignCode") String signCode,
                                       @Field("AppVersion") String version,
                                       @Field("AppCode") String appCode,
-                                      @Field("Signature") String signature
-    );
+                                      @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/Delivery/DeliveryStatistic")
@@ -117,8 +122,7 @@ public interface VinattiAPI {
     Call<ActiveResult> activeAuthorized(@Field("MobileNumber") String mobileNumber,
                                         @Field("ActiveCode") String activeCode,
                                         @Field("CodeDeviceActive") String codeDeviceActive,
-                                        @Field("Signature") String signature
-    );
+                                        @Field("Signature") String signature);
 
     @FormUrlEncoded
     @POST("api/CallCenter/CallForward")
@@ -269,6 +273,7 @@ public interface VinattiAPI {
     @POST("api/DingDong/CreateBD13")
     Call<SimpleResult> addNewBD13(@Body Bd13Create taskRequest);
 
+
     @POST("api/DingDong/Bussiness")
     Call<SimpleResult> createCallHistoryVHT(@Body CallHistoryVHT taskRequest);
 
@@ -313,7 +318,7 @@ public interface VinattiAPI {
     @POST("api/Collect/UpdateSenderVpostcode")
     Single<SimpleResult> saveToaDoGom(@Body List<SenderVpostcodeMode> request);
 
-    @POST(" api/Delivery/ReceiverVpostcode")
+    @POST("api/Delivery/ReceiverVpostcode")
     Single<SimpleResult> saveToaDoPhat(@Body List<ReceiverVpostcodeMode> request);
 
     @POST("api/Collect/ConfirmOrderPostman")
@@ -515,6 +520,9 @@ public interface VinattiAPI {
                                         @Field("RouteId") String routeId,
                                         @Field("RouteCode") String routeCode);
 
+    @POST("api/Statistic/Balance")
+    Call<SimpleResult> getBalance(@Body BalanceModel requestData);
+
     @FormUrlEncoded
     @POST("api/ChangeRoute/Cancel")
     Call<SimpleResult> cancelRoute(@Field("Id") Integer id,
@@ -576,6 +584,16 @@ public interface VinattiAPI {
     @POST("api/DingDong/Bussiness")
     Single<SimpleResult> commonService(@Body DataRequestPayment requestData);
 
+
+    @POST("api/DingDong/GetMainviewCollect")
+    Single<ThuGomRespone> getGetMainviewCollec(@Body BalanceModel requestData);
+
+    @GET("api/VietMap/VerifyAddress")
+    Single<VerifyAddressRespone> ddVerifyAddress(@Query("longitude") double longitude,
+                                                 @Query("latitude") double latitude);
+
+    @POST("api/VietMap/Create")
+    Single<XacMinhRespone> ddCreateVietMapRequest(@Body CreateVietMapRequest createVietMapRequest);
 
 //    @FormUrlEncoded
 //    @POST("api/Collect/SearchOrderPostman")

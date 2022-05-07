@@ -21,11 +21,13 @@ import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.NotificationDialog;
 import com.ems.dingdong.model.DataHistoryPayment;
 import com.ems.dingdong.model.DataRequestPayment;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -42,6 +44,7 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,6 +70,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     private PaymentAdapter mAdapter;
     private List<EWalletDataResponse> mList;
     private String postmanCode = "";
+    private String mobileNumber = "";
     private String poCode = "";
     private String routeCode = "";
     private String fromDate = "";
@@ -153,11 +157,12 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         mSwipeRefreshLayout.setOnRefreshListener(this);
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-//        String idBuuta = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        Log.d("asdasdas12341", userJson);
         if (!TextUtils.isEmpty(userJson)) {
             postmanCode = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName();
+            mobileNumber = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber();
         }
         if (!TextUtils.isEmpty(postOfficeJson)) {
             poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
@@ -423,8 +428,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     if (id.equals("3")) {
                         mPresenter.showLienket();
                     } else {
-
-
                         String con = "";
                         if (id.equals("1"))
                             con = "Tài khoản thấu chi NHTM SeABank?";
@@ -447,12 +450,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                                     if (id.equals("1"))
                                         bankcode = "SeABank";
                                     else bankcode = "EW";
-                                    for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                                        if (id.equals("1") && userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank"))
-                                            posmanTel = userInfo.getMobileNumber();
-                                        else if (id.equals("2") && userInfo.getSmartBankLink().get(i).getBankCode().equals("EW"))
-                                            posmanTel = userInfo.getMobileNumber();
-                                    }
+                                    posmanTel = userInfo.getMobileNumber();
                                     mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel);
                                     sweetAlertDialog.dismiss();
 
@@ -462,7 +460,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                                             public void onPaymentClick(String otp) {
                                                 if (ketquaINT == 1)
                                                     mPresenter.confirmPayment(list, otp,
-                                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
+                                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode, mobileNumber);
                                                 else {
                                                     Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
                                                 }
@@ -547,13 +545,8 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                                     bankcode = "SeABank";
                                 else bankcode = "EW";
 
-                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                                    if (id.equals("1") && userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank"))
-                                        posmanTel = userInfo.getMobileNumber();
-                                    else if (id.equals("2") && userInfo.getSmartBankLink().get(i).getBankCode().equals("EW"))
-                                        posmanTel = userInfo.getMobileNumber();
+                                posmanTel = userInfo.getMobileNumber();
 
-                                }
                                 mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel);
                                 sweetAlertDialog.dismiss();
                                 if (id.equals("2")) {
@@ -562,7 +555,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                                         public void onPaymentClick(String otp) {
                                             if (ketquaINT == 1)
                                                 mPresenter.confirmPayment(list, otp,
-                                                        requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
+                                                        requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode, mobileNumber);
                                             else {
                                                 Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
                                             }
@@ -638,5 +631,13 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         else if (mPresenter.getPositionTab() == 4)
             mPresenter.getDataPayment("2105", poCode, routeCode, postmanCode, fromDate, toDate);
         stopRefresh();
+    }
+
+    List<SmartBankLink> k;
+
+    @Override
+    public void setsmartBankConfirmLink(String x) {
+        SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
+        k = Arrays.asList(v);
     }
 }

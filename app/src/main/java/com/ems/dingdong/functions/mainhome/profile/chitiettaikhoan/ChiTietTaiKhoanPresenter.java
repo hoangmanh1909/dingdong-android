@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankPresenter;
@@ -26,7 +27,7 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
     public ChiTietTaiKhoanPresenter(ContainerView containerView) {
         super(containerView);
     }
-
+    SmartBankLink s;
     @Override
     public void start() {
 
@@ -41,7 +42,6 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
     public ChiTietTaiKhoanContract.View onCreateView() {
         return ChiTietTaiKhoanFragment.getInstance();
     }
-
 
     @Override
     public void ddHuyLienKet(SmartBankRequestCancelLinkRequest request) {
@@ -144,4 +144,12 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
 //        new EWalletPresenter(mContainerView).pushView();
     }
 
+    @Override
+    public SmartBankLink getSmartBankLink() {
+        return s;
+    }
+    public ChiTietTaiKhoanPresenter setSmartBankLink(SmartBankLink c) {
+        s = c;
+        return this;
+    }
 }

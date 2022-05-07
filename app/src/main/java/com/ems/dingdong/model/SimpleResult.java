@@ -14,7 +14,7 @@ public class SimpleResult implements Parcelable {
     String errorCode = "-100";
 
     @SerializedName(value = "message", alternate = "Message")
-    String message  ="";
+    String message = "";
 
     @SerializedName("Data")
     String data;
@@ -22,6 +22,7 @@ public class SimpleResult implements Parcelable {
     public String getData() {
         return data;
     }
+
     @Override
     public String toString() {
         return "SimpleResult{" +

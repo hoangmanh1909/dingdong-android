@@ -34,9 +34,9 @@ public class ValidationFragment extends ViewFragment<ValidationContract.Presente
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
-                mPresenter.validationAuthorized(edtPhone.getText().toString());
-            }
+//            if (NumberUtils.checkMobileNumber(edtPhone.getText().toString())) {
+//                mPresenter.validationAuthorized(edtPhone.getText().toString());
+//            }
         }
     };
 

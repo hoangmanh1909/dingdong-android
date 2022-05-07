@@ -19,6 +19,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
@@ -66,6 +67,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     SharedPref sharedPref;
     DialogOTP otpDialog;
     int type = 0;
+    SmartBankLink s;
 
     @Override
     protected int getLayoutId() {
@@ -81,6 +83,9 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
         super.initLayout();
         sharedPref = new SharedPref(getActivity());
         userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        s = mPresenter.getSmartBankLink();
+
+        Log.d("asdasdasd", new Gson().toJson(s));
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
@@ -96,23 +101,19 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
             tvMabuucuc.setText(String.format("%s - %s", postOffice.getCode(), postOffice.getName()));
         }
-        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-//                tvMabuucuc.setText(userInfo.getSmartBankLink().get(i).getPOCode() + " - " + userInfo.get);
-                tvMabuuta.setText(userInfo.getSmartBankLink().get(i).getPostmanCode() + " - " + userInfo.getFullName());
-                tvHovaten.setText(userInfo.getSmartBankLink().get(i).getBankAccountName());
-                tvSotktc.setText(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                tvSodienthoai.setText(userInfo.getMobileNumber());
-                tvLoaigiayto.setText(userInfo.getSmartBankLink().get(i).getPIDType());
-                tvSogttt.setText(userInfo.getSmartBankLink().get(i).getPIDNumber());
-                tvHanmuc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(userInfo.getSmartBankLink().get(i).getBankAccountLimit())))));
-                tvNgayhethan.setText(userInfo.getSmartBankLink().get(i).getBankAccountLimitExpired());
-                if (userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
-                    btnHuyMatmacdinh.setText("Hủy mặc định");
-                } else {
-                    btnHuyMatmacdinh.setText("Đặt mặc định");
-                }
-            }
+//                tvMabuucuc.setText(s.getPOCode() + " - " + userInfo.get);
+        tvMabuuta.setText(s.getPostmanCode() + " - " + userInfo.getFullName());
+        tvHovaten.setText(s.getBankAccountName());
+        tvSotktc.setText(s.getBankAccountNumber());
+        tvSodienthoai.setText(userInfo.getMobileNumber());
+        tvLoaigiayto.setText(s.getPIDType());
+        tvSogttt.setText(s.getPIDNumber());
+        tvHanmuc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(s.getBankAccountLimit())))));
+        tvNgayhethan.setText(s.getBankAccountLimitExpired());
+        if (s.getIsDefaultPayment()) {
+            btnHuyMatmacdinh.setText("Hủy mặc định");
+        } else {
+            btnHuyMatmacdinh.setText("Đặt mặc định");
         }
 
     }
@@ -129,91 +130,85 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
                 mPresenter.back();
                 break;
             case R.id.btn_huy_lienket:
-                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                        String title = "";
-                        String tilteMess = "";
-//                        if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING_CANCEL")) {
+                if (s.getBankCode().equals("SeABank")) {
+                    String title = "";
+                    String tilteMess = "";
+//                        if (s.getStatus().equals("WAITING_CANCEL")) {
 //                            CallOTP callOTP = new CallOTP();
-//                            callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-//                            callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-//                            callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
+//                            callOTP.setBankCode(s.getBankCode());
+//                            callOTP.setPOCode(s.getPOCode());
+//                            callOTP.setPostmanCode(s.getPostmanCode());
 //                            mPresenter.ddCallOTP(callOTP);
 //                        } else {
-                        SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
-                        smartBankRequestCancelLinkRequest.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                        smartBankRequestCancelLinkRequest.setPIDNumber(userInfo.getSmartBankLink().get(i).getPIDNumber());
-                        smartBankRequestCancelLinkRequest.setPIDType(userInfo.getSmartBankLink().get(i).getPIDType());
-                        smartBankRequestCancelLinkRequest.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                        smartBankRequestCancelLinkRequest.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                        smartBankRequestCancelLinkRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                        smartBankRequestCancelLinkRequest.setSeABankAccountLimit(userInfo.getSmartBankLink().get(i).getBankAccountLimit());
+                    SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
+                    smartBankRequestCancelLinkRequest.setBankCode(s.getBankCode());
+                    smartBankRequestCancelLinkRequest.setPIDNumber(s.getPIDNumber());
+                    smartBankRequestCancelLinkRequest.setPIDType(s.getPIDType());
+                    smartBankRequestCancelLinkRequest.setPOCode(s.getPOCode());
+                    smartBankRequestCancelLinkRequest.setPostmanCode(s.getPostmanCode());
+                    smartBankRequestCancelLinkRequest.setSeABankAccount(s.getBankAccountNumber());
+                    smartBankRequestCancelLinkRequest.setSeABankAccountLimit(s.getBankAccountLimit());
 
-                        title = "HỦY LIÊN KẾT";
-                        tilteMess = "Bạn có chắc chắn muốn hủy liên kết tài khoản không?";
+                    title = "HỦY LIÊN KẾT";
+                    tilteMess = "Bạn có chắc chắn muốn hủy liên kết tài khoản không?";
 
-                        DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
-                                tilteMess, title
-                                , new DiaLogMatDinh.OnPaymentCallback() {
-                            @Override
-                            public void onPaymentClick(String otp) {
-                                mPresenter.ddHuyLienKet(smartBankRequestCancelLinkRequest);
-                            }
-                        });
-                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                        otpDialog.show();
+                    DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
+                            tilteMess, title
+                            , new DiaLogMatDinh.OnPaymentCallback() {
+                        @Override
+                        public void onPaymentClick(String otp) {
+                            mPresenter.ddHuyLienKet(smartBankRequestCancelLinkRequest);
+                        }
+                    });
+                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    otpDialog.show();
 //                        }
-                    }
                 }
                 break;
             case R.id.btn_huy_matmacdinh:
                 TaiKhoanMatDinh taiKhoanMatDinh = new TaiKhoanMatDinh();
                 String title = "";
                 String tilteMess = "";
-                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                        if (!userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
+                if (s.getBankCode().equals("SeABank")) {
+                    if (!s.getIsDefaultPayment()) {
 //                            taiKhoanMatDinh.setBankCode(null);
-                            taiKhoanMatDinh.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                            taiKhoanMatDinh.setAccountNumber(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                            taiKhoanMatDinh.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                            taiKhoanMatDinh.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                            title = "ĐẶT LÀM MẶC ĐỊNH";
-                            tilteMess = "Bạn có muốn đặt tài khoản này làm tài khoản thanh toán măc định?";
-                            type = 1;
-                        } else {
-                            taiKhoanMatDinh.setAccountNumber(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                            taiKhoanMatDinh.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                            taiKhoanMatDinh.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                            title = "HỦY ĐẶT MẶC ĐỊNH";
-                            tilteMess = "Bạn có muốn hủy đặt mặc định tài khoản này?";
-                            type = 2;
-                        }
-
-                        DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
-                                tilteMess, title
-                                , new DiaLogMatDinh.OnPaymentCallback() {
-                            @Override
-                            public void onPaymentClick(String otp) {
-                                mPresenter.ddTaiKhoanMacDinh(taiKhoanMatDinh);
-                            }
-                        });
-                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                        otpDialog.show();
+                        taiKhoanMatDinh.setBankCode(s.getBankCode());
+                        taiKhoanMatDinh.setAccountNumber(s.getBankAccountNumber());
+                        taiKhoanMatDinh.setPostmanCode(s.getPostmanCode());
+                        taiKhoanMatDinh.setPOCode(s.getPOCode());
+                        title = "ĐẶT LÀM MẶC ĐỊNH";
+                        tilteMess = "Bạn có muốn đặt tài khoản này làm tài khoản thanh toán măc định?";
+                        type = 1;
+                    } else {
+                        taiKhoanMatDinh.setAccountNumber(s.getBankAccountNumber());
+                        taiKhoanMatDinh.setPostmanCode(s.getPostmanCode());
+                        taiKhoanMatDinh.setPOCode(s.getPOCode());
+                        title = "HỦY ĐẶT MẶC ĐỊNH";
+                        tilteMess = "Bạn có muốn hủy đặt mặc định tài khoản này?";
+                        type = 2;
                     }
+
+                    DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
+                            tilteMess, title
+                            , new DiaLogMatDinh.OnPaymentCallback() {
+                        @Override
+                        public void onPaymentClick(String otp) {
+                            mPresenter.ddTaiKhoanMacDinh(taiKhoanMatDinh);
+                        }
+                    });
+                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    otpDialog.show();
                 }
                 break;
             case R.id.btn_xemsodu:
-                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                        SmartBankInquiryBalanceRequest smartBankInquiryBalanceRequest = new SmartBankInquiryBalanceRequest();
-                        smartBankInquiryBalanceRequest.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                        smartBankInquiryBalanceRequest.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                        smartBankInquiryBalanceRequest.setSeABankAccount(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                        mPresenter.ddTruyVanSodu(smartBankInquiryBalanceRequest);
-                    }
+                if (s.getBankCode().equals("SeABank")) {
+                    SmartBankInquiryBalanceRequest smartBankInquiryBalanceRequest = new SmartBankInquiryBalanceRequest();
+                    smartBankInquiryBalanceRequest.setBankCode(s.getBankCode());
+                    smartBankInquiryBalanceRequest.setPostmanCode(s.getPostmanCode());
+                    smartBankInquiryBalanceRequest.setSeABankAccount(s.getBankAccountNumber());
+                    mPresenter.ddTruyVanSodu(smartBankInquiryBalanceRequest);
                 }
                 break;
         }
@@ -221,39 +216,37 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 
     @Override
     public void showOTP() {
-        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                userInfo.getSmartBankLink().get(0).setStatus("WAITING_CANCEL");
-                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-                SmartBankConfirmCancelLinkRequest smartBankConfirmLinkRequest = new SmartBankConfirmCancelLinkRequest();
-                smartBankConfirmLinkRequest.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                smartBankConfirmLinkRequest.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                smartBankConfirmLinkRequest.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber()
-                        , new DialogOTP.OnPaymentCallback() {
-                    @Override
-                    public void onPaymentClick(String otp, int type) {
-                        smartBankConfirmLinkRequest.setOTP(otp);
-                        mPresenter.ddXacnhanhuy(smartBankConfirmLinkRequest);
-                    }
+        if (s.getBankCode().equals("SeABank")) {
+//                userInfo.getSmartBankLink().get(0).setStatus("WAITING_CANCEL");
+//                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+            SmartBankConfirmCancelLinkRequest smartBankConfirmLinkRequest = new SmartBankConfirmCancelLinkRequest();
+            smartBankConfirmLinkRequest.setBankCode(s.getBankCode());
+            smartBankConfirmLinkRequest.setPOCode(s.getPOCode());
+            smartBankConfirmLinkRequest.setPostmanCode(s.getPostmanCode());
+            otpDialog = new DialogOTP(getViewContext(), "Vui lòng nhập OTP đã được gửi về SĐT " + userInfo.getMobileNumber()
+                    , new DialogOTP.OnPaymentCallback() {
+                @Override
+                public void onPaymentClick(String otp, int type) {
+                    smartBankConfirmLinkRequest.setOTP(otp);
+                    mPresenter.ddXacnhanhuy(smartBankConfirmLinkRequest);
+                }
 
-                    @Override
-                    public void onCallOTP() {
-                        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                                CallOTP callOTP = new CallOTP();
-                                callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-                                callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-                                callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-                                mPresenter.ddCallOTP(callOTP);
-                            }
+                @Override
+                public void onCallOTP() {
+                    for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+                        if (s.getBankCode().equals("SeABank")) {
+                            CallOTP callOTP = new CallOTP();
+                            callOTP.setBankCode(s.getBankCode());
+                            callOTP.setPOCode(s.getPOCode());
+                            callOTP.setPostmanCode(s.getPostmanCode());
+                            mPresenter.ddCallOTP(callOTP);
                         }
                     }
-                });
-                otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                otpDialog.show();
-            }
+                }
+            });
+            otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            otpDialog.show();
         }
     }
 
@@ -268,12 +261,12 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 
     @Override
     public void huyLKThanhCong() {
-        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                userInfo.getSmartBankLink().remove(i);
-                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-            }
-        }
+//        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+//            if (s.getBankCode().equals("SeABank")) {
+//                userInfo.getSmartBankLink().remove(i);
+//                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+//            }
+//        }
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -290,20 +283,20 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     @Override
     public void capNhatMacDinh() {
 
-        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                if (type == 2) {
-                    userInfo.getSmartBankLink().get(i).setIsDefaultPayment(false);
-                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-                } else if (type == 1) {
-                    userInfo.getSmartBankLink().get(i).setIsDefaultPayment(true);
-                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-                }
-                if (userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
-                    btnHuyMatmacdinh.setText("Hủy mặc định");
-                } else {
-                    btnHuyMatmacdinh.setText("Đặt mặc định");
-                }
+//        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+        if (s.getBankCode().equals("SeABank")) {
+//                if (type == 2) {
+//                    s.setIsDefaultPayment(false);
+//                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+//                } else if (type == 1) {
+//                    s.setIsDefaultPayment(true);
+//                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+//                }
+            if (s.getIsDefaultPayment()) {
+                btnHuyMatmacdinh.setText("Hủy mặc định");
+            } else {
+                btnHuyMatmacdinh.setText("Đặt mặc định");
+//                }
             }
         }
 

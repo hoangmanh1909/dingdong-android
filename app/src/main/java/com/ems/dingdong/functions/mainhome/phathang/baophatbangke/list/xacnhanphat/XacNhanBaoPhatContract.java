@@ -137,7 +137,9 @@ public interface XacNhanBaoPhatContract {
          */
         void showPostman(ArrayList<UserInfo> userInfos);
 
-        void showPaymentV2Success(String message);
+        void showPaymentV2Success(String message, String Data);
+
+        void showPaymentV2Error(String message);
 
         /**
          * Show image.
@@ -162,7 +164,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * Show success code.
          */
-        void showSuccess(String code);
+        void showSuccess(String code,String id);
 
         /**
          * Show change route status.
@@ -178,6 +180,7 @@ public interface XacNhanBaoPhatContract {
 
         List<DeliveryPostman> getItemSelected();
     }
+
 
     interface Presenter extends IPresenter<View, Interactor> {
 
@@ -214,7 +217,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery not success.
          */
-        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture,String EstimateProcessTime);
+        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture, String EstimateProcessTime);
 
         /**
          * delivery success.
@@ -245,7 +248,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
-        void onTabRefresh();
+        void onTabRefresh(String data,int mType);
 
         void deliveryPartial(DeliveryProductRequest request);
     }

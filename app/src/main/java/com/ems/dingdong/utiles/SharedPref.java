@@ -78,7 +78,14 @@ public class SharedPref {
             }
         }
     }
-
+    public void clearPTC() {
+        try {
+            editor.remove(Constants.KEY_PKTC);
+            editor.commit();
+        } catch (Exception ex) {
+            Logger.w(ex);
+        }
+    }
     public void clear() {
         try {
             editor.remove("UniqueID");

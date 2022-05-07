@@ -5,12 +5,19 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
+import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CommonObjectResult;
+import com.ems.dingdong.model.HomeCollectInfo;
 import com.ems.dingdong.model.HomeCollectInfoResult;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.ThuGomRespone;
+import com.ems.dingdong.model.ThuGomResponeValue;
 
 import java.util.ArrayList;
+
+import io.reactivex.Single;
 
 /**
  * The Home Contract
@@ -18,13 +25,17 @@ import java.util.ArrayList;
 interface HomeContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getHomeView(String fromDate,String toDate,String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback);
+        void getHomeView(String fromDate, String toDate, String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback);
+
+        Single<ThuGomRespone> getDDThugom(BalanceModel v);
     }
 
     interface View extends PresentView<Presenter> {
         void showObjectSuccess(HomeCollectInfoResult objectResult);
 
         void showObjectEmpty();
+
+        void showThuGom(ThuGomResponeValue v);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -39,9 +50,11 @@ interface HomeContract {
 
         void showViewStatisticPtc(StatisticType isSuccess);
 
-        void getHomeView(String fromDate,String toDate,String postmanCode, String routeCode);
+        void getHomeView(String fromDate, String toDate, String postmanCode, String routeCode);
 
         void showListBd13(int typeListDelivery);
+
+        void getDDThugom(BalanceModel v);
     }
 }
 

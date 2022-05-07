@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,9 +76,13 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
         @BindView(R.id.rl_item_count_selected)
         RelativeLayout relativeLayout;
         @BindView(R.id.tv_lading)
-        CustomTextView tvLading;
+        TextView tvLading;
         @BindView(R.id.tv_monney)
-        CustomTextView tvMonney;
+        TextView tvMonney;
+        @BindView(R.id.tv_tienphathoan)
+        TextView tvTienphathoan;
+        @BindView(R.id.tv_titletienphathoan)
+        TextView tvTitletienphathoan;
 
         HolderView(View itemView) {
             super(itemView);
@@ -93,7 +98,25 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
                 ivPickStatus.setImageResource(R.drawable.ic_cancel_close);
                 relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
             }
+            tvTienphathoan.setVisibility(View.GONE);
+            tvTitletienphathoan.setVisibility(View.GONE);
 
+            try {
+                if (item.getIsItemReturn().equals("Y")) {
+                    tvTienphathoan.setVisibility(View.VISIBLE);
+                    tvTitletienphathoan.setVisibility(View.VISIBLE);
+
+                    if (item.getType() == 1) {
+                        tvTitletienphathoan.setText("Cước chuyển hoàn phải thu ");
+                        tvTienphathoan.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
+                    } else {
+                        tvTitletienphathoan.setText("Cước chuyển hoàn phải trả ");
+                        tvTienphathoan.setText(String.format("%s", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
+                    }
+                }
+            } catch (NullPointerException nullPointerException) {
+
+            }
             if (!TextUtils.isEmpty(item.getMaE())) {
                 tvLading.setText(item.getMaE());
             } else {
@@ -106,7 +129,7 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
                 amount = item.getAmount();
             }
 
-            fee = item.getFeeShip() + item.getFeeCollectLater() + item.getFeeC() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA();
+            fee = item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA();
             tvMonney.setText(NumberUtils.formatPriceNumber(amount + fee));
         }
     }

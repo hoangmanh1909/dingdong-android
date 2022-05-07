@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -17,13 +18,32 @@
             android:orientation="vertical"
             android:padding="@dimen/_10sdp">
 
-            <com.ems.dingdong.views.CustomTextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/find_package_quickly"
-                android:textColor="@color/black">
+                android:layout_height="wrap_content">
 
-            </com.ems.dingdong.views.CustomTextView>
+                <com.ems.dingdong.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/find_package_quickly"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:id="@+id/img_refesh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/bg_gradient_search"
+                    android:drawableRight="@drawable/ic_refresh_circle"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="Làm mới"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/ll_scan_qr"

@@ -37,7 +37,7 @@ public class DialogReason extends Dialog {
 
     public DialogReason(@NonNull Context context, String title, List<Item> list, PickerCallback callback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        View view = View.inflate(getContext(), R.layout.dialog_picker, null);
+        View view = View.inflate(getContext(), R.layout.dialog_picker_v1, null);
         setContentView(view);
         ButterKnife.bind(this, view);
         mDelegate = callback;

@@ -108,6 +108,10 @@ public class PaymentConfirmModel {
         this.ladingPaymentInfoList = ladingPaymentInfoList;
     }
 
+    public String getPostmanTel() {
+        return postmanTel;
+    }
+
     public void setPostmanTel(String postmanTel) {
         this.postmanTel = postmanTel;
     }

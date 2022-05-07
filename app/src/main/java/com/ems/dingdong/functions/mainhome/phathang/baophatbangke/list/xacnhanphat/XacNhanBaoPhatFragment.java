@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -57,6 +58,7 @@ import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.hinhanh.ImageAdapter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CreateDeliveryParialDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CuocAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.DeliveryPartialAdapter;
@@ -80,6 +82,7 @@ import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.EditTextUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -148,7 +151,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_solution)
     FormItemTextView tv_solution;
     @BindView(R.id.tv_Description)
-    TextInputEditText tv_Description;
+    EditText tv_Description;
     @BindView(R.id.tv_route)
     FormItemTextView tv_route;
     @BindView(R.id.tv_postman)
@@ -164,9 +167,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_total)
     CustomBoldTextView tvTotal;
     @BindView(R.id.edt_receiver_name)
-    TextInputEditText edtReceiverName;
+    EditText edtReceiverName;
     @BindView(R.id.edt_GTTT)
-    TextInputEditText tvGTTT;
+    EditText tvGTTT;
     @BindView(R.id.edt_relationship)
     TextView edtRelationship;
     @BindView(R.id.tv_receiver_name)
@@ -184,7 +187,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
-    TextInputEditText edtOtherRelationship;
+    EditText edtOtherRelationship;
     @BindView(R.id.recycler_image_verify_avatar)
     RecyclerView recyclerImageVerifyAvatar;
     @BindView(R.id.recycler_image)
@@ -265,8 +268,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemTextView _tvBuuCuc;
     @BindView(R.id.cb_selected_edtcod)
     CheckBox checkBoxedtCod;
-    @BindView(R.id.cb_selected_phathoan)
-    CheckBox cbSelectedPhathoan;
+//    @BindView(R.id.cb_selected_phathoan)
+//    CheckBox cbSelectedPhathoan;
     @BindView(R.id.ll_tong_tien_tam_thu)
     LinearLayout llTongTienTamThu;
     @BindView(R.id.tv_tong_tien_nop_edit)
@@ -280,6 +283,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     long tiem_tam = 0;
     @BindView(R.id.ll_edt_cod)
     LinearLayout lledtcod;
+
+
+
     String toPoCode = "";
     private Calendar calDateOfBirth = Calendar.getInstance();
     private Calendar calendar = Calendar.getInstance();
@@ -379,6 +385,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
     String currenImaPath = null;
+
+    String mData = "";
+    List<String> mDataList = new ArrayList<>();
+    int mTypeTrangThai = 0;
 
     private File getImageFile() throws IOException {
         String timeStr = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -590,6 +600,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         listProductDelivery = new ArrayList<>();
         listProductRefund = new ArrayList<>();
         listProductDeliveryRequest = new ArrayList<>();
+
 
         if (mBaoPhatBangke.size() == 1) {
             rad_partial.setVisibility(View.VISIBLE);
@@ -897,7 +908,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                cbSelectedPhathoan.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(android.R.color.holo_red_light));
 //            }
 //        }
-        cbSelectedPhathoan.setVisibility(View.GONE);
+//        cbSelectedPhathoan.setVisibility(View.GONE);
     }
 
     private void showBuuCucden() {
@@ -981,8 +992,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             case R.id.rad_fail:
                 rbVerifyInfo.setChecked(false);
                 rbVerifyImage.setChecked(false);
-                cbSelectedPhathoan.setVisibility(View.GONE);
-                cbSelectedPhathoan.setChecked(false);
+//                cbSelectedPhathoan.setVisibility(View.GONE);
+//                cbSelectedPhathoan.setChecked(false);
                 mDeliveryType = 1;
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
@@ -1032,7 +1043,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
                 // hinh anh vaf thong tin
                 llVerify.setVisibility(View.VISIBLE);
-                ll_image.setVisibility(View.VISIBLE);
+
+                ll_image.setVisibility(View.GONE);
 
                 lledtcod.setVisibility(View.GONE);
 
@@ -1047,7 +1059,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_partial.setTextColor(getResources().getColor(R.color.color_yellow));
                 break;
             case R.id.img_back:
-                mPresenter.back();
+                finishView();
                 break;
             case R.id.img_send:
                 if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
@@ -1056,9 +1068,32 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
                 if (checkInfoClick) {
-                    if (TextUtils.isEmpty(edtGTTTDateAccepted.getText()) || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) ||
-                            TextUtils.isEmpty(edtDateOfBirth.getText()) || TextUtils.isEmpty(tvGTTT.getText()) || TextUtils.isEmpty(edtUserAddress.getText())) {
-                        showErrorToast(getViewContext().getString(R.string.please_enter_full_authentication_information));
+                    if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())
+                            || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) ||
+                            TextUtils.isEmpty(edtDateOfBirth.getText())
+                            || TextUtils.isEmpty(tvGTTT.getText())
+                            || TextUtils.isEmpty(edtUserAddress.getText())) {
+                        if (TextUtils.isEmpty(tvGTTT.getText())) {
+                            showErrorToast("Vui lòng nhập Số GTTT");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())) {
+                            showErrorToast("Vui lòng nhập Ngày cấp");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(edtDateOfBirth.getText())) {
+                            showErrorToast("Vui lòng nhập Ngày tháng năm sinh");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(edtUserAddress.getText())) {
+                            showErrorToast("Vui lòng nhập Địa chỉ người sử dụng");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(edtGTTTLocatedAccepted.getText())) {
+                            showErrorToast("Vui lòng nhập Nơi cấp");
+                            return;
+                        }
+
                     } else {
                         submit();
                     }
@@ -1672,7 +1707,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         if (TextUtils.isEmpty(edtReceiverName.getText())) {
             receiverName = item.getReciverName();
         } else {
-            receiverName = edtReceiverName.getText().toString();
+            receiverName = Objects.requireNonNull(edtReceiverName.getText()).toString();
         }
 
         String parcelCode = item.getMaE();
@@ -2030,7 +2065,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void showPaymentV2Success(String message) {
+    public void showPaymentV2Success(String message, String data) {
         if (null != getViewContext()) {
             new SweetAlertDialog(getViewContext())
                     .setTitleText("Thông báo")
@@ -2038,6 +2073,36 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     .setConfirmText("Ok")
                     .setConfirmClickListener(v -> {
                         v.dismiss();
+                        mData = data;
+//                        mTypeTrangThai = 1;
+//                        if (getItemSelected().size() > 1) {
+//                            mDeliveryType = 3;
+//                        }
+//                        DataModel dataModel = new DataModel();
+//                        dataModel = NetWorkController.getGson().fromJson(data, DataModel.class);
+//
+//                        try {
+//                            if (dataModel.getError().length() > 0)
+//                                mTypeTrangThai = 2;
+//                        } catch (Exception e) {
+//                        }
+
+                        hideProgress();
+                        finishView();
+                    }).show();
+        } else showSuccessToast(message);
+    }
+
+    @Override
+    public void showPaymentV2Error(String message) {
+        if (null != getViewContext()) {
+            new SweetAlertDialog(getViewContext())
+                    .setTitleText("Thông báo")
+                    .setContentText(message)
+                    .setConfirmText("Ok")
+                    .setConfirmClickListener(v -> {
+                        v.dismiss();
+                        mTypeTrangThai = 2; // bao phat that bai
                         hideProgress();
                         finishView();
                     }).show();
@@ -2198,7 +2263,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             mDeliveryError = +1;
             int total = mDeliverySuccess + mDeliveryError;
             if (total == getItemSelected().size()) {
-                showFinish();
+                mTypeTrangThai = 2; // bao phat that bai
+                showFinish(mTypeTrangThai);
             }
         }
     }
@@ -2228,16 +2294,29 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void showSuccess(String code) {
+    public void showSuccess(String code, String id) {
         if (null != getViewContext()) {
             if (code.equals("00")) {
                 mDeliverySuccess += 1;
+                mDataList.add(id);
             } else {
                 mDeliveryError += 1;
             }
+
+
             int total = mDeliverySuccess + mDeliveryError;
             if (total == getItemSelected().size()) {
-                showFinish();
+
+
+                DataModel dataModel = new DataModel();
+                dataModel.setSuccess(mDataList);
+                dataModel.setError(new ArrayList<>());
+                mData = NetWorkController.getGson().toJson(dataModel, DataModel.class);
+                mTypeTrangThai = 1;// baso phat thanh cong
+                Log.d("asdasda123khiem", mData + "");
+
+                showFinish(mTypeTrangThai);
+
             }
         }
     }
@@ -2250,7 +2329,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
-    private void showFinish() {
+    private void showFinish(int type) {
         hideProgress();
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
@@ -2269,7 +2348,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void finishView() {
         try {
             mPresenter.back();
-            mPresenter.onTabRefresh();
+            mPresenter.onTabRefresh(mData, mDeliveryType);
         } catch (NullPointerException nullPointerException) {
         }
     }

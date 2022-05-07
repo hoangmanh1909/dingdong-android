@@ -256,7 +256,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.getReceiverLon(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
-                    EstimateProcessTime,"DD_ANDROID");
+                    EstimateProcessTime, "DD_ANDROID");
 
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
@@ -278,7 +278,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode());
+                    mView.showSuccess(response.body().getErrorCode(),deliveryUnSuccessRequest.getData().getLadingPostmanID());
                     mView.hideProgress();
                 }
 
@@ -302,7 +302,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     mView.hideProgress();
-                    mView.showSuccess(response.body().getErrorCode());
+                    mView.showSuccess(response.body().getErrorCode(),"");
                 } else mView.showError(response.body().getMessage());
             }
 
@@ -449,12 +449,13 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                         NumberUtils.formatPriceNumber(amountPP),
                                         NumberUtils.formatPriceNumber(amountPNS));
                             } else {
-                                mView.showPaymentV2Success(simpleResult.getMessage());
+                                mView.showPaymentV2Success(simpleResult.getMessage(), simpleResult.getData());
+
                             }
                         },
                         throwable -> {
                             mView.hideProgress();
-                            mView.showPaymentV2Success(throwable.getMessage());
+                            mView.showPaymentV2Error(throwable.getMessage());
 
                         }
                 );
@@ -469,8 +470,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         mInteractor.paymentV2(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> mView.showPaymentV2Success(simpleResult.getMessage()),
-                        throwable -> mView.showPaymentV2Success(throwable.getMessage()));
+                .subscribe(simpleResult -> mView.showPaymentV2Success(simpleResult.getMessage(), simpleResult.getData()),
+                        throwable -> mView.showPaymentV2Error(throwable.getMessage()));
     }
 
     @Override
@@ -574,8 +575,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void onTabRefresh() {
-        titleTabsListener.onDelivered();
+    public void onTabRefresh(String data,int mType) {
+        titleTabsListener.onDelivered(data,mType);
     }
 
     @Override

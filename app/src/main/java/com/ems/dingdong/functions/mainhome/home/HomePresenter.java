@@ -13,9 +13,14 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPh
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
+import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.utiles.Constants;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -75,9 +80,9 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     }
 
     @Override
-    public void getHomeView(String fromDate,String toDate,String postmanCode, String routeCode) {
+    public void getHomeView(String fromDate, String toDate, String postmanCode, String routeCode) {
         mView.showProgress();
-        mInteractor.getHomeView(fromDate,toDate,postmanCode, routeCode, new CommonCallback<HomeCollectInfoResult>((Activity) mContainerView) {
+        mInteractor.getHomeView(fromDate, toDate, postmanCode, routeCode, new CommonCallback<HomeCollectInfoResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<HomeCollectInfoResult> call, Response<HomeCollectInfoResult> response) {
                 super.onSuccess(call, response);
@@ -104,5 +109,26 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
         Intent intent = new Intent(getViewContext(), ListBaoPhatBangKeActivity.class);
         intent.putExtra(Constants.DELIVERY_LIST_TYPE, typeListDelivery);
         getViewContext().startActivity(intent);
+    }
+
+    @Override
+    public void getDDThugom(BalanceModel v) {
+        mView.showProgress();
+        mInteractor.getDDThugom(v)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    try {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showThuGom(simpleResult.getValue());
+                            mView.hideProgress();
+                        } else {
+
+                            mView.hideProgress();
+                        }
+                    } catch (Exception e) {
+                    }
+
+                });
     }
 }

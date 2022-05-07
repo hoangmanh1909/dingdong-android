@@ -8,31 +8,45 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonContract;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.CreateVietMapRequest;
+import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PhoneNumber;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VpostcodeModel;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -79,7 +93,6 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
             @Override
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
-                mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     ArrayList<CommonObject> list = response.body().getList();
                     ArrayList<CommonObject> listG = new ArrayList<>();
@@ -120,14 +133,16 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             itemExists.weightS += Integer.parseInt(item.getWeigh());
                             tam += Integer.parseInt(item.getWeigh());
 //                            itemExists.setWeightS(); = tam;
-                            Log.d("asdahsjd123123", itemExists.weightS+"");
+                            Log.d("asdahsjd123123", itemExists.weightS + "");
                         }
                     }
-
-
                     mView.showResponseSuccess(listG);
+                    mView.hideProgress();
+
                 } else {
                     mView.showError(response.body().getMessage());
+                    mView.hideProgress();
+
                 }
             }
 
@@ -272,4 +287,90 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     public void vietmapSearch(List<VpostcodeModel> vpostcodeModels) {
         new AddressListPresenter(mContainerView).setListVpost(vpostcodeModels).setType(98).pushView();
     }
+
+    @Override
+    public void getDDVeryAddress(VerifyAddress verifyAddress) {
+        mView.showProgress();
+        mInteractor.ddVerifyAddress(verifyAddress)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        android.util.Log.d("asdasdasdasd", new Gson().toJson(simpleResult.getValue()));
+                        mView.showAddress(simpleResult.getValue());
+                    }
+
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void ddCreateVietMap(CreateVietMapRequest verifyAddress) {
+        mView.showProgress();
+        mInteractor.ddCreateVietMapRequest(verifyAddress)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.shoSucces(simpleResult.getValue());
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void ddSreachPhone(PhoneNumber phoneNumber) {
+        mView.showProgress();
+        mInteractor.ddSreachPhone(phoneNumber)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showDiachi(simpleResult.getData());
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+
+                    mView.hideProgress();
+                });
+    }
+
+
+    @Override
+    public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel) {
+        new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setListVposcode(addressListModel).pushView();
+    }
+
+    @Override
+    public void getMapVitri(Double v1, Double v2) {
+        mView.showProgress();
+        mInteractor.vietmapSearchViTri(v1, v2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        if (simpleResult.getResponseLocation() != null) {
+                            Object data = simpleResult.getResponseLocation();
+                            String dataJson = NetWorkController.getGson().toJson(data);
+                            XacMinhDiaChiResult resultModel = NetWorkController.getGson().fromJson(dataJson, XacMinhDiaChiResult.class);
+                            List<AddressListModel> getListSearchV1 = new ArrayList<>();
+                            List<VpostcodeModel> getListVpost = new ArrayList<>();
+                            VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                            vpostcodeModel.setMaE("");
+                            vpostcodeModel.setId(0);
+
+                            vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
+                            vpostcodeModel.setFullAdress("Vị trí hiện tại");
+                            vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
+                            vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
+                            getListVpost.add(vpostcodeModel);
+                            mView.showList(vpostcodeModel);
+                        } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
 }

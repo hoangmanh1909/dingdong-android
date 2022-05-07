@@ -193,9 +193,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_weight)
         public CustomTextView tv_weight;
         @BindView(R.id.tv_COD)
-        public CustomTextView tv_COD;
+        public CustomBoldTextView tv_COD;
         @BindView(R.id.tv_fee)
-        public CustomTextView tv_fee;
+        public CustomBoldTextView tv_fee;
         @BindView(R.id.layout_itemBD13)
         public LinearLayout linearLayout;
         @BindView(R.id.tv_index)
@@ -224,6 +224,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public ImageView ivStatus;
         @BindView(R.id.tv_sodonhang)
         public CustomTextView tvSodonhang;
+        @BindView(R.id.tv_xacminhdiachi)
+        public TextView tvXacminhdiachi;
+        @BindView(R.id.tv_tien_phathoan)
+        public TextView tvTienPhathoan;
+        @BindView(R.id.img_address)
+        public ImageView imgAddress;
+        @BindView(R.id.tv_goiy)
+        public TextView tvGoiy;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -248,9 +256,15 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_code.setText("");
             }
 
-            if (item.getReceiverVpostcode() == null || item.getReceiverVpostcode().isEmpty())
+            if (item.getReceiverVpostcode() == null || item.getReceiverVpostcode().isEmpty()) {
                 ivStatus.setVisibility(View.GONE);
-            else ivStatus.setVisibility(View.VISIBLE);
+                tvXacminhdiachi.setVisibility(View.VISIBLE);
+                imgAddress.setVisibility(View.VISIBLE);
+            } else {
+                ivStatus.setVisibility(View.VISIBLE);
+                tvXacminhdiachi.setVisibility(View.GONE);
+                imgAddress.setVisibility(View.GONE);
+            }
 
             String receiverName = "";
             String receiverMobile = "";
@@ -301,10 +315,17 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
 //            if (item.getTotalFee() != null)
             tv_fee.setText("Tổng thu (PKTC): " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
             tvRefundPostage.setVisibility(View.GONE);
+            tvTienPhathoan.setVisibility(View.GONE);
             try {
                 if (item.getIsItemReturn().equals("Y")) {
                     tvRefundPostage.setText("Bưu gửi phát hoàn");
                     tvRefundPostage.setVisibility(View.VISIBLE);
+                    tvTienPhathoan.setVisibility(View.VISIBLE);
+
+                    if (item.getType() == 1) {
+                        tvTienPhathoan.setText("Cước chuyển hoàn phải thu : " +  String.format("%s đ", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
+                    } else
+                        tvTienPhathoan.setText("Cước chuyển hoàn phải trả : "  +  String.format("%s đ", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
                 }
             } catch (NullPointerException nullPointerException) {
 

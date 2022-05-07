@@ -13,8 +13,10 @@ import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.notify.ListNotifyPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
+import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -23,7 +25,10 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -87,18 +92,43 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
 
-        mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate, new CommonCallback<StatisticPaymentResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<StatisticPaymentResult> call, Response<StatisticPaymentResult> response) {
-                mView.hideProgress();
-                if (getViewContext() != null)
-                    mView.updateBalance(response.body().getStatisticPaymentResponses());
-            }
+        mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate,
+                new CommonCallback<StatisticPaymentResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<StatisticPaymentResult> call, Response<StatisticPaymentResult> response) {
+                        mView.hideProgress();
+                        if (getViewContext() != null)
+                            mView.updateBalance(response.body().getStatisticPaymentResponses());
+                    }
 
+                    @Override
+                    protected void onError(Call<StatisticPaymentResult> call, String message) {
+                    }
+                });
+    }
+
+    @Override
+    public void ddGetBalance(BalanceModel v) {
+        mView.showProgress();
+        mInteractor.ddGetBalance(v, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onError(Call<StatisticPaymentResult> call, String message) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                try {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.setBalance(response.body().getData());
+                        mView.hideProgress();
+                    } else {
+
+                        mView.hideProgress();
+                    }
+                } catch (Exception e) {
+                }
+
+
             }
         });
+
     }
 
     @Override

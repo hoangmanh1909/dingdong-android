@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_change_route"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dimen_10dp"
+    android:paddingRight="@dimen/dimen_10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ems.dingdong.views.CustomTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:text="Chọn bưu cục"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp" />
+
+        <com.ems.dingdong.views.form.FormItemTextView
+            android:id="@+id/tv_buu_cuc"
+            app:formAction="@drawable/ic_arrow_down"
+            app:formDrawablePadding="@dimen/dimen_10dp"
+            app:formHint="Chọn bưu cục"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:textColor="#253854"
+            android:textSize="@dimen/text_size_14sp" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/Devider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_chontuyen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Chọn tuyến"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemTextView
+                android:id="@+id/tv_route"
+                app:formAction="@drawable/ic_arrow_down"
+                app:formDrawablePadding="@dimen/dimen_10dp"
+                app:formHint="Chọn tuyến"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="@dimen/text_size_14sp" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Bưu tá"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemTextView
+                android:id="@+id/tv_postman"
+                app:formAction="@drawable/ic_arrow_down"
+                app:formDrawablePadding="@dimen/dimen_10dp"
+                app:formHint="Chọn bưu tá"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="@dimen/text_size_14sp" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+    </LinearLayout>
+</LinearLayout>

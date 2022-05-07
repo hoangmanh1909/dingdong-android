@@ -4,6 +4,8 @@ package com.ems.dingdong.network;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.BalanceModel;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
@@ -14,6 +16,7 @@ import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ConfirmOrderPostmanResult;
 import com.ems.dingdong.model.CreateOrderRequest;
+import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
@@ -28,6 +31,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.PhoneNumber;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.ReceiverVpostcodeMode;
@@ -44,12 +48,15 @@ import com.ems.dingdong.model.StatisticDebitGeneralResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
+import com.ems.dingdong.model.ThuGomRespone;
 import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.XacMinhRespone;
 import com.ems.dingdong.model.request.BankAccountNumberRequest;
 import com.ems.dingdong.model.request.CallHistoryRequest;
 import com.ems.dingdong.model.request.CallOTP;
@@ -89,6 +96,7 @@ import com.ems.dingdong.model.response.IdentifyCationResponse;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
+import com.ems.dingdong.model.response.VerifyAddressRespone;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
@@ -415,7 +423,7 @@ public class NetWorkController {
 
     public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                                   String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason,"DD_ANDROID");
+        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason, "DD_ANDROID");
         call.enqueue(callback);
     }
 
@@ -579,6 +587,7 @@ public class NetWorkController {
         Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData(fromDate, toDate, postmanCode, routeCode);
         call.enqueue(callback);
     }
+
 
     public static void searchLadingCreatedBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> callback) {
         Call<DeliveryPostmanResponse> call = getAPIBuilder().searchLadingCreatedBd13(objRequest);
@@ -745,6 +754,11 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
+    public static void ddGetBalance(BalanceModel request, CommonCallback<SimpleResult> callback) {
+        Call<SimpleResult> call = getAPIBuilder().getBalance(request);
+        call.enqueue(callback);
+
+    }
 
     public static void changeRouteInsert(ChangeRouteRequest request,
                                          CommonCallback<SimpleResult> callback) {
@@ -1034,6 +1048,7 @@ public class NetWorkController {
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
+
     public static Single<SimpleResult> smartBankRequestCancelLinkRequest(SmartBankRequestCancelLinkRequest request) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("SMB004");
@@ -1068,4 +1083,32 @@ public class NetWorkController {
         dataRequestPayment.setData(getGson().toJson(request));
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
+
+    public static Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("SMB010");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+
+    public static Single<ThuGomRespone> getDDThugom(BalanceModel r) {
+        return getAPIRxBuilder().getGetMainviewCollec(r);
+    }
+
+    public static Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress r) {
+        return getAPIRxBuilder().ddVerifyAddress(r.getLongitude(), r.getLatitude());
+    }
+
+    public static Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest r) {
+        return getAPIRxBuilder().ddCreateVietMapRequest(r);
+    }
+
+    public static Single<SimpleResult> ddSreachPhone(PhoneNumber r) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("ROUTE_ADDRESS_SEARCH_ADDRESS");
+        dataRequestPayment.setData(getGson().toJson(r));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
 }

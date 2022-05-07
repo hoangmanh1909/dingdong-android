@@ -6,11 +6,19 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.PhoneNumber;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.Values;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VpostcodeModel;
+import com.ems.dingdong.model.XacMinhDiaChiResult;
+import com.ems.dingdong.model.XacMinhRespone;
 import com.ems.dingdong.model.request.SMLRequest;
+import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
+import com.ems.dingdong.model.response.VerifyAddressRespone;
 
 import java.util.List;
 
@@ -79,9 +87,19 @@ interface ListBaoPhatBangKeContract {
 
         Single<SimpleResult> _huySml(SMLRequest smlRequest);
 
+        Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress verifyAddress);
+
+        Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest createVietMapRequest);
+
+        Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment);
+
+        Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude);
     }
 
     interface View extends PresentView<Presenter> {
+        void showDiachi(String x);
+
+        void showList(VpostcodeModel getListVpostV1);
 
         /**
          * Show response list when get success all record
@@ -112,8 +130,11 @@ interface ListBaoPhatBangKeContract {
 
         void showSuccessUpdateMobileSender(String phoneSender, String message);
 
+        void showAddress(Values x);
 
         void showThongBao(String mess);
+
+        void shoSucces(String mess);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -123,6 +144,9 @@ interface ListBaoPhatBangKeContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);*/
+        void ddSreachPhone(PhoneNumber dataRequestPayment);
+
+        void getMapVitri(Double v1, Double v2);
 
         void _phatSml(SMLRequest smlRequest);
 
@@ -255,6 +279,12 @@ interface ListBaoPhatBangKeContract {
         void callByWifi(String calleeNumber);
 
         void callByCtellFree(String calleeNumber);
+
+        void getDDVeryAddress(VerifyAddress verifyAddress);
+
+        void ddCreateVietMap(CreateVietMapRequest createVietMapRequest);
+
+        void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel);
     }
 
 }

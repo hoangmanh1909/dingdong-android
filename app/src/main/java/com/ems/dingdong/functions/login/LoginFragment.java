@@ -54,7 +54,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
             Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,  Manifest.permission.READ_EXTERNAL_STORAGE,};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
     private ItemBottomSheetPickerUIFragment pickerShift;
 
@@ -77,40 +77,16 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0973222902;A0F0033A62B4FB523F85F25C0469F41F35AABCCE42165823EB9E11D42C91D427");// pro vinatti
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev vinatti
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919743436;6DF63D7BFF563C2B7B5CFF2F2F20D3C230D60246E78F4628E51CCBC0817B3B26");// dev UAT
-            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;94E87E0F179EBDE0DA506B9A2C0C5FAA377E5D0B3C27A22E37765BC6F2B8693A");// pre UAT
-//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;46B7C8DAA00B6BE227A293FE95A298ABC0422615AB6F8D4A8FE3B21615F2134D");// dev UAT
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;94E87E0F179EBDE0DA506B9A2C0C5FAA377E5D0B3C27A22E37765BC6F2B8693A");// pre UAT
+            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;47C230E3CDBA533985D159C635C657392204E45FD331DAB823B58DC319FFB83D");// dev UAT
             // dev vinatti
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0907859321;61BA38010909F754331BE4C4494FFF9EBAF0E17566B1B5F7E574455DD0B4E620"); // dev
+
         }
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969479103;769358EDB74E113A14A02A045B8DF176340CAD8D32396A53B4353CF2068CB685");
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;7BCA3DDD0E52721B2622013BC720D181AFEFF11F030F63D23F54890F05EBA3A0"); // pro
         checkPermissionCall();
         //loginSipCmc();
     }
-/*    private void loginSipCmc() {
-        SharedPref sharedPref = new SharedPref(getContext());
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
 
-        SipCmc.startService(getContext());
-        SipCmc.addCallback(new RegistrationCallback() {
-            @Override
-            public void registrationOk() {
-                super.registrationOk();
-                //showSuccessToast("login success");
-                Log.d("123123", "login Ctel success");
-            }
-
-            @Override
-            public void registrationFailed()  {
-                super.registrationFailed();
-                //showErrorToast("login Ctel failure");
-                Log.d("123123", "login Ctel failed");
-            }
-        }, null);
-
-        //nên viết callback trước khi gọi
-        SipCmc.loginAccount("28496");
-    }*/
 
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -233,10 +209,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @Override
     public void gotoHome() {
         SharedPref sharedPref = new SharedPref(getActivity());
-
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
@@ -350,7 +324,6 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
     void showDialog(List<RouteInfo> routeInfos) {
         new RouteDialog(getActivity(), routeInfos, new RouteOptionCallBack() {
-
             @Override
             public void onRouteOptionResponse(Item item, RouteInfo itemRouteInfo) {
                 SharedPref sharedPref = new SharedPref(getActivity());

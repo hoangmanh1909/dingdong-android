@@ -130,22 +130,30 @@
                 android:id="@+id/tv_lienket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bạn chưa liên kết tài khoản vui lòng liên kết tài khoản trước khi thực hiện giao dịch!"
                 android:padding="5dp"
-                android:textColor="@color/black"/>
+                android:text="Bạn chưa liên kết tài khoản vui lòng liên kết tài khoản trước khi thực hiện giao dịch!"
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_link_wallet"
                 android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_button_yellow"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textSize="14dp"
-                android:background="@drawable/bg_button_yellow"
-                android:layout_height="40dp"
-                android:textColor="@color/white"
                 android:text="Liên kết tài khoản"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"/>
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/process_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

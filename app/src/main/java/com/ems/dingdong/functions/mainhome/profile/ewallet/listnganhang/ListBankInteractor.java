@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang;
 
 import com.core.base.viper.Interactor;
+import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
@@ -24,5 +25,10 @@ public class ListBankInteractor extends Interactor<ListBankContract.Presenter> i
     @Override
     public Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
         return NetWorkController.smartBankConfirmLinkRequest(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
+        return NetWorkController.getDDsmartBankConfirmLinkRequest(request);
     }
 }

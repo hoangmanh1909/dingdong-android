@@ -9,6 +9,12 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("Count")
     @Expose
     private Integer count;
+    @SerializedName("CuocCH")
+    @Expose
+    private String CuocCH;
+    @SerializedName("Type")
+    @Expose
+    private Integer Type;
     @SerializedName("Id")
     @Expose
     private Integer id;
@@ -186,6 +192,21 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
 
+    public String getCuocCH() {
+        return CuocCH;
+    }
+
+    public void setCuocCH(String cuocCH) {
+        CuocCH = cuocCH;
+    }
+
+    public Integer getType() {
+        return Type;
+    }
+
+    public void setType(Integer type) {
+        Type = type;
+    }
 
     boolean isCheck;
 

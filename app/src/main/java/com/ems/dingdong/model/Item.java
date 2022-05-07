@@ -11,6 +11,10 @@ public class Item {
     String mabuugui;
     String sohoadon;
     String sotaikhoan;
+    int lv1;
+    int lv2;
+    String tvlv1;
+    String tvlv2;
 
     public Item(String value, String text) {
         this.value = value;
@@ -24,7 +28,7 @@ public class Item {
         this.addrest = addrest;
     }
 
-    public Item(String value, String text, boolean isLienket, int img,String sotaikhoan) {
+    public Item(String value, String text, boolean isLienket, int img, String sotaikhoan) {
         this.value = value;
         this.text = text;
         this.isLienket = isLienket;
@@ -45,6 +49,45 @@ public class Item {
         this.matin = matin;
         this.mabuugui = mabuugui;
         this.sohoadon = sohoadon;
+    }
+    public Item(int lv1, int lv2,String value) {
+        this.value = value;
+        this.lv1 = lv1;
+        this.lv2 = lv2;
+
+    }
+
+
+    public int getLv1() {
+        return lv1;
+    }
+
+    public void setLv1(int lv1) {
+        this.lv1 = lv1;
+    }
+
+    public int getLv2() {
+        return lv2;
+    }
+
+    public void setLv2(int lv2) {
+        this.lv2 = lv2;
+    }
+
+    public String getTvlv1() {
+        return tvlv1;
+    }
+
+    public void setTvlv1(String tvlv1) {
+        this.tvlv1 = tvlv1;
+    }
+
+    public String getTvlv2() {
+        return tvlv2;
+    }
+
+    public void setTvlv2(String tvlv2) {
+        this.tvlv2 = tvlv2;
     }
 
     public int getStt() {

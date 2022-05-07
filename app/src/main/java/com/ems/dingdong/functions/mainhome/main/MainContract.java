@@ -9,12 +9,16 @@ import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
+import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.ShiftResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
+import com.ems.dingdong.network.NetWorkController;
 
 import io.reactivex.Single;
+import retrofit2.Call;
 
 /**
  * The Home Contract
@@ -27,10 +31,15 @@ interface MainContract {
         void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<StatisticPaymentResult> callback);
 
         Single<TokenMoveCropResult> getAccessToken(String mobileNumber);
+
+        void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback);
+
     }
 
     interface View extends PresentView<Presenter> {
         void updateBalance(StatisticPaymentResponse value);
+
+        void setBalance(String x);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -47,6 +56,8 @@ interface MainContract {
         void showSetting();
 
         void getBalance();
+
+        void ddGetBalance(BalanceModel v);
 
         void showNitify();
     }

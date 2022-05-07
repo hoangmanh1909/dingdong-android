@@ -13,6 +13,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -166,10 +167,14 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         CustomTextView tvWeight;
         @BindView(R.id.linear_layout)
         LinearLayout linearLayout;
-        @BindView(R.id.img_map)
-        public ImageView imgMap;
+        @BindView(R.id.tv_goiy)
+        public TextView tvGoiy;
         @BindView(R.id.iv_status)
         public ImageView ivStatus;
+        @BindView(R.id.tv_xacminhdiachi)
+        public TextView tvXacminhdiachi;
+        @BindView(R.id.img_address)
+        public ImageView imgDddress;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
         @BindView(R.id.tv_Description)
@@ -206,9 +211,15 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
 //                tam += Integer.parseInt(item.getKhoiluong().get(i));
             tvWeight.setText(String.format("Khối lượng: %s Gram", NumberUtils.formatPriceNumber(item.weightS)));
 
-            if (item.getSenderVpostcode().isEmpty())
+            if (item.getSenderVpostcode().isEmpty()) {
                 ivStatus.setVisibility(GONE);
-            else ivStatus.setVisibility(View.VISIBLE);
+                tvXacminhdiachi.setVisibility(View.VISIBLE);
+                imgDddress.setVisibility(View.VISIBLE);
+            } else {
+                ivStatus.setVisibility(View.VISIBLE);
+                tvXacminhdiachi.setVisibility(View.GONE);
+                imgDddress.setVisibility(View.GONE);
+            }
 
             if (mType == 1) {
 //                cbSelected.setClickable(false);

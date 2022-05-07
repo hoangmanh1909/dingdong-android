@@ -2,24 +2,37 @@ package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.IdCallback;
+import com.ems.dingdong.model.BalanceModel;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class DiaLogOption extends Dialog {
+
 
     private Context mContext;
     IdCallback idCallback;
@@ -37,6 +50,8 @@ public class DiaLogOption extends Dialog {
     TextView tvLienket;
     @BindView(R.id.btn_link_wallet)
     Button btnLienket;
+    @BindView(R.id.process_bar)
+    ProgressBar process;
 
     public DiaLogOption(Context context, IdCallback idCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -48,48 +63,82 @@ public class DiaLogOption extends Dialog {
         this.idCallback = idCallback;
 
         sharedPref = new SharedPref(getContext());
-        userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        String token = sharedPref.getString(Constants.KEY_PAYMENT_TOKEN, "");
-        if (token != null) {
-            tvVidientu.setVisibility(View.VISIBLE);
-            tvLienket.setVisibility(View.GONE);
-            btnLienket.setVisibility(View.GONE);
-        }
-        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                llTaikhoan.setVisibility(View.VISIBLE);
-                tvLienket.setVisibility(View.GONE);
-                btnLienket.setVisibility(View.GONE);
-                tvTennganhang.setText(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                if (NumberUtils.isNumber(userInfo.getSmartBankLink().get(i).getBankAccountNumber())) {
-                    String mahoa = userInfo.getSmartBankLink().get(i).getBankAccountNumber().substring(userInfo.getSmartBankLink().get(i).getBankAccountNumber()
-                                    .length() - 4,
-                            userInfo.getSmartBankLink().get(i).getBankAccountNumber().length());
-                    mahoa = "xxxx xxxx " + mahoa;
-                    tvTennganhang.setText(mahoa);
-                }
-            }
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
+        BalanceModel v = new BalanceModel();
+        v.setPOProvinceCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPOProvinceCode());
+        v.setPODistrictCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPODistrictCode());
+        v.setPOCode(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode());
+        v.setPostmanCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
+        v.setPostmanId(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD());
+        v.setRouteCode(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode());
+        v.setRouteId(Long.parseLong(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId()));
+        try {
+//            mPresenter.getDDsmartBankConfirmLinkRequest(v);
+            NetWorkController.getDDsmartBankConfirmLinkRequest(v)
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        try {
+                            process.setVisibility(View.GONE);
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                SmartBankLink[] c = NetWorkController.getGson().fromJson(simpleResult.getData(), SmartBankLink[].class);
+                                List<SmartBankLink> k = Arrays.asList(c);
+                                if (k.size() == 0) {
+                                    tvLienket.setVisibility(View.VISIBLE);
+                                    btnLienket.setVisibility(View.VISIBLE);
+                                    llTaikhoan.setVisibility(View.GONE);
+                                    tvVidientu.setVisibility(View.GONE);
+                                } else if (k.size() > 0)
+                                    for (SmartBankLink i : k) {
+
+                                        tvLienket.setVisibility(View.GONE);
+                                        btnLienket.setVisibility(View.GONE);
+                                        if (k.size() == 2) {
+                                            llTaikhoan.setVisibility(View.VISIBLE);
+                                            tvVidientu.setVisibility(View.VISIBLE);
+                                        } else if (i.getBankCode().equals("SeABank") && k.size() == 1) {
+                                            llTaikhoan.setVisibility(View.VISIBLE);
+                                            tvVidientu.setVisibility(View.GONE);
+                                        } else if (i.getBankCode().equals("EW") & k.size() == 1) {
+                                            tvVidientu.setVisibility(View.VISIBLE);
+                                            llTaikhoan.setVisibility(View.GONE);
+                                        }
+                                    }
+                                for (int i = 0; i < k.size(); i++) {
+                                    if (k.get(i).getBankCode().equals("SeABank")) {
+                                        llTaikhoan.setVisibility(View.VISIBLE);
+                                        tvLienket.setVisibility(View.GONE);
+                                        btnLienket.setVisibility(View.GONE);
+                                        tvTennganhang.setText(k.get(i).getBankAccountNumber());
+                                        if (NumberUtils.isNumber(k.get(i).getBankAccountNumber())) {
+                                            String mahoa = k.get(i).getBankAccountNumber().substring(k.get(i).getBankAccountNumber()
+                                                            .length() - 4,
+                                                    k.get(i).getBankAccountNumber().length());
+                                            mahoa = "xxxx xxxx " + mahoa;
+                                            tvTennganhang.setText(mahoa);
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    });
+        } catch (Exception e) {
+
         }
 
 
-        if (userInfo.getSmartBankLink() == null || userInfo.getSmartBankLink().size() == 0) {
-            tvLienket.setVisibility(View.VISIBLE);
-            btnLienket.setVisibility(View.VISIBLE);
-            llTaikhoan.setVisibility(View.GONE);
-            tvVidientu.setVisibility(View.GONE);
-        }
+    }
 
-//        int size = userInfo.getSmartBankLink().size();
-//        if (size == 1) {
-//            if (userInfo.getSmartBankLink().get(0).getBankCode().equals("EW")) {
-//                tvVidientu.setVisibility(View.VISIBLE);
-//            } else if (userInfo.getSmartBankLink().get(0).getBankCode().equals("SeABank")) {
-//                llTaikhoan.setVisibility(View.VISIBLE);
-//            }
-//        }
+    private void getDDsmartBankConfirmLink() {
+
     }
 
     @Override

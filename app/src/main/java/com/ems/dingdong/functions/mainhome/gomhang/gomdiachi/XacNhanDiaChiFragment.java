@@ -24,17 +24,29 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.AddressCallback;
 import com.ems.dingdong.callback.OnChooseDay;
+import com.ems.dingdong.callback.XacMinhCallback;
+import com.ems.dingdong.dialog.DialogAddress;
+import com.ems.dingdong.dialog.DialogXacThuc;
 import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
 import com.ems.dingdong.functions.mainhome.xuatfile.XuatFileExcel;
+import com.ems.dingdong.model.AddressModel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.ItemHoanTatNhieuTin;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.PhoneNumber;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.PushOnClickParcelAdapter;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.Values;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -63,9 +75,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -111,6 +125,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     ParcelCodeInfo mParcelCodeInfo;
     CommonObject itemClick;
     int type = 0;
+    int mID = 0;
+    String mPhoneS = "";
+
+    int getmID = 0;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
     };//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
@@ -181,10 +199,29 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
                         } else {
-//                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
-//                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
-//                            mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
                             Log.d("thanhgkiew1231231", new Gson().toJson(holder.getItem(position)));
+                        }
+                    });
+                    holder.imgDddress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("AAAAAAA", mAdapter.getListFilter().get(position).getiD());
+                            mID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
+                            mPhoneS = holder.getItem(position).getReceiverPhone();
+                            VerifyAddress x = new VerifyAddress();
+                            x.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+                            x.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
+                            mPresenter.getDDVeryAddress(x);
+                        }
+                    });
+
+                    holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getmID = position;
+                            PhoneNumber phoneNumber = new PhoneNumber();
+                            phoneNumber.setPhone(holder.getItem(position).getReceiverPhone());
+                            mPresenter.ddSreachPhone(phoneNumber);
                         }
                     });
                 }
@@ -217,6 +254,29 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 //                            holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
 //                            holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
 //                            mPresenter.showChiTietHoanThanhTin(holder.getItem(position));
+                        }
+                    });
+
+                    holder.imgDddress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("AAAAAAA", mAdapter.getListFilter().get(position).getiD());
+                            mID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
+                            mPhoneS = holder.getItem(position).getReceiverPhone();
+                            VerifyAddress x = new VerifyAddress();
+                            x.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+                            x.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
+                            mPresenter.getDDVeryAddress(x);
+                        }
+                    });
+
+                    holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getmID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
+                            PhoneNumber phoneNumber = new PhoneNumber();
+                            phoneNumber.setPhone(holder.getItem(position).getReceiverPhone());
+                            mPresenter.ddSreachPhone(phoneNumber);
                         }
                     });
                 }
@@ -297,6 +357,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         });
         edtSearch.setSelected(true);
 
+        try {
+            mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(), new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+        } catch (Exception e) {
+        }
     }
 
 
@@ -422,9 +486,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             }
         }
         List<CommonObject> commonObjects = mAdapter.getItemsSelected();
-
         List<VpostcodeModel> vpostcodeModels = new ArrayList<>();
-
         for (int i = 0; i < commonObjects.size(); i++) {
             VpostcodeModel vpostcodeModel = new VpostcodeModel();
             vpostcodeModel.setMaE(commonObjects.get(i).getCode());
@@ -622,5 +684,96 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     public void eventListItem(PushOnClickParcelAdapter pushOnClickParcelAdapter) {
         mParcelCodeInfo = pushOnClickParcelAdapter.getParcelCode();
 //        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showAddress(Values x) {
+        android.util.Log.d("asdasdasdasd", new Gson().toJson(x));
+        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
+        UserInfo userInfo = null;
+        RouteInfo routeInfo = null;
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!routeJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+        }
+
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        PostOffice postOffice = null;
+        if (!posOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+        }
+        UserInfo finalUserInfo = userInfo;
+        PostOffice finalPostOffice = postOffice;
+        RouteInfo finalRouteInfo = routeInfo;
+        new DialogXacThuc(getViewContext(), x, new XacMinhCallback() {
+            @Override
+            public void onResponse(CreateVietMapRequest v) {
+                v.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+                v.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
+                v.setPOProvinceCode(finalUserInfo.getPOProvinceCode());
+                v.setPODistrictCode(finalUserInfo.getPODistrictCode());
+                v.setPOCode(finalPostOffice.getCode());
+                v.setPostmanCode(finalUserInfo.getUserName());
+                v.setPostmanId(finalUserInfo.getiD());
+                v.setRouteCode(finalRouteInfo.getRouteCode());
+                v.setRouteId(Long.parseLong(finalRouteInfo.getRouteId()));
+                v.setPhone(mPhoneS);
+                v.setType(2);
+                v.setId(String.valueOf(mID));
+                mPresenter.ddCreateVietMap(v);
+            }
+        }).show();
+    }
+
+    @Override
+    public void shoSucces(String mess) {
+        if (mPresenter.getTab() == 0) {
+            Log.d("asd123123123", mListChua.size() + "");
+            for (int i = 0; i < mListChua.size(); i++)
+                if (mID == Integer.parseInt(mListChua.get(i).getiD())) {
+                    mListChua.get(i).setSenderVpostcode(mess);
+                    Log.d("thasdasdasd", mess);
+                }
+            mAdapter.notifyDataSetChanged();
+        } else {
+            for (int i = 0; i < mListDa.size(); i++)
+                if (mID == Integer.parseInt(mListDa.get(i).getiD())) {
+                    mListDa.get(i).setSenderVpostcode(mess);
+                    mAdapter.notifyDataSetChanged();
+                }
+        }
+    }
+
+    VpostcodeModel vpostcodeModels = new VpostcodeModel();
+
+    @Override
+    public void showDiachi(String x) {
+        AddressModel[] addressModel = NetWorkController.getGson().fromJson(x, AddressModel[].class);
+        List<AddressModel> list = Arrays.asList(addressModel);
+        new DialogAddress(getViewContext(), list, new AddressCallback() {
+            @Override
+            public void onClickItem(AddressModel item) {
+                Log.d("AAAAAA", new Gson().toJson(item));
+                List<VpostcodeModel> x = new ArrayList<>();
+                x.add(vpostcodeModels);
+                VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                vpostcodeModel.setMaE(mAdapter.getListFilter().get(getmID).getCode());
+                vpostcodeModel.setId(Integer.parseInt(mAdapter.getListFilter().get(getmID).getiD()));
+                vpostcodeModel.setSenderVpostcode(item.getVpostCode());
+                vpostcodeModel.setReceiverVpostcode("");
+                vpostcodeModel.setFullAdress(item.getWardName() + ", " + item.getDistrictName() + ", " + item.getProvinceName());
+                x.add(vpostcodeModel);
+                mPresenter.showAddressDetail(x, null);
+            }
+        }).show();
+    }
+
+    @Override
+    public void showList(VpostcodeModel getListVpostV1) {
+        vpostcodeModels = getListVpostV1;
     }
 }

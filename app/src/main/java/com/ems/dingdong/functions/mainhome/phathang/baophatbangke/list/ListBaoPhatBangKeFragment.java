@@ -1,12 +1,12 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,14 +14,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,40 +26,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.core.base.viper.ViewFragment;
-import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
-import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.callback.AddressCallback;
 import com.ems.dingdong.callback.DismissDialogCallback;
-import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.callback.PhoneKhiem;
 import com.ems.dingdong.callback.SmlCallback;
-import com.ems.dingdong.calls.CallManager;
-import com.ems.dingdong.calls.IncomingCallActivity;
-import com.ems.dingdong.calls.Session;
-import com.ems.dingdong.dialog.DialogCuocgoi;
+import com.ems.dingdong.callback.XacMinhCallback;
+import com.ems.dingdong.dialog.DialogAddress;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.DialogSML;
-import com.ems.dingdong.dialog.DialogText;
+import com.ems.dingdong.dialog.DialogXacThuc;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.dialog.PhoneConectDialogExtend;
 import com.ems.dingdong.dialog.PhoneConectDialogIcon;
-import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
+import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
 import com.ems.dingdong.functions.mainhome.profile.CustomProvider;
 import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
+import com.ems.dingdong.model.AddressModel;
+import com.ems.dingdong.model.CreateVietMapRequest;
+import com.ems.dingdong.model.DataCateModel;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Leaf;
+import com.ems.dingdong.model.PhoneNumber;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
-import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.model.TreeNote;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.Values;
+import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.network.NetWorkController;
@@ -73,12 +72,8 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
 import com.rengwuxian.materialedittext.MaterialEditText;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.RegistrationCallback;
@@ -86,13 +81,13 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
-import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -123,6 +118,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @BindView(R.id.img_map)
     ImageView imgMap;
     private ArrayList<DeliveryPostman> mList;
+    private ArrayList<DeliveryPostman> mListCallback;
     private CreateBd13Adapter mAdapter;
     private UserInfo mUserInfo;
     private PostOffice postOffice;
@@ -139,13 +135,19 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private boolean isReturnedFromXacNhanBaoPhat = false;
     private boolean isFromNotification = true;
     private PhoneConectDialogExtend mPhoneConectDialogExtend;
-
     private PhoneConectDialogIcon mPhoneConectDialogicon;
     private String choosenLadingCode = "";
     private int mTotalScrolled = 0;
     String provider = "CTEL";
     String phoneReceiver = "";
     String POCode;
+    SharedPref sharedPref;
+    GetLocation mGetLocation;
+    int getmID = 0;
+    int getmIDPhoneNguoiNhan = 0;
+    int getmIDPhoneNguoiGui = 0;
+    String mPhoneEdit = "";
+    Location mLocation = null;
     String PostmanId;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
             Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -153,7 +155,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
-
+    int mID = 0;
+    String mPhoneS = "";
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
         public void onLeafClick(Leaf leaf) {
@@ -231,9 +234,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void initLayout() {
         super.initLayout();
-
-
-        SharedPref sharedPref = new SharedPref(getViewContext());
+        sharedPref = new SharedPref(getViewContext());
+        sharedPref.clearPTC();
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!TextUtils.isEmpty(userJson)) {
@@ -251,6 +253,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             return;
         }
         mList = new ArrayList<>();
+        mListCallback = new ArrayList<>();
+        mLocation = new GetLocation().getLastKnownLocation(getContext());
         mCalendar = Calendar.getInstance();
         mAdapter = new CreateBd13Adapter(getActivity(), CreateBd13Adapter.TypeBD13.LIST_BD13, mList, (count, amount) -> new Handler().postDelayed(() -> {
             while (isLoading) {
@@ -269,7 +273,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mPresenter.setTitleTab(count);
         }, 1000)) {
             @Override
-            public void onBindViewHolder(HolderView holder, final int position) {
+            public void onBindViewHolder(HolderView holder, @SuppressLint("RecyclerView") final int position) {
                 super.onBindViewHolder(holder, position);
                 holder.itemView.setOnClickListener(v -> {
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
@@ -287,7 +291,15 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         tvItemSelected.setText(String.valueOf(size));
                     }
                 });
-
+                holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getmID = position;
+                        PhoneNumber phoneNumber = new PhoneNumber();
+                        phoneNumber.setPhone(holder.getItem(position).getReciverMobile());
+                        mPresenter.ddSreachPhone(phoneNumber);
+                    }
+                });
 
                 holder.imgSml.setOnClickListener(v -> {
                     if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
@@ -377,6 +389,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     try {
                         mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
                         choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
+                        getmIDPhoneNguoiGui = mAdapter.getListFilter().get(position).getId();
                         EventBus.getDefault().postSticky(new CustomNumberSender(mSenderPhone));
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
@@ -384,17 +397,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     new DialogCuocgoiNew(getViewContext(), mSenderPhone, 2, new PhoneKhiem() {
                         @Override
                         public void onCallTongDai(String phone) {
+                            mPhoneEdit = phone;
                             mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                         }
 
                         @Override
                         public void onCall(String phone) {
+                            mPhoneEdit = phone;
                             callProvidertoCSKH(phone);
                         }
 
                         @Override
                         public void onCallEdit(String phone, int type) {
 //                            callProvidertoCSKH(phone);
+                            mPhoneEdit = phone;
                             if (type == 1) {
                                 callProvidertoCSKH(phone);
                             } else {
@@ -409,6 +425,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     try {
                         phoneReceiver = mAdapter.getListFilter().get(position).getReciverMobile().split(",")[0].replace(" ", "").replace(".", "");
                         mSenderPhone = mAdapter.getListFilter().get(position).getSenderMobile();
+                        getmIDPhoneNguoiNhan = mAdapter.getListFilter().get(position).getId();
                         choosenLadingCode = mAdapter.getListFilter().get(position).getMaE();
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
@@ -416,16 +433,19 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     new DialogCuocgoiNew(getViewContext(), phoneReceiver, 1, new PhoneKhiem() {
                         @Override
                         public void onCallTongDai(String phone) {
+                            mPhoneEdit = phone;
                             mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                         }
 
                         @Override
                         public void onCall(String phone) {
+                            mPhoneEdit = phone;
                             callProvidertoCSKH(phone);
                         }
 
                         @Override
                         public void onCallEdit(String phone, int type) {
+                            mPhoneEdit = phone;
                             if (type == 1) {
                                 callProvidertoCSKH(phone);
                             } else {
@@ -437,16 +457,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
 
-                holder.img_contact_phone_ctel.setOnClickListener(v -> {
-                });
-
-
-                holder.img_map.setOnClickListener(v -> {
-//                    if (null != mAdapter.getListFilter().get(position).getNewReceiverAddress()) {
-//                        if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress()))
-//                            mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getNewReceiverAddress().getFullAdress());
-//                    } else
-//                        mPresenter.vietmapSearch(mAdapter.getListFilter().get(position).getReciverAddress());
+                holder.imgAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mID = mAdapter.getListFilter().get(position).getId();
+                        mPhoneS = mAdapter.getListFilter().get(position).getReciverMobile();
+                        VerifyAddress x = new VerifyAddress();
+                        x.setLatitude(mLocation.getLatitude());
+                        x.setLongitude(mLocation.getLongitude());
+                        mPresenter.getDDVeryAddress(x);
+                    }
                 });
             }
         };
@@ -496,6 +516,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        try {
+            mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(), new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+        } catch (Exception e) {
         }
     }
 
@@ -549,7 +573,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
         mPresenter.updateMobile(phone, parcelCode);
-        initSearch();
+//        initSearch();
         if (provider.equals("CTEL")) {
             if (TextUtils.isEmpty(phone)) {
                 showErrorToast("Không tìm thấy số điện thoại của người nhận");
@@ -567,7 +591,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void showConfirmSaveMobileSender(final String phoneSender, String parcelCode, DismissDialogCallback callback) {
         mPresenter.updateMobileSender(phoneSender, parcelCode);
-        initSearch();
+//        initSearch();
         if (provider.equals("CTEL")) {
             if (TextUtils.isEmpty(phoneSender)) {
                 showErrorToast("Không tìm thấy số điện thoại của người nhận");
@@ -592,26 +616,83 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showSuccessUpdateMobile(String phone, String message) {
         showSuccessToast(message);
-        initSearch();
+//        initSearch();
     }
 
     @Override
     public void showSuccessUpdateMobileSender(String phoneSender, String message) {
+//        ArrayList<DeliveryPostman> deliveryPostmen = new ArrayList<>();
+//        Log.d("asdasdas2eqwe",getmIDPhoneNguoiNhan+"");
+//        if (getmIDPhoneNguoiNhan != 0)
+//            for (int i = 0; i < mList.size(); i++) {
+//
+//                if (mList.get(i).getId() == getmIDPhoneNguoiNhan) {
+//                    mList.get(i).setSenderMobile(mPhoneEdit);
+//                }
+//            }
+//        deliveryPostmen.addAll(mList);
+//        showListSuccessFromTab(deliveryPostmen);
         showSuccessToast(message);
-        initSearch();
+
+//        initSearch();
+    }
+
+    private List<DataCateModel> mDataModel;
+
+    @Override
+    public void showAddress(Values x) {
+        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
+        UserInfo userInfo = null;
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        if (!routeJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeJson, RouteInfo.class);
+        }
+
+        String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        PostOffice postOffice = null;
+        if (!posOfficeJson.isEmpty()) {
+            postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
+        }
+        UserInfo finalUserInfo = userInfo;
+        PostOffice finalPostOffice = postOffice;
+        new DialogXacThuc(getViewContext(), x, new XacMinhCallback() {
+            @Override
+            public void onResponse(CreateVietMapRequest v) {
+                v.setId(String.valueOf(mID));
+                v.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+                v.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
+                v.setPOProvinceCode(finalUserInfo.getPOProvinceCode());
+                v.setPODistrictCode(finalUserInfo.getPODistrictCode());
+                v.setPOCode(finalPostOffice.getCode());
+                v.setPostmanCode(finalUserInfo.getUserName());
+                v.setPostmanId(finalUserInfo.getiD());
+                v.setRouteCode(routeInfo.getRouteCode());
+                v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
+                v.setPhone(mPhoneS + "");
+                v.setType(1);
+                mPresenter.ddCreateVietMap(v);
+            }
+        }).show();
+//        DataCate[] dataModels = NetWorkController.getGson().fromJson(x,DataCate[].class);
+//        List<DataCate> list1 = Arrays.asList(dataModels);
+
     }
 
     @Override
     public void showThongBao(String mess) {
         showSuccessToast(mess);
-        initSearch();
-//        onDisplay();
+    }
 
-//        if (checkPlayServices()) {
-//            // Building the GoogleApi client
-//            buildGoogleApiClient();
-//        }
-//        getLocation();
+    @Override
+    public void shoSucces(String mess) {
+        for (int i = 0; i < mList.size(); i++)
+            if (mList.get(i).getId() == mID)
+                mList.get(i).setReceiverVpostcode(mess);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void showDialog() {
@@ -633,10 +714,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             edtSearch.removeTextChangedListener(textWatcher);
             edtSearch.setText("");
             edtSearch.addTextChangedListener(textWatcher);
-            initSearch();
         }
+//        showListSuccessFromTab(mList);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void initSearch() {
         cbPickAll.setChecked(false);
         swipeRefreshLayout.setRefreshing(true);
@@ -644,6 +726,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mList.clear();
             mAdapter.notifyDataSetChanged();
             int deliveryType = mPresenter.getDeliverType();
+            Log.d("THanhkhiem", deliveryType + "");
             if (!TextUtils.isEmpty(mFromDate) && !TextUtils.isEmpty(mToDate)) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
             } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
@@ -666,9 +749,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void initSearch(String mFromDate, String mToDate) {
         this.mFromDate = mFromDate;
         this.mToDate = mToDate;
-        initSearch();
+//        initSearch();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void notifyDatasetChanged() {
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
@@ -687,9 +771,107 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     }
 
-    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected, R.id.img_map})
+
+    @SuppressLint("NotifyDataSetChanged")
+    void updateViewList(String data, int mType) {
+        DataModel dataModel = new DataModel();
+        dataModel = NetWorkController.getGson().fromJson(data, DataModel.class);
+//        try {
+        if (!data.isEmpty()) {
+            List<String> dataSuccess = new ArrayList<>(dataModel.getSuccess());
+            xoaPhanTuSuccess(mList, dataSuccess, mType);
+        }
+//        } catch (Exception e) {
+//            Toast.showToast(getViewContext(), e.toString());
+//        }
+    }
+
+    ArrayList<DeliveryPostman> deliveryPostmenPKTC = new ArrayList<>();
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void xoaPhanTuSuccess(List<DeliveryPostman> list, List<String> dataSuccess, int mtype) {
+        int n = list.size();
+        ArrayList<DeliveryPostman> deliveryPostmen = new ArrayList<>();
+        ArrayList<DeliveryPostman> deliveryPostmanArrayList = new ArrayList<>();
+        Log.d("thahsdasdas", mtype + "");
+        if (mtype == 4) {
+            mList.removeAll(mAdapter.getItemsFilterSelected());
+            deliveryPostmen.addAll(mList);
+            showListSuccessFromTab(deliveryPostmen);
+        } else {
+
+            for (int j = 0; j < dataSuccess.size(); j++) {
+                int t = Integer.parseInt(dataSuccess.get(j));
+                for (int i = 0; i < n; i++) {
+                    if (list.get(i).getId() == t) {
+                        deliveryPostmanArrayList.add(list.get(i));
+                    }
+                }
+            }
+            if (mtype != 1)
+                mList.removeAll(deliveryPostmanArrayList);
+            else {
+                for (int j = 0; j < dataSuccess.size(); j++) {
+                    int t = Integer.parseInt(dataSuccess.get(j));
+                    for (int i = 0; i < n; i++) {
+                        if (mList.get(i).getId() == t) {
+                            mList.get(i).setStatus("Y");
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < mList.size(); i++) {
+                mList.get(i).setSelected(false);
+            }
+            deliveryPostmen.addAll(mList);
+//        sharedPref.clearPTC();
+            if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB)
+                for (int j = 0; j < dataSuccess.size(); j++) {
+                    int t = Integer.parseInt(dataSuccess.get(j));
+                    for (int i = 0; i < n; i++) {
+                        if (deliveryPostmen.get(i).getId() == t) {
+                            sharedPref.clearPTC();
+                            deliveryPostmen.get(i).setStatus("Y");
+                            deliveryPostmen.get(i).setCheck(false);
+                            String k = NetWorkController.getGson().toJson(mList.get(i));
+                            sharedPref.putString(Constants.KEY_PKTC, k);
+//                    Log.d("nguyenthi", new Gson().toJson(mList.get(i)));
+                        }
+                    }
+                }
+            showListSuccessFromTab(deliveryPostmen);
+        }
+    }
+//        if (type == 1) {
+//            mList.removeAll(mAdapter.getItemsSelected());
+//            mAdapter.setListFilter(mList);
+//            mAdapter.notifyDataSetChanged();
+//            showListSuccessCallback(mList);
+//        } else if (type == 0 || type == 2) {
+//            for (int i = 0; i < mAdapter.getItemsSelected().size(); i++) {
+//                mAdapter.getItemsSelected().get(i).setSelected(false);
+//            }
+//            mAdapter.notifyDataSetChanged();
+//            showListSuccessCallback(mList);
+//        } else if (type == 3) // bao phat nhieu buu gui
+//            initSearch();
+
+
+//
+
+    @SuppressLint("NonConstantResourceId")
+    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all,
+            R.id.tv_additional_barcode, R.id.rl_count_item_selected, R.id.img_map, R.id.img_refesh})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_refesh:
+                sharedPref.clearPTC();
+                swipeRefreshLayout.setRefreshing(true);
+                cbPickAll.setChecked(false);
+                relativeLayout.setVisibility(View.GONE);
+                initSearch();
+                break;
             case R.id.img_map:
                 List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
                 List<VpostcodeModel> vpostcodeModels = new ArrayList<>();
@@ -763,6 +945,58 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         showListSuccessFromTab(list);
     }
 
+    public void showListSuccessCallback(List<DeliveryPostman> list) {
+        mListCallback = new ArrayList<>();
+        mListCallback.clear();
+        if (getViewContext() != null) {
+            if (list == null || list.isEmpty()) {
+                pickAll.setVisibility(View.GONE);
+                tvAmount.setText(getResources().getString(R.string.default_amount));
+                mPresenter.setTitleTab(0);
+                showErrorToast("Không tìm thấy dữ liệu");
+            } else {
+                pickAll.setVisibility(View.VISIBLE);
+                long totalAmount = 0;
+                if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
+                    for (DeliveryPostman i : list) {
+                        if (i.getStatus().equals("N")) {
+                            mListCallback.add(i);
+                            totalAmount = totalAmount + i.getAmount();
+                        }
+                    }
+                } else {
+                    for (DeliveryPostman i : list) {
+                        if (i.getStatus().equals("Y")) {
+                            mListCallback.add(i);
+                            totalAmount = totalAmount + i.getAmount();
+                        }
+                    }
+                }
+                mPresenter.setTitleTab(mListCallback.size());
+                tvAmount.setText(String.format(getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(totalAmount)));
+            }
+            mAdapter.setListFilter(mListCallback);
+            mAdapter.notifyDataSetChanged();
+            new Handler().post(() -> {
+                if (isFromNotification) {
+                    isFromNotification = false;
+                    int position = getFocusPosition();
+                    if (position != 0)
+                        recycler.scrollToPosition(position);
+                }
+                if (mTotalScrolled != 0) {
+                    recycler.scrollToPosition(mTotalScrolled);
+                    recycler.addOnScrollListener(scrollListener);
+                }
+            });
+            if (!TextUtils.isEmpty(edtSearch.getText())) {
+                mAdapter.getFilter().filter(edtSearch.getText());
+            }
+            relativeLayout.setVisibility(View.GONE);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
     public void showListSuccessFromTab(List<DeliveryPostman> list) {
         if (getViewContext() != null) {
             mList.clear();
@@ -782,6 +1016,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         }
                     }
                 } else {
+                    String x = sharedPref.getString(Constants.KEY_PKTC, "");
+                    if (!x.isEmpty()) {
+                        DeliveryPostman l = NetWorkController.getGson().fromJson(x, DeliveryPostman.class);
+                        mList.add(l);
+                    }
                     for (DeliveryPostman i : list) {
                         if (i.getStatus().equals("Y")) {
                             mList.add(i);
@@ -797,7 +1036,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             new Handler().post(() -> {
                 if (isFromNotification) {
                     isFromNotification = false;
-
                     int position = getFocusPosition();
                     if (position != 0)
                         recycler.scrollToPosition(position);
@@ -833,6 +1071,36 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    VpostcodeModel vpostcodeModels = new VpostcodeModel();
+
+    @Override
+    public void showDiachi(String x) {
+        AddressModel[] addressModel = NetWorkController.getGson().fromJson(x, AddressModel[].class);
+        List<AddressModel> list = Arrays.asList(addressModel);
+        new DialogAddress(getViewContext(), list, new AddressCallback() {
+            @Override
+            public void onClickItem(AddressModel item) {
+                com.ems.dingdong.utiles.Log.d("AAAAAA", new Gson().toJson(item));
+                List<VpostcodeModel> x = new ArrayList<>();
+                x.add(vpostcodeModels);
+                VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                vpostcodeModel.setMaE(mAdapter.getListFilter().get(getmID).getMaE());
+                vpostcodeModel.setId(Integer.parseInt(String.valueOf(mAdapter.getListFilter().get(getmID).getId())));
+                vpostcodeModel.setReceiverVpostcode(item.getVpostCode());
+                vpostcodeModel.setSenderVpostcode("");
+                vpostcodeModel.setFullAdress(item.getWardName() + ", " + item.getDistrictName() + ", " + item.getProvinceName());
+                x.add(vpostcodeModel);
+                Log.d("asdas12123", new Gson().toJson(x));
+                mPresenter.showAddressDetail(x, null);
+            }
+        }).show();
+    }
+
+    @Override
+    public void showList(VpostcodeModel getListVpostV1) {
+        vpostcodeModels = getListVpostV1;
     }
 
     @Override
@@ -874,7 +1142,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         /* Do something */
         if (event.getType() == Constants.RELOAD_LIST) {
             if (event.getPosition() == mPresenter.getPositionTab()) {
-                initSearch();
+//                initSearch();
             }
         }
     }
