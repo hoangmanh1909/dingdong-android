@@ -229,6 +229,38 @@ android {
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDong VNPost"
         }
+        nat{
+            def API_URL = '"http://118.70.72.107:5000/"'
+            def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
+            def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
+            def DOMAIN_CTEL = '"https://api-connect.io/"'
+            def AUTH_CTEL = '"Basic RGluZ0Rvbmc6R2F0ZXdheUAyMTIyIUAj"'
+            def URL_IMAGE = '"http://172.16.132.102:1233/Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
+            buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
+            buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
+            buildConfigField("String", "API_URL", API_URL)
+            buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
+            buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
+            applicationId "com.tct.dingdong"
+            resValue "string", "app_name", "DingDongNAT"
+        }
+        lan{
+            def API_URL = '"http://172.16.132.102:5000/"'
+            def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
+            def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
+            def DOMAIN_CTEL = '"https://api-connect.io/"'
+            def AUTH_CTEL = '"Basic RGluZ0Rvbmc6R2F0ZXdheUAyMTIyIUAj"'
+            def URL_IMAGE = '"http://172.16.132.102:1233/Assets/Images/"'
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
+            buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
+            buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
+            buildConfigField("String", "API_URL", API_URL)
+            buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
+            buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
+            applicationId "com.tct.dingdong"
+            resValue "string", "app_name", "DingDongNAT"
+        }
         /*uat_ems {
         https://pns.vnpost.vn/ddsmartpos/
             def API_URL = '"http://222.255.250.245:50011/"'

@@ -23,14 +23,14 @@ import java.util.ArrayList;
 interface BaoPhatBangKeDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
+        void getReasons(CommonCallback<SimpleResult> commonCallback);
 
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, CommonCallback<SimpleResult> callback);
 
-        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
 
 
         void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);

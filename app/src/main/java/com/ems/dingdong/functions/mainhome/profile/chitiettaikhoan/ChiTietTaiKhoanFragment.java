@@ -19,6 +19,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
@@ -28,6 +29,8 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -96,24 +99,26 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
             PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
             tvMabuucuc.setText(String.format("%s - %s", postOffice.getCode(), postOffice.getName()));
         }
-        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-//                tvMabuucuc.setText(userInfo.getSmartBankLink().get(i).getPOCode() + " - " + userInfo.get);
-                tvMabuuta.setText(userInfo.getSmartBankLink().get(i).getPostmanCode() + " - " + userInfo.getFullName());
-                tvHovaten.setText(userInfo.getSmartBankLink().get(i).getBankAccountName());
-                tvSotktc.setText(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
-                tvSodienthoai.setText(userInfo.getMobileNumber());
-                tvLoaigiayto.setText(userInfo.getSmartBankLink().get(i).getPIDType());
-                tvSogttt.setText(userInfo.getSmartBankLink().get(i).getPIDNumber());
-                tvHanmuc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(userInfo.getSmartBankLink().get(i).getBankAccountLimit())))));
-                tvNgayhethan.setText(userInfo.getSmartBankLink().get(i).getBankAccountLimitExpired());
-                if (userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
-                    btnHuyMatmacdinh.setText("Hủy mặc định");
-                } else {
-                    btnHuyMatmacdinh.setText("Đặt mặc định");
-                }
-            }
-        }
+        mPresenter.getSmartBankLink(userInfo.getUserName(),userInfo.getUnitCode());
+
+//        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+//            if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+////                tvMabuucuc.setText(userInfo.getSmartBankLink().get(i).getPOCode() + " - " + userInfo.get);
+//                tvMabuuta.setText(userInfo.getSmartBankLink().get(i).getPostmanCode() + " - " + userInfo.getFullName());
+//                tvHovaten.setText(userInfo.getSmartBankLink().get(i).getBankAccountName());
+//                tvSotktc.setText(userInfo.getSmartBankLink().get(i).getBankAccountNumber());
+//                tvSodienthoai.setText(userInfo.getMobileNumber());
+//                tvLoaigiayto.setText(userInfo.getSmartBankLink().get(i).getPIDType());
+//                tvSogttt.setText(userInfo.getSmartBankLink().get(i).getPIDNumber());
+//                tvHanmuc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(userInfo.getSmartBankLink().get(i).getBankAccountLimit())))));
+//                tvNgayhethan.setText(userInfo.getSmartBankLink().get(i).getBankAccountLimitExpired());
+//                if (userInfo.getSmartBankLink().get(i).getIsDefaultPayment()) {
+//                    btnHuyMatmacdinh.setText("Hủy mặc định");
+//                } else {
+//                    btnHuyMatmacdinh.setText("Đặt mặc định");
+//                }
+//            }
+//        }
 
     }
 
@@ -307,6 +312,29 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
             }
         }
 
+
+    }
+
+    @Override
+    public void showSmartBankLink(List<SmartBankLink> smartBankLinks) {
+        for (SmartBankLink smartBankLink : smartBankLinks){
+            if (smartBankLink.getBankCode().equals("SeABank")) {
+//                tvMabuucuc.setText(userInfo.getSmartBankLink().get(i).getPOCode() + " - " + userInfo.get);
+                tvMabuuta.setText(smartBankLink.getPostmanCode() + " - " + userInfo.getFullName());
+                tvHovaten.setText(smartBankLink.getBankAccountName());
+                tvSotktc.setText(smartBankLink.getBankAccountNumber());
+                tvSodienthoai.setText(userInfo.getMobileNumber());
+                tvLoaigiayto.setText(smartBankLink.getPIDType());
+                tvSogttt.setText(smartBankLink.getPIDNumber());
+                tvHanmuc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(smartBankLink.getBankAccountLimit())))));
+                tvNgayhethan.setText(smartBankLink.getBankAccountLimitExpired());
+                if (smartBankLink.getIsDefaultPayment()) {
+                    btnHuyMatmacdinh.setText("Hủy mặc định");
+                } else {
+                    btnHuyMatmacdinh.setText("Đặt mặc định");
+                }
+            }
+        }
 
     }
 }

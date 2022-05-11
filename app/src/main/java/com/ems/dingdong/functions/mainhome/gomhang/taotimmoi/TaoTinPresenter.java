@@ -8,8 +8,13 @@ import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.ProvinceModels;
 import com.ems.dingdong.model.StatisticDetailCollect;
 import com.ems.dingdong.model.TaoTinReepone;
+import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.WardModels;
+import com.ems.dingdong.model.request.BaseRequest;
+import com.ems.dingdong.model.request.PUGetBusinessProfileRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 
 import java.util.Arrays;
@@ -26,8 +31,11 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
 
     private List<StatisticDetailCollect> mList;
 
+    private String mobileNumber = "";
+
     public TaoTinPresenter(ContainerView containerView) {
         super(containerView);
+        getUserMobileNumber();
     }
 
 
@@ -54,7 +62,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     @Override
     public void getTinhThanhPho() {
         mView.showProgress();
-        mInteractor.getTinhThanhPho()
+        mInteractor.getTinhThanhPho(new BaseRequest(0,mobileNumber,null,null))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -74,7 +82,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     @Override
     public void getQuanHuyen(int id) {
         mView.showProgress();
-        mInteractor.getQuanHuyen(id)
+        mInteractor.getQuanHuyen(new BaseRequest(id,mobileNumber,null,null))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -94,7 +102,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     @Override
     public void getXaPhuong(int id) {
         mView.showProgress();
-        mInteractor.getXaPhuong(id)
+        mInteractor.getXaPhuong(new BaseRequest(id,mobileNumber,null,null))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -112,7 +120,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     }
 
     @Override
-    public void search(String request) {
+    public void search(PUGetBusinessProfileRequest request) {
         mView.showProgress();
         mInteractor.search(request)
                 .subscribeOn(Schedulers.io())
@@ -132,9 +140,9 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     }
 
     @Override
-    public void searchDiachi(String id) {
+    public void searchDiachi(PUGetBusinessProfileRequest request) {
         mView.showProgress();
-        mInteractor.searchdiachi(id)
+        mInteractor.searchdiachi(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -167,5 +175,13 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
                 });
+    }
+    private void getUserMobileNumber(){
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()){
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            this.mobileNumber = userInfo.getMobileNumber();
+        }
     }
 }

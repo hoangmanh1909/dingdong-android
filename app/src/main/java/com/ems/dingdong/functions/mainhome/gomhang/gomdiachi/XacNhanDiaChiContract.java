@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 
@@ -22,7 +23,7 @@ public interface XacNhanDiaChiContract {
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate, CommonCallback<CommonObjectListResult> callback);
+                                       String toAssignDate, CommonCallback<SimpleResult> callback);
 
     }
 

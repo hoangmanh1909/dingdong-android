@@ -8,6 +8,7 @@ import android.view.View;
 import com.core.base.BaseActivity;
 import com.ems.dingdong.callback.BaoPhatBangKeFailCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
@@ -18,8 +19,10 @@ import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -159,18 +162,18 @@ public class BaoPhatBangKeFailDialog extends Dialog {
     }
 
     private void loadSolution() {
-        NetWorkController.getSolutionByReasonCode(mReasonInfo.getCode(), new CommonCallback<SolutionResult>(mActivity) {
+        NetWorkController.getSolutionByReasonCode(mReasonInfo.getCode(), new CommonCallback<SimpleResult>(mActivity) {
             @Override
-            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mListSolution = response.body().getSolutionInfos();
+                    mListSolution = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
                     showUISolution();
                 }
             }
 
             @Override
-            protected void onError(Call<SolutionResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

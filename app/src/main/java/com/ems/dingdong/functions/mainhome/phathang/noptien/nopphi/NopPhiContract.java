@@ -25,7 +25,7 @@ public interface NopPhiContract {
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
-        Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
+        Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel);
 
         Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment);
 

@@ -20,12 +20,12 @@ import java.util.ArrayList;
 interface TaoGachNoDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
+        void getReasons(CommonCallback<SimpleResult> commonCallback);
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
                                    String parcelCode, CommonCallback<SimpleResult> callback);
 
-        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
 
 
         void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback);

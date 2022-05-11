@@ -15,7 +15,10 @@ import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.ThonTinSoTaiKhoanRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -142,6 +145,31 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
     public void moveToEWallet() {
         new ListBankPresenter(mContainerView).pushView();
 //        new EWalletPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void getSmartBankLink(String userName, String unitCode) {
+        mView.showProgress();
+        mInteractor.getSmartBankLink(userName,unitCode)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+//                            mView.capNhatMacDinh();
+                            ArrayList<SmartBankLink> smartBankLinks = NetWorkController.getGson().fromJson(simpleResult.getData(),
+                                    new TypeToken<ArrayList<SmartBankLink>>() {
+                                    }.getType());
+
+                            mView.showSmartBankLink(smartBankLinks);
+
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+
+                        mView.hideProgress();
+                    }
+                });
     }
 
 }

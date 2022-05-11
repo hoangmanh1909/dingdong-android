@@ -3,13 +3,17 @@ package com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
+import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
+
+import java.util.List;
 
 import io.reactivex.Single;
 
@@ -28,6 +32,7 @@ public interface ChiTietTaiKhoanContract {
 
         Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request);
 
+        Single<SimpleResult>  getSmartBankLink(String userName,String unitCode);
 
     }
 
@@ -40,6 +45,8 @@ public interface ChiTietTaiKhoanContract {
         void showSoDu(String sodu);
 
         void capNhatMacDinh();
+
+        void showSmartBankLink(List<SmartBankLink> smartBankLinks);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -56,5 +63,6 @@ public interface ChiTietTaiKhoanContract {
 
         void moveToEWallet();
 
+        void getSmartBankLink(String userName,String unitCode);
     }
 }

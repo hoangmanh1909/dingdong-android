@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.model.LinkEWalletResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
@@ -15,7 +16,7 @@ public interface LinkEWalletContract {
 
         Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest);
 
-        Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm);
+        Single<SimpleResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm);
     }
 
     interface View extends PresentView<Presenter> {

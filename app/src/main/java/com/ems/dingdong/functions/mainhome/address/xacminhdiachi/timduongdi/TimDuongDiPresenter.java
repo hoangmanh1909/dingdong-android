@@ -20,7 +20,9 @@ import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 

@@ -28,7 +28,7 @@ public class NopPhiInteractor extends Interactor<NopPhiContract.Presenter> imple
     }
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+    public Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel) {
         return NetWorkController.requestPayment(paymentRequestModel);
     }
 

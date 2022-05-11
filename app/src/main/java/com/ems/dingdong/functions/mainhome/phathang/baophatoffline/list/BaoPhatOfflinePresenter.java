@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -248,7 +249,6 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                 //        this.feeShip = feeShip;
                 //        this.feeShipPNS = feeShipPNS;
                 //        this.feeCollectLaterPNS = feeCollectLaterPNS;
-
                 List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     Observable.fromIterable(images)

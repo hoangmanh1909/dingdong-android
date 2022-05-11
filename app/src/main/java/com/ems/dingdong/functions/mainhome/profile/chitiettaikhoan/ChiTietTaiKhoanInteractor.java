@@ -46,4 +46,9 @@ public class ChiTietTaiKhoanInteractor extends Interactor<ChiTietTaiKhoanContrac
     public Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request) {
         return NetWorkController.ddTaiKhoanMacDinh(request);
     }
+
+    @Override
+    public Single<SimpleResult> getSmartBankLink(String userName, String unitCode) {
+        return NetWorkController.getSmartBankLink(userName,unitCode);
+    }
 }

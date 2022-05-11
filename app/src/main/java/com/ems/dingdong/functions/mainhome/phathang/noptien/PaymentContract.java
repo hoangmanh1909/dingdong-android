@@ -24,12 +24,12 @@ import io.reactivex.Single;
 
 public interface PaymentContract {
     interface Interactor extends IInteractor<Presenter> {
-        Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode,
+        Single<SimpleResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode,
                                                  String routeCode, String postmanCode);
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
-        Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
+        Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel);
 
         Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment);
 

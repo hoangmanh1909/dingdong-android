@@ -7,11 +7,17 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.model.RouteInfo;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
+import com.ems.dingdong.model.response.StatisticDeliveryDetailResponse;
+import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -59,22 +65,22 @@ public class ListDeliverySuccessDetailPresenter extends Presenter<ListDeliverySu
                 Constants.KEY_ROUTE_INFO, ""), RouteInfo.class).getRouteCode();
         mInteractor.statisticDeliveryDetail(mServiceCode, mTypeDelivery, mPostmanID, mFromDate,
                 mToDate, mStatisticType, routeCode,
-                new CommonCallback<StatisticDeliveryDetailResult>((Activity) mContainerView) {
+                new CommonCallback<SimpleResult>((Activity) mContainerView) {
                     @Override
-                    protected void onSuccess(Call<StatisticDeliveryDetailResult> call,
-                                             Response<StatisticDeliveryDetailResult> response) {
+                    protected void onSuccess(Call<SimpleResult> call,
+                                             Response<SimpleResult> response) {
                         super.onSuccess(call, response);
                         mView.hideProgress();
                         if (response.body().getErrorCode().equals("00")) {
-                            mView.showListSuccess(Utils.getGeneralDeliveryDetailList(response.body()
-                                    .getStatisticDeliveryDetailResponses()));
+                            ArrayList<StatisticDeliveryDetailResponse> arrayList = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<ArrayList<StatisticDeliveryDetailResponse>>(){}.getType());
+                            mView.showListSuccess(Utils.getGeneralDeliveryDetailList(arrayList));
                         } else {
                             mView.showErrorToast(response.body().getMessage());
                         }
                     }
 
                     @Override
-                    protected void onError(Call<StatisticDeliveryDetailResult> call, String message) {
+                    protected void onError(Call<SimpleResult> call, String message) {
                         super.onError(call, message);
                         mView.hideProgress();
                         mView.showErrorToast(message);

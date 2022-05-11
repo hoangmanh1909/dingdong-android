@@ -19,13 +19,13 @@ class BaoPhatKhongThanhCongInteractor extends Interactor<BaoPhatKhongThanhCongCo
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
     }
 
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
+    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getSolutionByReasonCode(code, commonCallback);
     }
 

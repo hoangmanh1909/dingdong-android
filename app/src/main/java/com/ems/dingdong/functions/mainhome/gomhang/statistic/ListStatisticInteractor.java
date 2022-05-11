@@ -5,6 +5,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticCollectResult;
 import com.ems.dingdong.network.NetWorkController;
 
@@ -21,7 +22,7 @@ class ListStatisticInteractor extends Interactor<ListStatisticContract.Presenter
     }
 
     @Override
-    public void searchStatisticCollect(String postmanID,  String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {
+    public void searchStatisticCollect(String postmanID,  String fromDate, String toDate, CommonCallback<SimpleResult> callback) {
         NetWorkController.searchStatisticCollect(postmanID,  fromDate, toDate, callback);
     }
 

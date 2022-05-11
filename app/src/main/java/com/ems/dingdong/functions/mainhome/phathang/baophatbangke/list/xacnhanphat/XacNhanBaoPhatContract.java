@@ -39,14 +39,14 @@ public interface XacNhanBaoPhatContract {
         /**
          * Get all reasons.
          */
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
+        void getReasons(CommonCallback<SimpleResult> commonCallback);
 
         /**
          * Get all solution when use chose reason.
          *
          * @param code reason code.
          */
-        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
 
         /**
          * Save image to server.
@@ -68,7 +68,7 @@ public interface XacNhanBaoPhatContract {
          */
 //        Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request);
 
-        Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request);
+        Single<SimpleResult> checkDeliverySuccess(DeliverySuccessRequest request);
 
         Single<SimpleResult> paymentV2(DeliveryPaymentV2 request);
 
@@ -83,7 +83,7 @@ public interface XacNhanBaoPhatContract {
          *
          * @param poCode post code. This can be get in UserInfo that has been saved in share pref.
          */
-        void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
+        void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback);
 
         /**
          * Get all post man in a route.
@@ -91,7 +91,7 @@ public interface XacNhanBaoPhatContract {
          * @param poCode  post code. This can be get in UserInfo that has been saved in share pref.
          * @param routeId route id. This can be get in RouteInfo that has been saved in share pref.
          */
-        void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
+        void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 
         /**
          * Change route to another postman.

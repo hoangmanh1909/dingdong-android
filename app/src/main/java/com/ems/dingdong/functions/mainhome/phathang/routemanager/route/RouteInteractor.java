@@ -37,12 +37,12 @@ public class RouteInteractor extends Interactor<RouteConstract.Presenter> implem
     }
 
     @Override
-    public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<RouteResult> callback) {
+    public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<SimpleResult> callback) {
         NetWorkController.searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, pooCode, statusCode, fromRouteId, callback);
     }
 
     @Override
-    public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<RouteResult> callback) {
+    public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<SimpleResult> callback) {
         NetWorkController.searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, pooCode, statusCode, fromRouteId, callback);
     }
 
@@ -62,7 +62,7 @@ public class RouteInteractor extends Interactor<RouteConstract.Presenter> implem
     }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.getDeliveryRoute(poCode, callback);
     }
 }

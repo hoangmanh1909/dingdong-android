@@ -29,6 +29,7 @@ import com.ems.dingdong.model.StatisticDetailCollect;
 import com.ems.dingdong.model.TaoTinReepone;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.WardModels;
+import com.ems.dingdong.model.request.PUGetBusinessProfileRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -335,7 +336,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
                         .show();
                 break;
             case R.id.ll_scan_qr:
-                mPresenter.search(edt_search.getText());
+                mPresenter.search(new PUGetBusinessProfileRequest("BSP007",edt_search.getText()));
                 break;
             case R.id.edt_tinhthanhpho:
                 showTinhThanhPho();
@@ -402,7 +403,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         new DialogTaoTin(getViewContext(), "Danh sách khách hàng", list, new IdCallback() {
             @Override
             public void onResponse(String id) {
-                mPresenter.searchDiachi(id);
+                mPresenter.searchDiachi(new PUGetBusinessProfileRequest(id,"BSP006"));
             }
         }).show();
     }

@@ -31,12 +31,12 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
+    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getSolutionByReasonCode(code, commonCallback);
     }
 
@@ -61,7 +61,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
      * @param request
      */
     @Override
-    public Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request) {
+    public Single<SimpleResult> checkDeliverySuccess(DeliverySuccessRequest request) {
         return NetWorkController.checkDeliverySuccess(request);
     }
 
@@ -92,12 +92,12 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 //    }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.getDeliveryRoute(poCode, callback);
     }
 
     @Override
-    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
+    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback) {
         NetWorkController.getPostmanByRoute(poCode, routeId, routeType, callback);
     }
 

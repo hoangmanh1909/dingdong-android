@@ -122,7 +122,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
         payment.setFromDate(fromDate);
         payment.setToDate(toDate);
         payment.setStatus(status);
-        dataRequestPayment.setCode("COD001");
+//        dataRequestPayment.setCode("COD001");
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
         mPresenter.getHistoryPayment(dataRequestPayment, 0);
@@ -218,7 +218,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
         payment.setFromDate(fromDate);
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         layout_item_pick_all.setVisibility(View.GONE);
-        dataRequestPayment.setCode("COD001");
+//        dataRequestPayment.setCode("COD001");
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
         mPresenter.getHistoryPayment(dataRequestPayment, 1);
@@ -398,7 +398,7 @@ public class HistoryPaymentFragment extends ViewFragment<HistoryPaymentContract.
         payment.setFromDate(fromDate);
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         layout_item_pick_all.setVisibility(View.GONE);
-        dataRequestPayment.setCode("COD001");
+//        dataRequestPayment.setCode("COD001");
         String data = NetWorkController.getGson().toJson(payment);
         dataRequestPayment.setData(data);
         mPresenter.getHistoryPayment(dataRequestPayment, 1);

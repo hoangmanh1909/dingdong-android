@@ -21,12 +21,14 @@ import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ParcelAdapter;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.google.gson.reflect.TypeToken;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
@@ -227,19 +229,19 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     private void loadReasonFail() {
         if (mListReasonFail == null) {
             mActivity.showProgress();
-            NetWorkController.getReasonsHoanTat(new CommonCallback<ReasonResult>(mActivity) {
+            NetWorkController.getReasonsHoanTat(new CommonCallback<SimpleResult>(mActivity) {
                 @Override
-                protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mActivity.hideProgress();
                     if ("00".equals(response.body().getErrorCode())) {
-                        mListReasonFail = response.body().getReasonInfos();
+                        mListReasonFail = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
                     }
 
                 }
 
                 @Override
-                protected void onError(Call<ReasonResult> call, String message) {
+                protected void onError(Call<SimpleResult> call, String message) {
                     super.onError(call, message);
                     mActivity.hideProgress();
                 }
@@ -250,19 +252,19 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     private void loadReasonMiss() {
         if (mListReasonMiss == null) {
             mActivity.showProgress();
-            NetWorkController.getReasonsHoanTatMiss(new CommonCallback<ReasonResult>(mActivity) {
+            NetWorkController.getReasonsHoanTatMiss(new CommonCallback<SimpleResult>(mActivity) {
                 @Override
-                protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mActivity.hideProgress();
                     if ("00".equals(response.body().getErrorCode())) {
-                        mListReasonMiss = response.body().getReasonInfos();
+                        mListReasonMiss = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
                     }
 
                 }
 
                 @Override
-                protected void onError(Call<ReasonResult> call, String message) {
+                protected void onError(Call<SimpleResult> call, String message) {
                     super.onError(call, message);
                     mActivity.hideProgress();
                 }

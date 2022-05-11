@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.model.LinkEWalletResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
@@ -22,7 +23,7 @@ public class LinkEWalletInteractor extends Interactor<LinkEWalletContract.Presen
     }
 
     @Override
-    public Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
+    public Single<SimpleResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
         return NetWorkController.verifyLinkWithOtp(payLinkConfirm);
     }
 

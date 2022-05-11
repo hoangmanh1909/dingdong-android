@@ -15,7 +15,7 @@ public class CancelBD13Interactor extends Interactor<CancelBD13Contract.Presente
     }
 
     @Override
-    public void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> commonCallback) {
+    public void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getCancelDelivery(postmanCode,routeCode,fromDate,toDate,ladingCode,commonCallback);
     }
 

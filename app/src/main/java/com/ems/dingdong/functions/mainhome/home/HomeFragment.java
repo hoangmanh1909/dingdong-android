@@ -32,6 +32,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.response.GetMainViewResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
@@ -288,6 +289,16 @@ public class HomeFragment extends ViewFragment<HomeContract.Presenter> implement
 
     @Override
     public void showObjectEmpty() {
+
+    }
+
+    @Override
+    public void showGetDeliveryMainView(GetMainViewResponse response) {
+
+    }
+
+    @Override
+    public void showGetPickupMainView(GetMainViewResponse response) {
 
     }
 }

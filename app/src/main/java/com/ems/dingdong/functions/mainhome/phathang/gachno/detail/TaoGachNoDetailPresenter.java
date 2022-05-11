@@ -10,8 +10,10 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
@@ -19,6 +21,10 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -92,17 +98,18 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
 
     @Override
     public void getReasons() {
-        mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
+        mInteractor.getReasons(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.getReasonsSuccess(response.body().getReasonInfos());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    mView.getReasonsSuccess(reasonInfos);
                 }
             }
 
             @Override
-            protected void onError(Call<ReasonResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -197,18 +204,19 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
 
     @Override
     public void loadSolution(String code) {
-        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SolutionResult>((Context) mContainerView) {
+        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     //  mListSolution = response.body().getSolutionInfos();
-                    mView.showUISolution(response.body().getSolutionInfos());
+                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    mView.showUISolution(solutionInfos);
                 }
             }
 
             @Override
-            protected void onError(Call<SolutionResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

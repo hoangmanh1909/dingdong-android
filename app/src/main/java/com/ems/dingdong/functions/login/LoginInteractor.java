@@ -10,6 +10,7 @@ import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.LoginRequest;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
 
@@ -26,32 +27,37 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public void login(String mobileNumber, String signCode,String version,String appCode, CommonCallback<LoginResult> commonCallback) {
-        NetWorkController.loginAuthorized(mobileNumber, signCode,version,appCode, commonCallback);
+    public void login(LoginRequest loginRequest, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.loginAuthorized(loginRequest, commonCallback);
     }
 
     @Override
-    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
+    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback) {
         NetWorkController.getPostOfficeByCode(code, postmanID, callback);
     }
 
     @Override
-    public void getSolutions(CommonCallback<SolutionResult> commonCallback) {
+    public void getSolutions(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getSolutions(commonCallback);
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
     }
 
     @Override
-    public void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
-        NetWorkController.getVersion(code,data,signature,callback);
+    public void getVersion(CommonCallback<SimpleResult> callback) {
+        NetWorkController.getVersion(callback);
     }
 
     @Override
     public Single<SimpleResult> getList(String data) {
         return NetWorkController.getListBuuCucHuyen(data);
+    }
+
+    @Override
+    public void getBalance(String mobileNumber,String postmanId ,CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.getBalance(mobileNumber,postmanId ,commonCallback);
     }
 }

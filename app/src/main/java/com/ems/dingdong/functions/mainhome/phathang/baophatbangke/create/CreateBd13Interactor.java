@@ -24,7 +24,7 @@ class CreateBd13Interactor extends Interactor<CreateBd13Contract.Presenter>
     }
 
     @Override
-    public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> commonCallback) {
+    public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.searchLadingCreatedBd13(objRequest,commonCallback);
     }
 

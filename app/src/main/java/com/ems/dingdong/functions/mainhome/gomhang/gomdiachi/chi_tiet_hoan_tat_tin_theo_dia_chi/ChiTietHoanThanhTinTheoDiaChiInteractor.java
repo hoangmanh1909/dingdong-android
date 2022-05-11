@@ -24,12 +24,12 @@ public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietH
     }
 
     @Override
-    public void getReasonUnSuccess(CommonCallback<ReasonResult> commonCallback) {
+    public void getReasonUnSuccess(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getReasonsHoanTat(commonCallback);
     }
 
     @Override
-    public void getReasonFailure(CommonCallback<ReasonResult> commonCallback) {
+    public void getReasonFailure(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getReasonsHoanTatMiss(commonCallback);
     }
 

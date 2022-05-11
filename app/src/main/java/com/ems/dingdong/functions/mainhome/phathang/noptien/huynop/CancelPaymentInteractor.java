@@ -24,7 +24,7 @@ public class CancelPaymentInteractor extends Interactor<CancelPaymentContract.Pr
 
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+    public Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel) {
         return NetWorkController.requestPayment(paymentRequestModel);
     }
 

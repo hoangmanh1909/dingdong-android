@@ -12,6 +12,8 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDetailCollect;
 import com.ems.dingdong.model.TaoTinReepone;
 import com.ems.dingdong.model.WardModels;
+import com.ems.dingdong.model.request.BaseRequest;
+import com.ems.dingdong.model.request.PUGetBusinessProfileRequest;
 
 import java.util.List;
 
@@ -23,15 +25,15 @@ import io.reactivex.Single;
 interface TaoTinContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        Single<SimpleResult> getTinhThanhPho();
+        Single<SimpleResult> getTinhThanhPho(BaseRequest request);
 
-        Single<SimpleResult> getQuanHuyen(int id);
+        Single<SimpleResult> getQuanHuyen(BaseRequest request);
 
-        Single<SimpleResult> getXaPhuong(int id);
+        Single<SimpleResult> getXaPhuong(BaseRequest request);
 
-        Single<SimpleResult> search(String request);
+        Single<SimpleResult> search(PUGetBusinessProfileRequest request);
 
-        Single<SimpleResult> searchdiachi(String id);
+        Single<SimpleResult> searchdiachi(PUGetBusinessProfileRequest request);
 
         Single<SimpleResult> themTin(CreateOrderRequest createOrderRequest);
 
@@ -60,9 +62,9 @@ interface TaoTinContract {
 
         void getXaPhuong(int id);
 
-        void search(String request);
+        void search(PUGetBusinessProfileRequest request);
 
-        void searchDiachi(String id);
+        void searchDiachi(PUGetBusinessProfileRequest request);
 
         void themTinPresenter (CreateOrderRequest createOrderRequest);
     }

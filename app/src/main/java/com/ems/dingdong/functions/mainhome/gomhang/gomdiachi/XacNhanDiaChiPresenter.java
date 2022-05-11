@@ -17,6 +17,7 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
@@ -26,6 +27,7 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 import java.util.ArrayList;
@@ -75,13 +77,13 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate,
                                           int type) {
         mView.showProgress();
-        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<CommonObject> list = response.body().getList();
+                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
                     ArrayList<CommonObject> listG = new ArrayList<>();
                     for (CommonObject item : list) {
                         int tam = 0;
@@ -132,7 +134,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
             }
 
             @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 if (type == 0)

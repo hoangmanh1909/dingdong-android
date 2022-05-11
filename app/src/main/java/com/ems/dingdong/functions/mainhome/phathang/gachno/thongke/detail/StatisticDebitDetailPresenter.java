@@ -5,8 +5,16 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
+import com.ems.dingdong.model.response.StatisticDebitDetailResponse;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Utils;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -42,20 +50,21 @@ public class StatisticDebitDetailPresenter extends Presenter<StatisticDebitDetai
     public void statisticDebitDetail(String postmanID, String routeCode) {
         mPostmanID = postmanID;
         mView.showProgress();
-        mInteractor.statisticDebitDetail(postmanID, mFromDate, mToDate, mStatusCode, routeCode, new CommonCallback<StatisticDebitDetailResult>((Activity) mContainerView) {
+        mInteractor.statisticDebitDetail(postmanID, mFromDate, mToDate, mStatusCode, routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<StatisticDebitDetailResult> call, Response<StatisticDebitDetailResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListDetail(Utils.getGeneralDebitDetailList(response.body().getStatisticDebitDetailResponses()));
+                    ArrayList<StatisticDebitDetailResponse> arrayList = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<StatisticDebitDetailResponse>>(){}.getType());
+                    mView.showListDetail(Utils.getGeneralDebitDetailList(arrayList));
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }
             }
 
             @Override
-            protected void onError(Call<StatisticDebitDetailResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

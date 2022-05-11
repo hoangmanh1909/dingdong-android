@@ -17,6 +17,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.response.GetMainViewResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -153,45 +154,31 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
 
         String fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        if (mPresenter != null && userInfo != null && routeInfo != null)
-            mPresenter.getHomeView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode());
+//        if (mPresenter != null && userInfo != null && routeInfo != null)
+//            mPresenter.getHomeView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode());
+        if (mPresenter != null && userInfo != null && routeInfo != null){
+            mPresenter.getDeliveryMainView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode(),Constants.STT_GET_DELIVERY_MAIN_VIEW);
+            mPresenter.getPickUpMainView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode(),Constants.STT_GET_PICKUP_MAIN_VIEW);
+
+        }
+
+
     }
 
     @Override
     public void showObjectSuccess(HomeCollectInfoResult objectResult) {
+    }
+
+    @Override
+    public void showObjectEmpty() {
+    }
+
+    @Override
+    public void showGetDeliveryMainView(GetMainViewResponse response) {
         HomeCollectInfo homeCollectInfo = null;
-        HomeCollectInfo resInfo = objectResult.getHomeCollectInfo();
-        mListCollect.clear();
         mListDelivery.clear();
         mListDeliveryCOD.clear();
         mListDeliveryPA.clear();
-        /**
-         * Gom hàng
-         */
-        for (int i = 0; i < 4; i++) {
-            homeCollectInfo = new HomeCollectInfo();
-            homeCollectInfo.setType(0);
-            if (i == 0) {
-                homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
-                homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
-            } else if (i == 1) {
-                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
-                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressCollect()))));
-                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(resInfo.getTotalAddressNotCollect()))));
-            } else if (i == 2) {
-                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
-                homeCollectInfo.setTotalLadingCollect(resInfo.getTotalLadingCollect());
-                homeCollectInfo.setTotalLadingNotCollect(resInfo.getTotalLadingNotCollect());
-            } else {
-                homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
-                homeCollectInfo.setTotalWeightCollect(resInfo.getTotalWeightCollect());
-                homeCollectInfo.setTotalWeightNotCollect(resInfo.getTotalWeightNotCollect());
-            }
-            mListCollect.add(homeCollectInfo);
-        }
-        homeAdapter.clear();
-        homeAdapter.addItems(mListCollect);
-        homeAdapter.notifyDataSetChanged();
 
         /**
          * Phát hàng (thường)
@@ -204,12 +191,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
             } else if (i == 1) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
-                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber((resInfo.getTotalQuantityTodayNormal()))));
-                homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(resInfo.getTotalQuantityPastNormal())));
+                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber((response.getTotalQuantityTodayNormal()))));
+                homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalQuantityPastNormal())));
             } else {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
-                homeCollectInfo.setTotalFeeToday(resInfo.getTotalFeeTodayNormal());
-                homeCollectInfo.setTotalFeePast(resInfo.getTotalFeePastNormal());
+                homeCollectInfo.setTotalFeeToday(response.getTotalFeeTodayNormal());
+                homeCollectInfo.setTotalFeePast(response.getTotalFeePastNormal());
             }
             mListDelivery.add(homeCollectInfo);
         }
@@ -228,16 +215,16 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
             } else if (i == 1) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
-                homeCollectInfo.setTotalQuantityTodayCOD(resInfo.getTotalQuantityTodayCOD());
-                homeCollectInfo.setTotalQuantityPastCOD(resInfo.getTotalQuantityPastCOD());
+                homeCollectInfo.setTotalQuantityTodayCOD(response.getTotalQuantityTodayCOD());
+                homeCollectInfo.setTotalQuantityPastCOD(response.getTotalQuantityPastCOD());
             } else if (i == 2) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount_of_money));
-                homeCollectInfo.setTotalCODAmountTodayCOD(resInfo.getTotalCODAmountTodayCOD());
-                homeCollectInfo.setTotalCODAmountPastCOD(resInfo.getTotalCODAmountPastCOD());
+                homeCollectInfo.setTotalCODAmountTodayCOD(response.getTotalCODAmountTodayCOD());
+                homeCollectInfo.setTotalCODAmountPastCOD(response.getTotalCODAmountPastCOD());
             } else if (i == 3) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
-                homeCollectInfo.setTotalFeeTodayCOD(resInfo.getTotalFeeTodayCOD());
-                homeCollectInfo.setTotalFeePastCOD(resInfo.getTotalFeePastCOD());
+                homeCollectInfo.setTotalFeeTodayCOD(response.getTotalFeeTodayCOD());
+                homeCollectInfo.setTotalFeePastCOD(response.getTotalFeePastCOD());
             }
             mListDeliveryCOD.add(homeCollectInfo);
         }
@@ -256,12 +243,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
             } else if (i == 1) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
-                homeCollectInfo.setTotalQuantityTodayPA((resInfo.getTotalQuantityTodayPA()));
-                homeCollectInfo.setTotalQuantityPastPA(resInfo.getTotalQuantityPastPA());
+                homeCollectInfo.setTotalQuantityTodayPA((response.getTotalQuantityTodayPA()));
+                homeCollectInfo.setTotalQuantityPastPA(response.getTotalQuantityPastPA());
             } else {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
-                homeCollectInfo.setTotalFeeTodayPA(resInfo.getTotalFeeTodayPA());
-                homeCollectInfo.setTotalFeePastPA(resInfo.getTotalFeePastPA());
+                homeCollectInfo.setTotalFeeTodayPA(response.getTotalFeeTodayPA());
+                homeCollectInfo.setTotalFeePastPA(response.getTotalFeePast());
             }
             mListDeliveryPA.add(homeCollectInfo);
         }
@@ -271,8 +258,36 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     }
 
     @Override
-    public void showObjectEmpty() {
-
+    public void showGetPickupMainView(GetMainViewResponse response) {
+        HomeCollectInfo homeCollectInfo = null;
+        mListCollect.clear();
+        /**
+         * Gom hàng
+         */
+        for (int i = 0; i < 4; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(0);
+            if (i == 0) {
+                homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
+                homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
+                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalAddressCollect())));
+                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalAddressNotCollect())));
+            } else if (i == 2) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
+                homeCollectInfo.setTotalLadingCollect(response.getTotalLadingCollect());
+                homeCollectInfo.setTotalLadingNotCollect(response.getTotalLadingNotCollect());
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
+                homeCollectInfo.setTotalWeightCollect(response.getTotalWeightCollect());
+                homeCollectInfo.setTotalWeightNotCollect(response.getTotalWeightNotCollect());
+            }
+            mListCollect.add(homeCollectInfo);
+        }
+        homeAdapter.clear();
+        homeAdapter.addItems(mListCollect);
+        homeAdapter.notifyDataSetChanged();
     }
 
     private class HomeViewChangeListerner extends BroadcastReceiver {

@@ -12,12 +12,16 @@ import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.ResultModelV1;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Log;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,34 +66,36 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     }
 
     public void getReasons() {
-        mInteractor.getReasonUnSuccess(new CommonCallback<ReasonResult>((Activity) mContainerView) {
+        mInteractor.getReasonUnSuccess(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.getReasonUnSuccess(response.body().getReasonInfos());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    mView.getReasonUnSuccess(reasonInfos);
                 }
             }
 
             @Override
-            protected void onError(Call<ReasonResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
     }
 
     public void getReasonFailure() {
-        mInteractor.getReasonFailure(new CommonCallback<ReasonResult>((Activity) mContainerView) {
+        mInteractor.getReasonFailure(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.getReasonFailure(response.body().getReasonInfos());
+                    ArrayList<ReasonInfo> arrayList = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    mView.getReasonFailure(arrayList);
                 }
             }
 
             @Override
-            protected void onError(Call<ReasonResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

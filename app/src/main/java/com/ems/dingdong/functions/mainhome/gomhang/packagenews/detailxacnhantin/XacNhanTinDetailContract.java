@@ -29,9 +29,9 @@ interface XacNhanTinDetailContract {
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                         String statusCode, String confirmReason, CommonCallback<SimpleResult> callback);
 
-        void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
+        void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback);
 
-        void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
+        void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request);
     }

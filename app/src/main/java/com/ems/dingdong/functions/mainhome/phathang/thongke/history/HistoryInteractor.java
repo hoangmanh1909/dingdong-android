@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.thongke.history;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -16,7 +17,7 @@ class HistoryInteractor extends Interactor<HistoryContract.Presenter>
     }
 
     @Override
-    public void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback) {
+    public void getHistoryDelivery(String parcelCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.getHistoryDelivery(parcelCode, callback);
     }
 }

@@ -32,12 +32,12 @@ class XacNhanTinDetailInteractor extends Interactor<XacNhanTinDetailContract.Pre
     }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.getRoute(poCode, callback);
     }
 
     @Override
-    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
+    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback) {
         NetWorkController.getPostmanByRoute(poCode, routeId, routeType, callback);
     }
 

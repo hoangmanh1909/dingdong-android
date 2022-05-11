@@ -10,6 +10,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 
 import java.util.ArrayList;
@@ -26,14 +27,14 @@ public interface ListCommonContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate,
-                                       CommonCallback<CommonObjectListResult> callback);
+                                       CommonCallback<SimpleResult> callback);
 
         void searchDeliveryPostman(String postmanID,
                                    String fromDate,
                                    String route,
                                    String order, CommonCallback<CommonObjectListResult> callback);
 
-        void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback);
+        void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

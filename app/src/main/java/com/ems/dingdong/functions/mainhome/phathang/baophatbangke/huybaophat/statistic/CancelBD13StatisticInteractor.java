@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.st
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.model.CancelDeliveryResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.network.NetWorkController;
 
@@ -15,7 +16,7 @@ public class CancelBD13StatisticInteractor extends Interactor<CancelBD13Statisti
 
 
     @Override
-    public Observable<CancelDeliveryResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request) {
+    public Observable<SimpleResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request) {
         return NetWorkController.cancelDeliveryStatistic(request);
     }
 }

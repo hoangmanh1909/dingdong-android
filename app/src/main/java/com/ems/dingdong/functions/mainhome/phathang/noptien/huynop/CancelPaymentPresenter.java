@@ -117,7 +117,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
         paymentCancelRequestModel.setServiceCode(list.get(0).getServiceCode());
         String dataJson = NetWorkController.getGson().toJson(paymentCancelRequestModel);
         dataRequestPayment.setData(dataJson);
-        dataRequestPayment.setCode("EWL003");
+//        dataRequestPayment.setCode("EWL003");
         mView.showProgress();
 
         mInteractor.cancelPayment(dataRequestPayment)

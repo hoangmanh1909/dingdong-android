@@ -7,15 +7,22 @@ import android.util.Log;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
+import com.ems.dingdong.network.NetWorkController;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -66,20 +73,21 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
 
         Log.d ("thanhkhiemasd123123",new Gson().toJson(mListRequest));
         // check log
-        mInteractor.confirmAllOrderPostman(mListRequest, new CommonCallback<ConfirmAllOrderPostmanResult>((Activity) mContainerView) {
+        mInteractor.confirmAllOrderPostman(mListRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ConfirmAllOrderPostmanResult> call, Response<ConfirmAllOrderPostmanResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showResult(response.body().getAllOrderPostman());
+                    ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<ConfirmAllOrderPostman>(){}.getType());
+                    mView.showResult(confirmAllOrderPostman);
                 } else {
                     mView.showError(response.body().getMessage());
                 }
             }
 
             @Override
-            protected void onError(Call<ConfirmAllOrderPostmanResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showError(message);
@@ -100,15 +108,16 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
 
     @Override
     public void getRouteByPoCode(String poCode) {
-        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showRoute(response.body().getRouteInfos());
+                ArrayList<RouteInfo> routeInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteInfo>>(){}.getType());
+                mView.showRoute(routeInfos);
             }
 
             @Override
-            protected void onError(Call<RouteInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -116,15 +125,16 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
 
     @Override
     public void getPostman(String poCode, int routeId, String routeType) {
-        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<UserInfoResult>((Context) mContainerView) {
+        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<UserInfoResult> call, Response<UserInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showPostman(response.body().getUserInfos());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                mView.showPostman(userInfos);
             }
 
             @Override
-            protected void onError(Call<UserInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

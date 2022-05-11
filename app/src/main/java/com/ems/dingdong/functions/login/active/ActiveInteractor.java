@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.login.active;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
 
 /**
@@ -16,7 +17,7 @@ class ActiveInteractor extends Interactor<ActiveContract.Presenter>
     }
 
     @Override
-    public void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
+    public void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<SimpleResult> callback) {
         NetWorkController.activeAuthorized(mobileNumber, activeCode, codeDeviceActive, callback);
     }
 }

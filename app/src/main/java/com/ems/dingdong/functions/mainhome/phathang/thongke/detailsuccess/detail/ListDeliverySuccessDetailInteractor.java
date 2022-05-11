@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detai
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDeliveryDetailResult;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -21,7 +22,7 @@ class ListDeliverySuccessDetailInteractor extends Interactor<ListDeliverySuccess
     @Override
     public void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID,
                                         String fromDate, String toDate, StatisticType statisticType,
-                                        String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
+                                        String routeCode, CommonCallback<SimpleResult> callback) {
         switch (statisticType) {
             case CONTINUOUS_DELIVERY:
                 NetWorkController.getLadingStatusDetail(typeDelivery, serviceCode, postmanID, fromDate, toDate, Constants.CONTINUOUS_DELIVERY_CODE, routeCode, callback);

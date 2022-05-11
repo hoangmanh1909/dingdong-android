@@ -5,7 +5,13 @@ import android.app.Activity;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.Bd13Code;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.network.NetWorkController;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -38,13 +44,14 @@ public class ListBd13Presenter extends Presenter<ListBd13Contract.View, ListBd13
     @Override
     public void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift) {
         mView.showProgress();
-        mInteractor.searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift, new CommonCallback<HistoryCreateBd13Result>((Activity) mContainerView) {
+        mInteractor.searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<HistoryCreateBd13Result> call, Response<HistoryCreateBd13Result> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getBd13Codes());
+                    List<Bd13Code> bd13Codes = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<Bd13Code>>(){}.getType());
+                    mView.showResponseSuccess(bd13Codes);
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showResponseEmpty();
@@ -52,7 +59,7 @@ public class ListBd13Presenter extends Presenter<ListBd13Contract.View, ListBd13
             }
 
             @Override
-            protected void onError(Call<HistoryCreateBd13Result> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

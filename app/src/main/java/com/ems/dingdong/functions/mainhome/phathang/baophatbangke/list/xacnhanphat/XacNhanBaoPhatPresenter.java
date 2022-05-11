@@ -13,10 +13,13 @@ import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
+import com.ems.dingdong.model.ResultModelV1;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -36,6 +39,7 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -115,17 +119,18 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void getReasons() {
-        mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
+        mInteractor.getReasons(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.getReasonsSuccess(response.body().getReasonInfos());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    mView.getReasonsSuccess(reasonInfos);
                 }
             }
 
             @Override
-            protected void onError(Call<ReasonResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -133,17 +138,18 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void loadSolution(String code) {
-        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SolutionResult>((Context) mContainerView) {
+        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showSolution(response.body().getSolutionInfos());
+                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    mView.showSolution(solutionInfos);
                 }
             }
 
             @Override
-            protected void onError(Call<SolutionResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -434,7 +440,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 .subscribe(
                         simpleResult -> {
                             mView.hideProgress();
-                            paymentResponses = simpleResult.getPaymentResponses();
+                            paymentResponses = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<List<DeliveryPostman>>(){}.getType());
                             if (simpleResult.getErrorCode().equals("01")) {
                                 long amountPP = 0;
                                 long amountPNS = 0;
@@ -475,15 +481,16 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void getRouteByPoCode(String poCode) {
-        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showRoute(response.body().getRouteInfos());
+                ArrayList<RouteInfo> arrayList = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteInfo>>(){}.getType());
+                mView.showRoute(arrayList);
             }
 
             @Override
-            protected void onError(Call<RouteInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -491,15 +498,16 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void getPostman(String poCode, int routeId, String routeType) {
-        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<UserInfoResult>((Context) mContainerView) {
+        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<UserInfoResult> call, Response<UserInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showPostman(response.body().getUserInfos());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                mView.showPostman(userInfos);
             }
 
             @Override
-            protected void onError(Call<UserInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -580,10 +588,10 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void start() {
-        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
-            if (!mBaoPhatBangke.get(i).getReceiverVpostcode().equals(""))
-                vietmapDecode(mBaoPhatBangke.get(i).getReceiverVpostcode(), i);
-        }
+//        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+//            if (!mBaoPhatBangke.get(i).getReceiverVpostcode().equals(""))
+//                vietmapDecode(mBaoPhatBangke.get(i).getReceiverVpostcode(), i);
+//        }
     }
 
     public XacNhanBaoPhatPresenter setOnTabChangeListener(ListDeliveryConstract.OnTabsListener listener) {

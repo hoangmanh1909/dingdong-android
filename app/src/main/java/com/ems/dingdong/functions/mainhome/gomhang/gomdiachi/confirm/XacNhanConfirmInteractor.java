@@ -23,17 +23,17 @@ class XacNhanConfirmInteractor extends Interactor<XacNhanConfirmContract.Present
         super(presenter);
     }
     @Override
-    public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
+    public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback) {
         NetWorkController.confirmAllOrderPostman(request, callback);
     }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.getRoute(poCode, callback);
     }
 
     @Override
-    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
+    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback) {
         NetWorkController.getPostmanByRoute(poCode, routeId, routeType, callback);
     }
 

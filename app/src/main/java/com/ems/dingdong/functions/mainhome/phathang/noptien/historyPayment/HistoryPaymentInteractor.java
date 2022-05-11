@@ -26,7 +26,7 @@ public class HistoryPaymentInteractor extends Interactor<HistoryPaymentContract.
 
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+    public Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel) {
         return NetWorkController.requestPayment(paymentRequestModel);
     }
 

@@ -22,7 +22,7 @@ public interface CancelPaymentContract {
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
-        Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
+        Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel);
 
         Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel);
 

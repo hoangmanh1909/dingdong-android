@@ -11,6 +11,8 @@ import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.C
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.ResultModel;
+import com.ems.dingdong.model.ResultModelV1;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
@@ -19,6 +21,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,14 +117,14 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
         mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            if (simpleResult.getObject().getResult() != null)
-                                mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
-                            else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
-                        } else {
-                            mView.showError(simpleResult.getMessage());
-                            mView.hideProgress();
-                        }
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        if (simpleResult.getObject().getResult() != null)
+                            mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
+                        else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                    } else {
+                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
 
                 });
     }

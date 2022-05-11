@@ -20,7 +20,7 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     }
 
     @Override
-    public Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
+    public Single<SimpleResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
         return NetWorkController.getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
@@ -30,7 +30,7 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     }
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+    public Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel) {
         return NetWorkController.requestPayment(paymentRequestModel);
     }
 

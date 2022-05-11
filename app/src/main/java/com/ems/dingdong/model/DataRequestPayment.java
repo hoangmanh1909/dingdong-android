@@ -4,9 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DataRequestPayment {
-    @SerializedName("Code")
-    @Expose
-    private String code;
+//    @SerializedName("Code")
+//    @Expose
+//    private String code;
 
     @SerializedName("Data")
     @Expose
@@ -23,13 +23,13 @@ public class DataRequestPayment {
         this.signature = signature;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+//    public String getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(String code) {
+//        this.code = code;
+//    }
 
     public String getData() {
         return data;

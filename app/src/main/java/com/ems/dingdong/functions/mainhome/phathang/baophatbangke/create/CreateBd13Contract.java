@@ -25,7 +25,7 @@ public interface CreateBd13Contract {
     interface Interactor extends IInteractor<Presenter> {
         void bD13AddNew(Bd13Create json, CommonCallback<SimpleResult> commonCallback);
 
-        void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> commonCallback);
+        void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<SimpleResult> commonCallback);
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,

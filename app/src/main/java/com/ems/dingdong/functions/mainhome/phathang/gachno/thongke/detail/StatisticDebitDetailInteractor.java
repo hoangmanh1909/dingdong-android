@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.detail;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.network.NetWorkController;
 
@@ -14,7 +15,7 @@ public class StatisticDebitDetailInteractor extends Interactor<StatisticDebitDet
 
     @Override
     public void statisticDebitDetail(String postmanID, String fromDate, String toDate,
-                                     String statusCode, String routeCode, CommonCallback<StatisticDebitDetailResult> callback) {
+                                     String statusCode, String routeCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.statisticDebitDetail(postmanID, fromDate, toDate, statusCode, routeCode, callback);
     }
 }

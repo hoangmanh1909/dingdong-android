@@ -23,12 +23,12 @@ class ListHoanTatNhieuTinInteractor extends Interactor<ListHoanTatNhieuTinContra
     }
 
     @Override
-    public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
+    public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<SimpleResult> callback) {
         NetWorkController.searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
 
     @Override
-    public void getReasonsHoanTat(CommonCallback<ReasonResult> commonCallback) {
+    public void getReasonsHoanTat(CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.getReasonsHoanTat(commonCallback);
     }
 

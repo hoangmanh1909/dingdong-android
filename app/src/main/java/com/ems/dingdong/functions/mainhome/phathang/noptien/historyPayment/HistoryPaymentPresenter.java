@@ -107,7 +107,7 @@ public class HistoryPaymentPresenter extends Presenter<HistoryPaymentContract.Vi
         paymentCancelRequestModel.setLadingPaymentInfoList(cancelRequests);
         String dataJson = NetWorkController.getGson().toJson(paymentCancelRequestModel);
         dataRequestPayment.setData(dataJson);
-        dataRequestPayment.setCode("EWL003");
+//        dataRequestPayment.setCode("EWL003");
         mView.showProgress();
 
         mInteractor.cancelPayment(dataRequestPayment)
