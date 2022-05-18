@@ -253,7 +253,8 @@
                 android:gravity="center|left"
                 android:text="Gợi ý địa chỉ "
                 android:textColor="#0290fd"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="gone" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sender"

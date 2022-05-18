@@ -63,7 +63,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     @Override
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, int type) {
         mView.showProgress();
-        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate,
+                        new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);

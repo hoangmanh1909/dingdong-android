@@ -23,7 +23,9 @@
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- tools:overrideLibrary="com.tsongkha.spinnerdatepicker" -->
     <!-- for audio access -->
     <eat-comment />
+
     <queries>
+
         <!-- Camera -->
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
@@ -88,6 +90,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -180,7 +183,6 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_Actionbar" />
-
         <activity
             android:name=".functions.mainhome.scannerv1.QrCodeScanner"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -190,7 +192,6 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".functions.mainhome.scannerv1.QrCodeScannerV1"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -368,7 +369,7 @@
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="barcode"></meta-data>
+            android:value="barcode" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" />
@@ -378,7 +379,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.PortSipService"></service>
+        <service android:name=".services.PortSipService" />
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more.
@@ -403,7 +404,6 @@
             android:value="0cce76e3c35418e2833d7caeb11a76a15fc38dd0" />
 
         <activity android:name=".fcm.NotificationActivity" />
-
         <activity android:name=".functions.mainhome.notify.NotifiActivity" /> <!-- Register library Activities -->
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity"
@@ -426,8 +426,6 @@
                 <action android:name="STOP_ACTION" />
             </intent-filter>
         </receiver>
-
-
     </application>
 
 </manifest>

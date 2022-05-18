@@ -221,6 +221,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             getmID = position;
                             PhoneNumber phoneNumber = new PhoneNumber();
                             phoneNumber.setPhone(holder.getItem(position).getReceiverPhone());
+//                            phoneNumber.setPhone("0987654321");
                             mPresenter.ddSreachPhone(phoneNumber);
                         }
                     });

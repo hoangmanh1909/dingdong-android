@@ -20,10 +20,14 @@ import androidx.core.app.NotificationCompat;
 
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.callback.DialogCallback;
+import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
+import com.ems.dingdong.functions.mainhome.main.MainActivity;
 import com.ems.dingdong.functions.mainhome.notify.NotifiActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
+import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -76,7 +80,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("thanhkhiem", new Gson().toJson(remoteMessage.getData()));
         if (remoteMessage.getData().size() > 0) {
             if (!TextUtils.isEmpty(remoteMessage.getData().get("send_from"))) {
-                sendNotification("0", "Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13),"");
+                sendNotification("0", "Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13), "");
             } else if (!TextUtils.isEmpty(remoteMessage.getData().get("notifyNavigationType"))) {
                 sendNotification(remoteMessage.getData().get("notifyNavigationType"), remoteMessage.getData().get("message"), remoteMessage.getData().get("ticketCode"));
             } else {
@@ -101,60 +105,66 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         }*/
     }
 
-    private void sendNotification(String type, String messageBody,String ticketCode) {
+    private void sendNotification(String type, String messageBody, String ticketCode) {
         if (type != null) {
-            Intent intent;
+            Intent intent = null;
             Bundle bundle = new Bundle();
-//            if (messageBody.contains(Constants.GOM_HANG)) {
-//                intent = new Intent(this, ListCommonActivity.class);
-//                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
-//            }  else {
-//                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
-//                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
-//            }
+            try {
+                if (type.equals("3")) {
+                    intent = new Intent(this, ListBaoPhatBangKeActivity.class);
+                    intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+                } else if (type.equals("1") || type.equals("2")) {
+                    intent = new Intent(this, ListCommonActivity.class);
+                    intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                } else if (type.equals("4")) {
+                    intent = new Intent(this, NotifiActivity.class);
+                    intent.putExtra(Constants.TYPE_GOM_HANG, 4);
+                } else {
+                    intent = new Intent(this, NotificationActivity.class);
+                    bundle.putString("message", messageBody);
 
-            if (type.equals("3")) {
-                intent = new Intent(this, ListBaoPhatBangKeActivity.class);
-                intent.putExtra(Constants.TYPE_GOM_HANG, 3);
-            } else if (type.equals("1") || type.equals("2")) {
-                intent = new Intent(this, ListCommonActivity.class);
-                intent.putExtra(Constants.TYPE_GOM_HANG, 1);
-            } else {
-                intent = new Intent(this, NotifiActivity.class);
-                intent.putExtra(Constants.TYPE_GOM_HANG, 4);
-            }
-            bundle.putString("message", messageBody);
-            bundle.putString("ticketCode", ticketCode);
-            intent.putExtras(bundle);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                    new DialogTextThanhConhg(getBaseContext(), messageBody, new DialogCallback() {
+//                        @Override
+//                        public void onResponse(String loginRespone) {
+//
+//                        }
+//                    }).show();
+                }
+                bundle.putString("message", messageBody);
+                intent.putExtras(bundle);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                        PendingIntent.FLAG_ONE_SHOT);
+                Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-            long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setPriority(Notification.PRIORITY_HIGH)
-                            .setWhen(System.currentTimeMillis())
-                            .setSmallIcon(R.drawable.ic_notification)
-                            .setContentTitle("Thông báo")
-                            .setContentText(messageBody)
-                            .setAutoCancel(true)
-                            .setVibrate(vibratePattern)
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(
-                        getString(R.string.notification_channel_id),
-                        "Channel human readable title",
-                        NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(channel);
-                notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
+                long[] vibratePattern = new long[]{0, 400, 800, 600, 800, 800, 800, 1000, 2000};
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setPriority(Notification.PRIORITY_HIGH)
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.drawable.ic_notification)
+                                .setContentTitle("Thông báo")
+                                .setContentText(messageBody)
+                                .setAutoCancel(true)
+                                .setVibrate(vibratePattern)
+                                .setSound(defaultSoundUri)
+                                .setContentIntent(pendingIntent);
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(
+                            getString(R.string.notification_channel_id),
+                            "Channel human readable title",
+                            NotificationManager.IMPORTANCE_HIGH);
+                    notificationManager.createNotificationChannel(channel);
+                    notificationBuilder.setChannelId(getString(R.string.notification_channel_id));
+                }
+                if (notificationManager != null)
+                    notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+            } catch (Exception x) {
+
             }
-            if (notificationManager != null)
-                notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+
         }
     }
 

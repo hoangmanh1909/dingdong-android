@@ -138,7 +138,7 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
         super.onDisplay();
         XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
         commonFragment.onDisPlayFaKe();
-        commonFragment.onDisPlayFaKe();
+//        commonFragment.onDisPlayFaKe();
         XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
         commonFragment1.onDisPlayFaKe();
 

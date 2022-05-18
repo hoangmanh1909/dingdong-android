@@ -303,7 +303,6 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 list.add(rq);
             }
         }
-
         for (ItemHoanTatNhieuTin it : mList) {
             if (it.getStatus() == Constants.GREY) {
                 HoanTatTinRequest rq = new HoanTatTinRequest();

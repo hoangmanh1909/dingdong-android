@@ -27,8 +27,8 @@ public class DialogReason extends Dialog {
 
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
-    @BindView(R.id.tv_title)
-    CustomTextView tvTitle;
+//    @BindView(R.id.tv_title)
+//    CustomTextView tvTitle;
     @BindView(R.id.edt_picker_search)
     EditText edtSearch;
     PickerAdapter mAdapter;
@@ -42,7 +42,7 @@ public class DialogReason extends Dialog {
         ButterKnife.bind(this, view);
         mDelegate = callback;
         mList = list;
-        tvTitle.setText(title);
+//        tvTitle.setText(title);
         mAdapter = new PickerAdapter(getContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull PickerAdapter.HolderView holder, int position) {
@@ -80,15 +80,13 @@ public class DialogReason extends Dialog {
         super.show();
     }
 
-    @OnClick({R.id.img_back, R.id.tv_cancel})
+    @OnClick({R.id.tv_dong})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.tv_dong:
                 dismiss();
                 break;
-            case R.id.tv_cancel:
-                edtSearch.setText("");
-                break;
+
         }
     }
 }

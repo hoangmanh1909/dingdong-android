@@ -45,9 +45,11 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -216,7 +218,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         }).show();
                     }
                 });
-
+                holder.tvGoiy.setVisibility(View.GONE);
+                holder.tvXacminhdiachi.setVisibility(View.GONE);
+                holder.imgAddress.setVisibility(View.GONE);
                 ///
                 holder.img_contact_phone.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -475,7 +479,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             tvAmount.setText("Tổng tiền: " + String.format("%s đ", NumberUtils.formatPriceNumber(totalAmount)));
         }
         mAdapter.setListFilter(list);
-        mPresenter.titleChanged(list.size(),0);
+        mPresenter.titleChanged(list.size(), 0);
         mAdapter.notifyDataSetChanged();
     }
 

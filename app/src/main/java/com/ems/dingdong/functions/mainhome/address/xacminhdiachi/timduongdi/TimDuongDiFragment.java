@@ -25,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.callback.VposcodeCallback;
+import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.dialog.TimDuongDiDialog;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
@@ -461,7 +463,13 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 
     @Override
     public void showError(String mes) {
-        Toast.makeText(getContext(), "Không lấy được thông tin lịch trình", Toast.LENGTH_LONG).show();
+        new DialogTextThanhConhg(getViewContext(), mes, new DialogCallback() {
+            @Override
+            public void onResponse(String loginRespone) {
+                mPresenter.back();
+            }
+        }).show();
+//        Toast.makeText(getContext(), mes, Toast.LENGTH_LONG).show();
         tvKm.setText("Số km: " + 0);
         tvTime.setText("Thời gian: 00h00p");
     }

@@ -340,7 +340,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
 
     @Override
     public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel) {
-        new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setListVposcode(addressListModel).pushView();
+        new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setType(98).setListVposcode(addressListModel).pushView();
     }
 
     @Override

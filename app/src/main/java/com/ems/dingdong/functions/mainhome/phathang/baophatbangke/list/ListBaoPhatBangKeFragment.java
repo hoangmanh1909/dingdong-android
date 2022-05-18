@@ -291,12 +291,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         tvItemSelected.setText(String.valueOf(size));
                     }
                 });
+                holder.tvGoiy.setVisibility(View.VISIBLE);
                 holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         getmID = position;
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhone(holder.getItem(position).getReciverMobile());
+                        if (holder.getItem(position).getReciverMobile().isEmpty()){
+                            Toast.showToast(getViewContext(),"BG không có SĐT người nhận. Vui lòng kiểm tra lại!");
+                            return;
+                        }
                         mPresenter.ddSreachPhone(phoneNumber);
                     }
                 });
@@ -829,7 +834,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB)
                 for (int j = 0; j < dataSuccess.size(); j++) {
                     int t = Integer.parseInt(dataSuccess.get(j));
-                    for (int i = 0; i < n; i++) {
+                    for (int i = 0; i < deliveryPostmen.size(); i++) {
                         if (deliveryPostmen.get(i).getId() == t) {
                             sharedPref.clearPTC();
                             deliveryPostmen.get(i).setStatus("Y");

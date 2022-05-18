@@ -361,8 +361,6 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-//                            btnConfirm.setEnabled(false);
-//                            btnReject.setEnabled(false);
                             if (mPresenter != null)
                                 mPresenter.back();
                         }

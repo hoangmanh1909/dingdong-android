@@ -77,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:background="@null"
+                    android:imeOptions="actionDone"
                     android:hint="Vui lòng nhập tên địa điểm"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
@@ -98,6 +99,7 @@
                     android:id="@+id/edt_sonha"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
+                    android:imeOptions="actionDone"
                     android:background="@null"
                     android:hint="Vui lòng nhập số nhà"
                     android:textColor="@color/black"
@@ -121,6 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:background="@null"
+                    android:imeOptions="actionDone"
                     android:hint="Vui lòng nhập tên đường"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
@@ -143,6 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:background="@null"
+                    android:imeOptions="actionDone"
                     android:hint="Vui lòng nhập thôn/xóm"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
@@ -167,6 +171,7 @@
                     android:layout_height="42dp"
                     android:background="@null"
                     android:gravity="center|left"
+                    android:imeOptions="actionDone"
                     android:hint="Vui chọn đơn vị hành chính"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
