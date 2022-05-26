@@ -5,6 +5,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -21,7 +22,7 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
 
     @Override
     public Observable<CommonObjectResult> findLocation(String ladingCode, String poCode) {
-        return NetWorkController.findLocation(ladingCode, poCode);
+        return NetWorkControllerGateWay.findLocation(ladingCode, poCode);
     }
 
     @Override

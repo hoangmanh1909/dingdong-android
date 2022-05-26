@@ -141,5 +141,113 @@ public class Constants {
 
     public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG = "HOAN_THANH_TIN_THANH_CONG";
 
+    public static final String DATE_FORMAT = "dd/mm/yyyy HH:mm:ss";
+
+    // Phát hàng
+    public static final String DLV_TRACK_TRACE_LADING = "DLV_TRACK_TRACE_LADING";
+    public static final String DLV_DELIVERY_POSTMAN = "DLV_DELIVERY_POSTMAN";
+    public static final String DLV_PAYMENT = "DLV_PAYMENT";
+    public static final String DLV_PAYMENT_V2 = "DLV_PAYMENT_V2";
+    public static final String DLV_DELIVERY_SUCCESS = "DLV_DELIVERY_SUCCESS";
+    public static final String DLV_CHECK_AMOUNT_PAYMENT = "DLV_CHECK_AMOUNT_PAYMENT";
+    public static final String DLV_DELIVERY_UN_SUCCESS = "DLV_DELIVERY_UN_SUCCESS";
+    public static final String DLV_DELIVERY_PARTIAL = "DLV_DELIVERY_PARTIAL";
+    public static final String DLV_DELIVERY_REASONS = "DLV_DELIVERY_REASONS";
+    public static final String DLV_DELIVERY_ROUTE = "DLV_DELIVERY_ROUTE";
+    public static final String DLV_DLV_GET_SOLUTIONS_BY_REASON = "DLV_DLV_GET_SOLUTIONS_BY_REASON";
+    public static final String DLV_GET_SOLUTIONS = "DLV_GET_SOLUTIONS";
+    public static final String DLV_CANCEL_DIVIDED = "DLV_CANCEL_DIVIDED";
+    public static final String DLV_CREATE_BD13 = "DLV_CREATE_BD13";
+    public static final String DLV_CREATE_SEARCH_BD13 = "DLV_CREATE_SEARCH_BD13";
+    public static final String DLV_CREATE_CONFIRM_BD13 = "DLV_CREATE_CONFIRM_BD13";
+    public static final String DLV_GET_LADING_BD13 = "DLV_GET_LADING_BD13";
+    public static final String DLV_GET_CANCEL_DELIVERY = "DLV_GET_CANCEL_DELIVERY";
+    public static final String DLV_CANCEL_DELIVERY = "DLV_CANCEL_DELIVERY";
+    public static final String DLV_UPDATE_MOBILE = "DLV_UPDATE_MOBILE";
+    public static final String DLV_SML_GET_HUB_BY_POCODE = "DLV_SML_GET_HUB_BY_POCODE";
+    public static final String DLV_SML_DELIVERY = "DLV_SML_DELIVERY";
+    public static final String DLV_SML_DELIVERY_CANCEL = "DLV_SML_DELIVERY_CANCEL";
+    public static final String DLV_SML_DELIVERY_STATISTIC  = "DLV_SML_DELIVERY_STATISTIC";
+    public static final String DLV_DIC_GET_POSTMAN_SHIFT  = "DLV_DIC_GET_POSTMAN_SHIFT";
+    public static final String DLV_CHANGE_ROUTE_APPROVE  = "DLV_CHANGE_ROUTE_APPROVE";
+    public static final String DLV_CHANGE_ROUTE_DISAGREE  = "DLV_CHANGE_ROUTE_DISAGREE";
+    public static final String DLV_RECEIVER_VPOST_CODE  = "DLV_RECEIVER_VPOST_CODE";
+    public static final String DLV_SENDER_VPOST_CODE  = "DLV_SENDER_VPOST_CODE";
+    public static final String DLV_LADDING_JOURNEY  = "DLV_LADDING_JOURNEY";
+    public static final String DLV_PUSH_TO_PNS  = "DLV_PUSH_TO_PNS";
+    public static final String DLV_CALL_CENTER_FORWARD  = "DLV_CALL_CENTER_FORWARD";
+    public static final String DLV_CALL_CENTER_SEARCH  = "DLV_CALL_CENTER_SEARCH";
+    public static final String DLV_LOCATION_ADD_NEW  = "DLV_LOCATION_ADD_NEW";
+
+
+
+    // thống kê
+    public static final String STT_GET_DELIVERY_MAIN_VIEW = "STT_GET_DELIVERY_MAIN_VIEW";
+    public static final String STT_GET_PICKUP_MAIN_VIEW = "STT_GET_PICKUP_MAIN_VIEW";
+    public static final String STT_GET_TICKET_NOTIFY = "STT_GET_TICKET_NOTIFY";
+    public static final String STT_COLLECT = "STT_COLLECT";
+    public static final String STT_DELIVERY_GENERAL = "STT_DELIVERY_GENERAL";
+    public static final String STT_DELIVERY_DETAILL = "STT_DELIVERY_DETAILL";
+    public static final String STT_CHANGE_ROUTE = "STT_CHANGE_ROUTE";
+    public static final String STT_PAYMENT = "STT_PAYMENT";
+    public static final String STT_DEBIT_GENERAL = "STT_DEBIT_GENERAL";
+    public static final String STT_DEBIT_DETAILL = "STT_DEBIT_DETAILL";
+    public static final String STT_LADING_STATUS_GENERAL = "STT_LADING_STATUS_GENERAL";
+    public static final String STT_LADING_STATUS_DETAIL = "STT_LADING_STATUS_DETAIL";
+    public static final String STT_GET_TICKET_NOTIFY_UPDATE_SEEN = "STT_GET_TICKET_NOTIFY_UPDATE_SEEN";
+    public static final String STT_GET_TICKET_NOTIFY_BY_CODE = "STT_GET_TICKET_NOTIFY_BY_CODE";
+    public static final String STT_LADING_CANCEL_DELIVERY = "STT_LADING_CANCEL_DELIVERY";
+    public static final String STT_DELIVERY = "STT_DELIVERY";
+
+
+    //Ví
+    public static final String EW_PAYLINK_REQUEST = "EW_PAYLINK_REQUEST";
+    public static final String EW_PAYLINK_CONFIRM = "EW_PAYLINK_CONFIRM";
+    public static final String EW_PAYMENT_REQUEST = "EW_PAYMENT_REQUEST";
+    public static final String EW_PAYMENT_CONFIRM = "EW_PAYMENT_CONFIRM";
+    public static final String EW_GET_DATA_PAYMENT = "EW_GET_DATA_PAYMENT";
+    public static final String EW_GET_DATA_HISTORY = "EW_GET_DATA_HISTORY";
+    public static final String EW_GET_DATA_SUCCESS = "EW_GET_DATA_SUCCESS";
+    public static final String EW_REMOVE_DATA = "EW_REMOVE_DATA";
+    public static final String EW_CANCEL_DATA = "EW_CANCEL_DATA";
+
+    //Gom hàng
+    public static final String PU_SEARCH_ORDER_POSTMAN = "PU_SEARCH_ORDER_POSTMAN";
+    public static final String PU_CONFIRM_ORDER_POSTMAN = "PU_CONFIRM_ORDER_POSTMAN";
+    public static final String PU_ORDER_CHANGE_ROUTE = "PU_ORDER_CHANGE_ROUTE";
+    public static final String PU_CONFIRM_ALL_ORDER_POSTMAN = "PU_CONFIRM_ALL_ORDER_POSTMAN";
+    public static final String PU_COLLECT_ORDER_POSTMAN = "PU_COLLECT_ORDER_POSTMAN";
+    public static final String PU_SEARCH_ORDER_POSTMAN_COLLECT_ALL = "PU_SEARCH_ORDER_POSTMAN_COLLECT_ALL";
+    public static final String PU_CREATE_ORDER = "PU_CREATE_ORDER";
+    public static final String PU_BP_GET_BY_ID = "PU_BP_GET_BY_ID";
+    public static final String PU_BP_GET_CHILD_BY_CODE = "PU_BP_GET_CHILD_BY_CODE";
+    public static final String PU_DIC_GET_PROVINCES = "PU_DIC_GET_PROVINCES";
+    public static final String PU_DIC_GET_DISTRICTS = "PU_DIC_GET_DISTRICTS";
+    public static final String PU_DIC_GET_WARDS = "PU_DIC_GET_WARDS";
+    public static final String PU_DIC_GET_PICKUP_REASON = "PU_DIC_GET_PICKUP_REASON";
+    public static final String PU_DIC_POSTMAN_BY_ROUTE = "PU_DIC_POSTMAN_BY_ROUTE";
+    public static final String PU_ORDER_CHANGE_ROUTE_ACCEPT = "PU_ORDER_CHANGE_ROUTE_ACCEPT";
+    public static final String PU_ORDER_CHANGE_ROUTE_CANCEL = "PU_ORDER_CHANGE_ROUTE_CANCEL";
+    public static final String PU_ORDER_CHANGE_ROUTE_MANAGE = "PU_ORDER_CHANGE_ROUTE_MANAGE";
+    public static final String PU_ORDER_CHANGE_ROUTE_REJECT = "PU_ORDER_CHANGE_ROUTE_REJECT";
+    public static final String PU_COLLECT_ALL_ORDER_POSTMAN = "PU_COLLECT_ALL_ORDER_POSTMAN";
+    public static final String PU_GET_CANCEL_ORDER_REASON = "PU_GET_CANCEL_ORDER_REASON";
+    public static final String PU_OCR_SEARCH_FOR_CANCEL  = "DLV_DIC_GET_POSTMAN_SHIFT";
+    public static final String PU_OCR_GET_DETAIL_BY_LADDING_CODE  = "DLV_DIC_GET_POSTMAN_SHIFT";
+    public static final String PU_DIC_GET_POS_IN_DISTRICT  = "PU_DIC_GET_POS_IN_DISTRICT";
+    public static final String PU_OCR_SEARCH_FOR_APPROVE  = "PU_OCR_SEARCH_FOR_APPROVE";
+
+
+    //viet map
+    public static final String VM_REVERSE = "VM_REVERSE";
+    public static final String VM_SEARCH = "VM_SEARCH";
+    public static final String VM_VERIFY = "VM_VERIFY";
+    public static final String VM_UPDATE = "VM_UPDATE";
+    public static final String VM_ROUTE = "VM_ROUTE";
+    public static final String VM_ROUTE_V2 = "VM_ROUTE_V2";
+    public static final String VM_ENCODE = "VM_ENCODE";
+    public static final String VM_DECODE = "VM_DECODE";
+    public static final String VM_TRAVEL_SALESMAN_PROBLEM = "VM_TRAVEL_SALESMAN_PROBLEM";
+
 
 }
