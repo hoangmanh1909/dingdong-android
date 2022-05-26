@@ -216,7 +216,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature,
                 mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0,
                 "",false,0,"","",
-                "","","","","","","","DD_ANDROID");
+                "","","","","","","","DD_ANDROID","");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -338,7 +338,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                         "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(),
                         signature, mBaoPhatBangke.getImageDelivery(), "N", "",
                         0, "",false,0,"","",
-                        "","","","","","","","DD_ANDROID");
+                        "","","","","","","","DD_ANDROID","");
                 mInteractor.pushToPNSDelivery(request,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override

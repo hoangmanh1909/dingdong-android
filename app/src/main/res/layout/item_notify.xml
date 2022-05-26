@@ -26,9 +26,9 @@
                 android:id="@+id/img_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/badge_blue"
+                android:padding="10dp"
                 android:src="@drawable/ic_ticket_notify" />
         </RelativeLayout>
         <LinearLayout
@@ -57,7 +57,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_toEndOf="@+id/title_ticket"
                     android:gravity="right"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/red_light" />
             </RelativeLayout>
 
             <TextView

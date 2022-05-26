@@ -14,8 +14,12 @@ import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.TokenMoveCropResult;
+import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
+import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.Call;
@@ -34,15 +38,21 @@ interface MainContract {
 
         void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback);
 
+        Single<SimpleResult> getListTicket(TicketNotifyRequest request);
+
     }
 
     interface View extends PresentView<Presenter> {
         void updateBalance(StatisticPaymentResponse value);
 
         void setBalance(String x);
+
+        void showListNotifi(List<TicketNotifyRespone> list);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void getListTicket(TicketNotifyRequest request);
+
         HomePresenter getHomePresenter();
 
         GomHangPresenter getGomHangPresenter();

@@ -11,6 +11,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DialogCallback;
+import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.UserInfo;
@@ -40,13 +42,15 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
     TextView tv_thong_bao;
     @BindView(R.id.layout_swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
-    private String mFromDate;
-    private String mToDate;
+
     private NotifyAdapter mAdapter;
     private List<TicketNotifyRespone> mList;
     String mobilenumber;
     private Calendar mCalendar;
-    List<String> listString ;
+    private String mFromDate;
+    private String mToDate;
+    List<String> listString;
+
     public static ListNotifyFragment getInstance() {
         return new ListNotifyFragment();
     }
@@ -80,7 +84,16 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
                     public void onClick(View v) {
                         List<String> ticketModes = new ArrayList<>();
                         ticketModes.add(mList.get(position).getTicketCode());
-                        mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode());
+                        if (mList.get(position).getType() != 1) {
+                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(),mList.get(position).getType());
+                        } else {
+                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(),mList.get(position).getType());
+                            new DialogTextThanhConhg(getViewContext(), mList.get(position).getContent(), new DialogCallback() {
+                                @Override
+                                public void onResponse(String loginRespone) {
+                                }
+                            }).show();
+                        }
                     }
                 });
             }
@@ -89,6 +102,7 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
         recyclerView.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
     }
+
     public void refreshLayout() {
         TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
         ticketNotifyRequest.setMobileNumber(mobilenumber);
@@ -97,6 +111,7 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
         mPresenter.getListTicket(ticketNotifyRequest);
         swipeRefresh.setRefreshing(false);
     }
+
     @Override
     public void showListNotifi(List<TicketNotifyRespone> list) {
         swipeRefresh.setRefreshing(false);
@@ -130,11 +145,11 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
         }
     }
 
-    @OnClick({R.id.img_back, R.id.tv_search,R.id.tv_thong_bao})
+    @OnClick({R.id.img_back, R.id.tv_search, R.id.tv_thong_bao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_thong_bao:
-                mPresenter.isSeen(listString,"");
+                mPresenter.isSeen(listString, "",1);
                 break;
             case R.id.img_back:
                 mPresenter.back();

@@ -154,7 +154,7 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         0,
                         "", item.isCancelOrder(), item.getFeeCancelOrder(), postManTel1, postManCode1,
 
-                        "", "", "", "", "", "", "","DD_ANDROID");
+                        "", "", "", "", "", "", "","DD_ANDROID","");
                 List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     mView.showProgress();

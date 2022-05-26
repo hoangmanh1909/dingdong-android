@@ -13,6 +13,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,8 +57,9 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                         this.list1 = list1;
                         mView.hideProgress();
                         mView.showListNotifi(list1);
-                    }  else {
+                    } else {
                         mView.hideProgress();
+                        mView.showListNotifi(new ArrayList<>());
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
                 });
@@ -69,7 +71,7 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
     }
 
     @Override
-    public void isSeen(List<String> list, String ticket) {
+    public void isSeen(List<String> list, String ticket, int type) {
         mView.hideProgress();
         mInteractor.isSeen(list)
                 .subscribeOn(Schedulers.io())
@@ -77,9 +79,9 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
                         mView.hideProgress();
-                        if (list.size() == 1)
+                        if (list.size() == 1 && type != 1)
                             showDetail(ticket);
-                        else  {
+                        else {
                             mView.refesht();
                         }
                     } else {

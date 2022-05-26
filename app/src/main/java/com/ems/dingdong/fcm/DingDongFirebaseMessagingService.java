@@ -25,6 +25,7 @@ import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
+import com.ems.dingdong.functions.mainhome.notify.ListNotifyActivity;
 import com.ems.dingdong.functions.mainhome.notify.NotifiActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
@@ -120,15 +121,8 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                     intent = new Intent(this, NotifiActivity.class);
                     intent.putExtra(Constants.TYPE_GOM_HANG, 4);
                 } else {
-                    intent = new Intent(this, NotificationActivity.class);
+                    intent = new Intent(this, ListNotifyActivity.class);
                     bundle.putString("message", messageBody);
-
-//                    new DialogTextThanhConhg(getBaseContext(), messageBody, new DialogCallback() {
-//                        @Override
-//                        public void onResponse(String loginRespone) {
-//
-//                        }
-//                    }).show();
                 }
                 bundle.putString("message", messageBody);
                 intent.putExtras(bundle);

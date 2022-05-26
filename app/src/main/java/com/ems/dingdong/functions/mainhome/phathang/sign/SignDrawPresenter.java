@@ -134,7 +134,7 @@ public class SignDrawPresenter extends Presenter<SignDrawContract.View, SignDraw
                 solutionCode, status, paymentChannel, deliveryType, signatureCapture, "", amount, ladingPostmanID, Constants.SHIFT, routeCode,
                 signature, imageDelivery, "N", "", 0, "", false, 0,
                 "", "",
-                "", "", "", "", "", "", "","DD_ANDROID");
+                "", "", "", "", "", "", "","DD_ANDROID","");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

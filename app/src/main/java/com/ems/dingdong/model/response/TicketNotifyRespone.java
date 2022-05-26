@@ -17,6 +17,17 @@ public class TicketNotifyRespone {
     @SerializedName("IsSeen")
     @Expose
     private String isSeen;
+    @SerializedName("Type")
+    @Expose
+    private int Type;
+
+    public int getType() {
+        return Type;
+    }
+
+    public void setType(int type) {
+        Type = type;
+    }
 
     public String getTicketCode() {
         return ticketCode;

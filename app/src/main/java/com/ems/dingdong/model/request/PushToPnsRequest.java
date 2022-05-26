@@ -78,6 +78,16 @@ public class PushToPnsRequest {
     private String EstimateProcessTime;
     @SerializedName("SourceChanel")
     private String SourceChanel;
+    @SerializedName("ReasonCancelOrder")
+    private String ReasonCancelOrder;
+
+    public String getPostmanID() {
+        return postmanID;
+    }
+
+    public void setPostmanID(String postmanID) {
+        this.postmanID = postmanID;
+    }
 
     public String getEstimateProcessTime() {
         return EstimateProcessTime;
@@ -103,9 +113,17 @@ public class PushToPnsRequest {
         this.feeCancelOrder = feeCancelOrder;
     }
 
-    public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode, String deliveryDate, String deliveryTime, String receiverName,
-                            String reasonCode, String solutionCode, String status, String paymentChannel,
-                            String deliveryType, String signatureCapture, String note, String collectAmount, String ladingPostmanID,
+    public PushToPnsRequest(String postmanID, String ladingCode, String deliveryPOCode,
+                            String deliveryDate,
+                            String deliveryTime,
+                            String receiverName,
+                            String reasonCode,
+                            String solutionCode,
+                            String status,
+                            String paymentChannel,
+                            String deliveryType,
+                            String signatureCapture,
+                            String note, String collectAmount, String ladingPostmanID,
                             String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn, String batchCode,
                             Integer itemsInBatch, String amountForBatch, boolean isCancelOrder, long feeCancelOrder, String postmanTel, String postmanCode,
                             String DeliveryLat,
@@ -115,7 +133,7 @@ public class PushToPnsRequest {
                             String PODeliveryLat,
                             String PODeliveryLon,
                             String EstimateProcessTime,
-                            String SourceChanel) {
+                            String SourceChanel,String ReasonCancelOrder) {
         this.EstimateProcessTime = EstimateProcessTime;
         this.SourceChanel = SourceChanel;
         this.postmanID = postmanID;
@@ -151,6 +169,8 @@ public class PushToPnsRequest {
         this.ReceiverLon = ReceiverLon;
         this.PODeliveryLat = PODeliveryLat;
         this.PODeliveryLon = PODeliveryLon;
+        this.ReasonCancelOrder = ReasonCancelOrder;
+
     }
 
 

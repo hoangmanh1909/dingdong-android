@@ -65,7 +65,18 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     public XacNhanBaoPhatPresenter setBaoPhatBangKe(List<DeliveryPostman> baoPhatBangKe) {
+        for (int i = 0; i < baoPhatBangKe.size(); i++)
+            if (!baoPhatBangKe.get(i).getVatCode().isEmpty()) {
+                String gtgt[] = baoPhatBangKe.get(i).getVatCode().split(",");
+                for (int j = 0; j < gtgt.length; j++) {
+                    if (gtgt[j].equals("AHZ")) {
+                        baoPhatBangKe.get(i).setItemReturn("N");
+                        break;
+                    }
+                }
+            }
         this.mBaoPhatBangke = baoPhatBangKe;
+
         calDate = Calendar.getInstance();
         mHour = calDate.get(Calendar.HOUR_OF_DAY);
         mMinute = calDate.get(Calendar.MINUTE);
@@ -196,8 +207,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
 
     @Override
-    public void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture, String EstimateProcessTime) {
+    public void submitToPNS(String reason, String solution, String note, String deliveryImage,
+                            String authenImage, String signCapture,
+                            String EstimateProcessTime, boolean ischeck, String lydo) {
         mView.showProgress();
+        Log
+                .d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
@@ -216,11 +231,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String status = "C18";
             String amount = Integer.toString(item.getAmount());
             String shiftId = Integer.toString(item.getShiftId());
-            boolean isCancle = item.isCheck();
+            boolean isCancle = ischeck;
             long feeCancle = item.getFeeCancelOrder();
             String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-            if (isCancle) feeCancle = item.getFeeCancelOrder();
-            else feeCancle = 0;
+//            if (isCancle)
+            feeCancle = item.getFeeCancelOrder();
+//            else feeCancle = 0;
             String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
             PushToPnsRequest request = new PushToPnsRequest(
                     postmanID,
@@ -256,7 +272,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     item.getReceiverLon(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
-                    EstimateProcessTime, "DD_ANDROID");
+                    EstimateProcessTime, "DD_ANDROID", lydo);
 
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
@@ -278,7 +294,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode(),deliveryUnSuccessRequest.getData().getLadingPostmanID());
+                    mView.showSuccess(response.body().getErrorCode(), deliveryUnSuccessRequest.getData().getLadingPostmanID());
                     mView.hideProgress();
                 }
 
@@ -302,7 +318,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     mView.hideProgress();
-                    mView.showSuccess(response.body().getErrorCode(),"");
+                    mView.showSuccess(response.body().getErrorCode(), "");
                 } else mView.showError(response.body().getMessage());
             }
 
@@ -316,7 +332,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                                String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit) {
+                                String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -339,7 +355,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             String reasonCode = "";
             String solutionCode = "";
             String status = "C14";
-            String note = "";
             String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
             final String paymentChannel = "1";
             String deliveryType = "";
@@ -575,8 +590,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     }
 
     @Override
-    public void onTabRefresh(String data,int mType) {
-        titleTabsListener.onDelivered(data,mType);
+    public void onTabRefresh(String data, int mType) {
+        titleTabsListener.onDelivered(data, mType);
     }
 
     @Override

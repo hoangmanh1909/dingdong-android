@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -34,7 +35,9 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.CallHistoryRequest;
+import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
+import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -51,7 +54,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.linphone.core.LinphoneCall;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,6 +87,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     View viewTop;
     @BindView(R.id.img_notification)
     ImageView img_notification;
+    @BindView(R.id.notification_badge)
+    TextView notification_badge;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
     private Fragment gomHangFragment;
@@ -94,6 +102,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     String userJson;
     String postOfficeJson;
     String routeInfoJson;
+    String mobilenumber;
+    private Calendar mCalendar;
+    private String mFromDate;
+    private String mToDate;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -112,7 +124,13 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-
+        mCalendar = Calendar.getInstance();
+        Date today = Calendar.getInstance().getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DATE, -10);
+        mFromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+        mToDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
@@ -129,6 +147,13 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
                 getBalance();
+                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
+                ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
+                ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
+                ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
+                mobilenumber = userInfo.getMobileNumber();
+                mPresenter.getListTicket(ticketNotifyRequest);
 //                if (homeFragment != null) {
 //                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
 //                    v1Fragment.updateHomeView();
@@ -173,6 +198,17 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
         Intent intent = new Intent(getActivity(), CheckLocationService.class);
         getViewContext().startService(intent);
+
+        if (!userJson.isEmpty()) {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
+            ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
+            ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
+            ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
+            mobilenumber = userInfo.getMobileNumber();
+            mPresenter.getListTicket(ticketNotifyRequest);
+        }
+
         if (!"6".equals(userInfo.getEmpGroupID())) {
             /**
              * follow Hanh
@@ -248,6 +284,22 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         };
     }
 
+    @Override
+    public void showListNotifi(List<TicketNotifyRespone> list) {
+        int tam = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getIsSeen().equals("N")) {
+                tam++;
+            }
+        }
+        if (tam == 0)
+            notification_badge.setVisibility(View.GONE);
+        else {
+            notification_badge.setVisibility(View.VISIBLE);
+            notification_badge.setText(tam + "");
+        }
+    }
+
     private Fragment getFragmentItem(int position) {
         if (mPresenter != null) {
             switch (position) {
@@ -306,6 +358,13 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         switch (viewPager.getCurrentItem()) {
             case 0:
                 getBalance();
+                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
+                ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
+                ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
+                ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
+                mobilenumber = userInfo.getMobileNumber();
+                mPresenter.getListTicket(ticketNotifyRequest);
                 break;
             case 2:
                 try {

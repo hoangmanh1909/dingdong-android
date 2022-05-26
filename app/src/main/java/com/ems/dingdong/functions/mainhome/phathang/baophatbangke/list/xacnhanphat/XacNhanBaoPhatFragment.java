@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -51,7 +52,9 @@ import com.ems.dingdong.callback.ChonAnhCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PickerCallback;
 import com.ems.dingdong.dialog.ConfirmDialog;
+import com.ems.dingdong.dialog.ConfirmPhiHuyDonHangDialog;
 import com.ems.dingdong.dialog.DiallogChonAnh;
+import com.ems.dingdong.dialog.DialogNhapKhongThanhCong;
 import com.ems.dingdong.dialog.DialogNhaptienCOD;
 import com.ems.dingdong.dialog.DialogReason;
 import com.ems.dingdong.dialog.DialogText;
@@ -188,6 +191,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recycler;
     @BindView(R.id.edt_other_relationship)
     EditText edtOtherRelationship;
+    @BindView(R.id.edt_note)
+    EditText edtNote;
     @BindView(R.id.recycler_image_verify_avatar)
     RecyclerView recyclerImageVerifyAvatar;
     @BindView(R.id.recycler_image)
@@ -268,7 +273,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     FormItemTextView _tvBuuCuc;
     @BindView(R.id.cb_selected_edtcod)
     CheckBox checkBoxedtCod;
-//    @BindView(R.id.cb_selected_phathoan)
+    //    @BindView(R.id.cb_selected_phathoan)
 //    CheckBox cbSelectedPhathoan;
     @BindView(R.id.ll_tong_tien_tam_thu)
     LinearLayout llTongTienTamThu;
@@ -283,7 +288,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     long tiem_tam = 0;
     @BindView(R.id.ll_edt_cod)
     LinearLayout lledtcod;
-
 
 
     String toPoCode = "";
@@ -865,10 +869,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-//                if (!cbSelected.isChecked()) {
-//                    mBaoPhatBangke.get(position).setFeeCancelOrder(0);
-//                    holder.tv_monney.setText("0");
-//                }
 
 
                 holder.tv_monney.addTextChangedListener(new TextWatcher() {
@@ -1490,7 +1490,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (rbVerifyImage.isChecked() && rbVerifyInfo.isChecked()) authenType = 3;
             else if (rbVerifyInfo.isChecked()) authenType = 1;
             else if (rbVerifyImage.isChecked()) authenType = 2;
-//            Log.d("thasndasdasd", authenType + "");
             if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
                 if (authenType == 1 && !checkInfo(authenType)) {
                     return;
@@ -1577,10 +1576,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         if (mDeliveryType == 2) {
                             if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                        edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
+                                        edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString());
                             } else {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(),
-                                        edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam);
+                                        edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString());
                             }
                         } else {
                             if (totalAmount > 0) {
@@ -1622,9 +1621,37 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             String time = TimeUtils.convertDateToString(calendar.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
+            long t = 0;
+            if (cbSelected.isChecked()) {
+                for (int i = 0; i < mBaoPhatBangke.size(); i++)
+                    t += mBaoPhatBangke.get(i).getFeeCancelOrder();
+            }
 
-            new ConfirmDialog(getViewContext(), listSelected.size())
-                    .setOnCancelListener(Dialog::dismiss)
+            String mess = null;
+
+            mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">"+ String.format("%s", NumberUtils.formatPriceNumber(t))+"</font>"+ " VNĐ, bạn có thu đủ tiền hay không?";
+
+            new ConfirmPhiHuyDonHangDialog(getViewContext(),
+                    listSelected.size(), t)
+                    .setOnCallBacklClickListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                    })
+                    .setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
+                        confirmDialog1.dismiss();
+                        new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
+                            @Override
+                            public void onResponse(String id) {
+                                mPresenter.submitToPNS(
+                                        mReasonInfo.getCode(),
+                                        mSolutionInfo.getCode(),
+                                        tv_Description.getText().toString(),
+                                        mFile,
+                                        mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
+                                        mSign,
+                                        time, false, id);
+                            }
+                        }).show();
+                    })
                     .setOnOkListener(confirmDialog -> {
                         confirmDialog.dismiss();
                         mPresenter.submitToPNS(
@@ -1634,9 +1661,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 mFile,
                                 mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                 mSign,
-                                time);
+                                time, true, "");
                     })
-                    .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
+                    .setWarning(mess)
                     .show();
 //            }
 
@@ -1714,7 +1741,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         String reasonCode = "";
         String solutionCode = "";
         String status = "C44";
-        String note = "";
+        String note = edtNote.getText().toString();
 
         final String paymentChannel = "1";
         SharedPref sharedPref = new SharedPref(getActivity());

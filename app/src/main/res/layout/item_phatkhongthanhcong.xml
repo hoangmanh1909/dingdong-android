@@ -134,10 +134,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:background="@null"
+            android:background="@drawable/bg_status_not"
+            android:padding="10dp"
+            android:layout_gravity="center|top"
+            android:gravity="center|left|top"
             android:hint="Vui lòng nhập ghi chú"
             android:textColor="@color/red_light"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:maxLines="5"
+            android:lines="5"/>
     </LinearLayout>
 
 

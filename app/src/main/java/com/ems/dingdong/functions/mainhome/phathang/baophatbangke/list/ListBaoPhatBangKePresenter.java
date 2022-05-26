@@ -438,7 +438,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             getListVpost.add(vpostcodeModel);
                             mView.showList(vpostcodeModel);
                         } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
-                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    } else {}
                     mView.hideProgress();
                 });
     }

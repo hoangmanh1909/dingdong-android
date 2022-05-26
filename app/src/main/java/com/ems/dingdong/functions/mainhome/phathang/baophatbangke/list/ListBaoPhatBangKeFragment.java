@@ -298,8 +298,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         getmID = position;
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhone(holder.getItem(position).getReciverMobile());
-                        if (holder.getItem(position).getReciverMobile().isEmpty()){
-                            Toast.showToast(getViewContext(),"BG không có SĐT người nhận. Vui lòng kiểm tra lại!");
+                        if (holder.getItem(position).getReciverMobile().isEmpty()) {
+                            Toast.showToast(getViewContext(), "BG không có SĐT người nhận. Vui lòng kiểm tra lại!");
                             return;
                         }
                         mPresenter.ddSreachPhone(phoneNumber);
@@ -804,7 +804,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             deliveryPostmen.addAll(mList);
             showListSuccessFromTab(deliveryPostmen);
         } else {
-
             for (int j = 0; j < dataSuccess.size(); j++) {
                 int t = Integer.parseInt(dataSuccess.get(j));
                 for (int i = 0; i < n; i++) {
@@ -947,6 +946,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showListSuccess(List<DeliveryPostman> list) {
+//        for (int i = 0; i < list.size(); i++)
+//            if (!list.get(i).getVatCode().isEmpty()) {
+//                String gtgt[] = list.get(i).getVatCode().split(",");
+//                for (int j = 0; j < gtgt.length; j++) {
+//                    if (gtgt[j].equals("AHZ")) {
+//                        list.get(i).setItemReturn("N");
+//                        break;
+//                    }
+//                }
+//            }
         showListSuccessFromTab(list);
     }
 

@@ -75,7 +75,7 @@ public class BaoPhatKhongThanhCongPresenter extends Presenter<BaoPhatKhongThanhC
                 solutionCode, status, "", "", "", "", "0", ladingPostmanID, Constants.SHIFT, routeCode,
                 signature, "", "N", "", 0, "", false, 0, "", "",
 
-                "","","","","","","","DD_ANDROID");
+                "","","","","","","","DD_ANDROID","");
         mInteractor.pushToPNS(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

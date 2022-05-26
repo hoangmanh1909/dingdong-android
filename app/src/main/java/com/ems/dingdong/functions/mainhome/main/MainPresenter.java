@@ -19,12 +19,18 @@ import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.TicketNotifyRequest;
+import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -74,6 +80,25 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                 }
             });
         }
+    }
+
+    @Override
+    public void getListTicket(TicketNotifyRequest request) {
+        mView.showProgress();
+        mInteractor.getListTicket(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        TicketNotifyRespone[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), TicketNotifyRespone[].class);
+                        List<TicketNotifyRespone> list1 = Arrays.asList(list);
+                        mView.hideProgress();
+                        mView.showListNotifi(list1);
+                    } else {
+                        mView.hideProgress();
+                        mView.showListNotifi(new ArrayList<>());
+                    }
+                });
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.TokenMoveCropResult;
+import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.network.NetWorkController;
 
 import io.reactivex.Single;
@@ -42,6 +43,10 @@ class MainInteractor extends Interactor<MainContract.Presenter>
         NetWorkController.ddGetBalance(requset, callback);
     }
 
+    @Override
+    public Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
+        return NetWorkController.getListTicket(request);
+    }
 //    @Override
 //    public void ddGetBalance(BalanceModel request) {
 //        return NetWorkController.ddGetBalance(request);

@@ -154,6 +154,8 @@ public class DeliveryPostman implements Comparable {
 
     @SerializedName("IDHub")
     private String iDHub;
+    @SerializedName("ReasonCancelOrder")
+    private String ReasonCancelOrder;
 
     @SerializedName("HubAddress")
     private String hubAddress;
@@ -191,6 +193,14 @@ public class DeliveryPostman implements Comparable {
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
+
+    public String getReasonCancelOrder() {
+        return ReasonCancelOrder;
+    }
+
+    public void setReasonCancelOrder(String reasonCancelOrder) {
+        ReasonCancelOrder = reasonCancelOrder;
+    }
 
     public String getCuocCH() {
         return CuocCH;

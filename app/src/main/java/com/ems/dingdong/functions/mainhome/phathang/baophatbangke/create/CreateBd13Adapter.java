@@ -323,9 +323,9 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                     tvTienPhathoan.setVisibility(View.VISIBLE);
 
                     if (item.getType() == 1) {
-                        tvTienPhathoan.setText("Cước chuyển hoàn phải thu : " +  String.format("%s đ", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
+                        tvTienPhathoan.setText("Cước chuyển hoàn phải thu : " + String.format("%s đ", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
                     } else
-                        tvTienPhathoan.setText("Cước chuyển hoàn phải trả : "  +  String.format("%s đ", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
+                        tvTienPhathoan.setText("Cước chuyển hoàn phải trả : " + String.format("%s đ", NumberUtils.formatPriceNumber(Integer.parseInt(item.getCuocCH()))));
                 }
             } catch (NullPointerException nullPointerException) {
 
@@ -351,6 +351,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
             } else {
                 gtgt.setText("GTGT: ");
+            }
+
+            if (!item.getVatCode().isEmpty()) {
+                String gtgt[] = item.getVatCode().split(",");
+                for (int i = 0; i < gtgt.length; i++) {
+                    if (gtgt[i].equals("AHZ"))
+                        tvTienPhathoan.setVisibility(View.GONE);
+                }
             }
 
             if (!TextUtils.isEmpty(item.getVatCode())) {

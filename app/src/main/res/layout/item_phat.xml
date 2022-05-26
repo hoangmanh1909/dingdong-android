@@ -5,11 +5,11 @@
     android:id="@+id/layout_real_receiver_name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:layout_marginBottom="10dp">
+    android:paddingRight="10dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -61,6 +61,7 @@
             android:layout_marginTop="5dp"
             android:background="@null"
             android:hint="Vui lòng nhập tên người nhận"
+            android:padding="10dp"
             android:textColor="@color/red_light"
             android:textSize="14dp" />
 
@@ -104,6 +105,7 @@
                 android:drawableRight="@drawable/ic_arrow_drop_down_v1"
                 android:foreground="?attr/selectableItemBackground"
                 android:hint="Chọn mối quan hệ"
+                android:padding="10dp"
                 android:paddingRight="5dp"
                 android:textColor="@color/red_light"
                 android:textSize="14dp" />
@@ -157,6 +159,7 @@
             android:layout_marginTop="5dp"
             android:background="@null"
             android:hint="Vui lòng nhập mối quan hệ khác"
+            android:padding="10dp"
             android:textColor="@color/red_light"
             android:textSize="14dp" />
     </LinearLayout>
@@ -206,6 +209,7 @@
             android:layout_marginTop="5dp"
             android:background="@null"
             android:hint="Vui lòng nhập số GTTT"
+            android:padding="10dp"
             android:textColor="@color/red_light"
             android:textSize="14dp" />
 
@@ -252,9 +256,14 @@
             android:id="@+id/edt_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
             android:layout_marginTop="5dp"
-            android:background="@null"
+            android:background="@drawable/bg_status_not"
+            android:gravity="center|left|top"
             android:hint="Vui lòng nhập ghi chú"
+            android:lines="5"
+            android:maxLines="5"
+            android:padding="10dp"
             android:textColor="@color/red_light"
             android:textSize="14dp" />
     </LinearLayout>

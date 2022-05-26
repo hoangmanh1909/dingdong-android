@@ -50,10 +50,16 @@ public class NotifyAdapter extends RecyclerBaseAdapter<TicketNotifyRespone, Noti
 
         @Override
         public void bindView(final TicketNotifyRespone model, int position) {
-            imgLogo.setBackgroundResource(R.drawable.badge_blue);
-            imgLogo.setImageResource(R.drawable.ic_ticket_notify);
 
-            title_thong_bao.setText("Ticket");
+            if (model.getType() == 1) {
+                title_thong_bao.setText("Thông báo");
+                imgLogo.setBackgroundResource(R.drawable.badge_vang);
+                imgLogo.setImageResource(R.drawable.ic_notify);
+            } else {
+                title_thong_bao.setText("Ticket");
+                imgLogo.setBackgroundResource(R.drawable.badge_blue);
+                imgLogo.setImageResource(R.drawable.ic_ticket_notify);
+            }
             tv_thoi_gian.setText(model.getPushTime());
             tv_noi_dung.setText(model.getContent());
 

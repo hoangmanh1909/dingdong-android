@@ -217,13 +217,14 @@ public interface XacNhanBaoPhatContract {
         /**
          * delivery not success.
          */
-        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage, String signCapture, String EstimateProcessTime);
+        void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
+                         String signCapture, String EstimateProcessTime,boolean ischeck,String lydo);
 
         /**
          * delivery success.
          */
         void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                             String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit);
+                             String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit,String note);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);
