@@ -68,6 +68,7 @@ import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
+import com.ems.dingdong.model.request.RequestObject;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
@@ -594,6 +595,13 @@ public interface VinattiAPI {
 
     @POST("api/VietMap/Create")
     Single<XacMinhRespone> ddCreateVietMapRequest(@Body CreateVietMapRequest createVietMapRequest);
+
+    // gateway
+    @POST("Gateway/Execute")
+    Call<SimpleResult> commonService(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Observable<CommonObjectResult> findLocation(@Body RequestObject requestObject);
 
 //    @FormUrlEncoded
 //    @POST("api/Collect/SearchOrderPostman")
