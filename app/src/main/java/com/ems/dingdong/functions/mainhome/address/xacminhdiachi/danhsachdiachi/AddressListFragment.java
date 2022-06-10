@@ -2,11 +2,15 @@ package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -24,6 +28,7 @@ import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.DigLogChiDanDuong;
 import com.ems.dingdong.dialog.TimDuongDiDialog;
 import com.ems.dingdong.model.AddressListModel;
+import com.ems.dingdong.model.MapMode;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
@@ -34,9 +39,11 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ems.dingdong.views.CustomTextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,6 +53,8 @@ import butterknife.OnClick;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
+
+import org.apache.poi.ss.formula.functions.T;
 
 public class AddressListFragment extends ViewFragment<AddressListContract.Presenter>
         implements AddressListContract.View {
@@ -57,8 +66,14 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     EditText edtSearchAddress;
     @BindView(R.id.img_search)
     ImageView search;
+    @BindView(R.id.map)
+    Button map;
+    @BindView(R.id.img_next)
+    Button img_next;
     @BindView(R.id.tv_title)
     CustomBoldTextView tvTitle;
+    @BindView(R.id.tv_address)
+    CustomTextView tvAddress;
 
     private AddressListAdapter addressListAdapter;
     private AddressListAdapterV12 addressListAdapterV12;
@@ -76,6 +91,8 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     String routeInfoJson;
     SharedPref sharedPref;
     private int transportType = 0;
+    MapMode m;
+    String string;
 
     public static AddressListFragment getInstance() {
         return new AddressListFragment();
@@ -89,15 +106,6 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     @Override
     public void initLayout() {
         super.initLayout();
-        sharedPref = new SharedPref(getActivity());
-        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-        transportType = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getTransportType();
-        mLocation = getLastKnownLocation();
-        if (mPresenter != null)
-            checkSelfPermission();
-        else
-            return;
-        edtSearchAddress.setSelected(true);
         if (mPresenter.getType() == Constants.TYPE_ROUTE) {
             search.setVisibility(View.VISIBLE);
             edtSearchAddress.setVisibility(View.VISIBLE);
@@ -107,33 +115,57 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
             edtSearchAddress.setVisibility(View.GONE);
             tvTitle.setText("Xác minh địa chỉ");
         }
-        mListObjectV12 = mPresenter.getListVpost();
-        if (mListObjectV12 != null)
-            for (int i = 0; i < mListObjectV12.size(); i++) {
-                if (!mListObjectV12.get(i).getReceiverVpostcode().equals("")) {
-                    mPresenter.vietmapDecode(mListObjectV12.get(i).getReceiverVpostcode(), i);
+        if (mPresenter.getType() != Constants.TYPE_DETAIL_ADDRESS) {
+            sharedPref = new SharedPref(getActivity());
+            routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+            transportType = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getTransportType();
+            mLocation = getLastKnownLocation();
+            if (mPresenter != null)
+                checkSelfPermission();
+            else
+                return;
+            edtSearchAddress.setSelected(true);
+
+            mListObjectV12 = mPresenter.getListVpost();
+            Log.d("thanasdasd", new Gson().toJson(mPresenter.getListVpost()));
+            if (mListObjectV12 != null)
+                for (int i = 0; i < mListObjectV12.size(); i++) {
+                    if (mListObjectV12.get(i).getReceiverVpostcode().length() > 0) {
+                        mPresenter.vietmapDecode(mListObjectV12.get(i).getReceiverVpostcode(), i);
+                    }
+                    if (mListObjectV12.get(i).getSenderVpostcode().length() > 0) {
+                        mPresenter.vietmapDecode(mListObjectV12.get(i).getSenderVpostcode(), i);
+                    }
                 }
-                if (!mListObjectV12.get(i).getSenderVpostcode().equals("")) {
-                    mPresenter.vietmapDecode(mListObjectV12.get(i).getSenderVpostcode(), i);
+
+            addressListAdapterV12 = new AddressListAdapterV12(getContext(), mListObjectV12) {
+                @Override
+                public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                    super.onBindViewHolder(holder, position);
+                    holder.tvSsua.setOnClickListener(v -> {
+                        new TimDuongDiDialog(getViewContext(), mListObjectV12.get(position), mPresenter.getType(), (AddressListPresenter) mPresenter, new VposcodeCallback() {
+                            @Override
+                            public void onVposcodeResponse(VpostcodeModel reason) {
+                                mListObjectV12.set(position, reason);
+                                addressListAdapterV12.notifyDataSetChanged();
+                            }
+                        }).show();
+                    });
                 }
+            };
+            RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
+            recycler.setAdapter(addressListAdapterV12);
+
+            SharedPref sharedPref = new SharedPref(getViewContext());
+            string = sharedPref.getString(Constants.KEY_GG_MAP, "");
+            if (!string.equals("")) {
+                m = NetWorkController.getGson().fromJson(string, MapMode.class);
             }
-        addressListAdapterV12 = new AddressListAdapterV12(getContext(), mListObjectV12) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
-                holder.tvSsua.setOnClickListener(v -> {
-                    new TimDuongDiDialog(getViewContext(), mListObjectV12.get(position), mPresenter.getType(), (AddressListPresenter) mPresenter, new VposcodeCallback() {
-                        @Override
-                        public void onVposcodeResponse(VpostcodeModel reason) {
-                            mListObjectV12.set(position, reason);
-                            addressListAdapterV12.notifyDataSetChanged();
-                        }
-                    }).show();
-                });
-            }
-        };
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recycler);
-        recycler.setAdapter(addressListAdapterV12);
+        } else {
+            img_next.setVisibility(View.GONE);
+            map.setVisibility(View.GONE);
+            mPresenter.vietmapSearch();
+        }
     }
 
     @Override
@@ -184,7 +216,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_search, R.id.img_next})
+    @OnClick({R.id.img_back, R.id.img_search, R.id.img_next, R.id.map})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_next:
@@ -250,6 +282,37 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                 mAddress = edtSearchAddress.getText().toString();
                 mPresenter.vietmapSearch(mAddress, mLocation);
                 break;
+            case R.id.map:
+                try {
+                    if (string != null) {
+                        if (m != null && !m.getParamValue().isEmpty()) {
+                            String url = m.getParamValue();
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        } else Toast.showToast(getViewContext(), "Chức năng đang đóng");
+                    } else Toast.showToast(getViewContext(), "Chức năng đang đóng");
+                } catch (Exception e) {
+                }
+
+//                Uri gmmIntentUri = Uri.parse("geo:" + mLocation.getLatitude() + "," + mLocation.getLongitude());
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                startActivity(mapIntent);
+//                String tam = "";
+//                for (int i = 0; i < mListObjectVNext.size(); i++) {
+//                    if (tam.equals("")) {
+//                        tam += mListObjectVNext.get(i).getLatitude() + "," + mListObjectVNext.get(i).getLongitude();
+//                    } else {
+//                        tam += "/";
+//                        tam += mListObjectVNext.get(i).getLatitude() + "," + mListObjectVNext.get(i).getLongitude();
+//                    }
+//                }
+//                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                        Uri.parse("https://www.google.com/maps/dir/" +
+//                                tam));
+//                startActivity(intent);
+                break;
         }
     }
 
@@ -257,6 +320,13 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     public void showAddressList(List<AddressListModel> listAddress) {
         if (listAddress.isEmpty()) {
             showSuccessToast(getString(R.string.not_found_any_address));
+        } else {
+            tvAddress.setVisibility(View.VISIBLE);
+            tvAddress.setText("");
+            try {
+                tvAddress.setText(listAddress.get(0).getStreet());
+            } catch (Exception e) {
+            }
         }
 //        mListObject.clear();
 //        mListObject.addAll(listAddress);
@@ -274,7 +344,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     public void showList(VpostcodeModel getListVpostV1) {
         mListObjectVNext = new ArrayList<>();
         mListObjectVNext.add(getListVpostV1);
-        if (mListObjectVNext != null)
+        if (mListObjectV12 != null)
             mListObjectVNext.addAll(mListObjectV12);
     }
 

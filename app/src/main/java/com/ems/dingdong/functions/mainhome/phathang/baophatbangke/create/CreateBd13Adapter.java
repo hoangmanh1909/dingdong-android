@@ -92,6 +92,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         return commonObjectsSelected;
     }
 
+    public List<DeliveryPostman> getItemsFilter() {
+        List<DeliveryPostman> commonObjectsSelected = new ArrayList<>();
+        List<DeliveryPostman> items = mListFilter;
+
+        commonObjectsSelected.addAll(items);
+        return commonObjectsSelected;
+    }
+
 
     @Override
     public Filter getFilter() {
@@ -147,7 +155,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                             }
                         }
                     }
-
                     mListFilter = filteredList;
                 }
 
@@ -265,6 +272,11 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tvXacminhdiachi.setVisibility(View.GONE);
                 imgAddress.setVisibility(View.GONE);
             }
+
+            if (item.getReceiverVerify() == 1) {
+                ivStatus.setImageResource(R.drawable.ic_check_v2);
+            } else ivStatus.setImageResource(R.drawable.ic_baseline_check_circle_24_cam);
+
 
             String receiverName = "";
             String receiverMobile = "";

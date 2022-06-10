@@ -4,7 +4,6 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDebitDetailResult;
 import com.ems.dingdong.model.response.StatisticDebitDetailResponse;
 
@@ -14,7 +13,7 @@ interface StatisticDebitDetailContract {
     interface Interactor extends IInteractor<Presenter> {
 
         void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, String routeCode,
-                           CommonCallback<SimpleResult> callback);
+                           CommonCallback<StatisticDebitDetailResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

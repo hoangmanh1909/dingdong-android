@@ -45,10 +45,10 @@ public class DialogNhapKhongThanhCong extends Dialog {
                 dismiss();
                 break;
             case R.id.tv_xac_nhan:
-                if (TextUtils.isEmpty(tvLydo.getText().toString())) {
-                    Toast.showToast(getContext(), "Vui lòng nhập lý do không thu");
-                    return;
-                }
+//                if (TextUtils.isEmpty(tvLydo.getText().toString())) {
+//                    Toast.showToast(getContext(), "Vui lòng nhập lý do không thu");
+//                    return;
+//                }
                 idCallback.onResponse(tvLydo.getText().toString().trim());
                 dismiss();
                 break;

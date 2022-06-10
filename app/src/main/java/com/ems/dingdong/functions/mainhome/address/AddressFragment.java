@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.ggmap.MapActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.model.GroupInfo;
@@ -58,6 +59,10 @@ public class AddressFragment extends ViewFragment<AddressContract.Presenter> imp
                         HomeInfo homeInfo = mList.get(section).getList().get(position);
                         if (homeInfo.getId() == 1) {
                             mPresenter.showXacMinhDiaChi();
+
+//                            Intent intent= new Intent(getViewContext(), MapActivity.class);
+//                            getViewContext().startActivity(intent);
+
                         }
                     }
                 });

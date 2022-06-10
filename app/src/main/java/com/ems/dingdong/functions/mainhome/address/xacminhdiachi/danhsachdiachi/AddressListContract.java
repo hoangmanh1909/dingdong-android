@@ -49,6 +49,8 @@ public interface AddressListContract {
 
         void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel);
 
+        void showMap(List<VpostcodeModel> addressListModel);
+
         void vietmapSearch(String address, Location location);
 
         void vietmapDecode(String decode, int posi);

@@ -36,6 +36,8 @@ interface MainContract {
 
         Single<TokenMoveCropResult> getAccessToken(String mobileNumber);
 
+        Single<SimpleResult> getMap();
+
         void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getListTicket(TicketNotifyRequest request);
@@ -64,6 +66,8 @@ interface MainContract {
         AddressPresenter getAddressPresenter();
 
         void showSetting();
+
+        void getMap();
 
         void getBalance();
 

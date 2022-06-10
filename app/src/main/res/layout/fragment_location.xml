@@ -154,6 +154,32 @@
                                 android:layout_weight="0.8"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
+                                android:text="Trạng thái kho"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14sp" />
+
+                            <TextView
+                                android:id="@+id/typewarhouse"
+                                android:layout_weight="1.2"
+                                android:layout_width="0dp"
+                                android:textSize="14dp"
+                                android:textColor="@color/black"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:text="@string/cod_amount"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
@@ -202,7 +228,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView_cuoc"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -549,6 +575,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_white_radius_bottom_common"
                         android:orientation="vertical">
+
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler"

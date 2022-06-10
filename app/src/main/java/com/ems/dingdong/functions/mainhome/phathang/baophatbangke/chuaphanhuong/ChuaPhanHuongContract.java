@@ -29,6 +29,8 @@ public interface ChuaPhanHuongContract {
     interface View extends PresentView<Presenter> {
         void showListSuccess(List<ChuaPhanHuongMode> list);
 
+        void showKhongcodl(String mess);
+
         void showComfrimThanCong(String mess,List<ChuaPhanHuongMode> list);
     }
 

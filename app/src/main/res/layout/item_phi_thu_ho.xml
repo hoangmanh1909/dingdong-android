@@ -1,45 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_item_count_selected"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/_5sdp"
-    android:weightSum="3">
+    android:padding="@dimen/_5sdp">
 
-
-    <com.ems.dingdong.views.CustomTextView
-        android:id="@+id/tv_lading"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/rl_item_count_selected"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_toRightOf="@+id/iv_pick_status"
-        android:layout_weight="1.2"
-        android:text="lading code"
-        android:textColor="@color/black" />
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp"
+        android:weightSum="3">
 
 
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/tv_monney"
-        android:layout_width="0dp"
-        android:layout_weight="1.8"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@+id/ll_scan_qr"
-        android:hint="Nhập số tiền cần thu"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:textColorHint="@color/colorBlackTrans20"
-        android:textSize="@dimen/text_size_14sp"
-        app:met_bottomTextSize="@dimen/text_size_sub"
-        app:met_clearButton="true"
-        app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/black"
-        app:met_textColor="@color/black"
-        app:met_textColorHint="@color/colorBlackTrans20"
-        app:met_underlineColor="@color/transparent"/>
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_lading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_toRightOf="@+id/iv_pick_status"
+            android:layout_weight="1.3"
+            android:text="lading code"
+            android:textColor="@color/black" />
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/tv_monney"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/ll_scan_qr"
+            android:layout_weight="1.7"
+            android:hint="Nhập số tiền cần thu"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:textColorHint="@color/colorBlackTrans20"
+            android:textSize="@dimen/text_size_14sp"
+            app:met_bottomTextSize="@dimen/text_size_sub"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/black"
+            app:met_textColor="@color/black"
+            app:met_textColorHint="@color/colorBlackTrans20"
+            app:met_underlineColor="@color/transparent" />
+    </LinearLayout>
 </LinearLayout>

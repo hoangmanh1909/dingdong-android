@@ -41,7 +41,7 @@ interface LocationContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void showBarcode(BarCodeCallback barCodeCallback);
 
-        void findLocation();
+        void findLocation(String code);
 
         void callForward(String phone, String parcelCode);
     }

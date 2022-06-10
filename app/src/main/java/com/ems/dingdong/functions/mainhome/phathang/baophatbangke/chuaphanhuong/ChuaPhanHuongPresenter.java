@@ -33,7 +33,6 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
 
     @Override
     public void start() {
-
     }
 
     @Override
@@ -89,11 +88,14 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
                         }
                         if (j == 0)
                             chuaPhanHuongModes.addAll(list1);
-                        else
+                        else {
                             Toast.showToast(getViewContext(), "Bưu gửi đã tồn tại trong danh sách");
+                        }
                         mView.showListSuccess(chuaPhanHuongModes);
                         mView.hideProgress();
-                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    } else {
+                        mView.showKhongcodl(simpleResult.getMessage());
+                    }
                     mView.hideProgress();
                 });
     }

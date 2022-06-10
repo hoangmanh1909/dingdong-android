@@ -59,7 +59,6 @@ public class DialogXacThuc extends Dialog {
         mActivity = (BaseActivity) context;
         this.callback = callback;
         k = x;
-
         edtDonvihanhchinh.setText(k.getDataRevert().getWardName() + ", " + k.getDataRevert().getDistrictName() + ", " + k.getDataRevert().getCityName());
     }
 
@@ -105,14 +104,12 @@ public class DialogXacThuc extends Dialog {
 
     private void showUIStatus() {
         ArrayList<Item> items = new ArrayList<>();
+        Log.d("thahasdasdasd",new Gson().toJson(k.getDataCateModels()));
         List<DataCateModel> cateModel = k.getDataCateModels();
-
-//        Log.d("sadasdasdas",new Gson().toJson(cateModel));
         if (cateModel != null) {
             for (DataCateModel item : cateModel) {
                 int idlv2 = 0;
                 String namelv2 = "-";
-
                 if (item.getSubCategories().size() == 0) {
                     idlv2 = 0;
                     namelv2 = "";
@@ -122,7 +119,6 @@ public class DialogXacThuc extends Dialog {
                 }
                 items.add(new Item(item.getId()+"",
                         item.getName() + namelv2));
-                ;
             }
 
             new DialoChonPhanloai(getContext(), "Chọn phân loại", items, new PickerCallback() {

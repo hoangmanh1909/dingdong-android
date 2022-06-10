@@ -21,7 +21,6 @@ public class StatusInfo extends RealmObject{
     String StatusCode;
     @SerializedName("ReasonCode")
     private String reasonCode;
-
     @SerializedName("Description")
     private String description;
     @SerializedName("ActionTypeName")

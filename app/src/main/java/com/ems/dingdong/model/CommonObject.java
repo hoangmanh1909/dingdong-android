@@ -30,7 +30,8 @@ public class CommonObject extends RealmObject {
     String SenderVpostcode;
     @SerializedName("ReferenceCode")
     @Expose
-    private String ReferenceCode; @SerializedName("SourceChanel")
+    private String ReferenceCode;
+    @SerializedName("SourceChanel")
     @Expose
     private String SourceChanel;
 
@@ -101,7 +102,18 @@ public class CommonObject extends RealmObject {
     @SerializedName("ListOrderNumber")
     String ListOrderNumber;
     @SerializedName("DivideByName")
+
     String DivideByName;
+    @SerializedName("TypeWarehouse")
+    String TypeWarehouse;
+
+    public String getTypeWarehouse() {
+        return TypeWarehouse;
+    }
+
+    public void setTypeWarehouse(String typeWarehouse) {
+        TypeWarehouse = typeWarehouse;
+    }
 
     public String getDivideByName() {
         return DivideByName;

@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.IdCallback;
+import com.ems.dingdong.dialog.DialogThongBao;
 import com.ems.dingdong.dialog.NotificationDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.model.ComfrimCreateMode;
@@ -172,7 +174,7 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         List<String> strings = new ArrayList<>();
         for (int i = 0; i < mList.size(); i++) {
             if (mList.get(i).isSelected())
-                strings.add(mList.get(i).getLadingCode());
+                    strings.add(mList.get(i).getLadingCode());
         }
         comfrimCreateMode.setListLadingCode(strings);
         mPresenter.comfrimCreate(comfrimCreateMode);
@@ -222,6 +224,10 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
             tvCount.setText("Số lượng: " + String.format("%s", NumberUtils.formatPriceNumber(list.size())));
             long totalAmount = 0;
             for (ChuaPhanHuongMode i : list) {
+                // moi them
+                i.setSelected(true);
+                cbPickAll.setChecked(true);
+
                 mList.add(i);
                 totalAmount = totalAmount + i.getAmountCOD();
             }
@@ -232,6 +238,17 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         mAdapter.setListFilter(mList);
         mPresenter.titleChanged(mList.size(), 1);
         mAdapter.notifyDataSetChanged();
+        scanQr();
+    }
+
+    @Override
+    public void showKhongcodl(String mess) {
+        new DialogThongBao(getViewContext(), mess, new IdCallback() {
+            @Override
+            public void onResponse(String id) {
+                scanQr();
+            }
+        }).show();
     }
 
     @Override

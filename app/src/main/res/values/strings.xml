@@ -26,6 +26,8 @@
     <string name="action_search">Search</string>
     <string name="default_notification_channel_id">1</string>
     <string name="add">add</string>
+    <string name="mapbox_style_url">mapbox://styles/mapbox/light-v9</string>
+
     <string name="reset">reset</string>
     <string name="about">about</string>
     <string name="exit">exit</string>

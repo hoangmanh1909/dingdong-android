@@ -57,17 +57,15 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
     }
 
     @Override
-    public void findLocation() {
+    public void findLocation(String code) {
         if (TextUtils.isEmpty(poCode)) {
             initPocode();
         }
-        mView.fromView()
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .flatMap(ladingCode -> mInteractor.findLocation(ladingCode, poCode))
+        mInteractor.findLocation(code, poCode)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        commonObjectResult -> {
+                .subscribe(commonObjectResult -> {
                             mView.hideProgress();
                             mView.showSuccessToast(commonObjectResult.getMessage());
                             if (commonObjectResult.getErrorCode().equals("00")) {

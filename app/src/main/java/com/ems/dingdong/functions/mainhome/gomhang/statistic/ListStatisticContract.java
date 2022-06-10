@@ -8,7 +8,6 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticCollect;
 import com.ems.dingdong.model.StatisticCollectResult;
 
@@ -23,7 +22,7 @@ interface ListStatisticContract {
         void searchStatisticCollect(
                 String postmanID,
                 String fromDate,
-                String toDate, CommonCallback<SimpleResult> callback);
+                String toDate, CommonCallback<StatisticCollectResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

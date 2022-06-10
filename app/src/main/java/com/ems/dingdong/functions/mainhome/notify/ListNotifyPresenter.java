@@ -2,7 +2,10 @@ package com.ems.dingdong.functions.mainhome.notify;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.callback.DialogCallback;
+import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.functions.mainhome.notify.detailticket.DetailNotifyPresenter;
+import com.ems.dingdong.model.GachNo;
 import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
@@ -10,6 +13,7 @@ import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 
@@ -27,11 +31,31 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
         super(containerView);
     }
 
+    String mess;
     List<TicketNotifyRespone> list1;
 
     @Override
     public void start() {
-
+        if (mess != null) {
+            String k[] = mess.split(";");
+            Log.d("sadasdasdasda", k[0] + ";"+ k[1]);
+            if (k.length == 2) {
+                List<String> ticketModes = new ArrayList<>();
+                ticketModes.add(k[1]);
+                isSeen(ticketModes, k[1], 1);
+                new DialogTextThanhConhg(getViewContext(), k[0], new DialogCallback() {
+                    @Override
+                    public void onResponse(String loginRespone) {
+                    }
+                }).show();
+            } else {
+                new DialogTextThanhConhg(getViewContext(), k[0], new DialogCallback() {
+                    @Override
+                    public void onResponse(String loginRespone) {
+                    }
+                }).show();
+            }
+        }
     }
 
     @Override
@@ -89,5 +113,11 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                         mView.hideProgress();
                     }
                 });
+    }
+
+    public ListNotifyPresenter setMess(String mess) {
+        this.mess = mess;
+
+        return this;
     }
 }

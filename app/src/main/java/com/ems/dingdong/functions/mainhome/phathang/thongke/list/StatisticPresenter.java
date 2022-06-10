@@ -8,18 +8,11 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.history.HistoryPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.OnTabListener;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -63,15 +56,14 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             postmanID = userInfo.getiD();
         }
         mView.showProgress();
-        mInteractor.searchDeliveryStatistic(fromDate, toDate, status, postmanID, routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.searchDeliveryStatistic(fromDate, toDate, status, postmanID, routeCode, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<CommonObject> commonObjects = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
-                    mView.showListSuccess(commonObjects);
+                    mView.showListSuccess(response.body().getList());
 
                 } else {
                     mView.showListEmpty();
@@ -79,7 +71,7 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<CommonObjectListResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

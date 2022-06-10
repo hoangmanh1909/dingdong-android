@@ -14,6 +14,7 @@ import com.ems.dingdong.functions.mainhome.notify.ListNotifyPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.BalanceModel;
+import com.ems.dingdong.model.MapMode;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -24,13 +25,17 @@ import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.Gson;
+import com.mapbox.mapboxsdk.Mapbox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,7 +89,6 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
 
     @Override
     public void getListTicket(TicketNotifyRequest request) {
-        mView.showProgress();
         mInteractor.getListTicket(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -194,5 +198,26 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     @Override
     public void showSetting() {
         new SettingPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void getMap() {
+
+        mInteractor.getMap()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        MapMode[] searchMode = NetWorkController.getGson().fromJson(simpleResult.getData(), MapMode[].class);
+                        List<MapMode> list1 = Arrays.asList(searchMode);
+                        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                        sharedPref.putString(Constants.KEY_GG_MAP, NetWorkController.getGson().toJson(list1.get(0)));
+                        mView.hideProgress();
+                    } else {
+                        mView.hideProgress();
+                    }
+                }, Throwable::printStackTrace);
+
+
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +63,8 @@ public class PhiThuHoAdapter extends RecyclerView.Adapter<PhiThuHoAdapter.Holder
         public MaterialEditText tv_monney;
         @BindView(R.id.tv_lading)
         public CustomTextView tv_lading;
+        @BindView(R.id.rl_item_count_selected)
+        public LinearLayout rl_item_count_selected;
 
         HolderView(View itemView) {
             super(itemView);
@@ -83,6 +86,11 @@ public class PhiThuHoAdapter extends RecyclerView.Adapter<PhiThuHoAdapter.Holder
             if (item.getFeeCancelOrder() != 0) {
                 tv_monney.setEnabled(false);
             } else tv_monney.setEnabled(true);
+
+            if (item.isAnItem()) {
+                rl_item_count_selected.setVisibility(View.VISIBLE);
+            } else rl_item_count_selected.setVisibility(View.GONE);
+
             EditTextUtils.editTextListener(tv_monney);
 
 //            item.setFeeCancelOrder(Long.parseLong(tv_monney.getText().toString().replaceAll("\\.", "")));

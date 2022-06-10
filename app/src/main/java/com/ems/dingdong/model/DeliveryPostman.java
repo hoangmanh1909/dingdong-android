@@ -193,6 +193,36 @@ public class DeliveryPostman implements Comparable {
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
     private String PODeliveryLon;
+    @SerializedName("ReceiverVerify")
+    private int ReceiverVerify;
+
+    int mViti = -1;
+
+    public int getmViti() {
+        return mViti;
+    }
+
+    public void setmViti(int mViti) {
+        this.mViti = mViti;
+    }
+
+    public int getReceiverVerify() {
+        return ReceiverVerify;
+    }
+
+    public void setReceiverVerify(int receiverVerify) {
+        ReceiverVerify = receiverVerify;
+    }
+
+    boolean isCheckFeeCancelOrder;
+
+    public boolean isCheckFeeCancelOrder() {
+        return isCheckFeeCancelOrder;
+    }
+
+    public void setCheckFeeCancelOrder(boolean checkFeeCancelOrder) {
+        isCheckFeeCancelOrder = checkFeeCancelOrder;
+    }
 
     public String getReasonCancelOrder() {
         return ReasonCancelOrder;
@@ -219,6 +249,15 @@ public class DeliveryPostman implements Comparable {
     }
 
     boolean isCheck;
+    boolean isAnItem = false;
+
+    public boolean isAnItem() {
+        return isAnItem;
+    }
+
+    public void setAnItem(boolean anItem) {
+        isAnItem = anItem;
+    }
 
     public boolean isCheck() {
         return isCheck;

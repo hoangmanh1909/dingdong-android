@@ -231,7 +231,45 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/rl_count_item_selected"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/size_20dp"
+            android:background="@drawable/bg_count_package_selected"
+            android:foreground="?attr/selectableItemBackground"
+            android:visibility="gone">
 
+            <ImageView
+                android:id="@+id/ic_check"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_check" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_item_selected"
+                android:layout_width="@dimen/size_20dp"
+                android:layout_height="@dimen/size_20dp"
+                android:layout_marginLeft="-20dp"
+                android:layout_toRightOf="@+id/ic_check"
+                android:background="@drawable/bg_count_number"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ic_check"
+                android:layout_centerHorizontal="true"
+                android:text="Bỏ chọn"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_6sdp" />
+        </RelativeLayout>
         <!-- <CustomTextView
              android:id="@+id/btn_confirm_all"
              android:layout_width="wrap_content"

@@ -19,9 +19,12 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CreatebangKeSearchCallback;
 import com.ems.dingdong.callback.CreatedBD13Callback;
 import com.ems.dingdong.callback.DismissDialogCallback;
+import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PhoneCallback;
 import com.ems.dingdong.dialog.CreateBangKeSearchDialog;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
+import com.ems.dingdong.dialog.DialogText;
+import com.ems.dingdong.dialog.DialogThongBao;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
@@ -44,10 +47,13 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,6 +79,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @BindView(R.id.cb_pick_all)
     CheckBox cbPickAll;
 
+
     private ItemBottomSheetPickerUIFragment pickerBag;
     private String mBag = "0";
     private ItemBottomSheetPickerUIFragment pickerShift;
@@ -94,7 +101,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     UserInfo userInfo;
     PostOffice postOffice;
     RouteInfo routeInfo;
-
+    int viTriQuetma = 0;
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -110,6 +117,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         @Override
         public void afterTextChanged(Editable s) {
             mAdapter.getFilter().filter(s.toString());
+
         }
     };
 
@@ -173,6 +181,13 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 holder.itemView.setOnClickListener(v -> {
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    if (holder.getItem(position).isSelected()) {
+                        viTriQuetma++;
+                        holder.getItem(position).setmViti(viTriQuetma);
+                    } else {
+                        viTriQuetma--;
+                        holder.getItem(position).setmViti(-1);
+                    }
                     if (cbPickAll.isChecked() && !holder.getItem(position).isSelected()) {
                         cbPickAll.setChecked(false);
                     } else if (isAllSelected()) {
@@ -293,7 +308,37 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         mPresenter.showBarcode(new BarCodeCallback() {
             @Override
             public void scanQrcodeResponse(String value) {
-                edtSearch.setText(value);
+                int t = 0;
+                if (value.length() == 13) {
+                    edtSearch.setText(value);
+                    for (int i = 0; i < mAdapter.getListFilter().size(); i++) {
+                        if (mAdapter.getListFilter().get(i).getMaE().equals(value)) {
+                            if (!mAdapter.getListFilter().get(i).isSelected()) {
+                                t++;
+                                mAdapter.getListFilter().get(i).setSelected(true);
+                                viTriQuetma++;
+                                mAdapter.getListFilter().get(i).setmViti(viTriQuetma);
+                            } else {
+                                edtSearch.setText("");
+                                t++;
+                                Toast.showToast(getViewContext(), "Bưu gửi đã được chọn");
+                            }
+                        }
+                    }
+                    if (t > 0) {
+                        scanQr();
+                    } else
+                        new DialogThongBao(getViewContext(), "Không tìm thấy bưu gửi", new IdCallback() {
+                            @Override
+                            public void onResponse(String id) {
+                                edtSearch.setText("");
+                                scanQr();
+                            }
+                        }).show();
+                } else {
+                    edtSearch.setText("");
+                    new DialogText(getViewContext(), "Mã bưu gửi không hợp lệ, vui lòng kiểm tra lại!").show();
+                }
             }
         });
     }
@@ -316,6 +361,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             case R.id.layout_item_pick_all:
                 setAllCheckBox();
                 break;
+
             default:
                 throw new IllegalArgumentException("cant not find view just have clicked");
         }
@@ -323,7 +369,6 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     private void showDialog() {
         new CreateBangKeSearchDialog(getActivity(), calFromDate, calToDate, new CreatebangKeSearchCallback() {
-
             @Override
             public void onResponse(String fromDate, String toDate, String chuyenThu, int timeCode) {
                 if (timeCode == Constants.ERROR_TIME_CODE) {
@@ -342,14 +387,26 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     private void showDialogConfirm(long quantity, long totalAmount) {
         new CreatedBd13Dialog(getActivity(), 0, quantity, totalAmount, new CreatedBD13Callback() {
-
             @Override
             public void onResponse(String cancelType, String des) {
                 final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+                Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
+                    @Override
+                    public int compare(DeliveryPostman o1, DeliveryPostman o2) {
+                        return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+                    }
+                });
                 Bd13Create bd13Create = new Bd13Create();
                 List<Integer> ids = new ArrayList<>();
+                String t = "";
                 for (DeliveryPostman i : deliveryPostmans) {
                     ids.add(i.getId());
+                    if (t.equals(""))
+                        t += i.getmViti();
+                    else {
+                        t += ",";
+                        t += i.getmViti();
+                    }
                 }
                 bd13Create.setIds(ids);
                 bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
@@ -358,7 +415,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
 
                 String json = NetWorkController.getGson().toJson(bd13Create);
-                Log.d("JSON POST ====>", json);
+//            X
 
                 mPresenter.postBD13AddNew(bd13Create);
             }

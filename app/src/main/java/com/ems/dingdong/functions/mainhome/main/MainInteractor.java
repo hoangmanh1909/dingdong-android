@@ -39,6 +39,11 @@ class MainInteractor extends Interactor<MainContract.Presenter>
     }
 
     @Override
+    public Single<SimpleResult> getMap() {
+        return NetWorkController.getMap();
+    }
+
+    @Override
     public void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback) {
         NetWorkController.ddGetBalance(requset, callback);
     }

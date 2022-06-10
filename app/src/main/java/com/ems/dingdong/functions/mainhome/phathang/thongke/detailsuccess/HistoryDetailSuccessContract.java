@@ -4,7 +4,6 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
 import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
 
@@ -17,7 +16,7 @@ interface HistoryDetailSuccessContract {
 
     interface Interactor extends IInteractor<Presenter> {
 
-        void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<SimpleResult> statisticDeliveryGeneralResultCommonCallback);
+        void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> statisticDeliveryGeneralResultCommonCallback);
     }
 
     interface View extends PresentView<Presenter> {

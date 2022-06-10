@@ -18,13 +18,7 @@ public class NotifiActivity extends DingDongActivity {
         String ticketCode = "";
         Intent intent = getIntent();
         String value1 = intent.getStringExtra("ticketCode");
-//        String value2 = intent.getStringExtra("message");
-//        if (value2 != null)
-//            new DialogTextThanhConhg(this, value2, new DialogCallback() {
-//                @Override
-//                public void onResponse(String loginRespone) {
-//                }
-//            }).show();
+
         return (ViewFragment) new DetailNotifyPresenter(this).setCodeTicket(value1).getFragment();
     }
 }

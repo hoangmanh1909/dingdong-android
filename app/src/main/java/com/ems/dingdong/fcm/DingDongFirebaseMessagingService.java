@@ -123,6 +123,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 } else {
                     intent = new Intent(this, ListNotifyActivity.class);
                     bundle.putString("message", messageBody);
+                    bundle.putString("ticketCode", ticketCode);
                 }
                 bundle.putString("message", messageBody);
                 intent.putExtras(bundle);

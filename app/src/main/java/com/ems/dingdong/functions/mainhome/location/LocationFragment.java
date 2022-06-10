@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -99,7 +100,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     private StatusAdapter mAdapter;
     private PublishSubject<String> subject;
     String mPhone;
-
+    @BindView(R.id.typewarhouse)
+    TextView Typewarhouse;
 
     @BindView(R.id.recyclerView_cuoc)
     RecyclerView recyclerView_cuoc;
@@ -140,7 +142,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         mAdapterCuoc = new TienCuocApdapter(getViewContext(), mListCuoc);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView_cuoc);
         recyclerView_cuoc.setAdapter(mAdapterCuoc);
-        mPresenter.findLocation();
     }
 
     protected void checkSelfPermission() {
@@ -164,7 +165,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     }
 
     public void getQuery() {
-        mPresenter.findLocation();
     }
 
     @Override
@@ -178,6 +178,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
         _tvSenderPhone.setText(commonObject.getSenderPhone());
         _tvReceiverPhone.setText(commonObject.getReceiverMobile());
+        Typewarhouse.setText(commonObject.getTypeWarehouse());
 
 //        if (commonObject.getFee() != null) {
 //            tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getFee())));
@@ -229,15 +230,11 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_search:
-                subject = PublishSubject.create();
-                imgSearch.setOnClickListener(
-                        v -> {
-                            if (TextUtils.isEmpty(edtLadingCode.getText())) {
-                                showErrorToast("Vui lòng nhập mã");
-                                return;
-                            }
-                            subject.onNext(edtLadingCode.getText());
-                        });
+                if (TextUtils.isEmpty(edtLadingCode.getText())) {
+                    showErrorToast("Vui lòng nhập mã");
+                    return;
+                }
+                mPresenter.findLocation(edtLadingCode.getText().toString());
                 break;
             case R.id.tv_SenderPhone:
 //                new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
@@ -362,7 +359,9 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                 mPresenter.showBarcode(value -> {
                     getQuery();
                     edtLadingCode.setText(value);
-                    subject.onNext(value);
+//                    subject.onNext(value);
+                    if (value != null)
+                        mPresenter.findLocation(value);
                 });
                 break;
         }

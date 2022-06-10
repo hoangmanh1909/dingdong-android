@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -52,6 +54,7 @@ import com.ems.dingdong.callback.ChonAnhCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PickerCallback;
 import com.ems.dingdong.dialog.ConfirmDialog;
+import com.ems.dingdong.dialog.ConfirmPKTCDialog;
 import com.ems.dingdong.dialog.ConfirmPhiHuyDonHangDialog;
 import com.ems.dingdong.dialog.DiallogChonAnh;
 import com.ems.dingdong.dialog.DialogNhapKhongThanhCong;
@@ -170,7 +173,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @BindView(R.id.tv_total)
     CustomBoldTextView tvTotal;
     @BindView(R.id.edt_receiver_name)
-    EditText edtReceiverName;
+    TextInputEditText edtReceiverName;
     @BindView(R.id.edt_GTTT)
     EditText tvGTTT;
     @BindView(R.id.edt_relationship)
@@ -393,6 +396,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     String mData = "";
     List<String> mDataList = new ArrayList<>();
     int mTypeTrangThai = 0;
+    int mDemTrangThai = 0;
 
     private File getImageFile() throws IOException {
         String timeStr = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -576,7 +580,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                     checkVerify();
                     adapter.notifyDataSetChanged();
-                    phiThuHoAdapter.notifyDataSetChanged();
+                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // Write whatever to want to do after delay specified (1 sec)
+//                            phiThuHoAdapter.notifyDataSetChanged();
+//
+//                        }
+//                    }, 1000);
                     updateTotalPackage();
                 });
             }
@@ -858,13 +870,36 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         EditTextUtils.editTextListener(et_pt_amount);
         recyclerds.setVisibility(View.GONE);
         for (int i = 0; i < mBaoPhatBangke.size(); i++) {
-            if (mBaoPhatBangke.get(i).getFeeCancelOrder() != 0) {
+            if (mBaoPhatBangke.get(i).getFeeCancelOrder() == 0) {
+                mBaoPhatBangke.get(i).setCheck(false);
+                mBaoPhatBangke.get(i).setAnItem(false);
+                cbSelected.setChecked(false);
+                recyclerds.setVisibility(View.VISIBLE);
+                break;
+            } else {
                 cbSelected.setChecked(true);
                 mBaoPhatBangke.get(i).setCheck(true);
+                mBaoPhatBangke.get(i).setAnItem(true);
                 recyclerds.setVisibility(View.VISIBLE);
-//                break;
-            } else mBaoPhatBangke.get(i).setCheck(false);
+            }
+
         }
+        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+            if (mBaoPhatBangke.get(i).getFeeCancelOrder() == 0) {
+                mBaoPhatBangke.get(i).setAnItem(false);
+            } else {
+                mBaoPhatBangke.get(i).setAnItem(true);
+            }
+        }
+
+        if (mBaoPhatBangke.size() > 1)
+            for (int i = 0; i < mBaoPhatBangke.size(); i++)
+                if (mBaoPhatBangke.get(i).getFeeCancelOrder() > 0)
+                    mBaoPhatBangke.get(i).setCheckFeeCancelOrder(true);
+                else {
+                    mDemTrangThai++;
+                    mBaoPhatBangke.get(i).setCheckFeeCancelOrder(false);
+                }
         phiThuHoAdapter = new PhiThuHoAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -930,6 +965,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }).show();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
             R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
             R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
@@ -950,21 +986,32 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showBuuCucden();
                 break;
             case R.id.cb_selected:
+
+                showProgress();
                 if (cbSelected.isChecked()) {
                     for (int i = 0; i < mBaoPhatBangke.size(); i++) {
                         if (mBaoPhatBangke.get(i).getFeeCancelOrder() != 0) {
                             mBaoPhatBangke.get(i).setCheck(true);
                         } else mBaoPhatBangke.get(i).setCheck(false);
+                        mBaoPhatBangke.get(i).setAnItem(true);
                     }
                     phiThuHoAdapter.notifyDataSetChanged();
                     recyclerds.setVisibility(View.VISIBLE);
                 } else {
-                    recyclerds.setVisibility(View.GONE);
+//                    recyclerds.setVisibility(View.GONE);
                     for (int i = 0; i < mBaoPhatBangke.size(); i++) {
                         mBaoPhatBangke.get(i).setCheck(false);
                     }
                     phiThuHoAdapter.notifyDataSetChanged();
                 }
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideProgress();
+                    }
+                }, 500);
 
                 break;
             case R.id.rad_success:
@@ -1612,9 +1659,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Toast.showToast(tvTime.getContext(), getViewContext().getString(R.string.you_have_not_time));
                 return;
             }
+            List<DeliveryPostman> deliveryPostmen = getItemSelected();
             if (cbSelected.isChecked()) {
-                for (int i = 0; i < mBaoPhatBangke.size(); i++) {
-                    if (mBaoPhatBangke.get(i).getFeeCancelOrder() < 1000) {
+                if (deliveryPostmen.size() > 1) {
+                    for (int i = 0; i < deliveryPostmen.size(); i++) {
+                        if (deliveryPostmen.get(i).getFeeCancelOrder() < 1000) {
+                            Toast.showToast(getViewContext(), "Vui lòng nhập số tiền tối thiểu là 1,000 đồng");
+                            return;
+                        }
+                    }
+                } else {
+                    if (deliveryPostmen.get(0).getFeeCancelOrder() < 1000) {
                         Toast.showToast(getViewContext(), "Vui lòng nhập số tiền tối thiểu là 1,000 đồng");
                         return;
                     }
@@ -1623,51 +1678,71 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             String time = TimeUtils.convertDateToString(calendar.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
             long t = 0;
             if (cbSelected.isChecked()) {
-                for (int i = 0; i < mBaoPhatBangke.size(); i++)
-                    t += mBaoPhatBangke.get(i).getFeeCancelOrder();
+                for (int i = 0; i < deliveryPostmen.size(); i++)
+                    t += deliveryPostmen.get(i).getFeeCancelOrder();
+            } else {
+                for (int i = 0; i < deliveryPostmen.size(); i++)
+                    if (deliveryPostmen.get(i).getFeeCancelOrder() > 0)
+                        t += deliveryPostmen.get(i).getFeeCancelOrder();
             }
 
             String mess = null;
 
-            mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">"+ String.format("%s", NumberUtils.formatPriceNumber(t))+"</font>"+ " VNĐ, bạn có thu đủ tiền hay không?";
+            mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(t)) + "</font>" + " VNĐ, bạn có thu đủ tiền hay không?";
 
-            new ConfirmPhiHuyDonHangDialog(getViewContext(),
-                    listSelected.size(), t)
-                    .setOnCallBacklClickListener(confirmDialog -> {
-                        confirmDialog.dismiss();
-                    })
-                    .setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
-                        confirmDialog1.dismiss();
-                        new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
-                            @Override
-                            public void onResponse(String id) {
-                                mPresenter.submitToPNS(
-                                        mReasonInfo.getCode(),
-                                        mSolutionInfo.getCode(),
-                                        tv_Description.getText().toString(),
-                                        mFile,
-                                        mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                                        mSign,
-                                        time, false, id);
-                            }
-                        }).show();
-                    })
-                    .setOnOkListener(confirmDialog -> {
-                        confirmDialog.dismiss();
-                        mPresenter.submitToPNS(
-                                mReasonInfo.getCode(),
-                                mSolutionInfo.getCode(),
-                                tv_Description.getText().toString(),
-                                mFile,
-                                mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                                mSign,
-                                time, true, "");
-                    })
-                    .setWarning(mess)
-                    .show();
-//            }
+            if (t > 0) {
+                new ConfirmPhiHuyDonHangDialog(getViewContext(),
+                        listSelected.size(), t)
+                        .setOnCallBacklClickListener(confirmDialog -> {
+                            confirmDialog.dismiss();
+                        })
+                        .setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
+                            confirmDialog1.dismiss();
+                            new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
+                                @Override
+                                public void onResponse(String id) {
+                                    mPresenter.submitToPNS(
+                                            mReasonInfo.getCode(),
+                                            mSolutionInfo.getCode(),
+                                            tv_Description.getText().toString(),
+                                            mFile,
+                                            mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
+                                            mSign,
+                                            time, false, id);
+                                }
+                            }).show();
+                        })
+                        .setOnOkListener(confirmDialog -> {
+                            confirmDialog.dismiss();
+                            mPresenter.submitToPNS(
+                                    mReasonInfo.getCode(),
+                                    mSolutionInfo.getCode(),
+                                    tv_Description.getText().toString(),
+                                    mFile,
+                                    mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
+                                    mSign,
+                                    time, true, "");
+                        })
+                        .setWarning(mess)
+                        .show();
 
-
+            } else {
+                new ConfirmPKTCDialog(getViewContext(), listSelected.size())
+                        .setOnCancelListener(Dialog::dismiss)
+                        .setOnOkListener(confirmDialog -> {
+                            confirmDialog.dismiss();
+                            mPresenter.submitToPNS(
+                                    mReasonInfo.getCode(),
+                                    mSolutionInfo.getCode(),
+                                    tv_Description.getText().toString(),
+                                    mFile,
+                                    mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
+                                    mSign,
+                                    time, false, "");
+                        })
+                        .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
+                        .show();
+            }
 //            }
         } else if (mDeliveryType == 3) {
             /**
@@ -2330,11 +2405,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mDeliveryError += 1;
             }
 
-
             int total = mDeliverySuccess + mDeliveryError;
             if (total == getItemSelected().size()) {
-
-
                 DataModel dataModel = new DataModel();
                 dataModel.setSuccess(mDataList);
                 dataModel.setError(new ArrayList<>());

@@ -791,8 +791,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //        }
     }
 
-    ArrayList<DeliveryPostman> deliveryPostmenPKTC = new ArrayList<>();
-
     @SuppressLint("NotifyDataSetChanged")
     private void xoaPhanTuSuccess(List<DeliveryPostman> list, List<String> dataSuccess, int mtype) {
         int n = list.size();
@@ -830,20 +828,23 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             deliveryPostmen.addAll(mList);
 //        sharedPref.clearPTC();
-            if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB)
+            if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
+                sharedPref.clearPTC();
+                ArrayList<DeliveryPostman> deliveryPKTC = new ArrayList<>();
                 for (int j = 0; j < dataSuccess.size(); j++) {
                     int t = Integer.parseInt(dataSuccess.get(j));
                     for (int i = 0; i < deliveryPostmen.size(); i++) {
                         if (deliveryPostmen.get(i).getId() == t) {
-                            sharedPref.clearPTC();
                             deliveryPostmen.get(i).setStatus("Y");
                             deliveryPostmen.get(i).setCheck(false);
-                            String k = NetWorkController.getGson().toJson(mList.get(i));
-                            sharedPref.putString(Constants.KEY_PKTC, k);
+                            deliveryPKTC.add(deliveryPostmen.get(i));
 //                    Log.d("nguyenthi", new Gson().toJson(mList.get(i)));
                         }
                     }
                 }
+                String k = NetWorkController.getGson().toJson(deliveryPKTC);
+                sharedPref.putString(Constants.KEY_PKTC, k);
+            }
             showListSuccessFromTab(deliveryPostmen);
         }
     }
@@ -1032,14 +1033,27 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 } else {
                     String x = sharedPref.getString(Constants.KEY_PKTC, "");
                     if (!x.isEmpty()) {
-                        DeliveryPostman l = NetWorkController.getGson().fromJson(x, DeliveryPostman.class);
-                        mList.add(l);
+                        Log.d("nhuhang", x);
+                        DeliveryPostman l[] = NetWorkController.getGson().fromJson(x, DeliveryPostman[].class);
+                        List<DeliveryPostman> k = Arrays.asList(l);
+                        mList.addAll(k);
                     }
                     for (DeliveryPostman i : list) {
                         if (i.getStatus().equals("Y")) {
                             mList.add(i);
                             totalAmount = totalAmount + i.getAmount();
                         }
+                    }
+                    List<DeliveryPostman> postmen = new ArrayList<>();
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (!postmen.contains(mList.get(i))) {
+                            postmen.add(mList.get(i));
+                        }
+                    }
+                    mList.clear();
+                    mList.addAll(postmen);
+                    for (DeliveryPostman i : mList) {
+                        totalAmount = totalAmount + i.getAmount();
                     }
                 }
                 mPresenter.setTitleTab(mList.size());

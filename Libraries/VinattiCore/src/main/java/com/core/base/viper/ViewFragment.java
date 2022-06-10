@@ -221,4 +221,5 @@ public abstract class ViewFragment<P extends IPresenter>
     public boolean isShowing() {
         return isResumed() && this == BaseActivity.getTopFragment(getFragmentManager());
     }
+
 }

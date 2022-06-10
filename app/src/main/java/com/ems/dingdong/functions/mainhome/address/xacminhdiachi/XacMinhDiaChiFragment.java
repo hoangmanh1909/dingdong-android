@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -76,11 +77,11 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // This contains the MapView in XML and needs to be called after the access token is configured.
-
+        Mapbox.getInstance(getContext(), getString(R.string.mapbox_access_token));
         mapView.onCreate(savedInstanceState);
-
         mapView.getMapAsync(this);
     }
+
 
     @OnClick({R.id.img_back, R.id.btn_get_location})
     public void onViewClicked(View view) {

@@ -142,18 +142,21 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
         setupAdapter();
 
-
+        try {
+            mPresenter.getMap();
+        } catch (Exception e) {
+        }
         bottomBar.setOnTabSelectListener(tabId -> {
+            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
+            ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
+            ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
+            ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
+            mobilenumber = userInfo.getMobileNumber();
+            mPresenter.getListTicket(ticketNotifyRequest);
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
                 getBalance();
-                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
-                ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
-                ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
-                ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
-                mobilenumber = userInfo.getMobileNumber();
-                mPresenter.getListTicket(ticketNotifyRequest);
 //                if (homeFragment != null) {
 //                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
 //                    v1Fragment.updateHomeView();
@@ -355,16 +358,17 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onDisplay() {
         super.onDisplay();
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
+        ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
+        ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
+        ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
+        mobilenumber = userInfo.getMobileNumber();
+        mPresenter.getListTicket(ticketNotifyRequest);
         switch (viewPager.getCurrentItem()) {
             case 0:
                 getBalance();
-                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
-                ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
-                ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
-                ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
-                mobilenumber = userInfo.getMobileNumber();
-                mPresenter.getListTicket(ticketNotifyRequest);
+
                 break;
             case 2:
                 try {

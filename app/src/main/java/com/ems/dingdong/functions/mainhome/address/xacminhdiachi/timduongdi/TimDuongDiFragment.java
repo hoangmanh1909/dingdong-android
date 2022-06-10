@@ -149,7 +149,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         super.initLayout();
         mList = new ArrayList<>();
         mList = mPresenter.getListVpostcodeModell();
-        mApiTravel = mPresenter.getApiTravel();
         mAdapter = new TimDuongDiAdapter(getViewContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull @NotNull HolderView holder, int position) {
@@ -226,6 +225,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 
     @Override
     public void onPermissionResult(boolean granted) {
+
     }
 
     @Override
@@ -238,11 +238,14 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         this.mapboxMap.setStyle(new Style.Builder().fromUri("asset://tile-vmap.json"), style -> enableLocationComponent(style));
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         Log.d("ThKhiem4", "initLayout");
-        // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
-
             LocationComponentOptions locationComponentOptions = LocationComponentOptions.builder(getContext())
                     // .layerAbove("simple-tiles")
                     .backgroundDrawable(R.drawable.ic_gps)

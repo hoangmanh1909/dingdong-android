@@ -1102,6 +1102,8 @@ public class NetWorkController {
 
     public static Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest r) {
         return getAPIRxBuilder().ddCreateVietMapRequest(r);
+    }public static Single<SimpleResult> getMap() {
+        return getAPIRxBuilder().getMap();
     }
 
     public static Single<SimpleResult> ddSreachPhone(PhoneNumber r) {

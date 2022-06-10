@@ -8,6 +8,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiPresenter;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.map.MapPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.ResultModel;
@@ -92,6 +93,11 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     }
 
     @Override
+    public void showMap(List<VpostcodeModel> addressListModel) {
+        new MapPresenter(mContainerView).setType(mType).setListVposcode(addressListModel).pushView();
+    }
+
+    @Override
     public void vietmapSearch(String address, Location location) {
         mView.showProgress();
         mAddress = address;
@@ -114,14 +120,14 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
         mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            if (simpleResult.getObject().getResult() != null)
-                                mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
-                            else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
-                        } else {
-                            mView.showError(simpleResult.getMessage());
-                            mView.hideProgress();
-                        }
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        if (simpleResult.getObject().getResult() != null)
+                            mView.showLongLat(simpleResult.getObject().getResult().getLocation().getLongitude(), simpleResult.getObject().getResult().getLocation().getLatitude(), posi);
+                        else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                    } else {
+                        mView.showError(simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
 
                 });
     }

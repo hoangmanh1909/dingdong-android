@@ -211,8 +211,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                             String authenImage, String signCapture,
                             String EstimateProcessTime, boolean ischeck, String lydo) {
         mView.showProgress();
-        Log
-                .d("thanhkhieee", note);
+        Log.d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();

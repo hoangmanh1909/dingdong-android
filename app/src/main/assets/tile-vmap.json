@@ -4,7 +4,8 @@
     "simple-tiles": {
       "type": "raster",
       "tiles": [
-        "https://maps.vnpost.vn/tm6/{z}/{x}/{y}@2x.png?apikey=f50f96fd875c023e6fd8acac6d9a7e0d15699071d3259542"
+       
+        "https://api.mapbox.com/styles/v1/mapbox/bright-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaG9hbmdtYW5oMTkwOSIsImEiOiJjazczMjZhYTUwNGRxM2VxdzBhdWxqZmg0In0.bS71h7OOLd1OobSajeMQ9g"
       ],
       "tileSize": 512
     }

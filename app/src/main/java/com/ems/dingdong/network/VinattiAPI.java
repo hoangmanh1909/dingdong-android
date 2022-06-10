@@ -596,6 +596,9 @@ public interface VinattiAPI {
     @POST("api/VietMap/Create")
     Single<XacMinhRespone> ddCreateVietMapRequest(@Body CreateVietMapRequest createVietMapRequest);
 
+    @GET("api/Authorized/GetParams")
+    Single<SimpleResult> getMap();
+
     // gateway
     @POST("Gateway/Execute")
     Call<SimpleResult> commonService(@Body RequestObject requestObject);

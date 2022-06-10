@@ -37,14 +37,15 @@
                 android:textSize="@dimen/text_size_18sp" />
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/img_next"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="center|right"
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="@dimen/dimen_10dp"
-            app:srcCompat="@drawable/telegram" />
+        <!--        <ImageView-->
+        <!--            android:id="@+id/img_next"-->
+        <!--            android:layout_width="56dp"-->
+        <!--            android:layout_height="56dp"-->
+        <!--            android:layout_gravity="center|right"-->
+        <!--            android:foreground="?attr/selectableItemBackground"-->
+        <!--            android:padding="@dimen/dimen_10dp"-->
+        <!--            app:srcCompat="@drawable/telegram" />-->
+
     </FrameLayout>
 
     <RelativeLayout
@@ -76,6 +77,45 @@
             android:padding="@dimen/_2sdp"
             android:src="@drawable/ic_search_blue" />
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/map"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/green_border"
+            android:text="Chuyển đến GG MAP"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/img_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@color/colorBlue"
+            android:text="Chỉ đường"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <com.ems.dingdong.views.CustomTextView
+        android:id="@+id/tv_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:padding="10dp"
+        android:text="Địa chỉ"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_14sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
