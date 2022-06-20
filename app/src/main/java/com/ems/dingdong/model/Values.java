@@ -5,10 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Values {
-    @SerializedName("DataCate")
-    public List<DataCateModel> dataCateModels;
+
     @SerializedName("DataRevert")
     private DataRevertModel DataRevert;
+
+    @SerializedName("DataCate")
+    public List<DataCateModel> dataCateModels;
 
     public List<DataCateModel> getDataCateModels() {
         return dataCateModels;

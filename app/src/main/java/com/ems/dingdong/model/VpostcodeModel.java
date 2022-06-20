@@ -40,10 +40,20 @@ public class VpostcodeModel {
     String SenderVpostcode;
     @SerializedName("MaE")
     String MaE;
+    @SerializedName("Vitri")
+    String Vitri;
     @SerializedName("latitude")
     double latitude;
     @SerializedName("longitude")
     double longitude;
+
+    public String getVitri() {
+        return Vitri;
+    }
+
+    public void setVitri(String vitri) {
+        Vitri = vitri;
+    }
 
     public double getLatitude() {
         return latitude;

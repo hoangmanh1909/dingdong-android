@@ -214,11 +214,14 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
                             else
                                 vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
                             vpostcodeModel.setFullAdress("Vị trí hiện tại");
+                            vpostcodeModel.setVitri(resultModel.getResult().getCompoundCode());
                             vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
                             vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
                             getListVpostV1.add(vpostcodeModel);
                             mView.showList(vpostcodeModel);
-                        } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        }
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
                 });

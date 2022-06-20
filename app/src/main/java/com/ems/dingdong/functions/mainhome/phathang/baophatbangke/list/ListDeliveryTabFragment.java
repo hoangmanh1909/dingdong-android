@@ -148,7 +148,6 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
         tabList.get(0).updateViewList(data,mType);
         tabList.get(1).updateViewList(data,mType);
         tabList.get(pager.getCurrentItem()).onDisplay();
-        Log.d("TranKhiem", data + "");
     }
 
     private void notifyDatasetChanged() {

@@ -68,6 +68,8 @@ public class AddressListAdapterV12 extends RecyclerView.Adapter<AddressListAdapt
         public CustomTextView tvSsua;
         @BindView(R.id.iv_status)
         ImageView ivStatus;
+        @BindView(R.id.delete)
+        ImageView delete;
 
         public HolderView(View itemView) {
             super(itemView);

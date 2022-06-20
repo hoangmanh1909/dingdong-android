@@ -127,7 +127,6 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
             edtSearchAddress.setSelected(true);
 
             mListObjectV12 = mPresenter.getListVpost();
-            Log.d("thanasdasd", new Gson().toJson(mPresenter.getListVpost()));
             if (mListObjectV12 != null)
                 for (int i = 0; i < mListObjectV12.size(); i++) {
                     if (mListObjectV12.get(i).getReceiverVpostcode().length() > 0) {
@@ -137,7 +136,6 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                         mPresenter.vietmapDecode(mListObjectV12.get(i).getSenderVpostcode(), i);
                     }
                 }
-
             addressListAdapterV12 = new AddressListAdapterV12(getContext(), mListObjectV12) {
                 @Override
                 public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -150,6 +148,11 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                                 addressListAdapterV12.notifyDataSetChanged();
                             }
                         }).show();
+                    });
+                    holder.delete.setOnClickListener(v -> {
+                        mListObjectV12.remove(position);
+                        mListObjectVNext.remove(position + 1);
+                        addressListAdapterV12.notifyDataSetChanged();
                     });
                 }
             };
@@ -220,6 +223,10 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_next:
+                if (mListObjectV12.size() == 0) {
+                    Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ");
+                    return;
+                }
                 if (mPresenter.getType() == 99) {
                     for (int i = 0; i < mListObjectV12.size(); i++) {
                         if (mListObjectV12.get(i).getReceiverVpostcode().equals("")) {
@@ -227,6 +234,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                             return;
                         }
                     }
+                    Log.d("thasndasdasd",new Gson().toJson(mListObjectVNext));
                     new DigLogChiDanDuong(getContext(), new SapXepCallback() {
                         @Override
                         public void onResponse(int type) {
@@ -283,35 +291,43 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                 mPresenter.vietmapSearch(mAddress, mLocation);
                 break;
             case R.id.map:
-                try {
-                    if (string != null) {
-                        if (m != null && !m.getParamValue().isEmpty()) {
-                            String url = m.getParamValue();
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
-                        } else Toast.showToast(getViewContext(), "Chức năng đang đóng");
-                    } else Toast.showToast(getViewContext(), "Chức năng đang đóng");
-                } catch (Exception e) {
+                if (mListObjectV12.size() == 0) {
+                    Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ");
+                    return;
                 }
-
-//                Uri gmmIntentUri = Uri.parse("geo:" + mLocation.getLatitude() + "," + mLocation.getLongitude());
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                startActivity(mapIntent);
-//                String tam = "";
-//                for (int i = 0; i < mListObjectVNext.size(); i++) {
-//                    if (tam.equals("")) {
-//                        tam += mListObjectVNext.get(i).getLatitude() + "," + mListObjectVNext.get(i).getLongitude();
-//                    } else {
-//                        tam += "/";
-//                        tam += mListObjectVNext.get(i).getLatitude() + "," + mListObjectVNext.get(i).getLongitude();
-//                    }
-//                }
-//                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-//                        Uri.parse("https://www.google.com/maps/dir/" +
-//                                tam));
-//                startActivity(intent);
+                if (mListObjectV12.size() < 10) {
+                    if (mPresenter.getType() == 99) {
+                        for (int i = 0; i < mListObjectV12.size(); i++) {
+                            if (mListObjectV12.get(i).getReceiverVpostcode().equals("")) {
+                                Toast.showToast(getViewContext(), "Vui lòng xác thực toàn bộ địa chỉ");
+                                return;
+                            }
+                        }
+                    } else if (mPresenter.getType() == 98) {
+                        for (int i = 0; i < mListObjectV12.size(); i++) {
+                            if (mListObjectV12.get(i).getSenderVpostcode().equals("")) {
+                                Toast.showToast(getViewContext(), "Vui lòng xác thực toàn bộ địa chỉ");
+                                return;
+                            }
+                        }
+                    }
+                    String tam = "";
+                    for (int i = 0; i < mListObjectVNext.size(); i++) {
+                        if (tam.equals("")) {
+                            tam += mListObjectVNext.get(i).getLatitude() + "," + mListObjectVNext.get(i).getLongitude();
+                        } else {
+                            tam += "/";
+                            tam += mListObjectVNext.get(i).getLatitude() + "," + mListObjectVNext.get(i).getLongitude();
+                        }
+                    }
+                    Log.d("thanhkiemasdasd", "https://www.google.com/maps/dir/" + tam);
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("https://www.google.com/maps/dir/" +
+                                    tam));
+                    startActivity(intent);
+                } else {
+                    Toast.showToast(getViewContext(), "Vui chọn 9 địa chỉ để chỉ đường bằng GG MAP");
+                }
                 break;
         }
     }
@@ -335,8 +351,6 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
     @Override
     public void showError(String message) {
-//        mListObject.clear();
-//        addressListAdapter.notifyDataSetChanged();
         showErrorToast(message);
     }
 
@@ -355,6 +369,13 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
         vpostcodeModel.setLongitude(log);
         mListObjectV12.set(pos, vpostcodeModel);
 
+    }
+
+    int mLoi = 0;
+
+    @Override
+    public void showThatbai() {
+        mLoi = 1;
     }
 
     private void checkSelfPermission() {

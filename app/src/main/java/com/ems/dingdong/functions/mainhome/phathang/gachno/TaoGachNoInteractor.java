@@ -23,9 +23,9 @@ class TaoGachNoInteractor extends Interactor<TaoGachNoContract.Presenter>
     }
 
     @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode,String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode, callback);
+                ladingCode,PostmanId,POcode, callback);
     }
 
     @Override

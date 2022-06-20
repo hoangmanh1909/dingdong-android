@@ -35,7 +35,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String ladingCode, CommonCallback<SimpleResult> callback);
+                                   String ladingCode, String PostmanId, String POcode,CommonCallback<SimpleResult> callback);
 
         void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
 

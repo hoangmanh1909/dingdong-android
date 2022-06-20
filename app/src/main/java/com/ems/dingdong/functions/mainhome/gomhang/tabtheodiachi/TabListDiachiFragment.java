@@ -20,6 +20,7 @@ import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiPresen
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonContract;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.views.OnCustomPageChangeListener;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -72,8 +73,17 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
     public void initLayout() {
         super.initLayout();
         tabList = new ArrayList<>();
-        tabList.add((XacNhanDiaChiFragment) new XacNhanDiaChiPresenter(mPresenter.getContainerView()).setTypeTab(0).setType(mPresenter.getType()).setOnTabListener(this).getFragment());
-        tabList.add((XacNhanDiaChiFragment) new XacNhanDiaChiPresenter(mPresenter.getContainerView()).setTypeTab(1).setType(mPresenter.getType()).setOnTabListener(this).getFragment());
+        tabList.add((XacNhanDiaChiFragment) new XacNhanDiaChiPresenter(mPresenter.getContainerView())
+                .setTypeTab(0)
+                .setType(mPresenter.getType())
+                .setOnTabListener(this)
+                .getFragment());
+        tabList.add((XacNhanDiaChiFragment) new XacNhanDiaChiPresenter(mPresenter.getContainerView())
+                .setTypeTab(1)
+                .setType(mPresenter.getType())
+                .setOnTabListener(this)
+                .getFragment());
+
         mAdapter = new TabListDiaChiAdapter(getChildFragmentManager(), mPresenter.getType(), getContext(), tabList);
         pager.setAdapter(mAdapter);
         pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
@@ -83,14 +93,15 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
                     case 0:
                         mPosition = newPosition;
                         img_confirm.setVisibility(View.VISIBLE);
-//                        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-//                        commonFragment.onDisPlayFaKe();
+                        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
+                        commonFragment.onDisPlayFaKe(0);
+
                         break;
                     case 1:
                         mPosition = newPosition;
                         img_confirm.setVisibility(View.GONE);
-//                        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
-//                        commonFragment1.onDisPlayFaKe();
+                        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
+                        commonFragment1.onDisPlayFaKe(1);
                         break;
 
                     default:
@@ -113,8 +124,6 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
 
     @Override
     public void onCanceledDelivery() {
-//        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-//        commonFragment.refreshLayout();
     }
 
     @Override
@@ -122,10 +131,6 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
         mAdapter.setTittle(quantity, currentSetTab);
         mAdapter.notifyDataSetChanged();
         tabs.notifyDataSetChanged();
-//        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-//        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
-//        commonFragment.onDisPlayFaKe();
-//        commonFragment1.onDisPlayFaKe();
     }
 
     @Override
@@ -137,12 +142,9 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
     public void onDisplay() {
         super.onDisplay();
         XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
-        commonFragment.onDisPlayFaKe();
-//        commonFragment.onDisPlayFaKe();
+        commonFragment.onDisPlayFaKe(0);
         XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
-        commonFragment1.onDisPlayFaKe();
-
-
+        commonFragment1.onDisPlayFaKe(1);
     }
 
     @OnClick({R.id.img_back, R.id.img_confirm})

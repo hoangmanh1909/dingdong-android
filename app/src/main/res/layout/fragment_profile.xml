@@ -104,6 +104,40 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_e_luong"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_baseline_attach_money_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tiền lương"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <ImageView style="@style/ImageViewArrowRight" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View style="@style/Devider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:id="@+id/rl_e_wallet"
                 style="@style/RelativeLayoutPersonal">
 

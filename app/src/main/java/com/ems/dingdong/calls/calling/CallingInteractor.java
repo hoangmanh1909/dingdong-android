@@ -15,7 +15,7 @@ public class CallingInteractor extends Interactor<CallingContract.Presenter> imp
 
     @Override
     public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
-        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber, "", "",
                 ladingCode, callback);
     }
 }

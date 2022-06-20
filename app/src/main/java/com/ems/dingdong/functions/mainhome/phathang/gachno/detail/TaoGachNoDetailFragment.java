@@ -266,7 +266,6 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
 
         }
     }
-
     @OnClick({R.id.img_back, R.id.img_send, R.id.tv_SenderPhone, R.id.tv_reason, R.id.tv_solution,
             R.id.tv_deliveryDate, R.id.tv_deliveryTime})//R.id.btn_sign,
     public void onViewClicked(View view) {
@@ -279,18 +278,19 @@ public class TaoGachNoDetailFragment extends ViewFragment<TaoGachNoDetailContrac
 
                 break;
             case R.id.tv_SenderPhone:
+
                 if (!TextUtils.isEmpty(mBaoPhatBangke.getSenderPhone())) {
                     new PhoneConectDialog(getActivity(), mBaoPhatBangke.getSenderPhone(), new PhoneCallback() {
                         @Override
                         public void onCallSenderResponse(String phone) {
                             mPhone = phone;
-                            mPresenter.callForward(phone);
+                            mPresenter.callForward(phone,mBaoPhatBangke.getOrderPostmanID(),mBaoPhatBangke.getPoCode());
                         }
 
                         @Override
                         public void onCallReceiverResponse(String phone) {
                             mPhone = phone;
-                            mPresenter.callForward(phone);
+                            mPresenter.callForward(phone,mBaoPhatBangke.getOrderPostmanID(),mBaoPhatBangke.getPoCode());
                         }
 
                         @Override

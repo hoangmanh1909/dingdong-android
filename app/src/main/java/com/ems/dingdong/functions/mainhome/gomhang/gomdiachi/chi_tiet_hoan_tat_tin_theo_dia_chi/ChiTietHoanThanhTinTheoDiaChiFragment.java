@@ -332,7 +332,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 }
             }
         }
-
+//        Log.d("thasdas1231", new Gson().toJson(commonObjects));
         buuguiAdapter = new BuuguiAdapter(getViewContext(), commonObjects) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -735,6 +735,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 hoanTatTinRequest.setStatusCode(Constants.GOM_HANG_THAT_BAI);
                 if (mReason != null) {
                     hoanTatTinRequest.setReasonCode(mReason.getCode());
+                    hoanTatTinRequest.setCollectReason(mReason.getName());
                 }
             }
 
@@ -920,7 +921,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                         (item, position) -> {
                             tvReasonFailure.setText(item.getText());
                             mReason = new ReasonInfo(item.getValue(), item.getText());
-
                         }, 0);
                 pickerUIReason1.show(getActivity().getSupportFragmentManager(), pickerUIReason1.getTag());
             } else {

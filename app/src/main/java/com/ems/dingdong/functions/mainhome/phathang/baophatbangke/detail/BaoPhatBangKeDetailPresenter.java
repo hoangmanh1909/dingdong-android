@@ -113,7 +113,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
     @Override
     public void updateMobile(String phone) {
         mView.showProgress();
-        mInteractor.updateMobile(mBaoPhatBangke.getCode(),"1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.updateMobile(mBaoPhatBangke.getCode(), "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -205,8 +205,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             amount = mBaoPhatBangke.getCollectAmount();
         }
         String shiftId = mBaoPhatBangke.getShiftId();
-        if(shiftId == null || "0".equals(shiftId))
-        {
+        if (shiftId == null || "0".equals(shiftId)) {
             shiftId = Constants.SHIFT;
         }
         String signature = Utils.SHA256(ladingCode + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
@@ -215,8 +214,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 solutionCode, status, "", "", signatureCapture, note,
                 amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature,
                 mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0,
-                "",false,0,"","",
-                "","","","","","","","DD_ANDROID","");
+                "", false, 0, "", "",
+                "", "", "", "", "", "", "", "DD_ANDROID", "");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -244,14 +243,17 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             callerNumber = userInfo.getMobileNumber();
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         mView.showProgress();
         String ladingCode = mBaoPhatBangke.getParcelCode();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, ladingCode, userInfo.getiD(), poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -321,8 +323,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             amount = mBaoPhatBangke.getCollectAmount();
         }
         String shiftId = mBaoPhatBangke.getShiftId();
-        if(shiftId == null || "0".equals(shiftId))
-        {
+        if (shiftId == null || "0".equals(shiftId)) {
             shiftId = Constants.SHIFT;
         }
         if ("12".equals(mBaoPhatBangke.getService())) {
@@ -337,8 +338,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                         solutionCode, status, "", "", signatureCapture,
                         "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(),
                         signature, mBaoPhatBangke.getImageDelivery(), "N", "",
-                        0, "",false,0,"","",
-                        "","","","","","","","DD_ANDROID","");
+                        0, "", false, 0, "", "",
+                        "", "", "", "", "", "", "", "DD_ANDROID", "");
                 mInteractor.pushToPNSDelivery(request,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override
@@ -412,8 +413,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
         String ladingPostmanID = mBaoPhatBangke.getiD();
         String signature = Utils.SHA256(parcelCode + mobileNumber + deliveryPOCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         String shiftId = mBaoPhatBangke.getShiftId();
-        if(shiftId == null || "0".equals(shiftId))
-        {
+        if (shiftId == null || "0".equals(shiftId)) {
             shiftId = Constants.SHIFT;
         }
         PaymentDeviveryRequest request = new PaymentDeviveryRequest(postmanID,
@@ -421,8 +421,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 status, paymentChannel, "0", signatureCapture,
                 note, amount, shiftId, mBaoPhatBangke.getRouteCode(), ladingPostmanID, signature,
                 mBaoPhatBangke.getImageDelivery(), userInfo.getUserName(), null,
-                isPaymentPP, "N", "", 0,0,0,0,0,0,0,
-                0,0,0,0,"","");
+                isPaymentPP, "N", "", 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, "", "");
 
         mInteractor.paymentDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override

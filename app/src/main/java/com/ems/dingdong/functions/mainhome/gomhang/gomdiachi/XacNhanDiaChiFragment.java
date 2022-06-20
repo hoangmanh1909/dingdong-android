@@ -274,7 +274,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            getmID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
+                            getmID = position;
                             PhoneNumber phoneNumber = new PhoneNumber();
                             phoneNumber.setPhone(holder.getItem(position).getReceiverPhone());
                             mPresenter.ddSreachPhone(phoneNumber);
@@ -385,17 +385,16 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void onDisplay() {
         super.onDisplay();
-        onDisPlayFaKe();
     }
 
-    public void onDisPlayFaKe() {
+    public void onDisPlayFaKe(int type) {
+        Log.d("asd121231asfkjadad", 1 + "");
         itemClick = null;
         itemAtPosition = null;
         if (mUserInfo != null && !TextUtils.isEmpty(fromDate) && !TextUtils.isEmpty(toDate)) {
             if (mPresenter.getType() == 1) {
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P0", fromDate, toDate, type);
-            }
-            if (mPresenter.getType() == 4) {//2
+            } else if (mPresenter.getType() == 4) {//2
                 mPresenter.searchOrderPostmanCollect("0", "0", mUserInfo.getiD(), "P1", fromDate, toDate, type);
             }
         }
@@ -560,7 +559,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
-//        mList.clear();
 //        mList.addAll(list);
         type = 1;
         ArrayList<CommonObject> mListChuatam = new ArrayList<>();
@@ -587,6 +585,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
                 tvAcceptCount.setVisibility(View.GONE);
                 tvRejectCount.setVisibility(View.VISIBLE);
+                tvNodata.setVisibility(View.GONE);
+                recycler.setVisibility(View.VISIBLE);
                 mAdapter.notifyDataSetChanged();
             } else {
                 mListDa.clear();
@@ -595,6 +595,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 tvRejectCount.setVisibility(View.GONE);
                 tvAcceptCount.setVisibility(View.VISIBLE);
                 mPresenter.titleChanged(mListDa.size(), 1);
+                tvNodata.setVisibility(View.GONE);
+                recycler.setVisibility(View.VISIBLE);
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -634,30 +636,47 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         }
     }
 
+    SweetAlertDialog sweetAlertDialog;
+
     @Override
     public void showError(String message) {
-        if (getActivity() != null) {
-//            edtSearch.setVisibility(View.GONE);
-            type = 1;
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            if (mPresenter.getTab() == 0) {
-                                mListChua.clear();
-                                mAdapter.notifyDataSetChanged();
-                            } else {
-                                mListDa.clear();
-                                mAdapter.notifyDataSetChanged();
-                            }
-                            sweetAlertDialog.dismiss();
-
-                        }
-                    }).show();
+        type = 1;
+//        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+//                .setConfirmText("OK")
+//                .setTitleText("Thông báo")
+//                .setContentText(message)
+//                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                    @Override
+//                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                        if (mPresenter.getTab() == 0) {
+//                            mListChua.clear();
+//                            mAdapter.notifyDataSetChanged();
+//                        } else {
+//                            mListDa.clear();
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//                        sweetAlertDialog.dismiss();
+//                    }
+//                }).show();
+        if (mPresenter.getTab() == 0) {
+            mListChua.clear();
+            mAdapter.notifyDataSetChanged();
+            tvNodata.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.GONE);
+            tvAcceptCount.setVisibility(View.GONE);
+            tvRejectCount.setVisibility(View.VISIBLE);
+            tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", 0));
+        } else {
+            mListDa.clear();
+            tvNodata.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.GONE);
+            mAdapter.notifyDataSetChanged();
+            tvRejectCount.setVisibility(View.GONE);
+            tvAcceptCount.setVisibility(View.VISIBLE);
+            tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", 0));
         }
+        tvNodata.setVisibility(View.VISIBLE);
+        recycler.setVisibility(View.GONE);
     }
 
     @Override
@@ -739,8 +758,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     mListChua.get(i).setSenderVpostcode(mess);
                     Log.d("thasdasdasd", mess);
                 }
+
             mAdapter.notifyDataSetChanged();
         } else {
+
             for (int i = 0; i < mListDa.size(); i++)
                 if (mID == Integer.parseInt(mListDa.get(i).getiD())) {
                     mListDa.get(i).setSenderVpostcode(mess);

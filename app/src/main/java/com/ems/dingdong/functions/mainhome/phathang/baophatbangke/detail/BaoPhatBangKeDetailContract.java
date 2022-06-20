@@ -28,7 +28,7 @@ interface BaoPhatBangKeDetailContract {
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String ladingCode, CommonCallback<SimpleResult> callback);
+                                   String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 

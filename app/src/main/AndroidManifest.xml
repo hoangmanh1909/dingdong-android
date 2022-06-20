@@ -16,6 +16,7 @@
         android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -70,7 +71,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <uses-library android:required="true" android:name="com.google.android.maps" />
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -393,9 +396,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" />
-<!--        <meta-data-->
-<!--            android:name="com.google.android.geo.API_KEY"-->
-<!--            android:value="AIzaSyAFjjD5f4UJ6N6LP6nU26yWqGc-8jLqWWA" />-->
+        <!--        <meta-data-->
+        <!--            android:name="com.google.android.geo.API_KEY"-->
+        <!--            android:value="AIzaSyAFjjD5f4UJ6N6LP6nU26yWqGc-8jLqWWA" />-->
 
         <service android:name=".fcm.DingDongFirebaseMessagingService">
             <intent-filter>

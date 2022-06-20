@@ -30,12 +30,12 @@ import io.reactivex.Single;
 public interface XacNhanDiaChiContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchOrderPostmanCollect(String orderPostmanID,
+        Single<CommonObjectListResult>  searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate, CommonCallback<CommonObjectListResult> callback);
+                                       String toAssignDate);
 
         Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress verifyAddress);
 
@@ -53,7 +53,7 @@ public interface XacNhanDiaChiContract {
 
         void showAddress(Values x);
 
-        void shoSucces(String mess);
+        void  shoSucces(String mess);
 
         void showDiachi(String x);
 

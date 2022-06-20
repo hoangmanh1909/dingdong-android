@@ -146,6 +146,10 @@ public class UserInfo {
         return isEms;
     }
 
+    public void setIsEms(String isEms) {
+        this.isEms = isEms;
+    }
+
     public String geteWalletPaymentToken() {
         return eWalletPaymentToken;
     }

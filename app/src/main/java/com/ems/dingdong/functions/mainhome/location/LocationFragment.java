@@ -237,24 +237,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                 mPresenter.findLocation(edtLadingCode.getText().toString());
                 break;
             case R.id.tv_SenderPhone:
-//                new DialogCuocgoi(getViewContext(), _tvSenderPhone.getText().toString(), "2", new PhoneKhiem() {
-//                    @Override
-//                    public void onCallTongDai(String phone) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCall(String phone) {
-//                        mPhone = phone;
-//                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
-//                    }
-//
-//                    @Override
-//                    public void onCallEdit(String phone,int type) {
-//
-//                    }
-//                }).show();
-                new DialogCuocgoiNew(getViewContext(), _tvReceiverPhone.getText().toString(), 4, new PhoneKhiem() {
+                new DialogCuocgoiNew(getViewContext(), _tvSenderPhone.getText().toString(), 4, new PhoneKhiem() {
                     @Override
                     public void onCallTongDai(String phone) {
                         mPresenter.callForward(phone, tvParcelCode.getText().toString());
@@ -263,7 +246,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                     @Override
                     public void onCall(String phone) {
                         Intent intent1 = new Intent(Intent.ACTION_CALL);
-                        intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                        intent1.setData(Uri.parse("tel:" + phone));
                         if (ContextCompat.checkSelfPermission(getActivity(),
                                 Manifest.permission.CALL_PHONE)
                                 != PackageManager.PERMISSION_GRANTED) {
@@ -278,7 +261,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                     public void onCallEdit(String phone, int type) {
                         if (type == 1) {
                             Intent intent1 = new Intent(Intent.ACTION_CALL);
-                            intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                            intent1.setData(Uri.parse("tel:" + _tvSenderPhone.getText().toString()));
                             if (ContextCompat.checkSelfPermission(getActivity(),
                                     Manifest.permission.CALL_PHONE)
                                     != PackageManager.PERMISSION_GRANTED) {
@@ -304,7 +287,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                     @Override
                     public void onCall(String phone) {
                         Intent intent1 = new Intent(Intent.ACTION_CALL);
-                        intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
+                        intent1.setData(Uri.parse("tel:" + phone));
                         if (ContextCompat.checkSelfPermission(getActivity(),
                                 Manifest.permission.CALL_PHONE)
                                 != PackageManager.PERMISSION_GRANTED) {

@@ -42,6 +42,8 @@ public interface AddressListContract {
         void showList(VpostcodeModel getListVpostV1);
 
         void showLongLat(double log, double lat, int pos);
+
+        void showThatbai();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

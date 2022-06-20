@@ -19,6 +19,7 @@ import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PhoneNumber;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.VerifyAddress;
@@ -234,18 +235,23 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         return mPos;
     }
 
+    private PostOffice postOffice;
+
     @Override
     public void callForward(String phone, String parcelCode) {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             callerNumber = userInfo.getMobileNumber();
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, userInfo.getiD(), poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -255,7 +261,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         mView.showCallSuccess(response.body().getData());
                     } else {
                         mView.showCallError(response.body().getMessage());
-
                     }
                 }
             }
@@ -410,8 +415,9 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel) {
-        new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setType(99).setListVposcode(addressListModel).pushView();
+        new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setType(99).setTypeBack(1).setListVposcode(addressListModel).pushView();
     }
+
     @Override
     public void getMapVitri(Double v1, Double v2) {
         mView.showProgress();
@@ -438,7 +444,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             getListVpost.add(vpostcodeModel);
                             mView.showList(vpostcodeModel);
                         } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
-                    } else {}
+                    } else {
+                    }
                     mView.hideProgress();
                 });
     }

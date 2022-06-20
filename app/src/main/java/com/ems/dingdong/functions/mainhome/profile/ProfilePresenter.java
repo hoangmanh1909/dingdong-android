@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
+import com.ems.dingdong.functions.mainhome.profile.tienluong.SalaryPresenter;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -44,5 +45,10 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
     @Override
     public void showLichsuCuocgoi() {
         new TabCallPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showLuong() {
+        new SalaryPresenter(mContainerView).pushView();
     }
 }

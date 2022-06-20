@@ -260,19 +260,19 @@ public class NetWorkController {
 
     public static Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                                            String callForwardType, String hotlineNumber,
-                                                           String ladingCode, CommonCallback<SimpleResult> callback) {
+                                                           String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
         String type = "1";
-        Log.d("thasndahsd12123123", Constants.HEADER_NUMBER);
-        if (Constants.HEADER_NUMBER.equals("tel:159")) {
-            type = "1";
-        } else {
-            type = "2";
-        }
+//        Log.d("thasndahsd12123123", Constants.HEADER_NUMBER);
+//        if (Constants.HEADER_NUMBER.equals("tel:159")) {
+//            type = "1";
+//        } else {
+//            type = "2";
+//        }
 
 //        Log.d("thasdasdasdas",Constants.HEADER_NUMBER);
         String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
-                hotlineNumber, ladingCode, type, signature);
+                hotlineNumber, ladingCode, "2", PostmanId, POCode, signature);
         call.enqueue(callback);
         return call;
     }
@@ -288,15 +288,7 @@ public class NetWorkController {
 ////        call.enqueue(callback);
 //        return null;
 //    }
-    public static void searchOrderPostmanCollect(String orderPostmanID,
-                                                 String orderID,
-                                                 String postmanID,
-                                                 String status,
-                                                 String fromAssignDate,
-                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
-        call.enqueue(callback);
-    }
+
 
     public static void searchAllOrderPostmanCollect(String orderPostmanID,
                                                     String orderID,
@@ -869,6 +861,27 @@ public class NetWorkController {
         return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
     }
 
+    public static void searchOrderPostmanCollect(String orderPostmanID,
+                                                 String orderID,
+                                                 String postmanID,
+                                                 String status,
+                                                 String fromAssignDate,
+                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
+        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+        call.enqueue(callback);
+    }
+
+    public static Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID,
+                                                                           String orderID,
+                                                                           String postmanID,
+                                                                           String status,
+                                                                           String fromAssignDate,
+                                                                           String toAssignDate) {
+        return getAPIRxBuilder().searchOrderPostmanCollect1(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+//        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+//        call.enqueue(callback);
+    }
+
     public static Single<SimpleResult> statisticSMLDeliveryFail(StatisticSMLDeliveryFailRequest request) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("STT001");
@@ -1102,7 +1115,9 @@ public class NetWorkController {
 
     public static Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest r) {
         return getAPIRxBuilder().ddCreateVietMapRequest(r);
-    }public static Single<SimpleResult> getMap() {
+    }
+
+    public static Single<SimpleResult> getMap() {
         return getAPIRxBuilder().getMap();
     }
 

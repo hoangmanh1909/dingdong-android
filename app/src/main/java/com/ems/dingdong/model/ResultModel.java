@@ -10,6 +10,16 @@ public class ResultModel {
 
     @SerializedName("location")
     LocationMap location;
+    @SerializedName("compoundCode")
+    String compoundCode;
+
+    public String getCompoundCode() {
+        return compoundCode;
+    }
+
+    public void setCompoundCode(String compoundCode) {
+        this.compoundCode = compoundCode;
+    }
 
     public LocationMap getLocation() {
         return location;

@@ -81,16 +81,13 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
-
                 if (charString.isEmpty()) {
                     mListFilter = mList;
                 } else {
                     List<ParcelCodeInfo> filteredList = new ArrayList<>();
                     for (ParcelCodeInfo row : mList) {
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (row.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
-                                row.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
+                                row.getOrderCode().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }

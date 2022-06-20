@@ -127,12 +127,15 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         });
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
             case R.id.rl_cuocgoi:
                 mPresenter.showLichsuCuocgoi();
+                break;
+            case R.id.rl_e_luong:
+                mPresenter.showLuong();
                 break;
             case R.id.img_back:
                 mPresenter.back();

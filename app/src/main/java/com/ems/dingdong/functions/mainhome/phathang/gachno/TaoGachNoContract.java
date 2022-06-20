@@ -22,7 +22,7 @@ interface TaoGachNoContract {
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String ladingCode, CommonCallback<SimpleResult> callback);
+                                   String ladingCode,String PostmanId, String POcode, CommonCallback<SimpleResult> callback);
 
 
         void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback);

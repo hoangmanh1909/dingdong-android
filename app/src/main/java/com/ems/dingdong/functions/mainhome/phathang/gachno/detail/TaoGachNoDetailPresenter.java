@@ -163,7 +163,7 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
     }*/
 
     @Override
-    public void callForward(String phone) {
+    public void callForward(String phone, String PostmanId, String POCode) {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -173,25 +173,26 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, mBaoPhatBangke.getParcelCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showCallSuccess();
-                } else {
-                    mView.showError(response.body().getMessage());
-                }
-            }
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, mBaoPhatBangke.getParcelCode()
+                , PostmanId, POCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                    @Override
+                    protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        super.onSuccess(call, response);
+                        mView.hideProgress();
+                        if (response.body().getErrorCode().equals("00")) {
+                            mView.showCallSuccess();
+                        } else {
+                            mView.showError(response.body().getMessage());
+                        }
+                    }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showError(message);
-            }
-        });
+                    @Override
+                    protected void onError(Call<SimpleResult> call, String message) {
+                        super.onError(call, message);
+                        mView.hideProgress();
+                        mView.showError(message);
+                    }
+                });
 
     }
 

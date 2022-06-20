@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -60,13 +61,16 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             callerNumber = userInfo.getMobileNumber();
         }
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, mCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, mCode, userInfo.getiD(), poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

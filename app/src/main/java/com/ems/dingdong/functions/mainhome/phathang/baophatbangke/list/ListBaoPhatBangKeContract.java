@@ -70,7 +70,7 @@ interface ListBaoPhatBangKeContract {
          */
         Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                                  String callForwardType, String hotlineNumber,
-                                                 String ladingCode, CommonCallback<SimpleResult> callback);
+                                                 String ladingCode, String PostmanId, String POCode,CommonCallback<SimpleResult> callback);
 
         /**
          * Update mobile of current lading code.
@@ -193,6 +193,7 @@ interface ListBaoPhatBangKeContract {
          * @return 10 or 20.
          */
         int getType();
+
 
         /**
          * Get lading code when fragment is added from notification, to point to exactly position when notification come.

@@ -149,6 +149,7 @@
     <string name="account_info">THÔNG TIN TÀI KHOẢN</string>
     <string name="enter_name_phone_number_address">Nhập bưu gửi, tên, sđt, địa chỉ</string>
     <string name="create_bd13">Lập bảng kê (BD13)</string>
+    <string name="salary">Tiền lương</string>
     <string name="package_info">Thông tin vận đơn</string>
     <string name="type_delivery">Hình thức báo phát</string>
     <string name="ok">Thành công</string>

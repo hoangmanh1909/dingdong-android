@@ -20,9 +20,10 @@ class BaoPhatThanhCongInteractor extends Interactor<BaoPhatThanhCongContract.Pre
     public void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
         NetWorkController.searchParcelCodeDelivery(parcelCode, callback);
     }
+
     @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode, callback);
+                ladingCode, PostmanId, POcode, callback);
     }
 }

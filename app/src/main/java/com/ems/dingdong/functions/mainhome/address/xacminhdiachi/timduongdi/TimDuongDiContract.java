@@ -47,6 +47,9 @@ public interface TimDuongDiContract {
 
         int getType();
 
+        int getTypeBack();
+
+
         void saveToaDoGom(List<SenderVpostcodeMode> request);
 
         void saveToaDoPhat(List<ReceiverVpostcodeMode> request);

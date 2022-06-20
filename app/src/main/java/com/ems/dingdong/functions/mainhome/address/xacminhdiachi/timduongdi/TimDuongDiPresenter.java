@@ -20,7 +20,9 @@ import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
     AddressListModel addressListModel;
     List<VpostcodeModel> list;
     private int mType;
+    private int mTypeBack;
     private TravelSales getApiTravel;
 
     public TimDuongDiPresenter(ContainerView containerView) {
@@ -61,8 +64,15 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
         return this;
     }
 
+    public TimDuongDiPresenter setTypeBack(int type) {
+        this.mTypeBack = type;
+        return this;
+    }
+
     public TimDuongDiPresenter setApiTravel(TravelSales getApiTravel) {
         this.getApiTravel = getApiTravel;
+        Log.d("asdasda123123123", new Gson().toJson(getApiTravel));
+
         return this;
     }
 
@@ -136,6 +146,10 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
 
     public int getType() {
         return mType;
+    }
+
+    public int getTypeBack() {
+        return mTypeBack;
     }
 
     @Override

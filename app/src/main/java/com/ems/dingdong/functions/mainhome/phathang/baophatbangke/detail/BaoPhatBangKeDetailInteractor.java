@@ -28,9 +28,9 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
 
 
     @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode, callback);
+                ladingCode, PostmanId, POCode, callback);
     }
 
     @Override
@@ -39,16 +39,14 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     }
 
 
-
-
     @Override
     public void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
         NetWorkController.getInquiryAmount(parcelCode, callback);
     }
 
     @Override
-    public void updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.updateMobile(code,type, mobileNumber, commonCallback);
+    public void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.updateMobile(code, type, mobileNumber, commonCallback);
     }
 
     @Override

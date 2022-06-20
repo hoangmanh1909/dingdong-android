@@ -22,15 +22,16 @@ class TaoGachNoDetailInteractor extends Interactor<TaoGachNoDetailContract.Prese
     public void getReasons(CommonCallback<ReasonResult> commonCallback) {
         NetWorkController.getReasons(commonCallback);
     }
+
     @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber, PostmanId, POCode,
                 ladingCode, callback);
     }
 
     @Override
     public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
-        NetWorkController.getSolutionByReasonCode(code,commonCallback);
+        NetWorkController.getSolutionByReasonCode(code, commonCallback);
     }
 
     @Override

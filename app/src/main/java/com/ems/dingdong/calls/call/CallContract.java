@@ -13,7 +13,7 @@ public interface CallContract {
     interface Interactor extends IInteractor<Presenter> {
         Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                                  String callForwardType, String hotlineNumber,
-                                                 String ladingCode, CommonCallback<SimpleResult> callback);
+                                                 String ladingCode,  String PostmanId, String POCode,CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -37,7 +37,7 @@ public interface CallContract {
         String getCalleeNumber();
 
 
-        void callForward(String phone, String parcelCode);
+        void callForward(String phone, String parcelCode, String PostmanId, String POCode);
 
     }
 }

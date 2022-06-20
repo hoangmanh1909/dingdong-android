@@ -11,6 +11,7 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
@@ -109,13 +110,16 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo =null;
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            userInfo  = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             callerNumber = userInfo.getMobileNumber();
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode,userInfo.getiD(),poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

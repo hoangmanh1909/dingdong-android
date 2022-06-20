@@ -149,6 +149,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         super.initLayout();
         mList = new ArrayList<>();
         mList = mPresenter.getListVpostcodeModell();
+        mApiTravel = mPresenter.getApiTravel();
         mAdapter = new TimDuongDiAdapter(getViewContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull @NotNull HolderView holder, int position) {
@@ -243,6 +244,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         Log.d("ThKhiem4", "initLayout");
         if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
@@ -317,18 +319,26 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                 }
                 break;
             case R.id.btn_dong:
+                if (mPresenter.getTypeBack() == 1) {
+                    mPresenter.back();
+                    return;
+                }
                 if (mPresenter.getType() == 99) {
-                    Intent intent = new Intent(getActivity(), ListBaoPhatBangKeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.putExtra(Constants.TYPE_GOM_HANG, 3);
-                    getActivity().finish();
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity(), ListBaoPhatBangKeActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.putExtra(Constants.TYPE_GOM_HANG, 3);
+//                    getActivity().finish();
+//                    startActivity(intent);
+                    mPresenter.back();
+                    mPresenter.back();
                 } else {
-                    Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.putExtra(Constants.TYPE_GOM_HANG, 4);
-                    getActivity().finish();
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity(), XacNhanDiaChiActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.putExtra(Constants.TYPE_GOM_HANG, 4);
+//                    getActivity().finish();
+//                    startActivity(intent);
+                    mPresenter.back();
+                    mPresenter.back();
                 }
                 break;
             case R.id.tv_themdiemdung:
@@ -447,9 +457,11 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 
 
     public void getRoutes() {
-        Log.d("ThKhiem6", "initLayout");
         if (mLocation != null) {
             List<String> requests = new ArrayList<>();
+            mList= new ArrayList<>();
+            mList = mPresenter.getListVpostcodeModell();
+            Log.d("ThKhiem6", new Gson().toJson(mPresenter.getListVpostcodeModell()));
             for (int i = 0; i < mList.size(); i++) {
                 if (mPresenter.getType() == 99)
                     requests.add(mList.get(i).getReceiverVpostcode());
@@ -460,7 +472,6 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                 mPresenter.vietmapTravelSalesmanProblem(mApiTravel);
             else
                 mPresenter.getPoint(requests);
-//            mPresenter.vietmapTravelSalesmanProblem(requests);
         }
     }
 

@@ -21,9 +21,10 @@ interface TaoGachNoDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
         void getReasons(CommonCallback<ReasonResult> commonCallback);
+
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String parcelCode, CommonCallback<SimpleResult> callback);
+                                   String parcelCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 
@@ -51,13 +52,21 @@ interface TaoGachNoDetailContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         CommonObject getBaoPhatBangke();
+
         void getReasons();
-        void callForward(String phone);
+
+        void callForward(String phone, String PostmanId, String POCode);
+
         void loadSolution(String code);
+
         void paymentDeliveryNoCodPayPost(String base64);
+
         void paymentDeliveryPayPost(String base64);
+
         int getPosition();
+
         int getDeliveryType();
+
         int getPositionRow();
     }
 }

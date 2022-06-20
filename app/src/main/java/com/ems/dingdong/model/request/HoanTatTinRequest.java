@@ -26,7 +26,7 @@ public class HoanTatTinRequest {
     String pickUpTime;
     @SerializedName("OrderImage")
     String file;
-//    @SerializedName("ShipmentCode")
+    //    @SerializedName("ShipmentCode")
 //    List<String> shipmentCode;
     @SerializedName("ReasonCode")
     String reasonCode;
@@ -66,7 +66,7 @@ public class HoanTatTinRequest {
     private String POCollectLon;
     @SerializedName("OrderCode")
     private String orderCode;
- @SerializedName("SourceChanel")
+    @SerializedName("SourceChanel")
     private String SourceChanel;
 
     public String getSourceChanel() {

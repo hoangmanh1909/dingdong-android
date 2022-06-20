@@ -22,9 +22,14 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
     }
 
     @Override
-    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
+    public Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
+        return NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
     }
+
+//    @Override
+//    public Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
+//        Single<CommonObjectListResult> null;
+//    }
 
     //    @Override
 //    public Single<SimpleResult> searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate,

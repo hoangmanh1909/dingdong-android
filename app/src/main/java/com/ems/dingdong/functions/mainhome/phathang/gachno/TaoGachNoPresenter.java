@@ -14,6 +14,7 @@ import com.ems.dingdong.functions.mainhome.phathang.gachno.searchlist.ListGachNo
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectResult;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
@@ -173,13 +174,16 @@ public class TaoGachNoPresenter extends Presenter<TaoGachNoContract.View, TaoGac
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String callerNumber = "";
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo =null;
         if (!userJson.isEmpty()) {
-            UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             callerNumber = userInfo.getMobileNumber();
         }
         String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
         mView.showProgress();
-        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline,ladingCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline,ladingCode,userInfo.getiD(),poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);

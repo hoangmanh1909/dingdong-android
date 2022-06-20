@@ -29,7 +29,7 @@ public interface CreateBd13Contract {
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String ladingCode, CommonCallback<SimpleResult> callback);
+                                   String ladingCode,String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         void updateMobile(String code, String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
     }

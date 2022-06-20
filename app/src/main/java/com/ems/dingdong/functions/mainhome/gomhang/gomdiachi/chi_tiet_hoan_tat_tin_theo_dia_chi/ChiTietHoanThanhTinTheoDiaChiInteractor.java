@@ -8,6 +8,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
+
 import java.util.List;
 
 import io.reactivex.Single;
@@ -42,15 +43,16 @@ public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietH
     public void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
         NetWorkController.collectOrderPostmanCollect(hoanTatTinRequest, callback);
     }
+
     @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, CommonCallback<SimpleResult> callback) {
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode, callback);
+                ladingCode, PostmanId, POcode, callback);
     }
 
     @Override
-    public void updateMobile(String code,String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.updateMobile(code,type, mobileNumber, commonCallback);
+    public void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkController.updateMobile(code, type, mobileNumber, commonCallback);
     }
 
     @Override

@@ -133,6 +133,8 @@ public interface VinattiAPI {
                                              @Field("HotlineNumber") String hotlineNumber,
                                              @Field("LadingCode") String ladingCode,
                                              @Field("Type") String type,
+                                             @Field("PostmanId") String PostmanId,
+                                             @Field("POcode") String POcode,
                                              @Field("Signature") String signature
     );
 
@@ -144,6 +146,15 @@ public interface VinattiAPI {
                                                            @Field("Status") String status,
                                                            @Field("FromAssignDate") String fromAssignDate,
                                                            @Field("ToAssignDate") String toAssignDate);
+
+    @FormUrlEncoded
+    @POST("api/Collect/SearchOrderPostman")
+    Single<CommonObjectListResult> searchOrderPostmanCollect1(@Field("OrderPostmanID") String orderPostmanID,
+                                                              @Field("OrderID") String orderID,
+                                                              @Field("PostmanID") String postmanID,
+                                                              @Field("Status") String status,
+                                                              @Field("FromAssignDate") String fromAssignDate,
+                                                              @Field("ToAssignDate") String toAssignDate);
 
     @FormUrlEncoded
     @POST("api/Collect/SearchOrderPostmanCollectAll")
