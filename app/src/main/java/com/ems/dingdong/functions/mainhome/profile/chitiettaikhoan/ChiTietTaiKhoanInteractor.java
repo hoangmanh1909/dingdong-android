@@ -8,6 +8,7 @@ import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -19,31 +20,31 @@ public class ChiTietTaiKhoanInteractor extends Interactor<ChiTietTaiKhoanContrac
 
     @Override
     public Single<SimpleResult> ddHuyLienKet(SmartBankRequestCancelLinkRequest request) {
-        return NetWorkController.smartBankRequestCancelLinkRequest(request);
+        return NetWorkControllerGateWay.smartBankRequestCancelLinkRequest(request);
     }
 
     @Override
     public Single<SimpleResult> ddXacnhanhuy(SmartBankConfirmCancelLinkRequest request) {
-        return NetWorkController.SmartBankConfirmCancelLinkRequest(request);
+        return NetWorkControllerGateWay.SmartBankConfirmCancelLinkRequest(request);
     }
 
     @Override
     public Single<SimpleResult> ddTruyVanSodu(SmartBankInquiryBalanceRequest request) {
-        return NetWorkController.ddTruyVanSodu(request);
+        return NetWorkControllerGateWay.ddTruyVanSodu(request);
     }
 
     @Override
     public Single<SimpleResult> vnpCallOTP(CallOTP callOTP) {
-        return NetWorkController.ddCallOTP(callOTP);
+        return NetWorkControllerGateWay.ddCallOTP(callOTP);
     }
 
     @Override
     public Single<SimpleResult> ddSodu(SmartBankInquiryBalanceRequest callOTP) {
-        return NetWorkController.ddTruyVanSodu(callOTP);
+        return NetWorkControllerGateWay.ddTruyVanSodu(callOTP);
     }
 
     @Override
     public Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request) {
-        return NetWorkController.ddTaiKhoanMacDinh(request);
+        return NetWorkControllerGateWay.ddTaiKhoanMacDinh(request);
     }
 }

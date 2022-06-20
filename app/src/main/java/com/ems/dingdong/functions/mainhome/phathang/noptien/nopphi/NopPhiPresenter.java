@@ -16,10 +16,12 @@ import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.EWalletRequestResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,11 +117,12 @@ public class NopPhiPresenter extends Presenter<NopPhiContract.View, NopPhiContra
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        EWalletRequestResponse  response = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<EWalletRequestResponse>(){}.getType());
                         mView.showRequestSuccess(simpleResult.getMessage(),
-                                simpleResult.getListEWalletResponse().getTranid(),
-                                simpleResult.getListEWalletResponse().getRetRefNumber());
-                        Tranid = simpleResult.getListEWalletResponse().getTranid();
-                        RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
+                                response.getTranid(),
+                                response.getRetRefNumber());
+                        Tranid = response.getTranid();
+                        RetRefNumber = response.getRetRefNumber();
                         Mess = simpleResult.getMessage();
                     } else if (simpleResult != null) {
                         mView.showConfirmError(simpleResult.getMessage());

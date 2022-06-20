@@ -617,6 +617,12 @@ public interface VinattiAPI {
     @POST("Gateway/Execute")
     Observable<CommonObjectResult> findLocation(@Body RequestObject requestObject);
 
+    @POST("Gateway/Execute")
+    Single<LinkEWalletResult> linkEWallet(@Body RequestObject request);
+
+    @POST("Gateway/Execute")
+    Single<SimpleResult>  commonServiceRx(@Body RequestObject requestObject);
+
 //    @FormUrlEncoded
 //    @POST("api/Collect/SearchOrderPostman")
 //    Single<CommonObjectListResult> searchOrderPostmanCollect1(@Field("OrderPostmanID") String orderPostmanID,

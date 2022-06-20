@@ -22,12 +22,14 @@ import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.EWalletRequestResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.poi.ss.formula.functions.T;
 
@@ -88,20 +90,21 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribeOn(Schedulers.io())
                 .delay(1500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(eWalletDataResult -> {
-                    if (eWalletDataResult != null && eWalletDataResult.getErrorCode().equals("00")) {
-                        mView.showListSuccess(eWalletDataResult.getListEWalletData());
+                .subscribe(result -> {
+                    ArrayList<EWalletDataResponse> walletDataResponses = NetWorkController.getGson().fromJson(result.getData(),new TypeToken<List<EWalletDataResponse>>(){}.getType());
+                    if (result.getErrorCode().equals("00")) {
+                        mView.showListSuccess(walletDataResponses);
                         mView.hideProgress();
-                        if (eWalletDataResult.getListEWalletData().size() == 0) {
+                        if (walletDataResponses.size() == 0) {
                             if (getPositionTab() == 0)
-                                titleChanged(eWalletDataResult.getListEWalletData().size(), 0);
+                                titleChanged(walletDataResponses.size(), 0);
                             else if (getPositionTab() == 4)
-                                titleChanged(eWalletDataResult.getListEWalletData().size(), 1);
+                                titleChanged(walletDataResponses.size(), 1);
 //                            mView.showErrorToast("Không tìm thấy dữ liệu phù hợp");
                         }
                     } else {
                         mView.hideProgress();
-                        Toast.showToast(getViewContext(), eWalletDataResult.getMessage());
+                        Toast.showToast(getViewContext(), result.getMessage());
                     }
                 }, throwable -> {
                     mView.showErrorToast(throwable.getMessage());
@@ -134,11 +137,12 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         if (type == 2) {
+                            EWalletRequestResponse response = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<EWalletRequestResponse>(){}.getType());
                             mView.showRequestSuccess(list, simpleResult.getMessage(),
-                                    simpleResult.getListEWalletResponse().getTranid(),
-                                    simpleResult.getListEWalletResponse().getRetRefNumber());
-                            Tranid = simpleResult.getListEWalletResponse().getTranid();
-                            RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
+                                    response.getTranid(),
+                                    response.getRetRefNumber());
+                            Tranid = response.getTranid();
+                            RetRefNumber = response.getRetRefNumber();
                             Mess = simpleResult.getMessage();
                         } else {
                             Toast.showToast(getViewContext(), simpleResult.getMessage());

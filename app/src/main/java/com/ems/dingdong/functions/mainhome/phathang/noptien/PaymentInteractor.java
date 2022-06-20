@@ -11,6 +11,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -21,32 +22,32 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     }
 
     @Override
-    public Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
-        return NetWorkController.getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
+    public Single<SimpleResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
+        return NetWorkControllerGateWay.getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
     @Override
     public Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
-        return NetWorkController.getHistoryPayment(dataRequestPayment);
+        return NetWorkControllerGateWay.getHistoryPayment(dataRequestPayment);
     }
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
-        return NetWorkController.requestPayment(paymentRequestModel);
+    public Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+        return NetWorkControllerGateWay.requestPayment(paymentRequestModel);
     }
 
     @Override
     public Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment) {
-        return NetWorkController.deletePayment(dataRequestPayment);
+        return NetWorkControllerGateWay.deletePayment(dataRequestPayment);
     }
 
     @Override
     public Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
-        return NetWorkController.confirmPayment(paymentConfirmModel);
+        return NetWorkControllerGateWay.confirmPayment(paymentConfirmModel);
     }
 
     @Override
     public Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
-        return NetWorkController.getDDsmartBankConfirmLinkRequest(request);
+        return NetWorkControllerGateWay.getDDsmartBankConfirmLinkRequest(request);
     }
 }

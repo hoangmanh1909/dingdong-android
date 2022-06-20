@@ -34,6 +34,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    packagingOptions {
+        exclude "lib/arm64-v8a/librealm-jni.so"
+    }
     signingConfigs {
         debug {
             keyAlias 'DingDong'

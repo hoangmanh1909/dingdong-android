@@ -8,6 +8,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -24,21 +25,21 @@ public class NopPhiInteractor extends Interactor<NopPhiContract.Presenter> imple
 
     @Override
     public Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
-        return NetWorkController.getHistoryPayment(dataRequestPayment);
+        return NetWorkControllerGateWay.getHistoryPayment(dataRequestPayment);
     }
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
-        return NetWorkController.requestPayment(paymentRequestModel);
+    public Single<SimpleResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+        return NetWorkControllerGateWay.requestPayment(paymentRequestModel);
     }
 
     @Override
     public Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment) {
-        return NetWorkController.deletePayment(dataRequestPayment);
+        return NetWorkControllerGateWay.deletePayment(dataRequestPayment);
     }
 
     @Override
     public Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
-        return NetWorkController.confirmPayment(paymentConfirmModel);
+        return NetWorkControllerGateWay.confirmPayment(paymentConfirmModel);
     }
 }

@@ -8,9 +8,11 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
+import com.ems.dingdong.model.response.VerifyLinkOtpResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.reflect.TypeToken;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -75,18 +77,19 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
         mInteractor.verifyLinkWithOtp(payLinkConfirm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((verifyLinkOtpResult, throwable) -> {
-                    if (verifyLinkOtpResult != null &&
-                            verifyLinkOtpResult.getErrorCode() != null &&
-                            verifyLinkOtpResult.getErrorCode().equals("00")) {
-                        if (!TextUtils.isEmpty(verifyLinkOtpResult.getToken())) {
-                            pref.putString(Constants.KEY_PAYMENT_TOKEN, verifyLinkOtpResult.getToken());
-                            mView.showOtpSuccess(verifyLinkOtpResult.getMessage());
+                .subscribe((result, throwable) -> {
+                    if (result != null &&
+                            result.getErrorCode() != null &&
+                            result.getErrorCode().equals("00")) {
+                        VerifyLinkOtpResponse response = NetWorkController.getGson().fromJson(result.getData(),new TypeToken<VerifyLinkOtpResponse>(){}.getType());
+                        if (!TextUtils.isEmpty(response.getToken())) {
+                            pref.putString(Constants.KEY_PAYMENT_TOKEN, response.getToken());
+                            mView.showOtpSuccess(result.getMessage());
                         } else {
                             mView.showOtpError("Không liên kết được ví điện tử");
                         }
-                    } else if (verifyLinkOtpResult != null && verifyLinkOtpResult.getErrorCode() != null) {
-                        mView.showOtpError(verifyLinkOtpResult.getMessage());
+                    } else if (result != null && result.getErrorCode() != null) {
+                        mView.showOtpError(result.getMessage());
                     } else {
                         mView.showOtpError(throwable.getMessage());
                     }
