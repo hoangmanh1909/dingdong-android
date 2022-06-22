@@ -1,11 +1,9 @@
-package com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang;
+package com.ems.dingdong.functions.mainhome.profile.ewallet.lienket;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,18 +14,17 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.utiles.NumberUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.HolderView> {
+public class LinkBankAdapter extends RecyclerView.Adapter<LinkBankAdapter.HolderView> {
     private List<Item> mList;
     private List<Item> mListFilter;
     private Context mContext;
 
-    public ListBankAdapter(Context context, List<Item> items) {
+    public LinkBankAdapter(Context context, List<Item> items) {
         mList = items;
         mListFilter = items;
         mContext = context;
@@ -44,12 +41,12 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
     @NonNull
     @Override
-    public HolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adapter, parent, false));
+    public LinkBankAdapter.HolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new LinkBankAdapter.HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adapter, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+    public void onBindViewHolder(@NonNull LinkBankAdapter.HolderView holder, int position) {
         holder.bindView(mListFilter.get(position));
     }
 
@@ -79,8 +76,7 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
             Item item = (Item) model;
             imgMotaikhoan.setImageResource(item.getImg());
             tvTitle.setText(item.getText());
-            if (item.getText().equals(""))
-                tvTitle.setVisibility(View.GONE);
+
             tvSotaikhoan.setText(item.getSotaikhoan());
             if (item.isLienket())
                 tvMatdinh.setText("Đã liên kết");

@@ -10,9 +10,31 @@ public class DanhSachNganHangRepsone {
     @SerializedName("BankName")
     @Expose
     public String BankName;
-    @SerializedName("Logo")
+    @SerializedName("GroupLogo")
     @Expose
     public String Logo;
+    @SerializedName("GroupType")
+    @Expose
+    public int GroupType;
+    @SerializedName("GroupName")
+    @Expose
+    public String GroupName;
+
+    public int getGroupType() {
+        return GroupType;
+    }
+
+    public void setGroupType(int groupType) {
+        GroupType = groupType;
+    }
+
+    public String getGroupName() {
+        return GroupName;
+    }
+
+    public void setGroupName(String groupName) {
+        GroupName = groupName;
+    }
 
     public String getLogo() {
         return Logo;

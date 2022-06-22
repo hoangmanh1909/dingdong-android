@@ -32,6 +32,16 @@ public class PaymentConfirmModel {
 
     @SerializedName("PostmanTel")
     String postmanTel;
+    @SerializedName("AccountType")
+    Integer AccountType;
+
+    public Integer getAccountType() {
+        return AccountType;
+    }
+
+    public void setAccountType(Integer accountType) {
+        AccountType = accountType;
+    }
 
     @SerializedName("Ladings")
     List<LadingPaymentInfo> ladingPaymentInfoList;

@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Liên kết tài khoản thấu chi NHTM "
+                android:text="Liên kết tài khoản"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="14dp" />
@@ -70,11 +70,13 @@
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/camera_view"
                 tools:ignore="MissingConstraints">
 
@@ -218,11 +220,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
                 tools:ignore="MissingConstraints" />
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout_thongtin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
                 tools:ignore="MissingConstraints">
 

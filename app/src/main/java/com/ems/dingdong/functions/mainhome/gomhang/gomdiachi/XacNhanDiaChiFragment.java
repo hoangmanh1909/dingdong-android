@@ -561,6 +561,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     public void showResponseSuccess(ArrayList<CommonObject> list) {
 //        mList.addAll(list);
         type = 1;
+        tvNodata.setVisibility(View.GONE);
         ArrayList<CommonObject> mListChuatam = new ArrayList<>();
         ArrayList<CommonObject> mListDatam = new ArrayList<>();
         itemAtPosition = null;
@@ -634,6 +635,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
             }
         }
+        recycler.setVisibility(View.VISIBLE);
     }
 
     SweetAlertDialog sweetAlertDialog;

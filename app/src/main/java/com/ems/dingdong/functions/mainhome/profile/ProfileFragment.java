@@ -141,19 +141,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 mPresenter.back();
                 break;
             case R.id.rl_logout:
-//                SipCmc.logOut(new LogOutCallBack() {
-//                    @Override
-//                    public void logoutSuccess() {
-//                        Log.d("logoutSuccess", " thanh cong");
-//                        super.logoutSuccess();
-//                    }
-//
-//                    @Override
-//                    public void logoutFailed() {
-//                        Log.d("logoutFailed", " that bai");
-//                        super.logoutFailed();
-//                    }
-//                });
+
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

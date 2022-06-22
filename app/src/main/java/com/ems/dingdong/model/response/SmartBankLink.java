@@ -42,10 +42,20 @@ public class SmartBankLink {
     private String paymentToken;
     @SerializedName("Status")
     @Expose
-    private String status;
+    private String status;@SerializedName("BankName")
+    @Expose
+    private String BankName;
     @SerializedName("IsDefaultPayment")
     @Expose
     private Boolean isDefaultPayment;
+
+    public String getBankName() {
+        return BankName;
+    }
+
+    public void setBankName(String bankName) {
+        BankName = bankName;
+    }
 
     public String getBankCode() {
         return bankCode;

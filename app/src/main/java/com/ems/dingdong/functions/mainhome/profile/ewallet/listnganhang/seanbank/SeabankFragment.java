@@ -235,16 +235,18 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         PopupMenu popupMenu = new PopupMenu(requireContext(), anchor);
         if (danhSachNganHangRepsone.size() > 0) {
             for (int i = 0; i < danhSachNganHangRepsone.size(); i++) {
-                popupMenu.getMenu().add(0, i, i, danhSachNganHangRepsone.get(i).getBankName());
+                if (danhSachNganHangRepsone.get(i).getGroupType() == 2)
+                    popupMenu.getMenu().add(0, i, danhSachNganHangRepsone.get(i).getGroupType(), danhSachNganHangRepsone.get(i).getBankName());
             }
             popupMenu.setOnMenuItemClickListener(item -> {
-                constraintLayout.setVisibility(View.VISIBLE);
-                idDanhSach = item.getItemId();
-                maNganHang = danhSachNganHangRepsone.get(idDanhSach).getBankCode();
-                tvTenchitietnganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankName());
-                tvTennganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankCode());
-                Glide.with(this).load(danhSachNganHangRepsone.get(idDanhSach).getLogo()).into(imgLogo);
-                tvTennganhanglienket.setText("Liên kết tài khoản " + danhSachNganHangRepsone.get(idDanhSach).getBankCode());
+                    constraintLayout.setVisibility(View.VISIBLE);
+                    idDanhSach = item.getItemId();
+                    maNganHang = danhSachNganHangRepsone.get(idDanhSach).getBankCode();
+                    tvTenchitietnganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankName());
+                    tvTennganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankCode());
+                    Glide.with(this).load(danhSachNganHangRepsone.get(idDanhSach).getLogo()).into(imgLogo);
+                    tvTennganhanglienket.setText("Liên kết tài khoản " + danhSachNganHangRepsone.get(idDanhSach).getBankCode());
+
                 return true;
             });
             popupMenu.show();

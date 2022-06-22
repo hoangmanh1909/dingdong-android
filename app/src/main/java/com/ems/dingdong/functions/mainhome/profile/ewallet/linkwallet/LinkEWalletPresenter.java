@@ -8,9 +8,15 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -28,13 +34,34 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
     }
 
     @Override
-    public void linkEWallet() {
+    public void getDanhSachNganHang() {
+        mView.showProgress();
+        mInteractor.getDanhSachNganHang()
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            DanhSachNganHangRepsone[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DanhSachNganHangRepsone[].class);
+                            List<DanhSachNganHangRepsone> list1 = Arrays.asList(list);
+                            mView.showDanhSach(list1);
+                            mView.hideProgress();
+                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void linkEWallet(int type) {
         mView.showProgress();
         PayLinkRequest request = new PayLinkRequest();
         if (TextUtils.isEmpty(mobileNumber) || !TextUtils.isEmpty(poCode) || !TextUtils.isEmpty(postmanCode)) {
             refreshUserInfo();
         }
         request.setpOCode(poCode);
+        request.setAccountType(type);
         request.setPostmanCode(postmanCode);
         request.setPostmanTel(mobileNumber);
         mInteractor.linkEWallet(request)
@@ -61,10 +88,12 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
     }
 
     @Override
-    public void verifyLinkWithOtp(String requestId, String otp) {
+    public void verifyLinkWithOtp(String requestId, String otp, int type) {
         mView.showProgress();
         PayLinkConfirm payLinkConfirm = new PayLinkConfirm();
         payLinkConfirm.setOTPCode(otp);
+        payLinkConfirm.setAccountType(type);
+        payLinkConfirm.setRequestId(requestId);
         payLinkConfirm.setRequestId(requestId);
         if (TextUtils.isEmpty(mobileNumber) || !TextUtils.isEmpty(poCode) || !TextUtils.isEmpty(postmanCode)) {
             refreshUserInfo();
@@ -107,6 +136,7 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
     @Override
     public void start() {
         refreshUserInfo();
+        getDanhSachNganHang();
     }
 
     @Override

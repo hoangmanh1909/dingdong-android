@@ -1,43 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bg_gradient_top">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="@dimen/dimen_56dp"
-                android:layout_height="@dimen/dimen_56dp"
-                android:layout_centerVertical="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_back_shadown" />
-
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/link_to_e_post_wallet"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_18sp" />
-        </RelativeLayout>
-    </FrameLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,6 +28,7 @@
 
             <com.ems.dingdong.views.OtpEditText
                 android:id="@+id/et_otp"
+                app:maxLength="6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
@@ -71,42 +37,7 @@
                 android:maxLength="6"
                 android:textIsSelectable="false"
                 android:textSize="40sp"
-                android:visibility="gone"
-                app:maxLength="6" />
-
-            <com.ems.dingdong.views.OtpEditText
-                android:id="@+id/et_otpvimb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:digits="1234567890"
-                android:inputType="number"
-                android:maxLength="8"
-                android:textIsSelectable="false"
-                android:textSize="40sp"
-                android:visibility="gone"
-                app:maxLength="8" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/camera_view"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="6dp"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/tv_chonnagnhang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_arrow_drop_down_v1"
-                    android:gravity="center|left"
-                    android:padding="10dp"
-                    android:text="Chọn ví"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/ll_from_info"
@@ -187,4 +118,4 @@
                 android:textSize="@dimen/_14sdp" />
         </LinearLayout>
     </RelativeLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

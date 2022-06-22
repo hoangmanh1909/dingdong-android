@@ -39,13 +39,13 @@ public class EWalletFragment extends ViewFragment<EWalletContract.Presenter> imp
         super.onDisplay();
         SharedPref pref = SharedPref.getInstance(getViewContext());
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
-        if (TextUtils.isEmpty(token)) {
-            btnLinkWallet.setVisibility(View.VISIBLE);
-            tvInfoLink.setText(getString(R.string.not_link_to_e_wallet));
-        } else {
-            btnLinkWallet.setVisibility(View.GONE);
-            tvInfoLink.setText(getString(R.string.linked_to_e_wallet));
-        }
+//        if (TextUtils.isEmpty(token)) {
+//            btnLinkWallet.setVisibility(View.VISIBLE);
+//            tvInfoLink.setText(getString(R.string.not_link_to_e_wallet));
+//        } else {
+//            btnLinkWallet.setVisibility(View.GONE);
+//            tvInfoLink.setText(getString(R.string.linked_to_e_wallet));
+//        }
     }
 
     @OnClick({R.id.img_back, R.id.btn_link_wallet})

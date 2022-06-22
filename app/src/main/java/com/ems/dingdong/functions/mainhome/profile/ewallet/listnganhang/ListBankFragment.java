@@ -24,8 +24,10 @@ import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.Gson;
 
 import org.apache.poi.ss.formula.functions.T;
 import org.jetbrains.annotations.NotNull;
@@ -91,22 +93,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         } else {
             isKietta = true;
         }
-
-//        if (isKietta)
-////        mList.add(new Item(2 + "", "SeaBank", isKietta, R.drawable.seabank));
-////        userInfo.setSmartBankLink(new ArrayList<>());
-//            if (userInfo.getSmartBankLink().size() > 0 || userInfo.getSmartBankLink() != null)
-//                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-//                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-////                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
-////                        mList.add(new Item(2 + "", "SeaBank", false, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
-////                    } else
-//                        mList.add(new Item(2 + "", "SeaBank", true, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
-//
-//                    } else
-//                        mList.add(new Item(1 + "", "Ví điện tử PostPay", isKietta, R.drawable.postpay, "Ví điện tử PostPay"));
-//
-//                }
 
         mAdapter = new ListBankAdapter(getContext(), mList) {
             @Override
@@ -177,10 +163,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                     @Override
                     public void onResponse(String id) {
                         if (id.equals("2")) {
-                            if (isKietta) {
-                                Toast.showToast(getViewContext(), "Bạn đã liên kết tài khoản Ví PayPost");
-                            } else
-                                mPresenter.showEwallet();
+                            mPresenter.showEwallet();
                         } else {
                             boolean is = false;
                             if (userInfo.getSmartBankLink() != null) {
@@ -200,9 +183,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                                 mPresenter.taikhoanthauchi();
                         }
                     }
-                }).
-
-                        show();
+                }).show();
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -283,19 +264,22 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     public void setsmartBankConfirmLink(String x) {
         SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
         k = Arrays.asList(v);
-        if (k.size() > 0 || k != null)
+        Log.d("AAAAAAAA", new Gson().toJson(k));
+        int t = 0;
+        if (k.size() > 0 || k != null) {
             for (int i = 0; i < k.size(); i++) {
                 if (k.get(i).getBankCode().equals("SeABank")) {
-//                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
-//                        mList.add(new Item(2 + "", "SeaBank", false, R.drawable.seabank, userInfo.getSmartBankLink().get(i).getBankAccountNumber()));
-//                    } else
-                    mList.add(new Item(2 + "", "SeaBank", true, R.drawable.seabank, k.get(i).getBankAccountNumber()));
-
+                    mList.add(new Item(2 + "", k.get(i).getBankName(), true, R.drawable.seabank, k.get(i).getBankAccountNumber()));
                 } else
-                    mList.add(new Item(1 + "", "Ví điện tử PostPay", isKietta, R.drawable.postpay, "Ví điện tử PostPay"));
+                    t++;
+                if (t == 0)
+                    mList.add(new Item(1 + "", "Ví điện tử PostPay", isKietta, R.drawable.postpay, k.get(i).getBankName()));
+                else {
+                    mList.add(new Item(1 + "", "", isKietta, R.drawable.postpay, k.get(i).getBankName()));
+                }
 
             }
-
+        }
         mAdapter.notifyDataSetChanged();
     }
 }
