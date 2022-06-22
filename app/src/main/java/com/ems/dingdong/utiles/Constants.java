@@ -261,6 +261,9 @@ public class Constants {
     public static final String DLV_DEFAULT_PAYMENT_BANK = "DLV_DEFAULT_PAYMENT_BANK";
     public static final String DLV_GET_LIST_BANK_LINK = "DLV_GET_LIST_BANK_LINK";
 
+    public static final String EXTRA_TYPE_FRAGMENT = "extraTypeFragment";
+    public static final int THRESHOLD_CLICK_TIME = 500;
+
 
 
 

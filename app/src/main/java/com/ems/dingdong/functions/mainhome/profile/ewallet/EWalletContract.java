@@ -14,5 +14,6 @@ public interface EWalletContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         void showLinkEWalletFragment();
+        int getTypeEWallet();
     }
 }

@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listwallet.ListEWalletPresenter;
 import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.response.DanhSachTaiKhoanRespone;
@@ -43,13 +44,14 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
 
     @Override
     public void showEwallet() {
-        new EWalletPresenter(mContainerView).pushView();
+        new ListEWalletPresenter(mContainerView,1).pushView();
     }
 
     @Override
-    public void taikhoanthauchi() {
-        new SeabankPresenter(mContainerView).pushView();
+    public void showBank() {
+        new ListEWalletPresenter(mContainerView,2).pushView();
     }
+
 
     @Override
     public void showSeaBank(SmartBankLink s) {

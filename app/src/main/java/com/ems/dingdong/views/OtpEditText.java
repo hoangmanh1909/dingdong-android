@@ -97,4 +97,7 @@ public class OtpEditText extends AppCompatEditText {
             }
         }
     }
+    public void setmNumChars(int maxLength){
+        this.mNumChars = maxLength;
+    }
 }

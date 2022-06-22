@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:paddingStart="@dimen/_10sdp"
+    android:paddingEnd="@dimen/_10sdp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_bank"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ngân hàng liên kết"
+        android:textColor="#03A9F4"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_bank"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:src="@drawable/postpay"
+        android:paddingStart="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv_bank"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="@dimen/_44sdp"
+        android:layout_height="@dimen/_36sdp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name_bank"
+        android:text="SeaBank"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/img_bank"
+        app:layout_constraintTop_toTopOf="@id/img_bank"
+        app:layout_constraintBottom_toBottomOf="@id/img_bank"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_matdinh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_bank"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Đã liên kết"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/green_border"
+        android:textStyle="italic" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@id/img_bank"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#A3A1A1"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

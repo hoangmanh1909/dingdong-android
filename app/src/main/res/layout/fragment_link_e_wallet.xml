@@ -67,11 +67,11 @@
                 android:cursorVisible="false"
                 android:digits="1234567890"
                 android:inputType="number"
-                android:maxLength="6"
+                android:maxLength="8"
                 android:textIsSelectable="false"
                 android:textSize="40sp"
                 android:visibility="gone"
-                app:maxLength="6" />
+                app:maxLength="8" />
 
             <LinearLayout
                 android:id="@+id/ll_from_info"

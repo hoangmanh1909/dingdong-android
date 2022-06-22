@@ -177,27 +177,28 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                     @Override
                     public void onResponse(String id) {
                         if (id.equals("2")) {
-                            if (isKietta) {
-                                Toast.showToast(getViewContext(), "Bạn đã liên kết tài khoản Ví PayPost");
-                            } else
-                                mPresenter.showEwallet();
+//                            if (isKietta) {
+//                                Toast.showToast(getViewContext(), "Bạn đã liên kết tài khoản Ví PayPost");
+//                            } else
+//                                mPresenter.showEwallet();
+                            mPresenter.showEwallet();
                         } else {
-                            boolean is = false;
-                            if (userInfo.getSmartBankLink() != null) {
-                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                                        is = false;
-                                        Toast.showToast(getViewContext(), "Vui lòng hủy liên kết tài khoản trước khi liên kết tài khoản mới");
-                                        break;
-                                    } else {
-                                        is = true;
-                                    }
-                                }
-                            } else is = true;
-
-                            if (is) mPresenter.taikhoanthauchi();
-                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
-                                mPresenter.taikhoanthauchi();
+//                            boolean is = false;
+//                            if (userInfo.getSmartBankLink() != null) {
+//                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+//                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+//                                        is = false;
+//                                        Toast.showToast(getViewContext(), "Vui lòng hủy liên kết tài khoản trước khi liên kết tài khoản mới");
+//                                        break;
+//                                    } else {
+//                                        is = true;
+//                                    }
+//                                }
+//                            } else is = true;
+//
+//                            if (is) mPresenter.taikhoanthauchi();
+//                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
+                                mPresenter.showBank();
                         }
                     }
                 }).

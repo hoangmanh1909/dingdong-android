@@ -13,6 +13,12 @@ public class DanhSachNganHangRepsone {
     @SerializedName("Logo")
     @Expose
     public String Logo;
+    @SerializedName("GroupLogo")
+    @Expose
+    public String groupLogo;
+    @SerializedName("GroupType")
+    @Expose
+    public Integer groupType;
 
     public String getLogo() {
         return Logo;
@@ -36,5 +42,22 @@ public class DanhSachNganHangRepsone {
 
     public void setBankName(String bankName) {
         BankName = bankName;
+    }
+
+
+    public String getGroupLogo() {
+        return groupLogo;
+    }
+
+    public void setGroupLogo(String groupLogo) {
+        this.groupLogo = groupLogo;
+    }
+
+    public Integer getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(Integer groupType) {
+        this.groupType = groupType;
     }
 }

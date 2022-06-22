@@ -319,7 +319,7 @@ object NetWorkControllerGateWay {
     } //SMB002
 
     @JvmStatic
-    fun getDanhSachNganHang(): Single<SimpleResult?>? {
+    fun getDanhSachNganHang(): Single<SimpleResult> {
         val data = getGson().toJson("")
         val signature = signature(data)
         val requestObject = RequestObject("ANDROID", "", Constants.DLV_GET_BANK_LIST, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)

@@ -16,6 +16,9 @@ public class PayLinkRequest {
     @SerializedName("Signature")
     String signature;
 
+    @SerializedName("AccountType")
+    int accountType;
+
     public void setPostmanTel(String postmanTel) {
         this.postmanTel = postmanTel;
     }
@@ -42,5 +45,13 @@ public class PayLinkRequest {
 
     public String getpOCode() {
         return pOCode;
+    }
+
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
     }
 }

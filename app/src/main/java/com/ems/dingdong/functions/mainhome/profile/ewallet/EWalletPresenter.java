@@ -6,8 +6,14 @@ import com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalle
 
 public class EWalletPresenter extends Presenter<EWalletContract.View, EWalletContract.Interactor> implements EWalletContract.Presenter {
 
+    private int typeEWallet = 1;
     public EWalletPresenter(ContainerView containerView) {
         super(containerView);
+    }
+
+    public EWalletPresenter setTypeEWallet(int typeEWallet){
+        this.typeEWallet = typeEWallet;
+        return this;
     }
 
     @Override
@@ -27,6 +33,11 @@ public class EWalletPresenter extends Presenter<EWalletContract.View, EWalletCon
 
     @Override
     public void showLinkEWalletFragment() {
-        new LinkEWalletPresenter(mContainerView).pushView();
+        new LinkEWalletPresenter(mContainerView).setTypeEWallet(typeEWallet).pushView();
+    }
+
+    @Override
+    public int getTypeEWallet() {
+        return typeEWallet;
     }
 }

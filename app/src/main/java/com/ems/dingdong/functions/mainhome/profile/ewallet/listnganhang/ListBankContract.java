@@ -39,7 +39,7 @@ public interface ListBankContract {
 
         void showEwallet();
 
-        void taikhoanthauchi();
+        void showBank();
 
         void showSeaBank(SmartBankLink s);
 

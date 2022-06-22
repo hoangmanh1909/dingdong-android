@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet;
 
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -60,6 +61,11 @@ public class  LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Prese
                 edtIdUser.setText(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
             }
         }
+        if (mPresenter.getTypeEWallet() == 1) {
+            otpEditText.setmNumChars(6);
+            otpEditText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(6)});
+        }
+
 
     }
 
@@ -73,9 +79,16 @@ public class  LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Prese
                 if (linearLayout.getVisibility() == View.VISIBLE) {
                     mPresenter.linkEWallet();
                 } else {
-                    if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) {
-                        showErrorToast(getString(R.string.wrong_otp_pattern));
-                        return;
+                    if (mPresenter.getTypeEWallet()==1){
+                        if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) { // payPost
+                            showErrorToast(getString(R.string.wrong_otp_pattern));
+                            return;
+                        }
+                    }else {
+                        if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 8) { //PayPost-MB
+                            showErrorToast(getString(R.string.wrong_otp_pattern));
+                            return;
+                        }
                     }
                     SharedPref pref = SharedPref.getInstance(getViewContext());
                     String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");

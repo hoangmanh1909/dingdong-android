@@ -15,6 +15,8 @@ public class PayLinkConfirm {
     String postmanCode;
     @SerializedName("POCode")
     String pOCode;
+    @SerializedName("AccountType")
+    int accountType;
 
     public void setRequestId(String requestId) {
         this.requestId = requestId;
@@ -58,5 +60,13 @@ public class PayLinkConfirm {
 
     public void setpOCode(String pOCode) {
         this.pOCode = pOCode;
+    }
+
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
     }
 }

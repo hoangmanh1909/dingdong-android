@@ -24,9 +24,15 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
     private String poCode;
     private String postmanCode;
     private SharedPref pref;
+    private int typeEWallet;
 
     public LinkEWalletPresenter(ContainerView containerView) {
         super(containerView);
+    }
+
+    public LinkEWalletPresenter setTypeEWallet(int typeEWallet){
+        this.typeEWallet = typeEWallet;
+        return this;
     }
 
     @Override
@@ -36,6 +42,8 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
         if (TextUtils.isEmpty(mobileNumber) || !TextUtils.isEmpty(poCode) || !TextUtils.isEmpty(postmanCode)) {
             refreshUserInfo();
         }
+        if (typeEWallet == 1) request.setAccountType(1); // typeEWallet == 1 request ví PostPay
+        else request.setAccountType(2);                  // typeEWallet == 1 request ví PostPay-MB
         request.setpOCode(poCode);
         request.setPostmanCode(postmanCode);
         request.setPostmanTel(mobileNumber);
@@ -71,6 +79,8 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
         if (TextUtils.isEmpty(mobileNumber) || !TextUtils.isEmpty(poCode) || !TextUtils.isEmpty(postmanCode)) {
             refreshUserInfo();
         }
+        if (typeEWallet == 1) payLinkConfirm.setAccountType(1); // typeEWallet == 1 request ví PostPay
+        else payLinkConfirm.setAccountType(2);                  // typeEWallet == 1 request ví PostPay-MB
         payLinkConfirm.setPostmanTel(mobileNumber);
         payLinkConfirm.setpOCode(poCode);
         payLinkConfirm.setPostmanCode(postmanCode);
@@ -105,6 +115,11 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
     @Override
     public String getUserIdApp() {
         return postmanCode;
+    }
+
+    @Override
+    public int getTypeEWallet() {
+        return typeEWallet;
     }
 
     @Override

@@ -40,5 +40,7 @@ public interface LinkEWalletContract {
         String getPhoneNumber();
 
         String getUserIdApp();
+
+        int getTypeEWallet();
     }
 }
