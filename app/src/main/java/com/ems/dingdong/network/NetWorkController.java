@@ -7,6 +7,7 @@ import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.ComfrimCreateMode;
@@ -30,6 +31,7 @@ import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LinkEWalletResult;
+import com.ems.dingdong.model.LinkHistory;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PhoneNumber;
 import com.ems.dingdong.model.PostOfficeResult;
@@ -86,14 +88,12 @@ import com.ems.dingdong.model.request.SeaBankPaymentRequest;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
-import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.BankAccountNumberResponse;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.model.response.IdentifyCationResponse;
-import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.SeaBankHistoryPaymentResponse;
 import com.ems.dingdong.model.response.SeaBankInquiryResponse;
 import com.ems.dingdong.model.response.VerifyAddressRespone;
@@ -102,8 +102,7 @@ import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
-import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -269,7 +268,6 @@ public class NetWorkController {
 //            type = "2";
 //        }
 
-//        Log.d("thasdasdasdas",Constants.HEADER_NUMBER);
         String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
                 hotlineNumber, ladingCode, "2", PostmanId, POCode, signature);
@@ -1069,6 +1067,14 @@ public class NetWorkController {
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
+    public static Single<SimpleResult> huyLienKetVi(SmartBankRequestCancelLinkRequest request) {
+        return getAPIRxBuilder().huyLienKetVi(request);
+    }
+
+    public static Single<SimpleResult> ddCall(CallLiveMode request) {
+        return getAPIRxBuilder().ddCall(request);
+    }
+
     public static Single<SimpleResult> SmartBankConfirmCancelLinkRequest(SmartBankConfirmCancelLinkRequest request) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         dataRequestPayment.setCode("SMB005");
@@ -1107,6 +1113,18 @@ public class NetWorkController {
 
     public static Single<ThuGomRespone> getDDThugom(BalanceModel r) {
         return getAPIRxBuilder().getGetMainviewCollec(r);
+    }
+
+    public static Single<SimpleResult> getHistory(LinkHistory r) {
+        return getAPIRxBuilder().getHistory(r);
+    }
+
+    public static Single<SimpleResult> getCallHistory(HistoryRequest r) {
+        return getAPIRxBuilder().getCallHistory(r);
+    }
+
+    public static Single<SimpleResult> SetDefaultPayment(LinkHistory r) {
+        return getAPIRxBuilder().SetDefaultPayment(r);
     }
 
     public static Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress r) {

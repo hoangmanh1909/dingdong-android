@@ -34,6 +34,7 @@ public interface ChiTietTaiKhoanContract {
 
     interface View extends PresentView<Presenter> {
         void showOTP();
+
         void dissOTP();
 
         void huyLKThanhCong();

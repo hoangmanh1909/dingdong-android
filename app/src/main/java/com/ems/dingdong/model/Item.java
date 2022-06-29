@@ -5,7 +5,7 @@ public class Item {
     String text;
     String addrest;
     boolean isLienket;
-    int img;
+    String img;
     int stt;
     String matin;
     String mabuugui;
@@ -15,6 +15,12 @@ public class Item {
     int lv2;
     String tvlv1;
     String tvlv2;
+    String BankCode;
+    String PIDNumber;
+    String PIDType;
+    String POCode;
+    String PaymentToken;
+    boolean defaut;
 
     public Item(String value, String text) {
         this.value = value;
@@ -28,12 +34,76 @@ public class Item {
         this.addrest = addrest;
     }
 
-    public Item(String value, String text, boolean isLienket, int img, String sotaikhoan) {
+    public Item(String value, String text, boolean isLienket, String img, String sotaikhoan, boolean defaut) {
         this.value = value;
         this.text = text;
         this.isLienket = isLienket;
         this.img = img;
         this.sotaikhoan = sotaikhoan;
+        this.defaut = defaut;
+    }
+
+    public Item(String value, String text, boolean isLienket, String img, String sotaikhoan, String BankCode,
+                String PIDNumber, String PIDType, String POCode, String PaymentToken, boolean defaut) {
+        this.value = value;
+        this.text = text;
+        this.isLienket = isLienket;
+        this.img = img;
+        this.sotaikhoan = sotaikhoan;
+        this.BankCode = BankCode;
+        this.PIDNumber = PIDNumber;
+        this.PIDType = PIDType;
+        this.POCode = POCode;
+        this.PaymentToken = PaymentToken;
+        this.defaut = defaut;
+    }
+
+    public boolean isDefaut() {
+        return defaut;
+    }
+
+    public void setDefaut(boolean defaut) {
+        this.defaut = defaut;
+    }
+
+    public String getPaymentToken() {
+        return PaymentToken;
+    }
+
+    public void setPaymentToken(String paymentToken) {
+        PaymentToken = paymentToken;
+    }
+
+    public String getBankCode() {
+        return BankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        BankCode = bankCode;
+    }
+
+    public String getPIDNumber() {
+        return PIDNumber;
+    }
+
+    public void setPIDNumber(String PIDNumber) {
+        this.PIDNumber = PIDNumber;
+    }
+
+    public String getPIDType() {
+        return PIDType;
+    }
+
+    public void setPIDType(String PIDType) {
+        this.PIDType = PIDType;
+    }
+
+    public String getPOCode() {
+        return POCode;
+    }
+
+    public void setPOCode(String POCode) {
+        this.POCode = POCode;
     }
 
     public String getSotaikhoan() {
@@ -50,7 +120,8 @@ public class Item {
         this.mabuugui = mabuugui;
         this.sohoadon = sohoadon;
     }
-    public Item(int lv1, int lv2,String value) {
+
+    public Item(int lv1, int lv2, String value) {
         this.value = value;
         this.lv1 = lv1;
         this.lv2 = lv2;
@@ -122,11 +193,11 @@ public class Item {
         this.sohoadon = sohoadon;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

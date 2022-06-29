@@ -1,9 +1,11 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabContract;
@@ -22,6 +24,7 @@ import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -109,11 +112,15 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 });
     }
 
+    OtpDialog otpDialog;
+
     @Override
-    public void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode, int type, String bankcode, String posmanTel) {
+    public void requestPayment(List<LadingPaymentInfo> list, String poCode,
+                               String routeCode, String postmanCode, int type,
+                               String bankcode, String posmanTel, String token, SmartBankLink item) {
         PaymentRequestModel requestModel = new PaymentRequestModel();
         SharedPref pref = SharedPref.getInstance(getViewContext());
-        String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
+//        String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         ladingPaymentInfoList = new ArrayList<>();
         ladingPaymentInfoList = list;
         requestModel.setLadingPaymentInfoList(list);
@@ -127,31 +134,43 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
             requestModel.setServiceCode("2104");
         else if (getPositionTab() == 4)
             requestModel.setServiceCode("2105");
-
+        mView.showProgress();
         mInteractor.requestPayment(requestModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
-                        if (type == 2) {
-                            mView.showRequestSuccess(list, simpleResult.getMessage(),
-                                    simpleResult.getListEWalletResponse().getTranid(),
-                                    simpleResult.getListEWalletResponse().getRetRefNumber());
+                        if (type == 1) {
+//                            mView.showRequestSuccess(list, simpleResult.getMessage(),
+//                                    simpleResult.getListEWalletResponse().getTranid(),
+//                                    simpleResult.getListEWalletResponse().getRetRefNumber());
                             Tranid = simpleResult.getListEWalletResponse().getTranid();
                             RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
                             Mess = simpleResult.getMessage();
+                            otpDialog = new OtpDialog(getViewContext(), type, item, new OtpDialog.OnPaymentCallback() {
+                                @Override
+                                public void onPaymentClick(String otp) {
+                                    confirmPayment(list, otp,
+                                            Tranid, RetRefNumber, poCode, routeCode, postmanCode, posmanTel, token);
+                                }
+                            }, Mess);
+                            otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                            otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                            otpDialog.show();
+                            mView.hideProgress();
                         } else {
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.showThanhCong();
                         }
                     } else if (simpleResult != null) {
-//                        mView.dongdialog();
                         mView.showConfirmError(simpleResult.getMessage());
+                        mView.hideProgress();
+
                     } else {
                         mView.dongdialog();
+                        mView.hideProgress();
                         mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
-                    mView.hideProgress();
                 }, throwable -> {
                     mView.showConfirmError(throwable.getMessage());
                     mView.hideProgress();
@@ -204,6 +223,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                     } else if (simpleResult != null) {
                         mView.showConfirmError(simpleResult.getMessage());
                     } else {
+
                         mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
                     }
                     mView.hideProgress();
@@ -215,15 +235,14 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
     @Override
     public void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
-                               String routeCode, String postmanCode, String mobileNumber) {
+                               String routeCode, String postmanCode, String mobileNumber, String token) {
         PaymentConfirmModel model = new PaymentConfirmModel();
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String values = sharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
 //        if (!TextUtils.isEmpty(values)) {
 //            mobileNumber = values.split(";")[0];
 //        }
-        String token = sharedPref.getString(Constants.KEY_PAYMENT_TOKEN, "");
-        model.setOtpCode(otp);
+        model.setOtpCode(otp.toUpperCase());
         model.setPaymentToken(token);
         model.setTransId(requestId);
         model.setRetRefNumber(retRefNumber);
@@ -239,15 +258,28 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showConfirmSuccess(simpleResult.getMessage());
-                    } else if (simpleResult != null) {
+                        try {
+                            otpDialog.dismiss();
+                        } catch (Exception x) {
+                            x.getMessage();
+                        }
+                    } else if (simpleResult.getErrorCode().equals("101")) {
                         mView.showConfirmError(simpleResult.getMessage());
-                        mView.dongdialog();
                     } else {
-                        mView.showConfirmError("Lỗi xử lí hệ thống, vui lòng liên hệ ban quản trị.");
+                        mView.showConfirmError(simpleResult.getMessage());
+                        try {
+                            otpDialog.dismiss();
+                        } catch (Exception x) {
+                            x.getMessage();
+                        }
                     }
-                    mView.dongdialog();
                     mView.hideProgress();
                 }, throwable -> {
+                    try {
+                        otpDialog.dismiss();
+                    } catch (Exception x) {
+                        x.getMessage();
+                    }
                     mView.showConfirmError(throwable.getMessage());
                     mView.hideProgress();
                 });
@@ -309,11 +341,10 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
-//                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.setsmartBankConfirmLink(simpleResult.getData());
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
-                });
+                }, Throwable::printStackTrace);
     }
 }

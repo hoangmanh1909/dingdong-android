@@ -32,18 +32,31 @@
             android:padding="5dp"
             android:src="@drawable/seabank" />
 
-
-        <TextView
-            android:id="@+id/tv_sotaikhoan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+        <LinearLayout
+            android:id="@+id/ll_linlayout"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
             android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/img_motaikhoan"
             android:gravity="center|left"
-            android:text="xxxx xxxx xxxx 9999"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_sotaikhoan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xxxx xxxx xxxx 9999"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_trang_thai"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nge ghi âm" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_matdinh"

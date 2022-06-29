@@ -99,7 +99,6 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                 if (linearLayout.getVisibility() == View.VISIBLE) {
                     mPresenter.linkEWallet(mType);
                 } else {
-
                     if (mType == 1) {
                         if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) {
                             showErrorToast(getString(R.string.wrong_otp_pattern));
@@ -109,14 +108,13 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                         String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
                         mPresenter.verifyLinkWithOtp(requestId, otpEditText.getText().toString(), 1);
                     } else {
-                        if (TextUtils.isEmpty(otpEditTextViMB.getText())) {
+                        if (TextUtils.isEmpty(otpEditTextViMB.getText()) || otpEditTextViMB.getText().length() != 6) {
                             showErrorToast(getString(R.string.wrong_otp_pattern));
                             return;
                         }
                         SharedPref pref = SharedPref.getInstance(getViewContext());
                         String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
                         mPresenter.verifyLinkWithOtp(requestId, otpEditTextViMB.getText().toString(), 2);
-
                     }
 
                 }
@@ -127,7 +125,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     @Override
     public void showLinkSuccess(String message) {
         linearLayout.setVisibility(View.GONE);
-
+        tvChonnagnhang.setEnabled(false);
         if (mType == 1) {
             otpEditText.setVisibility(View.VISIBLE);
         } else {
@@ -142,7 +140,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
         new SweetAlertDialog(getViewContext())
                 .setConfirmText("OK")
                 .setTitleText(getResources().getString(R.string.notification))
-                .setContentText(message)
+                .setContentText("Liên kết tài khoản ví thành công.")
                 .setConfirmClickListener(sweetAlertDialog -> {
                     mPresenter.back();
                     sweetAlertDialog.dismiss();

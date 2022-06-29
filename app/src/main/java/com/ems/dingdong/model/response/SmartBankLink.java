@@ -42,12 +42,123 @@ public class SmartBankLink {
     private String paymentToken;
     @SerializedName("Status")
     @Expose
-    private String status;@SerializedName("BankName")
+    private String status;
+    @SerializedName("GroupName")
+    @Expose
+    private String GroupName;
+    @SerializedName("BankName")
     @Expose
     private String BankName;
+    @SerializedName("BankLogo")
+    @Expose
+    private String BankLogo;
+    @SerializedName("GroupLogo")
+    @Expose
+    private String GroupLogo;
     @SerializedName("IsDefaultPayment")
     @Expose
     private Boolean isDefaultPayment;
+    @SerializedName("IsShowOTPPayment")
+    @Expose
+    private Boolean IsShowOTPPayment;
+
+    @SerializedName("OTPLength")
+    @Expose
+    private int OTPLength;
+    @SerializedName("OTPType")
+    @Expose
+    private int OTPType;
+    @SerializedName("GroupType")
+    @Expose
+    private int GroupType;
+
+    public int getGroupType() {
+        return GroupType;
+    }
+
+    public String getGroupLogo() {
+        return GroupLogo;
+    }
+
+    public void setGroupLogo(String groupLogo) {
+        GroupLogo = groupLogo;
+    }
+
+    public void setGroupType(int groupType) {
+        GroupType = groupType;
+    }
+
+    public String getpIDType() {
+        return pIDType;
+    }
+
+    public void setpIDType(String pIDType) {
+        this.pIDType = pIDType;
+    }
+
+    public String getpIDNumber() {
+        return pIDNumber;
+    }
+
+    public void setpIDNumber(String pIDNumber) {
+        this.pIDNumber = pIDNumber;
+    }
+
+    public String getpOCode() {
+        return pOCode;
+    }
+
+    public void setpOCode(String pOCode) {
+        this.pOCode = pOCode;
+    }
+
+    public String getpOName() {
+        return pOName;
+    }
+
+    public void setpOName(String pOName) {
+        this.pOName = pOName;
+    }
+
+    public String getGroupName() {
+        return GroupName;
+    }
+
+    public void setGroupName(String groupName) {
+        GroupName = groupName;
+    }
+
+    public Boolean getDefaultPayment() {
+        return isDefaultPayment;
+    }
+
+    public void setDefaultPayment(Boolean defaultPayment) {
+        isDefaultPayment = defaultPayment;
+    }
+
+    public Boolean getShowOTPPayment() {
+        return IsShowOTPPayment;
+    }
+
+    public void setShowOTPPayment(Boolean showOTPPayment) {
+        IsShowOTPPayment = showOTPPayment;
+    }
+
+    public int getOTPLength() {
+        return OTPLength;
+    }
+
+    public void setOTPLength(int OTPLength) {
+        this.OTPLength = OTPLength;
+    }
+
+    public int getOTPType() {
+        return OTPType;
+    }
+
+    public void setOTPType(int OTPType) {
+        this.OTPType = OTPType;
+    }
 
     public String getBankName() {
         return BankName;
@@ -59,6 +170,14 @@ public class SmartBankLink {
 
     public String getBankCode() {
         return bankCode;
+    }
+
+    public String getBankLogo() {
+        return BankLogo;
+    }
+
+    public void setBankLogo(String bankLogo) {
+        BankLogo = bankLogo;
     }
 
     public void setBankCode(String bankCode) {

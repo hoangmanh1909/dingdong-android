@@ -12,6 +12,7 @@ import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.notification.cuocgoictel.NotiCtelPresenter;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
@@ -38,7 +39,7 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
     public void start() {
         if (mess != null) {
             String k[] = mess.split(";");
-            Log.d("sadasdasdasda", k[0] + ";"+ k[1]);
+            Log.d("sadasdasdasda", k[0] + ";" + k[1]);
             if (k.length == 2) {
                 List<String> ticketModes = new ArrayList<>();
                 ticketModes.add(k[1]);
@@ -94,6 +95,10 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
         new DetailNotifyPresenter(mContainerView).setCodeTicket(ticket).pushView();
     }
 
+    public void showCall(String ticket) {
+        new NotiCtelPresenter(mContainerView).setCodeTicket(ticket).pushView();
+    }
+
     @Override
     public void isSeen(List<String> list, String ticket, int type) {
         mView.hideProgress();
@@ -103,7 +108,9 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
                         mView.hideProgress();
-                        if (list.size() == 1 && type != 1)
+                        if (list.size() == 1 && type == 5) {
+                            showCall(ticket);
+                        } else if (list.size() == 1 && type != 1)
                             showDetail(ticket);
                         else {
                             mView.refesht();

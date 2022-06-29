@@ -2,8 +2,11 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Single;
 
 /**
  * The Phone interactor
@@ -25,4 +28,10 @@ class PhoneInteractor extends Interactor<PhoneContract.Presenter>
     public void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
         NetWorkController.updateMobile(code, type, mobileNumber, commonCallback);
     }
+
+    @Override
+    public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
+        return NetWorkController.ddCall(callLiveMode);
+    }
+
 }

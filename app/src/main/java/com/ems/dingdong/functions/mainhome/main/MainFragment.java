@@ -153,7 +153,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
             ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
             mobilenumber = userInfo.getMobileNumber();
-            mPresenter.getListTicket(ticketNotifyRequest);
+            try {
+                mPresenter.getListTicket(ticketNotifyRequest);
+
+            } catch (Exception x) {
+                x.getSuppressed();
+            }
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
                 getBalance();

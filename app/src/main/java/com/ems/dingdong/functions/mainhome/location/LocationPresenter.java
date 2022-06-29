@@ -9,13 +9,20 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.notification.cuocgoictel.NotiCtelPresenter;
+import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
+import com.ems.dingdong.notification.cuocgoictel.data.HistoryRespone;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,7 +36,9 @@ import retrofit2.Response;
 public class LocationPresenter extends Presenter<LocationContract.View, LocationContract.Interactor>
         implements LocationContract.Presenter {
 
+
     private String poCode;
+    private String code = "";
 
     public LocationPresenter(ContainerView containerView) {
         super(containerView);
@@ -44,6 +53,13 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
     public void start() {
         // Start getting data here
         initPocode();
+
+        if (!code.equals("")) {
+            findLocation(code);
+            HistoryRequest request = new HistoryRequest();
+            request.setLadingCode(code);
+            getHistoryCall(request);
+        }
     }
 
     @Override
@@ -54,6 +70,60 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
     @Override
     public void showBarcode(BarCodeCallback barCodeCallback) {
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
+    }
+
+    public LocationPresenter setCodeTicket(String codeTicket) {
+        this.code = codeTicket;
+        return this;
+    }
+
+    @Override
+    public void ddCall(CallLiveMode r) {
+        mView.showProgress();
+        mInteractor.ddCall(r)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showCallLive(r.getFromNumber());
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void getHistoryCall(HistoryRequest request) {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        request.setPOCode(poCode);
+        request.setPostmanCode(userInfo.getUserName());
+        request.setPostmanTel(userInfo.getMobileNumber());
+        mInteractor.getHistoryCall(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+
+                        HistoryRespone[] j
+                                = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
+                        List<HistoryRespone> l = Arrays.asList(j);
+                        mView.showLog(l);
+
+                    } else {
+                        mView.showError();
+                    }
+                    mView.hideProgress();
+                });
     }
 
     @Override
@@ -79,6 +149,11 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                             mView.hideProgress();
                         }
                 );
+    }
+
+    @Override
+    public String getCode() {
+        return code;
     }
 
     @Override

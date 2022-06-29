@@ -18,6 +18,7 @@ import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.SmartBankLink;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public interface PaymentContract {
         Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel);
 
         Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request);
+
 
     }
 
@@ -70,11 +72,14 @@ public interface PaymentContract {
 
         void getDataPayment(String serviceCode, String poCode, String routeCode, String postmanCode, String fromDate, String toDate);
 
-        void requestPayment(List<LadingPaymentInfo> list, String poCode, String routeCode, String postmanCode, int type, String bankcode, String posmanTel);
+        void requestPayment(List<LadingPaymentInfo> list, String poCode,
+                            String routeCode, String postmanCode, int type,
+                            String bankcode, String posmanTel, String token, SmartBankLink item);
 
         void deletePayment(List<EWalletDataResponse> list);
 
-        void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode, String mobileNumber);
+        void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
+                            String routeCode, String postmanCode, String mobileNumber, String token);
 
         int getPositionTab();
 

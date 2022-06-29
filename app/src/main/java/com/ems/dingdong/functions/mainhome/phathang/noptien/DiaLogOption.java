@@ -1,16 +1,28 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
+import static com.blankj.utilcode.util.StringUtils.getString;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.IdCallback;
+import com.ems.dingdong.callback.ViCallback;
+import com.ems.dingdong.dialog.NotificationDialog;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
@@ -18,8 +30,10 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,25 +49,47 @@ public class DiaLogOption extends Dialog {
 
 
     private Context mContext;
-    IdCallback idCallback;
+    ViCallback idCallback;
     private UserInfo userInfo;
     String userJson;
     SharedPref sharedPref;
 
     @BindView(R.id.ll_taikhoan)
     LinearLayout llTaikhoan;
+    @BindView(R.id.ll_vi)
+    LinearLayout llVi;
+    @BindView(R.id.rl_vipostpay)
+    RelativeLayout rlVipostpay;
+    @BindView(R.id.rl_vipostpay_mb)
+    RelativeLayout rlVipostpayMb;
     @BindView(R.id.tv_tennganhang)
     TextView tvTennganhang;
-    @BindView(R.id.tv_vidientu)
-    TextView tvVidientu;
+    @BindView(R.id.tv_vipostpay)
+    TextView tvVipostpay;
+    @BindView(R.id.tv_vipostpay_mb)
+    TextView tvVipostpay_mb;
+    @BindView(R.id.tv_vi)
+    TextView tvVi;
+
+
+    @BindView(R.id.img_logo)
+    ImageView imgLogo;
+    @BindView(R.id.img_vipostpay)
+    ImageView imgVipostpay;
+    @BindView(R.id.img_vipostpay_mb)
+    ImageView imgVipostpayMb;
     @BindView(R.id.tv_lienket)
     TextView tvLienket;
     @BindView(R.id.btn_link_wallet)
     Button btnLienket;
     @BindView(R.id.process_bar)
     ProgressBar process;
+    String token = "";
+    String tokenSeaBan = "";
+    String tokenMB = "";
+    String bankcode = "", bankcodeMB = "", bankcodeSeanBank = "";
 
-    public DiaLogOption(Context context, IdCallback idCallback) {
+    public DiaLogOption(Context context, ViCallback idCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mContext = context;
         View view = View.inflate(getContext(), R.layout.dialog_option, null);
@@ -76,7 +112,6 @@ public class DiaLogOption extends Dialog {
         v.setRouteCode(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode());
         v.setRouteId(Long.parseLong(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId()));
         try {
-//            mPresenter.getDDsmartBankConfirmLinkRequest(v);
             NetWorkController.getDDsmartBankConfirmLinkRequest(v)
                     .delay(1000, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
@@ -91,21 +126,36 @@ public class DiaLogOption extends Dialog {
                                     tvLienket.setVisibility(View.VISIBLE);
                                     btnLienket.setVisibility(View.VISIBLE);
                                     llTaikhoan.setVisibility(View.GONE);
-                                    tvVidientu.setVisibility(View.GONE);
+                                    llVi.setVisibility(View.GONE);
                                 } else if (k.size() > 0)
                                     for (SmartBankLink i : k) {
-
                                         tvLienket.setVisibility(View.GONE);
                                         btnLienket.setVisibility(View.GONE);
-                                        if (k.size() == 2) {
+                                        if (i.getBankCode().equals("SeABank") && i.getIsDefaultPayment()) {
                                             llTaikhoan.setVisibility(View.VISIBLE);
-                                            tvVidientu.setVisibility(View.VISIBLE);
-                                        } else if (i.getBankCode().equals("SeABank") && k.size() == 1) {
-                                            llTaikhoan.setVisibility(View.VISIBLE);
-                                            tvVidientu.setVisibility(View.GONE);
-                                        } else if (i.getBankCode().equals("EW") & k.size() == 1) {
-                                            tvVidientu.setVisibility(View.VISIBLE);
-                                            llTaikhoan.setVisibility(View.GONE);
+                                            tokenSeaBan = i.getPaymentToken();
+                                            bankcodeSeanBank = i.getBankCode();
+                                            Glide.with(getContext()).load(i.getBankLogo()).into(imgLogo);
+                                        } else if (i.getBankCode().equals("EW") && i.getIsDefaultPayment()) {
+                                            llVi.setVisibility(View.VISIBLE);
+                                            rlVipostpayMb.setVisibility(View.VISIBLE);
+                                            tvVipostpay_mb.setText(i.getBankName());
+                                            tokenMB = i.getPaymentToken();
+                                            bankcodeMB = i.getBankCode();
+                                            Log.d("AAAAA tokenMB", tokenMB);
+                                            Glide.with(getContext()).load(i.getBankLogo()).into(imgVipostpayMb);
+                                        } else if (i.getBankCode().equals("VNPD") && i.getIsDefaultPayment()) {
+                                            llVi.setVisibility(View.VISIBLE);
+                                            rlVipostpay.setVisibility(View.VISIBLE);
+                                            tvVipostpay.setText(i.getBankName());
+                                            token = i.getPaymentToken();
+                                            bankcode = i.getBankCode();
+                                            Log.d("AAAAA token", tokenMB);
+                                            Glide.with(getContext()).load(i.getBankLogo()).into(imgVipostpay);
+                                        }
+                                        if (llVi.getVisibility() == View.GONE) {
+                                            llVi.setVisibility(View.VISIBLE);
+                                            tvVi.setVisibility(View.VISIBLE);
                                         }
                                     }
                                 for (int i = 0; i < k.size(); i++) {
@@ -147,22 +197,38 @@ public class DiaLogOption extends Dialog {
     }
 
 
-    @OnClick({R.id.ic_cancel, R.id.rl_nganhang, R.id.tv_vidientu, R.id.btn_link_wallet})
+    @OnClick({R.id.ic_cancel, R.id.rl_nganhang, R.id.rl_vipostpay, R.id.rl_vipostpay_mb, R.id.btn_link_wallet, R.id.tv_vi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ic_cancel:
                 dismiss();
                 break;
             case R.id.btn_link_wallet:
-                idCallback.onResponse("3");
+                idCallback.onResponse("3", token, bankcode);
                 dismiss();
                 break;
             case R.id.rl_nganhang:
-                idCallback.onResponse("1");
+                idCallback.onResponse("1", tokenSeaBan, bankcodeSeanBank);
                 dismiss();
                 break;
-            case R.id.tv_vidientu:
-                idCallback.onResponse("2");
+            case R.id.rl_vipostpay:
+                idCallback.onResponse("2", token, bankcode);
+                dismiss();
+                break;
+            case R.id.rl_vipostpay_mb:
+                idCallback.onResponse("4", tokenMB, bankcodeMB);
+                dismiss();
+                break;
+            case R.id.tv_vi:
+                new NotificationDialog(getContext())
+                        .setConfirmText(getString(R.string.payment_confirn))
+                        .setCancelText(getString(R.string.payment_cancel))
+                        .setHtmlContent("Bạn không thể thực hiện chức năng này. Vui lòng kiểm tra lựa chọn tài khoản mặc định để tiếp tục thực hiện.")
+                        .setCancelClickListener(Dialog::dismiss)
+                        .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            new ListBankPresenter((ContainerView) getContext()).pushView();
+                        }).show();
                 dismiss();
                 break;
 

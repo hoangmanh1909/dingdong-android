@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankActivite;
@@ -16,6 +17,7 @@ import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.dialog.D
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.dialog.DiaLogSoDu;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
@@ -27,6 +29,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Utils;
 import com.ems.dingdong.views.CustomTextView;
 import com.google.gson.Gson;
 
@@ -68,6 +71,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     DialogOTP otpDialog;
     int type = 0;
     SmartBankLink s;
+    PostOffice postOffice;
 
     @Override
     protected int getLayoutId() {
@@ -98,7 +102,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
         Log.d("asdhjg23123", new Gson().toJson(userInfo));
 
         if (!postOfficeJson.isEmpty()) {
-            PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
             tvMabuucuc.setText(String.format("%s - %s", postOffice.getCode(), postOffice.getName()));
         }
 //                tvMabuucuc.setText(s.getPOCode() + " - " + userInfo.get);
@@ -140,6 +144,11 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 //                            callOTP.setPostmanCode(s.getPostmanCode());
 //                            mPresenter.ddCallOTP(callOTP);
 //                        } else {
+                    String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+                    String routeCode = "";
+                    if (!TextUtils.isEmpty(routeInfoJson)) {
+                        routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
+                    }
                     SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
                     smartBankRequestCancelLinkRequest.setBankCode(s.getBankCode());
                     smartBankRequestCancelLinkRequest.setPIDNumber(s.getPIDNumber());
@@ -148,6 +157,14 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
                     smartBankRequestCancelLinkRequest.setPostmanCode(s.getPostmanCode());
                     smartBankRequestCancelLinkRequest.setSeABankAccount(s.getBankAccountNumber());
                     smartBankRequestCancelLinkRequest.setSeABankAccountLimit(s.getBankAccountLimit());
+                    smartBankRequestCancelLinkRequest.setPODistrictCode(userInfo.getPODistrictCode());
+                    smartBankRequestCancelLinkRequest.setPOProvinceCode(userInfo.getPOProvinceCode());
+                    smartBankRequestCancelLinkRequest.setRouteCode(routeCode);
+                    smartBankRequestCancelLinkRequest.setRouteId(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId());
+                    smartBankRequestCancelLinkRequest.setPostmanTel(userInfo.getMobileNumber());
+                    smartBankRequestCancelLinkRequest.setPostmanId(userInfo.getiD());
+                    smartBankRequestCancelLinkRequest.setPostmanCode(userInfo.getUserName());
+                    smartBankRequestCancelLinkRequest.setSignature(Utils.SHA256(userInfo.getMobileNumber() + userInfo.getUserName() + s.getPOCode() + BuildConfig.PRIVATE_KEY).toUpperCase());
 
                     title = "HỦY LIÊN KẾT";
                     tilteMess = "Bạn có chắc chắn muốn hủy liên kết tài khoản không?";
@@ -282,21 +299,11 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 
     @Override
     public void capNhatMacDinh() {
-
-//        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
         if (s.getBankCode().equals("SeABank")) {
-//                if (type == 2) {
-//                    s.setIsDefaultPayment(false);
-//                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-//                } else if (type == 1) {
-//                    s.setIsDefaultPayment(true);
-//                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-//                }
             if (s.getIsDefaultPayment()) {
                 btnHuyMatmacdinh.setText("Hủy mặc định");
             } else {
                 btnHuyMatmacdinh.setText("Đặt mặc định");
-//                }
             }
         }
 

@@ -13,6 +13,10 @@ import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneKhiem;
 import com.ems.dingdong.dialog.DialogCuocgoi;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
+import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.PhoneCallback;
@@ -34,6 +38,8 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     CustomTextView tvContactPhone;
     private String mPhone;
     private PhoneConectDialog mPhoneConectDialog;
+    SharedPref sharedPref;
+    String userJson;
 
     public static PhoneFragment getInstance() {
         return new PhoneFragment();
@@ -48,6 +54,8 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     public void initLayout() {
         super.initLayout();
         tvContactPhone.setText(mPresenter.getPhone());
+
+
     }
 
     @OnClick(R.id.tv_ContactPhone)
@@ -61,14 +69,26 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
             @Override
             public void onCall(String phone) {
                 mPhone = phone;
-                showCallSuccess(phone);
+                CallLiveMode callLiveMode = new CallLiveMode();
+                sharedPref = new SharedPref(getViewContext());
+                userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                callLiveMode.setToNumber(phone);
+                callLiveMode.setLadingCode(mPresenter.getCode());
+                mPresenter.ddCall(callLiveMode);
             }
 
             @Override
             public void onCallEdit(String phone, int type) {
                 mPhone = phone;
                 if (type == 1) {
-                    showCallSuccess(phone);
+                    CallLiveMode callLiveMode = new CallLiveMode();
+                    sharedPref = new SharedPref(getViewContext());
+                    userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                    callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                    callLiveMode.setToNumber(phone);
+                    callLiveMode.setLadingCode(mPresenter.getCode());
+                    mPresenter.ddCall(callLiveMode);
                 } else {
                     mPresenter.callForward(phone);
                 }
@@ -115,6 +135,20 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
     public void showView(String phone, String mes) {
         showSuccessToast(mes);
 
+    }
+
+    @Override
+    public void showCallLive(String phone) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phone));
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, 100);
+        } else {
+            startActivity(intent);
+        }
     }
 
     private void showConfirmSaveMobile(final String phone) {

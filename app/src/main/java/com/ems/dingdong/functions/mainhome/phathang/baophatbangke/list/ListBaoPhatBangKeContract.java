@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -70,7 +71,7 @@ interface ListBaoPhatBangKeContract {
          */
         Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                                  String callForwardType, String hotlineNumber,
-                                                 String ladingCode, String PostmanId, String POCode,CommonCallback<SimpleResult> callback);
+                                                 String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         /**
          * Update mobile of current lading code.
@@ -94,6 +95,8 @@ interface ListBaoPhatBangKeContract {
         Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment);
 
         Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude);
+
+        Single<SimpleResult> ddCall(CallLiveMode callLiveMode);
     }
 
     interface View extends PresentView<Presenter> {
@@ -135,6 +138,8 @@ interface ListBaoPhatBangKeContract {
         void showThongBao(String mess);
 
         void shoSucces(String mess);
+
+        void showCallLive(String phone);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -144,6 +149,9 @@ interface ListBaoPhatBangKeContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);*/
+
+        void showLog(String maE);
+
         void ddSreachPhone(PhoneNumber dataRequestPayment);
 
         void getMapVitri(Double v1, Double v2);
@@ -286,6 +294,10 @@ interface ListBaoPhatBangKeContract {
         void ddCreateVietMap(CreateVietMapRequest createVietMapRequest);
 
         void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel);
+
+        void showLoci(String mess);
+
+        void ddCall(CallLiveMode r);
     }
 
 }

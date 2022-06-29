@@ -84,10 +84,12 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
                     public void onClick(View v) {
                         List<String> ticketModes = new ArrayList<>();
                         ticketModes.add(mList.get(position).getTicketCode());
-                        if (mList.get(position).getType() != 1) {
-                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(),mList.get(position).getType());
+                        if (mList.get(position).getType() == 5) {
+                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
+                        } else if (mList.get(position).getType() != 1) {
+                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
                         } else {
-                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(),mList.get(position).getType());
+                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
                             new DialogTextThanhConhg(getViewContext(), mList.get(position).getContent(), new DialogCallback() {
                                 @Override
                                 public void onResponse(String loginRespone) {
@@ -97,9 +99,15 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
                     }
                 });
             }
-        };
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
+        }
+
+        ;
+        RecyclerUtils.setupVerticalRecyclerView(
+
+                getActivity(), recyclerView);
+        recyclerView.addItemDecoration(new
+
+                DividerItemDecoration(getViewContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -149,7 +157,7 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_thong_bao:
-                mPresenter.isSeen(listString, "",1);
+                mPresenter.isSeen(listString, "", 1);
                 break;
             case R.id.img_back:
                 mPresenter.back();

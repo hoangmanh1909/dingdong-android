@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -15,6 +16,10 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -54,6 +59,11 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
     @Override
     public String getPhone() {
         return mPhone;
+    }
+
+    @Override
+    public String getCode() {
+        return mCode;
     }
 
     @Override
@@ -109,6 +119,23 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
                 mView.hideProgress();
             }
         });
+    }
+
+    @Override
+    public void ddCall(CallLiveMode r) {
+        mView.showProgress();
+        mInteractor.ddCall(r)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showCallLive(r.getFromNumber());
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
+                    mView.hideProgress();
+                });
     }
 
     public PhonePresenter setCode(String code) {

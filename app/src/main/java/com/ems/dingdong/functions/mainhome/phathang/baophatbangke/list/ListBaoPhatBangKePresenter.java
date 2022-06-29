@@ -13,9 +13,12 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
+import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.AddressListModel;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PhoneNumber;
@@ -398,6 +401,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
+    public void showLog(String maE) {
+        new LogPresenter(mContainerView).setCode(maE).pushView();
+    }
+
+    @Override
     public void ddSreachPhone(PhoneNumber phoneNumber) {
         mView.showProgress();
         mInteractor.ddSreachPhone(phoneNumber)
@@ -417,6 +425,29 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel) {
         new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setType(99).setTypeBack(1).setListVposcode(addressListModel).pushView();
     }
+
+    @Override
+    public void showLoci(String mess) {
+        new LocationPresenter(mContainerView).setCodeTicket(mess).pushView();
+    }
+
+    @Override
+    public void ddCall(CallLiveMode r) {
+        mView.showProgress();
+        mInteractor.ddCall(r)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showCallLive(r.getFromNumber());
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
+                    mView.hideProgress();
+                });
+    }
+
 
     @Override
     public void getMapVitri(Double v1, Double v2) {

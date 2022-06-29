@@ -105,26 +105,87 @@
 
             <View style="@style/Devider" />
 
-            <TextView
-                android:id="@+id/tv_vidientu"
+            <LinearLayout
+                android:id="@+id/ll_vi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_vidientu"
-                android:drawablePadding="10dp"
-                android:gravity="center|left"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:text="Ví điện tử PostPay"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <View style="@style/Devider" />
+                <TextView
+                    android:id="@+id/tv_vi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_vidientu"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Ví điện tử"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+                <View style="@style/Devider" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_vipostpay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/img_vipostpay"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/seabank" />
+
+                    <TextView
+                        android:id="@+id/tv_vipostpay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/img_vipostpay"
+                        android:text="asdasds"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_vipostpay_mb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/img_vipostpay_mb"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/seabank" />
+
+                    <TextView
+                        android:id="@+id/tv_vipostpay_mb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/img_vipostpay_mb"
+                        android:text="asdasds"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_lienket"

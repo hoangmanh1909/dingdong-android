@@ -175,10 +175,7 @@
                 android:id="@+id/layout_swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_5dp">
+            >
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"

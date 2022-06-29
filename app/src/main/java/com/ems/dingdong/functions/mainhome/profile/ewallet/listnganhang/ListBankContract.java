@@ -12,6 +12,8 @@ import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 public interface ListBankContract {
@@ -31,11 +33,12 @@ public interface ListBankContract {
 
         void dissmisOTP();
 
-
         void setsmartBankConfirmLink(String x);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void showEwalletDetail(SmartBankLink smartBankLink, List<SmartBankLink> k);
 
         void showEwallet();
 

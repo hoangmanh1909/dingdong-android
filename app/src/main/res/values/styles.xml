@@ -1,13 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/bg_yellow_primary</item>
         <item name="colorPrimaryDark">@color/bg_yellow_primary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="textStyle">
+        <!-- Card background color -->
+        <!-- Ripple for API 21 of android, and regular selector on older -->
+        <!--<item name="android:foreground">?android:selectableItemBackground</item>-->
+        <!-- Resting Elevation from Material guidelines -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Add corner Radius -->
+        <!--<item name="android:clickable">true</item>-->
+        <!--<item name="android:layout_margin">8dp</item>-->
     </style>
 
     <style name="AppTheme_Actionbar" parent="Theme.AppCompat.Light.DarkActionBar">

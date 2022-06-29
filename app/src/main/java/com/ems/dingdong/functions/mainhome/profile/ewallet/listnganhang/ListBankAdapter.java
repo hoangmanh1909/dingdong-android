@@ -12,8 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.utiles.NumberUtils;
 
 import java.util.ArrayList;
@@ -23,21 +25,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.HolderView> {
-    private List<Item> mList;
-    private List<Item> mListFilter;
+    private List<SmartBankLink> mListFilter;
     private Context mContext;
 
-    public ListBankAdapter(Context context, List<Item> items) {
-        mList = items;
+    public ListBankAdapter(Context context, List<SmartBankLink> items) {
         mListFilter = items;
         mContext = context;
     }
 
-    public void setListFilter(List<Item> list) {
+    public void setListFilter(List<SmartBankLink> list) {
         mListFilter = list;
     }
 
-    public List<Item> getListFilter() {
+    public List<SmartBankLink> getListFilter() {
         return mListFilter;
     }
 
@@ -68,6 +68,8 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
         TextView tvTitle;
         @BindView(R.id.tv_matdinh)
         TextView tvMatdinh;
+        @BindView(R.id.tv_trang_thai)
+        TextView tv_trang_thai;
 
 
         HolderView(View itemView) {
@@ -76,21 +78,26 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
         }
 
         public void bindView(Object model) {
-            Item item = (Item) model;
-            imgMotaikhoan.setImageResource(item.getImg());
-            tvTitle.setText(item.getText());
-            if (item.getText().equals(""))
+            SmartBankLink item = (SmartBankLink) model;
+            Glide.with(mContext).load(item.getBankLogo()).into(imgMotaikhoan);
+            tvTitle.setText(item.getGroupName());
+            if (item.getBankName() == null || item.getBankName().equals(""))
                 tvTitle.setVisibility(View.GONE);
-            tvSotaikhoan.setText(item.getSotaikhoan());
-            if (item.isLienket())
+            else tvTitle.setVisibility(View.VISIBLE);
+
+            if (item.getDefaultPayment())
                 tvMatdinh.setText("Đã liên kết");
             else tvMatdinh.setText("Chờ xác nhận");
 
-            if (NumberUtils.isNumber(item.getSotaikhoan())) {
-                String mahoa = item.getSotaikhoan().substring(item.getSotaikhoan().length() - 4, item.getSotaikhoan().length());
+            if (item.getGroupType() == 1) tvMatdinh.setText("Đã liên kết");
+            if (item.getIsDefaultPayment()) {
+                tv_trang_thai.setText("Mặc định");
+            } else tv_trang_thai.setText("Không mặc định");
+            if (NumberUtils.isNumber(item.getBankAccountNumber())) {
+                String mahoa = item.getBankAccountNumber().substring(item.getBankAccountNumber().length() - 4, item.getBankAccountNumber().length());
                 mahoa = "xxxx xxxx " + mahoa;
                 tvSotaikhoan.setText(mahoa);
-            }
+            } else tvSotaikhoan.setText(item.getBankName());
 
         }
     }

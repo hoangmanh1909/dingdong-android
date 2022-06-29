@@ -52,6 +52,27 @@
             android:layout_marginTop="@dimen/size_30dp"
             android:orientation="vertical">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/camera_view"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="6dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/tv_chonnagnhang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_v1"
+                    android:gravity="center|left"
+                    android:padding="10dp"
+                    android:text="Chọn ví bưu điện"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_info_link"
                 android:layout_width="match_parent"
@@ -81,35 +102,16 @@
                 android:cursorVisible="false"
                 android:digits="1234567890"
                 android:inputType="number"
-                android:maxLength="8"
+                android:maxLength="6"
                 android:textIsSelectable="false"
                 android:textSize="40sp"
                 android:visibility="gone"
-                app:maxLength="8" />
+                app:maxLength="6" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/camera_view"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="6dp"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/tv_chonnagnhang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_arrow_drop_down_v1"
-                    android:gravity="center|left"
-                    android:padding="10dp"
-                    android:text="Chọn ví"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:id="@+id/ll_from_info"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

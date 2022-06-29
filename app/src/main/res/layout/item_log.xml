@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_item_count_selected"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_sohieubg"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="so hieu buu gui" />
+
+            <TextView
+                android:id="@+id/tv_sodienthoai"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="so dien thoai" />
+
+            <TextView
+                android:id="@+id/tv_thoigian"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="thoi gian" />
+
+            <TextView
+                android:id="@+id/tv_chieugoi"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="chieu goi" />
+
+            <TextView
+                android:id="@+id/tv_trang_thai"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Trang thai" />
+
+            <TextView
+                android:id="@+id/tv_linknge"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Trang thai" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

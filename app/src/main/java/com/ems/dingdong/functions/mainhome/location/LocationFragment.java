@@ -3,16 +3,22 @@ package com.ems.dingdong.functions.mainhome.location;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
@@ -28,11 +34,14 @@ import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.dialog.DialogCuocgoi;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogAdapter;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.notification.cuocgoictel.data.HistoryRespone;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -43,6 +52,7 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
 //import com.sip.cmc.SipCmc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +117,13 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     RecyclerView recyclerView_cuoc;
     TienCuocApdapter mAdapterCuoc;
     List<Item> mListCuoc;
+    @BindView(R.id.ll_khongcodulieu)
+    LinearLayout ll_khongcodulieu;
+    @BindView(R.id.recyclerView_log)
+    RecyclerView recyclerViewLog;
+    LogAdapter mAdapterLog;
+    List<HistoryRespone> historyResponeList;
+
 
     public static LocationFragment getInstance() {
         return new LocationFragment();
@@ -142,7 +159,28 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         mAdapterCuoc = new TienCuocApdapter(getViewContext(), mListCuoc);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView_cuoc);
         recyclerView_cuoc.setAdapter(mAdapterCuoc);
+        edtLadingCode.setText(mPresenter.getCode());
+
+
+        historyResponeList = new ArrayList<>();
+        mAdapterLog = new LogAdapter(getViewContext(), historyResponeList) {
+            @Override
+            public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position, @NonNull List<Object> payloads) {
+                super.onBindViewHolder(holder, position, payloads);
+                mAdapterLog = new LogAdapter(getViewContext(), historyResponeList) {
+                    @Override
+                    public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+
+                    }
+                };
+            }
+        };
+        recyclerViewLog.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerViewLog);
+        recyclerViewLog.setAdapter(mAdapterLog);
     }
+
 
     protected void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -152,6 +190,35 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             }
 
         }
+    }
+
+    @Override
+    public void showLog(List<HistoryRespone> l) {
+        ll_khongcodulieu.setVisibility(View.GONE);
+        recyclerView_cuoc.setVisibility(View.VISIBLE);
+        historyResponeList.clear();
+        historyResponeList.addAll(l);
+        mAdapterLog.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCallLive(String phone) {
+        Intent intent1 = new Intent(Intent.ACTION_CALL);
+        intent1.setData(Uri.parse("tel:" + phone));
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            startActivity(intent1);
+        }
+    }
+
+    @Override
+    public void showError() {
+        ll_khongcodulieu.setVisibility(View.VISIBLE);
+        recyclerViewLog.setVisibility(View.GONE);
     }
 
     @Override
@@ -245,31 +312,26 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
                     @Override
                     public void onCall(String phone) {
-                        Intent intent1 = new Intent(Intent.ACTION_CALL);
-                        intent1.setData(Uri.parse("tel:" + phone));
-                        if (ContextCompat.checkSelfPermission(getActivity(),
-                                Manifest.permission.CALL_PHONE)
-                                != PackageManager.PERMISSION_GRANTED) {
+                        CallLiveMode callLiveMode = new CallLiveMode();
+                        SharedPref sharedPref = new SharedPref(getViewContext());
+                        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                        callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                        callLiveMode.setToNumber(phone);
+                        callLiveMode.setLadingCode(tvParcelCode.getText().toString());
+                        mPresenter.ddCall(callLiveMode);
 
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-                        } else {
-                            startActivity(intent1);
-                        }
                     }
 
                     @Override
                     public void onCallEdit(String phone, int type) {
                         if (type == 1) {
-                            Intent intent1 = new Intent(Intent.ACTION_CALL);
-                            intent1.setData(Uri.parse("tel:" + _tvSenderPhone.getText().toString()));
-                            if (ContextCompat.checkSelfPermission(getActivity(),
-                                    Manifest.permission.CALL_PHONE)
-                                    != PackageManager.PERMISSION_GRANTED) {
-
-                                ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-                            } else {
-                                startActivity(intent1);
-                            }
+                            CallLiveMode callLiveMode = new CallLiveMode();
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                            callLiveMode.setToNumber(phone);
+                            callLiveMode.setLadingCode(tvParcelCode.getText().toString());
+                            mPresenter.ddCall(callLiveMode);
                         } else {
                             mPresenter.callForward(phone, tvParcelCode.getText().toString());
                         }
@@ -286,31 +348,25 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
                     @Override
                     public void onCall(String phone) {
-                        Intent intent1 = new Intent(Intent.ACTION_CALL);
-                        intent1.setData(Uri.parse("tel:" + phone));
-                        if (ContextCompat.checkSelfPermission(getActivity(),
-                                Manifest.permission.CALL_PHONE)
-                                != PackageManager.PERMISSION_GRANTED) {
-
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-                        } else {
-                            startActivity(intent1);
-                        }
+                        CallLiveMode callLiveMode = new CallLiveMode();
+                        SharedPref sharedPref = new SharedPref(getViewContext());
+                        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                        callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                        callLiveMode.setToNumber(phone);
+                        callLiveMode.setLadingCode(tvParcelCode.getText().toString());
+                        mPresenter.ddCall(callLiveMode);
                     }
 
                     @Override
                     public void onCallEdit(String phone, int type) {
                         if (type == 1) {
-                            Intent intent1 = new Intent(Intent.ACTION_CALL);
-                            intent1.setData(Uri.parse("tel:" + _tvReceiverPhone.getText().toString()));
-                            if (ContextCompat.checkSelfPermission(getActivity(),
-                                    Manifest.permission.CALL_PHONE)
-                                    != PackageManager.PERMISSION_GRANTED) {
-
-                                ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-                            } else {
-                                startActivity(intent1);
-                            }
+                            CallLiveMode callLiveMode = new CallLiveMode();
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                            callLiveMode.setToNumber(phone);
+                            callLiveMode.setLadingCode(tvParcelCode.getText().toString());
+                            mPresenter.ddCall(callLiveMode);
                         } else {
                             mPresenter.callForward(phone, tvParcelCode.getText().toString());
                         }

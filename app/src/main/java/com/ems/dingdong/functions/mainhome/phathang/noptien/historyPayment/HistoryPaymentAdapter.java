@@ -158,6 +158,7 @@ public class HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAd
         @BindView(R.id.tv_trang_thai)
         CustomTextView tv_trang_thai;
 
+
         @BindView(R.id.cb_selected)
         CheckBox checkBox;
 
@@ -199,6 +200,10 @@ public class HistoryPaymentAdapter extends RecyclerView.Adapter<HistoryPaymentAd
                 tvLadingCode.setText(model.getLadingCode());
             else
                 tvLadingCode.setText("");
+
+
+
+
 
             if (model.getRetRefNumber() != null)
                 tvSoThamChieu.setText(String.format("%s: %s", mContext.getString(R.string.so_tham_chieu), model.getRetRefNumber()));

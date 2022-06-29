@@ -5,6 +5,7 @@ import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CallHistoryVHT;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CancelDeliveryResult;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -18,7 +19,6 @@ import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
-import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
 import com.ems.dingdong.model.GachNoResult;
@@ -27,6 +27,7 @@ import com.ems.dingdong.model.HistoryCreateBd13Result;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LinkEWalletResult;
+import com.ems.dingdong.model.LinkHistory;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
@@ -48,7 +49,6 @@ import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
-import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.XacMinhRespone;
@@ -74,9 +74,9 @@ import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
-import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.model.response.VerifyAddressRespone;
-import com.google.android.gms.vision.L;
+import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
+import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -535,6 +535,7 @@ public interface VinattiAPI {
     @POST("api/Statistic/Balance")
     Call<SimpleResult> getBalance(@Body BalanceModel requestData);
 
+
     @FormUrlEncoded
     @POST("api/ChangeRoute/Cancel")
     Call<SimpleResult> cancelRoute(@Field("Id") Integer id,
@@ -551,6 +552,9 @@ public interface VinattiAPI {
 
     @GET("api/MoveCrop/GetAccessTokenAndroid")
     Single<TokenMoveCropResult> getAccessTokenAndroid(@Query("mobileNUmber") String mobileNUmber);
+
+    @POST("api/CallCenter/CallHistory")
+    Single<SimpleResult> getCallHistory(@Body HistoryRequest historyRequest);
 
     @POST("api/EWallet/PayLinkRequest")
     Single<LinkEWalletResult> linkEWallet(@Body PayLinkRequest request);
@@ -596,9 +600,21 @@ public interface VinattiAPI {
     @POST("api/DingDong/Bussiness")
     Single<SimpleResult> commonService(@Body DataRequestPayment requestData);
 
+    @POST("api/EWallet/CancelLink")
+    Single<SimpleResult> huyLienKetVi(@Body SmartBankRequestCancelLinkRequest requestData);
+
 
     @POST("api/DingDong/GetMainviewCollect")
     Single<ThuGomRespone> getGetMainviewCollec(@Body BalanceModel requestData);
+
+    @POST("api/EWallet/LinkHistory")
+    Single<SimpleResult> getHistory(@Body LinkHistory requestData);
+
+    @POST("api/CallCenter/CallDirect")
+    Single<SimpleResult> ddCall(@Body CallLiveMode requestData);
+
+    @POST("api/EWallet/SetDefaultPayment")
+    Single<SimpleResult> SetDefaultPayment(@Body LinkHistory requestData);
 
     @GET("api/VietMap/VerifyAddress")
     Single<VerifyAddressRespone> ddVerifyAddress(@Query("longitude") double longitude,

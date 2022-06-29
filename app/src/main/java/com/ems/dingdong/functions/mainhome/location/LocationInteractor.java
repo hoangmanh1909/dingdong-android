@@ -2,11 +2,14 @@ package com.ems.dingdong.functions.mainhome.location;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
 
 /**
@@ -22,11 +25,21 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
     @Override
     public Observable<CommonObjectResult> findLocation(String ladingCode, String poCode) {
         return NetWorkController.findLocation(ladingCode, poCode);
+    }    @Override
+
+    public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
+        return NetWorkController.ddCall(callLiveMode);
+    }
+
+
+    @Override
+    public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
+        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                ladingCode, PostmanId, POcode, callback);
     }
 
     @Override
-    public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode,String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
-        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode,PostmanId,POcode, callback);
+    public Single<SimpleResult> getHistoryCall(HistoryRequest historyRequest) {
+        return NetWorkController.getCallHistory(historyRequest);
     }
 }

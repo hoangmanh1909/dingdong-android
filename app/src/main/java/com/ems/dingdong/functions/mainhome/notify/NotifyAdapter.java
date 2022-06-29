@@ -55,6 +55,10 @@ public class NotifyAdapter extends RecyclerBaseAdapter<TicketNotifyRespone, Noti
                 title_thong_bao.setText("Thông báo");
                 imgLogo.setBackgroundResource(R.drawable.badge_vang);
                 imgLogo.setImageResource(R.drawable.ic_notify);
+            } else if (model.getType() == 5) {
+                title_thong_bao.setText("Thông báo");
+                imgLogo.setBackgroundResource(R.drawable.badge_xanh);
+                imgLogo.setImageResource(R.drawable.ic_outline_phone_in_talk_24_with);
             } else {
                 title_thong_bao.setText("Ticket");
                 imgLogo.setBackgroundResource(R.drawable.badge_blue);

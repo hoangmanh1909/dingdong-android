@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.PhoneNumber;
@@ -38,9 +39,9 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     }
 
     @Override
-    public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode,String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+    public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
         return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode,PostmanId,POCode, callback);
+                ladingCode, PostmanId, POCode, callback);
     }
 
     @Override
@@ -72,12 +73,19 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     public Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest createVietMapRequest) {
         return NetWorkController.ddCreateVietMapRequest(createVietMapRequest);
     }
+
     @Override
     public Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment) {
         return NetWorkController.ddSreachPhone(dataRequestPayment);
     }
+
     @Override
     public Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude) {
-        return NetWorkController.vietmapVitriEndCode(longitude,latitude);
+        return NetWorkController.vietmapVitriEndCode(longitude, latitude);
+    }
+
+    @Override
+    public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
+        return NetWorkController.ddCall(callLiveMode);
     }
 }

@@ -4,8 +4,11 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailViPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankPresenter;
 import com.ems.dingdong.model.BaseRequestModel;
+import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.response.DanhSachTaiKhoanRespone;
 import com.ems.dingdong.model.response.SmartBankLink;
@@ -42,8 +45,13 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     }
 
     @Override
+    public void showEwalletDetail(SmartBankLink smartBankLink, List<SmartBankLink> k) {
+        new DeatailViPresenter(mContainerView).setSmartBankLink(smartBankLink).setList(k).pushView();
+    }
+
+    @Override
     public void showEwallet() {
-        new EWalletPresenter(mContainerView).pushView();
+        new LinkEWalletPresenter(mContainerView).pushView();
     }
 
     @Override
@@ -96,6 +104,7 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
                     }
                 });
     }
+
 
     @Override
     public void getDDsmartBankConfirmLinkRequest(BaseRequestModel x) {

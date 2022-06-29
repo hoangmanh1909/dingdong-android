@@ -34,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,9 +47,8 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     RecyclerView recycler;
     @BindView(R.id.tv_lienket)
     TextView tvLienket;
-
     ListBankAdapter mAdapter;
-    List<Item> mList;
+    List<SmartBankLink> mList;
     boolean isKietta;
     private UserInfo userInfo;
     String userJson;
@@ -71,7 +72,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     @Override
     public void initLayout() {
         super.initLayout();
-        mList = new ArrayList<>();
         SharedPref pref = SharedPref.getInstance(getViewContext());
         String token = pref.getString(Constants.KEY_PAYMENT_TOKEN, "");
         sharedPref = new SharedPref(getActivity());
@@ -93,6 +93,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         } else {
             isKietta = true;
         }
+        mList = new ArrayList<>();
 
         mAdapter = new ListBankAdapter(getContext(), mList) {
             @Override
@@ -101,24 +102,10 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mList.get(position).getValue().equals("1")) {
-                            mPresenter.showEwallet();
-                        } else {
-//                            for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-//                                if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-//                                    if (userInfo.getSmartBankLink().get(i).getStatus().equals("WAITING")) {
-//                                        CallOTP callOTP = new CallOTP();
-//                                        callOTP.setBankCode(userInfo.getSmartBankLink().get(i).getBankCode());
-//                                        callOTP.setPOCode(userInfo.getSmartBankLink().get(i).getPOCode());
-//                                        callOTP.setPostmanCode(userInfo.getSmartBankLink().get(i).getPostmanCode());
-//                                        mPresenter.ddCallOTP(callOTP);
-//                                        break;
-//                                    } else
-//                                        mPresenter.showSeaBank();
-//                                }
-//                            }
+                        if (mList.get(position).getGroupType() == 1) {
 
-//                            if (userInfo.getSmartBankLink().size() == 0)
+                            mPresenter.showEwalletDetail(mList.get(position), k);
+                        } else {
                             for (int i = 0; i < k.size(); i++) {
                                 if (k.get(i).getBankCode().equals("SeABank")) {
                                     mPresenter.showSeaBank(k.get(i));
@@ -134,7 +121,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         recycler.setAdapter(mAdapter);
 
 
-        getDDsmartBankConfirmLink();
     }
 
     private void getDDsmartBankConfirmLink() {
@@ -146,13 +132,17 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         v.setPostmanId(userInfo.getiD());
         v.setRouteCode(routeInfo.getRouteCode());
         v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
-
-
         try {
             mPresenter.getDDsmartBankConfirmLinkRequest(v);
         } catch (Exception e) {
 
         }
+    }
+
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+        getDDsmartBankConfirmLink();
     }
 
     @OnClick({R.id.img_back, R.id.tv_lienket})
@@ -165,22 +155,22 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                         if (id.equals("2")) {
                             mPresenter.showEwallet();
                         } else {
-                            boolean is = false;
-                            if (userInfo.getSmartBankLink() != null) {
-                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-                                        is = false;
-                                        Toast.showToast(getViewContext(), "Vui lòng hủy liên kết tài khoản trước khi liên kết tài khoản mới");
-                                        break;
-                                    } else {
-                                        is = true;
-                                    }
-                                }
-                            } else is = true;
-
-                            if (is) mPresenter.taikhoanthauchi();
-                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
-                                mPresenter.taikhoanthauchi();
+//                            boolean is = false;
+//                            if (userInfo.getSmartBankLink() != null) {
+//                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
+//                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+//                                        is = false;
+//                                        Toast.showToast(getViewContext(), "Vui lòng hủy liên kết tài khoản trước khi liên kết tài khoản mới");
+//                                        break;
+//                                    } else {
+//                                        is = true;
+//                                    }
+//                                }
+//                            } else is = true;
+//
+//                            if (is) mPresenter.taikhoanthauchi();
+//                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
+                            mPresenter.taikhoanthauchi();
                         }
                     }
                 }).show();
@@ -243,8 +233,8 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         }
 
         for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).getValue().equals("2")) {
-                mList.get(i).setLienket(true);
+            if (mList.get(i).getGroupType() == 2) {
+                mList.get(i).setIsDefaultPayment(true);
                 mAdapter.notifyDataSetChanged();
             }
         }
@@ -260,25 +250,46 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         }
     }
 
+    class NameComparator implements Comparator<SmartBankLink> {
+        public int compare(SmartBankLink s1, SmartBankLink s2) {
+            return s1.getBankName().compareTo(s2.getBankName());
+        }
+    }
+
     @Override
     public void setsmartBankConfirmLink(String x) {
+        mList.clear();
         SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
         k = Arrays.asList(v);
-        Log.d("AAAAAAAA", new Gson().toJson(k));
+        Collections.sort(k, new NameComparator());
         int t = 0;
         if (k.size() > 0 || k != null) {
-            for (int i = 0; i < k.size(); i++) {
-                if (k.get(i).getBankCode().equals("SeABank")) {
-                    mList.add(new Item(2 + "", k.get(i).getBankName(), true, R.drawable.seabank, k.get(i).getBankAccountNumber()));
-                } else
-                    t++;
-                if (t == 0)
-                    mList.add(new Item(1 + "", "Ví điện tử PostPay", isKietta, R.drawable.postpay, k.get(i).getBankName()));
-                else {
-                    mList.add(new Item(1 + "", "", isKietta, R.drawable.postpay, k.get(i).getBankName()));
-                }
+//            for (int i = 0; i < k.size(); i++) {
+//                if (k.get(i).getBankCode().equals("SeABank")) {
+//                    mList.add(new Item(2 + "", k.get(i).getBankName(), true, k.get(i).getBankLogo(), k.get(i).getBankAccountNumber(), k.get(i).getIsDefaultPayment()));
+//                } else {
+//                    if (t == 0)
+//                        mList.add(new Item(1 + "", "Ví điện tử", isKietta, k.get(i).getBankLogo(), k.get(i).getBankName(),
+//                                k.get(i).getBankCode(), k.get(i).getPIDNumber(), k.get(i).getPIDType(), k.get(i).getPOCode(), k.get(i).getPaymentToken()
+//                                , k.get(i).getIsDefaultPayment()));
+//                    else {
+//                        mList.add(new Item(1 + "", "", isKietta, k.get(i).getBankLogo(), k.get(i).getBankName(),
+//                                k.get(i).getBankCode(), k.get(i).getPIDNumber(), k.get(i).getPIDType(), k.get(i).getPOCode(), k.get(i).getPaymentToken()
+//                                , k.get(i).getIsDefaultPayment()));
+//                    }
+//                    t++;
+//                }
+//
+//            }
 
-            }
+            mList.clear();
+            mList.addAll(k);
+            int r = 0;
+            for (int i = 0; i < mList.size(); i++)
+                if (mList.get(i).getGroupType() == 1) {
+                    r = i;
+                }
+            mList.get(r).setGroupName("");
         }
         mAdapter.notifyDataSetChanged();
     }

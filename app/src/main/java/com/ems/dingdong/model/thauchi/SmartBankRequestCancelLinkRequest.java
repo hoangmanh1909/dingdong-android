@@ -46,6 +46,105 @@ public class SmartBankRequestCancelLinkRequest {
     @SerializedName("SeABankAccountLimit")
     @Expose
     public String SeABankAccountLimit;
+    @SerializedName("POProvinceCode")
+    @Expose
+    public String POProvinceCode;
+    @SerializedName("PODistrictCode")
+    @Expose
+    public String PODistrictCode;
+    @SerializedName("PostmanId")
+    @Expose
+    public String PostmanId;
+    @SerializedName("RouteCode")
+    @Expose
+    public String RouteCode;
+    @SerializedName("RouteId")
+    @Expose
+    public String RouteId;
+    @SerializedName("Signature")
+    @Expose
+    public String Signature;
+    @SerializedName("AccountType")
+    @Expose
+    public int AccountType;
+    @SerializedName("PostmanTel")
+    @Expose
+    public String PostmanTel;
+    @SerializedName("PaymentToken")
+    @Expose
+    public String PaymentToken;
+
+    public String getPaymentToken() {
+        return PaymentToken;
+    }
+
+    public void setPaymentToken(String paymentToken) {
+        PaymentToken = paymentToken;
+    }
+
+    public String getPostmanTel() {
+        return PostmanTel;
+    }
+
+    public void setPostmanTel(String postmanTel) {
+        PostmanTel = postmanTel;
+    }
+
+    public String getPOProvinceCode() {
+        return POProvinceCode;
+    }
+
+    public void setPOProvinceCode(String POProvinceCode) {
+        this.POProvinceCode = POProvinceCode;
+    }
+
+    public String getPODistrictCode() {
+        return PODistrictCode;
+    }
+
+    public void setPODistrictCode(String PODistrictCode) {
+        this.PODistrictCode = PODistrictCode;
+    }
+
+    public String getPostmanId() {
+        return PostmanId;
+    }
+
+    public void setPostmanId(String postmanId) {
+        PostmanId = postmanId;
+    }
+
+    public String getRouteCode() {
+        return RouteCode;
+    }
+
+    public void setRouteCode(String routeCode) {
+        RouteCode = routeCode;
+    }
+
+    public String getRouteId() {
+        return RouteId;
+    }
+
+    public void setRouteId(String routeId) {
+        RouteId = routeId;
+    }
+
+    public String getSignature() {
+        return Signature;
+    }
+
+    public void setSignature(String signature) {
+        Signature = signature;
+    }
+
+    public int getAccountType() {
+        return AccountType;
+    }
+
+    public void setAccountType(int accountType) {
+        AccountType = accountType;
+    }
 
     public String getBankCode() {
         return BankCode;

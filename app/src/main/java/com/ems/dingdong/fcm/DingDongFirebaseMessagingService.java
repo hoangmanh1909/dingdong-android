@@ -29,6 +29,7 @@ import com.ems.dingdong.functions.mainhome.notify.ListNotifyActivity;
 import com.ems.dingdong.functions.mainhome.notify.NotifiActivity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
+import com.ems.dingdong.notification.cuocgoictel.NotiCtelActivity;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -120,6 +121,9 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 } else if (type.equals("4")) {
                     intent = new Intent(this, NotifiActivity.class);
                     intent.putExtra(Constants.TYPE_GOM_HANG, 4);
+                } else if (type.equals("5")) {
+                    intent = new Intent(this, NotiCtelActivity.class);
+                    intent.putExtra(Constants.TYPE_GOM_HANG, 5);
                 } else {
                     intent = new Intent(this, ListNotifyActivity.class);
                     bundle.putString("message", messageBody);

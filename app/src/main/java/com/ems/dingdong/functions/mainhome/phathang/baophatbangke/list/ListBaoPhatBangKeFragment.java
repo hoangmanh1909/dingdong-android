@@ -50,6 +50,7 @@ import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
 import com.ems.dingdong.functions.mainhome.profile.CustomProvider;
 import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
 import com.ems.dingdong.model.AddressModel;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DataCateModel;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -196,6 +197,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
     };
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_bao_phat_bang_ke;
+    }
+
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -224,11 +230,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     public static ListBaoPhatBangKeFragment getInstance() {
         return new ListBaoPhatBangKeFragment();
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_bao_phat_bang_ke;
     }
 
     @Override
@@ -290,6 +291,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         relativeLayout.setVisibility(View.VISIBLE);
                         tvItemSelected.setText(String.valueOf(size));
                     }
+                });
+                holder.tv_code.setOnClickListener(v -> {
+                    mPresenter.showLoci(mAdapter.getListFilter().get(position).getMaE());
                 });
                 holder.tvGoiy.setVisibility(View.VISIBLE);
                 holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
@@ -409,7 +413,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCall(String phone) {
                             mPhoneEdit = phone;
-                            callProvidertoCSKH(phone);
+                            CallLiveMode callLiveMode = new CallLiveMode();
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                            callLiveMode.setToNumber(phone);
+                            callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                            mPresenter.ddCall(callLiveMode);
                         }
 
                         @Override
@@ -417,11 +427,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //                            callProvidertoCSKH(phone);
                             mPhoneEdit = phone;
                             if (type == 1) {
-                                callProvidertoCSKH(phone);
+                                CallLiveMode callLiveMode = new CallLiveMode();
+                                SharedPref sharedPref = new SharedPref(getViewContext());
+                                String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                                callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                                callLiveMode.setToNumber(phone);
+                                callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                                mPresenter.ddCall(callLiveMode);
                             } else {
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
                             mPresenter.updateMobileSender(phone, choosenLadingCode);
+
+                            mAdapter.getListFilter().get(position).setSenderMobile(phone);
+                            mAdapter.notifyDataSetChanged();
                         }
                     }).show();
                 });
@@ -445,18 +464,32 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCall(String phone) {
                             mPhoneEdit = phone;
-                            callProvidertoCSKH(phone);
+                            CallLiveMode callLiveMode = new CallLiveMode();
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                            callLiveMode.setToNumber(phone);
+                            callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                            mPresenter.ddCall(callLiveMode);
                         }
 
                         @Override
                         public void onCallEdit(String phone, int type) {
                             mPhoneEdit = phone;
                             if (type == 1) {
-                                callProvidertoCSKH(phone);
+                                CallLiveMode callLiveMode = new CallLiveMode();
+                                SharedPref sharedPref = new SharedPref(getViewContext());
+                                String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                                callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                                callLiveMode.setToNumber(phone);
+                                callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                                mPresenter.ddCall(callLiveMode);
                             } else {
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
                             mPresenter.updateMobile(phone, choosenLadingCode);
+                            mAdapter.getListFilter().get(position).setReciverMobile(phone);
+                            mAdapter.notifyDataSetChanged();
                         }
                     }).show();
                 });
@@ -698,6 +731,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             if (mList.get(i).getId() == mID)
                 mList.get(i).setReceiverVpostcode(mess);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCallLive(String phone) {
+        callProvidertoCSKH(phone);
     }
 
     private void showDialog() {
@@ -1133,25 +1171,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showCallError(String message) {
-//        if (getViewContext() != null) {
-//            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-//                Intent intent = new Intent(Intent.ACTION_CALL);
-//                intent.setData(Uri.parse(Constants.HEADER_NUMBER + "," + mPhone));
-//                startActivity(intent);
-//            }
-//        }
+
         Toast.showToast(getViewContext(), message);
     }
 
     @Override
     public void showCallSuccess(String phone) {
-//        if (getViewContext() != null) {
-//            if (PermissionUtils.checkToRequest(getViewContext(), CALL_PHONE, REQUEST_CODE_ASK_PERMISSIONS)) {
-//                Intent intent = new Intent(Intent.ACTION_CALL);
-//                intent.setData(Uri.parse(Constants.HEADER_NUMBER));
-//                startActivity(intent);
-//            }
-//        }
+
         callProvidertoCSKH(phone);
     }
 
@@ -1283,10 +1309,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         } else {
             startActivity(intent);
         }
-//        Intent intentcall = new Intent();
-//        intentcall.setAction(Intent.ACTION_CALL);
-//        intentcall.setData(Uri.parse("tel:" + phone)); // set the Uri
-//        startActivity(intentcall);
     }
 
     @Override

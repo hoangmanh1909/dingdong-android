@@ -34,6 +34,8 @@ public class PaymentConfirmModel {
     String postmanTel;
     @SerializedName("AccountType")
     Integer AccountType;
+    @SerializedName("Ladings")
+    List<LadingPaymentInfo> ladingPaymentInfoList;
 
     public Integer getAccountType() {
         return AccountType;
@@ -43,8 +45,6 @@ public class PaymentConfirmModel {
         AccountType = accountType;
     }
 
-    @SerializedName("Ladings")
-    List<LadingPaymentInfo> ladingPaymentInfoList;
 
     public void setPostmanCode(String postmanCode) {
         this.postmanCode = postmanCode;
