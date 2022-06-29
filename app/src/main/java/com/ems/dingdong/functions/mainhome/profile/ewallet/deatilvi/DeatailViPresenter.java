@@ -155,7 +155,6 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
-
                             DeatailMode[] modes = NetWorkController.getGson().fromJson(simpleResult.getData(), DeatailMode[].class);
                             List<DeatailMode> ls = Arrays.asList(modes);
                             mView.showHistory(ls);
@@ -199,10 +198,6 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
         return c;
     }
 
-    @Override
-    public int getAccount() {
-        return account;
-    }
 
     @Override
     public List<SmartBankLink> getList() {

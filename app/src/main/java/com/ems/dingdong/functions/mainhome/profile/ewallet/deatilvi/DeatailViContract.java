@@ -50,8 +50,6 @@ public interface DeatailViContract {
 
         String getTrangThai();
 
-        int getAccount();
-
         List<SmartBankLink> getList();
 
         SmartBankLink getSmartBankLink();
