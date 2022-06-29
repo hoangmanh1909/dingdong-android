@@ -257,6 +257,10 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 if (!TextUtils.isEmpty(routeInfoJson)) {
                     routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
                 }
+                int account=0;
+                if (smartBankLink.getBankName().contains("MB")){
+                    account =2;
+                }else account=1;
                 SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
                 smartBankRequestCancelLinkRequest.setBankCode(smartBankLink.getBankCode());
                 smartBankRequestCancelLinkRequest.setPIDNumber(smartBankLink.getPIDNumber());
@@ -269,7 +273,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 smartBankRequestCancelLinkRequest.setPostmanTel(userInfo.getMobileNumber());
                 smartBankRequestCancelLinkRequest.setPostmanId(userInfo.getiD());
                 smartBankRequestCancelLinkRequest.setPostmanCode(userInfo.getUserName());
-                smartBankRequestCancelLinkRequest.setAccountType(mPresenter.getAccount());
+                smartBankRequestCancelLinkRequest.setAccountType(account);
                 smartBankRequestCancelLinkRequest.setPaymentToken(smartBankLink.getPaymentToken());
                 smartBankRequestCancelLinkRequest.setSignature(Utils.SHA256(userInfo.getMobileNumber()
                         + userInfo.getUserName()

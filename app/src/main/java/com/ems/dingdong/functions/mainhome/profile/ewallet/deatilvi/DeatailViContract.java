@@ -48,9 +48,6 @@ public interface DeatailViContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void ddHuyLienKet(SmartBankRequestCancelLinkRequest request);
 
-        String getTrangThai();
-
-        int getAccount();
 
         List<SmartBankLink> getList();
 

@@ -194,15 +194,6 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                 });
     }
 
-    @Override
-    public String getTrangThai() {
-        return c;
-    }
-
-    @Override
-    public int getAccount() {
-        return account;
-    }
 
     @Override
     public List<SmartBankLink> getList() {

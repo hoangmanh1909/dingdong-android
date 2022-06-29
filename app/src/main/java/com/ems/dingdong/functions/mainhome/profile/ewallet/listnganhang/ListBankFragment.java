@@ -285,11 +285,14 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
             mList.clear();
             mList.addAll(k);
             int r = 0;
+            int l = 0;
             for (int i = 0; i < mList.size(); i++)
                 if (mList.get(i).getGroupType() == 1) {
                     r = i;
+                    l++;
                 }
-            mList.get(r).setGroupName("");
+            if (l > 1)
+                mList.get(r).setGroupName("");
         }
         mAdapter.notifyDataSetChanged();
     }

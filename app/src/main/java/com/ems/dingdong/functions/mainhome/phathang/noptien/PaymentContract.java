@@ -79,7 +79,7 @@ public interface PaymentContract {
         void deletePayment(List<EWalletDataResponse> list);
 
         void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
-                            String routeCode, String postmanCode, String mobileNumber, String token);
+                            String routeCode, String postmanCode, String mobileNumber, String token,int type,String bankcode);
 
         int getPositionTab();
 
