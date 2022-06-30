@@ -95,7 +95,7 @@ public class DiaLogOptionNew extends Dialog {
             if (mList.get(i).getGroupType() == 1 && mList.get(i).getIsDefaultPayment()) {
                 vi++;
             }
-        mList.get(r).setGroupName("");
+//        mList.get(r).setGroupName("");
         int finalVi = vi;
         mAdapter = new DialogAdapter(getContext(), mList) {
             @Override

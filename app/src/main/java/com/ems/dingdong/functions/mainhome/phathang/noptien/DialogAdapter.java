@@ -28,6 +28,8 @@ import butterknife.ButterKnife;
 public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.HolderView> {
     private List<SmartBankLink> mListFilter;
     private Context mContext;
+    private Boolean isFirstItemBank = true;
+    private Boolean isFirstItemWallet = true;
 
     public DialogAdapter(Context context, List<SmartBankLink> SmartBankLinks) {
         mListFilter = SmartBankLinks;
@@ -98,15 +100,25 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.HolderView
                     .load(item.getGroupLogo()).into(imgTitle);
 
             tvTitle.setText(item.getGroupName());
-            if (item.getIsDefaultPayment()) {
+            if (item.getIsDefaultPayment() && item.getGroupType()==1) { // GroupType == 1 ví điện tử
                 ll_seabank_motaikhoan.setVisibility(View.VISIBLE);
-            } else {
+            } else if (!item.getIsDefaultPayment() && item.getGroupType()==1){
                 ll_seabank_motaikhoan.setVisibility(View.GONE);
             }
 
             if (item.getGroupName() == null || item.getGroupName().equals(""))
                 ll_linlayout_title.setVisibility(View.GONE);
             else ll_linlayout_title.setVisibility(View.VISIBLE);
+
+            if (item.getGroupType()==1){
+                if (isFirstItemWallet) ll_linlayout_title.setVisibility(View.VISIBLE);
+                else ll_linlayout_title.setVisibility(View.GONE);
+                isFirstItemWallet=false;
+            }else {
+                if (isFirstItemBank) ll_linlayout_title.setVisibility(View.VISIBLE);
+                else ll_linlayout_title.setVisibility(View.GONE);
+                isFirstItemBank=false;
+            }
 
             if (NumberUtils.isNumber(item.getBankAccountNumber())) {
                 String mahoa = item.getBankAccountNumber().substring(item.getBankAccountNumber().length() - 4, item.getBankAccountNumber().length());
