@@ -104,6 +104,13 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.HolderView
                 ll_seabank_motaikhoan.setVisibility(View.GONE);
             }
 
+//            if (item.getBankCode().equals("SeaBank"))
+//                ll_seabank_motaikhoan.setVisibility(View.VISIBLE);
+//
+//            if(!item.getBankCode().equals("SeaBank"))
+//                ll_linlayout_.setVisibility(View.VISIBLE);
+//            else ll_linlayout_.setVisibility(View.GONE);
+
             if (item.getGroupName() == null || item.getGroupName().equals(""))
                 ll_linlayout_title.setVisibility(View.GONE);
             else ll_linlayout_title.setVisibility(View.VISIBLE);

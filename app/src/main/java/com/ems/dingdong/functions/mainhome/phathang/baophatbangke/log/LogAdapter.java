@@ -83,7 +83,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.HolderView> {
             tvThoigian.setText("Thời gian bắt đầu gọi: "+item.getStartTime());
             tvChieugoi.setText("Chiều gọi: "+item.getCallTypeName());
             tvTrangThai.setText("Trạng thái: "+item.getStatus());
-            tv_linknge.setText("Link: "+item.getRecordFile());
+            tv_linknge.setText("Nghe ghi âm");
 //            mediaPlayer = new MediaPlayer();
 //            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 //            try {

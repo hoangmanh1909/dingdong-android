@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.location;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -8,6 +9,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,7 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
 //import com.sip.cmc.SipCmc;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,13 +170,18 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             @Override
             public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position, @NonNull List<Object> payloads) {
                 super.onBindViewHolder(holder, position, payloads);
-                mAdapterLog = new LogAdapter(getViewContext(), historyResponeList) {
+                holder.tv_linknge.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position) {
-                        super.onBindViewHolder(holder, position);
-
+                    public void onClick(View v) {
+//                        Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
+//                        intent.setDataAndType(Uri.fromFile(new File(historyResponeList.get(position).getRecordFile())), "audio/*");
+//                        try {
+//                            getViewContext().startActivity(intent);
+//                        } catch (ActivityNotFoundException e) {
+//                            Log.d("error", e.getMessage());
+//                        }
                     }
-                };
+                });
             }
         };
         recyclerViewLog.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

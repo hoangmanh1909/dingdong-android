@@ -1,6 +1,8 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -65,7 +67,16 @@ public class LogFragment extends ViewFragment<LogContract.Presenter> implements 
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
+                holder.tv_linknge.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String url = historyResponeList.get(position).getRecordFile();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
 
+                    }
+                });
             }
         };
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
