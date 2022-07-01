@@ -71,12 +71,22 @@ public class DiaLogOptionNew extends Dialog {
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
+    @BindView(R.id.layout_seabank)
+    LinearLayout layoutSeaBank;
+    @BindView(R.id.layout_e_wallet)
+    LinearLayout layoutEWallet;
+
+
+
+
     DialogAdapter mAdapter;
     List<SmartBankLink> mList;
+    ContainerView containerView;
 
     public DiaLogOptionNew(Context context, List<SmartBankLink> list, ContainerView containerView, ViNewCallback idCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mContext = context;
+        this.containerView = containerView;
         View view = View.inflate(getContext(), R.layout.dialog_option_new, null);
         getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         setContentView(view);
@@ -85,18 +95,27 @@ public class DiaLogOptionNew extends Dialog {
         mList = new ArrayList<>();
         mList.addAll(list);
 
-        int r = 0;
-        int vi = 0;
-        for (int i = 0; i < mList.size(); i++)
-            if (mList.get(i).getGroupType() == 1) {
-                r = i;
-            }
-        for (int i = 0; i < mList.size(); i++)
-            if (mList.get(i).getGroupType() == 1 && mList.get(i).getIsDefaultPayment()) {
-                vi++;
-            }
-        mList.get(r).setGroupName("");
-        int finalVi = vi;
+        boolean isContainSeaBank = false;
+        boolean isContainEWallet = false;
+        for (SmartBankLink smartBankLink : list){
+            if (smartBankLink.getGroupType()==1) isContainEWallet = true;
+            if (smartBankLink.getGroupType()==2) isContainSeaBank = true;
+        }
+        if (!isContainSeaBank) layoutSeaBank.setVisibility(View.VISIBLE);
+        if (!isContainEWallet) layoutEWallet.setVisibility(View.VISIBLE);
+
+//        int r = 0;
+//        int vi = 0;
+//        for (int i = 0; i < mList.size(); i++)
+//            if (mList.get(i).getGroupType() == 1) {
+//                r = i;
+//            }
+//        for (int i = 0; i < mList.size(); i++)
+//            if (mList.get(i).getGroupType() == 1 && mList.get(i).getIsDefaultPayment()) {
+//                vi++;
+//            }
+////        mList.get(r).setGroupName("");
+//        int finalVi = vi;
         mAdapter = new DialogAdapter(getContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -113,7 +132,7 @@ public class DiaLogOptionNew extends Dialog {
                 holder.ll_linlayout_title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (finalVi == 0 && !mList.get(position).getIsDefaultPayment()) {
+                        if (!mList.get(position).getIsDefaultPayment() && mList.get(position).getGroupType()==1) {
                             new NotificationDialog(getContext())
                                     .setConfirmText(getString(R.string.payment_confirn))
                                     .setCancelText(getString(R.string.payment_cancel))
@@ -136,11 +155,11 @@ public class DiaLogOptionNew extends Dialog {
         RecyclerUtils.setupVerticalRecyclerView(getContext(), recycler);
         recycler.setAdapter(mAdapter);
 
-
-        if (mList.size() == 0) {
-            btnLienket.setVisibility(View.VISIBLE);
-            llTaikhoan.setVisibility(View.GONE);
-        }
+//
+//        if (mList.size() == 0) {
+//            btnLienket.setVisibility(View.VISIBLE);
+//            llTaikhoan.setVisibility(View.GONE);
+//        }
 
     }
 
@@ -151,13 +170,44 @@ public class DiaLogOptionNew extends Dialog {
     }
 
 
-    @OnClick({R.id.ic_cancel, R.id.btn_link_wallet})
+    @OnClick({R.id.ic_cancel, R.id.btn_link_wallet,R.id.layout_seabank,R.id.layout_e_wallet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ic_cancel:
                 dismiss();
                 break;
+            case R.id.layout_seabank:
+                String contentSeaBank="Bạn có muốn liên kết tài khoản Thấu chi";
+                new NotificationDialog(getContext())
+                        .setConfirmText(getString(R.string.payment_confirn))
+                        .setCancelText(getString(R.string.payment_cancel))
+                        .setHtmlContent(contentSeaBank)
+                        .setCancelClickListener(Dialog::dismiss)
+                        .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            sweetAlertDialog.dismiss();
+                            dismiss();
+                            new ListBankPresenter(containerView).pushView();
 
+                        }).show();
+                dismiss();
+                break;
+            case R.id.layout_e_wallet:
+                String contentEWallet ="Bạn có muốn liên kết tài khoản Ví điện tử";
+                new NotificationDialog(getContext())
+                        .setConfirmText(getString(R.string.payment_confirn))
+                        .setCancelText(getString(R.string.payment_cancel))
+                        .setHtmlContent(contentEWallet)
+                        .setCancelClickListener(Dialog::dismiss)
+                        .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            sweetAlertDialog.dismiss();
+                            dismiss();
+                            new ListBankPresenter(containerView).pushView();
+
+                        }).show();
+                dismiss();
+                break;
 
         }
     }

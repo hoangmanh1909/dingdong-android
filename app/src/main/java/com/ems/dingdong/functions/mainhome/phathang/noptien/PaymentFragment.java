@@ -439,7 +439,8 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 info.setFeeType(item.getFeeType());
                 list.add(info);
             }
-            Collections.sort(k, new PaymentFragment.NameComparator());
+            if (k==null) k = new ArrayList<>();
+            else Collections.sort(k, new PaymentFragment.NameComparator());
             new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
                 @Override
                 public void onResponse(SmartBankLink item) {
