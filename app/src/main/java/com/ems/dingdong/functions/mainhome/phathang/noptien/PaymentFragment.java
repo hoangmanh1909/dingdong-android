@@ -431,22 +431,22 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             String codAmount = NumberUtils.formatPriceNumber(cod);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
             List<LadingPaymentInfo> list = new ArrayList<>();
+            int countFee = 0;
             for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
                 LadingPaymentInfo info = new LadingPaymentInfo();
                 info.setCodAmount(item.getCodAmount());
-                if (item.getFee() > 0) {
-                    Toast.showToast(getViewContext(), "Bưu gửi có có cước COD không được nộp qua ví bưu điện");
-                    return;
-                }
                 info.setFeeCod(item.getFee());
                 info.setLadingCode(item.getLadingCode());
                 info.setFeeType(item.getFeeType());
+                if (item.getFee() > 0)
+                    countFee++;
                 list.add(info);
             }
             if (k == null) k = new ArrayList<>();
             else Collections.sort(k, new PaymentFragment.NameComparator());
 
 
+            int finalCountFee = countFee;
             new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
                 @Override
                 public void onResponse(SmartBankLink item) {
@@ -462,9 +462,20 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                             .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                             .setConfirmClickListener(sweetAlertDialog -> {
                                 String posmanTel = "";
-                                posmanTel = userInfo.getMobileNumber();
-                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
-                                        item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
+                                if (item.getGroupType() == 2) {
+                                    posmanTel = userInfo.getMobileNumber();
+                                    mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
+                                            item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
+                                } else {
+                                    if (finalCountFee > 0) {
+                                        showErrorToast("Bưu gửi có cước COD không được nộp qua ví bưu điện");
+                                    } else {
+                                        posmanTel = userInfo.getMobileNumber();
+                                        mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
+                                                item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
+                                    }
+                                }
+
                                 sweetAlertDialog.dismiss();
                             }).show();
                 }

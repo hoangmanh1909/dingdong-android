@@ -566,7 +566,8 @@
                         android:layout_width="match_parent"
                         android:background="@drawable/bg_gradient_top"
                         android:padding="@dimen/dimen_10dp"
-                        android:text="THÔNG TIN TRẠNG THÁI"
+                        android:text="Chi tiết lịch sử bưu gửi "
+                        android:textAllCaps="true"
                         android:textColor="@color/white" />
 
                     <LinearLayout
@@ -580,9 +581,7 @@
                             android:id="@+id/recycler"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp"
+
                             android:visibility="visible" />
                     </LinearLayout>
                 </LinearLayout>
@@ -593,6 +592,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_5dp"
                     android:orientation="vertical">
+
                     <com.ems.dingdong.views.CustomBoldTextView
                         style="@style/HeaderNews"
                         android:layout_width="match_parent"
@@ -613,8 +613,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/header"
-                            android:orientation="vertical"
-                          >
+                            android:orientation="vertical">
 
 
                             <LinearLayout
@@ -640,8 +639,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recyclerView_log"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                           />
+                                android:layout_height="match_parent" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

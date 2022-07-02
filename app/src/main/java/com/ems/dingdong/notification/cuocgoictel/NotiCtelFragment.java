@@ -52,6 +52,8 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
     TextView tvThoigiansudung;
     @BindView(R.id.tv_nge)
     TextView tvNghe;
+    @BindView(R.id.ll_call)
+    LinearLayout llCall;
 
 
     @BindView(R.id.imh_seebar)
@@ -110,7 +112,9 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
         tvSohieuBg.setText(detailNotifyMode.getLadingCode());
         tvTenkhachhang.setText(detailNotifyMode.getReceiverName());
         tvSodienthoai.setText(detailNotifyMode.getReceiverTel() + "");
-        tvThoigiansudung.setText(detailNotifyMode.getCalledAt());
+        if (detailNotifyMode.getAnswerDuration() > 0)
+            tvThoigiansudung.setText(detailNotifyMode.getCalledAt() + "     " + detailNotifyMode.getAnswerDuration() + "s");
+        else tvThoigiansudung.setText(detailNotifyMode.getCalledAt());
         url = detailNotifyMode.getRecordUrl();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -129,15 +133,18 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
             Toast.showToast(getViewContext(), "IOException");
             e.printStackTrace();
         }
-//        if (file) {
-//            tvNghe.setText("Nghe ghi âm");
-//            imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-//        } else {
-//            tvNghe.setText("File ghi âm lỗi");
-//            imgSeebar.setImageResource(R.drawable.ic_baseline_error_24);
-//        }
-
         tvNghe.setText("Đang tải file");
+
+
+        if (detailNotifyMode.getCallStatus().equals("S")) {
+            tvNghe.setVisibility(View.VISIBLE);
+            imgSeebar.setVisibility(View.VISIBLE);
+            llCall.setVisibility(View.VISIBLE);
+        } else {
+            tvNghe.setVisibility(View.GONE);
+            imgSeebar.setVisibility(View.GONE);
+            llCall.setVisibility(View.GONE);
+        }
 
     }
 
@@ -253,7 +260,7 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-//        hideProgress();
+        hideProgress();
         if (file) {
             tvNghe.setText("Nghe ghi âm");
             imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);

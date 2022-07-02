@@ -21,6 +21,26 @@ public class NotiCtelModel {
     private String RecordUrl;
     @SerializedName("CalledAt")
     private String CalledAt;
+    @SerializedName("CallStatus")
+    private String CallStatus;
+    @SerializedName("AnswerDuration")
+    private int AnswerDuration;
+
+    public String getCallStatus() {
+        return CallStatus;
+    }
+
+    public void setCallStatus(String callStatus) {
+        CallStatus = callStatus;
+    }
+
+    public int getAnswerDuration() {
+        return AnswerDuration;
+    }
+
+    public void setAnswerDuration(int answerDuration) {
+        AnswerDuration = answerDuration;
+    }
 
     public String getTicketCode() {
         return TicketCode;

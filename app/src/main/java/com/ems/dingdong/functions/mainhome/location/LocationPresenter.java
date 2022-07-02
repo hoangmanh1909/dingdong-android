@@ -56,9 +56,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
 
         if (!code.equals("")) {
             findLocation(code);
-            HistoryRequest request = new HistoryRequest();
-            request.setLadingCode(code);
-            getHistoryCall(request);
+
         }
     }
 
@@ -114,8 +112,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
 
-                        HistoryRespone[] j
-                                = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
+                        HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
                         List<HistoryRespone> l = Arrays.asList(j);
                         mView.showLog(l);
 
@@ -140,6 +137,9 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                             mView.showSuccessToast(commonObjectResult.getMessage());
                             if (commonObjectResult.getErrorCode().equals("00")) {
                                 mView.showFindLocationSuccess(commonObjectResult.getCommonObject());
+                                HistoryRequest request = new HistoryRequest();
+                                request.setLadingCode(code);
+                                getHistoryCall(request);
                             } else {
                                 mView.showErrorToast(commonObjectResult.getMessage());
                                 mView.showEmpty();

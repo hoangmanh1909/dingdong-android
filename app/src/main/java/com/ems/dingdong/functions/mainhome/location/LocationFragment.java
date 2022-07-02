@@ -37,6 +37,7 @@ import com.ems.dingdong.dialog.DialogCuocgoi;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogAdapter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailMode;
 import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
@@ -52,11 +53,16 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 //import com.sip.cmc.SipCmc;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -101,6 +107,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     LinearLayout llSign;
     @BindView(R.id.ll_location)
     LinearLayout llLocation;
+    @BindView(R.id.ll_log_cuoc_goi)
+    LinearLayout ll_log_cuoc_goi;
     @BindView(R.id.tv_COD)
     CustomTextView tvCOD;
     //    @BindView(R.id.tv_fee)
@@ -110,7 +118,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     @BindView(R.id.tv_SenderPhone)
     CustomTextView _tvSenderPhone;
     private ArrayList<StatusInfo> mList;
-    private StatusAdapter mAdapter;
+    private HistoryAdapter mAdapter;
     private PublishSubject<String> subject;
     String mPhone;
     @BindView(R.id.typewarhouse)
@@ -142,10 +150,13 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         super.initLayout();
         checkSelfPermission();
 //        edtLadingCode.setText("EJ423686407VN");
+        ll_log_cuoc_goi.setVisibility(View.GONE);
         mList = new ArrayList<>();
-        mAdapter = new StatusAdapter(getViewContext(), mList);
+        mAdapter = new HistoryAdapter(getViewContext(), mList);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
+
         edtLadingCode.getEditText().setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -173,13 +184,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                 holder.tv_linknge.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
-//                        intent.setDataAndType(Uri.fromFile(new File(historyResponeList.get(position).getRecordFile())), "audio/*");
-//                        try {
-//                            getViewContext().startActivity(intent);
-//                        } catch (ActivityNotFoundException e) {
-//                            Log.d("error", e.getMessage());
-//                        }
+
                     }
                 });
             }
@@ -207,6 +212,41 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         historyResponeList.clear();
         historyResponeList.addAll(l);
         mAdapterLog.notifyDataSetChanged();
+        for (int i = 0; i < l.size(); i++) {
+            StatusInfo statusInfo = new StatusInfo();
+            statusInfo.setStatusDate(l.get(i).getStartTime().toString().split(" ")[0]);
+            statusInfo.setStatusTime(l.get(i).getStartTime().toString().split(" ")[1]);
+            statusInfo.setPOName(l.get(i).getLadingCode());
+            statusInfo.setActionTypeName(l.get(i).getCallTypeName());
+            statusInfo.setStatusMessage(l.get(i).getToNumber());
+            statusInfo.setDescription("Trạng thái: " + l.get(i).getStatus());
+            mList.add(statusInfo);
+        }
+
+        Collections.sort(mList, new Comparator<StatusInfo>() {
+            private SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            public int compare(StatusInfo o1, StatusInfo o2) {
+                int result = -1;
+                try {
+                    result = sdf.parse(o2.getStatusDate() + " " + o2.getStatusTime()).compareTo(sdf.parse(o1.getStatusDate() + " " + o1.getStatusTime()));
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+                return result;
+            }
+        });
+        Log.d("AAAAAAAAA", new Gson().toJson(mList));
+
+        mAdapter.notifyDataSetChanged();
+
+        llStatus.setVisibility(View.VISIBLE);
+    }
+
+    class NameComparator implements Comparator<StatusInfo> {
+        public int compare(StatusInfo s1, StatusInfo s2) {
+            return s1.getStatusDate().compareTo(s2.getStatusDate());
+        }
     }
 
     @Override
@@ -288,8 +328,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         if (commonObject.getStatusInfoArrayList() == null || commonObject.getStatusInfoArrayList().isEmpty()) {
             llStatus.setVisibility(View.GONE);
         } else {
-            mList = commonObject.getStatusInfoArrayList();
-            mAdapter.refresh(commonObject.getStatusInfoArrayList());
+            mList.addAll(commonObject.getStatusInfoArrayList());
+            mAdapter.notifyDataSetChanged();
             llStatus.setVisibility(View.VISIBLE);
         }
         if (!TextUtils.isEmpty(commonObject.getSignatureCapture())) {
@@ -381,23 +421,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 //                        mPresenter.updateMobile(phone, choosenLadingCode);
                     }
                 }).show();
-//                new DialogCuocgoi(getViewContext(), _tvReceiverPhone.getText().toString(), "2", new PhoneKhiem() {
-//                    @Override
-//                    public void onCallTongDai(String phone) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCall(String phone) {
-//                        mPhone = phone;
-//                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
-//                    }
-//
-//                    @Override
-//                    public void onCallEdit(String phone,int type) {
-//
-//                    }
-//                }).show();
+
                 break;
             case R.id.img_back:
                 mPresenter.back();
