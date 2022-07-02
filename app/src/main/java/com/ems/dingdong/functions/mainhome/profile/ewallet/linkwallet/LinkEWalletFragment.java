@@ -100,7 +100,11 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                     mPresenter.linkEWallet(mType);
                 } else {
                     if (mType == 1) {
-                        if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) {
+                        if (TextUtils.isEmpty(otpEditText.getText())) {
+                            showErrorToast("OTP không được bỏ trống");
+                            return;
+                        }
+                        if (otpEditText.getText().length() != 6) {
                             showErrorToast(getString(R.string.wrong_otp_pattern));
                             return;
                         }

@@ -58,7 +58,7 @@ public interface NopPhiContract {
 
         void requestPayment(List<EWalletDataResponse> list, String poCode, String routeCode, String postmanCode);
 
-        void deletePayment(List<EWalletDataResponse> list);
+        void deletePayment(List<EWalletDataResponse> list,String mobileNumber);
 
         void confirmPayment(String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode);
 

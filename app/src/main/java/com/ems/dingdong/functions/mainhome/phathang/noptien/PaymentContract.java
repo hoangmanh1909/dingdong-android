@@ -76,7 +76,7 @@ public interface PaymentContract {
                             String routeCode, String postmanCode, int type,
                             String bankcode, String posmanTel, String token, SmartBankLink item);
 
-        void deletePayment(List<EWalletDataResponse> list);
+        void deletePayment(List<EWalletDataResponse> list,String mobileNumber);
 
         void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
                             String routeCode, String postmanCode, String mobileNumber, String token,int type,String bankcode);

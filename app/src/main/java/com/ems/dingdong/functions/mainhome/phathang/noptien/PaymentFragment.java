@@ -450,6 +450,14 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
                 @Override
                 public void onResponse(SmartBankLink item) {
+                    if (item.getGroupType()==1){
+                        for (EWalletDataResponse eWalletDataResponse : mAdapter.getItemsSelected()) {
+                            if (eWalletDataResponse.getFee() > 0) {
+                                Toast.showToast(getViewContext(), "Bưu gửi có cước COD không được nộp qua ví bưu điện");
+                                return;
+                            }
+                        }
+                    }
                     String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
                             list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                             "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
@@ -586,7 +594,9 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             String codAmount = NumberUtils.formatPriceNumber(cod + fee);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
 
-            Collections.sort(k, new PaymentFragment.NameComparator());
+            if (k == null) k = new ArrayList<>();
+            else Collections.sort(k, new PaymentFragment.NameComparator());
+
             new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
                 @Override
                 public void onResponse(SmartBankLink item) {
@@ -703,7 +713,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.deletePayment(mAdapter.getItemsSelected());
+                        mPresenter.deletePayment(mAdapter.getItemsSelected(),mobileNumber);
                         sweetAlertDialog.dismiss();
                     })
                     .show();
