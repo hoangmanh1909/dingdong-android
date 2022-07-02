@@ -434,13 +434,19 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
                 LadingPaymentInfo info = new LadingPaymentInfo();
                 info.setCodAmount(item.getCodAmount());
+                if (item.getFee() > 0) {
+                    Toast.showToast(getViewContext(), "Bưu gửi có có cước COD không được nộp qua ví bưu điện");
+                    return;
+                }
                 info.setFeeCod(item.getFee());
                 info.setLadingCode(item.getLadingCode());
                 info.setFeeType(item.getFeeType());
                 list.add(info);
             }
-            if (k==null) k = new ArrayList<>();
+            if (k == null) k = new ArrayList<>();
             else Collections.sort(k, new PaymentFragment.NameComparator());
+
+
             new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
                 @Override
                 public void onResponse(SmartBankLink item) {

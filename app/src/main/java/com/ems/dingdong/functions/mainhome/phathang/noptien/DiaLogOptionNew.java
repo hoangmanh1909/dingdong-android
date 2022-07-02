@@ -177,27 +177,12 @@ public class DiaLogOptionNew extends Dialog {
                 dismiss();
                 break;
             case R.id.layout_seabank:
-                String contentSeaBank="Bạn có muốn liên kết tài khoản Thấu chi";
+            case R.id.layout_e_wallet:
+                String contentSeaBank="Bạn chưa liên kết tài khoản, Vui lòng liên kết tài khoản để thực hiện chức năng?";
                 new NotificationDialog(getContext())
                         .setConfirmText(getString(R.string.payment_confirn))
                         .setCancelText(getString(R.string.payment_cancel))
                         .setHtmlContent(contentSeaBank)
-                        .setCancelClickListener(Dialog::dismiss)
-                        .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                        .setConfirmClickListener(sweetAlertDialog -> {
-                            sweetAlertDialog.dismiss();
-                            dismiss();
-                            new ListBankPresenter(containerView).pushView();
-
-                        }).show();
-                dismiss();
-                break;
-            case R.id.layout_e_wallet:
-                String contentEWallet ="Bạn có muốn liên kết tài khoản Ví điện tử";
-                new NotificationDialog(getContext())
-                        .setConfirmText(getString(R.string.payment_confirn))
-                        .setCancelText(getString(R.string.payment_cancel))
-                        .setHtmlContent(contentEWallet)
                         .setCancelClickListener(Dialog::dismiss)
                         .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                         .setConfirmClickListener(sweetAlertDialog -> {

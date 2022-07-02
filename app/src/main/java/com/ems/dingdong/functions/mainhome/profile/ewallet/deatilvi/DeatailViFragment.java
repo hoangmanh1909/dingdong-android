@@ -160,7 +160,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
 
     @Override
     public void showErrorHistory(String mess) {
-        llLichsu.setVisibility(View.VISIBLE);
+        llLichsu.setVisibility(View.GONE);
         Toast.showToast(getViewContext(), mess);
     }
 
