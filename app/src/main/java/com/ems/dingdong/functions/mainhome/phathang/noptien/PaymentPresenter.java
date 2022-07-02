@@ -184,7 +184,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
 
     @Override
-    public void deletePayment(List<EWalletDataResponse> list) {
+    public void deletePayment(List<EWalletDataResponse> list,String mobileNumber) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         removeRequests = new ArrayList<>();
         removeRequests.clear();
@@ -212,6 +212,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
             info.setFeeType(Integer.parseInt(item.getFeeType()));
             info.setPOCode(poCode);
+            info.setPostmanTel(mobileNumber);
             removeRequests.add(info);
         }
         String dataJson = NetWorkController.getGson().toJson(removeRequests);

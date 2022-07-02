@@ -396,7 +396,9 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.deletePayment(mAdapter.getItemsSelected());
+                        String userJson = SharedPref.getInstance(getViewContext()).getString(Constants.KEY_USER_INFO, "");
+                        String mobileNumber = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber();
+                        mPresenter.deletePayment(mAdapter.getItemsSelected(),mobileNumber);
                         sweetAlertDialog.dismiss();
                     })
                     .show();

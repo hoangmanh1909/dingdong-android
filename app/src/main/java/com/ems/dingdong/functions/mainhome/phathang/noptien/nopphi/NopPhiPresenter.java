@@ -134,7 +134,7 @@ public class NopPhiPresenter extends Presenter<NopPhiContract.View, NopPhiContra
     }
 
     @Override
-    public void deletePayment(List<EWalletDataResponse> list) {
+    public void deletePayment(List<EWalletDataResponse> list,String mobileNumber) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         removeRequests = new ArrayList<>();
         removeRequests.clear();
@@ -157,6 +157,7 @@ public class NopPhiPresenter extends Presenter<NopPhiContract.View, NopPhiContra
 //            Log.d("thanhkhiempy", info.getRetRefNumber());
             info.setRemoveBy(id);
             info.setPOCode(poCode);
+            info.setPostmanTel(mobileNumber);
             removeRequests.add(info);
         }
         String dataJson = NetWorkController.getGson().toJson(removeRequests);
