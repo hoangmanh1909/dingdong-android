@@ -412,6 +412,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                         @Override
                         public void onCall(String phone) {
+                            if (phone==null || phone.isEmpty()){
+                                Toast.showToast(requireContext(),"Số điện thoại không hợp lệ.");
+                                return;
+                            }
                             mPhoneEdit = phone;
                             CallLiveMode callLiveMode = new CallLiveMode();
                             SharedPref sharedPref = new SharedPref(getViewContext());
