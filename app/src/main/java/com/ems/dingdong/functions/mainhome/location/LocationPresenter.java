@@ -84,7 +84,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showCallLive(r.getFromNumber());
+                        mView.showCallLive(r.getToNumber());
                     } else {
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }

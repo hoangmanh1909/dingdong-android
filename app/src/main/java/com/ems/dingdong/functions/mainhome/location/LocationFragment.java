@@ -470,7 +470,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
         } else {
             startActivity(intent);
