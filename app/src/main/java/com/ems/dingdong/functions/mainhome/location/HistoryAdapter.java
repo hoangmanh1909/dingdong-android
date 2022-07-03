@@ -127,14 +127,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                 tvDescription.setVisibility(View.GONE);
                 llCall.setVisibility(View.VISIBLE);
                 tvTypeMessage.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(item.getDescription())) {
+                    tvGhichu.setText(item.getDescription());
+                    tvGhichu.setVisibility(View.VISIBLE);
+                } else {
+                    tvGhichu.setText("");
+                    tvGhichu.setVisibility(View.GONE);
+                }
                 if (item.getStatus().contains("nhỡ")) {
                     if (item.getActionTypeName().contains("đi")) {
                         imgLogo.setVisibility(View.VISIBLE);
+                        imgLogo.setImageResource(R.drawable.ic_baseline_phone_forwarded_24_v1);
+
                     } else if (item.getActionTypeName().contains("đến")) {
-                        imgLogo.setVisibility(View.INVISIBLE);
+                        imgLogo.setImageResource(R.drawable.ic_baseline_phone_callback_24_v1);
+                        imgLogo.setVisibility(View.VISIBLE);
                     }
 //                    imgLogo.setBackgroundResource(R.drawable.badge_background);
-                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_missed_24);
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.red_light));
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.red_light));
                     tvGhichu.setTextColor(mContext.getResources().getColor(R.color.red_light));
@@ -142,11 +151,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                 } else if (item.getStatus().equals("Thành công") && !item.getToNumber().isEmpty()) {
                     if (item.getActionTypeName().contains("đi")) {
                         imgLogo.setVisibility(View.VISIBLE);
+                        imgLogo.setImageResource(R.drawable.ic_baseline_phone_forwarded_24_v1);
                     } else if (item.getActionTypeName().contains("đến")) {
-                        imgLogo.setVisibility(View.INVISIBLE);
+                        imgLogo.setImageResource(R.drawable.ic_baseline_phone_callback_24_v1);
+                        imgLogo.setVisibility(View.VISIBLE);
                     }
 //                    imgLogo.setBackgroundResource(R.drawable.badge_xanh);
-                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_in_talk_24_v1);
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
                     tvGhichu.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
                     tvDescription.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
@@ -154,8 +164,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     imgLogo.setVisibility(View.INVISIBLE);
                     tvTypeMessage.setVisibility(View.GONE);
                     llCall.setVisibility(View.VISIBLE);
-                    tvCall.setText(item.getStatus());
+                    tvGhichu.setText(item.getStatus());
                     tvCall.setVisibility(View.VISIBLE);
+                    tvGhichu.setVisibility(View.VISIBLE);
+                    tvCall.setText(item.getToNumber());
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
                 } else {
                     imgLogo.setVisibility(View.INVISIBLE);
@@ -184,13 +196,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                 item.setStatusTime("");
             }
 
-            if (!TextUtils.isEmpty(item.getDescription())) {
-                tvGhichu.setText(item.getDescription());
-                tvGhichu.setVisibility(View.VISIBLE);
-            } else {
-                tvGhichu.setText("");
-                tvGhichu.setVisibility(View.GONE);
-            }
 
             tvStatusDateStatusTime.setText(String.format("%s\n %s", item.getStatusDate(), item.getStatusTime()));
             ViewGroup.LayoutParams params = viewLine.getLayoutParams();
