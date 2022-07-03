@@ -591,7 +591,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 info.setFeeType(item.getFeeType());
                 list.add(info);
             }
-            String codAmount = NumberUtils.formatPriceNumber(cod + fee);
+            String codAmount = NumberUtils.formatPriceNumber(cod);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
 
             if (k == null) k = new ArrayList<>();
@@ -601,7 +601,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 @Override
                 public void onResponse(SmartBankLink item) {
                     String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                            list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                            list.size() + "</font>" + " bưu gửi với tổng số tiền: " +
                             "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
                             "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + item.getBankName();
                     new NotificationDialog(getViewContext()).
