@@ -283,7 +283,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             statusInfo.setTypeCall(1);
             statusInfo.setStatus(l.get(i).getStatus());
             if (l.get(i).getAnswerDuration() > 0)
-                statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + ")");
+                statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + "s)");
 
             mList.add(statusInfo);
         }

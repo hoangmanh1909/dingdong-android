@@ -35,7 +35,7 @@ import butterknife.OnClick;
 /**
  * The Notification Fragment
  */
-public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> implements NotiCtelContract.View, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
+public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> implements NotiCtelContract.View, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
     public static NotiCtelFragment getInstance() {
         return new NotiCtelFragment();
@@ -123,6 +123,7 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
             mediaPlayer.setOnErrorListener(this);
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.prepareAsync();
+            mediaPlayer.setOnCompletionListener(this);
         } catch (IllegalArgumentException e) {
             Toast.showToast(getViewContext(), "IllegalArgumentException");
             e.printStackTrace();
@@ -270,5 +271,11 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
 
         }
         return false;
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        tvNghe.setText("Nghe ghi âm");
+        imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
     }
 }
