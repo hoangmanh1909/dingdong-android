@@ -904,16 +904,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-
-
+                if (cbSelected.isChecked()) {
+                    holder.tv_monney.setEnabled(true);
+                } else holder.tv_monney.setEnabled(false);
                 holder.tv_monney.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start,
                                               int before, int count) {
                         //setting data to array, when changed
+
                         if (!TextUtils.isEmpty(s.toString())) {
                             mBaoPhatBangke.get(position).setFeeCancelOrder(Long.parseLong(s.toString().replaceAll("\\.", "")));
                         } else mBaoPhatBangke.get(position).setFeeCancelOrder(0);
+
                     }
 
                     @Override
@@ -986,7 +989,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showBuuCucden();
                 break;
             case R.id.cb_selected:
-
                 showProgress();
                 if (cbSelected.isChecked()) {
                     for (int i = 0; i < mBaoPhatBangke.size(); i++) {
@@ -1690,7 +1692,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(t)) + "</font>" + " VNĐ, bạn có thu đủ tiền hay không?";
 
-            if (t > 0) {
+            if (cbSelected.isChecked() ) {
                 new ConfirmPhiHuyDonHangDialog(getViewContext(),
                         listSelected.size(), t)
                         .setOnCallBacklClickListener(confirmDialog -> {
