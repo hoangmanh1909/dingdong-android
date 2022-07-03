@@ -72,15 +72,16 @@ public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnEr
             mediaPlayer.setOnErrorListener(this);
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.prepareAsync();
+            mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.prepare();
         } catch (IllegalArgumentException e) {
-            Toast.showToast(getApplication(), "IllegalArgumentException");
+            Log.d("IllegalArgumentException", "IllegalArgumentException");
             e.printStackTrace();
         } catch (IllegalStateException e) {
-            Toast.showToast(getApplication(), "IllegalStateException");
+            Log.d("IllegalStateException",  "IllegalStateException");
             e.printStackTrace();
         } catch (IOException e) {
-            Toast.showToast(getApplication(), "IOException");
+            Log.d("IOException", "IOException");
             e.printStackTrace();
         }
 
