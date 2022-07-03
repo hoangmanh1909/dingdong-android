@@ -107,6 +107,7 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
         }).show();
     }
 
+
     @Override
     public void showInfo(NotiCtelModel detailNotifyMode) {
         tvSohieuBg.setText(detailNotifyMode.getLadingCode());
@@ -149,6 +150,30 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.pause();
+    }
+
     @OnClick({R.id.imh_seebar, R.id.img_back, R.id.img_phone, R.id.tv_sohieubg, R.id.tv_sodienthoai})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -180,33 +205,6 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
                     tvNghe.setText("Dừng nghe");
                 }
                 break;
-//            case R.id.tv_dung_nge:
-//                handler.removeCallbacks(udatae);
-//                mediaPlayer.pause();
-//                break;
-//            case R.id.img_relay:
-//                llRelay.setVisibility(View.GONE);
-//                mediaPlayer = new MediaPlayer();
-//                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//                try {
-//                    mediaPlayer.setDataSource(url);
-//                    mediaPlayer.setOnErrorListener(this);
-//                    mediaPlayer.setOnPreparedListener(this);
-//                    mediaPlayer.prepareAsync();
-//                } catch (IllegalArgumentException e) {
-//                    Toast.showToast(getViewContext(), "IllegalArgumentException");
-//                    e.printStackTrace();
-//                } catch (IllegalStateException e) {
-//                    Toast.showToast(getViewContext(), "IllegalStateException");
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    Toast.showToast(getViewContext(), "IOException");
-//                    e.printStackTrace();
-//                }
-//                imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-//                tvNghe.setText("Nghe ghi âm");
-//                mediaPlayer.pause();
-//                break;
             case R.id.img_back:
                 mediaPlayer.pause();
                 mPresenter.back();
@@ -278,4 +276,5 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
         tvNghe.setText("Nghe ghi âm");
         imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
     }
+
 }

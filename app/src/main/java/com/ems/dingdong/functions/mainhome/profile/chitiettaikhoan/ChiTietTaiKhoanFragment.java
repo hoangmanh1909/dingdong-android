@@ -299,14 +299,13 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 
     @Override
     public void capNhatMacDinh() {
-        if (s.getBankCode().equals("SeABank")) {
-            if (s.getIsDefaultPayment()) {
-                btnHuyMatmacdinh.setText("Hủy mặc định");
-            } else {
-                btnHuyMatmacdinh.setText("Đặt mặc định");
-            }
+        s = mPresenter.getSmartBankLink();
+        if (s.getIsDefaultPayment()) {
+            btnHuyMatmacdinh.setText("Hủy mặc định");
+        } else {
+            btnHuyMatmacdinh.setText("Đặt mặc định");
         }
-
-
     }
+
+
 }

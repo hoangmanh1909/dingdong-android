@@ -27,7 +27,9 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
     public ChiTietTaiKhoanPresenter(ContainerView containerView) {
         super(containerView);
     }
+
     SmartBankLink s;
+
     @Override
     public void start() {
 
@@ -128,8 +130,10 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
+                            if (request.getBankCode() == null)
+                                s.setIsDefaultPayment(false);
+                            else s.setIsDefaultPayment(true);
                             mView.capNhatMacDinh();
-
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
 
@@ -148,6 +152,7 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
     public SmartBankLink getSmartBankLink() {
         return s;
     }
+
     public ChiTietTaiKhoanPresenter setSmartBankLink(SmartBankLink c) {
         s = c;
         return this;

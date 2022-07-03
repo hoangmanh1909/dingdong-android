@@ -286,16 +286,16 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
             } else if (i == 1) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
-                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(v.getTotalAddressCollect())));
-                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(v.getTotalAddressNotCollect())));
+                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(v != null ? v.getTotalAddressCollect() : 0)));
+                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(v != null ? v.getTotalAddressNotCollect() : 0)));
             } else if (i == 2) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
-                homeCollectInfo.setTotalLadingCollect(Integer.valueOf(v.getTotalLadingCollect()));
-                homeCollectInfo.setTotalLadingNotCollect(Integer.valueOf(v.getTotalLadingNotCollect()));
+                homeCollectInfo.setTotalLadingCollect(Integer.valueOf(v != null ? v.getTotalLadingCollect() : 0));
+                homeCollectInfo.setTotalLadingNotCollect(Integer.valueOf(v != null ? v.getTotalLadingNotCollect() : 0));
             } else if (i == 3) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
-                homeCollectInfo.setTotalWeightCollect(Integer.valueOf(v.getTotalWeightCollect()));
-                homeCollectInfo.setTotalWeightNotCollect(Integer.valueOf(v.getTotalWeightNotCollect()));
+                homeCollectInfo.setTotalWeightCollect(Integer.valueOf(v != null ? v.getTotalWeightCollect() : 0));
+                homeCollectInfo.setTotalWeightNotCollect(Integer.valueOf(v != null ? v.getTotalWeightNotCollect() : 0));
             }
             mListCollect.add(homeCollectInfo);
         }

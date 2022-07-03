@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien.huynop;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -182,6 +183,7 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
             return mListFilter.get(position);
         }
 
+        @SuppressLint("SetTextI18n")
         public void bindView(EWalletDataResponse model, int position) {
             index.setText((position + 1) + " - ");
 //            tvThanhtaoan.setVisibility(View.GONE);
@@ -208,7 +210,10 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
             if (!TextUtils.isEmpty(model.getBankName()))
                 tvThanhtaoan.setText("Kênh thanh toán: " + model.getBankName());
             else
-                tvThanhtaoan.setText("Kênh thanh toán: ");
+                tvThanhtaoan.setText("Kênh thanh toán: " +
+                        (model.getCashinChannel().equals("VNPD") ? "Ví điện tử PostPay" :
+                                (model.getCashinChannel().equals("SeABank") ? "Ngân hàng TMCP Đông Nam Á" :
+                                        model.getCashinChannel().equals("PP") ? "Ví điện tử PostPay - MB" : "")));
 
             if (model.getRetRefNumber() != null)
                 tvSoThamChieu.setText(String.format("%s: %s", mContext.getString(R.string.so_tham_chieu), model.getRetRefNumber()));

@@ -123,7 +123,7 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                             mView.showThuGom(simpleResult.getValue());
                             mView.hideProgress();
                         } else {
-
+                            mView.showThuGom(simpleResult.getValue());
                             mView.hideProgress();
                         }
                     } catch (Exception e) {

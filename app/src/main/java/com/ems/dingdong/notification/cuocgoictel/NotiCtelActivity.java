@@ -16,4 +16,10 @@ public class NotiCtelActivity extends DingDongActivity {
 
         return (ViewFragment) new NotiCtelPresenter(this).setCodeTicket(value1).getFragment();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 }
