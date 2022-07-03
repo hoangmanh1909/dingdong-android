@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="@dimen/dimen_5dp"
-    android:paddingBottom="@dimen/dimen_5dp"
-    android:id="@+id/ll_background">
+    android:paddingBottom="@dimen/dimen_5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,25 +24,42 @@
                 android:id="@+id/tv_stt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14sp"
-
                 android:paddingLeft="5dp"
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/text_size_14sp"
                 tools:text="1" />
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_code"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:layout_marginBottom="@dimen/dimen_5dp"
-                android:drawableLeft="@drawable/ic_barcode_v1"
-                android:drawablePadding="5dp"
-                android:gravity="center|left"
-                android:paddingLeft="7dp"
-                android:textColor="@color/blue"
-                android:textSize="14dp"
-                tools:text="1234567890" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_marginBottom="@dimen/dimen_5dp"
+                    android:layout_weight="1.8"
+                    android:drawableLeft="@drawable/ic_barcode_v1"
+                    android:drawablePadding="5dp"
+                    android:gravity="center|left"
+                    android:paddingLeft="7dp"
+                    android:textColor="@color/blue"
+                    android:textSize="14dp"
+                    tools:text="1234567890" />
+
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="0dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="32dp"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_outline_file_copy_24" />
+
+            </LinearLayout>
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_sodonhang"

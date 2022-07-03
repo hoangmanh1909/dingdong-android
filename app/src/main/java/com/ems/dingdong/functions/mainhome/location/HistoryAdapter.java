@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,8 +64,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
         CustomTextView tvDescription;
         @BindView(R.id.tv_TypeMessage)
         CustomTextView tvTypeMessage;
+        @BindView(R.id.tv_call)
+        CustomTextView tvCall;
+        @BindView(R.id.tv_ghichu)
+        CustomTextView tvGhichu;
         @BindView(R.id.view_line)
         View viewLine;
+        @BindView(R.id.ll_call)
+        LinearLayout llCall;
+        @BindView(R.id.img_logo)
+        ImageView imgLogo;
+
 
         public HolderView(View itemView) {
             super(itemView);
@@ -77,11 +88,85 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
         @SuppressLint("SetTextI18n")
         public void bindView(Object model) {
             StatusInfo item = (StatusInfo) model;
+            if (item.getTypeCall() == 0) {
+                llCall.setVisibility(View.GONE);
+                tvDescription.setTextColor(mContext.getResources().getColor(R.color.black));
+                tvTypeMessage.setText("");
+                if (!TextUtils.isEmpty(item.getActionTypeName())) {
+                    tvTypeMessage.setText(item.getActionTypeName());
+                    tvTypeMessage.setVisibility(View.VISIBLE);
+                } else {
+                    tvTypeMessage.setText("");
+                    tvTypeMessage.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(item.getDescription())) {
+                    tvDescription.setText(item.getDescription());
+                    tvDescription.setVisibility(View.VISIBLE);
+                } else {
+                    tvDescription.setText("");
+                    tvDescription.setVisibility(View.GONE);
+                }
+
+                if (item.getActionTypeName().contains("điện")) {
+                    imgLogo.setVisibility(View.INVISIBLE);
+                    tvTypeMessage.setVisibility(View.GONE);
+                    llCall.setVisibility(View.VISIBLE);
+                    tvCall.setText(item.getActionTypeName());
+                    tvCall.setVisibility(View.VISIBLE);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
+                } else imgLogo.setVisibility(View.GONE);
+            } else {
+                tvCall.setText("");
+                if (!TextUtils.isEmpty(item.getToNumber())) {
+                    tvCall.setText(item.getToNumber());
+                    tvCall.setVisibility(View.VISIBLE);
+                } else {
+                    tvCall.setText("");
+                    tvCall.setVisibility(View.GONE);
+                }
+                tvDescription.setVisibility(View.GONE);
+                llCall.setVisibility(View.VISIBLE);
+                tvTypeMessage.setVisibility(View.GONE);
+                if (item.getStatus().contains("nhỡ")) {
+                    if (item.getActionTypeName().contains("đi")) {
+                        imgLogo.setVisibility(View.VISIBLE);
+                    } else if (item.getActionTypeName().contains("đến")) {
+                        imgLogo.setVisibility(View.INVISIBLE);
+                    }
+//                    imgLogo.setBackgroundResource(R.drawable.badge_background);
+                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_missed_24);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tvGhichu.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tvDescription.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                } else if (item.getStatus().equals("Thành công") && !item.getToNumber().isEmpty()) {
+                    if (item.getActionTypeName().contains("đi")) {
+                        imgLogo.setVisibility(View.VISIBLE);
+                    } else if (item.getActionTypeName().contains("đến")) {
+                        imgLogo.setVisibility(View.INVISIBLE);
+                    }
+//                    imgLogo.setBackgroundResource(R.drawable.badge_xanh);
+                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_in_talk_24_v1);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
+                    tvGhichu.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
+                    tvDescription.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
+                } else if (item.getStatus().contains("trực tiếp")) {
+                    imgLogo.setVisibility(View.INVISIBLE);
+                    tvTypeMessage.setVisibility(View.GONE);
+                    llCall.setVisibility(View.VISIBLE);
+                    tvCall.setText(item.getStatus());
+                    tvCall.setVisibility(View.VISIBLE);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
+                } else {
+                    imgLogo.setVisibility(View.INVISIBLE);
+                    tvCall.setVisibility(View.GONE);
+                }
+            }
             if (!TextUtils.isEmpty(item.getPOName())) {
                 tvPOCodePOName.setText(String.format("%s - %s", item.getPOCode(), item.getPOName()));
                 tvPOCodePOName.setVisibility(View.VISIBLE);
-                if (TextUtils.isEmpty(item.getPOCode())){
-                    tvPOCodePOName.setText(String.format("%s",  item.getPOName()));
+                if (TextUtils.isEmpty(item.getPOCode())) {
+                    tvPOCodePOName.setText(String.format("%s", item.getPOName()));
                 }
             } else {
                 tvPOCodePOName.setVisibility(View.GONE);
@@ -98,21 +183,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
             if (item.getStatusTime() == null) {
                 item.setStatusTime("");
             }
+
             if (!TextUtils.isEmpty(item.getDescription())) {
-                tvDescription.setText(item.getDescription());
-                tvDescription.setVisibility(View.VISIBLE);
+                tvGhichu.setText(item.getDescription());
+                tvGhichu.setVisibility(View.VISIBLE);
             } else {
-                tvDescription.setText("");
-                tvDescription.setVisibility(View.GONE);
+                tvGhichu.setText("");
+                tvGhichu.setVisibility(View.GONE);
             }
-            tvTypeMessage.setText("");
-            if (!TextUtils.isEmpty(item.getActionTypeName())) {
-                tvTypeMessage.setText(item.getActionTypeName());
-                tvTypeMessage.setVisibility(View.VISIBLE);
-            } else {
-                tvTypeMessage.setText("");
-                tvTypeMessage.setVisibility(View.GONE);
-            }
+
             tvStatusDateStatusTime.setText(String.format("%s\n %s", item.getStatusDate(), item.getStatusTime()));
             ViewGroup.LayoutParams params = viewLine.getLayoutParams();
 
@@ -124,16 +203,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
             if (TextUtils.isEmpty(item.getDescription()))
                 docao -= 30;
             params.height = docao;
+            if (item.getTypeCall() == 1)
+                docao = 70;
             viewLine.setLayoutParams(params);
         }
-
 
         public Handler handler = new Handler();
 
         public void updaterSeebeek() {
-//            if (mediaPlayer.isPlaying()) {
-//                handler.postDelayed(udatae, 1000);
-//            }
+
         }
 
         public Runnable udatae = new Runnable() {

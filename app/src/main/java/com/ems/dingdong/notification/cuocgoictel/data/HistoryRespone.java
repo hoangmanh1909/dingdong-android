@@ -15,6 +15,16 @@ public class HistoryRespone {
     private String CallTypeName;
     @SerializedName("RecordFile")
     private String RecordFile;
+    @SerializedName("AnswerDuration")
+    private int AnswerDuration;
+
+    public int getAnswerDuration() {
+        return AnswerDuration;
+    }
+
+    public void setAnswerDuration(int answerDuration) {
+        AnswerDuration = answerDuration;
+    }
 
     public String getToNumber() {
         return ToNumber;

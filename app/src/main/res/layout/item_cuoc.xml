@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/iv_pick_status"
         android:layout_weight="1.2"
         android:text="lading code"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/black"/>
 
 
     <com.ems.dingdong.views.CustomTextView

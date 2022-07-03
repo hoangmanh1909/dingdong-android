@@ -16,6 +16,8 @@ public class CommonObject extends RealmObject {
 
     String mType = "";
 
+
+
     public String getmType() {
         return mType;
     }

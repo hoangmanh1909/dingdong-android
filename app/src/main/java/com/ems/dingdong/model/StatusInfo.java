@@ -37,7 +37,15 @@ public class StatusInfo extends RealmObject {
     private String CallTypeName;
     @SerializedName("RecordFile")
     private String RecordFile;
+    int typeCall=0;
 
+    public int getTypeCall() {
+        return typeCall;
+    }
+
+    public void setTypeCall(int typeCall) {
+        this.typeCall = typeCall;
+    }
     public String getToNumber() {
         return ToNumber;
     }

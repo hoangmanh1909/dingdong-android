@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -89,8 +90,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     CustomTextView tvReceiverName;
     @BindView(R.id.tv_receiverAddress)
     CustomTextView tvReceiverAddress;
-    @BindView(R.id.tv_realReceiverName)
-    CustomTextView tvRealReceiverName;
+    //    @BindView(R.id.tv_realReceiverName)
+//    CustomTextView tvRealReceiverName;
     @BindView(R.id.ll_detail)
     LinearLayout llDetail;
     @BindView(R.id.recycler)
@@ -152,7 +153,71 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 //        edtLadingCode.setText("EJ423686407VN");
         ll_log_cuoc_goi.setVisibility(View.GONE);
         mList = new ArrayList<>();
-        mAdapter = new HistoryAdapter(getViewContext(), mList);
+        mAdapter = new HistoryAdapter(getViewContext(), mList) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.tvGhichu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mList.get(position).getTypeCall() == 1)
+                            if (mList.get(position).getRecordFile() == null || mList.get(position).getRecordFile().isEmpty()) {
+                                Toast.showToast(getViewContext(), "Không có tệp ghi âm!");
+                                return;
+                            } else {
+                                Intent intent = new Intent(getViewContext(), AudioActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("tvSohieuBg", tvParcelCode.getText().toString());
+                                bundle.putString("tvSodienthoai", mList.get(position).getToNumber());
+                                bundle.putString("tvThoigiansudung", mList.get(position).getStatusDate() + " " + mList.get(position).getStatusTime());
+                                bundle.putString("imgSeebar", mList.get(position).getRecordFile());
+                                intent.putExtras(bundle);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                getActivity().startActivity(intent);
+                            }
+                    }
+                });
+                holder.tvCall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mList.get(position).getTypeCall() == 1 && NumberUtils.checkNumber(mList.get(position).getToNumber()))
+                            new DialogCuocgoiNew(getViewContext(), mList.get(position).getToNumber(), 2209, new PhoneKhiem() {
+                                @Override
+                                public void onCallTongDai(String phone) {
+                                    mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                                }
+
+                                @Override
+                                public void onCall(String phone) {
+                                    CallLiveMode callLiveMode = new CallLiveMode();
+                                    SharedPref sharedPref = new SharedPref(getViewContext());
+                                    String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                                    callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                                    callLiveMode.setToNumber(phone);
+                                    callLiveMode.setLadingCode(tvParcelCode.getText().toString());
+                                    mPresenter.ddCall(callLiveMode);
+                                }
+
+                                @Override
+                                public void onCallEdit(String phone, int type) {
+                                    if (type == 1) {
+                                        CallLiveMode callLiveMode = new CallLiveMode();
+                                        SharedPref sharedPref = new SharedPref(getViewContext());
+                                        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                                        callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                                        callLiveMode.setToNumber(phone);
+                                        callLiveMode.setLadingCode(tvParcelCode.getText().toString());
+                                        mPresenter.ddCall(callLiveMode);
+                                    } else {
+                                        mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                                    }
+//                        mPresenter.updateMobile(phone, choosenLadingCode);
+                                }
+                            }).show();
+                    }
+                });
+            }
+        };
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
@@ -176,22 +241,22 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         edtLadingCode.setText(mPresenter.getCode());
 
 
-        historyResponeList = new ArrayList<>();
-        mAdapterLog = new LogAdapter(getViewContext(), historyResponeList) {
-            @Override
-            public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position, @NonNull List<Object> payloads) {
-                super.onBindViewHolder(holder, position, payloads);
-                holder.tv_linknge.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-            }
-        };
-        recyclerViewLog.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerViewLog);
-        recyclerViewLog.setAdapter(mAdapterLog);
+//        historyResponeList = new ArrayList<>();
+//        mAdapterLog = new LogAdapter(getViewContext(), historyResponeList) {
+//            @Override
+//            public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position, @NonNull List<Object> payloads) {
+//                super.onBindViewHolder(holder, position, payloads);
+//                holder.tv_linknge.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                });
+//            }
+//        };
+//        recyclerViewLog.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+//        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerViewLog);
+//        recyclerViewLog.setAdapter(mAdapterLog);
     }
 
 
@@ -207,19 +272,19 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
     @Override
     public void showLog(List<HistoryRespone> l) {
-        ll_khongcodulieu.setVisibility(View.GONE);
-        recyclerView_cuoc.setVisibility(View.VISIBLE);
-        historyResponeList.clear();
-        historyResponeList.addAll(l);
-        mAdapterLog.notifyDataSetChanged();
         for (int i = 0; i < l.size(); i++) {
             StatusInfo statusInfo = new StatusInfo();
             statusInfo.setStatusDate(l.get(i).getStartTime().toString().split(" ")[0]);
             statusInfo.setStatusTime(l.get(i).getStartTime().toString().split(" ")[1]);
-            statusInfo.setPOName(l.get(i).getLadingCode());
+            statusInfo.setLadingCode(l.get(i).getLadingCode());
             statusInfo.setActionTypeName(l.get(i).getCallTypeName());
-            statusInfo.setStatusMessage(l.get(i).getToNumber());
-            statusInfo.setDescription("Trạng thái: " + l.get(i).getStatus());
+            statusInfo.setToNumber(l.get(i).getToNumber());
+            statusInfo.setRecordFile(l.get(i).getRecordFile());
+            statusInfo.setTypeCall(1);
+            statusInfo.setStatus(l.get(i).getStatus());
+            if (l.get(i).getAnswerDuration() > 0)
+                statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + ")");
+
             mList.add(statusInfo);
         }
 
@@ -286,10 +351,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void showFindLocationSuccess(CommonObject commonObject) {
         llDetail.setVisibility(View.VISIBLE);
         tvParcelCode.setText(commonObject.getCode());
-        tvSenderName.setText(commonObject.getSenderName());
-        tvSenderAddress.setText(commonObject.getSenderAddress());
-        tvReceiverName.setText(commonObject.getReciverName());
-        tvReceiverAddress.setText(commonObject.getReceiverAddress());
+        tvSenderName.setText("Người gửi: " + commonObject.getSenderName());
+        tvSenderAddress.setText("Địa chỉ: " + commonObject.getSenderAddress());
+        tvReceiverName.setText("Người nhận: " + commonObject.getReciverName());
+        tvReceiverAddress.setText("Địa chỉ: " + commonObject.getReceiverAddress());
 
         _tvSenderPhone.setText(commonObject.getSenderPhone());
         _tvReceiverPhone.setText(commonObject.getReceiverMobile());
@@ -328,6 +393,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         if (commonObject.getStatusInfoArrayList() == null || commonObject.getStatusInfoArrayList().isEmpty()) {
             llStatus.setVisibility(View.GONE);
         } else {
+            mList.clear();
             mList.addAll(commonObject.getStatusInfoArrayList());
             mAdapter.notifyDataSetChanged();
             llStatus.setVisibility(View.VISIBLE);
@@ -338,7 +404,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         } else {
             imgSign.setVisibility(View.GONE);
         }
-        tvRealReceiverName.setText(commonObject.getRealReceiverName());
+//        tvRealReceiverName.setText(commonObject.getRealReceiverName());
     }
 
     @OnClick({R.id.img_capture, R.id.img_back, R.id.tv_SenderPhone, R.id.tv_ReceiverPhone, R.id.img_search})

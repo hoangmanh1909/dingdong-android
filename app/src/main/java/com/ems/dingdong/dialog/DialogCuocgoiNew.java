@@ -70,6 +70,12 @@ public class DialogCuocgoiNew extends Dialog {
             tvGoitructiep.setText("Gọi người gửi trực tiếp");
             tvSuasdt.setVisibility(View.GONE);
             tvGoibuucuc.setVisibility(View.VISIBLE);
+        } else if (type == 2209) {
+            title = "Sửa số người gửi";
+            tvGoiquatongdai.setText("Gọi qua tổng đài");
+            tvGoitructiep.setText("Gọi trực tiếp");
+            tvSuasdt.setVisibility(View.GONE);
+            tvGoibuucuc.setVisibility(View.VISIBLE);
         }
 
     }

@@ -111,11 +111,9 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-
                         HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
                         List<HistoryRespone> l = Arrays.asList(j);
                         mView.showLog(l);
-
                     } else {
                         mView.showError();
                     }

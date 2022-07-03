@@ -62,6 +62,38 @@
                 android:textSize="@dimen/_12sdp" />
 
             <LinearLayout
+                android:id="@+id/ll_call"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_baseline_phone_missed_24" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/text_color_total_theme2"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_ghichu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center|right"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_12sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -83,7 +115,9 @@
                     android:layout_weight="5"
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_12sp" />
+
             </LinearLayout>
+
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_Description"

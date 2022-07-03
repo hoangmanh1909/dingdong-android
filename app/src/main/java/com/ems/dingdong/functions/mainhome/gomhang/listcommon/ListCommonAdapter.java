@@ -1,5 +1,7 @@
 package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
@@ -141,6 +144,8 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         LinearLayout llBackground;
         @BindView(R.id.iv_status)
         public ImageView ivStatus;
+        @BindView(R.id.img_logo)
+        public ImageView imgLogo;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -149,6 +154,16 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
 
         public void bindView(Object model) {
             CommonObject item = (CommonObject) model;
+            ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+
+            imgLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipData clip = ClipData.newPlainText(item.getCode(), item.getCode());
+                    Toast.showToast(mContext, "Đã sao chép " + item.getCode());
+                    clipboard.setPrimaryClip(clip);
+                }
+            });
             tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
