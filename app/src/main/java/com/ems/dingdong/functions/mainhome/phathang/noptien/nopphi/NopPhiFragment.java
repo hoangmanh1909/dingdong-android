@@ -27,6 +27,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -396,7 +397,9 @@ public class NopPhiFragment extends ViewFragment<NopPhiContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.deletePayment(mAdapter.getItemsSelected());
+                        String userJson = SharedPref.getInstance(getViewContext()).getString(Constants.KEY_USER_INFO, "");
+                        String mobileNumber = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber();
+                        mPresenter.deletePayment(mAdapter.getItemsSelected(),mobileNumber);
                         sweetAlertDialog.dismiss();
                     })
                     .show();

@@ -4,6 +4,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
 import com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment;
 import com.ems.dingdong.model.BaseRequestModel;
 import com.ems.dingdong.model.LinkHistory;
 import com.ems.dingdong.model.request.TaiKhoanMatDinh;
@@ -15,6 +16,8 @@ import com.ems.dingdong.utiles.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -145,6 +148,12 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                 });
     }
 
+    class NameComparator implements Comparator<DeatailMode> {
+        public int compare(DeatailMode s1, DeatailMode s2) {
+            return s1.getAmndDate().compareTo(s2.getAmndDate());
+        }
+    }
+
     @Override
     public void getHistory(LinkHistory request) {
         mView.showProgress();
@@ -155,8 +164,10 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
+
                             DeatailMode[] modes = NetWorkController.getGson().fromJson(simpleResult.getData(), DeatailMode[].class);
                             List<DeatailMode> ls = Arrays.asList(modes);
+//                            Collections.sort(ls, new NameComparator());
                             mView.showHistory(ls);
                         } else {
                             mView.showErrorHistory(simpleResult.getMessage());
@@ -191,11 +202,6 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                         mView.hideProgress();
                     }
                 });
-    }
-
-    @Override
-    public String getTrangThai() {
-        return c;
     }
 
 

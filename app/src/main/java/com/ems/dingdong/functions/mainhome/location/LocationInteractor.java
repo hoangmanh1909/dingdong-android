@@ -3,9 +3,9 @@ package com.ems.dingdong.functions.mainhome.location;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CallLiveMode;
-import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 
 import io.reactivex.Observable;
@@ -23,8 +23,8 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
     }
 
     @Override
-    public Observable<CommonObjectResult> findLocation(String ladingCode, String poCode) {
-        return NetWorkController.findLocation(ladingCode, poCode);
+    public Observable<SimpleResult> findLocation(String ladingCode, String poCode) {
+        return NetWorkControllerGateWay.findLocation(ladingCode, poCode);
     }    @Override
 
     public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {

@@ -13,6 +13,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.PaymentRequestResponse;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface HistoryPaymentContract {
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
-        Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
+        Single<PaymentRequestResponse> requestPayment(PaymentRequestModel paymentRequestModel);
 
         Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel);
 

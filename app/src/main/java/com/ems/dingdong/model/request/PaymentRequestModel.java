@@ -29,6 +29,16 @@ public class PaymentRequestModel {
     String BankCode;
     @SerializedName("PostmanTel")
     String PostmanTel;
+    @SerializedName("AccountType")
+    Integer AccountType;
+
+    public Integer getAccountType() {
+        return AccountType;
+    }
+
+    public void setAccountType(Integer accountType) {
+        AccountType = accountType;
+    }
 
     public String getBankCode() {
         return BankCode;

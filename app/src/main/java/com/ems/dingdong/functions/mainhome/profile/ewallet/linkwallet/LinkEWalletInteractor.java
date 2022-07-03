@@ -7,6 +7,7 @@ import com.ems.dingdong.model.VerifyLinkOtpResult;
 import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -19,17 +20,17 @@ public class LinkEWalletInteractor extends Interactor<LinkEWalletContract.Presen
 
     @Override
     public Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest) {
-        return NetWorkController.linkEWallet(payLinkRequest);
+        return NetWorkControllerGateWay.linkEWallet(payLinkRequest);
     }
 
     @Override
     public Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
-        return NetWorkController.verifyLinkWithOtp(payLinkConfirm);
+        return NetWorkControllerGateWay.verifyLinkWithOtp(payLinkConfirm);
     }
 
     @Override
     public Single<SimpleResult> getDanhSachNganHang() {
-        return NetWorkController.getDanhSachNganHang();
+        return NetWorkControllerGateWay.getDanhSachNganHang();
     }
 
 

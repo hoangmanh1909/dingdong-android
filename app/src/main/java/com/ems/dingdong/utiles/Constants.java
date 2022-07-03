@@ -211,6 +211,20 @@ public class Constants {
     public static final String EW_GET_DATA_SUCCESS = "EW_GET_DATA_SUCCESS";
     public static final String EW_REMOVE_DATA = "EW_REMOVE_DATA";
     public static final String EW_CANCEL_DATA = "EW_CANCEL_DATA";
+    public static final String EW_CANCEL_LINK = "EW_CANCEL_LINK";
+    public static final String EW_LINK_HISTORY = "EW_LINK_HISTORY";
+    public static final String EW_DEFAULT_PAYMENT = "EW_DEFAULT_PAYMENT";
+
+    public static final String DLV_GET_BANK_LIST = "DLV_GET_BANK_LIST";
+    public static final String DLV_REQUEST_LINK = "DLV_REQUEST_LINK";
+    public static final String DLV_CONFIRM_LINK = "DLV_CONFIRM_LINK";
+    public static final String DLV_REQUEST_CANCEL_LINK = "DLV_REQUEST_CANCEL_LINK";
+    public static final String DLV_CONFIRM_CANCEL_LINK = "DLV_CONFIRM_CANCEL_LINK";
+    public static final String DLV_INQUIRY_BALANCE = "DLV_INQUIRY_BALANCE";
+    public static final String DLV_GET_LIST_ACCOUNT = "DLV_GET_LIST_ACCOUNT";
+    public static final String DLV_RESEND_OTP = "DLV_RESEND_OTP";
+    public static final String DLV_DEFAULT_PAYMENT_BANK = "DLV_DEFAULT_PAYMENT_BANK";
+    public static final String DLV_GET_LIST_BANK_LINK = "DLV_GET_LIST_BANK_LINK";
 
     //Gom hàng
     public static final String PU_SEARCH_ORDER_POSTMAN = "PU_SEARCH_ORDER_POSTMAN";

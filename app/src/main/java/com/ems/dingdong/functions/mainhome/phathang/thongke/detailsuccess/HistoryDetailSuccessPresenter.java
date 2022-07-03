@@ -7,9 +7,15 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detail.ListDeliverySuccessDetailPresenter;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDeliveryGeneralResult;
+import com.ems.dingdong.model.response.StatisticDeliveryGeneralResponse;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -52,13 +58,14 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
         mFromDate = fromDate;
         mToDate = toDate;
         mView.showProgress();
-        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, mStatisticType, routeCode, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
+        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, mStatisticType, routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<StatisticDeliveryGeneralResult> call, Response<StatisticDeliveryGeneralResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(Utils.getGeneralList(response.body().getStatisticDeliveryGeneralResponses()));
+                    ArrayList<StatisticDeliveryGeneralResponse> deliveryGeneralResponses = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(),new TypeToken<ArrayList<StatisticDeliveryGeneralResponse>>(){}.getType());
+                    mView.showListSuccess(Utils.getGeneralList(deliveryGeneralResponses));
 
                 } else {
                     mView.showErrorToast(response.body().getMessage());
@@ -66,7 +73,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
             }
 
             @Override
-            protected void onError(Call<StatisticDeliveryGeneralResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

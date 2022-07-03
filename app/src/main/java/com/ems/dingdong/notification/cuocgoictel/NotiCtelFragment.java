@@ -35,7 +35,7 @@ import butterknife.OnClick;
 /**
  * The Notification Fragment
  */
-public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> implements NotiCtelContract.View, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
+public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> implements NotiCtelContract.View, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
     public static NotiCtelFragment getInstance() {
         return new NotiCtelFragment();
@@ -52,6 +52,8 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
     TextView tvThoigiansudung;
     @BindView(R.id.tv_nge)
     TextView tvNghe;
+    @BindView(R.id.ll_call)
+    LinearLayout llCall;
 
 
     @BindView(R.id.imh_seebar)
@@ -105,12 +107,15 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
         }).show();
     }
 
+
     @Override
     public void showInfo(NotiCtelModel detailNotifyMode) {
         tvSohieuBg.setText(detailNotifyMode.getLadingCode());
         tvTenkhachhang.setText(detailNotifyMode.getReceiverName());
         tvSodienthoai.setText(detailNotifyMode.getReceiverTel() + "");
-        tvThoigiansudung.setText(detailNotifyMode.getCalledAt());
+        if (detailNotifyMode.getAnswerDuration() > 0)
+            tvThoigiansudung.setText(detailNotifyMode.getCalledAt() + "     " + detailNotifyMode.getAnswerDuration() + "s");
+        else tvThoigiansudung.setText(detailNotifyMode.getCalledAt());
         url = detailNotifyMode.getRecordUrl();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -119,6 +124,7 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
             mediaPlayer.setOnErrorListener(this);
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.prepareAsync();
+            mediaPlayer.setOnCompletionListener(this);
         } catch (IllegalArgumentException e) {
             Toast.showToast(getViewContext(), "IllegalArgumentException");
             e.printStackTrace();
@@ -129,16 +135,43 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
             Toast.showToast(getViewContext(), "IOException");
             e.printStackTrace();
         }
-//        if (file) {
-//            tvNghe.setText("Nghe ghi âm");
-//            imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-//        } else {
-//            tvNghe.setText("File ghi âm lỗi");
-//            imgSeebar.setImageResource(R.drawable.ic_baseline_error_24);
-//        }
-
         tvNghe.setText("Đang tải file");
 
+
+        if (detailNotifyMode.getCallStatus().equals("S")) {
+            tvNghe.setVisibility(View.VISIBLE);
+            imgSeebar.setVisibility(View.VISIBLE);
+            llCall.setVisibility(View.VISIBLE);
+        } else {
+            tvNghe.setVisibility(View.GONE);
+            imgSeebar.setVisibility(View.GONE);
+            llCall.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.pause();
     }
 
     @OnClick({R.id.imh_seebar, R.id.img_back, R.id.img_phone, R.id.tv_sohieubg, R.id.tv_sodienthoai})
@@ -172,33 +205,6 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
                     tvNghe.setText("Dừng nghe");
                 }
                 break;
-//            case R.id.tv_dung_nge:
-//                handler.removeCallbacks(udatae);
-//                mediaPlayer.pause();
-//                break;
-//            case R.id.img_relay:
-//                llRelay.setVisibility(View.GONE);
-//                mediaPlayer = new MediaPlayer();
-//                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//                try {
-//                    mediaPlayer.setDataSource(url);
-//                    mediaPlayer.setOnErrorListener(this);
-//                    mediaPlayer.setOnPreparedListener(this);
-//                    mediaPlayer.prepareAsync();
-//                } catch (IllegalArgumentException e) {
-//                    Toast.showToast(getViewContext(), "IllegalArgumentException");
-//                    e.printStackTrace();
-//                } catch (IllegalStateException e) {
-//                    Toast.showToast(getViewContext(), "IllegalStateException");
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    Toast.showToast(getViewContext(), "IOException");
-//                    e.printStackTrace();
-//                }
-//                imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-//                tvNghe.setText("Nghe ghi âm");
-//                mediaPlayer.pause();
-//                break;
             case R.id.img_back:
                 mediaPlayer.pause();
                 mPresenter.back();
@@ -253,7 +259,7 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-//        hideProgress();
+        hideProgress();
         if (file) {
             tvNghe.setText("Nghe ghi âm");
             imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
@@ -264,4 +270,11 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
         }
         return false;
     }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        tvNghe.setText("Nghe ghi âm");
+        imgSeebar.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
+    }
+
 }

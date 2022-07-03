@@ -8,6 +8,7 @@ import com.ems.dingdong.model.request.TaiKhoanMatDinh;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -21,27 +22,27 @@ public class DeatailViInteractor extends Interactor<DeatailViContract.Presenter>
 
     @Override
     public Single<SimpleResult> ddHuyLienKet(SmartBankRequestCancelLinkRequest request) {
-        return NetWorkController.huyLienKetVi(request);
+        return NetWorkControllerGateWay.huyLienKetVi(request);
     }
 
     @Override
     public Single<SimpleResult> ddXacnhanhuy(SmartBankConfirmCancelLinkRequest request) {
-        return NetWorkController.SmartBankConfirmCancelLinkRequest(request);
+        return NetWorkControllerGateWay.SmartBankConfirmCancelLinkRequest(request);
     }
 
     @Override
     public Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request) {
-        return NetWorkController.ddTaiKhoanMacDinh(request);
+        return NetWorkControllerGateWay.ddTaiKhoanMacDinh(request);
     }
 
     @Override
     public Single<SimpleResult> getHistory(LinkHistory request) {
-        return NetWorkController.getHistory(request);
+        return NetWorkControllerGateWay.getHistory(request);
     }
 
     @Override
     public Single<SimpleResult> SetDefaultPayment(LinkHistory request) {
-        return NetWorkController.SetDefaultPayment(request);
+        return NetWorkControllerGateWay.SetDefaultPayment(request);
     }
 
 }

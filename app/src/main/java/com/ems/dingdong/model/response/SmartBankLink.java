@@ -72,6 +72,10 @@ public class SmartBankLink {
     @Expose
     private int GroupType;
 
+
+    public SmartBankLink() {
+    }
+
     public int getGroupType() {
         return GroupType;
     }

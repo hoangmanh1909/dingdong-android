@@ -71,6 +71,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
+        <activity
+            android:name=".functions.mainhome.location.AudioActivity"
+            android:exported="false" />
+
         <uses-library
             android:name="com.google.android.maps"
             android:required="true" />
@@ -186,6 +190,7 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -403,11 +408,9 @@
             android:value="barcode" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" />
-        <!--        <meta-data-->
-        <!--            android:name="com.google.android.geo.API_KEY"-->
-        <!--            android:value="AIzaSyAFjjD5f4UJ6N6LP6nU26yWqGc-8jLqWWA" />-->
-
+            android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" /> <!-- <meta-data -->
+        <!-- android:name="com.google.android.geo.API_KEY" -->
+        <!-- android:value="AIzaSyAFjjD5f4UJ6N6LP6nU26yWqGc-8jLqWWA" /> -->
         <service android:name=".fcm.DingDongFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

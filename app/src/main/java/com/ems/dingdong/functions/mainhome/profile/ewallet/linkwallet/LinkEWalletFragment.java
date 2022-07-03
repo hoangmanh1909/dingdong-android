@@ -100,7 +100,11 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                     mPresenter.linkEWallet(mType);
                 } else {
                     if (mType == 1) {
-                        if (TextUtils.isEmpty(otpEditText.getText()) || otpEditText.getText().length() != 6) {
+                        if (TextUtils.isEmpty(otpEditText.getText())) {
+                            showErrorToast("OTP không được bỏ trống");
+                            return;
+                        }
+                        if (otpEditText.getText().length() != 6) {
                             showErrorToast(getString(R.string.wrong_otp_pattern));
                             return;
                         }
@@ -108,7 +112,11 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                         String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
                         mPresenter.verifyLinkWithOtp(requestId, otpEditText.getText().toString(), 1);
                     } else {
-                        if (TextUtils.isEmpty(otpEditTextViMB.getText()) || otpEditTextViMB.getText().length() != 6) {
+                        if (TextUtils.isEmpty(otpEditTextViMB.getText())) {
+                            showErrorToast("OTP không được bỏ trống");
+                            return;
+                        }
+                        if (otpEditTextViMB.getText().length() != 6) {
                             showErrorToast(getString(R.string.wrong_otp_pattern));
                             return;
                         }

@@ -165,7 +165,8 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
 
         @BindView(R.id.ll_radio)
         LinearLayout ll_radio;
-
+        @BindView(R.id.tv_thanhtaoan)
+        CustomTextView tvThanhtaoan;
 
         @BindView(R.id.tv_cod_amount)
         CustomTextView tvCod;
@@ -183,7 +184,7 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
 
         public void bindView(EWalletDataResponse model, int position) {
             index.setText((position + 1) + " - ");
-
+//            tvThanhtaoan.setVisibility(View.GONE);
             if (model.getCodAmount() != null)
                 tvCod.setText(String.format("%s: %s", model.getFeeTypeName(), NumberUtils.formatPriceNumber(model.getCodAmount())));
             else
@@ -203,6 +204,11 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
                 tvLadingCode.setText(model.getLadingCode());
             else
                 tvLadingCode.setText("");
+
+            if (!TextUtils.isEmpty(model.getBankName()))
+                tvThanhtaoan.setText("Kênh thanh toán: " + model.getBankName());
+            else
+                tvThanhtaoan.setText("Kênh thanh toán: ");
 
             if (model.getRetRefNumber() != null)
                 tvSoThamChieu.setText(String.format("%s: %s", mContext.getString(R.string.so_tham_chieu), model.getRetRefNumber()));

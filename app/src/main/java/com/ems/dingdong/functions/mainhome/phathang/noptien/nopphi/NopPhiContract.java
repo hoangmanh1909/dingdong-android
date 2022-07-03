@@ -13,6 +13,7 @@ import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.model.response.PaymentRequestResponse;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface NopPhiContract {
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
-        Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
+        Single<PaymentRequestResponse> requestPayment(PaymentRequestModel paymentRequestModel);
 
         Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment);
 
@@ -58,7 +59,7 @@ public interface NopPhiContract {
 
         void requestPayment(List<EWalletDataResponse> list, String poCode, String routeCode, String postmanCode);
 
-        void deletePayment(List<EWalletDataResponse> list);
+        void deletePayment(List<EWalletDataResponse> list,String mobileNumber);
 
         void confirmPayment(String otp, String requestId, String retRefNumber, String poCode, String routeCode, String postmanCode);
 

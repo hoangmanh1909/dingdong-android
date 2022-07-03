@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
@@ -17,19 +16,19 @@ import java.util.List;
 import butterknife.BindView;
 
 public class StatusAdapter extends RecyclerBaseAdapter {
-
+    Context mContext;
 
     public StatusAdapter(Context context, List<StatusInfo> items) {
         super(context, items);
+        mContext = context;
     }
 
     @Override
-    public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new HolderView(inflateView(parent, R.layout.item_status));
+    public StatusAdapter.HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new StatusAdapter.HolderView(inflateView(parent, R.layout.item_status_log));
     }
 
     class HolderView extends BaseViewHolder {
-
         @BindView(R.id.tv_POCode_POName)
         CustomBoldTextView tvPOCodePOName;
         @BindView(R.id.tv_StatusMessage)
@@ -40,6 +39,8 @@ public class StatusAdapter extends RecyclerBaseAdapter {
         CustomTextView tvDescription;
         @BindView(R.id.tv_TypeMessage)
         CustomTextView tvTypeMessage;
+        @BindView(R.id.view_line)
+        View viewLine;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -81,7 +82,21 @@ public class StatusAdapter extends RecyclerBaseAdapter {
                 tvTypeMessage.setText("");
                 tvTypeMessage.setVisibility(View.GONE);
             }
-            tvStatusDateStatusTime.setText(String.format("%s, %s", item.getStatusDate(), item.getStatusTime()));
+            tvStatusDateStatusTime.setText(String.format("%s\n %s", item.getStatusDate(), item.getStatusTime()));
+            ViewGroup.LayoutParams params = viewLine.getLayoutParams();
+
+            int docao = 150;
+            if (TextUtils.isEmpty(item.getActionTypeName()))
+                docao -= 30;
+            if (TextUtils.isEmpty(item.getActionTypeName()) && TextUtils.isEmpty(item.getStatusMessage()))
+                docao -= 20;
+            if (TextUtils.isEmpty(item.getDescription()))
+                docao -= 30;
+            params.height = docao;
+            viewLine.setLayoutParams(params);
         }
     }
 }
+
+
+

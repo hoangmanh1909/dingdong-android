@@ -50,22 +50,51 @@ public class NotifyAdapter extends RecyclerBaseAdapter<TicketNotifyRespone, Noti
 
         @Override
         public void bindView(final TicketNotifyRespone model, int position) {
-
+            tv_thoi_gian.setText(model.getPushTime());
+            tv_noi_dung.setText(model.getContent());
             if (model.getType() == 1) {
                 title_thong_bao.setText("Thông báo");
                 imgLogo.setBackgroundResource(R.drawable.badge_vang);
                 imgLogo.setImageResource(R.drawable.ic_notify);
+                title_thong_bao.setTextColor(mContext.getResources().getColor(R.color.black));
+                tv_noi_dung.setTextColor(mContext.getResources().getColor(R.color.black));
+                tv_thoi_gian.setTextColor(mContext.getResources().getColor(R.color.black));
             } else if (model.getType() == 5) {
                 title_thong_bao.setText("Thông báo");
                 imgLogo.setBackgroundResource(R.drawable.badge_xanh);
                 imgLogo.setImageResource(R.drawable.ic_outline_phone_in_talk_24_with);
+                if (model.getCallStatus().equals("S")) {
+                    title_thong_bao.setText("Thông báo");
+                    tv_thoi_gian.setText(model.getPushTime() + "    " + model.getAnswerDuration() + "s");
+                    imgLogo.setBackgroundResource(R.drawable.badge_xanh);
+                    imgLogo.setImageResource(R.drawable.ic_outline_phone_in_talk_24_with);
+                    title_thong_bao.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
+                    tv_noi_dung.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
+                    tv_thoi_gian.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
+                } else if (model.getCallStatus().equals("F")) {
+                    title_thong_bao.setText("Thông báo");
+                    imgLogo.setBackgroundResource(R.drawable.badge_background);
+                    imgLogo.setImageResource(R.drawable.ic_outline_phone_missed_24);
+                    title_thong_bao.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tv_noi_dung.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tv_thoi_gian.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                } else if (model.getCallStatus().equals("")) {
+                    title_thong_bao.setText("Thông báo");
+                    imgLogo.setBackgroundResource(R.drawable.badge_den);
+                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_24);
+                    title_thong_bao.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tv_noi_dung.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tv_thoi_gian.setTextColor(mContext.getResources().getColor(R.color.black));
+                }
             } else {
                 title_thong_bao.setText("Ticket");
                 imgLogo.setBackgroundResource(R.drawable.badge_blue);
                 imgLogo.setImageResource(R.drawable.ic_ticket_notify);
+                title_thong_bao.setTextColor(mContext.getResources().getColor(R.color.black));
+                tv_noi_dung.setTextColor(mContext.getResources().getColor(R.color.black));
+                tv_thoi_gian.setTextColor(mContext.getResources().getColor(R.color.black));
             }
-            tv_thoi_gian.setText(model.getPushTime());
-            tv_noi_dung.setText(model.getContent());
+
 
             if (model.getIsSeen().equals("N")) {
                 ll_background.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));

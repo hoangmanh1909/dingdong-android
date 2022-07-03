@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.core.base.viper.Presenter;
@@ -27,7 +28,6 @@ import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
@@ -130,6 +130,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         requestModel.setRouteCode(routeCode);
         requestModel.setBankCode(bankcode);
         requestModel.setPostmanTel(posmanTel);
+        int account;
+        if (item.getBankName().contains("MB")) {
+            account = 2;
+        } else account = 1;
+        requestModel.setAccountType(account);
         if (getPositionTab() == 0)
             requestModel.setServiceCode("2104");
         else if (getPositionTab() == 4)
@@ -139,19 +144,19 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                    if (simpleResult != null && simpleResult.getCode().equals("00")) {
                         if (type == 1) {
 //                            mView.showRequestSuccess(list, simpleResult.getMessage(),
 //                                    simpleResult.getListEWalletResponse().getTranid(),
 //                                    simpleResult.getListEWalletResponse().getRetRefNumber());
-                            Tranid = simpleResult.getListEWalletResponse().getTranid();
-                            RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
+                            Tranid = simpleResult.getValue().getTranid();
+                            RetRefNumber = simpleResult.getValue().getRetRefNumber();
                             Mess = simpleResult.getMessage();
                             otpDialog = new OtpDialog(getViewContext(), type, item, new OtpDialog.OnPaymentCallback() {
                                 @Override
                                 public void onPaymentClick(String otp) {
                                     confirmPayment(list, otp,
-                                            Tranid, RetRefNumber, poCode, routeCode, postmanCode, posmanTel, token);
+                                            Tranid, RetRefNumber, poCode, routeCode, postmanCode, posmanTel, token, account, bankcode);
                                 }
                             }, Mess);
                             otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -179,7 +184,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
 
     @Override
-    public void deletePayment(List<EWalletDataResponse> list) {
+    public void deletePayment(List<EWalletDataResponse> list,String mobileNumber) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         removeRequests = new ArrayList<>();
         removeRequests.clear();
@@ -207,6 +212,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
             info.setFeeType(Integer.parseInt(item.getFeeType()));
             info.setPOCode(poCode);
+            info.setPostmanTel(mobileNumber);
             removeRequests.add(info);
         }
         String dataJson = NetWorkController.getGson().toJson(removeRequests);
@@ -235,7 +241,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
     @Override
     public void confirmPayment(List<LadingPaymentInfo> list, String otp, String requestId, String retRefNumber, String poCode,
-                               String routeCode, String postmanCode, String mobileNumber, String token) {
+                               String routeCode, String postmanCode, String mobileNumber, String token, int type, String bankcode) {
         PaymentConfirmModel model = new PaymentConfirmModel();
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
         String values = sharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
@@ -251,6 +257,8 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         model.setPostmanCode(postmanCode);
         model.setLadingPaymentInfoList(list);
         model.setPostmanTel(mobileNumber);
+        model.setAccountType(type);
+        model.setBankCode(bankcode);
         mView.showProgress();
         mInteractor.confirmPayment(model)
                 .subscribeOn(Schedulers.io())

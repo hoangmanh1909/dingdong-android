@@ -10,16 +10,19 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.notification.cuocgoictel.NotiCtelPresenter;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRespone;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,9 +59,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
 
         if (!code.equals("")) {
             findLocation(code);
-            HistoryRequest request = new HistoryRequest();
-            request.setLadingCode(code);
-            getHistoryCall(request);
+
         }
     }
 
@@ -86,7 +87,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showCallLive(r.getFromNumber());
+                        mView.showCallLive(r.getToNumber());
                     } else {
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
@@ -114,8 +115,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
 
-                        HistoryRespone[] j
-                                = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
+                        HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
                         List<HistoryRespone> l = Arrays.asList(j);
                         mView.showLog(l);
 
@@ -136,10 +136,14 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(commonObjectResult -> {
+                            CommonObject commonObject = NetWorkControllerGateWay.getGson().fromJson(commonObjectResult.getData(),new TypeToken<CommonObject>(){}.getType());
                             mView.hideProgress();
                             mView.showSuccessToast(commonObjectResult.getMessage());
                             if (commonObjectResult.getErrorCode().equals("00")) {
-                                mView.showFindLocationSuccess(commonObjectResult.getCommonObject());
+                                mView.showFindLocationSuccess(commonObject);
+                                HistoryRequest request = new HistoryRequest();
+                                request.setLadingCode(code);
+                                getHistoryCall(request);
                             } else {
                                 mView.showErrorToast(commonObjectResult.getMessage());
                                 mView.showEmpty();

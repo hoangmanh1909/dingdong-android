@@ -34,7 +34,7 @@ public class DeatailHistoryAdapter extends RecyclerView.Adapter<DeatailHistoryAd
 
     @Override
     public void onBindViewHolder(@NonNull HolderView holder, int position) {
-        holder.bindView(mList.get(position));
+        holder.bindView(mList.get(position),position);
     }
 
     @Override
@@ -49,6 +49,8 @@ public class DeatailHistoryAdapter extends RecyclerView.Adapter<DeatailHistoryAd
         TextView tvActionName;
         @BindView(R.id.tv_AmndDate)
         TextView tvAmndDate;
+        @BindView(R.id.viewFooter)
+         View viewFooter;
 
 
         HolderView(View itemView) {
@@ -56,10 +58,14 @@ public class DeatailHistoryAdapter extends RecyclerView.Adapter<DeatailHistoryAd
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindView(Object model) {
+        public void bindView(Object model,int position) {
             DeatailMode item = (DeatailMode) model;
             tvActionName.setText(item.getActionName());
             tvAmndDate.setText(item.getAmndDate());
+
+            if (position==mList.size()-1){
+                viewFooter.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

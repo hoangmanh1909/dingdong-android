@@ -36,9 +36,19 @@ public class PaymentConfirmModel {
     Integer AccountType;
     @SerializedName("Ladings")
     List<LadingPaymentInfo> ladingPaymentInfoList;
+    @SerializedName("BankCode")
+    String BankCode;
 
     public Integer getAccountType() {
         return AccountType;
+    }
+
+    public String getBankCode() {
+        return BankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        BankCode = bankCode;
     }
 
     public void setAccountType(Integer accountType) {

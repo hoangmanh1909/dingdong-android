@@ -63,6 +63,8 @@
 
             </LinearLayout>
 
+
+
             <TextView
                 android:id="@+id/tv_lienket"
                 android:layout_width="match_parent"
@@ -85,6 +87,65 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/layout_seabank"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/img_motaikhoan"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_title_seabank"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_thau_chi" />
+
+                <TextView
+                    android:id="@+id/tv_title_seabank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:text="Tài khoản thấu chi NHTM"
+                    android:textColor="@color/bg_blue_primary"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_e_wallet"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/img_motaikhoan"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_title_e_wallet"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_vi_dientu" />
+
+                <TextView
+                    android:id="@+id/tv_title_e_wallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:text="Ví điện tử"
+
+                    android:textColor="@color/bg_blue_primary"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
 
         </LinearLayout>

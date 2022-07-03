@@ -7,7 +7,6 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObject;
-import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRespone;
@@ -25,7 +24,7 @@ import retrofit2.Call;
 interface LocationContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        Observable<CommonObjectResult> findLocation(String ladingCode, String poCode);
+        Observable<SimpleResult> findLocation(String ladingCode, String poCode);
 
         Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                                  String callForwardType, String hotlineNumber,

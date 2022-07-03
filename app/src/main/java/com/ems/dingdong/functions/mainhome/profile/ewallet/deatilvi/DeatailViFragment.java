@@ -160,7 +160,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
 
     @Override
     public void showErrorHistory(String mess) {
-        llLichsu.setVisibility(View.VISIBLE);
+        llLichsu.setVisibility(View.GONE);
         Toast.showToast(getViewContext(), mess);
     }
 
@@ -199,45 +199,45 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                     }
                 }
                 if (smartBankLink.getIsDefaultPayment()) {
-                title1 = "HỦY ĐẶT MẶC ĐỊNH";
-                tilteMess1 = "Bạn có muốn hủy đặt mặc định tài khoản này?";
-                DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
-                        tilteMess1, title1
-                        , new DiaLogMatDinh.OnPaymentCallback() {
-                    @Override
-                    public void onPaymentClick(String otp) {
-                        LinkHistory linkHistory = new LinkHistory();
-                        linkHistory.setBankCode(null);
-                        linkHistory.setPOCode(smartBankLink.getPOCode());
-                        linkHistory.setPostmanCode(userInfo.getUserName());
-                        linkHistory.setPostmanTel(userInfo.getMobileNumber());
-                        mPresenter.SetDefaultPayment(linkHistory);
-                    }
-                });
-                otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                otpDialog.show();
-            } else{
-                title1 = "ĐẶT LÀM MẶC ĐỊNH";
-                tilteMess1 = "Bạn có muốn đặt tài khoản này làm tài khoản thanh toán mặc định?";
-                DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
-                        tilteMess1, title1
-                        , new DiaLogMatDinh.OnPaymentCallback() {
-                    @Override
-                    public void onPaymentClick(String otp) {
-                        LinkHistory linkHistory = new LinkHistory();
-                        linkHistory.setBankCode(smartBankLink.getBankCode());
-                        linkHistory.setPOCode(smartBankLink.getPOCode());
-                        linkHistory.setPostmanCode(userInfo.getUserName());
-                        linkHistory.setPostmanTel(userInfo.getMobileNumber());
-                        mPresenter.SetDefaultPayment(linkHistory);
-                    }
-                });
-                otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                otpDialog.show();
-            }
-            break;
+                    title1 = "HỦY ĐẶT MẶC ĐỊNH";
+                    tilteMess1 = "Bạn có muốn hủy đặt mặc định tài khoản này?";
+                    DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
+                            tilteMess1, title1
+                            , new DiaLogMatDinh.OnPaymentCallback() {
+                        @Override
+                        public void onPaymentClick(String otp) {
+                            LinkHistory linkHistory = new LinkHistory();
+                            linkHistory.setBankCode(null);
+                            linkHistory.setPOCode(smartBankLink.getPOCode());
+                            linkHistory.setPostmanCode(userInfo.getUserName());
+                            linkHistory.setPostmanTel(userInfo.getMobileNumber());
+                            mPresenter.SetDefaultPayment(linkHistory);
+                        }
+                    });
+                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    otpDialog.show();
+                } else{
+                    title1 = "ĐẶT LÀM MẶC ĐỊNH";
+                    tilteMess1 = "Bạn có muốn đặt tài khoản này làm tài khoản thanh toán mặc định?";
+                    DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
+                            tilteMess1, title1
+                            , new DiaLogMatDinh.OnPaymentCallback() {
+                        @Override
+                        public void onPaymentClick(String otp) {
+                            LinkHistory linkHistory = new LinkHistory();
+                            linkHistory.setBankCode(smartBankLink.getBankCode());
+                            linkHistory.setPOCode(smartBankLink.getPOCode());
+                            linkHistory.setPostmanCode(userInfo.getUserName());
+                            linkHistory.setPostmanTel(userInfo.getMobileNumber());
+                            mPresenter.SetDefaultPayment(linkHistory);
+                        }
+                    });
+                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    otpDialog.show();
+                }
+                break;
             case R.id.btn_lichsu:
                 btnHuyMatmacdinh.setVisibility(View.GONE);
                 btn_lichsu.setVisibility(View.GONE);

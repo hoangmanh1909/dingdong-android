@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
@@ -412,6 +413,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                         @Override
                         public void onCall(String phone) {
+                            if (phone==null || phone.isEmpty()){
+                                Toast.showToast(requireContext(),"Số điện thoại không hợp lệ.");
+                                return;
+                            }
                             mPhoneEdit = phone;
                             CallLiveMode callLiveMode = new CallLiveMode();
                             SharedPref sharedPref = new SharedPref(getViewContext());

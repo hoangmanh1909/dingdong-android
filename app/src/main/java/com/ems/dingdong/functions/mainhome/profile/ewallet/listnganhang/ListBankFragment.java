@@ -258,12 +258,11 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
 
     @Override
     public void setsmartBankConfirmLink(String x) {
-        mList.clear();
-        SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
-        k = Arrays.asList(v);
-        Collections.sort(k, new NameComparator());
-        int t = 0;
-        if (k.size() > 0 || k != null) {
+        if (x != null) {
+            mList.clear();
+            SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
+            k = Arrays.asList(v);
+            Collections.sort(k, new NameComparator());
 //            for (int i = 0; i < k.size(); i++) {
 //                if (k.get(i).getBankCode().equals("SeABank")) {
 //                    mList.add(new Item(2 + "", k.get(i).getBankName(), true, k.get(i).getBankLogo(), k.get(i).getBankAccountNumber(), k.get(i).getIsDefaultPayment()));
@@ -282,7 +281,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
 //
 //            }
 
-            mList.clear();
             mList.addAll(k);
             int r = 0;
             int l = 0;
@@ -293,7 +291,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 }
             if (l > 1)
                 mList.get(r).setGroupName("");
-        }
+        } else mList.clear();
         mAdapter.notifyDataSetChanged();
     }
 }

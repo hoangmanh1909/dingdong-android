@@ -376,5 +376,9 @@ dependencies {
     implementation 'com.budiyev.android:code-scanner:2.1.0'
     implementation 'io.github.chaosleung:pinview:1.4.4'
 //    implementation 'com.afollestad:material-camera:0.4.4'
+
+    //Play Video
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.2'
+
 }
 apply plugin: 'com.google.gms.google-services'

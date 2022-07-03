@@ -16,6 +16,7 @@ import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -118,7 +119,10 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
                         if (simpleResult.getErrorCode().equals("00")) {
 //                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.setsmartBankConfirmLink(simpleResult.getData());
-                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.setsmartBankConfirmLink(null);
+                        }
                         mView.hideProgress();
                     }
                 });

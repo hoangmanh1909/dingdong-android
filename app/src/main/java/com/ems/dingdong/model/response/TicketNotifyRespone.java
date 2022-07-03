@@ -17,9 +17,31 @@ public class TicketNotifyRespone {
     @SerializedName("IsSeen")
     @Expose
     private String isSeen;
+    @SerializedName("CallStatus")
+    @Expose
+    private String CallStatus;
     @SerializedName("Type")
     @Expose
     private int Type;
+    @SerializedName("AnswerDuration")
+    @Expose
+    private int AnswerDuration;
+
+    public String getCallStatus() {
+        return CallStatus;
+    }
+
+    public void setCallStatus(String callStatus) {
+        CallStatus = callStatus;
+    }
+
+    public int getAnswerDuration() {
+        return AnswerDuration;
+    }
+
+    public void setAnswerDuration(int answerDuration) {
+        AnswerDuration = answerDuration;
+    }
 
     public int getType() {
         return Type;

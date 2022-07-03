@@ -74,6 +74,7 @@ import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.request.vietmap.UpdateRequest;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
+import com.ems.dingdong.model.response.PaymentRequestResponse;
 import com.ems.dingdong.model.response.VerifyAddressRespone;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
@@ -631,7 +632,19 @@ public interface VinattiAPI {
     Call<SimpleResult> commonService(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
-    Observable<CommonObjectResult> findLocation(@Body RequestObject requestObject);
+    Observable<SimpleResult> findLocation(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<LinkEWalletResult> linkEWallet(@Body RequestObject request);
+
+    @POST("Gateway/Execute")
+    Single<SimpleResult>  commonServiceRx(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<PaymentRequestResponse>  paymentRequest(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body RequestObject requestObject);
 
 //    @FormUrlEncoded
 //    @POST("api/Collect/SearchOrderPostman")
