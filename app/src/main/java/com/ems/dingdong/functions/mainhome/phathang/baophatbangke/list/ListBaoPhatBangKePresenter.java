@@ -114,7 +114,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showThongBao(simpleResult.getMessage());
                         mView.phatSmlSuccess(simpleResult.getMessage());
                     } else mView.showThongBao(simpleResult.getMessage());
                     mView.hideProgress();
@@ -129,7 +128,6 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showThongBao(simpleResult.getMessage());
                         mView.huySmlSuccess(simpleResult.getMessage());
                     } else mView.showThongBao(simpleResult.getMessage());
 
