@@ -114,6 +114,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     llCall.setVisibility(View.VISIBLE);
                     tvCall.setText(item.getActionTypeName());
                     tvCall.setVisibility(View.VISIBLE);
+                    tvGhichu.setVisibility(View.GONE);
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
                 } else imgLogo.setVisibility(View.GONE);
             } else {

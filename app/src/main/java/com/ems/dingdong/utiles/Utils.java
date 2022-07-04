@@ -997,9 +997,7 @@ public class Utils {
         return "";
     }
 
-    public static boolean isBlank(String text) {
-        return text == null || text.trim().equals("");
-    }
+
 
    /* public static String convertToNewMaVung(String phoneNumber,String oldCode,String newCode){
         String newPhone = Utilities.fomarPhoneNumber(phoneNumber);

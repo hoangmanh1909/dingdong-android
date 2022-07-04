@@ -160,7 +160,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private int positionItem = 0;
 
     int mID = 0;
-    private int positionItem = 0;
     String mPhoneS = "";
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
@@ -761,19 +760,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         callProvidertoCSKH(phone);
     }
 
-    @Override
-    public void phatSmlSuccess(String message) {
-        mAdapter.getListFilter().get(positionItem).setVatCode("PHS");
-        mAdapter.notifyItemChanged(positionItem);
-        showSuccessToast(message);
-    }
 
-    @Override
-    public void huySmlSuccess(String message) {
-        mAdapter.getListFilter().get(positionItem).setVatCode("PHU");
-        mAdapter.notifyItemChanged(positionItem);
-        showSuccessToast(message);
-    }
 
     private void showDialog() {
         new EditDayDialog(getActivity(), mFromDate, mToDate, 0, (calFrom, calTo, status) -> {

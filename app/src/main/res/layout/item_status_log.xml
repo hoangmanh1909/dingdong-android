@@ -95,7 +95,6 @@
                     android:drawableLeft="@drawable/ic_baseline_volume_up_24"
                     android:drawablePadding="10dp"
                     android:gravity="center|right"
-                    android:text="asdad"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_12sp" />
             </RelativeLayout>
