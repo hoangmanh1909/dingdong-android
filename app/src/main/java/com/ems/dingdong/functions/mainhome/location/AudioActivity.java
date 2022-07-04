@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import butterknife.BindView;
 
-public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener {
+public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
 
     @BindView(R.id.tv_sohieubg)
     TextView tvSohieuBg;
@@ -30,6 +30,7 @@ public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnEr
     TextView tvThoigiansudung;
     @BindView(R.id.tv_nge)
     TextView tvNghe;
+    TextView tvTenkhachhang;
     @BindView(R.id.ll_call)
     LinearLayout llCall;
 
@@ -51,6 +52,7 @@ public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnEr
         tvSohieuBg = findViewById(R.id.tv_sohieubg);
         tvSodienthoai = findViewById(R.id.tv_sodienthoai);
         tvThoigiansudung = findViewById(R.id.tv_thoigiansudung);
+        tvTenkhachhang = findViewById(R.id.tv_tenkhachhang);
         imgSeebar = findViewById(R.id.imh_seebar);
         tvNghe = findViewById(R.id.tv_nge);
         img_back = findViewById(R.id.img_back);
@@ -60,9 +62,11 @@ public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnEr
         String value1 = intent.getStringExtra("tvSodienthoai");
         String value3 = intent.getStringExtra("tvThoigiansudung");
         String value4 = intent.getStringExtra("imgSeebar");
+//        String value5 = intent.getStringExtra("tvTenKhachHang");
         tvSohieuBg.setText(value2);
         tvSodienthoai.setText(value1);
         tvThoigiansudung.setText(value3);
+//        tvTenkhachhang.setText(value5);
 
         url = value4;
         mediaPlayer = new MediaPlayer();
@@ -78,7 +82,7 @@ public class AudioActivity extends AppCompatActivity implements MediaPlayer.OnEr
             Log.d("IllegalArgumentException", "IllegalArgumentException");
             e.printStackTrace();
         } catch (IllegalStateException e) {
-            Log.d("IllegalStateException",  "IllegalStateException");
+            Log.d("IllegalStateException", "IllegalStateException");
             e.printStackTrace();
         } catch (IOException e) {
             Log.d("IOException", "IOException");

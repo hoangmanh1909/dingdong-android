@@ -157,6 +157,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
+    private int positionItem = 0;
+
     int mID = 0;
     String mPhoneS = "";
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
@@ -312,6 +314,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.imgSml.setOnClickListener(v -> {
+                    positionItem = position;
                     if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
                         int j = 0;
                         String tam[] = mAdapter.getListFilter().get(position).getVatCode().split(",");
@@ -741,6 +744,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showCallLive(String phone) {
         callProvidertoCSKH(phone);
+    }
+
+    @Override
+    public void phatSmlSuccess(String message) {
+        mAdapter.getListFilter().get(positionItem).setVatCode("PHS");
+        mAdapter.notifyItemChanged(positionItem);
+        showSuccessToast(message);
+    }
+
+    @Override
+    public void huySmlSuccess(String message) {
+        mAdapter.getListFilter().get(positionItem).setVatCode("PHU");
+        mAdapter.notifyItemChanged(positionItem);
+        showSuccessToast(message);
     }
 
     private void showDialog() {

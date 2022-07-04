@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien.tabs;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -124,6 +125,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
 
     @Override
     public void onCanceledDelivery() {
+        Log.e("TAG", "onCanceledDelivery: "+mPosition );
         if (mPosition == 0) {
             PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
             paymentFragment1.onDisplayFake();
@@ -157,6 +159,8 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
         super.onDisplay();
         PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
         paymentFragment1.onDisplayFake();
+        PaymentFragment paymentFragment2 = (PaymentFragment) tabList.get(1);
+        paymentFragment2.onDisplayFake();
 
     }
 

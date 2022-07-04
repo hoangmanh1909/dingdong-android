@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -71,7 +72,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
         @BindView(R.id.view_line)
         View viewLine;
         @BindView(R.id.ll_call)
-        LinearLayout llCall;
+        RelativeLayout llCall;
         @BindView(R.id.img_logo)
         ImageView imgLogo;
 
@@ -165,10 +166,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     imgLogo.setImageResource(R.drawable.ic_baseline_contact_phone_24);
                     tvTypeMessage.setVisibility(View.GONE);
                     llCall.setVisibility(View.VISIBLE);
-                    tvGhichu.setText(item.getStatus());
                     tvCall.setVisibility(View.VISIBLE);
-                    tvGhichu.setVisibility(View.VISIBLE);
-                    tvCall.setText(item.getToNumber());
+                    tvGhichu.setVisibility(View.GONE);
+                    tvCall.setText(item.getToNumber() + "\n" + item.getStatus());
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
                 } else {
                     imgLogo.setVisibility(View.INVISIBLE);

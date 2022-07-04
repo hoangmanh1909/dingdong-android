@@ -124,6 +124,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                 } else if (type.equals("5")) {
                     intent = new Intent(this, NotiCtelActivity.class);
                     intent.putExtra(Constants.TYPE_GOM_HANG, 5);
+                    intent.putExtra("ticketCode",ticketCode);
                 } else {
                     intent = new Intent(this, ListNotifyActivity.class);
                     bundle.putString("message", messageBody);

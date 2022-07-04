@@ -131,6 +131,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void onDisplay() {
         super.onDisplay();
+
     }
 
     public void onDisplayFake() {
@@ -217,6 +218,10 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         v.setRouteCode(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode());
         v.setRouteId(Long.parseLong(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId()));
         mPresenter.getDDsmartBankConfirmLinkRequest(v);
+    }
+
+    private void getDDsmartBankConfirmLinkRequest(){
+
     }
 
     @OnClick({R.id.img_send, R.id.img_back, R.id.cb_pick_all, R.id.tv_search,
