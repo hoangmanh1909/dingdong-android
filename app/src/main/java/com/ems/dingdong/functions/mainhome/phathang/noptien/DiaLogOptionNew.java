@@ -79,8 +79,6 @@ public class DiaLogOptionNew extends Dialog {
     LinearLayout layoutEWallet;
 
 
-
-
     DialogAdapter mAdapter;
     List<SmartBankLink> mList;
     ContainerView containerView;
@@ -99,25 +97,13 @@ public class DiaLogOptionNew extends Dialog {
 
         boolean isContainSeaBank = false;
         boolean isContainEWallet = false;
-        for (SmartBankLink smartBankLink : list){
-            if (smartBankLink.getGroupType()==1) isContainEWallet = true;
-            if (smartBankLink.getGroupType()==2) isContainSeaBank = true;
+        for (SmartBankLink smartBankLink : list) {
+            if (smartBankLink.getGroupType() == 1) isContainEWallet = true;
+            if (smartBankLink.getGroupType() == 2) isContainSeaBank = true;
         }
         if (!isContainSeaBank) layoutSeaBank.setVisibility(View.VISIBLE);
         if (!isContainEWallet) layoutEWallet.setVisibility(View.VISIBLE);
 
-//        int r = 0;
-//        int vi = 0;
-//        for (int i = 0; i < mList.size(); i++)
-//            if (mList.get(i).getGroupType() == 1) {
-//                r = i;
-//            }
-//        for (int i = 0; i < mList.size(); i++)
-//            if (mList.get(i).getGroupType() == 1 && mList.get(i).getIsDefaultPayment()) {
-//                vi++;
-//            }
-////        mList.get(r).setGroupName("");
-//        int finalVi = vi;
         mAdapter = new DialogAdapter(getContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -134,7 +120,7 @@ public class DiaLogOptionNew extends Dialog {
                 holder.ll_linlayout_title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!mList.get(position).getIsDefaultPayment() && mList.get(position).getGroupType()==1) {
+                        if (!mList.get(position).getIsDefaultPayment() && mList.get(position).getGroupType() == 1) {
                             new NotificationDialog(getContext())
                                     .setConfirmText(getString(R.string.payment_confirn))
                                     .setCancelText(getString(R.string.payment_cancel))
@@ -172,14 +158,14 @@ public class DiaLogOptionNew extends Dialog {
     }
 
 
-    @OnClick({R.id.ic_cancel, R.id.btn_link_wallet,R.id.layout_seabank,R.id.layout_e_wallet})
+    @OnClick({R.id.ic_cancel, R.id.btn_link_wallet, R.id.layout_seabank, R.id.layout_e_wallet})
     public void onViewClicked(View view) {
+        String contentSeaBank = "Bạn chưa liên kết tài khoản, Vui lòng liên kết tài khoản để thực hiện chức năng?";
         switch (view.getId()) {
             case R.id.ic_cancel:
                 dismiss();
                 break;
             case R.id.layout_seabank:
-                String contentSeaBank="Bạn chưa liên kết tài khoản, Vui lòng liên kết tài khoản để thực hiện chức năng?";
                 new NotificationDialog(getContext())
                         .setConfirmText(getString(R.string.payment_confirn))
                         .setCancelText(getString(R.string.payment_cancel))
@@ -195,16 +181,16 @@ public class DiaLogOptionNew extends Dialog {
                 dismiss();
                 break;
             case R.id.layout_e_wallet:
-                String contentEWallet="Bạn chưa liên kết tài khoản, Vui lòng liên kết tài khoản để thực hiện chức năng?";
                 new NotificationDialog(getContext())
                         .setConfirmText(getString(R.string.payment_confirn))
                         .setCancelText(getString(R.string.payment_cancel))
-                        .setHtmlContent(contentEWallet)
+                        .setHtmlContent(contentSeaBank)
                         .setCancelClickListener(Dialog::dismiss)
                         .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                         .setConfirmClickListener(sweetAlertDialog -> {
                             sweetAlertDialog.dismiss();
                             dismiss();
+
                             new LinkEWalletPresenter(containerView).pushView();
 
                         }).show();

@@ -276,31 +276,26 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     @Override
     public void showThuGom(ThuGomResponeValue v) {
         HomeCollectInfo homeCollectInfo = null;
-        android.util.Log.e("TAG", "showThuGom: 1" );
 //        HomeCollectInfo resInfo = NetWorkController.getGson().fromJson(v, HomeCollectInfo.class);
         mListCollect = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             homeCollectInfo = new HomeCollectInfo();
             homeCollectInfo.setType(0);
             if (i == 0) {
-                android.util.Log.e("TAG", "showThuGom: 2" );
                 homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
                 homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
             } else if (i == 1) {
-                android.util.Log.e("TAG", "showThuGom: 3" );
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
-                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(v != null ? v.getTotalAddressCollect():0)));
-                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(v!=null ? v.getTotalAddressNotCollect():0)));
+                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(v != null ? v.getTotalAddressCollect() : 0)));
+                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(v != null ? v.getTotalAddressNotCollect() : 0)));
             } else if (i == 2) {
-                android.util.Log.e("TAG", "showThuGom: 4" );
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
-                homeCollectInfo.setTotalLadingCollect(v != null ? v.getTotalLadingCollect() : 0);
-                homeCollectInfo.setTotalLadingNotCollect(v != null ? v.getTotalLadingNotCollect() : 0);
+                homeCollectInfo.setTotalLadingCollect(Integer.valueOf(v != null ? v.getTotalLadingCollect() : 0));
+                homeCollectInfo.setTotalLadingNotCollect(Integer.valueOf(v != null ? v.getTotalLadingNotCollect() : 0));
             } else if (i == 3) {
-                android.util.Log.e("TAG", "showThuGom: 5" );
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
-                homeCollectInfo.setTotalWeightCollect(v != null ? v.getTotalWeightCollect() : 0);
-                homeCollectInfo.setTotalWeightNotCollect(v != null ? v.getTotalWeightNotCollect() : 0);
+                homeCollectInfo.setTotalWeightCollect(Integer.valueOf(v != null ? v.getTotalWeightCollect() : 0));
+                homeCollectInfo.setTotalWeightNotCollect(Integer.valueOf(v != null ? v.getTotalWeightNotCollect() : 0));
             }
             mListCollect.add(homeCollectInfo);
         }

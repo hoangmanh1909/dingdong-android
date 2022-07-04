@@ -51,6 +51,7 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/header"
@@ -188,7 +189,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Nge ghi âm" />
+                        android:text="Nghe ghi âm" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -215,54 +216,6 @@
                         android:gravity="center"
                         android:text="Gọi cho KH" />
                 </LinearLayout>
-                <!--                <LinearLayout-->
-                <!--                    android:id="@+id/ll_dungnge"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="65dp"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:orientation="vertical">-->
-
-                <!--                    <ImageView-->
-                <!--                        android:id="@+id/imh_dung_nge"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:src="@drawable/ic_baseline_pause_circle_filled_24" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/tv_dung_nge"-->
-                <!--                        style="@style/textStyle"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_gravity="center"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:gravity="center"-->
-                <!--                        android:text="Dừng nghe" />-->
-                <!--                </LinearLayout>-->
-
-                <!--                <LinearLayout-->
-                <!--                    android:id="@+id/ll_relay"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="65dp"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:orientation="vertical">-->
-
-                <!--                    <ImageView-->
-                <!--                        android:id="@+id/img_relay"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:src="@drawable/ic_baseline_replay_24" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/tv_nge"-->
-                <!--                        style="@style/textStyle"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_gravity="center"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:gravity="center"-->
-                <!--                        android:text="Nge lại từ đầu" />-->
-                <!--                </LinearLayout>-->
 
 
             </LinearLayout>
@@ -270,6 +223,25 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_khongcodulieu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_baseline_receipt_long_24" />
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Không có dữ liệu" />
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

@@ -210,6 +210,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         items.add(new Item("0", "Tất cả"));
         items.add(new Item("1", "1. Ví điện tử PostPay"));
         items.add(new Item("2", "2. Tài khoản thấu chi NHTM"));
+        items.add(new Item("3", "3. Ví điện tử PostPay - MB"));
 
         new PickerLichSuNopDialog(getContext(), "Chọn kênh nộp", items,
                 item -> {

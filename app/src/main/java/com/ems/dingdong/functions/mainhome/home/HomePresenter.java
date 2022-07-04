@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.home;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -124,7 +123,6 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                             mView.showThuGom(simpleResult.getValue());
                             mView.hideProgress();
                         } else {
-
                             mView.showThuGom(simpleResult.getValue());
                             mView.hideProgress();
                         }

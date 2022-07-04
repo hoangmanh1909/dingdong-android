@@ -54,6 +54,10 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
     TextView tvNghe;
     @BindView(R.id.ll_call)
     LinearLayout llCall;
+    @BindView(R.id.ll_khongcodulieu)
+    LinearLayout llKhongcodulieu;
+    @BindView(R.id.ll_info)
+    LinearLayout llInfo;
 
 
     @BindView(R.id.imh_seebar)
@@ -79,7 +83,8 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
         super.initLayout();
 //        mPresenter.getDetail(mPresenter.setCodeTicket());
         mediaPlayer = new MediaPlayer();
-
+        llKhongcodulieu.setVisibility(View.GONE);
+        llInfo.setVisibility(View.GONE);
     }
 
     private Runnable udatae = new Runnable() {
@@ -110,6 +115,8 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
 
     @Override
     public void showInfo(NotiCtelModel detailNotifyMode) {
+        llInfo.setVisibility(View.VISIBLE);
+        llKhongcodulieu.setVisibility(View.GONE);
         tvSohieuBg.setText(detailNotifyMode.getLadingCode());
         tvTenkhachhang.setText(detailNotifyMode.getReceiverName());
         tvSodienthoai.setText(detailNotifyMode.getReceiverTel() + "");
@@ -147,6 +154,14 @@ public class NotiCtelFragment extends ViewFragment<NotiCtelContract.Presenter> i
             imgSeebar.setVisibility(View.GONE);
             llCall.setVisibility(View.GONE);
         }
+
+    }
+
+    @Override
+    public void showInfoError(String text) {
+        llKhongcodulieu.setVisibility(View.VISIBLE);
+        llInfo.setVisibility(View.GONE);
+        Toast.showToast(getViewContext(), text);
 
     }
 

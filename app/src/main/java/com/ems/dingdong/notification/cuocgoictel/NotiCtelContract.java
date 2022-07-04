@@ -29,6 +29,8 @@ interface NotiCtelContract {
     interface View extends PresentView<Presenter> {
         void showInfo(NotiCtelModel detailNotifyMode);
 
+        void showInfoError(String text);
+
         void showCallError(String message);
 
         void showCallSuccess(String phone);

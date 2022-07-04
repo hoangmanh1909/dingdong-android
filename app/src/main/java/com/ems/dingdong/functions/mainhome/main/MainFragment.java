@@ -255,7 +255,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         v.setPostmanId(userInfo.getiD());
         v.setRouteCode(routeInfo.getRouteCode());
         v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
-        mPresenter.ddGetBalance(v);
+        if (v != null)
+            mPresenter.ddGetBalance(v);
     }
 
     private void eventLoginAndCallCtel() {

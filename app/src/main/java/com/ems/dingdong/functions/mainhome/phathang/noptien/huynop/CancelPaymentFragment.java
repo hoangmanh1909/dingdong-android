@@ -145,7 +145,7 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
         layout_item_pick_all.setVisibility(View.VISIBLE);
 
         SharedPref sharedPref = SharedPref.getInstance(getViewContext());
-        userJson  = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!TextUtils.isEmpty(userJson)) {
@@ -258,7 +258,12 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     mList.addAll(eWalletDataResponses);
                 } else if (status == 1) {
                     for (int i = 0; i < eWalletDataResponses.size(); i++) {
-                        if (eWalletDataResponses.get(i).getCashinChannel().equals("EW"))
+                        if (eWalletDataResponses.get(i).getCashinChannel().equals("VNPD"))
+                            mList.add(eWalletDataResponses.get(i));
+                    }
+                } else if (status == 3) {
+                    for (int i = 0; i < eWalletDataResponses.size(); i++) {
+                        if (eWalletDataResponses.get(i).getCashinChannel().equals("PP"))
                             mList.add(eWalletDataResponses.get(i));
                     }
                 } else {
@@ -336,26 +341,26 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
 //                    if (id.equals("3")) {
 //                        mPresenter.showLienket();
 //                    } else {
-                        String con = "";
-                        long cod = 0;
-                        long fee = 0;
-                        for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
-                            cod += item.getCodAmount();
-                            fee += item.getFee();
-                        }
-                        String codAmount = NumberUtils.formatPriceNumber(cod);
-                        String feeAmount = NumberUtils.formatPriceNumber(fee);
+            String con = "";
+            long cod = 0;
+            long fee = 0;
+            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+                cod += item.getCodAmount();
+                fee += item.getFee();
+            }
+            String codAmount = NumberUtils.formatPriceNumber(cod);
+            String feeAmount = NumberUtils.formatPriceNumber(fee);
 
 //                        if (id.equals("1"))
 //                            con = "Tài khoản thấu chi NHTM SeABank?";
 //                        else con = "Ví điện tử PostPay?";
 
-                        String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
-                                mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
-                                "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                                "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ " + con + "?";
+            String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
+                    mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                    "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                    "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ " + con + "?";
 
-                        new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod + fee, (type, description) -> {
+            new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod + fee, (type, description) -> {
 //                            new NotificationDialog(getViewContext())
 //                                    .setConfirmText(getString(R.string.payment_confirn))
 //                                    .setCancelText(getString(R.string.payment_cancel))
@@ -363,11 +368,11 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
 //                                    .setCancelClickListener(Dialog::dismiss)
 //                                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
 //                                    .setConfirmClickListener(sweetAlertDialog -> {
-                                        mPresenter.cancelPayment(mAdapter.getItemsSelected(), Integer.parseInt(type), description);
+                mPresenter.cancelPayment(mAdapter.getItemsSelected(), Integer.parseInt(type), description);
 //                                        sweetAlertDi?al?og.dismiss();
 //                                    })
 //                                    .show();
-                        }).show();
+            }).show();
 
 //                    new NotificationDialog(getViewContext())
 //                            .setConfirmText(getString(R.string.payment_confirn))

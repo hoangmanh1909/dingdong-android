@@ -156,6 +156,9 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
         mList.addAll(list);
         mAdapter.notifyDataSetChanged();
         llLichsu.setVisibility(View.VISIBLE);
+        btnHuyMatmacdinh.setVisibility(View.GONE);
+        btn_lichsu.setVisibility(View.GONE);
+        btn_huy_lienket.setVisibility(View.GONE);
     }
 
     @Override
@@ -217,7 +220,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                     otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                     otpDialog.show();
-                } else{
+                } else {
                     title1 = "ĐẶT LÀM MẶC ĐỊNH";
                     tilteMess1 = "Bạn có muốn đặt tài khoản này làm tài khoản thanh toán mặc định?";
                     DiaLogMatDinh otpDialog = new DiaLogMatDinh(getViewContext(),
@@ -239,9 +242,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 }
                 break;
             case R.id.btn_lichsu:
-                btnHuyMatmacdinh.setVisibility(View.GONE);
-                btn_lichsu.setVisibility(View.GONE);
-                btn_huy_lienket.setVisibility(View.GONE);
+
                 LinkHistory linkHistory = new LinkHistory();
                 linkHistory.setBankCode(smartBankLink.getBankCode());
                 linkHistory.setPOCode(smartBankLink.getPOCode());
@@ -257,10 +258,10 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 if (!TextUtils.isEmpty(routeInfoJson)) {
                     routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
                 }
-                int account=0;
-                if (smartBankLink.getBankName().contains("MB")){
-                    account =2;
-                }else account=1;
+                int account = 0;
+                if (smartBankLink.getBankName().contains("MB")) {
+                    account = 2;
+                } else account = 1;
                 SmartBankRequestCancelLinkRequest smartBankRequestCancelLinkRequest = new SmartBankRequestCancelLinkRequest();
                 smartBankRequestCancelLinkRequest.setBankCode(smartBankLink.getBankCode());
                 smartBankRequestCancelLinkRequest.setPIDNumber(smartBankLink.getPIDNumber());

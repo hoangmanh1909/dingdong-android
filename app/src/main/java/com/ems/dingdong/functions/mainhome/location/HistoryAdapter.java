@@ -161,7 +161,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     tvGhichu.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
                     tvDescription.setTextColor(mContext.getResources().getColor(R.color.text_color_total_theme2));
                 } else if (item.getStatus().contains("trực tiếp")) {
-                    imgLogo.setVisibility(View.INVISIBLE);
+                    imgLogo.setVisibility(View.VISIBLE);
+                    imgLogo.setImageResource(R.drawable.ic_baseline_contact_phone_24);
                     tvTypeMessage.setVisibility(View.GONE);
                     llCall.setVisibility(View.VISIBLE);
                     tvGhichu.setText(item.getStatus());

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -60,6 +61,7 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
     @OnClick(R.id.tv_ContactPhone)
     public void onViewClicked() {
+        Log.e("TAG", "onViewClicked: 2121" );
         new DialogCuocgoiNew(getViewContext(), mPresenter.getPhone(), 2, new PhoneKhiem() {
             @Override
             public void onCallTongDai(String phone) {
@@ -80,7 +82,9 @@ public class PhoneFragment extends ViewFragment<PhoneContract.Presenter> impleme
 
             @Override
             public void onCallEdit(String phone, int type) {
+                tvContactPhone.setText(phone);
                 mPhone = phone;
+                mPresenter.setNumberPhone(phone);
                 if (type == 1) {
                     CallLiveMode callLiveMode = new CallLiveMode();
                     sharedPref = new SharedPref(getViewContext());

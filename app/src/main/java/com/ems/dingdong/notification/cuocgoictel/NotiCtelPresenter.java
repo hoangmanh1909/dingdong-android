@@ -69,7 +69,7 @@ public class NotiCtelPresenter extends Presenter<NotiCtelContract.View, NotiCtel
                         mView.showInfo(NetWorkController.getGson().fromJson(simpleResult.getData(), NotiCtelModel.class));
                         mView.hideProgress();
                     } else {
-                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.showInfoError(simpleResult.getMessage());
                         mView.hideProgress();
                     }
                 });

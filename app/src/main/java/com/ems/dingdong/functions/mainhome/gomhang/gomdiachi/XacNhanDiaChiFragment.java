@@ -184,6 +184,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 public void onBindViewHolder(@NonNull HolderView holder, int position) {
                     super.onBindViewHolder(holder, position);
                     holder.tvContactAddress.setOnClickListener(v -> {
+                        android.util.Log.e("TAG", "onBindViewHolder: 12121" );
                         if (mPresenter.getType() == 1) {
                             holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                             holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
@@ -205,6 +206,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     holder.imgDddress.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            android.util.Log.e("TAG", "onClick: 1212" );
                             Log.d("AAAAAAA", mAdapter.getListFilter().get(position).getiD());
                             mID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
                             mPhoneS = holder.getItem(position).getReceiverPhone();

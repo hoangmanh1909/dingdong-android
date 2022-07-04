@@ -55,6 +55,10 @@ public class PhonePresenter extends Presenter<PhoneContract.View, PhoneContract.
         mPhone = phone;
         return this;
     }
+    @Override
+    public void setNumberPhone(String phone) {
+        mPhone = phone;
+    }
 
     @Override
     public String getPhone() {

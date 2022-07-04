@@ -37,6 +37,7 @@ interface PhoneContract {
     interface Presenter extends IPresenter<View, Interactor> {
         String getPhone();
         String getCode();
+        void setNumberPhone(String phone);
 
         void callForward(String phone);
 

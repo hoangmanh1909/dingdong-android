@@ -904,16 +904,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);
-
-
+                if (cbSelected.isChecked()) {
+                    holder.tv_monney.setEnabled(true);
+                } else holder.tv_monney.setEnabled(false);
                 holder.tv_monney.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start,
                                               int before, int count) {
                         //setting data to array, when changed
+
                         if (!TextUtils.isEmpty(s.toString())) {
                             mBaoPhatBangke.get(position).setFeeCancelOrder(Long.parseLong(s.toString().replaceAll("\\.", "")));
                         } else mBaoPhatBangke.get(position).setFeeCancelOrder(0);
+
                     }
 
                     @Override
@@ -986,7 +989,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 showBuuCucden();
                 break;
             case R.id.cb_selected:
-
                 showProgress();
                 if (cbSelected.isChecked()) {
                     for (int i = 0; i < mBaoPhatBangke.size(); i++) {
@@ -1554,7 +1556,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
 
-            if (TextUtils.isEmpty(edtOtherRelationship.getText()) &&
+            if ((TextUtils.isEmpty(edtOtherRelationship.getText()) || Utils.isBlank(edtOtherRelationship.getText().toString())) &&
                     edtRelationship.getText().equals(getViewContext().getString(R.string.other))) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_reeceiver_relationship));
                 return;
@@ -1690,7 +1692,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(t)) + "</font>" + " VNĐ, bạn có thu đủ tiền hay không?";
 
-            if (t > 0) {
+            if (cbSelected.isChecked() ) {
                 new ConfirmPhiHuyDonHangDialog(getViewContext(),
                         listSelected.size(), t)
                         .setOnCallBacklClickListener(confirmDialog -> {
@@ -2021,57 +2023,57 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void attemptSendMedia(String path_media, int type) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
-            Uri uri = Uri.fromFile(new File(path_media));
-            return BitmapUtils.processingBitmap(uri, getViewContext());
-        }).subscribeOn(Schedulers.computation())
+                    Uri uri = Uri.fromFile(new File(path_media));
+                    return BitmapUtils.processingBitmap(uri, getViewContext());
+                }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
                 .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                isSavedImage -> {
-                    if (isSavedImage) {
-                        String path = file.getParent() + File.separator + "Process_" + file.getName();
-                        // mSignPosition = false;
-                        //mPresenter.postImageAvatar(pathAvatar);
-                        if (isCaptureAvatar) {
-                            mPresenter.postImageAvatar(path);
-                            imageAvatarAdapter.getListFilter().add(new Item(path, ""));
-                            imageAvatarAdapter.notifyDataSetChanged();
-                        } else {
-                            mPresenter.postImage(path);
-                            if (isCaptureVerify) {
-                                imageVerifyAdapter.getListFilter().add(new Item(path, ""));
-                                imageVerifyAdapter.notifyDataSetChanged();
-                            }
+                        isSavedImage -> {
+                            if (isSavedImage) {
+                                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                                // mSignPosition = false;
+                                //mPresenter.postImageAvatar(pathAvatar);
+                                if (isCaptureAvatar) {
+                                    mPresenter.postImageAvatar(path);
+                                    imageAvatarAdapter.getListFilter().add(new Item(path, ""));
+                                    imageAvatarAdapter.notifyDataSetChanged();
+                                } else {
+                                    mPresenter.postImage(path);
+                                    if (isCaptureVerify) {
+                                        imageVerifyAdapter.getListFilter().add(new Item(path, ""));
+                                        imageVerifyAdapter.notifyDataSetChanged();
+                                    }
 
-                            if (isCaptureOther) {
-                                imageOtherAdapter.getListFilter().add(new Item(path, ""));
-                                imageOtherAdapter.notifyDataSetChanged();
-                            }
+                                    if (isCaptureOther) {
+                                        imageOtherAdapter.getListFilter().add(new Item(path, ""));
+                                        imageOtherAdapter.notifyDataSetChanged();
+                                    }
 
-                            if (isCapture) {
-                                imageAdapter.getListFilter().add(new Item(path, ""));
-                                imageAdapter.notifyDataSetChanged();
-                            }
+                                    if (isCapture) {
+                                        imageAdapter.getListFilter().add(new Item(path, ""));
+                                        imageAdapter.notifyDataSetChanged();
+                                    }
 
-                            if (isCaptureDelivery) {
-                                imageDeliveryAdapter.getListFilter().add(new Item(path, ""));
-                                imageDeliveryAdapter.notifyDataSetChanged();
-                            }
+                                    if (isCaptureDelivery) {
+                                        imageDeliveryAdapter.getListFilter().add(new Item(path, ""));
+                                        imageDeliveryAdapter.notifyDataSetChanged();
+                                    }
 
-                            if (isCaptureRefund) {
-                                imageRefundAdapter.getListFilter().add(new Item(path, ""));
-                                imageRefundAdapter.notifyDataSetChanged();
+                                    if (isCaptureRefund) {
+                                        imageRefundAdapter.getListFilter().add(new Item(path, ""));
+                                        imageRefundAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                                if (type == 0)
+                                    if (file.exists())
+                                        file.delete();
+                            } else {
+                                mPresenter.postImage(path_media);
                             }
-                        }
-                        if (type == 0)
-                            if (file.exists())
-                                file.delete();
-                    } else {
-                        mPresenter.postImage(path_media);
-                    }
-                },
-                onError -> Logger.e("error save image")
-        );
+                        },
+                        onError -> Logger.e("error save image")
+                );
     }
 
     private void showUIReason() {

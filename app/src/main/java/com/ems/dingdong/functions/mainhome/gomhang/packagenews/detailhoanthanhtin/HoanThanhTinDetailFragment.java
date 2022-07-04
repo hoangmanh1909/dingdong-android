@@ -172,6 +172,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     mAdapter.removeItem(position);
                     mAdapter.notifyItemRangeChanged(position, mList.size());
                     recyclerScan.setAdapter(mAdapter);
+                    updateTvCountScanWhenRemoveItem();
                 });
             }
         };
@@ -500,6 +501,10 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
             Toast.showToast(getActivity(), "Chưa nhập mã");
 
         }
+    }
+    private void updateTvCountScanWhenRemoveItem(){
+        if (mAdapter.getItemCount()==0) tvCountScan.setText("SCAN ĐƠN HÀNG");
+        else tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
     }
 
   /*  @Override
