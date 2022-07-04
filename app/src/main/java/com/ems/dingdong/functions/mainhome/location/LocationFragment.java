@@ -169,6 +169,7 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                                 Bundle bundle = new Bundle();
                                 bundle.putString("tvSohieuBg", tvParcelCode.getText().toString());
                                 bundle.putString("tvSodienthoai", mList.get(position).getToNumber());
+//                                bundle.putString("tvTenKhachHang", tvSenderName.getText().toString());
                                 bundle.putString("tvThoigiansudung", mList.get(position).getStatusDate() + " " + mList.get(position).getStatusTime());
                                 bundle.putString("imgSeebar", mList.get(position).getRecordFile());
                                 intent.putExtras(bundle);

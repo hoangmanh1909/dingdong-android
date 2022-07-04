@@ -157,6 +157,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
     int mID = 0;
+    private int positionItem = 0;
     String mPhoneS = "";
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
         @Override
@@ -311,6 +312,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.imgSml.setOnClickListener(v -> {
+                    positionItem = position;
                     if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
                         int j = 0;
                         String tam[] = mAdapter.getListFilter().get(position).getVatCode().split(",");
@@ -412,8 +414,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                         @Override
                         public void onCall(String phone) {
-                            if (phone==null || phone.isEmpty()){
-                                Toast.showToast(requireContext(),"Số điện thoại không hợp lệ.");
+                            if (phone == null || phone.isEmpty()) {
+                                Toast.showToast(requireContext(), "Số điện thoại không hợp lệ.");
                                 return;
                             }
                             mPhoneEdit = phone;
@@ -563,6 +565,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(), new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
         } catch (Exception e) {
         }
+    }
+
+    @Override
+    public void phatSmlSuccess(String message) {
+        mAdapter.getListFilter().get(positionItem).setVatCode("PHS");
+        mAdapter.notifyItemChanged(positionItem);
+        showSuccessToast(message);
+    }
+
+    @Override
+    public void huySmlSuccess(String message) {
+        mAdapter.getListFilter().get(positionItem).setVatCode("PHU");
+        mAdapter.notifyItemChanged(positionItem);
+        showSuccessToast(message);
     }
 
     public boolean checkPermissionForReadExtertalStorage() {

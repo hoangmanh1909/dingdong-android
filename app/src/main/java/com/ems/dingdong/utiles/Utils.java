@@ -137,6 +137,10 @@ public class Utils {
         }
     }
 
+    public static boolean isBlank(String text) {
+        return text == null || text.trim().equals("");
+    }
+
     public static String convertNumberToString(String number) {
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal bigDecimal;
@@ -642,7 +646,8 @@ public class Utils {
         }
 
     }
-    public static OkHttpClient getUnsafeOkHttpClient(int readTimeOut, int connectTimeOut,String userName) {
+
+    public static OkHttpClient getUnsafeOkHttpClient(int readTimeOut, int connectTimeOut, String userName) {
 
         try {
             // Create a trust manager that does not validate certificate chains
@@ -979,7 +984,7 @@ public class Utils {
         return componentInfo.getClassName().equals("com.ems.dingdong.calls.IncomingCallActivity");
     }
 
-    public static String getLocalTime(String format){
+    public static String getLocalTime(String format) {
         try {
             long time = System.currentTimeMillis();
             SimpleDateFormat sdf = new SimpleDateFormat(format);

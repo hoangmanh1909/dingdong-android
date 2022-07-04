@@ -1556,7 +1556,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
 
-            if (TextUtils.isEmpty(edtOtherRelationship.getText()) &&
+            if ((TextUtils.isEmpty(edtOtherRelationship.getText()) || Utils.isBlank(edtOtherRelationship.getText().toString())) &&
                     edtRelationship.getText().equals(getViewContext().getString(R.string.other))) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_reeceiver_relationship));
                 return;
@@ -1692,7 +1692,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(t)) + "</font>" + " VNĐ, bạn có thu đủ tiền hay không?";
 
-            if (cbSelected.isChecked() ) {
+            if (cbSelected.isChecked()) {
                 new ConfirmPhiHuyDonHangDialog(getViewContext(),
                         listSelected.size(), t)
                         .setOnCallBacklClickListener(confirmDialog -> {

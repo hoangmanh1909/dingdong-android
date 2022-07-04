@@ -37,33 +37,33 @@
             android:textColor="@color/black"
             android:textSize="12dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="clear_text">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_receiver_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="left|center"
-                        android:background="@null"
-                        android:textColor="@color/red_light"
-                        android:textSize="14dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_receiver_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:gravity="left|center"
+                android:textColor="@color/red_light"
+                android:textSize="14dp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <EditText-->
-<!--            android:id="@+id/edt_receiver_name"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:background="@null"-->
-<!--            android:hint="Vui lòng nhập tên người nhận"-->
-<!--            android:padding="10dp"-->
-<!--            android:textColor="@color/red_light"-->
-<!--            android:textSize="14dp" />-->
+        <!--        <EditText-->
+        <!--            android:id="@+id/edt_receiver_name"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:background="@null"-->
+        <!--            android:hint="Vui lòng nhập tên người nhận"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:textColor="@color/red_light"-->
+        <!--            android:textSize="14dp" />-->
 
     </LinearLayout>
 
@@ -125,7 +125,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

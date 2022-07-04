@@ -61,15 +61,16 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/_12sdp" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_call"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/img_logo"
                     android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:padding="5dp"
                     android:src="@drawable/ic_baseline_phone_missed_24" />
@@ -77,21 +78,27 @@
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_call"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/img_logo"
                     android:gravity="center"
                     android:textColor="@color/text_color_total_theme2"
                     android:textSize="@dimen/text_size_12sp" />
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_ghichu"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:drawableLeft="@drawable/ic_baseline_volume_up_24"
+                    android:drawablePadding="10dp"
                     android:gravity="center|right"
+                    android:text="asdad"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_12sp" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
