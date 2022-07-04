@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
@@ -155,6 +156,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
             Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
+
+    private int positionItem = 0;
 
     int mID = 0;
     String mPhoneS = "";
@@ -311,6 +314,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.imgSml.setOnClickListener(v -> {
+                    positionItem = position;
                     if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
                         int j = 0;
                         String tam[] = mAdapter.getListFilter().get(position).getVatCode().split(",");
@@ -740,6 +744,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void showCallLive(String phone) {
         callProvidertoCSKH(phone);
+    }
+
+    @Override
+    public void phatSmlSuccess(String message) {
+        mAdapter.getListFilter().get(positionItem).setVatCode("PHS");
+        mAdapter.notifyItemChanged(positionItem);
+        showSuccessToast(message);
+    }
+
+    @Override
+    public void huySmlSuccess(String message) {
+        mAdapter.getListFilter().get(positionItem).setVatCode("PHU");
+        mAdapter.notifyItemChanged(positionItem);
+        showSuccessToast(message);
     }
 
     private void showDialog() {

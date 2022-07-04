@@ -1556,7 +1556,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
 
-            if (TextUtils.isEmpty(edtOtherRelationship.getText()) &&
+            if ((TextUtils.isEmpty(edtOtherRelationship.getText()) || Utils.isBlank(edtOtherRelationship.getText().toString())) &&
                     edtRelationship.getText().equals(getViewContext().getString(R.string.other))) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_reeceiver_relationship));
                 return;

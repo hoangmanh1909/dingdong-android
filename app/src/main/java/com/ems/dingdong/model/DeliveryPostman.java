@@ -704,6 +704,10 @@ public class DeliveryPostman implements Comparable {
         return vatCode;
     }
 
+    public void setVatCode(String vatCode) {
+        this.vatCode = vatCode;
+    }
+
     public String getDescription() {
         return description;
     }

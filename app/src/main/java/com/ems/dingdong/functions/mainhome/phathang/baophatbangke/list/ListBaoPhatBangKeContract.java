@@ -140,6 +140,10 @@ interface ListBaoPhatBangKeContract {
         void shoSucces(String mess);
 
         void showCallLive(String phone);
+
+        void phatSmlSuccess(String message);
+
+        void huySmlSuccess(String message);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

@@ -27,6 +27,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.RawContacts;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -989,6 +990,10 @@ public class Utils {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static boolean isBlank(String text) {
+        return text == null || text.trim().equals("");
     }
 
    /* public static String convertToNewMaVung(String phoneNumber,String oldCode,String newCode){
