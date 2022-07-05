@@ -85,11 +85,11 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
                 tvTitle.setVisibility(View.GONE);
             else tvTitle.setVisibility(View.VISIBLE);
 
-            if (item.getDefaultPayment())
-                tvMatdinh.setText("Đã liên kết");
-            else tvMatdinh.setText("Chờ xác nhận");
+//            if (item.getDefaultPayment())
+//                tvMatdinh.setText("Đã liên kết");
+//           else tvMatdinh.setText("Chờ xác nhận");
 
-            if (item.getGroupType() == 1) tvMatdinh.setText("Đã liên kết");
+            tvMatdinh.setText("Đã liên kết");
             if (item.getIsDefaultPayment()) {
                 tv_trang_thai.setText("Mặc định");
             } else tv_trang_thai.setText("Không mặc định");
@@ -99,6 +99,31 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
                 tvSotaikhoan.setText(mahoa);
             } else tvSotaikhoan.setText(item.getBankName());
 
+        }
+    }
+    public void notifyItem(SmartBankLink smartBankLink){
+        try {
+            for (int i= 0;i < mListFilter.size();i++){
+                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+                    notifyItemChanged(i);
+                    return;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void removeItem(SmartBankLink smartBankLink){
+        try {
+            for (int i= 0;i < mListFilter.size();i++){
+                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+                    mListFilter.remove(i);
+                    notifyDataSetChanged();
+                    return;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

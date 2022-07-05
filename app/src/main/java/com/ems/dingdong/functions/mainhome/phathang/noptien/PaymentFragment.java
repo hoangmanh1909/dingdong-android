@@ -34,6 +34,9 @@ import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.DisplayElement;
+import com.ems.dingdong.observer.EWalletData;
+import com.ems.dingdong.observer.Observer;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
@@ -58,7 +61,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
-        implements PaymentContract.View, SwipeRefreshLayout.OnRefreshListener {
+        implements PaymentContract.View, SwipeRefreshLayout.OnRefreshListener, DisplayElement<Object>, Observer<Object> {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -209,6 +212,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         };
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         recycler.setAdapter(mAdapter);
+        getDDsmartBankConfirmLinkRequest();
+
+    }
+
+    private void getDDsmartBankConfirmLinkRequest(){
         BalanceModel v = new BalanceModel();
         v.setPOProvinceCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPOProvinceCode());
         v.setPODistrictCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPODistrictCode());
@@ -218,10 +226,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         v.setRouteCode(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode());
         v.setRouteId(Long.parseLong(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId()));
         mPresenter.getDDsmartBankConfirmLinkRequest(v);
-    }
-
-    private void getDDsmartBankConfirmLinkRequest(){
-
     }
 
     @OnClick({R.id.img_send, R.id.img_back, R.id.cb_pick_all, R.id.tv_search,
@@ -245,15 +249,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     }
 
     public void refreshLayout() {
-        BalanceModel v = new BalanceModel();
-        v.setPOProvinceCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPOProvinceCode());
-        v.setPODistrictCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPODistrictCode());
-        v.setPOCode(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode());
-        v.setPostmanCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
-        v.setPostmanId(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD());
-        v.setRouteCode(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode());
-        v.setRouteId(Long.parseLong(NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteId()));
-        mPresenter.getDDsmartBankConfirmLinkRequest(v);
         if (mPresenter.getPositionTab() == 0)
             mPresenter.getDataPayment("2104", poCode, routeCode, postmanCode, fromDate, toDate);
         else if (mPresenter.getPositionTab() == 4)
@@ -545,6 +540,38 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         }
     }
 
+    @Override
+    public void display(Object data) {
+        try {
+            if (data instanceof EWalletData){
+                EWalletData eWalletData = (EWalletData) data;
+                switch (eWalletData.getStateEWallet()){
+                    case UPDATE:{
+                        updateItemSmartBank(eWalletData.getSmartBankLink());
+                        break;
+                    }
+                    case DELETE:{
+                        removeItemSmartBank(eWalletData.getSmartBankLink());
+                        break;
+                    }
+                    case NOTIFY:{
+                        getDDsmartBankConfirmLinkRequest();
+                        break;
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void update(Object data) {
+        display(data);
+    }
+
     class NameComparator implements Comparator<SmartBankLink> {
         public int compare(SmartBankLink s1, SmartBankLink s2) {
             return s1.getBankName().compareTo(s2.getBankName());
@@ -730,6 +757,42 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void setsmartBankConfirmLink(String x) {
         SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
-        k = Arrays.asList(v);
+        k = new ArrayList<>(Arrays.asList(v));
+    }
+
+    private void updateItemSmartBank(SmartBankLink smartBankLink){
+        try {
+            for (int i=0;i<k.size();i++){
+                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+                    k.get(i).setIsDefaultPayment(smartBankLink.getIsDefaultPayment());
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void removeItemSmartBank(SmartBankLink smartBankLink){
+        try {
+            for (int i=0;i<k.size();i++){
+                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+                    k.remove(i);
+                    return;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EWalletData.INSTANCE.registerObserver(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EWalletData.INSTANCE.removeObserver(this);
     }
 }

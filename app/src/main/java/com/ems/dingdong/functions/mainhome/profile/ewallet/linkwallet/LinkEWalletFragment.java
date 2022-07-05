@@ -9,11 +9,14 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.bumptech.glide.Glide;
+import com.chaos.view.PinView;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.enumClass.StateEWallet;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -34,14 +37,16 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     @BindView(R.id.tv_info_link)
     CustomTextView tvInfoLink;
 
-    @BindView(R.id.et_otp)
-    OtpEditText otpEditText;
-
-    @BindView(R.id.et_otpvimb)
-    OtpEditText otpEditTextViMB;
+    //    @BindView(R.id.et_otp)
+//    OtpEditText otpEditText;
+//
+//    @BindView(R.id.et_otpvimb)
+//    OtpEditText otpEditTextViMB;
 
     @BindView(R.id.ll_from_info)
     LinearLayout linearLayout;
+    @BindView(R.id.firstPinView)
+    PinView firstPinView;
 
     @BindView(R.id.edt_phone_number)
     CustomEditText edtPhoneNumber;
@@ -99,31 +104,33 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                 if (linearLayout.getVisibility() == View.VISIBLE) {
                     mPresenter.linkEWallet(mType);
                 } else {
-                    if (mType == 1) {
-                        if (TextUtils.isEmpty(otpEditText.getText())) {
-                            showErrorToast("OTP không được bỏ trống");
-                            return;
-                        }
-                        if (otpEditText.getText().length() != 6) {
-                            showErrorToast(getString(R.string.wrong_otp_pattern));
-                            return;
-                        }
-                        SharedPref pref = SharedPref.getInstance(getViewContext());
-                        String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
-                        mPresenter.verifyLinkWithOtp(requestId, otpEditText.getText().toString(), 1);
-                    } else {
-                        if (TextUtils.isEmpty(otpEditTextViMB.getText())) {
-                            showErrorToast("OTP không được bỏ trống");
-                            return;
-                        }
-                        if (otpEditTextViMB.getText().length() != 6) {
-                            showErrorToast(getString(R.string.wrong_otp_pattern));
-                            return;
-                        }
-                        SharedPref pref = SharedPref.getInstance(getViewContext());
-                        String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
-                        mPresenter.verifyLinkWithOtp(requestId, otpEditTextViMB.getText().toString(), 2);
+//                    if (mType == 1) {
+                    if (TextUtils.isEmpty(firstPinView.getText())) {
+                        showErrorToast("OTP không được bỏ trống");
+                        return;
                     }
+                    if (firstPinView.getText().length() != 6) {
+                        showErrorToast(getString(R.string.wrong_otp_pattern));
+                        return;
+                    }
+                    SharedPref pref = SharedPref.getInstance(getViewContext());
+                    String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
+                    mPresenter.verifyLinkWithOtp(requestId, firstPinView.getText().toString(), mType);
+//
+
+                    //                    } else {
+//                        if (TextUtils.isEmpty(otpEditTextViMB.getText())) {
+//                            showErrorToast("OTP không được bỏ trống");
+//                            return;
+//                        }
+//                        if (otpEditTextViMB.getText().length() != 6) {
+//                            showErrorToast(getString(R.string.wrong_otp_pattern));
+//                            return;
+//                        }
+//                        SharedPref pref = SharedPref.getInstance(getViewContext());
+//                        String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
+//                        mPresenter.verifyLinkWithOtp(requestId, otpEditTextViMB.getText().toString(), 2);
+//                    }
 
                 }
                 break;
@@ -134,17 +141,18 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     public void showLinkSuccess(String message) {
         linearLayout.setVisibility(View.GONE);
         tvChonnagnhang.setEnabled(false);
-        if (mType == 1) {
-            otpEditText.setVisibility(View.VISIBLE);
-        } else {
-            otpEditTextViMB.setVisibility(View.VISIBLE);
-        }
+//        if (mType == 1) {
+        firstPinView.setVisibility(View.VISIBLE);
+//        } else {
+//            firstPinView.setVisibility(View.VISIBLE);
+//        }
         tvInfoLink.setVisibility(View.VISIBLE);
         tvInfoLink.setText(message);
     }
 
     @Override
     public void showOtpSuccess(String message) {
+        EWalletData.setMeasurements(StateEWallet.NOTIFY,null);
         new SweetAlertDialog(getViewContext())
                 .setConfirmText("OK")
                 .setTitleText(getResources().getString(R.string.notification))

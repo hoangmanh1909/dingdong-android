@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -23,8 +24,10 @@ import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.DisplayElement;
+import com.ems.dingdong.observer.EWalletData;
+import com.ems.dingdong.observer.Observer;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
@@ -41,7 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> implements ListBankContract.View {
+public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> implements ListBankContract.View, DisplayElement<Object>, Observer<Object> {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -119,6 +122,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
         recycler.setAdapter(mAdapter);
+        getDDsmartBankConfirmLink();
 
 
     }
@@ -142,7 +146,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     @Override
     public void onDisplay() {
         super.onDisplay();
-        getDDsmartBankConfirmLink();
+//        getDDsmartBankConfirmLink();
     }
 
     @OnClick({R.id.img_back, R.id.tv_lienket})
@@ -250,6 +254,38 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         }
     }
 
+    @Override
+    public void display(Object data) {
+        try {
+            if (data instanceof EWalletData){
+                EWalletData eWalletData = (EWalletData) data;
+                switch (eWalletData.getStateEWallet()){
+                    case UPDATE:{
+                        mAdapter.notifyItem(eWalletData.getSmartBankLink());
+                        break;
+                    }
+                    case DELETE:{
+                        mAdapter.removeItem(eWalletData.getSmartBankLink());
+                        break;
+                    }
+                    case NOTIFY:{
+                        getDDsmartBankConfirmLink();
+                        break;
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void update(Object data) {
+        display(data);
+    }
+
     class NameComparator implements Comparator<SmartBankLink> {
         public int compare(SmartBankLink s1, SmartBankLink s2) {
             return s1.getBankName().compareTo(s2.getBankName());
@@ -293,5 +329,17 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 mList.get(r).setGroupName("");
         } else mList.clear();
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EWalletData.INSTANCE.registerObserver(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EWalletData.INSTANCE.removeObserver(this);
     }
 }

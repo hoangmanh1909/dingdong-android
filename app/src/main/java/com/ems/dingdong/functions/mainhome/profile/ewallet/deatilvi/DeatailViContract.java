@@ -43,6 +43,8 @@ public interface DeatailViContract {
         void showError(String mess);
 
         void capnhat(String mess);
+
+        void ddHuyLienKetSuccess();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
