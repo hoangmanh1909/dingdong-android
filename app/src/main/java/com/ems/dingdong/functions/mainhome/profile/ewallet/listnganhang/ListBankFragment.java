@@ -270,6 +270,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                     }
                     case NOTIFY:{
                         getDDsmartBankConfirmLink();
+                        mAdapter.resetItem();
                         break;
                     }
                 }
@@ -318,15 +319,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
 //            }
 
             mList.addAll(k);
-            int r = 0;
-            int l = 0;
-            for (int i = 0; i < mList.size(); i++)
-                if (mList.get(i).getGroupType() == 1) {
-                    r = i;
-                    l++;
-                }
-            if (l > 1)
-                mList.get(r).setGroupName("");
         } else mList.clear();
         mAdapter.notifyDataSetChanged();
     }
