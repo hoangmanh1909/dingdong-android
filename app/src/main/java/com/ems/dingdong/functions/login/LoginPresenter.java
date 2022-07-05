@@ -234,7 +234,6 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-
                     Realm realm = Realm.getDefaultInstance();
                     for (ReasonInfo info : response.body().getReasonInfos()) {
                         ReasonInfo result = realm.where(ReasonInfo.class).equalTo(Constants.REASONINFO_PRIMARY_KEY, info.getID()).findFirst();

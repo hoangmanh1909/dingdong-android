@@ -32,6 +32,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.RealmUtils;
@@ -41,6 +42,7 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.text.NumberFormat;
@@ -430,6 +432,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         isFirstChangeReason = true;
         ArrayList<Item> items = new ArrayList<>();
         final List<ReasonInfo> list = RealmUtils.getReasons();
+        Log.d("asdasdasdasdasd",new Gson().toJson(items));
         for (ReasonInfo item : list) {
             items.add(new Item(item.getCode(), item.getName()));
         }
