@@ -17,6 +17,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.enumClass.StateEWallet;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankAdapter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.dialog.DiaLogMatDinh;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP;
@@ -28,6 +29,7 @@ import com.ems.dingdong.model.request.TaiKhoanMatDinh;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -176,6 +178,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
     public void capnhat(String mess) {
         Toast.showToast(getViewContext(), mess);
         smartBankLink = mPresenter.getSmartBankLink();
+        EWalletData.setMeasurements(StateEWallet.UPDATE,smartBankLink);
         if (smartBankLink.getIsDefaultPayment()) {
             tvThanhtoan.setText("Mặc định");
             btnHuyMatmacdinh.setText("Hủy mặc định");
@@ -183,6 +186,11 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
             btnHuyMatmacdinh.setText("Đặt mặc định");
             tvThanhtoan.setText("Không mặc định");
         }
+    }
+
+    @Override
+    public void ddHuyLienKetSuccess() {
+        EWalletData.setMeasurements(StateEWallet.DELETE,mPresenter.getSmartBankLink());
     }
 
     @OnClick({R.id.img_back, R.id.btn_huy_lienket, R.id.btn_lichsu, R.id.btn_huy_matmacdinh})

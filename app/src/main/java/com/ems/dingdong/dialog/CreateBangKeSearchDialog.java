@@ -122,7 +122,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
                 if (calFromCreate.after(calToCreate) || calToCreate.after(Calendar.getInstance()))
                     mDelegate.onResponse(null, null, null, Constants.ERROR_TIME_CODE);
                 else
-                    mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), DateTimeUtils.convertDateToString(calToCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), mChuyenThu, Constants.SUCCESS_TIME_CODE);
+                    mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), DateTimeUtils.convertDateToString(calToCreate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5), tv_chuyenthu.getText(), Constants.SUCCESS_TIME_CODE);
                 dismiss();
                 break;
             case R.id.btnBack:

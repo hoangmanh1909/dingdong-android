@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.enumClass.StateEWallet;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankActivite;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.dialog.DiaLogMatDinh;
@@ -26,6 +27,7 @@ import com.ems.dingdong.model.thauchi.SmartBankConfirmCancelLinkRequest;
 import com.ems.dingdong.model.thauchi.SmartBankInquiryBalanceRequest;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
@@ -278,15 +280,8 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 
     @Override
     public void huyLKThanhCong() {
-//        for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-//            if (s.getBankCode().equals("SeABank")) {
-//                userInfo.getSmartBankLink().remove(i);
-//                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-//            }
-//        }
-        Intent intent = new Intent(getActivity(), ProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        EWalletData.setMeasurements(StateEWallet.DELETE,mPresenter.getSmartBankLink());
+        mPresenter.back();
     }
 
     @Override
@@ -300,6 +295,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     @Override
     public void capNhatMacDinh() {
         s = mPresenter.getSmartBankLink();
+        EWalletData.setMeasurements(StateEWallet.UPDATE,s);
         if (s.getIsDefaultPayment()) {
             btnHuyMatmacdinh.setText("Hủy mặc định");
         } else {
