@@ -399,7 +399,6 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 otpDialog.dismiss();
                 mPresenter.back();
-                mPresenter.back();
             }
         }
     }
