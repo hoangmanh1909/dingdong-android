@@ -106,8 +106,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                     @Override
                     public void onClick(View v) {
                         if (mList.get(position).getGroupType() == 1) {
-
-                            mPresenter.showEwalletDetail(mList.get(position), k);
+                            mPresenter.showEwalletDetail(mList.get(position), mAdapter.getListFilter());
                         } else {
                             for (int i = 0; i < k.size(); i++) {
                                 if (k.get(i).getBankCode().equals("SeABank")) {
@@ -159,21 +158,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                         if (id.equals("2")) {
                             mPresenter.showEwallet();
                         } else {
-//                            boolean is = false;
-//                            if (userInfo.getSmartBankLink() != null) {
-//                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-//                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-//                                        is = false;
-//                                        Toast.showToast(getViewContext(), "Vui lòng hủy liên kết tài khoản trước khi liên kết tài khoản mới");
-//                                        break;
-//                                    } else {
-//                                        is = true;
-//                                    }
-//                                }
-//                            } else is = true;
-//
-//                            if (is) mPresenter.taikhoanthauchi();
-//                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
                             mPresenter.taikhoanthauchi();
                         }
                     }
@@ -230,9 +214,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     public void showThanhCong() {
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-//                userInfo.getSmartBankLink().get(i).setStatus("ACTIVE");
                 otpDialog.dismiss();
-//                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
             }
         }
 
@@ -262,10 +244,16 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 switch (eWalletData.getStateEWallet()){
                     case UPDATE:{
                         mAdapter.notifyItem(eWalletData.getSmartBankLink());
+                        k.clear();
+                        k.addAll(mAdapter.getListFilter());
+                        Log.d("asdasdasdasdasd",new Gson().toJson(mAdapter.getListFilter()));
                         break;
                     }
                     case DELETE:{
                         mAdapter.removeItem(eWalletData.getSmartBankLink());
+                        k.clear();
+                        k.addAll(mAdapter.getListFilter());
+                        Log.d("asdasdasdasdasd",new Gson().toJson(mAdapter.getListFilter()));
                         break;
                     }
                     case NOTIFY:{
@@ -299,24 +287,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
             SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
             k = Arrays.asList(v);
             Collections.sort(k, new NameComparator());
-//            for (int i = 0; i < k.size(); i++) {
-//                if (k.get(i).getBankCode().equals("SeABank")) {
-//                    mList.add(new Item(2 + "", k.get(i).getBankName(), true, k.get(i).getBankLogo(), k.get(i).getBankAccountNumber(), k.get(i).getIsDefaultPayment()));
-//                } else {
-//                    if (t == 0)
-//                        mList.add(new Item(1 + "", "Ví điện tử", isKietta, k.get(i).getBankLogo(), k.get(i).getBankName(),
-//                                k.get(i).getBankCode(), k.get(i).getPIDNumber(), k.get(i).getPIDType(), k.get(i).getPOCode(), k.get(i).getPaymentToken()
-//                                , k.get(i).getIsDefaultPayment()));
-//                    else {
-//                        mList.add(new Item(1 + "", "", isKietta, k.get(i).getBankLogo(), k.get(i).getBankName(),
-//                                k.get(i).getBankCode(), k.get(i).getPIDNumber(), k.get(i).getPIDType(), k.get(i).getPOCode(), k.get(i).getPaymentToken()
-//                                , k.get(i).getIsDefaultPayment()));
-//                    }
-//                    t++;
-//                }
-//
-//            }
-
             mList.addAll(k);
             int r = 0;
             int l = 0;

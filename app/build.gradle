@@ -215,6 +215,24 @@ android {
             applicationId "com.tct.dingdong"
             resValue "string", "app_name", "DingDong VNPost Pre"
         }
+        pre_swap {
+            def API_URL = '"http://103.21.149.238:1235/"'
+            def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'
+            def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
+            def DOMAIN_CTEL = '"https://dev.api-connect.io/"'
+            def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
+            def URL_IMAGE = '"https://pre-pns.vnpost.vn/imageapi//Assets/Images/"'
+            def API_DINGDONG_GATEWAY = '"https://pre-pns.vnpost.vn/ddgateway/"'
+            buildConfigField("String", "API_DINGDONG_GATEWAY", API_DINGDONG_GATEWAY)
+            buildConfigField("String", "URL_IMAGE", URL_IMAGE)
+            buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
+            buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
+            buildConfigField("String", "API_URL", API_URL)
+            buildConfigField("String", "E_WALLET_SIGNATURE_KEY", E_WALLET_SIGNATURE_KEY)
+            buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
+            applicationId "com.tct.dingdong.dev"
+            resValue "string", "app_name", "DingDong VNPost Pre Old"
+        }
         pro_smartpost {
             def API_URL = '"https://pns.vnpost.vn/ddsmartpos/"'
             def PRIVATE_KEY = '"EEC766D418FB03E745A3C5B28ACEDC3ECCC0CCD90F6E63D9F95AD0305BD38B38"'

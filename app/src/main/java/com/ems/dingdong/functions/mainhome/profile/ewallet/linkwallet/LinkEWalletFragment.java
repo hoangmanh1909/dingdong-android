@@ -116,21 +116,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                     SharedPref pref = SharedPref.getInstance(getViewContext());
                     String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
                     mPresenter.verifyLinkWithOtp(requestId, firstPinView.getText().toString(), mType);
-//
 
-                    //                    } else {
-//                        if (TextUtils.isEmpty(otpEditTextViMB.getText())) {
-//                            showErrorToast("OTP không được bỏ trống");
-//                            return;
-//                        }
-//                        if (otpEditTextViMB.getText().length() != 6) {
-//                            showErrorToast(getString(R.string.wrong_otp_pattern));
-//                            return;
-//                        }
-//                        SharedPref pref = SharedPref.getInstance(getViewContext());
-//                        String requestId = pref.getString(Constants.KEY_LINK_REQUEST_ID, "");
-//                        mPresenter.verifyLinkWithOtp(requestId, otpEditTextViMB.getText().toString(), 2);
-//                    }
 
                 }
                 break;
@@ -152,7 +138,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
 
     @Override
     public void showOtpSuccess(String message) {
-        EWalletData.setMeasurements(StateEWallet.NOTIFY,null);
+        EWalletData.setMeasurements(StateEWallet.NOTIFY, null);
         new SweetAlertDialog(getViewContext())
                 .setConfirmText("OK")
                 .setTitleText(getResources().getString(R.string.notification))
@@ -181,21 +167,26 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
 
     private void pickFilter(View anchor) {
         PopupMenu popupMenu = new PopupMenu(requireContext(), anchor);
-        if (danhSachNganHangRepsone.size() > 0) {
-            for (int i = 0; i < danhSachNganHangRepsone.size(); i++) {
-                if (danhSachNganHangRepsone.get(i).getGroupType() == 1)
-                    popupMenu.getMenu().add(0, i, danhSachNganHangRepsone.get(i).getGroupType(), danhSachNganHangRepsone.get(i).getBankName());
-            }
-            popupMenu.setOnMenuItemClickListener(item -> {
-                tvChonnagnhang.setText(item.getTitle());
-                if (item.getTitle().toString().contains("MB"))
-                    mType = 2;
-                else mType = 1;
-                linearLayout.setVisibility(View.VISIBLE);
-                btnLinkWallet.setVisibility(View.VISIBLE);
-                return true;
-            });
-            popupMenu.show();
-        } else Toast.showToast(getViewContext(), "Chưa có ngân hàng nào để liên kết");
+        try {
+            if (danhSachNganHangRepsone != null) {
+                for (int i = 0; i < danhSachNganHangRepsone.size(); i++) {
+                    if (danhSachNganHangRepsone.get(i).getGroupType() == 1)
+                        popupMenu.getMenu().add(0, i, danhSachNganHangRepsone.get(i).getGroupType(), danhSachNganHangRepsone.get(i).getBankName());
+                }
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    tvChonnagnhang.setText(item.getTitle());
+                    if (item.getTitle().toString().contains("MB"))
+                        mType = 2;
+                    else mType = 1;
+                    linearLayout.setVisibility(View.VISIBLE);
+                    btnLinkWallet.setVisibility(View.VISIBLE);
+                    return true;
+                });
+                popupMenu.show();
+            } else Toast.showToast(getViewContext(), "Chưa có ngân hàng nào để liên kết");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 }

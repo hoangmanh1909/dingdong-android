@@ -394,7 +394,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
 
     @Override
     public void showMain() {
-        EWalletData.setMeasurements(StateEWallet.NOTIFY,null);
+        EWalletData.setMeasurements(StateEWallet.NOTIFY, null);
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 otpDialog.dismiss();

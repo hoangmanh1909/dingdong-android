@@ -110,8 +110,6 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
         }
 //        tvBuucuc.setText();
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-
-
         if (!postOfficeJson.isEmpty()) {
             postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
         }
@@ -119,7 +117,6 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
         mAdapter = new DeatailHistoryAdapter(getContext(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView);
         recyclerView.setAdapter(mAdapter);
-
         mListVi = new ArrayList<>();
         mListVi = mPresenter.getList();
         if (mListVi != null || mListVi.size() > 0) {
@@ -129,12 +126,14 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 }
             }
         }
-
-        for (int i = 0; i < mListVi.size(); i++) {
-            if (mListVi.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
-                mListVi.remove(i);
+        if (mListVi.size() > 1) {
+            for (int i = 0; i < mListVi.size(); i++) {
+                if (mListVi.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
+                    mListVi.remove(i);
+                }
             }
-        }
+        } else
+            mListVi = new ArrayList<>();
     }
 
     @Override
@@ -178,7 +177,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
     public void capnhat(String mess) {
         Toast.showToast(getViewContext(), mess);
         smartBankLink = mPresenter.getSmartBankLink();
-        EWalletData.setMeasurements(StateEWallet.UPDATE,smartBankLink);
+        EWalletData.setMeasurements(StateEWallet.UPDATE, smartBankLink);
         if (smartBankLink.getIsDefaultPayment()) {
             tvThanhtoan.setText("Mặc định");
             btnHuyMatmacdinh.setText("Hủy mặc định");
@@ -190,7 +189,7 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
 
     @Override
     public void ddHuyLienKetSuccess() {
-        EWalletData.setMeasurements(StateEWallet.DELETE,mPresenter.getSmartBankLink());
+        EWalletData.setMeasurements(StateEWallet.DELETE, mPresenter.getSmartBankLink());
     }
 
     @OnClick({R.id.img_back, R.id.btn_huy_lienket, R.id.btn_lichsu, R.id.btn_huy_matmacdinh})
@@ -200,7 +199,6 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 mPresenter.back();
                 break;
             case R.id.btn_huy_matmacdinh:
-
                 String title1 = "";
                 String tilteMess1 = "";
                 for (int i = 0; i < mListVi.size(); i++) {
@@ -250,7 +248,6 @@ public class DeatailViFragment extends ViewFragment<DeatailViContract.Presenter>
                 }
                 break;
             case R.id.btn_lichsu:
-
                 LinkHistory linkHistory = new LinkHistory();
                 linkHistory.setBankCode(smartBankLink.getBankCode());
                 linkHistory.setPOCode(smartBankLink.getPOCode());
