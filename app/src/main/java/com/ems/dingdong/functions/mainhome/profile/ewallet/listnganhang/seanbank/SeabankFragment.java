@@ -398,11 +398,8 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 otpDialog.dismiss();
-                userInfo.getSmartBankLink().get(i).setStatus("ACTIVE");
-                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-                Intent intent = new Intent(getViewContext(), ProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                mPresenter.back();
+                mPresenter.back();
             }
         }
     }

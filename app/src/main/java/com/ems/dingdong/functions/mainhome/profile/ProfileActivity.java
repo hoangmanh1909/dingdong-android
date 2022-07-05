@@ -19,7 +19,6 @@ public class ProfileActivity extends DingDongActivity {
 
     @Override
     public ViewFragment onCreateFirstFragment() {
-
         mFragment = (ProfileFragment) new ProfilePresenter(this).getFragment();
         return mFragment;
     }
