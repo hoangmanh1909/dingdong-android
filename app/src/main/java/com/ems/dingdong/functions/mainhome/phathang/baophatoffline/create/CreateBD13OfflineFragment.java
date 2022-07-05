@@ -470,10 +470,14 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 }
             } else if (isFirstChangeReason) {
                 isFirstChangeReason = false;
-                SolutionInfo firstInfo = list.get(0);
-                tv_solution.setText(firstInfo.getName());
-                mSolutionCode = firstInfo.getCode();
-                mSolutionInfo = firstInfo;
+                try {
+                    SolutionInfo firstInfo = list.get(0);
+                    tv_solution.setText(firstInfo.getName());
+                    mSolutionCode = firstInfo.getCode();
+                    mSolutionInfo = firstInfo;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 new PickerDialog(getViewContext(), "Chọn giải pháp", items,
                         item -> {

@@ -82,31 +82,43 @@
                 android:textSize="@dimen/_14sdp"
                 android:visibility="gone" />
 
-            <com.ems.dingdong.views.OtpEditText
-                android:id="@+id/et_otp"
-                android:layout_width="match_parent"
+            <com.chaos.view.PinView
+                android:id="@+id/firstPinView"
+                style="@style/PinWidget.PinView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:digits="1234567890"
-                android:inputType="number"
-                android:maxLength="6"
-                android:textIsSelectable="false"
-                android:textSize="40sp"
+                android:layout_gravity="center"
+                android:cursorVisible="true"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="@dimen/_16sdp"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:cursorWidth="2dp"
+                app:hideLineWhenFilled="false"
+                app:itemCount="6"
                 android:visibility="gone"
-                app:maxLength="6" />
+                app:itemHeight="42dp"
+                app:itemRadius="4dp"
+                app:itemSpacing="0dp"
+                app:itemWidth="32dp"
+                app:lineColor="@color/colorPrimary"
+                app:lineWidth="2dp"
+                app:viewType="rectangle" />
 
-            <com.ems.dingdong.views.OtpEditText
-                android:id="@+id/et_otpvimb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:digits="1234567890"
-                android:inputType="number"
-                android:maxLength="6"
-                android:textIsSelectable="false"
-                android:textSize="40sp"
-                android:visibility="gone"
-                app:maxLength="6" />
+<!--            <com.ems.dingdong.views.OtpEditText-->
+<!--                android:id="@+id/et_otpvimb"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:cursorVisible="false"-->
+<!--                android:digits="1234567890"-->
+<!--                android:inputType="number"-->
+<!--                android:maxLength="6"-->
+<!--                android:textIsSelectable="false"-->
+<!--                android:textSize="40sp"-->
+<!--                android:visibility="gone"-->
+<!--                app:maxLength="6" />-->
 
 
             <LinearLayout

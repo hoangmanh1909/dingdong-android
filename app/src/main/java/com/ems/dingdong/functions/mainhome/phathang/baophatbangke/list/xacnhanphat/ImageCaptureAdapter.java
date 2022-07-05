@@ -90,10 +90,18 @@ public class ImageCaptureAdapter extends RecyclerView.Adapter<ImageCaptureAdapte
 //                ivDelete.setOnClickListener( v -> {
 //                    removeAt(getPosition());
 //                });
+                ivDelete.setOnClickListener(v -> {
+                    removeAt(this.getAdapterPosition());
+                });
             }
         }
     }
 
+    public void removeAt(int position) {
+        mList.remove(position);
+        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, mList.size()-1);
+    }
 //    public void removeAt(int position) {
 //        mList.remove(position);
 //        notifyItemRemoved(position);
