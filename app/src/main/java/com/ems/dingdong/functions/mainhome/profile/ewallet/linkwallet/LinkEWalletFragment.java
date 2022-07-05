@@ -12,9 +12,11 @@ import com.bumptech.glide.Glide;
 import com.chaos.view.PinView;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.enumClass.StateEWallet;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -35,7 +37,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     @BindView(R.id.tv_info_link)
     CustomTextView tvInfoLink;
 
-//    @BindView(R.id.et_otp)
+    //    @BindView(R.id.et_otp)
 //    OtpEditText otpEditText;
 //
 //    @BindView(R.id.et_otpvimb)
@@ -150,6 +152,7 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
 
     @Override
     public void showOtpSuccess(String message) {
+        EWalletData.setMeasurements(StateEWallet.NOTIFY,null);
         new SweetAlertDialog(getViewContext())
                 .setConfirmText("OK")
                 .setTitleText(getResources().getString(R.string.notification))

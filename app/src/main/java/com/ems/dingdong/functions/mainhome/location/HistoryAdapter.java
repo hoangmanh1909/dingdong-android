@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,9 +115,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     llCall.setVisibility(View.VISIBLE);
                     tvCall.setText(item.getActionTypeName());
                     tvCall.setVisibility(View.VISIBLE);
-                    tvGhichu.setVisibility(View.GONE);
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
                 } else imgLogo.setVisibility(View.GONE);
+
+                if (!TextUtils.isEmpty(item.getDescription())) {
+                    tvGhichu.setText(item.getDescription());
+                    tvGhichu.setVisibility(View.VISIBLE);
+                } else {
+                    tvGhichu.setText("");
+                    tvGhichu.setVisibility(View.GONE);
+                }
             } else {
                 tvCall.setText("");
                 if (!TextUtils.isEmpty(item.getToNumber())) {

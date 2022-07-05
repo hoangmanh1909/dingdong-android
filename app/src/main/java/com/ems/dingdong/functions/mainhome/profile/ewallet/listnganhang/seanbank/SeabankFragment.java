@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.enumClass.StateEWallet;
 import com.ems.dingdong.functions.mainhome.profile.ProfileActivity;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankActivite;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment;
@@ -35,6 +36,7 @@ import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.ThonTinSoTaiKhoanRespone;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
@@ -392,6 +394,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
 
     @Override
     public void showMain() {
+        EWalletData.setMeasurements(StateEWallet.NOTIFY,null);
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 otpDialog.dismiss();

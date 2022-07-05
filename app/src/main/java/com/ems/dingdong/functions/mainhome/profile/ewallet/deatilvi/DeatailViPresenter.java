@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.enumClass.StateEWallet;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
 import com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment;
@@ -11,6 +12,7 @@ import com.ems.dingdong.model.request.TaiKhoanMatDinh;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.model.thauchi.SmartBankRequestCancelLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
 
@@ -220,6 +222,7 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
+                            mView.ddHuyLienKetSuccess();
                             back();
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());

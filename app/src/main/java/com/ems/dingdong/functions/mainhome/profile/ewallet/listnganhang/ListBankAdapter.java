@@ -87,7 +87,7 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
 //            if (item.getDefaultPayment())
 //                tvMatdinh.setText("Đã liên kết");
-//            else tvMatdinh.setText("Chờ xác nhận");
+//           else tvMatdinh.setText("Chờ xác nhận");
 
             tvMatdinh.setText("Đã liên kết");
             if (item.getIsDefaultPayment()) {
@@ -99,6 +99,31 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
                 tvSotaikhoan.setText(mahoa);
             } else tvSotaikhoan.setText(item.getBankName());
 
+        }
+    }
+    public void notifyItem(SmartBankLink smartBankLink){
+        try {
+            for (int i= 0;i < mListFilter.size();i++){
+                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+                    notifyItemChanged(i);
+                    return;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void removeItem(SmartBankLink smartBankLink){
+        try {
+            for (int i= 0;i < mListFilter.size();i++){
+                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+                    mListFilter.remove(i);
+                    notifyDataSetChanged();
+                    return;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
