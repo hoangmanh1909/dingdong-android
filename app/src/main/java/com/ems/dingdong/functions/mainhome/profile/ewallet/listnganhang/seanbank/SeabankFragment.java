@@ -241,13 +241,13 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
                     popupMenu.getMenu().add(0, i, danhSachNganHangRepsone.get(i).getGroupType(), danhSachNganHangRepsone.get(i).getBankName());
             }
             popupMenu.setOnMenuItemClickListener(item -> {
-                    constraintLayout.setVisibility(View.VISIBLE);
-                    idDanhSach = item.getItemId();
-                    maNganHang = danhSachNganHangRepsone.get(idDanhSach).getBankCode();
-                    tvTenchitietnganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankName());
-                    tvTennganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankCode());
-                    Glide.with(this).load(danhSachNganHangRepsone.get(idDanhSach).getLogo()).into(imgLogo);
-                    tvTennganhanglienket.setText("Liên kết tài khoản " + danhSachNganHangRepsone.get(idDanhSach).getBankCode());
+                constraintLayout.setVisibility(View.VISIBLE);
+                idDanhSach = item.getItemId();
+                maNganHang = danhSachNganHangRepsone.get(idDanhSach).getBankCode();
+                tvTenchitietnganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankName());
+                tvTennganhang.setText(danhSachNganHangRepsone.get(idDanhSach).getBankCode());
+                Glide.with(this).load(danhSachNganHangRepsone.get(idDanhSach).getLogo()).into(imgLogo);
+                tvTennganhanglienket.setText("Liên kết tài khoản " + danhSachNganHangRepsone.get(idDanhSach).getBankCode());
 
                 return true;
             });
@@ -398,11 +398,8 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 otpDialog.dismiss();
-                userInfo.getSmartBankLink().get(i).setStatus("ACTIVE");
-                sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
-                Intent intent = new Intent(getViewContext(), ProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                mPresenter.back();
+                mPresenter.back();
             }
         }
     }

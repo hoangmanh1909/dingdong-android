@@ -27,6 +27,9 @@ import butterknife.ButterKnife;
 public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.HolderView> {
     private List<SmartBankLink> mListFilter;
     private Context mContext;
+    private boolean isFirstItemBank = true;
+    private boolean isFirstItemEWallet = true;
+
 
     public ListBankAdapter(Context context, List<SmartBankLink> items) {
         mListFilter = items;
@@ -81,13 +84,16 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
             SmartBankLink item = (SmartBankLink) model;
             Glide.with(mContext).load(item.getBankLogo()).into(imgMotaikhoan);
             tvTitle.setText(item.getGroupName());
-            if (item.getBankName() == null || item.getBankName().equals(""))
-                tvTitle.setVisibility(View.GONE);
-            else tvTitle.setVisibility(View.VISIBLE);
 
-//            if (item.getDefaultPayment())
-//                tvMatdinh.setText("Đã liên kết");
-//           else tvMatdinh.setText("Chờ xác nhận");
+            if (item.getGroupType()==1){ // GroupType == 1 ví điện tử
+                if (isFirstItemEWallet) tvTitle.setVisibility(View.VISIBLE);
+                else tvTitle.setVisibility(View.GONE);
+                isFirstItemEWallet=false;
+            }else {
+                if (isFirstItemBank) tvTitle.setVisibility(View.VISIBLE);
+                else tvTitle.setVisibility(View.GONE);
+                isFirstItemBank=false;
+            }
 
             tvMatdinh.setText("Đã liên kết");
             if (item.getIsDefaultPayment()) {
@@ -106,6 +112,7 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
             for (int i= 0;i < mListFilter.size();i++){
                 if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
                     notifyItemChanged(i);
+                    resetItem();
                     return;
                 }
             }
@@ -119,11 +126,16 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
                 if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
                     mListFilter.remove(i);
                     notifyDataSetChanged();
+                    resetItem();
                     return;
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public void resetItem(){
+        isFirstItemBank = true;
+        isFirstItemEWallet=true;
     }
 }
