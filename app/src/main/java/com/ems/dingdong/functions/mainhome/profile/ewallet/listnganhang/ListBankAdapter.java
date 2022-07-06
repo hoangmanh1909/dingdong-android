@@ -18,6 +18,8 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.utiles.NumberUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,17 +84,21 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
         public void bindView(Object model) {
             SmartBankLink item = (SmartBankLink) model;
-            Glide.with(mContext).load(item.getBankLogo()).into(imgMotaikhoan);
+            try {
+                Glide.with(mContext).load(new URL(item.getBankLogo())).into(imgMotaikhoan);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             tvTitle.setText(item.getGroupName());
 
-            if (item.getGroupType()==1){ // GroupType == 1 ví điện tử
+            if (item.getGroupType() == 1) { // GroupType == 1 ví điện tử
                 if (isFirstItemEWallet) tvTitle.setVisibility(View.VISIBLE);
                 else tvTitle.setVisibility(View.GONE);
-                isFirstItemEWallet=false;
-            }else {
+                isFirstItemEWallet = false;
+            } else {
                 if (isFirstItemBank) tvTitle.setVisibility(View.VISIBLE);
                 else tvTitle.setVisibility(View.GONE);
-                isFirstItemBank=false;
+                isFirstItemBank = false;
             }
 
             tvMatdinh.setText("Đã liên kết");
@@ -107,35 +113,38 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
         }
     }
-    public void notifyItem(SmartBankLink smartBankLink){
+
+    public void notifyItem(SmartBankLink smartBankLink) {
         try {
-            for (int i= 0;i < mListFilter.size();i++){
-                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+            for (int i = 0; i < mListFilter.size(); i++) {
+                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
                     notifyDataSetChanged();
                     resetItem();
                     return;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void removeItem(SmartBankLink smartBankLink){
+
+    public void removeItem(SmartBankLink smartBankLink) {
         try {
-            for (int i= 0;i < mListFilter.size();i++){
-                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+            for (int i = 0; i < mListFilter.size(); i++) {
+                if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
                     mListFilter.remove(i);
                     notifyDataSetChanged();
                     resetItem();
                     return;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void resetItem(){
+
+    public void resetItem() {
         isFirstItemBank = true;
-        isFirstItemEWallet=true;
+        isFirstItemEWallet = true;
     }
 }
