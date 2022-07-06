@@ -114,7 +114,6 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-
                         HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
                         List<HistoryRespone> l = Arrays.asList(j);
                         mView.showLog(l);
@@ -131,6 +130,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
         if (TextUtils.isEmpty(poCode)) {
             initPocode();
         }
+        mView.showProgress();
         mInteractor.findLocation(code, poCode)
                 .delay(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
@@ -147,6 +147,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                             } else {
                                 mView.showErrorToast(commonObjectResult.getMessage());
                                 mView.showEmpty();
+                                mView.hideProgress();
                             }
                         },
                         throwable -> {

@@ -148,7 +148,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     if (item.getActionTypeName().contains("đi")) {
                         imgLogo.setVisibility(View.VISIBLE);
                         imgLogo.setImageResource(R.drawable.ic_baseline_phone_forwarded_24_v1);
-
                     } else if (item.getActionTypeName().contains("đến")) {
                         imgLogo.setImageResource(R.drawable.ic_baseline_phone_callback_24_v1);
                         imgLogo.setVisibility(View.VISIBLE);
