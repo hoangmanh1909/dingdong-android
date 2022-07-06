@@ -77,6 +77,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767042750203:android:7e3e1e62cb2921ce48525e",
+        "android_client_info": {
+          "package_name": "com.tct.dingdong.old"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767042750203-43usnqpgn6ga3od43fgi21lq9iq9hpo2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUZUJxu5OHAPmwT7Ek9x7CF43mHEKAIFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767042750203-43usnqpgn6ga3od43fgi21lq9iq9hpo2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "767042750203-peplomhv7otl8t4ocu10dig4cmdit4r0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vnpost.dingdong"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

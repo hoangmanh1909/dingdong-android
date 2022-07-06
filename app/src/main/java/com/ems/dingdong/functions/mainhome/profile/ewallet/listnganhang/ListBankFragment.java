@@ -239,24 +239,22 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     @Override
     public void display(Object data) {
         try {
-            if (data instanceof EWalletData){
+            if (data instanceof EWalletData) {
                 EWalletData eWalletData = (EWalletData) data;
-                switch (eWalletData.getStateEWallet()){
-                    case UPDATE:{
+                switch (eWalletData.getStateEWallet()) {
+                    case UPDATE: {
                         mAdapter.notifyItem(eWalletData.getSmartBankLink());
                         k.clear();
                         k.addAll(mAdapter.getListFilter());
-                        Log.d("asdasdasdasdasd",new Gson().toJson(mAdapter.getListFilter()));
                         break;
                     }
-                    case DELETE:{
+                    case DELETE: {
                         mAdapter.removeItem(eWalletData.getSmartBankLink());
                         k.clear();
                         k.addAll(mAdapter.getListFilter());
-                        Log.d("asdasdasdasdasd",new Gson().toJson(mAdapter.getListFilter()));
                         break;
                     }
-                    case NOTIFY:{
+                    case NOTIFY: {
                         getDDsmartBankConfirmLink();
                         mAdapter.resetItem();
                         break;
@@ -264,7 +262,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -284,11 +282,17 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     @Override
     public void setsmartBankConfirmLink(String x) {
         if (x != null) {
-            mList.clear();
-            SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
-            k = Arrays.asList(v);
-            Collections.sort(k, new NameComparator());
-            mList.addAll(k);
+            try {
+                mList.clear();
+                SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
+                k = Arrays.asList(v);
+                Log.d("AAAAAAA", new Gson().toJson(k));
+                Collections.sort(k, new NameComparator());
+                mList.addAll(k);
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
         } else mList.clear();
         mAdapter.notifyDataSetChanged();
     }

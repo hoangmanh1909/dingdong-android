@@ -273,7 +273,6 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     public void dissOTP() {
         try {
             otpDialog.dismiss();
-
         } catch (Exception e) {
         }
     }

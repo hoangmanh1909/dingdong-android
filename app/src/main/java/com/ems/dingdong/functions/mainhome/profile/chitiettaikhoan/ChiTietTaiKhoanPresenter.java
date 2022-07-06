@@ -59,6 +59,8 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -82,6 +84,8 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
                         }
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -100,6 +104,8 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -117,6 +123,8 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -139,6 +147,8 @@ public class ChiTietTaiKhoanPresenter extends Presenter<ChiTietTaiKhoanContract.
 
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 

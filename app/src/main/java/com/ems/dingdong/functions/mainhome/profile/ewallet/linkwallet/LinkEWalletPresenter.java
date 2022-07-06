@@ -50,6 +50,8 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 

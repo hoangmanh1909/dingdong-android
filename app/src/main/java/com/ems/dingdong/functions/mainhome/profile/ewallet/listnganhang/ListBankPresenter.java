@@ -117,7 +117,6 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
-//                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.setsmartBankConfirmLink(simpleResult.getData());
                         } else {
                             Toast.showToast(getViewContext(), simpleResult.getMessage());

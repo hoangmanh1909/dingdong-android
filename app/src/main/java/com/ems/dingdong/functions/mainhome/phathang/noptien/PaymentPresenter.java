@@ -353,6 +353,8 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                });
     }
 }

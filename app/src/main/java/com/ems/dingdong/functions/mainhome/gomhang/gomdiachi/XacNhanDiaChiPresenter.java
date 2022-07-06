@@ -317,7 +317,9 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
 
                     mView.hideProgress();
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                });
     }
 
     @Override
@@ -336,7 +338,9 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                         mView.hideProgress();
                     } else Toast.showToast(getViewContext(), "Không tìm thấy dữ liệu");
                     mView.hideProgress();
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                });
     }
 
 
@@ -372,7 +376,9 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                         } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác VMAP");
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                });
     }
 
 }

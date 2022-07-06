@@ -216,7 +216,9 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                     } else {
                         mView.hideProgress();
                     }
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                });
 
 
     }

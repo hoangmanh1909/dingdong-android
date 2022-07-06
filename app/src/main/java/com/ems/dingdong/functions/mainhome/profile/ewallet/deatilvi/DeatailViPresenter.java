@@ -147,6 +147,8 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
 
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -176,6 +178,8 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                         }
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -187,22 +191,29 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                    if (simpleResult != null) {
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            if (request.getBankCode() == null) {
-                                smartBankLink.setIsDefaultPayment(false);
-                                setSmartBankLink(smartBankLink);
+                    try {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                if (request.getBankCode() == null) {
+                                    smartBankLink.setIsDefaultPayment(false);
+                                    setSmartBankLink(smartBankLink);
+                                } else {
+                                    smartBankLink.setIsDefaultPayment(true);
+                                    setSmartBankLink(smartBankLink);
+                                }
+                                ;
+                                mView.capnhat(simpleResult.getMessage());
                             } else {
-                                smartBankLink.setIsDefaultPayment(true);
-                                setSmartBankLink(smartBankLink);
+                                mView.showError(simpleResult.getMessage());
                             }
-                            ;
-                            mView.capnhat(simpleResult.getMessage());
-                        } else {
-                            mView.showError(simpleResult.getMessage());
+                            mView.hideProgress();
                         }
+                    } catch (Exception e) {
+                        e.getMessage();
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -228,6 +239,8 @@ public class DeatailViPresenter extends Presenter<DeatailViContract.View, Deatai
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 }
