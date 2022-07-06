@@ -28,9 +28,9 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 49
+        versionCode 50
         //1.3.4
-        versionName "1.3.0"
+        versionName "1.3.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -56,7 +56,8 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.release
@@ -233,7 +234,7 @@ android {
             def DOMAIN_CTEL = '"https://api-connect.io/"'
             def AUTH_CTEL = '"Basic NjA2NzJkMGRkNzNiNjQwMDA3ZWQ4OTQ4OmdsTFhHZlFKckoxOWZ4SVFmRlZrcGROSA=="'
             def URL_IMAGE = '"https://pns.vnpost.vn/Assets/Images/"'
-            def API_DINGDONG_GATEWAY = '""'
+            def API_DINGDONG_GATEWAY = '"https://pns.vnpost.vn/ddgateway/"'
             buildConfigField("String", "API_DINGDONG_GATEWAY", API_DINGDONG_GATEWAY)
             buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)

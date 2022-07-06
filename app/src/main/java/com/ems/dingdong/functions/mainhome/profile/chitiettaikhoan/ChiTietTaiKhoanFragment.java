@@ -281,6 +281,9 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     @Override
     public void huyLKThanhCong() {
         EWalletData.setMeasurements(StateEWallet.DELETE,mPresenter.getSmartBankLink());
+        if (otpDialog != null && otpDialog.isShowing()){
+            otpDialog.dismiss();
+        }
         mPresenter.back();
     }
 

@@ -111,7 +111,7 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
         try {
             for (int i= 0;i < mListFilter.size();i++){
                 if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())){
-                    notifyItemChanged(i);
+                    notifyDataSetChanged();
                     resetItem();
                     return;
                 }
