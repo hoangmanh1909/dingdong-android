@@ -69,7 +69,7 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     public void ddCallOTP(CallOTP request) {
         mView.showProgress();
         mInteractor.vnpCallOTP(request)
-                .delay(1000, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -92,7 +92,7 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     public void smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
         mView.showProgress();
         mInteractor.smartBankConfirmLinkRequest(request)
-                .delay(1000, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -111,7 +111,7 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     public void getDDsmartBankConfirmLinkRequest(BaseRequestModel x) {
         mView.showProgress();
         mInteractor.getDDsmartBankConfirmLinkRequest(x)
-                .delay(1000, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
