@@ -51,52 +51,14 @@
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_cancel_red" />
                 </RelativeLayout>
-
-
-                <View
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/gray" />
+                    android:layout_height="match_parent"/>
 
-                <TextView
-                    android:id="@+id/tv_taikhoanthauchi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/credit"
-                    android:drawablePadding="10dp"
-                    android:gravity="center|left"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="10dp"
-                    android:textStyle="bold"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="Tài khoản thấu chi NHTM"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <View style="@style/Devider" />
-
-                <TextView
-                    android:id="@+id/tv_vidientu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/wallet"
-                    android:drawablePadding="10dp"
-                    android:gravity="center|left"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="Ví điện tử"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <View style="@style/Devider" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

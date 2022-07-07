@@ -32,4 +32,9 @@ public class ListBankInteractor extends Interactor<ListBankContract.Presenter> i
     public Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
         return NetWorkControllerGateWay.getDDsmartBankConfirmLinkRequest(request);
     }
+
+    @Override
+    public Single<SimpleResult> getDanhSachNganHang() {
+        return NetWorkControllerGateWay.getDanhSachNganHang();
+    }
 }

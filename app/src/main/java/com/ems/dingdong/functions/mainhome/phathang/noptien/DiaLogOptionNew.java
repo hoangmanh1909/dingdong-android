@@ -4,6 +4,8 @@ import static com.blankj.utilcode.util.StringUtils.getString;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import com.ems.dingdong.callback.ViCallback;
 import com.ems.dingdong.callback.ViNewCallback;
 import com.ems.dingdong.dialog.NotificationDialog;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletPresenter;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.AdapterLienKetTaiKhoan;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankAdapter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
@@ -34,9 +37,9 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.gson.Gson;
@@ -81,12 +84,14 @@ public class DiaLogOptionNew extends Dialog {
 
     DialogAdapter mAdapter;
     List<SmartBankLink> mList;
+    ArrayList<DanhSachNganHangRepsone> listBank;
     ContainerView containerView;
 
-    public DiaLogOptionNew(Context context, List<SmartBankLink> list, ContainerView containerView, ViNewCallback idCallback) {
+    public DiaLogOptionNew(Context context, List<SmartBankLink> list, ArrayList<DanhSachNganHangRepsone> listBank, ContainerView containerView, ViNewCallback idCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mContext = context;
         this.containerView = containerView;
+        this.listBank = listBank;
         View view = View.inflate(getContext(), R.layout.dialog_option_new, null);
         getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         setContentView(view);
@@ -103,6 +108,15 @@ public class DiaLogOptionNew extends Dialog {
         }
         if (!isContainSeaBank) layoutSeaBank.setVisibility(View.VISIBLE);
         if (!isContainEWallet) layoutEWallet.setVisibility(View.VISIBLE);
+
+        boolean isNotBank = true;
+        for (DanhSachNganHangRepsone item:listBank){ // ẩn seabank
+            if (item.GroupType==2){
+                break;
+            }else isNotBank = false;
+        }
+        if (!isNotBank) layoutSeaBank.setVisibility(View.GONE);
+
 
         mAdapter = new DialogAdapter(getContext(), mList) {
             @Override

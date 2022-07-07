@@ -23,6 +23,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomEditText;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.OtpEditText;
+import com.google.common.reflect.TypeToken;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     @BindView(R.id.btn_link_wallet)
     CustomTextView btnLinkWallet;
 
-    List<DanhSachNganHangRepsone> danhSachNganHangRepsone;
+    ArrayList<DanhSachNganHangRepsone> danhSachNganHangRepsone = new ArrayList<>();
+    String listBankJson;
 
     int mType = 1;
 
@@ -86,6 +88,18 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                 edtIdUser.setText(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
             }
         }
+        SharedPref sharedPref = new SharedPref(getActivity());
+        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK,"");
+        if (!listBankJson.isEmpty()){
+            danhSachNganHangRepsone.clear();
+            try {
+                danhSachNganHangRepsone.addAll(NetWorkController.getGson().fromJson(listBankJson,new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
         linearLayout.setVisibility(View.GONE);
         btnLinkWallet.setVisibility(View.GONE);
 
@@ -98,7 +112,11 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
                 mPresenter.back();
                 break;
             case R.id.tv_chonnagnhang:
-                pickFilter(tvChonnagnhang);
+                if (danhSachNganHangRepsone.size()==0){
+                    mPresenter.getDanhSachNganHang();
+                }else {
+                    pickFilter(tvChonnagnhang);
+                }
                 break;
             case R.id.btn_link_wallet:
                 if (linearLayout.getVisibility() == View.VISIBLE) {
@@ -160,9 +178,15 @@ public class LinkEWalletFragment extends ViewFragment<LinkEWalletContract.Presen
     }
 
     @Override
-    public void showDanhSach(List<DanhSachNganHangRepsone> list) {
-        danhSachNganHangRepsone = new ArrayList<>();
-        danhSachNganHangRepsone.addAll(list);
+    public void showDanhSach(ArrayList<DanhSachNganHangRepsone> list) {
+        try {
+            danhSachNganHangRepsone.clear();
+            if (list!=null) danhSachNganHangRepsone.addAll(list);
+            pickFilter(tvChonnagnhang);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void pickFilter(View anchor) {

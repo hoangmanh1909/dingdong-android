@@ -1,7 +1,6 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -16,12 +15,12 @@ import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.dialog.DialogLienKetTaiKhoan;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP;
 import com.ems.dingdong.model.BalanceModel;
-import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.observer.DisplayElement;
@@ -29,10 +28,8 @@ import com.ems.dingdong.observer.EWalletData;
 import com.ems.dingdong.observer.Observer;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.Toast;
-import com.google.gson.Gson;
+import com.google.common.reflect.TypeToken;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -59,9 +56,12 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     DialogOTP otpDialog;
     String postOfficeJson;
     String routeInfoJson;
+    String listBankJson;
     private PostOffice postOffice;
     private RouteInfo routeInfo;
     List<SmartBankLink> k;
+
+    ArrayList<DanhSachNganHangRepsone> listBank =  new ArrayList<DanhSachNganHangRepsone>();
 
     public static ListBankFragment getInstance() {
         return new ListBankFragment();
@@ -81,6 +81,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK,"");
 
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
@@ -90,6 +91,15 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
         }
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+        if (!listBankJson.isEmpty()){
+            listBank.clear();
+            try {
+                listBank.addAll(NetWorkController.getGson().fromJson(listBankJson,new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
         if (TextUtils.isEmpty(token)) {
             isKietta = false;
@@ -152,31 +162,12 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_lienket:
-                new DialogLienKetTaiKhoan(getViewContext(), new IdCallback() {
-                    @Override
-                    public void onResponse(String id) {
-                        if (id.equals("2")) {
-                            mPresenter.showEwallet();
-                        } else {
-//                            boolean is = false;
-//                            if (userInfo.getSmartBankLink() != null) {
-//                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-//                                    if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
-//                                        is = false;
-//                                        Toast.showToast(getViewContext(), "Vui lòng hủy liên kết tài khoản trước khi liên kết tài khoản mới");
-//                                        break;
-//                                    } else {
-//                                        is = true;
-//                                    }
-//                                }
-//                            } else is = true;
-//
-//                            if (is) mPresenter.taikhoanthauchi();
-//                            if (userInfo.getSmartBankLink() != null && userInfo.getSmartBankLink().size() == 0)
-                            mPresenter.taikhoanthauchi();
-                        }
-                    }
-                }).show();
+                if (listBank.size()==0){
+                    mPresenter.getDanhSachNganHang();
+                }else {
+                    showDialogLienKetTaiKhoan();
+                }
+
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -323,6 +314,20 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     }
 
     @Override
+    public void showDanhSach(ArrayList<DanhSachNganHangRepsone> list) {
+        try {
+            if (list != null){
+                listBank.clear();
+                listBank.addAll(list);
+                showDialogLienKetTaiKhoan();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         EWalletData.INSTANCE.registerObserver(this);
@@ -332,5 +337,18 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     public void onDestroy() {
         super.onDestroy();
         EWalletData.INSTANCE.removeObserver(this);
+    }
+
+    private void showDialogLienKetTaiKhoan(){
+        new DialogLienKetTaiKhoan(getViewContext(), new IdCallback() {
+            @Override
+            public void onResponse(String id) {
+                if (id.equals("1")){
+                    mPresenter.showEwallet();
+                }else {
+                    mPresenter.taikhoanthauchi();
+                }
+            }
+        }, listBank).show();
     }
 }

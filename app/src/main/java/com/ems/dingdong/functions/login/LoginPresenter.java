@@ -16,14 +16,20 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -66,6 +72,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     getSolutions();
                     getReasons();
                     getList(response.body().getUserInfo().getUnitCode());
+                    getDanhSachNganHang();
 //                    response.body().getUserInfo().setPIDNumber("154554454444");
 //                    response.body().getUserInfo().setPIDType("CMND");
 
@@ -160,6 +167,27 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     }
                 });
 
+    }
+
+    @Override
+    public void getDanhSachNganHang() {
+        try {
+            mInteractor.getDanhSachNganHang()
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                                sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
+                            }
+
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void getPostOfficeByCode(String unitCode, String postmanID) {

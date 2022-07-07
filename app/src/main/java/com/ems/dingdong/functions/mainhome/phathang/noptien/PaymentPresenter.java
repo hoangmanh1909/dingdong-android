@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
@@ -26,10 +27,12 @@ import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import org.apache.poi.ss.formula.functions.T;
@@ -326,6 +329,31 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
     @Override
     public int getCurrentTab() {
         return tabListener.getCurrentTab();
+    }
+
+    @Override
+    public void getDanhSachNganHang() {
+        try {
+            mView.showProgress();
+            mInteractor.getDanhSachNganHang()
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                                sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
+                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType());
+                                mView.showDanhSach(list);
+                                mView.hideProgress();
+                            } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

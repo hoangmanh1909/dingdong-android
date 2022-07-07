@@ -12,6 +12,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -53,5 +54,10 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     @Override
     public Single<SimpleResult> getList(String data) {
         return NetWorkController.getListBuuCucHuyen(data);
+    }
+
+    @Override
+    public Single<SimpleResult> getDanhSachNganHang() {
+        return NetWorkControllerGateWay.getDanhSachNganHang();
     }
 }

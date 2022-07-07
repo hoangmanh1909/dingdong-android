@@ -13,6 +13,7 @@ import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.ThonTinSoTaiKhoanRespone;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -33,7 +34,7 @@ public interface SeabankContract {
 
     interface View extends PresentView<Presenter> {
 
-        void showDanhSach(List<DanhSachNganHangRepsone> list);
+        void showDanhSach(ArrayList<DanhSachNganHangRepsone> list);
 
         void showThongTinTaiKhoan(SmartBankLink respone);
 

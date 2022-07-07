@@ -51,4 +51,9 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
     public Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
         return NetWorkControllerGateWay.getDDsmartBankConfirmLinkRequest(request);
     }
+
+    @Override
+    public Single<SimpleResult> getDanhSachNganHang() {
+        return NetWorkControllerGateWay.getDanhSachNganHang();
+    }
 }

@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
@@ -13,7 +14,9 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,22 +38,28 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
 
     @Override
     public void getDanhSachNganHang() {
-        mView.showProgress();
-        mInteractor.getDanhSachNganHang()
-                .delay(1000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult != null) {
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            DanhSachNganHangRepsone[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DanhSachNganHangRepsone[].class);
-                            List<DanhSachNganHangRepsone> list1 = Arrays.asList(list);
-                            mView.showDanhSach(list1);
+        try {
+            mView.showProgress();
+            mInteractor.getDanhSachNganHang()
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                                sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
+                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType());
+                                mView.showDanhSach(list);
+                                mView.hideProgress();
+                            } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
-                        } else Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        mView.hideProgress();
-                    }
-                });
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -136,7 +145,7 @@ public class LinkEWalletPresenter extends Presenter<LinkEWalletContract.View, Li
     @Override
     public void start() {
         refreshUserInfo();
-        getDanhSachNganHang();
+//        getDanhSachNganHang();
     }
 
     @Override

@@ -31,6 +31,8 @@ interface LoginContract {
         void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getList(String data);
+
+        Single<SimpleResult> getDanhSachNganHang();
     }
 
     interface View extends PresentView<Presenter> {
@@ -53,6 +55,8 @@ interface LoginContract {
         void getVersion();
 
         void getList(String data);
+
+        void getDanhSachNganHang();
     }
 }
 
