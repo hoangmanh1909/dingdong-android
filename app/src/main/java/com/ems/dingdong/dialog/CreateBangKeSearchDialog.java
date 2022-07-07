@@ -70,13 +70,19 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         tv_from_date.setText(TimeUtils.convertDateToString(calFromCreate.getTime(), TimeUtils.DATE_FORMAT_5));
         tv_to_date.setText(TimeUtils.convertDateToString(calToCreate.getTime(), TimeUtils.DATE_FORMAT_5));
 
-        SharedPref sharedPref = new SharedPref(mActivity);
-        List<ShiftInfo> list = sharedPref.getListShift();
-        for (ShiftInfo item : list) {
-            items.add(new Item(item.getShiftId(), item.getShiftName()));
-        }
+
+//        SharedPref sharedPref = new SharedPref(mActivity);
+//        try {
+//            List<ShiftInfo> list = sharedPref.getListShift();
+//            for (ShiftInfo item : list) {
+//                items.add(new Item(item.getShiftId(), item.getShiftName()));
+//            }
+//            mItem = items.get(0);
+//        } catch (Exception e) {
+//            e.getMessage();
+//        }
+
 //        tvShift.setText(items.get(0).getText());
-        mItem = items.get(0);
 //        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
 //        tv_chuyenthu.setText(mChuyenThu);
 //        tvBag.setText(mBag);
@@ -87,7 +93,7 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
         super.show();
     }
 
-    @OnClick({R.id.tv_from_date, R.id.tv_to_date, R.id.tv_search, R.id.btnBack,})
+    @OnClick({R.id.tv_from_date, R.id.tv_to_date, R.id.tv_search, R.id.btnBack})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_from_date:
@@ -176,7 +182,6 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
     }
 
     private void showUIShift() {
-
         if (pickerUIShift == null) {
             pickerUIShift = new ItemBottomSheetPickerUIFragment(items, "Chọn ca",
                     new ItemBottomSheetPickerUIFragment.PickerUiListener() {

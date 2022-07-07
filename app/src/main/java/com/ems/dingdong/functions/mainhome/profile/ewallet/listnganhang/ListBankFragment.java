@@ -247,18 +247,18 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
     @Override
     public void display(Object data) {
         try {
-            if (data instanceof EWalletData){
+            if (data instanceof EWalletData) {
                 EWalletData eWalletData = (EWalletData) data;
-                switch (eWalletData.getStateEWallet()){
-                    case UPDATE:{
+                switch (eWalletData.getStateEWallet()) {
+                    case UPDATE: {
                         mAdapter.notifyItem(eWalletData.getSmartBankLink());
                         break;
                     }
-                    case DELETE:{
+                    case DELETE: {
                         mAdapter.removeItem(eWalletData.getSmartBankLink());
                         break;
                     }
-                    case NOTIFY:{
+                    case NOTIFY: {
                         getDDsmartBankConfirmLink();
                         mAdapter.resetItem();
                         break;
@@ -266,7 +266,7 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -307,7 +307,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
 //                }
 //
 //            }
-
             mList.addAll(k);
         } else mList.clear();
         mAdapter.notifyDataSetChanged();
