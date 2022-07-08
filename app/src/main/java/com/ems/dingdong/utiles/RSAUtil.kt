@@ -5,6 +5,7 @@ import java.security.*
 import java.security.spec.InvalidKeySpecException
 import java.security.spec.PKCS8EncodedKeySpec
 import java.util.*
+import android.util.Base64;
 
 class RSAUtil {
     companion object{
@@ -27,7 +28,7 @@ class RSAUtil {
                FZ1edGBvRSm6
                """.trimIndent()
             try {
-                val b1 = Base64.getMimeDecoder().decode(privateKey)
+                val b1 = Base64.decode(privateKey, Base64.DEFAULT)
                 val spec = PKCS8EncodedKeySpec(b1)
                 val kf: KeyFactory
                 kf = KeyFactory.getInstance("RSA")
@@ -35,7 +36,7 @@ class RSAUtil {
                 privateSignature.initSign(kf.generatePrivate(spec))
                 privateSignature.update(plainText.toByteArray(StandardCharsets.UTF_8))
                 val s = privateSignature.sign()
-                return Base64.getEncoder().encodeToString(s)
+                return Base64.encodeToString(s, Base64.DEFAULT)
             } catch (e: NoSuchAlgorithmException) {
                 e.printStackTrace()
             } catch (e: SignatureException) {
