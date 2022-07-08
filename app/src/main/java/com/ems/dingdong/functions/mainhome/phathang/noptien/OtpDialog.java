@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -46,10 +47,15 @@ public class OtpDialog extends Dialog {
         mType = type;
         tvMessage.setText(message);
         pinView.setItemCount(item.getOTPLength());
-
     }
 
-    @OnClick({R.id.ic_cancel, R.id.tv_pay,R.id.rootView})
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pinView.setItemCount(item.getOTPLength());
+    }
+
+    @OnClick({R.id.ic_cancel, R.id.tv_pay, R.id.rootView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ic_cancel:
@@ -70,7 +76,7 @@ public class OtpDialog extends Dialog {
                 }
                 callback.onPaymentClick(pinView.getText().toString());
                 break;
-            case R.id.rootView:{
+            case R.id.rootView: {
                 KeyboardUtil.hide(rootView);
                 break;
             }
