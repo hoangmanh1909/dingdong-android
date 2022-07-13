@@ -21,7 +21,7 @@ interface PhatHangContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void searchTu (String tu);
+        void searchTu(String tu);
 
         void showViewStatisticPtc(StatisticType statisticType);
 
@@ -40,6 +40,8 @@ interface PhatHangContract {
         void showPayment();
 
         void showStatisticSML();
+
+        void showStatisticLog();
     }
 }
 

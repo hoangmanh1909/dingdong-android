@@ -6,6 +6,7 @@ package com.ems.dingdong.utiles;
 
 public class Constants {
     public static final String KEY_SHARE_PREFERENCES = "KEY_SHARE_PREFERENCES";
+    public static final String KEY_LOG_CALL = "KEY_LOG_CALL";
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
     public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
     public static final String KEY_BUU_CUC_HUYEN = "KEY_BUU_CUC_HUYEN";

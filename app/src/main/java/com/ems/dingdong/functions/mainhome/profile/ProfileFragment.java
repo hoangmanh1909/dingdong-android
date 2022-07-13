@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -16,7 +17,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.dialog.CallProviderDialog;
+import com.ems.dingdong.dialog.DialoggoiLai;
 import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.login.LoginActivity;
@@ -71,10 +74,13 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     TextView tv_route;
     @BindView(R.id.tv_ctel)
     TextView tvCtel;
+    @BindView(R.id.sw_switch)
+    Switch swSwitch;
 
     private PhoneDecisionDialog.OnClickListener callback;
     RouteInfo routeInfo;
     PostOffice postOffice;
+    SharedPref sharedPref;
 
     public static ProfileFragment getInstance() {
         return new ProfileFragment();
@@ -89,7 +95,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     public void initLayout() {
         super.initLayout();
 
-        SharedPref sharedPref = new SharedPref(getActivity());
+        sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
@@ -125,12 +131,28 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         switchPayPos.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isChecked);
         });
+
+
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
+            case R.id.sw_switch:
+                new DialoggoiLai(getViewContext(), "Bạn có muốn đẩy log gọi lên hệ thống", new IdCallback() {
+                    @Override
+                    public void onResponse(String id) {
+                        if (id.equals("1")) {
+                            swSwitch.setChecked(true);
+                            sharedPref.putString(Constants.KEY_LOG_CALL, "1");
+                        } else {
+                            swSwitch.setChecked(false);
+                            sharedPref.putString(Constants.KEY_LOG_CALL, "0");
+                        }
+                    }
+                }).show();
+                break;
             case R.id.rl_cuocgoi:
                 mPresenter.showLichsuCuocgoi();
                 break;

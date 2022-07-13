@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -210,9 +211,39 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <View
-                style="@style/Devider"
-                android:visibility="gone" />
+            <View style="@style/Devider" />
+
+            <RelativeLayout
+                android:id="@+id/rl_e_wallet"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_outline_phone_in_talk_24_with" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đẩy log cuộc gọi"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/sw_switch"
+                    style="@style/ImageViewArrowRightV1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View style="@style/Devider" />
 
             <RelativeLayout
                 android:id="@+id/rl_paypost"

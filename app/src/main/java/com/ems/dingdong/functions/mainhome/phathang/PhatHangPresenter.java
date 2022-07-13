@@ -15,6 +15,7 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentPrese
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.sml.SmartlockStatisticPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogPresenter;
 import com.ems.dingdong.model.GachNo;
 import com.ems.dingdong.model.ModeTu;
 import com.ems.dingdong.model.PostOffice;
@@ -127,5 +128,10 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     @Override
     public void showStatisticSML() {
         new SmartlockStatisticPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showStatisticLog() {
+        new StatisticalLogPresenter(mContainerView).pushView();
     }
 }
