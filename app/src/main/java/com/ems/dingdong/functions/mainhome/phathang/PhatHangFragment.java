@@ -68,7 +68,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(11, R.drawable.ic_thong_ke_bao_phat, "Thống kê gạch nợ"));
                 //  homeInfos.add(new HomeInfo(2, R.drawable.ic_bao_phat_thanh_cong, "Báo phát thành công"));
                 // homeInfos.add(new HomeInfo(3, R.drawable.ic_bao_phat_khong_thanh_cong, "Báo phát không thành công"));
-                    homeInfos.add(new HomeInfo(5, R.drawable.analytics, "Thống kê chi tiết PTC"));
+                homeInfos.add(new HomeInfo(5, R.drawable.analytics, "Thống kê chi tiết PTC"));
                 homeInfos.add(new HomeInfo(6, R.drawable.graph_bar, "Thống kê chi tiết PKTC"));
                 homeInfos.add(new HomeInfo(13, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển hoàn"));
                 homeInfos.add(new HomeInfo(14, R.drawable.ic_thong_ke_bao_phat, "Thống kê chi tiết chuyển tiếp"));
@@ -80,6 +80,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                  */
                 homeInfos.add(new HomeInfo(16, R.drawable.ic_logo_xanh, "Nộp tiền"));
                 homeInfos.add(new HomeInfo(17, R.drawable.ic_sml_123, "Smartlocker"));
+                homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Thống kê log cuộc gọi"));
 
                 mList.add(new GroupInfo("Phát hàng", homeInfos));
             }
@@ -134,6 +135,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showPayment();
                         } else if (homeInfo.getId() == 17) {
                             mPresenter.showStatisticSML();
+                        } else if (homeInfo.getId() == 18) {
+                            mPresenter.showStatisticLog();
                         }
                     }
                 });

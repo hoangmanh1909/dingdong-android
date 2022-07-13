@@ -25,13 +25,13 @@ public class DialoggoiLai extends Dialog {
     String sdt;
     IdCallback idCallback;
 
-    public DialoggoiLai(@NonNull Context context,String sdt, IdCallback idCallback) {
+    public DialoggoiLai(@NonNull Context context, String sdt, IdCallback idCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         View view = View.inflate(getContext(), R.layout.dialog_goilai, null);
         setContentView(view);
         ButterKnife.bind(this, view);
         this.idCallback = idCallback;
-        this.sdt = sdt;
+        _tvContent.setText(sdt);
     }
 
     @Override
@@ -43,16 +43,12 @@ public class DialoggoiLai extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_dong:
-                idCallback.onResponse("2");
+                idCallback.onResponse("0");
                 dismiss();
                 break;
             case R.id.tv_dongy:
                 idCallback.onResponse("1");
-//                SipCmc.callTo(sdt);
-                Intent intent1 = new Intent(getContext(), IncomingCallActivity.class);
-                intent1.putExtra(Constants.CALL_TYPE, 1);
-                intent1.putExtra(Constants.KEY_CALLEE_NUMBER, sdt);
-                getContext().startActivity(intent1);
+//
                 dismiss();
                 break;
 
