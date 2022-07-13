@@ -166,12 +166,12 @@ public interface RouteConstract {
         /**
          * @see Presenter
          */
-        void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<RouteResult> callback);
+        void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<SimpleResult> callback);
 
         /**
          * @see Presenter
          */
-        void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<RouteResult> callback);
+        void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<SimpleResult> callback);
 
         /**
          * @see Presenter

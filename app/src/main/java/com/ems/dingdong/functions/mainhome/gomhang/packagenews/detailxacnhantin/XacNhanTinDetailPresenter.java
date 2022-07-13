@@ -10,12 +10,14 @@ import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.model.response.StatisticSMLDeliveryFailResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Scheduler;
@@ -119,15 +121,16 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
 
     @Override
     public void getPostman(String poCode, int routeId, String routeType) {
-        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<UserInfoResult>((Context) mContainerView) {
+        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<UserInfoResult> call, Response<UserInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showPostman(response.body().getUserInfos());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                mView.showPostman(userInfos);
             }
 
             @Override
-            protected void onError(Call<UserInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

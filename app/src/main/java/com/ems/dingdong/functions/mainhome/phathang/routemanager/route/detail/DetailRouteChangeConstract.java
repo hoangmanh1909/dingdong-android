@@ -6,6 +6,7 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ChangeRouteResult;
 import com.ems.dingdong.model.DetailLadingCode;
+import com.ems.dingdong.model.SimpleResult;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ interface DetailRouteChangeConstract {
          * Get detail record.
          * @param ladingCode lading code
          */
-        void getChangeRouteDetail(String ladingCode, CommonCallback<ChangeRouteResult> callback);
+        void getChangeRouteDetail(String ladingCode, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

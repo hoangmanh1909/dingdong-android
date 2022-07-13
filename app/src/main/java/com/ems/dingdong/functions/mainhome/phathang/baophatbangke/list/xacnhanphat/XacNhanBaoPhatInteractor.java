@@ -20,6 +20,7 @@ import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -97,8 +98,8 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
-        NetWorkController.getPostmanByRoute(poCode, routeId, routeType, callback);
+    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getPostmanByRoute(poCode, routeId, routeType, callback);
     }
 
     @Override

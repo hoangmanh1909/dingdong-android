@@ -12,6 +12,7 @@ import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.XacMinhRespone;
 import com.ems.dingdong.model.response.VerifyAddressRespone;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -22,8 +23,8 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
     }
 
     @Override
-    public Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
-        return NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
 
 //    @Override

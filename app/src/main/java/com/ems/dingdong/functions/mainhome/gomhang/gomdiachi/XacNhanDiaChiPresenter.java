@@ -22,6 +22,7 @@ import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.PhoneNumber;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.VerifyAddress;
 import com.ems.dingdong.model.VpostcodeModel;
@@ -35,6 +36,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 import org.apache.poi.ss.formula.functions.T;
@@ -80,81 +82,64 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate,
                                           int type) {
         mView.showProgress();
-        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate)
-                .subscribeOn(Schedulers.io())
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult != null)
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            ArrayList<CommonObject> list = simpleResult.getList();
-                            ArrayList<CommonObject> listG = new ArrayList<>();
-                            for (CommonObject item : list) {
-                                int tam = 0;
-                                if (item.getStatusCode().equals("P5")) item.setStatusCode("P1");
-                                if (item.getStatusCode().equals("P6")) item.setStatusCode("P4");
+        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+                    ArrayList<CommonObject> listG = new ArrayList<>();
+                    for (CommonObject item : list) {
+                        int tam = 0;
+                        if (item.getStatusCode().equals("P5")) item.setStatusCode("P1");
+                        if (item.getStatusCode().equals("P6")) item.setStatusCode("P4");
 
-                                CommonObject itemExists = Iterables.tryFind(listG,
-                                        input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
-                                                && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
-                                ).orNull();
-                                if (itemExists == null) {
-                                    item.addOrderPostmanID(item.getOrderPostmanID());
-                                    item.addCode(item.getCode());
-                                    item.addCode1(item.getiD());
-                                    try {
-                                        item.weightS += Integer.parseInt(item.getWeigh());
-                                    } catch (Exception e) {
-                                    }
-                                    listG.add(item);
-                                } else {
-                                    if (item.getListParcelCode().size() == 0) {
-                                        ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
-                                        parcelCodeInfo.setOrderCode(item.getCode());
-                                        parcelCodeInfo.setOrderId(item.getiD());
-                                        parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
-                                        parcelCodeInfo.setTrackingCode("");
-                                        itemExists.getListParcelCode().add(parcelCodeInfo);
-                                    } else
-                                        for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
-                                            itemExists.getListParcelCode().add(parcelCodeInfo);
-                                        }
-                                    itemExists.addOrderPostmanID(item.getOrderPostmanID());
-                                    itemExists.addCode(item.getCode());
-                                    itemExists.addCode1(item.getiD());
-                                    itemExists.addKhoiluong(item.getWeigh());
-                                    itemExists.weightS += Integer.parseInt(item.getWeigh());
-                                    tam += Integer.parseInt(item.getWeigh());
-                                }
+                        CommonObject itemExists = Iterables.tryFind(listG,
+                                input -> (item.getReceiverAddress().equals(input != null ? input.getReceiverAddress() : "")
+                                        && item.getStatusCode().equals(input != null ? input.getStatusCode() : ""))
+                        ).orNull();
+                        if (itemExists == null) {
+                            item.addOrderPostmanID(item.getOrderPostmanID());
+                            item.addCode(item.getCode());
+                            item.addCode1(item.getiD());
+                            try {
+                                item.weightS += Integer.parseInt(item.getWeigh());
+                            } catch (Exception e) {
                             }
-                            mView.showResponseSuccess(listG);
-                            mView.hideProgress();
+                            listG.add(item);
                         } else {
-                            mView.showError(simpleResult.getMessage());
-                            mView.hideProgress();
+                            if (item.getListParcelCode().size() == 0) {
+                                ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
+                                parcelCodeInfo.setOrderCode(item.getCode());
+                                parcelCodeInfo.setOrderId(item.getiD());
+                                parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
+                                parcelCodeInfo.setTrackingCode("");
+                                itemExists.getListParcelCode().add(parcelCodeInfo);
+                            } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
+                                itemExists.getListParcelCode().add(parcelCodeInfo);
+                            }
+                            itemExists.addOrderPostmanID(item.getOrderPostmanID());
+                            itemExists.addCode(item.getCode());
+                            itemExists.addCode1(item.getiD());
+                            itemExists.addKhoiluong(item.getWeigh());
+                            itemExists.weightS += Integer.parseInt(item.getWeigh());
+                            tam += Integer.parseInt(item.getWeigh());
                         }
-                });
-//        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate,
-//                new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-//                    @Override
-//                    protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-//                        super.onSuccess(call, response);
-//                        if (response.body().getErrorCode().equals("00")) {
-//
-//
-//                        } else {
-//                            mView.showError(response.body().getMessage());
-//                            mView.hideProgress();
-//                        }
-//                    }
-//
-//                    @Override
-//                    protected void onError(Call<CommonObjectListResult> call, String message) {
-//                        super.onError(call, message);
-//                        mView.hideProgress();
-//
-//                    }
-//                });
+                    }
+                    mView.showResponseSuccess(listG);
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showError(message);
+            }
+        });
     }
 
     @Override

@@ -38,7 +38,7 @@ interface ListBaoPhatBangKeContract {
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate, CommonCallback<CommonObjectListResult> callback);
+                                       String toAssignDate, CommonCallback<SimpleResult> callback);
 
         /**
          * This search record to display and deliver.

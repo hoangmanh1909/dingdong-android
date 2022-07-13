@@ -24,11 +24,11 @@ import io.reactivex.Single;
 interface XacNhanConfirmContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback);
+        void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback);
 
         void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
 
-        void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
+        void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request);
     }

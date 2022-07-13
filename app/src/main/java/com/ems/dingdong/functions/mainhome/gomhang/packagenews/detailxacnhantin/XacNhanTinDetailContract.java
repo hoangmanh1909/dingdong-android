@@ -31,7 +31,7 @@ interface XacNhanTinDetailContract {
 
         void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
 
-        void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
+        void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request);
     }

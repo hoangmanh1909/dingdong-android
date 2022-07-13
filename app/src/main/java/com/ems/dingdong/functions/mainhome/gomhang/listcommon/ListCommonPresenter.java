@@ -16,8 +16,10 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.network.NetWorkController;
@@ -25,8 +27,10 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -63,14 +67,14 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     @Override
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, int type) {
         mView.showProgress();
-        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate,
-                        new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
+        mInteractor.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getList());
+                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+                    mView.showResponseSuccess(list);
                 } else {
                     if (type == 0)
                         mView.showError(response.body().getMessage());
@@ -78,7 +82,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
             }
 
             @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 if (type == 0)
@@ -159,20 +163,21 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
         }
         if (!listRequest.isEmpty()) {
             mView.showProgress();
-            mInteractor.confirmAllOrderPostman(listRequest, new CommonCallback<ConfirmAllOrderPostmanResult>((Activity) mContainerView) {
+            mInteractor.confirmAllOrderPostman(listRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
-                protected void onSuccess(Call<ConfirmAllOrderPostmanResult> call, Response<ConfirmAllOrderPostmanResult> response) {
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mView.hideProgress();
                     if (response.body().getErrorCode().equals("00")) {
-                        mView.showResult(response.body().getAllOrderPostman());
+                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<ConfirmAllOrderPostman>(){}.getType());
+                        mView.showResult(confirmAllOrderPostman);
                     } else {
                         mView.showError(response.body().getMessage());
                     }
                 }
 
                 @Override
-                protected void onError(Call<ConfirmAllOrderPostmanResult> call, String message) {
+                protected void onError(Call<SimpleResult> call, String message) {
                     super.onError(call, message);
                     mView.hideProgress();
                     mView.showError(message);

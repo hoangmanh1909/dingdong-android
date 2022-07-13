@@ -8,6 +8,8 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
+
 import java.util.List;
 
 import io.reactivex.Single;
@@ -23,18 +25,18 @@ class ListHoanTatNhieuTinInteractor extends Interactor<ListHoanTatNhieuTinContra
     }
 
     @Override
-    public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
+    public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
 
     @Override
-    public void getReasonsHoanTat(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasonsHoanTat(commonCallback);
+    public void getReasonsHoanTat(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasonsHoanTat(commonCallback);
     }
 
     @Override
     public void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback) {
-        NetWorkController.collectAllOrderPostman(list,callback);
+        NetWorkControllerGateWay.collectAllOrderPostman(list,callback);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -28,7 +29,7 @@ class XacNhanTinDetailInteractor extends Interactor<XacNhanTinDetailContract.Pre
 
     @Override
     public void confirmOrderPostmanCollect(String orderPostmanID, String employeeID, String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
-        NetWorkController.confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason, callback);
+        NetWorkControllerGateWay.confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason, callback);
     }
 
     @Override
@@ -37,13 +38,13 @@ class XacNhanTinDetailInteractor extends Interactor<XacNhanTinDetailContract.Pre
     }
 
     @Override
-    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
-        NetWorkController.getPostmanByRoute(poCode, routeId, routeType, callback);
+    public void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getPostmanByRoute(poCode, routeId, routeType, callback);
     }
 
     @Override
     public Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request) {
-        return NetWorkController.orderChangeRoute(request);
+        return NetWorkControllerGateWay.orderChangeRoute(request);
     }
 
 }

@@ -83,7 +83,7 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 
         }
         checkPermissionCall();
-        //loginSipCmc();
+//        loginSipCmc();
     }
 
 

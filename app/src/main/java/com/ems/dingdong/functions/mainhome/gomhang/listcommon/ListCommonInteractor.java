@@ -5,7 +5,9 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.ArrayList;
 
@@ -20,8 +22,8 @@ class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
     }
 
     @Override
-    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
+    public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
 
     @Override
@@ -30,7 +32,7 @@ class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
     }
 
     @Override
-    public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
-        NetWorkController.confirmAllOrderPostman(request, callback);
+    public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.confirmAllOrderPostman(request, callback);
     }
 }

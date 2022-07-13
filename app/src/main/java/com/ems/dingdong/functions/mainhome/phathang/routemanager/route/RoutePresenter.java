@@ -21,11 +21,15 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.OrderChangeRouteRequest;
 import com.ems.dingdong.model.request.OrderChangeRouteDingDongManagementRequest;
 import com.ems.dingdong.model.response.OrderChangeRouteDingDongManagementResponse;
+import com.ems.dingdong.model.response.RouteResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -145,23 +149,24 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         mView.showProgress();
         mInteractor.searchForApproved(ladingCode, fromDate,
                 toDate, postmanId,
-                routeId, poCode, statusCode, fromRouteId, new CommonCallback<RouteResult>(getViewContext()) {
+                routeId, poCode, statusCode, fromRouteId, new CommonCallback<SimpleResult>(getViewContext()) {
                     @Override
-                    protected void onError(Call<RouteResult> call, String message) {
+                    protected void onError(Call<SimpleResult> call, String message) {
                         super.onError(call, message);
                         mView.showListError(message);
                         mView.hideProgress();
                     }
 
                     @Override
-                    public void onResponse(Call<RouteResult> call, Response<RouteResult> response) {
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onResponse(call, response);
                         mView.hideProgress();
                         assert response.body() != null;
                         if (response.body().getErrorCode().equals("00")) {
-                            mView.showListSucces(response.body().getRouteResponses());
+                            ArrayList<RouteResponse> routeResponses = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteResponse>>(){}.getType());
+                            mView.showListSucces(routeResponses);
                             if (titleTabsListener != null)
-                                titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
+                                titleTabsListener.setQuantity(routeResponses.size(), typeRoute);
                         } else {
                             mView.showListError(response.body().getMessage());
                         }
@@ -174,23 +179,24 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
         mView.showProgress();
         mInteractor.searchForCancel(ladingCode, fromDate,
                 toDate, postmanId,
-                routeId, poCode, statusCode, fromRouteId, new CommonCallback<RouteResult>(getViewContext()) {
+                routeId, poCode, statusCode, fromRouteId, new CommonCallback<SimpleResult>(getViewContext()) {
                     @Override
-                    protected void onError(Call<RouteResult> call, String message) {
+                    protected void onError(Call<SimpleResult> call, String message) {
                         super.onError(call, message);
                         mView.showErrorToast(message);
                         mView.hideProgress();
                     }
 
                     @Override
-                    public void onResponse(Call<RouteResult> call, Response<RouteResult> response) {
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                         super.onResponse(call, response);
                         mView.hideProgress();
                         assert response.body() != null;
                         if (response.body().getErrorCode().equals("00")) {
-                            mView.showListSucces(response.body().getRouteResponses());
+                            ArrayList<RouteResponse> routeResponses = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteResponse>>(){}.getType());
+                            mView.showListSucces(routeResponses);
                             if (titleTabsListener != null) {
-                                titleTabsListener.setQuantity(response.body().getRouteResponses().size(), typeRoute);
+                                titleTabsListener.setQuantity(routeResponses.size(), typeRoute);
                             }
                         }
                     }

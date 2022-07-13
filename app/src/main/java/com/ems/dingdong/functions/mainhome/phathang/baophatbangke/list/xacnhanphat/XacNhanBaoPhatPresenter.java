@@ -36,6 +36,7 @@ import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -506,15 +507,16 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void getPostman(String poCode, int routeId, String routeType) {
-        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<UserInfoResult>((Context) mContainerView) {
+        mInteractor.getPostman(poCode, routeId, routeType, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<UserInfoResult> call, Response<UserInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showPostman(response.body().getUserInfos());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                mView.showPostman(userInfos);
             }
 
             @Override
-            protected void onError(Call<UserInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

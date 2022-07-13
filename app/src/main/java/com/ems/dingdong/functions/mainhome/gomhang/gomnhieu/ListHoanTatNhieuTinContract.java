@@ -28,8 +28,8 @@ interface ListHoanTatNhieuTinContract {
                                           String postmanID,
                                           String status,
                                           String fromAssignDate,
-                                          String toAssignDate, CommonCallback<CommonObjectListResult> callback);
-        void getReasonsHoanTat(CommonCallback<ReasonResult> commonCallback);
+                                          String toAssignDate, CommonCallback<SimpleResult> callback);
+        void getReasonsHoanTat(CommonCallback<SimpleResult> commonCallback);
 
         void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback);
 

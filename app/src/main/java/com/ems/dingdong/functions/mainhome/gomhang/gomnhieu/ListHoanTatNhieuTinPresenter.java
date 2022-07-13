@@ -7,11 +7,16 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
+import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.network.NetWorkController;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,40 +51,47 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
 
     @Override
     public void searchAllOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
-        mView.showProgress();
-        mInteractor.searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showResponseSuccess(response.body().getList());
-                } else {
-                    mView.showErrorToast(response.body().getMessage());
+        try {
+            mView.showProgress();
+            mInteractor.searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    super.onSuccess(call, response);
+                    mView.hideProgress();
+                    if (response.body().getErrorCode().equals("00")) {
+                        ArrayList<CommonObject> arrayList  = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+                        mView.showResponseSuccess(arrayList);
+                    } else {
+                        mView.showErrorToast(response.body().getMessage());
+                    }
                 }
-            }
 
-            @Override
-            protected void onError(Call<CommonObjectListResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
+                @Override
+                protected void onError(Call<SimpleResult> call, String message) {
+                    super.onError(call, message);
+                    mView.hideProgress();
+                    mView.showErrorToast(message);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void getReasons() {
-        mInteractor.getReasonsHoanTat(new CommonCallback<ReasonResult>((Activity) mContainerView) {
+        mInteractor.getReasonsHoanTat(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.getReasonsSuccess(response.body().getReasonInfos());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    mView.getReasonsSuccess(reasonInfos);
                 }
             }
 
             @Override
-            protected void onError(Call<ReasonResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

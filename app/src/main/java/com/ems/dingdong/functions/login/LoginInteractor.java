@@ -53,7 +53,7 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
 
     @Override
     public Single<SimpleResult> getList(String data) {
-        return NetWorkController.getListBuuCucHuyen(data);
+        return NetWorkControllerGateWay.getListBuuCucHuyen(data);
     }
 
     @Override

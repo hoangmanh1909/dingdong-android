@@ -8,6 +8,7 @@ import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -34,6 +35,6 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
 
     @Override
     public void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
-        NetWorkController.collectOrderPostmanCollect(hoanTatTinRequest, callback);
+        NetWorkControllerGateWay.collectOrderPostmanCollect(hoanTatTinRequest, callback);
     }
 }

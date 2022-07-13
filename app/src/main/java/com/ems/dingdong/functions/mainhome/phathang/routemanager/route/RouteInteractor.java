@@ -8,6 +8,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.OrderChangeRouteRequest;
 import com.ems.dingdong.model.request.OrderChangeRouteDingDongManagementRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -18,32 +19,32 @@ public class RouteInteractor extends Interactor<RouteConstract.Presenter> implem
 
     @Override
     public Single<SimpleResult> getChangeRouteOrder(OrderChangeRouteDingDongManagementRequest request) {
-        return NetWorkController.getChangeRouteOrder(request);
+        return NetWorkControllerGateWay.getChangeRouteOrder(request);
     }
 
     @Override
     public Single<SimpleResult> cancelOrder(OrderChangeRouteRequest request) {
-        return NetWorkController.cancelOrder(request);
+        return NetWorkControllerGateWay.cancelOrder(request);
     }
 
     @Override
     public Single<SimpleResult> approveOrder(OrderChangeRouteRequest request) {
-        return NetWorkController.approveOrder(request);
+        return NetWorkControllerGateWay.approveOrder(request);
     }
 
     @Override
     public Single<SimpleResult> rejectOrder(OrderChangeRouteRequest request) {
-        return NetWorkController.rejectOrder(request);
+        return NetWorkControllerGateWay.rejectOrder(request);
     }
 
     @Override
-    public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<RouteResult> callback) {
-        NetWorkController.searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, pooCode, statusCode, fromRouteId, callback);
+    public void searchForApproved(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, pooCode, statusCode, fromRouteId, callback);
     }
 
     @Override
-    public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<RouteResult> callback) {
-        NetWorkController.searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, pooCode, statusCode, fromRouteId, callback);
+    public void searchForCancel(String ladingCode, String fromDate, String toDate, String postmanId, String routeId, String pooCode, String statusCode, Integer fromRouteId, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, pooCode, statusCode, fromRouteId, callback);
     }
 
     @Override

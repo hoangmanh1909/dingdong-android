@@ -25,9 +25,9 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void postImage(String path, CommonCallback<UploadSingleResult> callback);
 
-        void getReasonUnSuccess(CommonCallback<ReasonResult> commonCallback);
+        void getReasonUnSuccess(CommonCallback<SimpleResult> commonCallback);
 
-        void getReasonFailure(CommonCallback<ReasonResult> commonCallback);
+        void getReasonFailure(CommonCallback<SimpleResult> commonCallback);
 
         void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback);
 

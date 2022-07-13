@@ -8,6 +8,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -25,23 +26,23 @@ public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietH
     }
 
     @Override
-    public void getReasonUnSuccess(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasonsHoanTat(commonCallback);
+    public void getReasonUnSuccess(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasonsHoanTat(commonCallback);
     }
 
     @Override
-    public void getReasonFailure(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasonsHoanTatMiss(commonCallback);
+    public void getReasonFailure(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasonsHoanTatMiss(commonCallback);
     }
 
     @Override
     public void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback) {
-        NetWorkController.collectAllOrderPostman(list, callback);
+        NetWorkControllerGateWay.collectAllOrderPostman(list, callback);
     }
 
     @Override
     public void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
-        NetWorkController.collectOrderPostmanCollect(hoanTatTinRequest, callback);
+        NetWorkControllerGateWay.collectOrderPostmanCollect(hoanTatTinRequest, callback);
     }
 
     @Override

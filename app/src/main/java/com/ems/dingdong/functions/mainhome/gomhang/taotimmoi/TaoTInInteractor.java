@@ -4,7 +4,10 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.model.CreateOrderRequest;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.request.BaseRequest;
+import com.ems.dingdong.model.request.PUGetBusinessProfileRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -20,32 +23,32 @@ class TaoTInInteractor extends Interactor<TaoTinContract.Presenter>
 
 
     @Override
-    public Single<SimpleResult> getTinhThanhPho() {
-        return NetWorkController.getTinhThanhPho();
+    public Single<SimpleResult> getTinhThanhPho(BaseRequest request) {
+        return NetWorkControllerGateWay.getTinhThanhPho(request);
     }
 
     @Override
-    public Single<SimpleResult> getQuanHuyen(int id) {
-        return NetWorkController.getQuanHuyen(id);
+    public Single<SimpleResult> getQuanHuyen(BaseRequest request) {
+        return NetWorkControllerGateWay.getQuanHuyen(request);
     }
 
     @Override
-    public Single<SimpleResult> getXaPhuong(int id) {
-        return NetWorkController.getXaPhuong(id);
+    public Single<SimpleResult> getXaPhuong(BaseRequest request) {
+        return NetWorkControllerGateWay.getXaPhuong(request);
     }
 
     @Override
-    public Single<SimpleResult> search(String request) {
-        return NetWorkController.search(request);
+    public Single<SimpleResult> search(PUGetBusinessProfileRequest request) {
+        return NetWorkControllerGateWay.search(request);
     }
 
     @Override
-    public Single<SimpleResult> searchdiachi(String id) {
-        return NetWorkController.searchdaichi(id);
+    public Single<SimpleResult> searchdiachi(PUGetBusinessProfileRequest request) {
+        return NetWorkControllerGateWay.searchdaichi(request);
     }
 
     @Override
     public Single<SimpleResult> themTin(CreateOrderRequest createOrderRequest) {
-        return NetWorkController.themTin(createOrderRequest);
+        return NetWorkControllerGateWay.themTin(createOrderRequest);
     }
 }

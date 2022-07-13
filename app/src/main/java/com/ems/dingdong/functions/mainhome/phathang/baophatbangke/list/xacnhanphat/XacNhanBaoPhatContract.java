@@ -91,7 +91,7 @@ public interface XacNhanBaoPhatContract {
          * @param poCode  post code. This can be get in UserInfo that has been saved in share pref.
          * @param routeId route id. This can be get in RouteInfo that has been saved in share pref.
          */
-        void getPostman(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback);
+        void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 
         /**
          * Change route to another postman.
