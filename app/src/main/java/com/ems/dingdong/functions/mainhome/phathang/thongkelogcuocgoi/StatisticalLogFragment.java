@@ -25,14 +25,18 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.base.DingDongActivity;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
+import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -65,7 +69,6 @@ public class StatisticalLogFragment extends ViewFragment<StatisticalLogContract.
     @Override
     public void onDisplay() {
         super.onDisplay();
-        checkSelfPermission();
     }
 
     @Override
@@ -110,12 +113,20 @@ public class StatisticalLogFragment extends ViewFragment<StatisticalLogContract.
         }
     }
 
+    @OnClick({R.id.img_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+        }
+    }
+
 
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int loaderID, @Nullable Bundle args) {
         Log.d("AAAAAAAA", "onCreateLoader() >> loaderID : " + loaderID);
-
         switch (loaderID) {
             case URL_LOADER:
                 // Returns a new CursorLoader
@@ -135,85 +146,42 @@ public class StatisticalLogFragment extends ViewFragment<StatisticalLogContract.
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor managedCursor) {
         Log.d("AAAAA", "onLoadFinished()");
+        try {
+            int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
+            int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
+            int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+            int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+            while (managedCursor.moveToNext()) {
+                String phNumber = managedCursor.getString(number);
+                String callType = managedCursor.getString(type);
+                String callDate = managedCursor.getString(date);
+                Date callDayTime = new Date(Long.valueOf(callDate));
+                String callDuration = managedCursor.getString(duration);
+                String dir = null;
+                String datea = DateTimeUtils.convertDateToString(callDayTime, DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+                int callTypeCode = Integer.parseInt(callType);
 
-        StringBuilder sb = new StringBuilder();
-
-        int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-        int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-        int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-        int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-
-        sb.append("<h4>Call Log Details <h4>");
-        sb.append("\n");
-        sb.append("\n");
-
-        sb.append("<table>");
-        Log.d("AAAAAA", new Gson().toJson(managedCursor));
-        while (managedCursor.moveToNext()) {
-            String phNumber = managedCursor.getString(number);
-            String callType = managedCursor.getString(type);
-            String callDate = managedCursor.getString(date);
-            Date callDayTime = new Date(Long.valueOf(callDate));
-            String callDuration = managedCursor.getString(duration);
-            String dir = null;
-            String datea = DateTimeUtils.convertDateToString(callDayTime, DateTimeUtils.DEFAULT_DATETIME_FORMAT4);
-            int callTypeCode = Integer.parseInt(callType);
-
-            StatisticalLogMode mode = new StatisticalLogMode();
-            mode.setCallDate(datea);
-            mode.setPhNumber(phNumber);
-            mode.setCallDuration(callDuration);
-            mList.add(mode);
-            switch (callTypeCode) {
-                case CallLog.Calls.OUTGOING_TYPE:
-                    dir = "Gọi đi";
-                    break;
-
-                case CallLog.Calls.INCOMING_TYPE:
-                    dir = "Gọi đến";
-                    break;
-
-                case CallLog.Calls.MISSED_TYPE:
-                    dir = "Nhỡ";
-                    break;
+                StatisticalLogMode mode = new StatisticalLogMode();
+                mode.setCallDate(datea);
+                mode.setPhNumber(phNumber);
+                mode.setCallDuration(callDuration);
+                mode.setCallType(callTypeCode);
+                mode.setDate(callDate);
+                mList.add(mode);
             }
-            mode.setCallType(dir);
-
-            sb.append("<tr>")
-                    .append("<td>Số điện thoại: </td>")
-                    .append("<td><strong>")
-                    .append(phNumber)
-                    .append("</strong></td>");
-            sb.append("</tr>");
-            sb.append("<br/>");
-            sb.append("<tr>")
-                    .append("<td>Loại cuộc gọi:</td>")
-                    .append("<td><strong>")
-                    .append(dir)
-                    .append("</strong></td>");
-            sb.append("</tr>");
-            sb.append("<br/>");
-            sb.append("<tr>")
-                    .append("<td>Date & Time:</td>")
-                    .append("<td><strong>")
-                    .append(datea)
-                    .append("</strong></td>");
-            sb.append("</tr>");
-            sb.append("<br/>");
-            sb.append("<tr>")
-                    .append("<td>Call Duration (Seconds):</td>")
-                    .append("<td><strong>")
-                    .append(callDuration)
-                    .append("</strong></td>");
-            sb.append("</tr>");
-            sb.append("<br/>");
-            sb.append("<br/>");
+            Collections.sort(mList, new NameComparator());
+            managedCursor.close();
+            mAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.getMessage();
         }
-        sb.append("</table>");
 
-        managedCursor.close();
-        mAdapter.notifyDataSetChanged();
-//        callLogsTextView.setText(Html.fromHtml(sb.toString()));
+    }
+
+    class NameComparator implements Comparator<StatisticalLogMode> {
+        public int compare(StatisticalLogMode s1, StatisticalLogMode s2) {
+            return s1.getDate().compareTo(s2.getDate());
+        }
     }
 
     @Override

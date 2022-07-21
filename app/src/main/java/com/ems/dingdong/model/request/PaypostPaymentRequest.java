@@ -1,6 +1,9 @@
 package com.ems.dingdong.model.request;
 
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class PaypostPaymentRequest {
     @SerializedName("PostmanID")
@@ -79,6 +82,8 @@ public class PaypostPaymentRequest {
     private Integer authenType;
     @SerializedName("ImageAuthen")
     private String ImageAuthen;
+    @SerializedName("ExchangeImage")
+    private String ImageExchange;
     @SerializedName("VATCode")
     private String VATCode;
 
@@ -123,6 +128,87 @@ public class PaypostPaymentRequest {
     private String PODeliveryLon;
     @SerializedName("SourceChanel")
     private String SourceChanel = "DD_ANDROID";
+
+
+    @SerializedName("IsExchange")
+    private boolean IsExchange;
+    @SerializedName("ExchangePODeliveryCode")
+    private String ExchangePODeliveryCode;
+    @SerializedName("ExchangeRouteCode")
+    private String ExchangeRouteCode;
+    @SerializedName("ExchangeLadingCode")
+    private String ExchangeLadingCode;
+    @SerializedName("ExchangeDeliveryDate")
+    private long ExchangeDeliveryDate;
+    @SerializedName("ExchangeDeliveryTime")
+    private int ExchangeDeliveryTime;
+    @SerializedName("ExchangeDetails")
+    private List<LadingProduct> ExchangeDetails;
+
+    public String getImageExchange() {
+        return ImageExchange;
+    }
+
+    public void setImageExchange(String imageExchange) {
+        ImageExchange = imageExchange;
+    }
+
+    public boolean isExchange() {
+        return IsExchange;
+    }
+
+    public void setExchange(boolean exchange) {
+        IsExchange = exchange;
+    }
+
+    public String getExchangePODeliveryCode() {
+        return ExchangePODeliveryCode;
+    }
+
+    public void setExchangePODeliveryCode(String exchangePODeliveryCode) {
+        ExchangePODeliveryCode = exchangePODeliveryCode;
+    }
+
+    public String getExchangeRouteCode() {
+        return ExchangeRouteCode;
+    }
+
+    public void setExchangeRouteCode(String exchangeRouteCode) {
+        ExchangeRouteCode = exchangeRouteCode;
+    }
+
+    public String getExchangeLadingCode() {
+        return ExchangeLadingCode;
+    }
+
+    public void setExchangeLadingCode(String exchangeLadingCode) {
+        ExchangeLadingCode = exchangeLadingCode;
+    }
+
+    public long getExchangeDeliveryDate() {
+        return ExchangeDeliveryDate;
+    }
+
+    public void setExchangeDeliveryDate(long exchangeDeliveryDate) {
+        ExchangeDeliveryDate = exchangeDeliveryDate;
+    }
+
+    public int getExchangeDeliveryTime() {
+        return ExchangeDeliveryTime;
+    }
+
+    public void setExchangeDeliveryTime(int exchangeDeliveryTime) {
+        ExchangeDeliveryTime = exchangeDeliveryTime;
+    }
+
+    public List<LadingProduct> getExchangeDetails() {
+        return ExchangeDetails;
+    }
+
+    public void setExchangeDetails(List<LadingProduct> exchangeDetails) {
+        ExchangeDetails = exchangeDetails;
+    }
+
 
     public String getSourceChanel() {
         return SourceChanel;

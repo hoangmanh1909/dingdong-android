@@ -36,7 +36,6 @@ public class CallProviderDialog extends Dialog {
     public CallProviderDialog(@NonNull Context context, CallProviderCallBack mDelegate) {//, List<CallProvider> callProviders
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = mDelegate;
-
         View view = View.inflate(getContext(), R.layout.dialog_call_provider, null);
         setContentView(view);
         ButterKnife.bind(this, view);

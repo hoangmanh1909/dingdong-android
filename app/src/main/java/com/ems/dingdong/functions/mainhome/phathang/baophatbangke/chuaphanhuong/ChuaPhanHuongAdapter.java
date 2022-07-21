@@ -50,7 +50,7 @@ public class ChuaPhanHuongAdapter extends RecyclerView.Adapter<ChuaPhanHuongAdap
 
     @Override
     public void onBindViewHolder(@NonNull ChuaPhanHuongAdapter.HolderView holder, int position) {
-        holder.bindView(mListFilter.get(position));
+        holder.bindView(mListFilter.get(position), position);
     }
 
     @Override
@@ -103,6 +103,8 @@ public class ChuaPhanHuongAdapter extends RecyclerView.Adapter<ChuaPhanHuongAdap
 
         @BindView(R.id.tv_code)
         CustomBoldTextView _tvMaE;
+        @BindView(R.id.tv_index)
+        CustomBoldTextView tvIndex;
         @BindView(R.id.tv_nguoi_nhan)
         CustomBoldTextView _tvNguoiNhan;
         @BindView(R.id.tv_nguoi_gui)
@@ -123,8 +125,9 @@ public class ChuaPhanHuongAdapter extends RecyclerView.Adapter<ChuaPhanHuongAdap
         public LinearLayout linearLayout;
 
         @SuppressLint("SetTextI18n")
-        public void bindView(Object model) {
+        public void bindView(Object model, int positon) {
             ChuaPhanHuongMode item = (ChuaPhanHuongMode) model;
+            tvIndex.setText(positon + 1 + "");
             if (!TextUtils.isEmpty(item.getLadingCode())) {
                 _tvMaE.setText(String.format("%s", item.getLadingCode()));
             }

@@ -9,12 +9,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:weightSum="2">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:orientation="vertical">
 
 
@@ -32,16 +32,31 @@
                     android:padding="5dp"
                     android:src="@drawable/ic_baseline_phone_missed_24" />
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/tv_call"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/img_logo"
-                    android:gravity="center"
-                    android:textColor="@color/text_color_total_theme2"
-                    android:textSize="@dimen/text_size_12sp" />
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_ghichu"
@@ -52,7 +67,7 @@
                     android:drawablePadding="10dp"
                     android:gravity="center|right"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_12sp" />
+                    android:textSize="@dimen/_14sdp" />
             </RelativeLayout>
 
 

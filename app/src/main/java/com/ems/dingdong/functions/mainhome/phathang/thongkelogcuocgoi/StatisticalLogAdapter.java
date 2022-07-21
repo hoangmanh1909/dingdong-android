@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.CallLog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,10 @@ public class StatisticalLogAdapter extends RecyclerView.Adapter<StatisticalLogAd
         CustomTextView tvCall;
         @BindView(R.id.tv_ghichu)
         CustomTextView tvGhichu;
+        @BindView(R.id.tv_time)
+        CustomTextView tvTime;
+        @BindView(R.id.img_logo)
+        ImageView imgLogo;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -69,8 +74,39 @@ public class StatisticalLogAdapter extends RecyclerView.Adapter<StatisticalLogAd
         public void bindView(Object model) {
             StatisticalLogMode item = (StatisticalLogMode) model;
             tvCall.setText(item.getPhNumber());
-            tvGhichu.setText(item.getCallType());
+            tvTime.setText(item.getCallDate());
+            String dir = "";
+            switch (item.getCallType()) {
+                case CallLog.Calls.OUTGOING_TYPE:
+                    dir = "Gọi đi";
+                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_forwarded_24_v1);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tvGhichu.setTextColor(mContext.getResources().getColor(R.color.black));
+                    break;
+                case CallLog.Calls.INCOMING_TYPE:
+                    dir = "Gọi đến";
+                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_callback_24_v1);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
+                    tvGhichu.setTextColor(mContext.getResources().getColor(R.color.black));
+                    break;
+                case CallLog.Calls.MISSED_TYPE:
+                    dir = "Nhỡ";
+                    imgLogo.setImageResource(R.drawable.ic_baseline_phone_missed_24);
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tvCall.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                    tvGhichu.setTextColor(mContext.getResources().getColor(R.color.black));
+                    break;
+                case CallLog.Calls.VOICEMAIL_TYPE:
+                    dir = " ";
+                    break;
+                default:
+                    dir = "Khong co";
+                    imgLogo.setImageResource(R.drawable.ic_baseline_contact_phone_24);
 
+            }
+            tvGhichu.setText(dir);
         }
     }
 }

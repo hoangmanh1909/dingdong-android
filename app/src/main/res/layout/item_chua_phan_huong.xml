@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:weightSum="10"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="10">
 
 
         <LinearLayout
@@ -26,11 +26,11 @@
 
             <CheckBox
                 android:id="@+id/cb_selected"
-                android:button="@drawable/custom_btn_radio"
-                android:paddingRight="@dimen/_5sdp"
-                android:clickable="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_btn_radio"
+                android:clickable="false"
+                android:paddingRight="@dimen/_5sdp" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,44 +39,37 @@
             android:layout_weight="9"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <com.ems.dingdong.views.CustomBoldTextView
+                <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_index"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:gravity="left"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_code"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_code" />
-
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_stt"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    tools:ignore="MissingConstraints" />
 
                 <com.ems.dingdong.views.CustomBoldTextView
                     android:id="@+id/tv_code"
-                    android:layout_width="0dp"
-                    android:paddingTop="5dp"
-                    android:paddingLeft="5dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tv_index"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
                     android:text="COD2018041"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_sml"
-                    app:layout_constraintEnd_toStartOf="@+id/img_sml"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/tv_index"
-                    app:layout_constraintTop_toTopOf="@+id/img_sml" />
+                    tools:ignore="MissingConstraints" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_nguoi_nhan"

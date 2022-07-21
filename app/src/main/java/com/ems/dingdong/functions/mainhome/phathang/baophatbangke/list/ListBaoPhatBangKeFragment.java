@@ -1079,7 +1079,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 pickAll.setVisibility(View.GONE);
                 tvAmount.setText(getResources().getString(R.string.default_amount));
                 mPresenter.setTitleTab(0);
-                showErrorToast("Không tìm thấy dữ liệu");
+//                showErrorToast("Không tìm thấy dữ liệu");
             } else {
                 pickAll.setVisibility(View.VISIBLE);
                 long totalAmount = 0;

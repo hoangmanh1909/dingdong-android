@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ThuPhiMode;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
@@ -164,7 +165,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * Show success code.
          */
-        void showSuccess(String code,String id);
+        void showSuccess(String code, String id);
 
         /**
          * Show change route status.
@@ -218,13 +219,15 @@ public interface XacNhanBaoPhatContract {
          * delivery not success.
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
-                         String signCapture, String EstimateProcessTime,boolean ischeck,String lydo);
+                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo);
 
         /**
          * delivery success.
          */
         void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                             String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit,String note);
+                             String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
+                             boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
+                             long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails,String imgAnhHoangTra);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);
@@ -249,7 +252,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * update ListBaoPhatBangKeFragment when deliver success or not.
          */
-        void onTabRefresh(String data,int mType);
+        void onTabRefresh(String data, int mType);
 
         void deliveryPartial(DeliveryProductRequest request);
     }

@@ -33,6 +33,8 @@ public class DateTimeUtils {
     public static final String SIMPLE_DATE_FORMAT5 = "yyyyMMdd";
     public static final String SIMPLE_DATE_FORMAT6 = "HHmmss";
     public static final String SIMPLE_DATE_FORMAT7 = "HHmm";
+    public static final String SIMPLE_DATE_FORMAT8 = "HH:mm";
+    public static final String SIMPLE_DATE_FORMAT9 = "HH:mm:ss";
 
     public static boolean isValidDate(String inDate, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);

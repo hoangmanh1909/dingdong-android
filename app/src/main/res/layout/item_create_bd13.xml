@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_margin="3dp"
-    app:cardCornerRadius="10dp"
+    android:orientation="vertical"
     android:paddingTop="@dimen/dimen_5dp"
-    android:paddingBottom="@dimen/dimen_5dp">
+    android:paddingBottom="@dimen/dimen_5dp"
+    app:cardCornerRadius="10dp">
 
     <LinearLayout
         android:id="@+id/layout_itemBD13"
@@ -301,12 +301,30 @@
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
-            <com.ems.dingdong.views.CustomTextView
-                android:id="@+id/tv_gtgt"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red_light"
-                android:textSize="@dimen/text_size_14sp" />
+                android:weightSum="2">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_gtgt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.5"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <ImageView
+                    android:id="@+id/img_doitra"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="0.5"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_doitra"
+                    android:visibility="gone" />
+            </LinearLayout>
 
 
             <com.ems.dingdong.views.CustomTextView

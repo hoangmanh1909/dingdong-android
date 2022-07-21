@@ -280,8 +280,8 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
 
     @Override
     public void huyLKThanhCong() {
-        EWalletData.setMeasurements(StateEWallet.DELETE,mPresenter.getSmartBankLink());
-        if (otpDialog != null && otpDialog.isShowing()){
+        EWalletData.setMeasurements(StateEWallet.DELETE, mPresenter.getSmartBankLink());
+        if (otpDialog != null && otpDialog.isShowing()) {
             otpDialog.dismiss();
         }
         mPresenter.back();
@@ -298,7 +298,7 @@ public class ChiTietTaiKhoanFragment extends ViewFragment<ChiTietTaiKhoanContrac
     @Override
     public void capNhatMacDinh() {
         s = mPresenter.getSmartBankLink();
-        EWalletData.setMeasurements(StateEWallet.UPDATE,s);
+        EWalletData.setMeasurements(StateEWallet.UPDATE, s);
         if (s.getIsDefaultPayment()) {
             btnHuyMatmacdinh.setText("Hủy mặc định");
         } else {

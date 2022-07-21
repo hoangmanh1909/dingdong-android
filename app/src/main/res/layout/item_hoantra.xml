@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp">
+
+    <View style="@style/Devider" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="THÔNG TIN HÀNG ĐỔI TRẢ"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Chọn bưu cục"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemTextView
+                android:id="@+id/tv_buu_cuc_hoantra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="@dimen/text_size_14sp"
+                app:formDrawablePadding="@dimen/dimen_10dp"
+                app:formHint="Chọn bưu cục" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Chọn tuyến"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.form.FormItemTextView
+                android:id="@+id/tv_route_hoantra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:textColor="#253854"
+                android:textSize="@dimen/text_size_14sp"
+                app:formDrawablePadding="@dimen/dimen_10dp"
+                app:formHint="Chọn tuyến" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="2dp"
+                android:text="Mã bưu gửi"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="12dp"
+                android:text="*"
+                android:textColor="@color/red_light"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edt_ma_buu_gui"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="4dp"
+            android:background="@null"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:hint="Nhập mã bưu gửi"
+            android:inputType="textCapCharacters"
+            android:maxLines="3"
+            android:padding="10dp"
+            android:textSize="14dp" />
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Ngày phát thực tế"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="12dp"
+                    android:text="*"
+                    android:textColor="@color/red_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.ems.dingdong.views.form.FormItemTextView
+                android:id="@+id/tv_date_hoantra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="14dp"
+                app:formAction="@drawable/ic_arrow_down"
+                app:formDrawablePadding="@dimen/dimen_10dp"
+                app:formHint="Chọn thời gian" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Giờ phát thực tế "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="12dp"
+                    android:text="*"
+                    android:textColor="@color/red_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.ems.dingdong.views.form.FormItemTextView
+                android:id="@+id/tv_tiem_hoantra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_light"
+                android:textSize="14dp"
+                app:formAction="@drawable/ic_arrow_down"
+                app:formDrawablePadding="@dimen/dimen_10dp"
+                app:formHint="Chọn thời gian" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/tv_anchor2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/iv_add_refund"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextHeaderDeliveryPartial"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginBottom="@dimen/_6sdp"
+                    android:text="Hàng đổi trả" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng tiền: "
+                        android:textColor="@color/red_light" />
+
+                    <TextView
+                        android:id="@+id/tv_hang_doi_tra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/red_light" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_add_hang_doi_tra"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_success"
+                android:src="@drawable/ic_add_control_point" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_hang_doi_tra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_image_hang_doi_tra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp">
+
+            <ImageView
+                android:id="@+id/iv_camera_hang_doi_tra"
+                android:layout_width="@dimen/dimen_70dp"
+                android:layout_height="@dimen/dimen_70dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="@dimen/size_10dp"
+                android:src="@drawable/ic_camera_plus" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_camera_hang_doi_tra"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/size_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Chụp ảnh"
+                android:textColor="@color/n_gray_text"
+                android:textSize="@dimen/text_size_12sp" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_image_hang_doi_tra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/rl_image_hang_doi_tra"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,10 +1,21 @@
 package com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi;
 
+import java.util.Date;
+
 public class StatisticalLogMode {
     String phNumber;
-    String callType;
+    int callType;
     String callDate;
     String callDuration;
+    String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getPhNumber() {
         return phNumber;
@@ -14,11 +25,11 @@ public class StatisticalLogMode {
         this.phNumber = phNumber;
     }
 
-    public String getCallType() {
+    public int getCallType() {
         return callType;
     }
 
-    public void setCallType(String callType) {
+    public void setCallType(int callType) {
         this.callType = callType;
     }
 

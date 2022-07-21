@@ -1,5 +1,9 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong;
 
+import static android.content.Context.LOCATION_SERVICE;
+
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -67,6 +71,8 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
     UserInfo userInfo;
     PostOffice postOffice;
     RouteInfo routeInfo;
+    private Location mLocation;
+    private LocationManager mLocationManager;
     private boolean isLoading = false;
 
     @Override
@@ -91,7 +97,7 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-
+        mLocation = getLastKnownLocation();
         mAdapter = new ChuaPhanHuongAdapter(getActivity(), mList, new ChuaPhanHuongAdapter.FilterDone() {
             @Override
             public void getCount(int count, long amount) {
@@ -154,6 +160,22 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         });
     }
 
+    private Location getLastKnownLocation() {
+        mLocationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
 
     public void submit() {
         int j = 0;
@@ -174,7 +196,7 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         List<String> strings = new ArrayList<>();
         for (int i = 0; i < mList.size(); i++) {
             if (mList.get(i).isSelected())
-                    strings.add(mList.get(i).getLadingCode());
+                strings.add(mList.get(i).getLadingCode());
         }
         comfrimCreateMode.setListLadingCode(strings);
         mPresenter.comfrimCreate(comfrimCreateMode);

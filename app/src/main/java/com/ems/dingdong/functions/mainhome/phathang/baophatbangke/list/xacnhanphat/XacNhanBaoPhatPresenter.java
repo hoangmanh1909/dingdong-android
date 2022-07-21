@@ -8,6 +8,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
@@ -332,7 +333,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
-                                String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note) {
+                                String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
+                                boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
+                                long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails, String imgAnhHoangTra) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -345,7 +348,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (DeliveryPostman item : mView.getItemSelected()) {
             String receiverName;
-            //receiverName = item.getReciverName();
             if (newReceiverName.isEmpty()) {
                 receiverName = item.getReciverName();
             } else {
@@ -387,7 +389,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setImageDelivery(deliveryImage);
             request.setBatchCode(item.getBatchCode());
             request.setItemsInBatch(item.getItemsInBatch());
-
             request.setIsItemReturn(item.isItemReturn());
             request.setAmountForBatch(item.getAmountForBatch());
             request.setReceiverReference(relationship);
@@ -406,24 +407,27 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setReceiverIDNumber(infoVerify.getGtgt());
             request.setImageAuthen(imageAuthen);
             request.setVATCode(item.getVatCode());
-
-
             request.setFeeCollectLater(item.getFeeCollectLater());
             request.setFeeCollectLaterPNS(item.getFeeCollectLater());
-
             request.setFeePPA(item.getFeePPA());
             request.setFeePPAPNS(item.getFeePPA());
-
             request.setFeeShip(item.getFeeShip());
             request.setFeeShipPNS(item.getFeeShip());
-
             request.setEditCODAmount(isCod);
             request.setcODAmountEdit(codeEdit);
             request.setFeeCOD(item.getFeeCOD());
             request.setFeePA(item.getFeePA());
+
+            request.setExchange(IsExchange);
+            request.setExchangePODeliveryCode(ExchangePODeliveryCode);
+            request.setExchangeRouteCode(ExchangeRouteCode);
+            request.setExchangeLadingCode(ExchangeLadingCode);
+            request.setExchangeDeliveryDate(ExchangeDeliveryDate);
+            request.setExchangeDeliveryTime(ExchangeDeliveryTime);
+            request.setExchangeDetails(ExchangeDetails);
+            request.setImageExchange(imgAnhHoangTra);
+
             request.setSourceChanel("DD_ANDROID");
-//            request.setFeePA(item.getFeePA());
-//            request.setFeePAPNS(item.getFeePA());
             paymentRequests.add(request);
         }
 
@@ -442,7 +446,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         deliverySuccessRequest.setPaymentBankCode(bankCode);
         deliverySuccessRequest.setPaypostPaymentRequests(paymentRequests);
 
-//        Log.d("asdhg12312312312123", new Gson().toJson(paymentRequests));
         mInteractor.checkDeliverySuccess(deliverySuccessRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -511,7 +514,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<UserInfo>>() {
+                }.getType());
                 mView.showPostman(userInfos);
             }
 

@@ -45,7 +45,6 @@ public class BaoPhatOfflineFailDialog extends Dialog {
     private ItemBottomSheetPickerUIFragment pickerUISolution;
 
     public BaoPhatOfflineFailDialog(Context context, List<ReasonInfo> listReason, BaoPhatOfflineFailCallback reasonCallback) {
-
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mDelegate = reasonCallback;
         this.mListReason = listReason;

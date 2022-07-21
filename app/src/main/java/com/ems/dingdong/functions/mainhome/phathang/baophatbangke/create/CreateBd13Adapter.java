@@ -237,6 +237,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         public TextView tvTienPhathoan;
         @BindView(R.id.img_address)
         public ImageView imgAddress;
+        @BindView(R.id.img_doitra)
+        public ImageView imgDoitra;
         @BindView(R.id.tv_goiy)
         public TextView tvGoiy;
 
@@ -361,17 +363,36 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
             cb_selected.setChecked(item.isSelected());
             if (!TextUtils.isEmpty(item.getVatCode())) {
                 gtgt.setText(String.format("GTGT: %s", item.getVatCode()));
+                if (item.getVatCode().equals("RT"))
+                    imgDoitra.setVisibility(View.GONE);
+                else imgDoitra.setVisibility(View.GONE);
             } else {
                 gtgt.setText("GTGT: ");
+                imgDoitra.setVisibility(View.GONE);
             }
 
             if (!item.getVatCode().isEmpty()) {
                 String gtgt[] = item.getVatCode().split(",");
                 for (int i = 0; i < gtgt.length; i++) {
-                    if (gtgt[i].equals("AHZ"))
+                    if (gtgt[i].equals("AHZ")) {
                         tvTienPhathoan.setVisibility(View.GONE);
+                    }
+
                 }
             }
+            if (!item.getVatCode().isEmpty()) {
+                String gtgt[] = item.getVatCode().split(",");
+                for (int i = 0; i < gtgt.length; i++) {
+                    if (gtgt[i].equals("RT")) {
+                        imgDoitra.setVisibility(View.GONE);
+                        break;
+                    } else {
+                        imgDoitra.setVisibility(View.GONE);
+                    }
+
+                }
+            } else
+                imgDoitra.setVisibility(View.GONE);
 
             if (!TextUtils.isEmpty(item.getVatCode())) {
                 String tam[] = item.getVatCode().split(",");
