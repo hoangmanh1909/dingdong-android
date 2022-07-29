@@ -13,10 +13,30 @@ public class HistoryRespone {
     private String Status;
     @SerializedName("CallTypeName")
     private String CallTypeName;
+    @SerializedName("FromNumber")
+    private String FromNumber;
+    @SerializedName("EndTime")
+    private String EndTime;
     @SerializedName("RecordFile")
     private String RecordFile;
     @SerializedName("AnswerDuration")
     private int AnswerDuration;
+
+    public String getFromNumber() {
+        return FromNumber;
+    }
+
+    public void setFromNumber(String fromNumber) {
+        FromNumber = fromNumber;
+    }
+
+    public String getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(String endTime) {
+        EndTime = endTime;
+    }
 
     public int getAnswerDuration() {
         return AnswerDuration;

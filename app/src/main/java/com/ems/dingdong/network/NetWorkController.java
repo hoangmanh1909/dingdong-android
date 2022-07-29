@@ -1122,6 +1122,9 @@ public class NetWorkController {
     public static Single<SimpleResult> getCallHistory(HistoryRequest r) {
         return getAPIRxBuilder().getCallHistory(r);
     }
+  public static Single<SimpleResult> getCallHistoryTotal(HistoryRequest r) {
+        return getAPIRxBuilder().getCallHistoryTotal(r);
+    }
 
     public static Single<SimpleResult> SetDefaultPayment(LinkHistory r) {
         return getAPIRxBuilder().SetDefaultPayment(r);

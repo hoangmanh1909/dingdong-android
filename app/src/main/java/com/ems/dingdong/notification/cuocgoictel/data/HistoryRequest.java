@@ -14,8 +14,48 @@ public class HistoryRequest {
     private int ToDate;
     @SerializedName("PostmanTel")
     private String PostmanTel;
-    @SerializedName("PostmanCode ")
+    @SerializedName("PostmanCode")
     private String PostmanCode;
+    @SerializedName("POProvinceCode")
+    private String POProvinceCode;
+    @SerializedName("PODistrictCode")
+    private String PODistrictCode;
+    @SerializedName("Status")
+    private int Status;
+    @SerializedName("RouteId")
+    private String RouteId;
+
+    public String getPOProvinceCode() {
+        return POProvinceCode;
+    }
+
+    public void setPOProvinceCode(String POProvinceCode) {
+        this.POProvinceCode = POProvinceCode;
+    }
+
+    public String getPODistrictCode() {
+        return PODistrictCode;
+    }
+
+    public void setPODistrictCode(String PODistrictCode) {
+        this.PODistrictCode = PODistrictCode;
+    }
+
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int status) {
+        Status = status;
+    }
+
+    public String getRouteId() {
+        return RouteId;
+    }
+
+    public void setRouteId(String routeId) {
+        RouteId = routeId;
+    }
 
     public String getPOCode() {
         return POCode;

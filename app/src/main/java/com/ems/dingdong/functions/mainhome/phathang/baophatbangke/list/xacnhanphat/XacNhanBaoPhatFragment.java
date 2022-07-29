@@ -545,10 +545,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         if (mBaoPhatBangke.size() == 1) lledtcod.setVisibility(View.VISIBLE);
         else lledtcod.setVisibility(View.GONE);
-//        lledtcod.setVisibility(View.GONE);
         checkBoxedtCod.setOnCheckedChangeListener((v1, v2) -> {
             if (v2) {
-                //true
                 llTongTienTamThu.setVisibility(View.VISIBLE);
                 ll_tong_tien_tam_thu1.setVisibility(View.VISIBLE);
                 new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
@@ -573,7 +571,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         });
 
         tvTime.setText(DateTimeUtils
-                .convertDateToString(calendar.getTime(),
+                .convertDateToString(calendarHoanTra.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
         if (mBaoPhatBangke.size() == 1) {
             cList = new ArrayList();
@@ -619,14 +617,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     checkVerify();
                     adapter.notifyDataSetChanged();
                     final Handler handler = new Handler();
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            // Write whatever to want to do after delay specified (1 sec)
-//                            phiThuHoAdapter.notifyDataSetChanged();
-//
-//                        }
-//                    }, 1000);
+
                     updateTotalPackage();
                 });
             }
@@ -830,7 +821,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 });
             }
         };
-
         imageOtherAdapter = new ImageAdapter(getViewContext(), listImageOther) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -973,7 +963,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         };
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerds);
         recyclerds.setAdapter(phiThuHoAdapter);
-        Log.d("AAAAAAA", new Gson().toJson(mBaoPhatBangke));
         if (mBaoPhatBangke.size() == 1) {
             String gtgt[] = mBaoPhatBangke.get(0).getVatCode().split(",");
             for (int i = 0; i < gtgt.length; i++) {
@@ -1002,7 +991,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 public void onClick(View v) {
                                     mHoanDoiTra.remove(position);
                                     mHoanDoiTraAdapter.notifyDataSetChanged();
-                                    Log.d("AAAASDSDASD", new Gson().toJson(mHoanDoiTra));
                                 }
                             });
                         }
@@ -1410,7 +1398,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         .callback((view1, year, monthOfYear, dayOfMonth) -> {
                             calendarHoanTra.set(year, monthOfYear, dayOfMonth);
                             tvTime.setText(DateTimeUtils
-                                    .convertDateToString(calendar.getTime(),
+                                    .convertDateToString(calendarHoanTra.getTime(),
                                             DateTimeUtils.SIMPLE_DATE_FORMAT));
                         })
                         .spinnerTheme(R.style.DatePickerSpinner)
@@ -1569,6 +1557,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         switch (type) {
             case "AVATAR":
+                isCaptureHoanTra = false;
                 isCaptureAvatar = true;
                 isCaptureVerify = false;
                 isCapture = false;
@@ -1578,6 +1567,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                startActivityForResult(intent, OPEN_MEDIA_PICKER);
                 break;
             case "OTHER":
+                isCaptureHoanTra = false;
                 isCaptureOther = true;
                 isCaptureAvatar = false;
                 isCaptureVerify = false;
@@ -1587,6 +1577,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                startActivityForResult(intent, OPEN_MEDIA_PICKER);
                 break;
             case "DEFAULT":
+                isCaptureHoanTra = false;
                 isCapture = true;
                 isCaptureAvatar = false;
                 isCaptureVerify = false;
@@ -1596,6 +1587,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                startActivityForResult(intent, OPEN_MEDIA_PICKER);
                 break;
             case "VERIFY":
+                isCaptureHoanTra = false;
                 isCaptureVerify = true;
                 isCaptureAvatar = false;
                 isCapture = false;
@@ -1605,6 +1597,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                startActivityForResult(intent, OPEN_MEDIA_PICKER);
                 break;
             case "PARTIAL_D":
+                isCaptureHoanTra = false;
                 isCaptureDelivery = true;
                 isCaptureAvatar = false;
                 isCaptureVerify = false;
@@ -1614,6 +1607,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                startActivityForResult(intent, OPEN_MEDIA_PICKER);
                 break;
             case "PARTIAL_R":
+                isCaptureHoanTra = false;
                 isCaptureRefund = true;
                 isCaptureDelivery = false;
                 isCaptureAvatar = false;
@@ -1643,6 +1637,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     void setIsCapture(String type) {
         switch (type) {
             case "AVATAR":
+                isCaptureHoanTra = false;
                 isCaptureAvatar = true;
                 isCaptureVerify = false;
                 isCapture = false;
@@ -1651,6 +1646,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureRefund = false;
                 break;
             case "OTHER":
+                isCaptureHoanTra = false;
                 isCaptureOther = true;
                 isCaptureAvatar = false;
                 isCaptureVerify = false;
@@ -1659,6 +1655,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureRefund = false;
                 break;
             case "DEFAULT":
+                isCaptureHoanTra = false;
                 isCapture = true;
                 isCaptureAvatar = false;
                 isCaptureVerify = false;
@@ -1667,6 +1664,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureRefund = false;
                 break;
             case "VERIFY":
+                isCaptureHoanTra = false;
                 isCaptureVerify = true;
                 isCaptureAvatar = false;
                 isCapture = false;
@@ -1675,6 +1673,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureRefund = false;
                 break;
             case "PARTIAL_D":
+                isCaptureHoanTra = false;
                 isCaptureDelivery = true;
                 isCaptureAvatar = false;
                 isCaptureVerify = false;
@@ -1683,6 +1682,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureRefund = false;
                 break;
             case "PARTIAL_R":
+                isCaptureHoanTra = false;
                 isCaptureRefund = true;
                 isCaptureDelivery = false;
                 isCaptureAvatar = false;
@@ -1865,6 +1865,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             long final_amountShow = _amountShow;
+
             new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
@@ -1881,8 +1882,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             else
                                 infoVerify.setAuthenType(authenType);
                         }
-
-                        // bao phat thanh cong
+                        // baophat thanh cong
                         if (mDeliveryType == 2) {
                             if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" +
@@ -1916,9 +1916,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     })
                     .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
                     .show();
-//            }
-
-
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(tv_reason.getContext(), getViewContext().getString(R.string.please_pick_reason));
@@ -1948,7 +1945,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                 }
             }
-            String time = TimeUtils.convertDateToString(calendar.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
+            String time = TimeUtils.convertDateToString(calendarHoanTra.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
             long t = 0;
             if (cbSelected.isChecked()) {
                 for (int i = 0; i < deliveryPostmen.size(); i++)
@@ -2528,7 +2525,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
             if (isCapture) {
-
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImages.add(item);
                 imageAdapter.notifyDataSetChanged();
@@ -2551,6 +2547,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 listImageRefund.add(item);
                 imageRefundAdapter.notifyDataSetChanged();
             }
+
             if (isCaptureHoanTra) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageHangDoiTra.add(item);
@@ -2760,17 +2757,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void checkVerify() {
         authenType = getAuthenType();
+        Log.d("MEMIT", authenType + "");
         if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
             if (rbVerifyInfo.isChecked()) {
                 llVerifyInfo.setVisibility(View.VISIBLE);
-                //llCaptureVerify.setVisibility(View.VISIBLE);
                 llVerifyImage.setVisibility(View.GONE);//add
             } else {
                 llVerifyInfo.setVisibility(View.GONE);
-                //llCaptureVerify.setVisibility(View.GONE);
                 llVerifyImage.setVisibility(View.GONE);//add
             }
             if (rbVerifyImage.isChecked()) {
@@ -2782,6 +2778,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
             rbVerifyInfo.setChecked(true);
+            rbVerifyInfo.setEnabled(false);
             verifyInfo();
             verifyImage();
             //llCaptureVerify.setVisibility(View.GONE);
@@ -2792,6 +2789,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
             rbVerifyImage.setChecked(true);
+            rbVerifyImage.setEnabled(false);
             verifyInfo();
             verifyImage();
             //llCaptureVerify.setVisibility(View.VISIBLE);
@@ -2803,7 +2801,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rbVerifyImage.setVisibility(View.VISIBLE);
             //llCaptureVerify.setVisibility(View.VISIBLE);
             rbVerifyInfo.setChecked(true);
+            rbVerifyInfo.setEnabled(false);
             rbVerifyImage.setChecked(true);
+            rbVerifyImage.setEnabled(false);
             verifyInfo();
             verifyImage();
             llVerifyImage.setVisibility(View.VISIBLE);

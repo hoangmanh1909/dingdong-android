@@ -10,6 +10,7 @@ import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
@@ -79,7 +80,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         if (type == 2)
             layout_trang_thai.setVisibility(View.VISIBLE);
         else layout_trang_thai.setVisibility(View.GONE);
-
+        mType = type;
         setListener();
     }
 
@@ -179,6 +180,21 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
                     showUICancelType();
                 break;
             case R.id.tvShowChargre:
+                if (mType == 1997) {
+                    String tam = "";
+                    Date date1 = null;
+                    Date date2 = null;
+                    date1 = calFrom.getTime();
+                    date2 = calTo.getTime();
+                    long getDiff = date2.getTime() - date1.getTime();
+                    long getDaysDiff = getDiff / (24 * 60 * 60 * 1000);
+
+                    if (getDaysDiff > 7) {
+                        Toast.showToast(getContext(), "Vui lòng chọn trong 7 ngày");
+                        return;
+                    }
+
+                }
                 delegate.onChooseDay(calFrom, calTo, status);
                 dismiss();
                 break;

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_gradient_top">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/dimen_56dp"
+                    android:layout_height="@dimen/dimen_56dp"
+                    android:layout_centerVertical="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="@dimen/dimen_10dp"
+                    android:src="@drawable/ic_back_shadown" />
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Thống kê log cuộc gọi"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18sp" />
+
+
+            </RelativeLayout>
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_success"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:weightSum="10">
+
+                        <!--View to display the yellow color icon-->
+                        <TextView
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="4"
+                            android:background="@drawable/textlines1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:paddingLeft="10dp"
+                            android:text="Trạng thái"
+                            android:textColor="@color/white"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <!--Text view to display R -->
+                        <TextView
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:background="@drawable/textlines1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text="Cuộc gọi đi"
+                            android:textColor="@color/white"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:background="@drawable/textlines1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text="Cuộc gọi đến"
+                            android:textColor="@color/white"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:weightSum="10">
+
+                        <!--View to display the yellow color icon-->
+                        <TextView
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="4"
+                            android:background="@drawable/textlines_item1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:paddingLeft="10dp"
+                            android:text="Thành công"
+                            android:textColor="@color/black"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <!--Text view to display R -->
+                        <TextView
+                            android:id="@+id/tv_goidi_success"
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:background="@drawable/textlines_item1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_goiden_success"
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:background="@drawable/textlines_item1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:weightSum="10">
+
+                        <!--View to display the yellow color icon-->
+                        <TextView
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="4"
+                            android:background="@drawable/textlines_item1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:paddingLeft="10dp"
+                            android:text="Nhỡ"
+                            android:textColor="@color/black"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <!--Text view to display R -->
+                        <TextView
+                            android:id="@+id/tv_goidi_error"
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:background="@drawable/textlines_item1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_goiden_error"
+                            style="@style/textStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:background="@drawable/textlines_item1"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_receipt_long_24" />
+
+                    <TextView
+                        android:id="@+id/tv_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/tv_search"
+        android:layout_width="@dimen/dimen_70dp"
+        android:layout_height="@dimen/dimen_70dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/dimen_10dp"
+        android:src="@drawable/ic_choose_calendar" />
+</RelativeLayout>

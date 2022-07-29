@@ -167,7 +167,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
                 }else {
                     showDialogLienKetTaiKhoan();
                 }
-
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -290,23 +289,6 @@ public class ListBankFragment extends ViewFragment<ListBankContract.Presenter> i
             SmartBankLink[] v = NetWorkController.getGson().fromJson(x, SmartBankLink[].class);
             k = Arrays.asList(v);
             Collections.sort(k, new NameComparator());
-//            for (int i = 0; i < k.size(); i++) {
-//                if (k.get(i).getBankCode().equals("SeABank")) {
-//                    mList.add(new Item(2 + "", k.get(i).getBankName(), true, k.get(i).getBankLogo(), k.get(i).getBankAccountNumber(), k.get(i).getIsDefaultPayment()));
-//                } else {
-//                    if (t == 0)
-//                        mList.add(new Item(1 + "", "Ví điện tử", isKietta, k.get(i).getBankLogo(), k.get(i).getBankName(),
-//                                k.get(i).getBankCode(), k.get(i).getPIDNumber(), k.get(i).getPIDType(), k.get(i).getPOCode(), k.get(i).getPaymentToken()
-//                                , k.get(i).getIsDefaultPayment()));
-//                    else {
-//                        mList.add(new Item(1 + "", "", isKietta, k.get(i).getBankLogo(), k.get(i).getBankName(),
-//                                k.get(i).getBankCode(), k.get(i).getPIDNumber(), k.get(i).getPIDType(), k.get(i).getPOCode(), k.get(i).getPaymentToken()
-//                                , k.get(i).getIsDefaultPayment()));
-//                    }
-//                    t++;
-//                }
-//
-//            }
             mList.addAll(k);
         } else mList.clear();
         mAdapter.notifyDataSetChanged();

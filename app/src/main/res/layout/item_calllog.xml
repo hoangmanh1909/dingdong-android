@@ -35,8 +35,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/img_logo"
                     android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/img_logo"
                     android:orientation="vertical">
 
                     <com.ems.dingdong.views.CustomTextView

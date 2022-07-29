@@ -75,7 +75,7 @@
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thời gian dự kiến nhập kho"
+            android:text="Thời gian dự kiến xuất kho"
             android:textColor="@color/black"
             android:textSize="12dp" />
 
@@ -133,16 +133,16 @@
             android:id="@+id/tv_Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
             android:layout_marginTop="5dp"
             android:background="@drawable/bg_status_not"
-            android:padding="10dp"
-            android:layout_gravity="center|top"
             android:gravity="center|left|top"
             android:hint="Vui lòng nhập ghi chú"
-            android:textColor="@color/red_light"
-            android:textSize="14dp"
+            android:lines="5"
             android:maxLines="5"
-            android:lines="5"/>
+            android:padding="10dp"
+            android:textColor="@color/red_light"
+            android:textSize="14dp" />
     </LinearLayout>
 
 

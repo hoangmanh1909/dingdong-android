@@ -9,7 +9,7 @@
 
     <item
         android:bottom="0.5dp"
-        android:color="@color/colorPrimary"
+        android:color="@color/md_amber_600"
         android:left="0.5dp"
         android:right="0.5dp"
         android:top="0.5dp">
@@ -17,7 +17,7 @@
         <shape android:shape="rectangle">
             <stroke
                 android:width="0.5dp"
-                android:color="@color/colorPrimary" />
+                android:color="@color/md_amber_600" />
 
             <gradient
                 android:endColor="@color/white"

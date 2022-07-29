@@ -557,6 +557,9 @@ public interface VinattiAPI {
     @POST("api/CallCenter/CallHistory")
     Single<SimpleResult> getCallHistory(@Body HistoryRequest historyRequest);
 
+    @POST("api/CallCenter/CallHistoryTotal")
+    Single<SimpleResult> getCallHistoryTotal(@Body HistoryRequest historyRequest);
+
     @POST("api/EWallet/PayLinkRequest")
     Single<LinkEWalletResult> linkEWallet(@Body PayLinkRequest request);
 
@@ -638,10 +641,10 @@ public interface VinattiAPI {
     Single<LinkEWalletResult> linkEWallet(@Body RequestObject request);
 
     @POST("Gateway/Execute")
-    Single<SimpleResult>  commonServiceRx(@Body RequestObject requestObject);
+    Single<SimpleResult> commonServiceRx(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
-    Single<PaymentRequestResponse>  paymentRequest(@Body RequestObject requestObject);
+    Single<PaymentRequestResponse> paymentRequest(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
     Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body RequestObject requestObject);

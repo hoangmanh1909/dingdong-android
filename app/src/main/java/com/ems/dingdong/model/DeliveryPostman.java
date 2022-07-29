@@ -196,8 +196,18 @@ public class DeliveryPostman implements Comparable {
     private String PODeliveryLon;
     @SerializedName("ReceiverVerify")
     private int ReceiverVerify;
+    @SerializedName("IsWarehouseOutput")
+    private boolean IsWarehouseOutput;
 
     int mViti = -1;
+
+    public boolean isWarehouseOutput() {
+        return IsWarehouseOutput;
+    }
+
+    public void setWarehouseOutput(boolean warehouseOutput) {
+        IsWarehouseOutput = warehouseOutput;
+    }
 
     public int getmViti() {
         return mViti;

@@ -265,6 +265,14 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 tv_code.setText("");
             }
 
+            if (item.isWarehouseOutput()) {
+                tv_code.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
+                tvIndex.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
+            } else {
+                tv_code.setTextColor(mContext.getResources().getColor(R.color.blue));
+                tvIndex.setTextColor(mContext.getResources().getColor(R.color.blue));
+            }
+
             if (item.getReceiverVpostcode() == null || item.getReceiverVpostcode().isEmpty()) {
                 ivStatus.setVisibility(View.GONE);
                 tvXacminhdiachi.setVisibility(View.VISIBLE);

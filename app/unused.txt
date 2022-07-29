@@ -2134,6 +2134,7 @@ io.fabric.sdk.android.services.common.FirebaseInfo
     static final java.lang.String GOOGLE_APP_ID
     static final java.lang.String FIREBASE_FEATURE_SWITCH
     static final java.lang.String AUTO_INITIALIZE
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallFragment$$ViewBinder$2
 com.google.common.util.concurrent.ForwardingLock
     public java.util.concurrent.locks.Condition newCondition()
 androidx.documentfile.provider.DocumentFile
@@ -7963,12 +7964,16 @@ com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.dialog.DiaLogMa
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.dialog.DiaLogMatDinh$$ViewBinder this$0
 com.google.android.gms.internal.clearcut.zzce
     private static final com.google.android.gms.internal.clearcut.zzce zzjm
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallFragment$$ViewBinder$1
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallFragment$$ViewBinder this$0
 org.apache.commons.lang3.builder.DiffBuilder$12
     final synthetic org.apache.commons.lang3.builder.DiffBuilder this$0
 com.google.common.graph.DirectedGraphConnections$2$2
     final synthetic com.google.common.graph.DirectedGraphConnections$2 this$1
 com.ems.dingdong.dialog.SignDialog$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.SignDialog$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$2
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
 com.facebook.imagepipeline.cache.CountingMemoryCache
     final java.util.Map mOtherEntries
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$$ViewBinder$6
@@ -7993,6 +7998,8 @@ androidx.transition.ChangeClipBounds$1
     final synthetic androidx.transition.ChangeClipBounds this$0
 com.ems.dingdong.dialog.BaseEditDayDialog$1
     final synthetic com.ems.dingdong.dialog.BaseEditDayDialog this$0
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$1
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTInFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTInFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$6
@@ -8019,6 +8026,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Frag
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$$ViewBinder this$0
 com.rey.material.widget.Spinner$DropdownPopup$2
     final synthetic com.rey.material.widget.Spinner val$this$0
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$3
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
 com.ems.dingdong.views.CustomProgressBar
     int delta
     boolean check
@@ -8106,6 +8115,8 @@ com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmAdap
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmAdapter this$0
 com.ems.dingdong.functions.mainhome.camera.ImagePro$CropingOptionAdapter
     final synthetic com.ems.dingdong.functions.mainhome.camera.ImagePro this$0
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$4
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter$1$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter$1 this$1
 com.ems.dingdong.dialog.DialogXacThuc$$ViewBinder$1
@@ -8138,6 +8149,8 @@ org.apache.poi.sl.draw.DrawTextParagraph
     static final synthetic boolean $assertionsDisabled
 com.rey.material.widget.SnackBar$BackgroundDrawable
     final synthetic com.rey.material.widget.SnackBar this$0
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$5
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 com.ems.dingdong.dialog.TimDuongDiDialog$$ViewBinder$3
@@ -8164,6 +8177,8 @@ com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonFragmen
     final synthetic com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonFragment this$0
 com.ems.dingdong.functions.mainhome.location.LocationFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.location.LocationFragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$6
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.FilteredSetMultimap$-CC
 com.ems.dingdong.dialog.RouteManagerDialog$$ViewBinder$6
     final synthetic com.ems.dingdong.dialog.RouteManagerDialog$$ViewBinder this$0
@@ -9134,6 +9149,8 @@ com.google.common.collect.AbstractMapBasedMultimap$2
     final synthetic com.google.common.collect.AbstractMapBasedMultimap this$0
 org.apache.poi.util.LittleEndianByteArrayInputStream
     static final synthetic boolean $assertionsDisabled
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallAdapter
+    android.content.Context mContext
 kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsJvmKt$createCoroutineUnintercepted$$inlined$createCoroutineFromSuspendFunction$IntrinsicsKt__IntrinsicsJvmKt$3
     final synthetic kotlin.coroutines.Continuation $completion
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Ordering$IncomparableValueException
@@ -9900,6 +9917,8 @@ com.dpizarro.uipicker.library.picker.PickerUIListView
     private int which
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeAdapter$HolderView$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeAdapter$HolderView this$1
+com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallAdapter
+    android.content.Context mContext
 com.google.android.gms.measurement.internal.zzfw
 com.ems.dingdong.functions.mainhome.phathang.gachno.receverpersion.ReceverPersonFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.receverpersion.ReceverPersonFragment$$ViewBinder this$0

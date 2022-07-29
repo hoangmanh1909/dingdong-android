@@ -10,6 +10,8 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.Can
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
@@ -132,6 +134,6 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showStatisticLog() {
-        new StatisticalLogPresenter(mContainerView).pushView();
+        new TabLogCallPresenter(mContainerView).pushView();
     }
 }

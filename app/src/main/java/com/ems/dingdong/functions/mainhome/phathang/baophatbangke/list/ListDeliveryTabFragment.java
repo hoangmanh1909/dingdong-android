@@ -144,9 +144,9 @@ public class ListDeliveryTabFragment extends ViewFragment<ListDeliveryConstract.
     }
 
     @Override
-    public void onDelivered(String data,int mType) {
-        tabList.get(0).updateViewList(data,mType);
-        tabList.get(1).updateViewList(data,mType);
+    public void onDelivered(String data, int mType) {
+        tabList.get(0).updateViewList(data, mType);
+        tabList.get(1).updateViewList(data, mType);
         tabList.get(pager.getCurrentItem()).onDisplay();
     }
 

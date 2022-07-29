@@ -241,23 +241,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         recyclerView_cuoc.setAdapter(mAdapterCuoc);
         edtLadingCode.setText(mPresenter.getCode());
 
-
-//        historyResponeList = new ArrayList<>();
-//        mAdapterLog = new LogAdapter(getViewContext(), historyResponeList) {
-//            @Override
-//            public void onBindViewHolder(@NonNull LogAdapter.HolderView holder, int position, @NonNull List<Object> payloads) {
-//                super.onBindViewHolder(holder, position, payloads);
-//                holder.tv_linknge.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                    }
-//                });
-//            }
-//        };
-//        recyclerViewLog.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-//        RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerViewLog);
-//        recyclerViewLog.setAdapter(mAdapterLog);
     }
 
 
@@ -285,7 +268,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             statusInfo.setStatus(l.get(i).getStatus());
             if (l.get(i).getAnswerDuration() > 0)
                 statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + "s)");
-
             mList.add(statusInfo);
         }
 
@@ -302,7 +284,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                 return result;
             }
         });
-        Log.d("AAAAAAAAA", new Gson().toJson(mList));
 
         mAdapter.notifyDataSetChanged();
 

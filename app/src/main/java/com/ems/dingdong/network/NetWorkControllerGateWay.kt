@@ -71,39 +71,92 @@ object NetWorkControllerGateWay {
     }
 
     @JvmStatic
-    fun searchDeliveryStatistic(fromDate: String, toDate: String, status: String, postmanId: String, routeCode: String, callback: CommonCallback<SimpleResult>){
+    fun searchDeliveryStatistic(
+        fromDate: String,
+        toDate: String,
+        status: String,
+        postmanId: String,
+        routeCode: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
         val request = SearchDeliveryStatisticRequest(fromDate, toDate, status, postmanId, routeCode)
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.STT_DELIVERY, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.STT_DELIVERY,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
 
     }
 
     @JvmStatic
-    fun statisticDebitGeneral(postmanID: String, fromDate: String, toDate: String, routeCode: String, callback: CommonCallback<SimpleResult>) {
+    fun statisticDebitGeneral(
+        postmanID: String,
+        fromDate: String,
+        toDate: String,
+        routeCode: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
         val debitGeneralRequest = DebitGeneralRequest(postmanID, fromDate, toDate, routeCode)
         val data = getGson().toJson(debitGeneralRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.STT_DEBIT_GENERAL, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.STT_DEBIT_GENERAL,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun statisticDebitDetail(postmanID: String, fromDate: String, toDate: String, statusCode: String, routeCode: String, callback: CommonCallback<SimpleResult>) {
-        val debitDetailRequest = DebitDetailRequest(postmanID, fromDate, toDate, statusCode, routeCode)
+    fun statisticDebitDetail(
+        postmanID: String,
+        fromDate: String,
+        toDate: String,
+        statusCode: String,
+        routeCode: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
+        val debitDetailRequest =
+            DebitDetailRequest(postmanID, fromDate, toDate, statusCode, routeCode)
         val data = getGson().toJson(debitDetailRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.STT_DEBIT_DETAILL, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.STT_DEBIT_DETAILL,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun statisticDeliveryGeneral(postmanID: String, fromDate: String, toDate: String, isSuccess: Boolean, routeCode: String, callback: CommonCallback<SimpleResult>) {
-        val deliveryGeneralRequest = DeliveryGeneralRequest(postmanID, fromDate, toDate, isSuccess, routeCode)
+    fun statisticDeliveryGeneral(
+        postmanID: String,
+        fromDate: String,
+        toDate: String,
+        isSuccess: Boolean,
+        routeCode: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
+        val deliveryGeneralRequest =
+            DeliveryGeneralRequest(postmanID, fromDate, toDate, isSuccess, routeCode)
         val data = getGson().toJson(deliveryGeneralRequest)
         val signature = signature(data)
         val requestObject = RequestObject(
@@ -116,30 +169,71 @@ object NetWorkControllerGateWay {
     }
 
     @JvmStatic
-    fun getLadingStatusGeneral(postmanID: String, fromDate: String, toDate: String, ladingType: Int, routeCode: String, callback: CommonCallback<SimpleResult>) {
-        val ladingStatusGeneralRequest = LadingStatusGeneralRequest(postmanID, fromDate, toDate, ladingType, routeCode)
+    fun getLadingStatusGeneral(
+        postmanID: String,
+        fromDate: String,
+        toDate: String,
+        ladingType: Int,
+        routeCode: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
+        val ladingStatusGeneralRequest =
+            LadingStatusGeneralRequest(postmanID, fromDate, toDate, ladingType, routeCode)
         val data = NetWorkController.getGson().toJson(ladingStatusGeneralRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.STT_LADING_STATUS_GENERAL, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.STT_LADING_STATUS_GENERAL,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
     fun findLocation(ladingCode: String, poCode: String): Observable<SimpleResult> {
-        val trackTraceLadingRequest = TrackTraceLadingRequest(ladingCode, poCode, Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase())
+        val trackTraceLadingRequest = TrackTraceLadingRequest(
+            ladingCode,
+            poCode,
+            Utils.SHA256(ladingCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase()
+        )
         val data = getGson().toJson(trackTraceLadingRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_TRACK_TRACE_LADING, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_TRACK_TRACE_LADING,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().findLocation(requestObject)
     }
 
     @JvmStatic
-    fun searchStatisticCollect(postmanID: String, fromDate: String, toDate: String, callback: CommonCallback<SimpleResult>) {
+    fun searchStatisticCollect(
+        postmanID: String,
+        fromDate: String,
+        toDate: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
         val statisticCollectRequest = StatisticCollectRequest(postmanID, fromDate, toDate)
         val data = NetWorkController.getGson().toJson(statisticCollectRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.STT_COLLECT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.STT_COLLECT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
@@ -156,23 +250,41 @@ object NetWorkControllerGateWay {
         )
         val data = getGson().toJson(payLinkRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_PAYLINK_REQUEST, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_PAYLINK_REQUEST,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().linkEWallet(requestObject)
     }
 
     @JvmStatic
     fun verifyLinkWithOtp(payLinkConfirm: PayLinkConfirm): Single<VerifyLinkOtpResult> {
-        payLinkConfirm.setSignature(Utils.SHA256(payLinkConfirm.requestId
-                + payLinkConfirm.otpCode
-                + payLinkConfirm.postmanTel
-                + payLinkConfirm.postmanCode
-                + payLinkConfirm.getpOCode()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY
-        ).toUpperCase()
+        payLinkConfirm.setSignature(
+            Utils.SHA256(
+                payLinkConfirm.requestId
+                        + payLinkConfirm.otpCode
+                        + payLinkConfirm.postmanTel
+                        + payLinkConfirm.postmanCode
+                        + payLinkConfirm.getpOCode()
+                        + BuildConfig.E_WALLET_SIGNATURE_KEY
+            ).toUpperCase()
         )
         val data = getGson().toJson(payLinkConfirm)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_PAYLINK_CONFIRM, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_PAYLINK_CONFIRM,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().verifyLinkWithOtp(requestObject)
     }
 
@@ -187,7 +299,15 @@ object NetWorkControllerGateWay {
         ).toUpperCase()
         val data = getGson().toJson(paymentRequestModel)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_PAYMENT_REQUEST, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_PAYMENT_REQUEST,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().paymentRequest(requestObject)
     }
 
@@ -205,44 +325,101 @@ object NetWorkControllerGateWay {
         ).toUpperCase()
         val data = getGson().toJson(paymentConfirmModel)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_PAYMENT_CONFIRM, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_PAYMENT_CONFIRM,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
-    fun getDataPayment(serviceCode: String?, fromDate: String?, toDate: String?, poCode: String?, routeCode: String?, postmanCode: String?): Single<SimpleResult> {
-        val dataPaymentRequest = GetDataPaymentRequest(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode)
+    fun getDataPayment(
+        serviceCode: String?,
+        fromDate: String?,
+        toDate: String?,
+        poCode: String?,
+        routeCode: String?,
+        postmanCode: String?
+    ): Single<SimpleResult> {
+        val dataPaymentRequest =
+            GetDataPaymentRequest(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode)
         val data = getGson().toJson(dataPaymentRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_GET_DATA_PAYMENT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_GET_DATA_PAYMENT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
     fun getHistoryPayment(dataRequestPayment: DataRequestPayment): Single<SimpleResult> {
         val signature = signature(dataRequestPayment.data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_GET_DATA_HISTORY, dataRequestPayment.data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_GET_DATA_HISTORY,
+            dataRequestPayment.data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
+
     @JvmStatic
     fun getDataSuccess(dataRequestPayment: DataRequestPayment): Single<SimpleResult> {
         val signature = signature(dataRequestPayment.data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_GET_DATA_SUCCESS, dataRequestPayment.data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_GET_DATA_SUCCESS,
+            dataRequestPayment.data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
     fun deletePayment(dataRequestPayment: DataRequestPayment): Single<SimpleResult> {
         val signature = signature(dataRequestPayment.data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_REMOVE_DATA, dataRequestPayment.data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_REMOVE_DATA,
+            dataRequestPayment.data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
     fun cancelPayment(dataRequestPayment: DataRequestPayment): Single<SimpleResult> {
         val signature = signature(dataRequestPayment.data)
-        Log.e("TAG", "deletePayment: " + dataRequestPayment.data )
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_CANCEL_DATA, dataRequestPayment.data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        Log.e("TAG", "deletePayment: " + dataRequestPayment.data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_CANCEL_DATA,
+            dataRequestPayment.data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -250,7 +427,15 @@ object NetWorkControllerGateWay {
     fun getDDsmartBankConfirmLinkRequest(request: BaseRequestModel?): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_GET_LIST_BANK_LINK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_GET_LIST_BANK_LINK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }//SMB010
 
@@ -258,7 +443,15 @@ object NetWorkControllerGateWay {
     fun ddTaiKhoanMacDinh(request: TaiKhoanMatDinh?): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_DEFAULT_PAYMENT_BANK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_DEFAULT_PAYMENT_BANK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } // SMB009
 
@@ -266,7 +459,15 @@ object NetWorkControllerGateWay {
     fun ddCallOTP(request: CallOTP?): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_RESEND_OTP, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_RESEND_OTP,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } //SMB008
 
@@ -274,7 +475,15 @@ object NetWorkControllerGateWay {
     fun getDanhSachTaiKhoan(danhSachTaiKhoanRequest: DanhSachTaiKhoanRequest?): Single<SimpleResult?>? {
         val data = getGson().toJson(danhSachTaiKhoanRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_GET_LIST_ACCOUNT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_GET_LIST_ACCOUNT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } // SMB007
 
@@ -282,7 +491,15 @@ object NetWorkControllerGateWay {
     fun ddTruyVanSodu(request: SmartBankInquiryBalanceRequest?): Single<SimpleResult?>? {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_INQUIRY_BALANCE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_INQUIRY_BALANCE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } // SMB006
 
@@ -290,7 +507,15 @@ object NetWorkControllerGateWay {
     fun SmartBankConfirmCancelLinkRequest(request: SmartBankConfirmCancelLinkRequest?): Single<SimpleResult?>? {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_CONFIRM_CANCEL_LINK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_CONFIRM_CANCEL_LINK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } // SMB005
 
@@ -298,7 +523,15 @@ object NetWorkControllerGateWay {
     fun smartBankRequestCancelLinkRequest(request: SmartBankRequestCancelLinkRequest?): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_REQUEST_CANCEL_LINK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_REQUEST_CANCEL_LINK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } // SMB004
 
@@ -306,7 +539,15 @@ object NetWorkControllerGateWay {
     fun smartBankConfirmLinkRequest(request: SmartBankConfirmLinkRequest?): Single<SimpleResult?>? {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_CONFIRM_LINK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_CONFIRM_LINK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } // SMB003
 
@@ -314,7 +555,15 @@ object NetWorkControllerGateWay {
     fun yeuCauLienKet(request: YeuCauLienKetRequest?): Single<SimpleResult?>? {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_REQUEST_LINK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_REQUEST_LINK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } //SMB002
 
@@ -322,7 +571,15 @@ object NetWorkControllerGateWay {
     fun getDanhSachNganHang(): Single<SimpleResult> {
         val data = getGson().toJson("")
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.DLV_GET_BANK_LIST, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.DLV_GET_BANK_LIST,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     } //SMB001
 
@@ -330,22 +587,47 @@ object NetWorkControllerGateWay {
     fun huyLienKetVi(request: SmartBankRequestCancelLinkRequest): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_CANCEL_LINK, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_CANCEL_LINK,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
-    fun getHistory(request:LinkHistory): Single<SimpleResult> {
+    fun getHistory(request: LinkHistory): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_LINK_HISTORY, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_LINK_HISTORY,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
+
     @JvmStatic
-    fun SetDefaultPayment(request:LinkHistory): Single<SimpleResult> {
+    fun SetDefaultPayment(request: LinkHistory): Single<SimpleResult> {
         val data = getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.EW_DEFAULT_PAYMENT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.EW_DEFAULT_PAYMENT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
     // end e-wallet
@@ -353,21 +635,64 @@ object NetWorkControllerGateWay {
     // start thu gom
 
     @JvmStatic
-    fun searchOrderPostmanCollect(orderPostmanID: String?, orderID: String?, postmanID: String?, status: String?, fromAssignDate: String?, toAssignDate: String?, callback: CommonCallback<SimpleResult>?) {
-        val searchOrderPostmanCollectRequest = SearchOrderPostmanCollectRequest(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate)
+    fun searchOrderPostmanCollect(
+        orderPostmanID: String?,
+        orderID: String?,
+        postmanID: String?,
+        status: String?,
+        fromAssignDate: String?,
+        toAssignDate: String?,
+        callback: CommonCallback<SimpleResult>?
+    ) {
+        val searchOrderPostmanCollectRequest = SearchOrderPostmanCollectRequest(
+            orderPostmanID,
+            orderID,
+            postmanID,
+            status,
+            fromAssignDate,
+            toAssignDate
+        )
         val data = NetWorkController.getGson().toJson(searchOrderPostmanCollectRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_SEARCH_ORDER_POSTMAN, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_SEARCH_ORDER_POSTMAN,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun confirmOrderPostmanCollect(orderPostmanID: String, employeeID: String, statusCode: String, confirmReason: String, callback: CommonCallback<SimpleResult>) {
-        val collectRequest = ConfirmOrderPostmanCollectRequest(orderPostmanID, employeeID, statusCode, confirmReason, "DD_ANDROID")
+    fun confirmOrderPostmanCollect(
+        orderPostmanID: String,
+        employeeID: String,
+        statusCode: String,
+        confirmReason: String,
+        callback: CommonCallback<SimpleResult>
+    ) {
+        val collectRequest = ConfirmOrderPostmanCollectRequest(
+            orderPostmanID,
+            employeeID,
+            statusCode,
+            confirmReason,
+            "DD_ANDROID"
+        )
         val data = NetWorkController.getGson().toJson(collectRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_CONFIRM_ORDER_POSTMAN, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_CONFIRM_ORDER_POSTMAN,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
@@ -376,58 +701,138 @@ object NetWorkControllerGateWay {
     fun orderChangeRoute(request: OrderChangeRouteInsertRequest?): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_ORDER_CHANGE_ROUTE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ORDER_CHANGE_ROUTE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
-    fun confirmAllOrderPostman(request: ArrayList<ConfirmOrderPostman>, callback: CommonCallback<SimpleResult>) {
+    fun confirmAllOrderPostman(
+        request: ArrayList<ConfirmOrderPostman>,
+        callback: CommonCallback<SimpleResult>
+    ) {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_CONFIRM_ALL_ORDER_POSTMAN, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_CONFIRM_ALL_ORDER_POSTMAN,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun collectOrderPostmanCollect(hoanTatTinRequest: HoanTatTinRequest, callback: CommonCallback<SimpleResult>?) {
+    fun collectOrderPostmanCollect(
+        hoanTatTinRequest: HoanTatTinRequest,
+        callback: CommonCallback<SimpleResult>?
+    ) {
         val data = NetWorkController.getGson().toJson(hoanTatTinRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_COLLECT_ORDER_POSTMAN, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_COLLECT_ORDER_POSTMAN,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun searchAllOrderPostmanCollect(orderPostmanID: String?, orderID: String?, postmanID: String?, status: String?, fromAssignDate: String?, toAssignDate: String?, callback: CommonCallback<SimpleResult>?) {
-        val searchOrderPostmanCollectRequest = SearchOrderPostmanCollectRequest(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate)
+    fun searchAllOrderPostmanCollect(
+        orderPostmanID: String?,
+        orderID: String?,
+        postmanID: String?,
+        status: String?,
+        fromAssignDate: String?,
+        toAssignDate: String?,
+        callback: CommonCallback<SimpleResult>?
+    ) {
+        val searchOrderPostmanCollectRequest = SearchOrderPostmanCollectRequest(
+            orderPostmanID,
+            orderID,
+            postmanID,
+            status,
+            fromAssignDate,
+            toAssignDate
+        )
         val data = NetWorkController.getGson().toJson(searchOrderPostmanCollectRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_SEARCH_ORDER_POSTMAN_COLLECT_ALL, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_SEARCH_ORDER_POSTMAN_COLLECT_ALL,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
+
     @JvmStatic
     fun themTin(request: CreateOrderRequest?): Single<SimpleResult> {
         val dataRequestPayment = DataRequestPayment()
         dataRequestPayment.data = NetWorkController.getGson().toJson(request)
         val data = NetWorkController.getGson().toJson(dataRequestPayment)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_CREATE_ORDER, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_CREATE_ORDER,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
+
     @JvmStatic
     fun searchdaichi(request: PUGetBusinessProfileRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_BP_GET_BY_ID, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_BP_GET_BY_ID,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
+
     @JvmStatic
     fun search(request: PUGetBusinessProfileRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_BP_GET_CHILD_BY_CODE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_BP_GET_CHILD_BY_CODE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -435,7 +840,15 @@ object NetWorkControllerGateWay {
     fun getTinhThanhPho(request: BaseRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_DIC_GET_PROVINCES, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_GET_PROVINCES,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -443,7 +856,15 @@ object NetWorkControllerGateWay {
     fun getQuanHuyen(request: BaseRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_DIC_GET_DISTRICTS, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_GET_DISTRICTS,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -451,7 +872,15 @@ object NetWorkControllerGateWay {
     fun getXaPhuong(request: BaseRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_DIC_GET_WARDS, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_GET_WARDS,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -459,17 +888,38 @@ object NetWorkControllerGateWay {
     fun getReasonsHoanTat(callback: CommonCallback<SimpleResult>) {
         val data = NetWorkController.getGson().toJson("")
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_DIC_GET_PICKUP_REASON, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_GET_PICKUP_REASON,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun getPostmanByRoute(poCode: String?, routeId: Int, routeType: String?, callback: CommonCallback<SimpleResult>?) {
+    fun getPostmanByRoute(
+        poCode: String?,
+        routeId: Int,
+        routeType: String?,
+        callback: CommonCallback<SimpleResult>?
+    ) {
         val getRouteRequest = GetPostmanByRouteRequest(poCode, routeId, routeType)
         val data = NetWorkController.getGson().toJson(getRouteRequest)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_DIC_POSTMAN_BY_ROUTE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_POSTMAN_BY_ROUTE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
@@ -478,7 +928,15 @@ object NetWorkControllerGateWay {
     fun approveOrder(request: OrderChangeRouteRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_ORDER_CHANGE_ROUTE_ACCEPT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ORDER_CHANGE_ROUTE_ACCEPT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -486,7 +944,15 @@ object NetWorkControllerGateWay {
     fun cancelOrder(request: OrderChangeRouteRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_ORDER_CHANGE_ROUTE_CANCEL, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ORDER_CHANGE_ROUTE_CANCEL,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -494,7 +960,15 @@ object NetWorkControllerGateWay {
     fun getChangeRouteOrder(request: OrderChangeRouteDingDongManagementRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_ORDER_CHANGE_ROUTE_MANAGE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ORDER_CHANGE_ROUTE_MANAGE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
@@ -502,15 +976,34 @@ object NetWorkControllerGateWay {
     fun rejectOrder(request: OrderChangeRouteRequest): Single<SimpleResult> {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_ORDER_CHANGE_ROUTE_REJECT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ORDER_CHANGE_ROUTE_REJECT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
-    fun collectAllOrderPostman(list: List<HoanTatTinRequest?>?, callback: CommonCallback<SimpleResult>?) {
+    fun collectAllOrderPostman(
+        list: List<HoanTatTinRequest?>?,
+        callback: CommonCallback<SimpleResult>?
+    ) {
         val data = NetWorkController.getGson().toJson(list)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_COLLECT_ALL_ORDER_POSTMAN, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_COLLECT_ALL_ORDER_POSTMAN,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
@@ -519,17 +1012,52 @@ object NetWorkControllerGateWay {
     fun getReasonsHoanTatMiss(callback: CommonCallback<SimpleResult>) {
         val data = NetWorkController.getGson().toJson("")
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_GET_CANCEL_ORDER_REASON, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_GET_CANCEL_ORDER_REASON,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
 
     @JvmStatic
-    fun searchForCancel(ladingCode: String?, fromDate: String?, toDate: String?, postmanId: String?, routeId: String?, poCode: String?, statusCode: String?, fromRouteId: Int?, callback: CommonCallback<SimpleResult>?) {
-        val request = SearchForCancelRequest(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId)
+    fun searchForCancel(
+        ladingCode: String?,
+        fromDate: String?,
+        toDate: String?,
+        postmanId: String?,
+        routeId: String?,
+        poCode: String?,
+        statusCode: String?,
+        fromRouteId: Int?,
+        callback: CommonCallback<SimpleResult>?
+    ) {
+        val request = SearchForCancelRequest(
+            ladingCode,
+            fromDate,
+            toDate,
+            postmanId,
+            routeId,
+            poCode,
+            statusCode,
+            fromRouteId
+        )
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_OCR_SEARCH_FOR_CANCEL, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_OCR_SEARCH_FOR_CANCEL,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
@@ -539,7 +1067,15 @@ object NetWorkControllerGateWay {
         val request = BaseRequest(null, null, ladingCode, null)
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_OCR_GET_DETAIL_BY_LADDING_CODE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_OCR_GET_DETAIL_BY_LADDING_CODE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }
@@ -549,16 +1085,51 @@ object NetWorkControllerGateWay {
         val request = BaseRequest(null, null, null, poCode)
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_DIC_GET_POS_IN_DISTRICT, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_GET_POS_IN_DISTRICT,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
     @JvmStatic
-    fun searchForApproved(ladingCode: String?, fromDate: String?, toDate: String?, postmanId: String?, routeId: String?, poCode: String?, statusCode: String?, fromRouteId: Int?, callback: CommonCallback<SimpleResult>?) {
-        val request = SearchForApprovedRequest(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId)
+    fun searchForApproved(
+        ladingCode: String?,
+        fromDate: String?,
+        toDate: String?,
+        postmanId: String?,
+        routeId: String?,
+        poCode: String?,
+        statusCode: String?,
+        fromRouteId: Int?,
+        callback: CommonCallback<SimpleResult>?
+    ) {
+        val request = SearchForApprovedRequest(
+            ladingCode,
+            fromDate,
+            toDate,
+            postmanId,
+            routeId,
+            poCode,
+            statusCode,
+            fromRouteId
+        )
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
-        val requestObject = RequestObject("ANDROID", "", Constants.PU_OCR_SEARCH_FOR_APPROVE, data, Utils.getLocalTime(Constants.DATE_FORMAT), "", signature)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_OCR_SEARCH_FOR_APPROVE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
         val call: Call<SimpleResult> = getApiBuilderVer().commonService(requestObject)
         call.enqueue(callback)
     }

@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:gravity="left"
+
                     android:textColor="@color/blue"
                     android:textSize="@dimen/text_size_16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/ll_code"
@@ -79,7 +80,7 @@
                         android:layout_toRightOf="@+id/tv_index"
                         android:text="COD2018041"
                         android:textColor="@color/blue"
-                        android:textSize="14dp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/tv_xacminhdiachi"
