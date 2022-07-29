@@ -90,6 +90,7 @@
                             android:hint="Nhập mã xác minh có 6 chữ số"
                             android:inputType="phone"
                             android:maxLines="1"
+                            android:imeOptions="actionDone"
                             android:paddingBottom="@dimen/size_10dp"
                             android:paddingLeft="0dp"
                             android:paddingRight="@dimen/size_10dp"

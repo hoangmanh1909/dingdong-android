@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_gradient_vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_vertical">
 
 
     <LinearLayout
@@ -36,11 +36,11 @@
 
                     <com.ems.dingdong.views.CustomTextView
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Xác thực ứng dụng lần đầu sử dụng"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_18sp"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
+                        android:textSize="@dimen/text_size_18sp" />
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/my_image_view"
@@ -68,12 +68,13 @@
                             android:background="@color/transparent"
                             android:gravity="left"
                             android:hint="Nhập số điện thoại"
+                            android:imeOptions="actionDone"
                             android:inputType="phone"
                             android:maxLines="1"
-                            android:paddingBottom="@dimen/size_10dp"
                             android:paddingLeft="0dp"
-                            android:paddingRight="@dimen/size_10dp"
                             android:paddingTop="@dimen/size_10dp"
+                            android:paddingRight="@dimen/size_10dp"
+                            android:paddingBottom="@dimen/size_10dp"
                             android:textColorHint="@color/text_gray"
                             android:textCursorDrawable="@null" />
 
@@ -81,6 +82,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/size_1dp"
                             android:background="@color/white_opacity43" />
+
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
