@@ -69,6 +69,7 @@
                             android:gravity="left"
                             android:hint="Nhập số điện thoại"
                             android:inputType="phone"
+                            android:imeOptions="actionDone"
                             android:maxLines="1"
                             android:paddingBottom="@dimen/size_10dp"
                             android:paddingLeft="0dp"
