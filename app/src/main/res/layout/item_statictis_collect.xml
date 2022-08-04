@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dimen_10dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,45 +11,35 @@
         android:orientation="horizontal"
         android:weightSum="10">
 
-        <LinearLayout
+
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_status_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_weight="5"
-            android:orientation="vertical">
+            android:background="@drawable/textlines_item1"
+            android:gravity="center|left"
+            android:paddingLeft="10dp"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/text_size_14sp"
+            tools:text="10.000" />
 
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_status_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/text_size_14sp"
-                tools:text="10.000" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
+        <com.ems.dingdong.views.CustomBoldTextView
+            android:id="@+id/tv_count"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_weight="5"
-            android:orientation="vertical">
+            android:background="@drawable/textlines_item1"
+            android:gravity="center|right"
+            android:paddingRight="10dp"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/text_size_14sp"
+            android:visibility="visible" />
 
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_count"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/text_size_14sp"
-                android:visibility="visible"
-                tools:text="10.000" />
-
-        </LinearLayout>
     </LinearLayout>
 
-    <View
-        style="@style/Devider"
-        android:layout_marginTop="@dimen/dimen_5dp" />
 
 </LinearLayout>

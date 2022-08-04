@@ -163,7 +163,7 @@ public class AddHangDoiTraDialog extends Dialog {
         long weight;
         int quantity;
 
-        if (TextUtils.isEmpty(edtNameProductAdd.getText().toString())) {
+        if (TextUtils.isEmpty(edtNameProductAdd.getText().toString().trim())) {
             Toast.showToast(getContext(), "Bạn chưa nhập Tên sản phẩm");
             return;
         }

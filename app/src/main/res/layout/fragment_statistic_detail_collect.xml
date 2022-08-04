@@ -40,51 +40,52 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:weightSum="10">
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Số TT"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14sp" />
+            android:orientation="horizontal"
+            android:weightSum="10">
 
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="0dp"
-            android:layout_weight="4.5"
-            android:layout_height="wrap_content"
-            android:text="Mã tin"
-            android:gravity="center"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/text_size_14sp" />
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1.5"
+                android:background="@drawable/textlines1"
+                android:gravity="center"
+                android:text="Số TT"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14sp" />
 
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="0dp"
-            android:layout_weight="4.5"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/text_size_14sp"
-            android:visibility="visible"
-            android:text="Mã bưu gửi" />
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="4"
+                android:background="@drawable/textlines1"
+                android:gravity="center"
+                android:text="Mã tin"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14sp" />
 
-    </LinearLayout>
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="4.5"
+                android:background="@drawable/textlines1"
+                android:gravity="center"
+                android:text="Mã bưu gửi"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14sp"
+                android:visibility="visible" />
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:visibility="visible" />
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

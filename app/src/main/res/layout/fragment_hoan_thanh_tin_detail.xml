@@ -69,8 +69,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
+                    android:background="@drawable/textlines_item1"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -119,8 +120,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
+                    android:background="@drawable/textlines_item1"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -408,8 +410,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
+                    android:background="@drawable/textlines_item1"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -453,6 +456,7 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="0.8"
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
@@ -465,6 +469,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="center"
                             android:orientation="vertical">
 
 
@@ -529,8 +534,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
+                    android:background="@drawable/textlines_item1"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -665,8 +671,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
-                    android:orientation="vertical">
+                    android:background="@drawable/textlines_item1"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/iv_package"
@@ -703,9 +710,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:background="@drawable/textlines_item1"
                     android:focusableInTouchMode="true"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_scan"

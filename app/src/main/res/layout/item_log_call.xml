@@ -29,11 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/phonecall"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="SĐT gọi đi: "
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold" />
@@ -54,14 +54,15 @@
 
             android:layout_marginTop="7dp">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/incomingcall"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="SĐT gọi đến: "
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/tv_sodiengoiden"
@@ -78,14 +79,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/start"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="Thời gian bắt đầu: "
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/tv_thoigianbatdau"
@@ -102,11 +104,11 @@
 
             android:layout_marginTop="7dp">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/finishline"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="Thời gian kết thúc: "
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold" />
@@ -126,11 +128,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/time"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="Thời gian đàm thoại: "
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold" />

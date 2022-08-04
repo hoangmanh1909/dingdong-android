@@ -57,7 +57,6 @@ public class ApplicationController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-//        SipCmc.initPrefs(this);
         if (!BuildConfig.DEBUG)
             Fabric.with(this, new Crashlytics());
         Fresco.initialize(this);

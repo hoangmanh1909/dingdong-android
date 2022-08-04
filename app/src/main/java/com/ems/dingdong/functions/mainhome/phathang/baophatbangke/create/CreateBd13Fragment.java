@@ -1,6 +1,11 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
+import static android.content.Context.LOCATION_SERVICE;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.Editable;
@@ -21,13 +26,20 @@ import com.ems.dingdong.callback.CreatedBD13Callback;
 import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PhoneCallback;
+import com.ems.dingdong.callback.SapXepCallback;
 import com.ems.dingdong.dialog.CreateBangKeSearchDialog;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
 import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.DialogThongBao;
 import com.ems.dingdong.dialog.PhoneConectDialog;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.Point;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
+import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.Item;
@@ -35,6 +47,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
+import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -87,7 +100,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     private String mChuyenThu = "";
     private Calendar calFromDate;
     private Calendar calToDate;
-
+    private LocationManager mLocationManager;
+    private Location mLocation;
     List<DeliveryPostman> mList = new ArrayList<>();
     CreateBd13Adapter mAdapter;
     private boolean isLoading = false;
@@ -240,16 +254,6 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 holder.img_contact_phone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        new PhoneCallback(){
-//                            @Override
-//                            public void onCallResponse(String phone) {
-//                                mPhone = phone;
-//                                mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
-//                            }
-//                            @Override
-//                            public void onUpdateResponse(String phone, DismissDialogCallback callback) {
-//                            }
-//                        };
                     }
                 });
             }
@@ -278,6 +282,27 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             }
         }
         return check;
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation() {
+        Location l = null;
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
     private void showConfirmSaveMobile(final String phone, String parcelCode, DismissDialogCallback callback) {
@@ -386,40 +411,75 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     private void showDialogConfirm(long quantity, long totalAmount) {
-        new CreatedBd13Dialog(getActivity(), 0, quantity, totalAmount, new CreatedBD13Callback() {
+        new DialogCreateBd13(getViewContext(), new SapXepCallback() {
             @Override
-            public void onResponse(String cancelType, String des) {
-                final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
-                Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
-                    @Override
-                    public int compare(DeliveryPostman o1, DeliveryPostman o2) {
-                        return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+            public void onResponse(int type) {
+                if (type == 2) {
+                    mLocation = getLastKnownLocation();
+                    if (mLocation == null) {
+                        new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
+                        return;
                     }
-                });
-                Bd13Create bd13Create = new Bd13Create();
-                List<Integer> ids = new ArrayList<>();
-                String t = "";
-                for (DeliveryPostman i : deliveryPostmans) {
-                    ids.add(i.getId());
-                    if (t.equals(""))
-                        t += i.getmViti();
-                    else {
-                        t += ",";
-                        t += i.getmViti();
+                    OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
+                    Point point = new Point();
+                    point.setLatitude(mLocation.getLatitude());
+                    point.setLongitude(mLocation.getLongitude());
+                    orderCreateBD13Mode.setStartPoint(point);
+                    orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
+                    List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
+                    List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+
+                    for (DeliveryPostman i : deliveryPostmans) {
+                        VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
+                        request.setId(i.getId());
+                        request.setLadingCode(i.getMaE());
+                        request.setReceiverAddress(i.getReciverAddress());
+                        request.setReceiverLat(i.getReceiverLat());
+                        request.setReceiverLon(i.getReceiverLon());
+//            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
+                        dataRequests.add(request);
                     }
+                    orderCreateBD13Mode.setData(dataRequests);
+                    String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
+                    Log.d("AAAAAAA", json);
+                    mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
+                } else {
+                    new CreatedBd13Dialog(getActivity(), 0, quantity, totalAmount, new CreatedBD13Callback() {
+                        @Override
+                        public void onResponse(String cancelType, String des) {
+                            final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
+                                @Override
+                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
+                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+                                }
+                            });
+                            Bd13Create bd13Create = new Bd13Create();
+                            List<Integer> ids = new ArrayList<>();
+                            String t = "";
+                            for (DeliveryPostman i : deliveryPostmans) {
+                                ids.add(i.getId());
+                                if (t.equals(""))
+                                    t += i.getmViti();
+                                else {
+                                    t += ",";
+                                    t += i.getmViti();
+                                }
+                            }
+                            bd13Create.setIds(ids);
+                            bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
+                            bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
+                            bd13Create.setPostmanCode(userInfo.getUserName());
+                            bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
+                            String json = NetWorkController.getGson().toJson(bd13Create);
+                            Log.d("AAAAAAA", json);
+                            mPresenter.postBD13AddNew(bd13Create);
+                        }
+                    }).show();
                 }
-                bd13Create.setIds(ids);
-                bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
-                bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
-                bd13Create.setPostmanCode(userInfo.getUserName());
-                bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
-
-                String json = NetWorkController.getGson().toJson(bd13Create);
-//            X
-
-                mPresenter.postBD13AddNew(bd13Create);
             }
         }).show();
+
     }
 
     private void searchLadingBd13(String fromDate, String toDate, String chuyenThu) {
@@ -565,6 +625,87 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     @Override
     public void showView() {
 
+    }
+
+    @Override
+    public void showVmap(List<VietMapOrderCreateBD13DataRequest> mList) {
+        hideProgress();
+        List<DeliveryPostman> deliveryPostmanList = mAdapter.getItemsSelected();
+        for (int i = 0; i < deliveryPostmanList.size(); i++) {
+            for (int j = 0; j < mList.size(); j++)
+                if (mList.get(j).getId() == deliveryPostmanList.get(i).getId()) {
+                    deliveryPostmanList.get(i).setSTT(Integer.parseInt(mList.get(j).getOrderNumber()));
+                }
+        }
+        List<DeliveryPostman> postmen = sort(deliveryPostmanList);
+        Log.d("AAAAAAAA", new Gson().toJson(postmen));
+        new DialogVmap(getViewContext(), postmen, new SapXepCallback() {
+            @Override
+            public void onResponse(int type) {
+                if (type == 1) {
+                    int totalAmount = 0;
+                    for (DeliveryPostman i : postmen) {
+                        totalAmount = totalAmount + i.getAmount();
+                    }
+
+                    new CreatedBd13Dialog(getActivity(), 0, postmen.size(), totalAmount, new CreatedBD13Callback() {
+                        @Override
+                        public void onResponse(String cancelType, String des) {
+                            final List<DeliveryPostman> deliveryPostmans = postmen;
+                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
+                                @Override
+                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
+                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+                                }
+                            });
+                            Bd13Create bd13Create = new Bd13Create();
+                            List<Integer> ids = new ArrayList<>();
+                            String t = "";
+                            for (DeliveryPostman i : deliveryPostmans) {
+                                ids.add(i.getId());
+                                if (t.equals(""))
+                                    t += i.getmViti();
+                                else {
+                                    t += ",";
+                                    t += i.getmViti();
+                                }
+                            }
+                            bd13Create.setIds(ids);
+                            bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
+                            bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
+                            bd13Create.setPostmanCode(userInfo.getUserName());
+                            bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
+                            String json = NetWorkController.getGson().toJson(bd13Create);
+                            Log.d("AAAAAAA", json);
+                            mPresenter.postBD13AddNew(bd13Create);
+                        }
+                    }).show();
+                } else {
+                    for (DeliveryPostman item : mAdapter.getItemsSelected()) {
+                        item.setSelected(false);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        }).show();
+    }
+
+
+    private List<DeliveryPostman> sort(List<DeliveryPostman> deliveryPostmanList) {
+        List<DeliveryPostman> list = deliveryPostmanList;
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (list.get(i).getSTT() > list.get(j).getSTT()) {
+                    // Hoan vi 2 so a[i] va a[j]
+                    DeliveryPostman deliveryPostman = new DeliveryPostman();
+                    deliveryPostman = list.get(i);
+                    list.set(i, list.get(j));
+                    list.set(j, deliveryPostman);
+                }
+            }
+        }
+        return list;
     }
 
     @Override

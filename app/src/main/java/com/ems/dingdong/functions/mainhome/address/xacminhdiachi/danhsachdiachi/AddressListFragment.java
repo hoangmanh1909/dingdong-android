@@ -261,7 +261,6 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                             return;
                         }
                     }
-
                     new DigLogChiDanDuong(getContext(), new SapXepCallback() {
                         @Override
                         public void onResponse(int type) {
@@ -344,9 +343,6 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
             } catch (Exception e) {
             }
         }
-//        mListObject.clear();
-//        mListObject.addAll(listAddress);
-//        addressListAdapter.notifyDataSetChanged();
     }
 
     @Override

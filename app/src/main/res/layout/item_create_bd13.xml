@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="5dp"
     android:orientation="vertical"
     android:paddingTop="@dimen/dimen_5dp"
     android:paddingBottom="@dimen/dimen_5dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
         android:id="@+id/layout_itemBD13"
@@ -179,6 +179,7 @@
                 android:id="@+id/tv_refund_postage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:textAllCaps="true"
@@ -190,6 +191,7 @@
                 android:id="@+id/tv_tien_phathoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:paddingBottom="5dp"
                 android:textColor="@color/red_light"
                 android:textSize="14dp" />
@@ -198,6 +200,7 @@
                 android:id="@+id/tv_sodonhang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -205,6 +208,7 @@
                 android:id="@+id/tv_batch_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -212,6 +216,7 @@
                 android:id="@+id/tv_new_instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -219,6 +224,7 @@
                 android:id="@+id/tv_new_receiver_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -226,6 +232,7 @@
                 android:id="@+id/ll_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <com.ems.dingdong.views.CustomBoldTextView
@@ -263,6 +270,8 @@
                 android:id="@+id/tv_sender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -270,6 +279,8 @@
                 android:id="@+id/tv_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:layout_marginTop="5dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -277,13 +288,17 @@
                 android:id="@+id/tv_instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/red_light"
+
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
 
@@ -292,19 +307,24 @@
                 android:id="@+id/tv_COD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/red_light"
+
                 android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomBoldTextView
                 android:id="@+id/tv_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/red_light"
                 android:textSize="@dimen/text_size_14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:layout_marginTop="5dp"
                 android:weightSum="2">
 
                 <com.ems.dingdong.views.CustomTextView
@@ -332,6 +352,7 @@
                 android:id="@+id/tv_sml_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp"

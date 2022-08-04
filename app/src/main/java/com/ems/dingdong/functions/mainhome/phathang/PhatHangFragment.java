@@ -1,14 +1,19 @@
 package com.ems.dingdong.functions.mainhome.phathang;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.GridLayout;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.home.HomeAdapter;
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
@@ -23,8 +28,12 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -35,8 +44,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
     private static final int SPAN_SIZE = 3;
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    private HomeGroupAdapter adapter;
-    ArrayList<GroupInfo> mList;
+    private HomeAdapter adapter;
+    List<HomeInfo> mList;
     private StickyHeaderGridLayoutManager mLayoutManager;
 
     public static PhatHangFragment getInstance() {
@@ -59,6 +68,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             if (!"6".equals(userInfo.getEmpGroupID())) {
+                homeInfos.clear();
                 homeInfos.add(new HomeInfo(1, R.drawable.ic_bao_phat_ban_ke, "Báo phát bản kê (BD13)"));
                 homeInfos.add(new HomeInfo(7, R.drawable.ic_lap_ban_ke, "Lập bản kê BD13"));
                 homeInfos.add(new HomeInfo(8, R.drawable.ic_nhap_bao_phat, "Nhập báo phát offline"));
@@ -82,18 +92,19 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(17, R.drawable.ic_sml_123, "Smartlocker"));
 //                homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Thống kê log cuộc gọi"));
                 homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
+                homeInfos.add(new HomeInfo(19, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
 
-                mList.add(new GroupInfo("Phát hàng", homeInfos));
+                mList.addAll(homeInfos);
             }
         }
-        adapter = new HomeGroupAdapter(mList) {
+        adapter = new HomeAdapter(getViewContext(), mList) {
             @Override
-            public void onBindItemViewHolder(ItemViewHolder viewHolder, final int section, final int position) {
-                super.onBindItemViewHolder(viewHolder, section, position);
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        HomeInfo homeInfo = mList.get(section).getList().get(position);
+                        HomeInfo homeInfo = mList.get(position);
                         if (homeInfo.getId() == 1) {
                             Intent intent = new Intent(getActivity(), ListBaoPhatBangKeActivity.class);
                             intent.putExtra(Constants.TYPE_GOM_HANG, 3);
@@ -112,8 +123,15 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                         } else if (homeInfo.getId() == 6) {
                             mPresenter.showViewStatisticPtc(StatisticType.ERROR_DELIVERY);
                         } else if (homeInfo.getId() == 7) {
-                            Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
-                            startActivity(intent);
+                            //asdasd
+                            String key = sharedPref.getString(Constants.KEY_RA_VAO, "");
+                            if (!TextUtils.isEmpty(key)) {
+                                Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.showToast(getViewContext(), "Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
+                                return;
+                            }
                         } else if (homeInfo.getId() == 8) {
                             mPresenter.showNhapBaoPhatOffline();
                         } else if (homeInfo.getId() == 9) {
@@ -138,6 +156,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showStatisticSML();
                         } else if (homeInfo.getId() == 18) {
                             mPresenter.showStatisticLog();
+                        } else if (homeInfo.getId() == 19) {
+                            mPresenter.showLog();
                         }
                     }
                 });
@@ -145,14 +165,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
         };
         mLayoutManager = new StickyHeaderGridLayoutManager(SPAN_SIZE);
         mLayoutManager.setHeaderBottomOverlapMargin(getResources().getDimensionPixelSize(R.dimen.dimen_8dp));
-        recycler.setItemAnimator(new DefaultItemAnimator() {
-            @Override
-            public boolean animateRemove(RecyclerView.ViewHolder holder) {
-                dispatchRemoveFinished(holder);
-                return false;
-            }
-        });
-        recycler.setLayoutManager(mLayoutManager);
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayout.VERTICAL, false));
         recycler.setAdapter(adapter);
     }
 }

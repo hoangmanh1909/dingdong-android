@@ -6,15 +6,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/line_gray">
-
+        android:background="@color/white">
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="@dimen/_10sdp"
             android:textColor="#ed1c24"
             android:textSize="@dimen/text_size_16sp" />
@@ -35,8 +35,6 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
                 android:visibility="visible" />
 
             <ImageView

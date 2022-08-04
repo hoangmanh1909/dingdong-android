@@ -136,4 +136,9 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     public void showStatisticLog() {
         new TabLogCallPresenter(mContainerView).pushView();
     }
+
+    @Override
+    public void showLog() {
+        new StatisticalLogPresenter(mContainerView).pushView();
+    }
 }

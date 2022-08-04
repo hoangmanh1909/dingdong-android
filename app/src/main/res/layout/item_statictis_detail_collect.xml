@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dimen_10dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/textlines_item1"
         android:orientation="horizontal"
+
         android:weightSum="10">
 
         <com.ems.dingdong.views.CustomBoldTextView
@@ -17,28 +18,43 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
+            android:gravity="center|left"
+            android:padding="5dp"
             android:text="Số TT"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_btn_bg_pressed_color" />
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_order_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="4.5"
+            android:layout_weight="4"
+            android:gravity="center|left"
+            android:padding="5dp"
             android:textColor="@color/blue"
             android:textSize="@dimen/text_size_14sp"
             tools:text="10.000" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_btn_bg_pressed_color" />
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_lading"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="4.5"
-            android:gravity="right"
+            android:gravity="right|center"
+            android:padding="5dp"
             android:textColor="@color/orange"
             android:textSize="@dimen/text_size_14sp"
             android:visibility="visible"
@@ -46,8 +62,8 @@
 
     </LinearLayout>
 
-    <View
-        style="@style/Devider"
-        android:layout_marginTop="@dimen/dimen_5dp" />
+    <!--    <View-->
+    <!--        style="@style/Devider"-->
+    <!--        android:layout_marginTop="@dimen/dimen_5dp" />-->
 
 </LinearLayout>

@@ -25,89 +25,93 @@
                 android:layout_centerVertical="true"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/img_back">
-            <com.ems.dingdong.views.CustomBoldTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="Thống kê PHÁT HÀNG thành công"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_14sp" />
-        </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/img_back">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Thống kê PHÁT HÀNG thành công"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14sp" />
+            </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
-        <com.ems.dingdong.views.CustomMediumTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/textlines"
-            android:gravity="center|left"
-            android:text="Dịch vụ"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <com.ems.dingdong.views.CustomMediumTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:background="@drawable/textlines"
-            android:gravity="center"
-            android:padding="@dimen/dimen_5dp"
-            android:text="Số lượng"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp" />
+            <com.ems.dingdong.views.CustomMediumTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/textlines1"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:text="Dịch vụ"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
 
-        <com.ems.dingdong.views.CustomMediumTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.17"
-            android:background="@drawable/textlines"
-            android:gravity="center"
-            android:text="Số tiền COD"
-            android:padding="@dimen/dimen_5dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp" />
+            <com.ems.dingdong.views.CustomMediumTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@drawable/textlines1"
+                android:gravity="center"
+                android:padding="@dimen/dimen_5dp"
+                android:text="Số lượng"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
 
-<!--        <com.ems.dingdong.views.CustomMediumTextView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1.17"-->
-<!--            android:background="@drawable/textlines"-->
-<!--            android:gravity="center"-->
-<!--            android:text="Tiền C"-->
-<!--            android:padding="@dimen/dimen_5dp"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="@dimen/text_size_16sp" />-->
+            <com.ems.dingdong.views.CustomMediumTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.17"
+                android:background="@drawable/textlines1"
+                android:gravity="center"
+                android:padding="@dimen/dimen_5dp"
+                android:text="Số tiền COD"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
 
-        <com.ems.dingdong.views.CustomMediumTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.17"
-            android:background="@drawable/textlines"
-            android:gravity="center"
-            android:text="Khoản thu khác"
-            android:padding="@dimen/dimen_5dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp" />
-    </LinearLayout>
+            <!--        <com.ems.dingdong.views.CustomMediumTextView-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="match_parent"-->
+            <!--            android:layout_weight="1.17"-->
+            <!--            android:background="@drawable/textlines1"-->
+            <!--            android:gravity="center"-->
+            <!--            android:text="Tiền C"-->
+            <!--            android:padding="@dimen/dimen_5dp"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:textSize="@dimen/text_size_16sp" />-->
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <com.ems.dingdong.views.CustomMediumTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.17"
+                android:background="@drawable/textlines1"
+                android:gravity="center"
+                android:padding="@dimen/dimen_5dp"
+                android:text="Khoản thu khác"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp" />
+        </LinearLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -118,8 +122,6 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
                 android:visibility="visible" />
 
             <ImageView
@@ -133,6 +135,5 @@
                 android:src="@drawable/ic_choose_calendar" />
         </RelativeLayout>
 
-
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -378,7 +378,6 @@ androidx.media.AudioAttributesCompat$AudioManagerHidden
 com.android.volley.toolbox.JsonRequest
     protected abstract com.android.volley.Response parseNetworkResponse(com.android.volley.NetworkResponse)
     protected static final java.lang.String PROTOCOL_CHARSET
-com.ems.dingdong.dialog.DialogLienKetTaiKhoan$$ViewBinder$2
 org.apache.poi.hpsf.UnicodeString
     byte[] getValue()
 com.airbnb.lottie.parser.moshi.LinkedHashTreeMap$AvlBuilder
@@ -582,7 +581,6 @@ com.google.common.collect.MapMakerInternalMap$WeakValueEntry
 androidx.core.app.NotificationCompat$CarExtender
     static final java.lang.String EXTRA_CAR_EXTENDER
     static final java.lang.String EXTRA_INVISIBLE_ACTIONS
-com.ems.dingdong.dialog.DialogLienKetTaiKhoan$$ViewBinder$3
 com.google.android.exoplayer2.drm.ClearKeyUtil
     private void <init>()
     private static final java.lang.String TAG
@@ -883,7 +881,6 @@ io.fabric.sdk.android.services.settings.DefaultSettingsSpiCall
     static final java.lang.String HEADER_OS_BUILD_VERSION
     static final java.lang.String HEADER_OS_DISPLAY_VERSION
     static final java.lang.String HEADER_INSTALLATION_ID
-com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment$1$1
 com.mapbox.mapboxsdk.camera.CameraPosition
     void <init>(com.mapbox.mapboxsdk.geometry.LatLng,double,double,double)
 okio.package-info
@@ -2134,7 +2131,6 @@ io.fabric.sdk.android.services.common.FirebaseInfo
     static final java.lang.String GOOGLE_APP_ID
     static final java.lang.String FIREBASE_FEATURE_SWITCH
     static final java.lang.String AUTO_INITIALIZE
-com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallFragment$$ViewBinder$2
 com.google.common.util.concurrent.ForwardingLock
     public java.util.concurrent.locks.Condition newCondition()
 androidx.documentfile.provider.DocumentFile
@@ -2414,7 +2410,6 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Synch
     synthetic bridge java.lang.Object delegate()
 com.google.common.io.BaseEncoding$DecodingException
     void <init>(java.lang.Throwable)
-com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankFragment$3$1
 com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflineContract
 com.facebook.imagepipeline.producers.PostprocessorProducer
     static final java.lang.String POSTPROCESSOR
@@ -3972,7 +3967,6 @@ org.apache.poi.sl.draw.DrawTextShape
     protected synthetic bridge org.apache.poi.sl.usermodel.Shape getShape()
 androidx.core.app.NotificationManagerCompat
     static final int MAX_SIDE_CHANNEL_SDK_VERSION
-com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogFragment$2$1
 com.google.common.reflect.TypeToken
     protected void <init>(java.lang.Class)
 com.google.android.material.datepicker.UtcDates
@@ -5076,6 +5070,8 @@ com.mapbox.android.core.location.Utils
     private void <init>()
     private static final int TWO_MINUTES
     private static final int ACCURACY_THRESHOLD_METERS
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.AdapterVmap$HolderView
+    public com.ems.dingdong.model.DeliveryPostman getItem(int)
 com.tsongkha.spinnerdatepicker.DatePicker
     void updateDate(int,int,int)
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.language.SoundexUtils
@@ -5740,7 +5736,6 @@ androidx.multidex.MultiDexExtractor
 com.google.common.collect.GwtTransient
 com.airbnb.lottie.parser.KeyframeParser
     private static final float MAX_CP_VALUE
-com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$27
 org.apache.commons.compress.archivers.dump.TapeInputStream
     private static final int recordSize
 com.facebook.common.executors.StatefulRunnable
@@ -6848,8 +6843,8 @@ com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon$$ViewBinder$2
 com.ems.dingdong.dialog.RouteDialog
     boolean check
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.AbstractBaseGraph
-    public synthetic bridge java.lang.Iterable successors(java.lang.Object)
     public synthetic bridge java.lang.Iterable predecessors(java.lang.Object)
+    public synthetic bridge java.lang.Iterable successors(java.lang.Object)
 com.journeyapps.barcodescanner.CaptureManager
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.profile.tienluong.luongthang.MonthlySalaryFragment$2
@@ -7200,9 +7195,9 @@ com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.Htt
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.AbstractHasher
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(java.nio.ByteBuffer)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(java.nio.ByteBuffer)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$2
@@ -7295,6 +7290,8 @@ com.google.android.gms.internal.places.zzby
     private static final com.google.android.gms.internal.places.zzby zzkg
 org.apache.poi.hssf.record.common.FeatProtection
     static void <clinit>()
+com.ems.dingdong.functions.mainhome.home.HomeAdapter$HolderView
+    final synthetic com.ems.dingdong.functions.mainhome.home.HomeAdapter this$0
 com.ems.dingdong.dialog.DialoggoiLai$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.DialoggoiLai$$ViewBinder this$0
 com.google.android.exoplayer2.audio.DefaultAudioSink
@@ -7591,6 +7588,9 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.map.MapFragment$$ViewB
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.map.MapFragment$$ViewBinder this$0
 com.google.common.collect.ForwardingSortedMap$StandardKeySet
     final synthetic com.google.common.collect.ForwardingSortedMap this$0
+com.ems.dingdong.functions.mainhome.home.HomeAdapter
+    java.util.List mList
+    android.content.Context mContext
 org.apache.poi.util.LittleEndianCP950Reader
     int cnt
 androidx.viewpager2.adapter.FragmentStateAdapter$5
@@ -7607,6 +7607,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacN
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 io.fabric.sdk.android.services.common.QueueFile$1
     final synthetic io.fabric.sdk.android.services.common.QueueFile this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$12$1$1
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$12$1 this$2
 com.ems.dingdong.location.CheckLocationService$1
     final synthetic com.ems.dingdong.location.CheckLocationService this$0
 com.google.common.util.concurrent.SequentialExecutor$1
@@ -7645,8 +7647,6 @@ com.facebook.drawee.view.DraweeView
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflineFragment$$ViewBinder$8
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflineFragment$$ViewBinder this$0
-com.ems.dingdong.functions.mainhome.phathang.PhatHangFragment$2
-    final synthetic com.ems.dingdong.functions.mainhome.phathang.PhatHangFragment this$0
 com.google.android.material.bottomsheet.BottomSheetDialog$3
     final synthetic com.google.android.material.bottomsheet.BottomSheetDialog this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.ParcelConfirmsAdapter$HolderView
@@ -7691,6 +7691,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacN
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 io.reactivex.internal.operators.single.SingleEquals$1InnerObserver
     final synthetic io.reactivex.internal.operators.single.SingleEquals this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13$$ViewBinder$1
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13$$ViewBinder this$0
 androidx.viewpager2.widget.ViewPager2$AccessibilityProvider
     final synthetic androidx.viewpager2.widget.ViewPager2 this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflineFragment$$ViewBinder$7
@@ -8270,6 +8272,8 @@ com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragme
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment$$ViewBinder this$0
 com.google.firebase.heartbeatinfo.HeartBeatInfoStorage
     static void <clinit>()
+com.ems.dingdong.functions.mainhome.main.MainFragment$NameComparator
+    final synthetic com.ems.dingdong.functions.mainhome.main.MainFragment this$0
 com.google.gson.internal.ConstructorConstructor$11
     final synthetic com.google.gson.internal.ConstructorConstructor this$0
 androidx.appcompat.widget.ThemeUtils
@@ -8328,6 +8332,8 @@ com.bumptech.glide.module.AppliesOptions
     public abstract void applyOptions(android.content.Context,com.bumptech.glide.GlideBuilder)
 com.rey.material.drawable.ArrowDrawable
     static void <clinit>()
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13$$ViewBinder$2
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.chihobtxh.menu.MenuChiHoFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.chihobtxh.menu.MenuChiHoFragment$$ViewBinder this$0
 androidx.core.view.WindowInsetsCompat$BuilderImpl20
@@ -8591,6 +8597,8 @@ com.ems.dingdong.dialog.StatictisSearchDialog$$ViewBinder$4
     final synthetic com.ems.dingdong.dialog.StatictisSearchDialog$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.ndk.internal.dwarf.DebugLineContext$1
     final synthetic com.google.firebase.crashlytics.buildtools.ndk.internal.dwarf.DebugLineContext this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap$$ViewBinder$1
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap$$ViewBinder this$0
 com.ems.dingdong.calls.call.CallFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.calls.call.CallFragment$$ViewBinder this$0
 com.google.android.gms.internal.clearcut.zzbp
@@ -8624,6 +8632,8 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiFragment$
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentFragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.main.MainFragment$$ViewBinder$5
+    final synthetic com.ems.dingdong.functions.mainhome.main.MainFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter$MyItemViewHolder
@@ -8637,6 +8647,8 @@ com.ems.dingdong.dialog.HoanTatTinDialog$$ViewBinder$4
     final synthetic com.ems.dingdong.dialog.HoanTatTinDialog$$ViewBinder this$0
 com.google.common.collect.FilteredKeySetMultimap$EntrySet
     final synthetic com.google.common.collect.FilteredKeySetMultimap this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap$$ViewBinder$2
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap$$ViewBinder this$0
 com.ems.dingdong.dialog.StatictisSearchDialog$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.StatictisSearchDialog$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.ndk.internal.dwarf.DebugLineContext$2
@@ -9145,6 +9157,8 @@ com.ems.dingdong.dialog.ConfirmDialog$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.ConfirmDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder$5
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.AdapterVmap$HolderView
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.AdapterVmap this$0
 com.google.common.collect.AbstractMapBasedMultimap$2
     final synthetic com.google.common.collect.AbstractMapBasedMultimap this$0
 org.apache.poi.util.LittleEndianByteArrayInputStream
@@ -9178,8 +9192,6 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacN
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonAdapter$HolderView$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonAdapter$HolderView this$1
-com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$8$1
-    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$8 this$1
 com.google.android.exoplayer2.extractor.mp4.SefReader$DataReference
     public final int dataType
 com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonFragment$$ViewBinder$4
@@ -9299,6 +9311,9 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietD
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiFragment$$ViewBinder this$0
 com.google.common.collect.AbstractMultimap$EntrySet
     final synthetic com.google.common.collect.AbstractMultimap this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.AdapterVmap
+    java.util.List mList
+    android.content.Context mContext
 com.ems.dingdong.functions.mainhome.profile.tienluong.luongtamtinh.ProvisionalSalaryFragment$1
     final synthetic com.ems.dingdong.functions.mainhome.profile.tienluong.luongtamtinh.ProvisionalSalaryFragment this$0
 com.google.common.util.concurrent.ExecutionSequencer$3
@@ -9445,6 +9460,8 @@ com.google.common.collect.MapMakerInternalMap$AbstractSerializationProxy
     final com.google.common.base.Equivalence valueEquivalence
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmFragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$8$1$1
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$8$1 this$2
 bolts.Task$3
     final synthetic bolts.Task this$0
 com.ems.dingdong.dialog.DialogSML$$ViewBinder$3

@@ -24,7 +24,7 @@
                 android:paddingStart="12dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="Thêm sản phẩm hàng đổi trả"
+                android:text="Thêm sản phẩm hàng thu hồi"
                 android:textColor="@color/white"
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -290,7 +290,7 @@
                             android:layout_marginLeft="12dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginRight="2dp"
-                            android:text="Nội dung đổi trả"
+                            android:text="Nội dung thu hồi"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -317,7 +317,7 @@
                         android:layout_marginRight="12dp"
                         android:background="@drawable/bg_status_not"
                         android:gravity="center|left|top"
-                        android:hint="Nhập nội dung đổi trả"
+                        android:hint="Nhập nội dung thu hồi"
                         android:lines="2"
                         android:maxLines="5"
                         android:padding="10dp"

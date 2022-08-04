@@ -44,7 +44,6 @@ import com.ems.dingdong.dialog.PhoneConectDialogExtend;
 import com.ems.dingdong.dialog.PhoneConectDialogIcon;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
@@ -121,7 +120,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     ImageView imgMap;
     private ArrayList<DeliveryPostman> mList;
     private ArrayList<DeliveryPostman> mListCallback;
-    private CreateBd13Adapter mAdapter;
+    private ListBaoPhatBD13Adapter mAdapter;
     private UserInfo mUserInfo;
     private PostOffice postOffice;
     private RouteInfo routeInfo;
@@ -260,7 +259,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         mListCallback = new ArrayList<>();
         mLocation = new GetLocation().getLastKnownLocation(getContext());
         mCalendar = Calendar.getInstance();
-        mAdapter = new CreateBd13Adapter(getActivity(), CreateBd13Adapter.TypeBD13.LIST_BD13, mList, (count, amount) -> new Handler().postDelayed(() -> {
+        mAdapter = new ListBaoPhatBD13Adapter(getActivity(), ListBaoPhatBD13Adapter.TypeBD13.LIST_BD13, mList, (count, amount) -> new Handler().postDelayed(() -> {
             while (isLoading) {
                 try {
                     Thread.sleep(1000);

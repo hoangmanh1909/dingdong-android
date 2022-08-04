@@ -200,6 +200,15 @@ public class DeliveryPostman implements Comparable {
     private boolean IsWarehouseOutput;
 
     int mViti = -1;
+    int STT = 0;
+
+    public int getSTT() {
+        return STT;
+    }
+
+    public void setSTT(int STT) {
+        this.STT = STT;
+    }
 
     public boolean isWarehouseOutput() {
         return IsWarehouseOutput;

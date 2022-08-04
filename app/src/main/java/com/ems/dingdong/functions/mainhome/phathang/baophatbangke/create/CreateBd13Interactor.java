@@ -2,11 +2,14 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
+
+import io.reactivex.Single;
 
 /**
  * The CreateBd13 interactor
@@ -25,17 +28,22 @@ class CreateBd13Interactor extends Interactor<CreateBd13Contract.Presenter>
 
     @Override
     public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> commonCallback) {
-        NetWorkController.searchLadingCreatedBd13(objRequest,commonCallback);
+        NetWorkController.searchLadingCreatedBd13(objRequest, commonCallback);
     }
 
     @Override
-    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode,String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+    public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
         NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
-                ladingCode,PostmanId,POCode, callback);
+                ladingCode, PostmanId, POCode, callback);
     }
 
     @Override
-    public void updateMobile(String code,String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
-        NetWorkController.updateMobile(code,type, phone, simpleResultCommonCallback);
+    public void updateMobile(String code, String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
+        NetWorkController.updateMobile(code, type, phone, simpleResultCommonCallback);
+    }
+
+    @Override
+    public Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode) {
+        return NetWorkController.getLapBangKeBD13(createBD13Mode);
     }
 }

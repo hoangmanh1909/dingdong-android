@@ -2,6 +2,8 @@ package com.ems.dingdong.functions.mainhome.main;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
@@ -9,6 +11,8 @@ import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.network.NetWorkController;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.Call;
@@ -51,6 +55,21 @@ class MainInteractor extends Interactor<MainContract.Presenter>
     @Override
     public Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
         return NetWorkController.getListTicket(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getVaoCa(MainMode request) {
+        return NetWorkController.getVaoCa(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getRaCa(String request) {
+        return NetWorkController.getRaCa(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getCallLog(List<CallLogMode> request) {
+        return NetWorkController.getCallLog(request);
     }
 //    @Override
 //    public void ddGetBalance(BalanceModel request) {

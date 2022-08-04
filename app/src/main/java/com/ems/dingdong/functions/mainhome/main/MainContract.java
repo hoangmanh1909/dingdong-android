@@ -8,6 +8,8 @@ import com.ems.dingdong.functions.mainhome.address.AddressPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.ShiftResult;
@@ -17,7 +19,6 @@ import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
-import com.ems.dingdong.network.NetWorkController;
 
 import java.util.List;
 
@@ -42,6 +43,12 @@ interface MainContract {
 
         Single<SimpleResult> getListTicket(TicketNotifyRequest request);
 
+        Single<SimpleResult> getVaoCa(MainMode request);
+
+        Single<SimpleResult> getRaCa(String request);
+
+        Single<SimpleResult> getCallLog(List<CallLogMode> request);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -50,10 +57,23 @@ interface MainContract {
         void setBalance(String x);
 
         void showListNotifi(List<TicketNotifyRespone> list);
+
+        void showVaoCa(String data);
+
+        void showRaCa(String data);
+        void showCallLog(String data);
+
+        void showError();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
         void getListTicket(TicketNotifyRequest request);
+
+        void getVaoCa(MainMode request);
+
+        void getRaCa(String request);
+
+        void getCallLog(List<CallLogMode> request);
 
         HomePresenter getHomePresenter();
 

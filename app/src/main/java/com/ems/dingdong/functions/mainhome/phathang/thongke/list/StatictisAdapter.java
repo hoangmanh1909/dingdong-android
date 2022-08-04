@@ -4,14 +4,13 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.NumberUtils;
-import com.ems.dingdong.views.CustomBoldTextView;
-import com.ems.dingdong.views.CustomTextView;
 
 import java.util.List;
 
@@ -33,23 +32,23 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
     class HolderView extends BaseViewHolder {
 
         @BindView(R.id.tv_count)
-        CustomBoldTextView tvCount;
+        TextView tvCount;
         @BindView(R.id.tv_parcel_code)
-        CustomBoldTextView tvParcelCode;
+        TextView tvParcelCode;
         @BindView(R.id.tv_receiver_name)
-        CustomTextView tvReceiverName;
+        TextView tvReceiverName;
         @BindView(R.id.tv_status_paypost)
-        CustomTextView tvStatusPaypost;
+        TextView tvStatusPaypost;
         @BindView(R.id.tv_delivery_date)
-        CustomTextView tvDeliveryDate;
+        TextView tvDeliveryDate;
         @BindView(R.id.tv_receiver_address)
-        CustomTextView tvReceiverAddress;
+        TextView tvReceiverAddress;
         @BindView(R.id.tv_reason)
-        CustomTextView tvReason;
+        TextView tvReason;
         @BindView(R.id.tv_status_name)
-        CustomBoldTextView tvStatusName;
+        TextView tvStatusName;
         @BindView(R.id.tv_amount)
-        CustomBoldTextView tvAmount;
+        TextView tvAmount;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -61,7 +60,7 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             tvCount.setText(String.format("Số thứ tự: %s", item.getCount()));
 
             if (!TextUtils.isEmpty(item.getParcelCode())) {
-                tvParcelCode.setText(item.getParcelCode());
+                tvParcelCode.setText(position + 1 + ". " + item.getParcelCode());
             } else {
                 tvParcelCode.setText("");
             }
@@ -90,20 +89,10 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             } else if ("Y".equals(item.getIsPaypost())) {
                 tvStatusPaypost.setText("Gạch nợ thành công");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
-            } /*else if ("E".equals(item.getIsPaypost())) {
-                tvStatusPaypost.setText("Gạch nợ thất bại");
-                tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.red_light));
-            } else if ("N".equals(item.getIsPaypost())) {
-                tvStatusPaypost.setText("Bưu gửi ko gạch nợ");
-            } else if ("A".equals(item.getIsPaypost())) {
-                tvStatusPaypost.setText("N/A");
-            } else if ("L".equals(item.getIsPaypost())) {
-                tvStatusPaypost.setText("98");
-            }*/ else {
+            } else {
                 tvStatusPaypost.setText("Gạch nợ thất bại");
                 tvStatusPaypost.setTextColor(mContext.getResources().getColor(R.color.color_debit_unsuccessful));
             }
-            // tvDeliveryDate.setText(DateTimeUtils.formatDate(item.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5, DateTimeUtils.SIMPLE_DATE_FORMAT));
             tvStatusPaypost.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(item.getStatusName())) {
                 tvStatusName.setText(item.getStatusName());
@@ -118,12 +107,14 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             }
 
             if (item.getStatus().equals("C14")) {
-                tvStatusName.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                tvStatusName.setTextColor(mContext.getResources().getColor(R.color.orange));
+                tvStatusName.setBackgroundResource(R.drawable.bg_border_cam);
                 if (!TextUtils.isEmpty(item.getServiceName())) {
                     tvReason.setText(String.format("%s", item.getServiceName()));
                 }
             } else {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_000080));
+                tvStatusName.setBackgroundResource(R.drawable.bg_border_blue);
                 if (!TextUtils.isEmpty(item.getReasonName())) {
                     tvReason.setText(String.format("%s", item.getReasonName()));
                 }
@@ -155,12 +146,6 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
 
             }
-//            if (!TextUtils.isEmpty(item.getCollectAmount()) && !TextUtils.isEmpty(item.getReceiveCollectFee())) {
-//
-//            } else if (!TextUtils.isEmpty(String.valueOf(item.getFeeCancelOrder()))) {
-//            } else {
-//                tvAmount.setText("0 VNĐ");
-//            }
         }
     }
 }

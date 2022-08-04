@@ -6,6 +6,8 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
 import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -16,6 +18,9 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Single;
 
 /**
  * The CreateBd13 Contract
@@ -29,9 +34,11 @@ public interface CreateBd13Contract {
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String ladingCode,String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
+                                   String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         void updateMobile(String code, String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
+
+        Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
     }
 
     interface View extends PresentView<Presenter> {
@@ -48,9 +55,13 @@ public interface CreateBd13Contract {
         void showError(String message);
 
         void showView();
+
+        void showVmap(List<VietMapOrderCreateBD13DataRequest> mList);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#f6a71b</color>
+    <color name="colorBacground">#fdd835</color>
     <color name="colorPrimaryDark">#0e7959</color>
     <color name="colorAccent">#14648c</color>
     <color name="colorFooter">#888888</color>
@@ -38,6 +39,7 @@
     <color name="black_singer">#96727171</color>
     <color name="black_listen">#666666</color>
     <color name="blue">#0000FF</color>
+    <color name="md_blue_700">#1976d2</color>
     <color name="grey">#686868</color>
     <color name="grey25">#90686868</color>
     <color name="gray_divider">#616469</color>
@@ -124,7 +126,7 @@
 
 
     <color name="color_divider_listview">#a1a1a1</color>
-
+    <color name="colorPrimary200">#0072BC</color>
     <color name="pay_divider">#63636B</color>
     <color name="bg_corner">#3D3D3D</color>
     <color name="text_blue_bank">#0187f9</color>
@@ -234,7 +236,7 @@
     <color name="text_binh_thuong">#26ca75</color>
     <color name="text_cat">#ea2a34</color>
     <color name="grey_black">#333333</color>
-    <color name="bg_blue">#29A19C </color>
+    <color name="bg_blue">#29A19C</color>
     <color name="text_chan">#ED6C21</color>
     <color name="color_55cfcc">#55cfcc</color>
     <color name="white_opacity43">#73FFFFFF</color>

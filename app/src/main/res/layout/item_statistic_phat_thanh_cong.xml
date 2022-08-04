@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|left"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/red_light"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.17"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/red_light"
@@ -51,7 +51,7 @@
 <!--            android:layout_width="0dp"-->
 <!--            android:layout_height="match_parent"-->
 <!--            android:layout_weight="1.17"-->
-<!--            android:background="@drawable/textlines_item"-->
+<!--            android:background="@drawable/textlines_item1"-->
 <!--            android:gravity="center|right"-->
 <!--            android:padding="@dimen/dimen_5dp"-->
 <!--            android:textColor="@color/red_light"-->
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.17"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/red_light"

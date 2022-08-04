@@ -106,7 +106,7 @@ public class StatisticalLogAdapter extends RecyclerView.Adapter<StatisticalLogAd
                     imgLogo.setImageResource(R.drawable.ic_baseline_contact_phone_24);
 
             }
-            tvGhichu.setText(dir);
+            tvGhichu.setText(dir + "\n" + item.getCallDuration());
         }
     }
 }

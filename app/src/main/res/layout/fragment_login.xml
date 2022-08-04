@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_gradient_vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_vertical">
 
 
     <LinearLayout
@@ -37,20 +37,19 @@
                     <com.ems.dingdong.views.CustomTextView
                         android:id="@+id/tv_status"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Xác thực ứng dụng lần đầu sử dụng"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_18sp"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
+                        android:textSize="@dimen/text_size_18sp" />
 
-                    <com.facebook.drawee.view.SimpleDraweeView
+                    <ImageView
                         android:id="@+id/my_image_view"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        fresco:actualImageResource="@drawable/ic_validation"
-                        fresco:roundAsCircle="true" />
+                        android:src="@drawable/ic_person_circle_sharp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -62,13 +61,13 @@
 
                         <com.ems.dingdong.views.CustomMediumTextView
                             android:id="@+id/tv_phone"
-                            android:visibility="gone"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="0987654321"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18sp"
-                            android:layout_gravity="center"
-                            android:layout_height="wrap_content" />
+                            android:visibility="gone" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"

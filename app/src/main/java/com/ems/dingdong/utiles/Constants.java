@@ -7,6 +7,7 @@ package com.ems.dingdong.utiles;
 public class Constants {
     public static final String KEY_SHARE_PREFERENCES = "KEY_SHARE_PREFERENCES";
     public static final String KEY_LOG_CALL = "KEY_LOG_CALL";
+    public static final String KEY_RA_VAO = "";
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
     public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
     public static final String KEY_BUU_CUC_HUYEN = "KEY_BUU_CUC_HUYEN";
@@ -249,8 +250,8 @@ public class Constants {
     public static final String PU_ORDER_CHANGE_ROUTE_REJECT = "PU_ORDER_CHANGE_ROUTE_REJECT";
     public static final String PU_COLLECT_ALL_ORDER_POSTMAN = "PU_COLLECT_ALL_ORDER_POSTMAN";
     public static final String PU_GET_CANCEL_ORDER_REASON = "PU_GET_CANCEL_ORDER_REASON";
-    public static final String PU_OCR_SEARCH_FOR_CANCEL  = "DLV_DIC_GET_POSTMAN_SHIFT";
-    public static final String PU_OCR_GET_DETAIL_BY_LADDING_CODE  = "DLV_DIC_GET_POSTMAN_SHIFT";
+    public static final String PU_OCR_SEARCH_FOR_CANCEL  = "PU_OCR_SEARCH_FOR_CANCEL";
+    public static final String PU_OCR_GET_DETAIL_BY_LADDING_CODE  = "PU_OCR_GET_DETAIL_BY_LADDING_CODE";
     public static final String PU_DIC_GET_POS_IN_DISTRICT  = "PU_DIC_GET_POS_IN_DISTRICT";
     public static final String PU_OCR_SEARCH_FOR_APPROVE  = "PU_OCR_SEARCH_FOR_APPROVE";
 

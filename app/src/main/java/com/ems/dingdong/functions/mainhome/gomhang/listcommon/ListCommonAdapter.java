@@ -69,7 +69,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
 
     @Override
     public HolderView onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xac_nhan_tin, parent, false));
+        return new HolderView(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xac_nhan_tin_v1, parent, false));
     }
 
     @Override

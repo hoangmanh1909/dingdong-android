@@ -168,7 +168,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
             }
 
             if (!TextUtils.isEmpty(item.getStatusDate())) {
-                tvTime.setText(item.getStatusDate());
+                tvTime.setText(item.getStatusDate().replaceAll(" ", "\n"));
             }
 
             long cod = 0;
@@ -205,12 +205,15 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                         tvCancel.setOnClickListener(v -> itemClickListenner.onCancelClick(item));
                         tvApproved.setOnClickListener(v -> itemClickListenner.onApproveClick(item));
                         tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.color_939393));
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_borde_xam);
                     } else if (item.getStatusName().equals(mContext.getString(R.string.agreed))) {
                         tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_border_green);
                         tvCancel.setVisibility(View.GONE);
                         tvApproved.setVisibility(View.GONE);
                     } else {
                         tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_border_redd);
                         tvCancel.setVisibility(View.GONE);
                         tvApproved.setVisibility(View.GONE);
                     }
@@ -219,13 +222,17 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.HolderView> 
                         tvCancel.setVisibility(View.VISIBLE);
                         tvApproved.setVisibility(View.INVISIBLE);
                         tvCancel.setText(mContext.getString(R.string.cancel_require));
+                        tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.color_939393));
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_borde_xam);
                         tvCancel.setOnClickListener(v -> itemClickListenner.onCancelRequestClick(item));
                     } else if (item.getStatusName().equals(mContext.getString(R.string.agreed))) {
                         tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.bg_primary));
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_border_green);
                         tvCancel.setVisibility(View.GONE);
                         tvApproved.setVisibility(View.GONE);
                     } else {
                         tvStatusRoute.setTextColor(mContext.getResources().getColor(R.color.red_light));
+                        tvStatusRoute.setBackgroundResource(R.drawable.bg_border_redd);
                         tvCancel.setVisibility(View.GONE);
                         tvApproved.setVisibility(View.GONE);
                     }

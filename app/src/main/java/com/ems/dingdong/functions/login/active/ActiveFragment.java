@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.login.active;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
 public class ActiveFragment extends ViewFragment<ActiveContract.Presenter> implements ActiveContract.View {
 
     @BindView(R.id.edtCode)
-    CustomEditText edtCode;
+    EditText edtCode;
 
     public static ActiveFragment getInstance() {
         return new ActiveFragment();

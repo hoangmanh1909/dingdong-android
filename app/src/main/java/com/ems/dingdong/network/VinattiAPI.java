@@ -1,6 +1,8 @@
 package com.ems.dingdong.network;
 
 
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.Bd13Create;
@@ -607,9 +609,15 @@ public interface VinattiAPI {
     @POST("api/EWallet/CancelLink")
     Single<SimpleResult> huyLienKetVi(@Body SmartBankRequestCancelLinkRequest requestData);
 
+    @POST("api/CallCenter/CallLog")
+    Single<SimpleResult> getCallLog(@Body List<CallLogMode> requestData);
+
 
     @POST("api/DingDong/GetMainviewCollect")
     Single<ThuGomRespone> getGetMainviewCollec(@Body BalanceModel requestData);
+
+    @POST("api/VietMap/OrderCreateBD13")
+    Single<SimpleResult> getLapBangKeBD13(@Body OrderCreateBD13Mode requestData);
 
     @POST("api/EWallet/LinkHistory")
     Single<SimpleResult> getHistory(@Body LinkHistory requestData);

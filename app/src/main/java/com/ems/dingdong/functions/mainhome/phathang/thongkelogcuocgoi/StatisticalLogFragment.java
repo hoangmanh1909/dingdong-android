@@ -145,12 +145,12 @@ public class StatisticalLogFragment extends ViewFragment<StatisticalLogContract.
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor managedCursor) {
-        Log.d("AAAAA", "onLoadFinished()");
         try {
             int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
             int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
             int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
             int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+            Log.d("AAAAA", new Gson().toJson(managedCursor));
             while (managedCursor.moveToNext()) {
                 String phNumber = managedCursor.getString(number);
                 String callType = managedCursor.getString(type);
@@ -169,6 +169,7 @@ public class StatisticalLogFragment extends ViewFragment<StatisticalLogContract.
                 mode.setDate(callDate);
                 mList.add(mode);
             }
+            Log.d("AAAAA", new Gson().toJson(mList));
             Collections.sort(mList, new NameComparator());
             managedCursor.close();
             mAdapter.notifyDataSetChanged();

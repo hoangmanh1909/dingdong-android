@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,63 +43,100 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/frame_profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/img_logo_persion"
-                android:layout_width="@dimen/_56sdp"
-                android:layout_height="@dimen/_56sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:src="@drawable/ic_account_v1" />
+            android:layout_height="wrap_content"
+            android:background="#fafafa"
+            tools:ignore="MissingConstraints">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_toEndOf="@id/img_logo_persion"
-                android:orientation="vertical">
+                android:layout_height="160dp"
+                android:layout_alignParentTop="true"
+                android:weightSum="12">
 
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/text_size_14sp"
-                    tools:text="0911818968 ( 108101 COD Hoàn kiếm 1 )" />
+                    android:layout_weight="3"
+                    android:background="@drawable/login_shape_bk"
+                    android:orientation="vertical">
 
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_fullname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#cccccc"
-                    android:textSize="@dimen/text_size_14sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_poname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#cccccc"
-                    android:textSize="@dimen/text_size_14sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_ctel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#cccccc"
-                    android:textSize="@dimen/text_size_14sp" />
-
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_login_bk"
+                        android:contentDescription="login background" />
+                </LinearLayout>
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/frame_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_logo_persion"
+                    android:layout_width="@dimen/_56sdp"
+                    android:layout_height="@dimen/_56sdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+
+                    android:src="@drawable/ic_person_circle_sharp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_logo_persion"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16dp"
+                        tools:text="0911818968 ( 108101 COD Hoàn kiếm 1 )" />
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_fullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2w"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_poname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="asda"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_ctel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="asdasd"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
-        <View style="@style/Devider" />
+        <!--        <View style="@style/Devider" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -215,6 +251,7 @@
 
             <RelativeLayout
                 android:id="@+id/rl_e_wallet"
+                android:visibility="gone"
                 style="@style/RelativeLayoutPersonal">
 
                 <LinearLayout

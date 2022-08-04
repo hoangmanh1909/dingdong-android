@@ -1,29 +1,50 @@
 package com.ems.dingdong.functions.mainhome.main;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.CallLog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.viewpager.widget.ViewPager;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
+import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.calls.CallManager;
 import com.ems.dingdong.calls.IncomingCallActivity;
 import com.ems.dingdong.calls.Session;
+import com.ems.dingdong.dialog.DialoggoiLai;
 import com.ems.dingdong.functions.mainhome.callservice.CallActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
+import com.ems.dingdong.functions.mainhome.main.data.ModeCA;
+import com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogFragment;
+import com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogMode;
 import com.ems.dingdong.functions.mainhome.profile.CustomItem;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomToNumber;
@@ -43,8 +64,11 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
+import com.google.android.exoplayer2.C;
+import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.PhoneCallback;
@@ -56,6 +80,8 @@ import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +93,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * The Home Fragment
  */
-public class MainFragment extends ViewFragment<MainContract.Presenter> implements MainContract.View {
+public class MainFragment extends ViewFragment<MainContract.Presenter> implements MainContract.View, LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.first_header)
     CustomTextView firstHeader;
@@ -89,6 +115,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     ImageView img_notification;
     @BindView(R.id.notification_badge)
     TextView notification_badge;
+    @BindView(R.id.sw_switch)
+    Switch swSwitch;
     private FragmentPagerAdapter adapter;
     private Fragment homeFragment;
     private Fragment gomHangFragment;
@@ -104,8 +132,17 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     String routeInfoJson;
     String mobilenumber;
     private Calendar mCalendar;
+    private Calendar mCalendarVaoCa;
+    private Calendar mCalendarRaCa;
     private String mFromDate;
+    private String mDateRaCa;
+    private String mDateVaoCa;
     private String mToDate;
+    SharedPref sharedPref;
+    String mDataCA;
+    boolean isCheck = false;
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CONTACTS};
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -119,12 +156,18 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void initLayout() {
         super.initLayout();
-        SharedPref sharedPref = new SharedPref(getActivity());
+        checkSelfPermission();
+        getLoaderManager().initLoader(URL_LOADER, null, this);
+
+        sharedPref = new SharedPref(getActivity());
+        checkDate();
         String callProvider = sharedPref.getString(Constants.KEY_CALL_PROVIDER_HOME, callProviderHome);
         userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         mCalendar = Calendar.getInstance();
+        mCalendarVaoCa = Calendar.getInstance();
+        mCalendarRaCa = Calendar.getInstance();
         Date today = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
@@ -225,7 +268,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         } else {
             img_notification.setVisibility(View.GONE);
             imgCall.setVisibility(View.GONE);
-//            imgTopSetting.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.INVISIBLE);
             viewTop.setVisibility(View.GONE);
             Handler handler = new Handler();
@@ -238,9 +280,44 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
 
         eventLoginAndCallCtel();
-//        ApplicationController.getInstance().initPortSipService();
     }
 
+
+    void checkDate() {
+        isCheck = false;
+        swSwitch.setChecked(false);
+        mDataCA = sharedPref.getString(Constants.KEY_RA_VAO, "");
+        if (!TextUtils.isEmpty(mDataCA)) {
+            isCheck = true;
+            swSwitch.setChecked(true);
+        } else {
+            isCheck = false;
+            swSwitch.setChecked(false);
+        }
+        mCalendar = Calendar.getInstance();
+        mCalendarRaCa = Calendar.getInstance();
+        mDateRaCa = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+        String toDay = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+//        String toDay = "05/08/2022";
+        if (!TextUtils.isEmpty(mDataCA)) {
+            ModeCA modeCA = NetWorkController.getGson().fromJson(mDataCA, ModeCA.class);
+            Log.d("AAAASDASDSAD", new Gson().toJson(modeCA));
+            mDateVaoCa = DateTimeUtils.convertStringToDatToString(modeCA.getNgaygio(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+            Date mToday = DateTimeUtils.convertStringToDate(toDay, DateTimeUtils.SIMPLE_DATE_FORMAT);
+            Date mDayVaota = DateTimeUtils.convertStringToDate(mDateVaoCa, DateTimeUtils.SIMPLE_DATE_FORMAT);
+            if (mDayVaota.before(mToday)) {
+                List<CallLogMode> modeList = new ArrayList<>();
+                for (int i = 0; i < mList.size(); i++) {
+                    if (mList.get(i).getCallDate().compareTo(mDateVaoCa) >= 0 && mList.get(i).getCallDate().compareTo(mDateRaCa) <= 0) {
+                        modeList.add(mList.get(i));
+                    }
+                }
+                Log.d("AAAASDASDSAD", toDay + " " + mDateVaoCa);
+                mPresenter.getCallLog(modeList);
+                sharedPref.clearRaVao();
+            }
+        }
+    }
 
     private void getBalance() {
         String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -309,6 +386,48 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
     }
 
+    @Override
+    public void showVaoCa(String data) {
+        isCheck = true;
+        swSwitch.setChecked(true);
+        ModeCA modeCA = new ModeCA();
+        modeCA.setData(data);
+        modeCA.setNgaygio(DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
+        sharedPref.putString(Constants.KEY_RA_VAO, NetWorkController.getGson().toJson(modeCA));
+        Toast.showToast(getViewContext(), "Bạn đã vào ca làm việc");
+    }
+
+    @Override
+    public void showRaCa(String data) {
+
+        Toast.showToast(getViewContext(), "Bạn đã rời khỏi ca làm việc");
+        mCalendarRaCa = Calendar.getInstance();
+        mDateRaCa = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+        mDataCA = sharedPref.getString(Constants.KEY_RA_VAO, "");
+        ModeCA modeCA = NetWorkController.getGson().fromJson(mDataCA, ModeCA.class);
+        mDateVaoCa = modeCA.getNgaygio();
+        List<CallLogMode> modeList = new ArrayList<>();
+        for (int i = 0; i < mList.size(); i++) {
+            if (mList.get(i).getCallDate().compareTo(mDateVaoCa) >= 0 && mList.get(i).getCallDate().compareTo(mDateRaCa) <= 0) {
+                modeList.add(mList.get(i));
+            }
+        }
+        mPresenter.getCallLog(modeList);
+        sharedPref.clearRaVao();
+    }
+
+    @Override
+    public void showCallLog(String data) {
+        isCheck = false;
+        swSwitch.setChecked(false);
+        Toast.showToast(getViewContext(), data);
+    }
+
+    @Override
+    public void showError() {
+        swSwitch.setChecked(isCheck);
+    }
+
     private Fragment getFragmentItem(int position) {
         if (mPresenter != null) {
             switch (position) {
@@ -337,10 +456,25 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         return new Fragment();
     }
 
+    private long lastClickTime = 0;
 
-    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting, R.id.fr_thongbao})
+    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting, R.id.fr_thongbao, R.id.sw_switch})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.sw_switch:
+                getLoaderManager().restartLoader(URL_LOADER, null, this);
+                if (isCheck) {
+                    String data = sharedPref.getString(Constants.KEY_RA_VAO, "");
+                    ModeCA modeCA = NetWorkController.getGson().fromJson(data, ModeCA.class);
+                    mPresenter.getRaCa(modeCA.getData());
+                } else {
+                    MainMode mode = new MainMode();
+                    mode.setPostmanTel(userInfo.getMobileNumber());
+                    mode.setPostmanCode(userInfo.getUserName());
+                    mPresenter.getVaoCa(mode);
+                }
+
+                break;
             case R.id.fr_thongbao:
                 mPresenter.showNitify();
                 break;
@@ -358,6 +492,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 mPresenter.showSetting();
                 break;
         }
+
     }
 
 
@@ -450,4 +585,84 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         viewTop.setVisibility(View.GONE);
     }
 
+    protected void checkSelfPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadExternalPermission = getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS);
+            if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+
+        }
+    }
+
+    private static final int URL_LOADER = 1;
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderID, @Nullable Bundle args) {
+        Log.d("AAAAAAAA", "onCreateLoader() >> loaderID : " + loaderID);
+        switch (loaderID) {
+            case URL_LOADER:
+                // Returns a new CursorLoader
+                return new CursorLoader(
+                        getActivity(),   // Parent activity context
+                        CallLog.Calls.CONTENT_URI,        // Table to query
+                        null,     // Projection to return
+                        null,            // No selection clause
+                        null,            // No selection arguments
+                        null             // Default sort order
+                );
+            default:
+                return null;
+        }
+    }
+
+    List<CallLogMode> mList = new ArrayList<>();
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor managedCursor) {
+        mList = new ArrayList<>();
+        try {
+            int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
+            int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
+            int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+            int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+            while (managedCursor.moveToNext()) {
+                String phNumber = managedCursor.getString(number);
+                String callType = managedCursor.getString(type);
+                String callDate = managedCursor.getString(date);
+                Date callDayTime = new Date(Long.valueOf(callDate));
+                String callDuration = managedCursor.getString(duration);
+                String dir = null;
+                String datea = DateTimeUtils.convertDateToString(callDayTime, DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+                int callTypeCode = Integer.parseInt(callType);
+
+                CallLogMode mode = new CallLogMode();
+                mode.setCallDate(datea);
+                mode.setPhNumber(phNumber);
+                mode.setCallDuration(callDuration);
+                mode.setCallType(callTypeCode);
+                mode.setDate(callDate);
+                mode.setFromNumber(userInfo.getMobileNumber());
+                mList.add(mode);
+            }
+            Collections.sort(mList, new NameComparator());
+            Log.d("MEMIT", mList.size() + "");
+            managedCursor.close();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+    }
+
+    class NameComparator implements Comparator<CallLogMode> {
+        public int compare(CallLogMode s1, CallLogMode s2) {
+            return s2.getDate().compareTo(s1.getDate());
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
 }

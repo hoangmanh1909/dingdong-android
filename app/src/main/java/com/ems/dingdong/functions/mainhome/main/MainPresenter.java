@@ -10,6 +10,8 @@ import com.ems.dingdong.functions.mainhome.address.AddressPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.GomHangPresenter;
 import com.ems.dingdong.functions.mainhome.home.HomePresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.functions.mainhome.notify.ListNotifyPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
@@ -101,6 +103,60 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                     } else {
                         mView.hideProgress();
                         mView.showListNotifi(new ArrayList<>());
+                    }
+                });
+    }
+
+    @Override
+    public void getVaoCa(MainMode request) {
+        mView.showProgress();
+        mInteractor.getVaoCa(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showVaoCa(simpleResult.getData());
+                        mView.hideProgress();
+                    } else {
+                        mView.showError();
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void getRaCa(String request) {
+        mView.showProgress();
+        mInteractor.getRaCa(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showRaCa(simpleResult.getData());
+                        mView.hideProgress();
+                    } else {
+                        mView.showError();
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void getCallLog(List<CallLogMode> request) {
+        mView.showProgress();
+        mInteractor.getCallLog(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showCallLog(simpleResult.getData());
+                        mView.hideProgress();
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
                     }
                 });
     }

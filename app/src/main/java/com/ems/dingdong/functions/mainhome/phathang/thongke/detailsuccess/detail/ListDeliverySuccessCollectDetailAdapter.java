@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detai
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
@@ -35,6 +36,8 @@ public class ListDeliverySuccessCollectDetailAdapter extends RecyclerBaseAdapter
         CustomBoldTextView tvLadingCode;
         @BindView(R.id.tv_Amount)
         CustomBoldTextView tvAmount;
+        @BindView(R.id.tv_feename)
+        TextView tvFeename;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -49,6 +52,7 @@ public class ListDeliverySuccessCollectDetailAdapter extends RecyclerBaseAdapter
             } else {
                 tvSoTt.setText(String.format("%s", position + 1));
             }
+            tvFeename.setVisibility(View.GONE);
             int tienCuoc = 0;
             if (item.getFeePPA() > 0) {
                 tienCuoc += item.getFeePPA();

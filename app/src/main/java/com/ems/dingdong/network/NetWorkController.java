@@ -3,6 +3,9 @@ package com.ems.dingdong.network;
 
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
 import com.ems.dingdong.model.ActiveResult;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.BaseRequestModel;
@@ -1110,9 +1113,27 @@ public class NetWorkController {
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
+    public static Single<SimpleResult> getVaoCa(MainMode request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("PMS001");
+        dataRequestPayment.setData(getGson().toJson(request));
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
+    public static Single<SimpleResult> getRaCa(String request) {
+        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+        dataRequestPayment.setCode("PMS002");
+        dataRequestPayment.setData(request);
+        return getAPIRxBuilder().commonService(dataRequestPayment);
+    }
+
 
     public static Single<ThuGomRespone> getDDThugom(BalanceModel r) {
         return getAPIRxBuilder().getGetMainviewCollec(r);
+    }
+
+    public static Single<SimpleResult> getCallLog(List<CallLogMode> requestData) {
+        return getAPIRxBuilder().getCallLog(requestData);
     }
 
     public static Single<SimpleResult> getHistory(LinkHistory r) {
@@ -1122,7 +1143,8 @@ public class NetWorkController {
     public static Single<SimpleResult> getCallHistory(HistoryRequest r) {
         return getAPIRxBuilder().getCallHistory(r);
     }
-  public static Single<SimpleResult> getCallHistoryTotal(HistoryRequest r) {
+
+    public static Single<SimpleResult> getCallHistoryTotal(HistoryRequest r) {
         return getAPIRxBuilder().getCallHistoryTotal(r);
     }
 
@@ -1136,6 +1158,10 @@ public class NetWorkController {
 
     public static Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest r) {
         return getAPIRxBuilder().ddCreateVietMapRequest(r);
+    }
+
+    public static Single<SimpleResult> getLapBangKeBD13(OrderCreateBD13Mode r) {
+        return getAPIRxBuilder().getLapBangKeBD13(r);
     }
 
     public static Single<SimpleResult> getMap() {

@@ -65,14 +65,15 @@ public class SeabankPresenter extends Presenter<SeabankContract.View, SeabankCon
                             if (simpleResult.getErrorCode().equals("00")) {
                                 SharedPref sharedPref = new SharedPref((Context) mContainerView);
                                 sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
-                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType());
+                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<ArrayList<DanhSachNganHangRepsone>>() {
+                                }.getType());
                                 mView.showDanhSach(list);
                                 mView.hideProgress();
                             } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -143,12 +144,14 @@ public class SeabankPresenter extends Presenter<SeabankContract.View, SeabankCon
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                    if (simpleResult != null) {
+                    if (simpleResult.getErrorCode() != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
                             DanhSachTaiKhoanRespone[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DanhSachTaiKhoanRespone[].class);
                             List<DanhSachTaiKhoanRespone> list1 = Arrays.asList(list);
                             mView.showDanhSachTaiKhoan(list1);
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }else{ Toast.showToast(getViewContext(),"Lỗi kết nối hệ thống, Vui lòng liên hệ quản trị viên!");
                         mView.hideProgress();
                     }
                 });

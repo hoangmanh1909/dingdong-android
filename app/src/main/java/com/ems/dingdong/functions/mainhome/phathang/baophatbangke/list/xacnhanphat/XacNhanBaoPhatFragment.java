@@ -1815,22 +1815,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             } else tiem_tam = 0;
 
             if (IsExchange) {
-                if (TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim())) {
-                    Toast.showToast(getViewContext(), "Vui lòng nhập mã bưu gửi hàng đổi trả");
-                    return;
-                }
-                if (!edtMaBuuGui.getText().toString().trim().matches("[\\w-]+")) {
+//                if (TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim())) {
+//                    Toast.showToast(getViewContext(), "Vui lòng nhập mã bưu gửi hàng thu hồi");
+//                    return;
+//                }
+                if (!TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim()) && !edtMaBuuGui.getText().toString().trim().matches("[\\w-]+")) {
                     Toast.showToast(getContext(), "Vui lòng kiểm tra mã bưu gửi");
                     return;
                 }
-                if (TextUtils.isEmpty(tvDateHoantra.getText().toString().trim())) {
-                    Toast.showToast(getViewContext(), "Vui lòng nhập ngày phát thực tế hàng đổi trả");
-                    return;
-                }
-                if (TextUtils.isEmpty(tvTiemHoantra.getText().toString().trim())) {
-                    Toast.showToast(getViewContext(), "Vui lòng giờ phát thực tế hàng đổi trả");
-                    return;
-                }
+//                if (TextUtils.isEmpty(tvDateHoantra.getText().toString().trim())) {
+//                    Toast.showToast(getViewContext(), "Vui lòng nhập ngày phát thực tế hàng thu hồi");
+//                    return;
+//                }
+//                if (TextUtils.isEmpty(tvTiemHoantra.getText().toString().trim())) {
+//                    Toast.showToast(getViewContext(), "Vui lòng giờ phát thực tế hàng thu hồi");
+//                    return;
+//                }
                 mExchangeLadingCode = edtMaBuuGui.getText().toString().trim();
                 mExchangeDeliveryDate = Long.parseLong(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT5));

@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.login.validation;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.widget.EditText;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -19,7 +20,7 @@ import butterknife.OnClick;
 public class ValidationFragment extends ViewFragment<ValidationContract.Presenter> implements ValidationContract.View {
 
     @BindView(R.id.edtPhone)
-    CustomEditText edtPhone;
+    EditText edtPhone;
 
     private TextWatcher textWatcherListener = new TextWatcher() {
         @Override

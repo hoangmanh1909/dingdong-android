@@ -260,7 +260,6 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 } else {
                     tv_code.setText(String.format("%s", item.getMaE()));
                 }
-
             } else {
                 tv_code.setText("");
             }

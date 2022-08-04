@@ -50,7 +50,7 @@
         app:pstsTabTextSize="14dp"
         app:pstsTabTextStyle="bold"
         app:pstsTabTextAllCaps="false"
-        app:pstsTabTextColor="@color/color_text_tab_header"
+        app:pstsTabTextColor="@color/black"
         app:pstsShouldExpand="true"
         app:pstsUnderlineColor="@color/colorWhite" />
 
