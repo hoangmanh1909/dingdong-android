@@ -65,21 +65,26 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
 
     @Override
     public void ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode) {
-        mView.showProgress();
-        mInteractor.ddLapBD13Vmap(createBD13Mode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        VietMapOrderCreateBD13DataRequest[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), VietMapOrderCreateBD13DataRequest[].class);
-                        List<VietMapOrderCreateBD13DataRequest> request = Arrays.asList(list);
-                        mView.showVmap(request);
-                    } else {
-                        Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        mView.hideProgress();
+        try {
+            mView.showProgress();
+            mInteractor.ddLapBD13Vmap(createBD13Mode)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            VietMapOrderCreateBD13DataRequest[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), VietMapOrderCreateBD13DataRequest[].class);
+                            List<VietMapOrderCreateBD13DataRequest> request = Arrays.asList(list);
+                            mView.showVmap(request);
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
 
-                    }
-                });
+                        }
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 
     @Override

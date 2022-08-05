@@ -163,7 +163,6 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 mPresenter.back();
                 break;
             case R.id.rl_logout:
-
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

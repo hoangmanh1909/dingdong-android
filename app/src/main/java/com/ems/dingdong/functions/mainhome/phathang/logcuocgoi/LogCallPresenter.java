@@ -52,31 +52,36 @@ public class LogCallPresenter extends Presenter<LogCallContract.View, LogCallCon
 
     @Override
     public void getHistoryCall(HistoryRequest request) {
-        mView.showProgress();
-        SharedPref sharedPref = new SharedPref((Context) mContainerView);
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        UserInfo userInfo = null;
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
-        if (!userJson.isEmpty()) {
-            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        request.setPOCode(poCode);
-        request.setPostmanCode(userInfo.getUserName());
-        request.setPostmanTel(userInfo.getMobileNumber());
-        mInteractor.getHistoryCall(request)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
-                        List<HistoryRespone> l = Arrays.asList(j);
-                        mView.showLog(l);
+        try {
+            mView.showProgress();
+            SharedPref sharedPref = new SharedPref((Context) mContainerView);
+            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+            UserInfo userInfo = null;
+            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+            String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
+            if (!userJson.isEmpty()) {
+                userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            }
+            request.setPOCode(poCode);
+            request.setPostmanCode(userInfo.getUserName());
+            request.setPostmanTel(userInfo.getMobileNumber());
+            mInteractor.getHistoryCall(request)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
+                            List<HistoryRespone> l = Arrays.asList(j);
+                            mView.showLog(l);
 
-                    } else {
-                    }
-                    mView.hideProgress();
-                });
+                        } else {
+                        }
+                        mView.hideProgress();
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 
     @Override

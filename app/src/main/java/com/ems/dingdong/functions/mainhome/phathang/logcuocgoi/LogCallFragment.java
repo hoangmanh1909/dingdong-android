@@ -47,10 +47,6 @@ public class LogCallFragment extends ViewFragment<LogCallContract.Presenter> imp
         mCalendarTo = Calendar.getInstance();
         mFromDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(mCalendarTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-//        HistoryRequest historyRequest = new HistoryRequest();
-//        historyRequest.setFromDate(Integer.parseInt(mFromDate));
-//        historyRequest.setToDate(Integer.parseInt(mToDate));
-//        mPresenter.getHistoryCall(historyRequest);
         mList = new ArrayList<>();
         mAdapter = new LogCallAdapter(getViewContext(), mList) {
             @Override

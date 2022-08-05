@@ -109,38 +109,48 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
 
     @Override
     public void getVaoCa(MainMode request) {
-        mView.showProgress();
-        mInteractor.getVaoCa(request)
-                .subscribeOn(Schedulers.io())
-                .delay(1000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showVaoCa(simpleResult.getData());
-                        mView.hideProgress();
-                    } else {
-                        mView.showError();
-                        mView.hideProgress();
-                    }
-                });
+        try {
+            mView.showProgress();
+            mInteractor.getVaoCa(request)
+                    .subscribeOn(Schedulers.io())
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showVaoCa(simpleResult.getData());
+                            mView.hideProgress();
+                        } else {
+                            mView.showError();
+                            mView.hideProgress();
+                        }
+                    }, Throwable::getMessage);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 
     @Override
     public void getRaCa(String request) {
-        mView.showProgress();
-        mInteractor.getRaCa(request)
-                .subscribeOn(Schedulers.io())
-                .delay(1000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showRaCa(simpleResult.getData());
-                        mView.hideProgress();
-                    } else {
-                        mView.showError();
-                        mView.hideProgress();
-                    }
-                });
+        try {
+            mView.showProgress();
+            mInteractor.getRaCa(request)
+                    .subscribeOn(Schedulers.io())
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showRaCa(simpleResult.getData());
+                            mView.hideProgress();
+                        } else {
+                            mView.showError();
+                            mView.hideProgress();
+                        }
+                    }, Throwable::getMessage);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 
     @Override

@@ -7,7 +7,9 @@ import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.data.T
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRespone;
+
 import java.util.List;
+
 import io.reactivex.Single;
 
 public interface LogCallContract {
@@ -25,6 +27,7 @@ public interface LogCallContract {
         TabLogCallRespone getLogCallMode();
 
         int mType();
+
         void showTrCuubg(String bg);
     }
 }

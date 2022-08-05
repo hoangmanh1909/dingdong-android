@@ -1,11 +1,13 @@
 package com.ems.dingdong.functions.mainhome.phathang;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -129,8 +131,17 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                                 Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
                                 startActivity(intent);
                             } else {
-                                Toast.showToast(getViewContext(), "Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
-                                return;
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
+                                builder1.setCancelable(false);
+                                builder1.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+//                                Toast.showToast(getViewContext(), "Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
                             }
                         } else if (homeInfo.getId() == 8) {
                             mPresenter.showNhapBaoPhatOffline();
