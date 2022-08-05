@@ -97,8 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
                         android:textSize="16dp"
+                        android:textStyle="bold"
                         tools:text="0911818968 ( 108101 COD Hoàn kiếm 1 )" />
 
                     <com.ems.dingdong.views.CustomMediumTextView
@@ -251,7 +251,6 @@
 
             <RelativeLayout
                 android:id="@+id/rl_e_wallet"
-                android:visibility="gone"
                 style="@style/RelativeLayoutPersonal">
 
                 <LinearLayout

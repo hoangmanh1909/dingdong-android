@@ -93,13 +93,13 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
 
     @Override
     public void onCanceledDelivery() {
-        if (mPosition == 0) {
-            ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
-            commonFragment.refreshLayout();
-        } else {
-            ListCommonFragment commonFragment1 = (ListCommonFragment) tabList.get(1);
-            commonFragment1.refreshLayout();
-        }
+//        if (mPosition == 0) {
+        ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
+        commonFragment.refreshLayout();
+//        } else {
+        ListCommonFragment commonFragment1 = (ListCommonFragment) tabList.get(1);
+        commonFragment1.refreshLayout();
+//        }
     }
 
     @Override
@@ -135,6 +135,7 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
                 break;
         }
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -142,11 +143,12 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
 
 
     }
+
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof  String){
+        if (event instanceof String) {
             String message = (String) event;
-            if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG)){
+            if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG)) {
                 pager.setCurrentItem(1);
             }
         }

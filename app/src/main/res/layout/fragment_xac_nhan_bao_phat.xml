@@ -410,7 +410,6 @@
                                             android:id="@+id/et_pt_amount"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-
                                             android:gravity="right"
                                             android:inputType="number"
                                             android:textColor="@color/red_light"

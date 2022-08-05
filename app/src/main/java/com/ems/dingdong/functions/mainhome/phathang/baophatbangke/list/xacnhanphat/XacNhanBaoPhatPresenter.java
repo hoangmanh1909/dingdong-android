@@ -35,6 +35,7 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -169,9 +170,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
-                if (response.body() != null) {
-                    mView.showImage(response.body().getFile(), path);
-                }
+                if (response.body().getErrorCode() != null) {
+                    if (response.body().getErrorCode().equals("00"))
+                        mView.showImage(response.body().getFile(), path);
+                    else Toast.showToast(getViewContext(), response.body().getMessage());
+                } else mView.showAlertDialog("Không kết nối được với hệ thống!");
             }
 
             @Override

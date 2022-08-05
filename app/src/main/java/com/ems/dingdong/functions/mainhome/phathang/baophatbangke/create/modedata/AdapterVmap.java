@@ -89,7 +89,11 @@ public class AdapterVmap extends RecyclerView.Adapter<AdapterVmap.HolderView> {
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
             tvCode.setText(String.format("%s. %s", item.getSTT(), item.getMaE()));
-            tvSodonhang.setText("Số đơn hàng: " + item.getReferenceCode());
+
+            if (TextUtils.isEmpty(item.getReferenceCode()))
+                tvSodonhang.setVisibility(View.GONE);
+            else
+                tvSodonhang.setText("Số đơn hàng: " + item.getReferenceCode());
             String receiverName = "";
             String receiverMobile = "";
             String receiverAddress = "";
@@ -111,13 +115,31 @@ public class AdapterVmap extends RecyclerView.Adapter<AdapterVmap.HolderView> {
             if (!TextUtils.isEmpty(item.getSenderAddress())) {
                 senderAddress = item.getSenderAddress();
             }
+
             tvReceiver.setText(String.format("Người nhận: %s - %s - %s", receiverName, receiverMobile, receiverAddress));
             tvSender.setText("Người gửi: " + item.getSenderName() + " - " + senderMobile + " - " + senderAddress);
-            tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
-            tvInstruction.setText(String.format("Ghi chú: %s", item.getInstruction()));
-            tvWeight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
-            tvFee.setText("Tổng thu (PKTC): " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
-            tvGtgt.setText(String.format("GTGT: %s", item.getVatCode()));
+
+            if (TextUtils.isEmpty(item.getDescription()))
+                tvInfo.setVisibility(View.GONE);
+            else
+                tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
+            if (TextUtils.isEmpty(item.getInstruction()))
+                tvInstruction.setVisibility(View.GONE);
+            else
+                tvInstruction.setText(String.format("Ghi chú: %s", item.getInstruction()));
+            if (TextUtils.isEmpty(item.getWeight().toString()))
+                tvWeight.setVisibility(View.GONE);
+            else
+                tvWeight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
+            if (TextUtils.isEmpty(String.valueOf(item.getFeeCancelOrder())))
+                tvFee.setVisibility(View.GONE);
+            else
+                tvFee.setText("Tổng thu (PKTC): " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getFeeCancelOrder())));
+            if (TextUtils.isEmpty(String.valueOf(item.getVatCode())))
+                tvGtgt.setVisibility(View.GONE);
+            else
+                tvGtgt.setText(String.format("GTGT: %s", item.getVatCode()));
+
             int fee = (int) (item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA());
             if (item.getAmount() != null)
                 tvCOD.setText("Tổng thu (PTC):  " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount() + fee)));

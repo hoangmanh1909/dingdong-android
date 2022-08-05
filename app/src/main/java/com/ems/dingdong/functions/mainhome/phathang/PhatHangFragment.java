@@ -92,7 +92,7 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(17, R.drawable.ic_sml_123, "Smartlocker"));
 //                homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Thống kê log cuộc gọi"));
                 homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
-                homeInfos.add(new HomeInfo(19, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
+//                homeInfos.add(new HomeInfo(19, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
 
                 mList.addAll(homeInfos);
             }

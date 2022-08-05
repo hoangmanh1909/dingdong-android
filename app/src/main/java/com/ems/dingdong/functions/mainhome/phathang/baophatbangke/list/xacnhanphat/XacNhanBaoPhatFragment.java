@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -66,6 +67,8 @@ import com.ems.dingdong.dialog.PickerDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.hinhanh.ImageAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.JavaImageResizer;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.ScalingUtilities;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.AddHangDoiTraDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.HangDoiTraAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.HangDoiTraCallback;
@@ -114,6 +117,8 @@ import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -991,6 +996,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 public void onClick(View v) {
                                     mHoanDoiTra.remove(position);
                                     mHoanDoiTraAdapter.notifyDataSetChanged();
+                                    double t = 0;
+                                    for (int i = 0; i < mHoanDoiTra.size(); i++) {
+                                        t += mHoanDoiTra.get(i).getAmount();
+                                    }
+                                    tvHangDoiTra.setText(NumberUtils.formatVinatti(t));
                                 }
                             });
                         }
@@ -1554,7 +1564,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     public void pickImage(String type, int max) {
-
         switch (type) {
             case "AVATAR":
                 isCaptureHoanTra = false;
@@ -1635,6 +1644,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private final static int CAMERA_RQ = 6969;
 
     void setIsCapture(String type) {
+        Log.d("AAAAASDASDASD", new Gson().toJson(listImageHangDoiTra));
+
         switch (type) {
             case "AVATAR":
                 isCaptureHoanTra = false;
@@ -2228,19 +2239,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
-
                 if (isCaptureAvatar) {
-                    mPresenter.postImageAvatar(data.getData().getPath());
+                    attemptSendMedia(data.getData().getPath(), 0);
                 } else {
-                    mPresenter.postImage(data.getData().getPath());
+                    attemptSendMedia(data.getData().getPath(), 0);
                 }
             } else {
-                Toast.showToast(getViewContext(), resultCode + "");
+//                Toast.showToast(getViewContext(), resultCode + "");
             }
         } else if (requestCode == 1) {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
-                mPresenter.postImage(getPath(selectedImageUri));
+                File file = new File(getPath(selectedImageUri));
+                long length = file.length();
+                length = length / 1024;
+                attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), getPath(selectedImageUri), "DINGDONG.jpg"), 1);
+                System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
             }
         }
     }
@@ -2262,8 +2276,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-
-    private void attemptSendMedia(String path_media, int type) {
+    private void attemptSendMediaFolder(String path_media, int type) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -2273,40 +2286,70 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 isSavedImage -> {
+                    if (true) {
+                        String path = file.getParent() + File.separator + "Process_" + file.getName();
+                        // mSignPosition = false;
+                        //mPresenter.postImageAvatar(pathAvatar);
+                        if (isCaptureAvatar) {
+                            mPresenter.postImageAvatar(path);
+                        } else {
+                            mPresenter.postImage(path);
+                        }
+                        if (type == 0)
+                            if (file.exists())
+                                file.delete();
+                    } else {
+                        String path = file.getParent() + File.separator + "Process_" + file.getName();
+                        Log.d("ASDASDSADasd", path);
+                        mPresenter.postImage(path_media);
+                    }
+                },
+                onError -> Logger.e("error save image")
+        );
+    }
+
+    public static File bitmapToFile(Context context, Bitmap bitmap, String fileNameToSave) { // File name like "image.png"
+        //create a file to write bitmap data
+        File file = null;
+        try {
+            file = new File(Environment.getExternalStorageDirectory() + File.separator + fileNameToSave);
+            file.createNewFile();
+
+//Convert bitmap to byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos); // YOU can also save it in JPEG
+            byte[] bitmapdata = bos.toByteArray();
+
+//write the bytes in file
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return file; // it will return null
+        }
+    }
+
+    private void attemptSendMedia(String path_media, int type) {
+        File file = new File(path_media);
+        Observable.fromCallable(() -> {
+            Uri uri = Uri.fromFile(new File(path_media));
+            return BitmapUtils.processingBitmap(uri, getViewContext());
+        }).subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.io())
+                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 80))
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                isSavedImage -> {
                     if (isSavedImage) {
                         String path = file.getParent() + File.separator + "Process_" + file.getName();
                         // mSignPosition = false;
                         //mPresenter.postImageAvatar(pathAvatar);
                         if (isCaptureAvatar) {
                             mPresenter.postImageAvatar(path);
-                            imageAvatarAdapter.getListFilter().add(new Item(path, ""));
-                            imageAvatarAdapter.notifyDataSetChanged();
                         } else {
                             mPresenter.postImage(path);
-                            if (isCaptureVerify) {
-                                imageVerifyAdapter.getListFilter().add(new Item(path, ""));
-                                imageVerifyAdapter.notifyDataSetChanged();
-                            }
-
-                            if (isCaptureOther) {
-                                imageOtherAdapter.getListFilter().add(new Item(path, ""));
-                                imageOtherAdapter.notifyDataSetChanged();
-                            }
-
-                            if (isCapture) {
-                                imageAdapter.getListFilter().add(new Item(path, ""));
-                                imageAdapter.notifyDataSetChanged();
-                            }
-
-                            if (isCaptureDelivery) {
-                                imageDeliveryAdapter.getListFilter().add(new Item(path, ""));
-                                imageDeliveryAdapter.notifyDataSetChanged();
-                            }
-
-                            if (isCaptureRefund) {
-                                imageRefundAdapter.getListFilter().add(new Item(path, ""));
-                                imageRefundAdapter.notifyDataSetChanged();
-                            }
                         }
                         if (type == 0)
                             if (file.exists())
@@ -2511,14 +2554,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showImage(String file, String path) {
         if (null != getViewContext()) {
             if (isCaptureAvatar) {
-
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImagesAvatar.add(item);
                 imageAvatarAdapter.notifyDataSetChanged();
             }
 
             if (isCaptureVerify) {
-
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageVerify.add(item);
                 imageVerifyAdapter.notifyDataSetChanged();

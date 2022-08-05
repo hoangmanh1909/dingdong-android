@@ -271,7 +271,6 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 }
             }
         } else {
-
             if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
             }
@@ -448,7 +447,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            onDisPlayFake();
+                           mPresenter.onCanceled();
                         }
                     }).show();
         }
