@@ -151,6 +151,9 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
             if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG)) {
                 pager.setCurrentItem(1);
             }
+            if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA)){
+                ((ListCommonFragment) tabList.get(1)).onDisPlayFake();
+            }
         }
     }
 

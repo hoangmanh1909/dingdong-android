@@ -438,6 +438,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
     @Override
     public void showResult(ConfirmAllOrderPostman allOrderPostman) {
+        EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA);
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")

@@ -144,6 +144,7 @@ public class Constants {
     public static final String STOP_ACTION = "STOP_ACTION";
 
     public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG = "HOAN_THANH_TIN_THANH_CONG";
+    public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA = "HOAN_THANH_TIN_THANH_CONG";
 
     public static final String DATE_FORMAT = "dd/mm/yyyy HH:mm:ss";
 
