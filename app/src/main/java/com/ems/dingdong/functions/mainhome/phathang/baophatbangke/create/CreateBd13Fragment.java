@@ -448,24 +448,15 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         @Override
                         public void onResponse(String cancelType, String des) {
                             final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
-                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
-                                @Override
-                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
-                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
-                                }
-                            });
+//                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
+//                                @Override
+//                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
+//                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+//                                }
+//                            });
                             Bd13Create bd13Create = new Bd13Create();
                             List<Integer> ids = new ArrayList<>();
-                            String t = "";
-                            for (DeliveryPostman i : deliveryPostmans) {
-                                ids.add(i.getId());
-                                if (t.equals(""))
-                                    t += i.getmViti();
-                                else {
-                                    t += ",";
-                                    t += i.getmViti();
-                                }
-                            }
+
                             bd13Create.setIds(ids);
                             bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
                             bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
@@ -652,23 +643,17 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         @Override
                         public void onResponse(String cancelType, String des) {
                             final List<DeliveryPostman> deliveryPostmans = postmen;
-                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
-                                @Override
-                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
-                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
-                                }
-                            });
+//                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
+//                                @Override
+//                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
+//                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+//                                }
+//                            });
                             Bd13Create bd13Create = new Bd13Create();
                             List<Integer> ids = new ArrayList<>();
-                            String t = "";
+//                            String t = "";
                             for (DeliveryPostman i : deliveryPostmans) {
                                 ids.add(i.getId());
-                                if (t.equals(""))
-                                    t += i.getmViti();
-                                else {
-                                    t += ",";
-                                    t += i.getmViti();
-                                }
                             }
                             bd13Create.setIds(ids);
                             bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));

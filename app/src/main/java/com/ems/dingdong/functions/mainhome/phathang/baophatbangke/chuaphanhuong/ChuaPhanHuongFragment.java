@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong
 
 import static android.content.Context.LOCATION_SERVICE;
 
+import android.annotation.SuppressLint;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
@@ -19,10 +20,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.CreatedBD13Callback;
 import com.ems.dingdong.callback.IdCallback;
+import com.ems.dingdong.callback.SapXepCallback;
+import com.ems.dingdong.dialog.CreatedBd13Dialog;
+import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.DialogThongBao;
 import com.ems.dingdong.dialog.NotificationDialog;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Adapter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.moredata.DialogVmapChuaPhanHuowng;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.Point;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
+import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PostOffice;
@@ -32,15 +42,18 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.ChuaPhanHuongMode;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
-import com.ems.dingdong.views.form.FormItemEditText;
+import com.google.gson.Gson;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -165,7 +178,7 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
-            Location l = mLocationManager.getLastKnownLocation(provider);
+            @SuppressLint("MissingPermission") Location l = mLocationManager.getLastKnownLocation(provider);
             if (l == null) {
                 continue;
             }
@@ -178,28 +191,135 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
     }
 
     public void submit() {
-        int j = 0;
-        for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).isSelected())
-                j++;
-        }
-        if (j == 0) {
-            Toast.showToast(getViewContext(), "Bạn chưa chọn bưu gửi nào.");
-            return;
-        }
 
-        ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
-        comfrimCreateMode.setPostmanId(userInfo.getiD());
-        comfrimCreateMode.setPostmanCode(userInfo.getUserName());
-        comfrimCreateMode.setPOCode(postOffice.getCode());
-        comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
-        List<String> strings = new ArrayList<>();
-        for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).isSelected())
-                strings.add(mList.get(i).getLadingCode());
+
+        new DialogCreateBd13(getViewContext(), new SapXepCallback() {
+            @Override
+            public void onResponse(int type) {
+                if (type == 2) {
+                    mLocation = getLastKnownLocation();
+                    if (mLocation == null) {
+                        new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
+                        return;
+                    }
+                    OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
+                    Point point = new Point();
+                    point.setLatitude(mLocation.getLatitude());
+                    point.setLongitude(mLocation.getLongitude());
+                    orderCreateBD13Mode.setStartPoint(point);
+                    orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
+                    List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
+                    List<ChuaPhanHuongMode> deliveryPostmans = mAdapter.getItemsSelected();
+
+                    for (ChuaPhanHuongMode i : deliveryPostmans) {
+                        VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
+                        request.setId(i.getId());
+                        request.setLadingCode(i.getLadingCode());
+                        request.setReceiverAddress(i.getReceiverAddress());
+                        request.setReceiverLat(i.getReceiverLat());
+                        request.setReceiverLon(i.getReceiverLon());
+//            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
+                        dataRequests.add(request);
+                    }
+                    orderCreateBD13Mode.setData(dataRequests);
+                    String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
+                    Log.d("AAAAAAA", json);
+                    mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
+                } else {
+                    int j = 0;
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (mList.get(i).isSelected())
+                            j++;
+                    }
+                    if (j == 0) {
+                        Toast.showToast(getViewContext(), "Bạn chưa chọn bưu gửi nào.");
+                        return;
+                    }
+
+                    ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
+                    comfrimCreateMode.setPostmanId(userInfo.getiD());
+                    comfrimCreateMode.setPostmanCode(userInfo.getUserName());
+                    comfrimCreateMode.setPOCode(postOffice.getCode());
+                    comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
+                    List<String> strings = new ArrayList<>();
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (mList.get(i).isSelected())
+                            strings.add(mList.get(i).getLadingCode());
+                    }
+                    comfrimCreateMode.setListLadingCode(strings);
+                    mPresenter.comfrimCreate(comfrimCreateMode);
+                }
+            }
+        }).show();
+    }
+
+    @Override
+    public void showVmap(List<VietMapOrderCreateBD13DataRequest> mList1) {
+        hideProgress();
+        List<ChuaPhanHuongMode> deliveryPostmanList = mAdapter.getItemsSelected();
+        for (int i = 0; i < deliveryPostmanList.size(); i++) {
+            for (int j = 0; j < mList1.size(); j++)
+                if (mList1.get(j).getId() == deliveryPostmanList.get(i).getId()) {
+                    deliveryPostmanList.get(i).setSTT(Integer.parseInt(mList1.get(j).getOrderNumber()));
+                }
         }
-        comfrimCreateMode.setListLadingCode(strings);
-        mPresenter.comfrimCreate(comfrimCreateMode);
+        List<ChuaPhanHuongMode> postmen = sort(deliveryPostmanList);
+        Log.d("AAAAAAAA", new Gson().toJson(postmen));
+        new DialogVmapChuaPhanHuowng(getViewContext(), postmen, new SapXepCallback() {
+            @Override
+            public void onResponse(int type) {
+                if (type == 1) {
+                    int totalAmount = 0;
+                    for (ChuaPhanHuongMode item : postmen) {
+                        totalAmount = totalAmount + item.getAmountCOD();
+                    }
+                    new CreatedBd13Dialog(getActivity(), 0, postmen.size(), totalAmount, new CreatedBD13Callback() {
+                        @Override
+                        public void onResponse(String cancelType, String des) {
+                            final List<ChuaPhanHuongMode> deliveryPostmans = postmen;
+//                            Collections.sort(deliveryPostmans, new Comparator<ChuaPhanHuongMode>() {
+//                                @Override
+//                                public int compare(ChuaPhanHuongMode o1, ChuaPhanHuongMode o2) {
+//                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
+//                                }
+//                            });
+                            ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
+
+                            comfrimCreateMode.setPostmanId(userInfo.getiD());
+                            comfrimCreateMode.setPostmanCode(userInfo.getUserName());
+                            comfrimCreateMode.setPOCode(postOffice.getCode());
+                            comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
+                            List<String> strings = new ArrayList<>();
+                            for (int i = 0; i < deliveryPostmans.size(); i++) {
+                                strings.add(deliveryPostmans.get(i).getLadingCode());
+                            }
+                            comfrimCreateMode.setListLadingCode(strings);
+
+                            String json = NetWorkController.getGson().toJson(comfrimCreateMode);
+                            Log.d("AAAAAAA", json);
+                            mPresenter.comfrimCreate(comfrimCreateMode);
+                        }
+                    }).show();
+                }
+            }
+        }).show();
+    }
+
+    private List<ChuaPhanHuongMode> sort(List<ChuaPhanHuongMode> deliveryPostmanList) {
+        List<ChuaPhanHuongMode> list = deliveryPostmanList;
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (list.get(i).getSTT() > list.get(j).getSTT()) {
+                    // Hoan vi 2 so a[i] va a[j]
+                    ChuaPhanHuongMode deliveryPostman = new ChuaPhanHuongMode();
+                    deliveryPostman = list.get(i);
+                    list.set(i, list.get(j));
+                    list.set(j, deliveryPostman);
+                }
+            }
+        }
+        return list;
     }
 
     @OnClick({R.id.img_search, R.id.layout_item_pick_all, R.id.img_capture})

@@ -4,6 +4,8 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Contract;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.SearchMode;
@@ -69,6 +71,30 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
                 });
+    }
+
+    @Override
+    public void ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode) {
+        try {
+            mView.showProgress();
+            mInteractor.ddLapBD13Vmap(createBD13Mode)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            VietMapOrderCreateBD13DataRequest[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), VietMapOrderCreateBD13DataRequest[].class);
+                            List<VietMapOrderCreateBD13DataRequest> request = Arrays.asList(list);
+                            mView.showVmap(request);
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+
+                        }
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 
     @Override

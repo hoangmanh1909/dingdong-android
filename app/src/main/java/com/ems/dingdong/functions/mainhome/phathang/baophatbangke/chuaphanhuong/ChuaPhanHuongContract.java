@@ -5,6 +5,8 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentContract;
 import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -24,6 +26,9 @@ public interface ChuaPhanHuongContract {
         Single<SimpleResult> searchCreate(SearchMode searchMode);
 
         Single<SimpleResult> comfirmCreate(ComfrimCreateMode comfrimCreateMode);
+
+        Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -31,10 +36,14 @@ public interface ChuaPhanHuongContract {
 
         void showKhongcodl(String mess);
 
-        void showComfrimThanCong(String mess,List<ChuaPhanHuongMode> list);
+        void showComfrimThanCong(String mess, List<ChuaPhanHuongMode> list);
+
+        void showVmap(List<VietMapOrderCreateBD13DataRequest> mList);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 

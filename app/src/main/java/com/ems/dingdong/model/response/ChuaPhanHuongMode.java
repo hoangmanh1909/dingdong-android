@@ -16,7 +16,10 @@ public class ChuaPhanHuongMode {
     private String ReceiverTel;
     @SerializedName("ReceiverAddress")
     private String ReceiverAddress;
-
+    @SerializedName("ReceiverLat")
+    private String ReceiverLat;
+    @SerializedName("ReceiverLon")
+    private String ReceiverLon;
     @SerializedName("SenderName")
     private String SenderName;
     @SerializedName("SenderTel")
@@ -24,7 +27,7 @@ public class ChuaPhanHuongMode {
     @SerializedName("SenderAddress")
     private String SenderAddress;
 
-
+    int STT = 0;
     @SerializedName("Content")
     private String Content;
     @SerializedName("Weight")
@@ -50,6 +53,30 @@ public class ChuaPhanHuongMode {
 
     @SerializedName("VATCode")
     private String VATCode;
+
+    public String getReceiverLat() {
+        return ReceiverLat;
+    }
+
+    public void setReceiverLat(String receiverLat) {
+        ReceiverLat = receiverLat;
+    }
+
+    public String getReceiverLon() {
+        return ReceiverLon;
+    }
+
+    public void setReceiverLon(String receiverLon) {
+        ReceiverLon = receiverLon;
+    }
+
+    public int getSTT() {
+        return STT;
+    }
+
+    public void setSTT(int STT) {
+        this.STT = STT;
+    }
 
     private boolean selected;
 

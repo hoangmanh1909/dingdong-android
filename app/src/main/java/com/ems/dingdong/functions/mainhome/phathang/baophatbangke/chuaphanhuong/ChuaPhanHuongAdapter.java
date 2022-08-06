@@ -127,7 +127,7 @@ public class ChuaPhanHuongAdapter extends RecyclerView.Adapter<ChuaPhanHuongAdap
         @SuppressLint("SetTextI18n")
         public void bindView(Object model, int positon) {
             ChuaPhanHuongMode item = (ChuaPhanHuongMode) model;
-            tvIndex.setText(positon + 1 + "");
+            tvIndex.setText(positon + 1 + ". ");
             if (!TextUtils.isEmpty(item.getLadingCode())) {
                 _tvMaE.setText(String.format("%s", item.getLadingCode()));
             }
