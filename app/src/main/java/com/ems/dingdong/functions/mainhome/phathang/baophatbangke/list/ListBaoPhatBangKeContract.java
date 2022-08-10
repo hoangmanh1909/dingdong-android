@@ -129,7 +129,7 @@ interface ListBaoPhatBangKeContract {
 
         void showCallSuccess(String phone);
 
-        void showSuccessUpdateMobile(String phone, String message);
+        void showSuccessUpdateMobile(String phone, String message,int type);
 
         void showSuccessUpdateMobileSender(String phoneSender, String message);
 
@@ -265,7 +265,7 @@ interface ListBaoPhatBangKeContract {
         /**
          * Update callee mobile number.
          */
-        void updateMobile(String phone, String parcelCode);
+        void updateMobile(String phone, String parcelCode,int type);
 
         void updateMobileSender(String phoneSender, String parcelCode);
 

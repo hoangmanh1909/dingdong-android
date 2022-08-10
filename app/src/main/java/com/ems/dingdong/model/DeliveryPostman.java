@@ -198,9 +198,29 @@ public class DeliveryPostman implements Comparable {
     private int ReceiverVerify;
     @SerializedName("IsWarehouseOutput")
     private boolean IsWarehouseOutput;
+    @SerializedName("SenderBookingPhone")
+    private String SenderBookingPhone;
+    @SerializedName("ReceiverBookingPhone")
+    private String ReceiverBookingPhone;
 
     int mViti = -1;
     int STT = 0;
+
+    public String getSenderBookingPhone() {
+        return SenderBookingPhone;
+    }
+
+    public void setSenderBookingPhone(String senderBookingPhone) {
+        SenderBookingPhone = senderBookingPhone;
+    }
+
+    public String getReceiverBookingPhone() {
+        return ReceiverBookingPhone;
+    }
+
+    public void setReceiverBookingPhone(String receiverBookingPhone) {
+        ReceiverBookingPhone = receiverBookingPhone;
+    }
 
     public int getSTT() {
         return STT;

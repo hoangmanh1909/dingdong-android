@@ -27,6 +27,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.core.base.viper.ViewFragment;
+import com.core.utils.NetworkUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.app.ApplicationController;
@@ -158,6 +159,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private int positionItem = 0;
 
+    int mIdPhone;
     int mID = 0;
     String mPhoneS = "";
     BottomPickerCallUIFragment.ItemClickListener listener = new BottomPickerCallUIFragment.ItemClickListener() {
@@ -294,9 +296,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         tvItemSelected.setText(String.valueOf(size));
                     }
                 });
+
                 holder.tv_code.setOnClickListener(v -> {
                     mPresenter.showLoci(mAdapter.getListFilter().get(position).getMaE());
                 });
+
                 holder.tvGoiy.setVisibility(View.VISIBLE);
                 holder.tvGoiy.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -410,13 +414,34 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCallTongDai(String phone) {
                             mPhoneEdit = phone;
-                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+//                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            try {
+                                if (mAdapter.getListFilter().get(position).getSenderBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+                                    Intent intent = new Intent(Intent.ACTION_CALL);
+                                    intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
+                                    if (ContextCompat.checkSelfPermission(getActivity(),
+                                            Manifest.permission.CALL_PHONE)
+                                            != PackageManager.PERMISSION_GRANTED) {
+                                        ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                                    } else {
+                                        startActivity(intent);
+                                    }
+                                } else if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                    mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+
+                                } else
+                                    Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
+
+                            } catch (Exception e) {
+                                e.getMessage();
+                            }
                         }
 
                         @Override
                         public void onCall(String phone) {
-                            if (phone==null || phone.isEmpty()){
-                                Toast.showToast(requireContext(),"Số điện thoại không hợp lệ.");
+                            if (phone == null || phone.isEmpty()) {
+                                Toast.showToast(requireContext(), "Số điện thoại không hợp lệ.");
                                 return;
                             }
                             mPhoneEdit = phone;
@@ -426,13 +451,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
                             callLiveMode.setToNumber(phone);
                             callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                            mPresenter.ddCall(callLiveMode);
+                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                mPresenter.ddCall(callLiveMode);
+                            } else
+                                Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
                         }
 
                         @Override
                         public void onCallEdit(String phone, int type) {
 //                            callProvidertoCSKH(phone);
                             mPhoneEdit = phone;
+                            mIdPhone = position;
                             if (type == 1) {
                                 CallLiveMode callLiveMode = new CallLiveMode();
                                 SharedPref sharedPref = new SharedPref(getViewContext());
@@ -440,17 +470,24 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                 callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
                                 callLiveMode.setToNumber(phone);
                                 callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                                mPresenter.ddCall(callLiveMode);
+                                if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                    mPresenter.ddCall(callLiveMode);
+                                } else
+                                    Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
                             } else {
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
-                            mPresenter.updateMobileSender(phone, choosenLadingCode);
 
-                            mAdapter.getListFilter().get(position).setSenderMobile(phone);
-                            mAdapter.notifyDataSetChanged();
+                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                mPresenter.updateMobileSender(phone, choosenLadingCode);
+                            } else
+                                Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
                         }
                     }).show();
                 });
+
                 // goi cho nguoi nhan
                 holder.img_contact_phone.setOnClickListener(v -> {
                     try {
@@ -465,7 +502,27 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         @Override
                         public void onCallTongDai(String phone) {
                             mPhoneEdit = phone;
-                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+//                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                            try {
+                                if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+                                    Intent intent = new Intent(Intent.ACTION_CALL);
+                                    intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
+                                    if (ContextCompat.checkSelfPermission(getActivity(),
+                                            Manifest.permission.CALL_PHONE)
+                                            != PackageManager.PERMISSION_GRANTED) {
+                                        ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                                    } else {
+                                        startActivity(intent);
+                                    }
+                                } else if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                    mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                                } else
+                                    Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
+
+                            } catch (Exception e) {
+                                e.getMessage();
+                            }
                         }
 
                         @Override
@@ -477,12 +534,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
                             callLiveMode.setToNumber(phone);
                             callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                            mPresenter.ddCall(callLiveMode);
+                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                mPresenter.ddCall(callLiveMode);
+                            } else
+                                Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
                         }
 
                         @Override
                         public void onCallEdit(String phone, int type) {
                             mPhoneEdit = phone;
+                            mIdPhone = position;
                             if (type == 1) {
                                 CallLiveMode callLiveMode = new CallLiveMode();
                                 SharedPref sharedPref = new SharedPref(getViewContext());
@@ -490,13 +552,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                 callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
                                 callLiveMode.setToNumber(phone);
                                 callLiveMode.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                                mPresenter.ddCall(callLiveMode);
+                                if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                    mPresenter.ddCall(callLiveMode);
+                                } else
+                                    Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
                             } else {
                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             }
-                            mPresenter.updateMobile(phone, choosenLadingCode);
-                            mAdapter.getListFilter().get(position).setReciverMobile(phone);
-                            mAdapter.notifyDataSetChanged();
+                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+
+                                mPresenter.updateMobile(phone, choosenLadingCode, 2);
+                            } else
+                                Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+
+
                         }
                     }).show();
                 });
@@ -617,7 +687,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     private void showConfirmSaveMobileReceiver(final String phone, String parcelCode, DismissDialogCallback callback) {
-        mPresenter.updateMobile(phone, parcelCode);
+//        mPresenter.updateMobile(phone, parcelCode);
 //        initSearch();
         if (provider.equals("CTEL")) {
             if (TextUtils.isEmpty(phone)) {
@@ -659,8 +729,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @Override
-    public void showSuccessUpdateMobile(String phone, String message) {
+    public void showSuccessUpdateMobile(String phone, String message, int type) {
         showSuccessToast(message);
+        mAdapter.getListFilter().get(mIdPhone).setReciverMobile(phone);
+        mAdapter.notifyDataSetChanged();
 //        initSearch();
     }
 
@@ -678,6 +750,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //        deliveryPostmen.addAll(mList);
 //        showListSuccessFromTab(deliveryPostmen);
         showSuccessToast(message);
+        mAdapter.getListFilter().get(mIdPhone).setSenderMobile(phoneSender);
+        mAdapter.notifyDataSetChanged();
 
 //        initSearch();
     }

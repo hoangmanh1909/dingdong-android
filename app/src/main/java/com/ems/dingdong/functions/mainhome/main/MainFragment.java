@@ -399,7 +399,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     @Override
     public void showRaCa(String data) {
-
         Toast.showToast(getViewContext(), "Bạn đã rời khỏi ca làm việc");
         mCalendarRaCa = Calendar.getInstance();
         mDateRaCa = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
@@ -632,7 +631,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 String callType = managedCursor.getString(type);
                 String callDate = managedCursor.getString(date);
                 Date callDayTime = new Date(Long.valueOf(callDate));
-                String callDuration = managedCursor.getString(duration);
+                String callDuration = "0";
+                callDuration = managedCursor.getString(duration);
                 String dir = null;
                 String datea = DateTimeUtils.convertDateToString(callDayTime, DateTimeUtils.DEFAULT_DATETIME_FORMAT);
                 int callTypeCode = Integer.parseInt(callType);

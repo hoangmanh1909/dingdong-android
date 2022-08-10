@@ -37,7 +37,28 @@ public class StatusInfo extends RealmObject {
     private String CallTypeName;
     @SerializedName("RecordFile")
     private String RecordFile;
-    int typeCall=0;
+    @SerializedName("ApplicationName")
+    private String ApplicationName;
+    @SerializedName("AnswerDuration")
+    private int AnswerDuration;
+
+    public int getAnswerDuration() {
+        return AnswerDuration;
+    }
+
+    public void setAnswerDuration(int answerDuration) {
+        AnswerDuration = answerDuration;
+    }
+
+    int typeCall = 0;
+
+    public String getApplicationName() {
+        return ApplicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        ApplicationName = applicationName;
+    }
 
     public int getTypeCall() {
         return typeCall;
@@ -46,6 +67,7 @@ public class StatusInfo extends RealmObject {
     public void setTypeCall(int typeCall) {
         this.typeCall = typeCall;
     }
+
     public String getToNumber() {
         return ToNumber;
     }

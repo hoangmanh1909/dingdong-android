@@ -48,7 +48,7 @@ public class LogCallFragment extends ViewFragment<LogCallContract.Presenter> imp
         mFromDate = DateTimeUtils.convertDateToString(mCalendar.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mToDate = DateTimeUtils.convertDateToString(mCalendarTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         mList = new ArrayList<>();
-        mAdapter = new LogCallAdapter(getViewContext(), mList) {
+        mAdapter = new LogCallAdapter(getViewContext(), mList, mPresenter.mType()) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
                 super.onBindViewHolder(holder, position);

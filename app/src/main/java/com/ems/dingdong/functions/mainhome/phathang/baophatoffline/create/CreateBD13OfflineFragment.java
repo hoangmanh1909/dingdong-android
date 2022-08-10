@@ -475,7 +475,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                     tv_solution.setText(firstInfo.getName());
                     mSolutionCode = firstInfo.getCode();
                     mSolutionInfo = firstInfo;
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

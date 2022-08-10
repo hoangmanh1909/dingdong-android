@@ -42,6 +42,7 @@ interface PhatHangContract {
         void showStatisticSML();
 
         void showStatisticLog();
+
         void showLog();
     }
 }

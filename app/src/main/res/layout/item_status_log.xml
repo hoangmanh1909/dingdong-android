@@ -82,7 +82,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/img_logo"
-                    android:gravity="center"
+                    android:gravity="center|left"
                     android:textColor="@color/text_color_total_theme2"
                     android:textSize="@dimen/text_size_12sp" />
 

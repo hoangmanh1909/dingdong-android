@@ -174,7 +174,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     if (response.body().getErrorCode().equals("00"))
                         mView.showImage(response.body().getFile(), path);
                     else Toast.showToast(getViewContext(), response.body().getMessage());
-                } else mView.showAlertDialog("Không kết nối được với hệ thống!");
+                } else {
+                    if (response.body().getMessage() == null)
+                        mView.showAlertDialog("Không kết nối được với hệ thống!");
+                    else mView.showAlertDialog(response.body().getMessage());
+                }
             }
 
             @Override

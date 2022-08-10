@@ -191,66 +191,69 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
     }
 
     public void submit() {
+        final List<ChuaPhanHuongMode> deliveryPostmamns = mAdapter.getItemsSelected();
+        if (!deliveryPostmamns.isEmpty() && deliveryPostmamns.size() > 0) {
+            new DialogCreateBd13(getViewContext(), new SapXepCallback() {
+                @Override
+                public void onResponse(int type) {
+                    if (type == 2) {
+                        mLocation = getLastKnownLocation();
+                        if (mLocation == null) {
+                            new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
+                            return;
+                        }
+                        OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
+                        Point point = new Point();
+                        point.setLatitude(mLocation.getLatitude());
+                        point.setLongitude(mLocation.getLongitude());
+                        orderCreateBD13Mode.setStartPoint(point);
+                        orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
+                        List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
+                        List<ChuaPhanHuongMode> deliveryPostmans = mAdapter.getItemsSelected();
 
-
-        new DialogCreateBd13(getViewContext(), new SapXepCallback() {
-            @Override
-            public void onResponse(int type) {
-                if (type == 2) {
-                    mLocation = getLastKnownLocation();
-                    if (mLocation == null) {
-                        new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
-                        return;
-                    }
-                    OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
-                    Point point = new Point();
-                    point.setLatitude(mLocation.getLatitude());
-                    point.setLongitude(mLocation.getLongitude());
-                    orderCreateBD13Mode.setStartPoint(point);
-                    orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
-                    List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
-                    List<ChuaPhanHuongMode> deliveryPostmans = mAdapter.getItemsSelected();
-
-                    for (ChuaPhanHuongMode i : deliveryPostmans) {
-                        VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
-                        request.setId(i.getId());
-                        request.setLadingCode(i.getLadingCode());
-                        request.setReceiverAddress(i.getReceiverAddress());
-                        request.setReceiverLat(i.getReceiverLat());
-                        request.setReceiverLon(i.getReceiverLon());
+                        for (ChuaPhanHuongMode i : deliveryPostmans) {
+                            VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
+                            request.setId(i.getId());
+                            request.setLadingCode(i.getLadingCode());
+                            request.setReceiverAddress(i.getReceiverAddress());
+                            request.setReceiverLat(i.getReceiverLat());
+                            request.setReceiverLon(i.getReceiverLon());
 //            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
-                        dataRequests.add(request);
-                    }
-                    orderCreateBD13Mode.setData(dataRequests);
-                    String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
-                    Log.d("AAAAAAA", json);
-                    mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
-                } else {
-                    int j = 0;
-                    for (int i = 0; i < mList.size(); i++) {
-                        if (mList.get(i).isSelected())
-                            j++;
-                    }
-                    if (j == 0) {
-                        Toast.showToast(getViewContext(), "Bạn chưa chọn bưu gửi nào.");
-                        return;
-                    }
+                            dataRequests.add(request);
+                        }
+                        orderCreateBD13Mode.setData(dataRequests);
+                        String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
+                        Log.d("AAAAAAA", json);
+                        mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
+                    } else {
+                        int j = 0;
+                        for (int i = 0; i < mList.size(); i++) {
+                            if (mList.get(i).isSelected())
+                                j++;
+                        }
+                        if (j == 0) {
+                            Toast.showToast(getViewContext(), "Bạn chưa chọn bưu gửi nào.");
+                            return;
+                        }
 
-                    ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
-                    comfrimCreateMode.setPostmanId(userInfo.getiD());
-                    comfrimCreateMode.setPostmanCode(userInfo.getUserName());
-                    comfrimCreateMode.setPOCode(postOffice.getCode());
-                    comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
-                    List<String> strings = new ArrayList<>();
-                    for (int i = 0; i < mList.size(); i++) {
-                        if (mList.get(i).isSelected())
-                            strings.add(mList.get(i).getLadingCode());
+                        ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
+                        comfrimCreateMode.setPostmanId(userInfo.getiD());
+                        comfrimCreateMode.setPostmanCode(userInfo.getUserName());
+                        comfrimCreateMode.setPOCode(postOffice.getCode());
+                        comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
+                        List<String> strings = new ArrayList<>();
+                        for (int i = 0; i < mList.size(); i++) {
+                            if (mList.get(i).isSelected())
+                                strings.add(mList.get(i).getLadingCode());
+                        }
+                        comfrimCreateMode.setListLadingCode(strings);
+                        mPresenter.comfrimCreate(comfrimCreateMode);
                     }
-                    comfrimCreateMode.setListLadingCode(strings);
-                    mPresenter.comfrimCreate(comfrimCreateMode);
                 }
-            }
-        }).show();
+            }).show();
+        } else {
+            showErrorToast("Chưa có bưu gửi nào được chọn.");
+        }
     }
 
     @Override

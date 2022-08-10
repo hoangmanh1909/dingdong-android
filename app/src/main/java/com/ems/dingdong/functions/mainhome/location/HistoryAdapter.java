@@ -134,6 +134,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     tvCall.setText("");
                     tvCall.setVisibility(View.GONE);
                 }
+                if (!TextUtils.isEmpty(item.getApplicationName()))
+                    tvCall.setText(item.getToNumber() + "\n" + item.getApplicationName());
+                else if (item.getAnswerDuration() > 0)
+                    tvCall.setText(item.getToNumber() + "    " + item.getAnswerDuration() + " s");
+
                 tvDescription.setVisibility(View.GONE);
                 llCall.setVisibility(View.VISIBLE);
                 tvTypeMessage.setVisibility(View.GONE);
@@ -176,7 +181,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
                     llCall.setVisibility(View.VISIBLE);
                     tvCall.setVisibility(View.VISIBLE);
                     tvGhichu.setVisibility(View.GONE);
-                    tvCall.setText(item.getToNumber() + "\n" + item.getStatus());
+                    tvCall.setText(item.getToNumber());
+//                    tvCall.setText(item.getToNumber() + "\n" + item.getStatus());
                     tvCall.setTextColor(mContext.getResources().getColor(R.color.black));
                 } else {
                     imgLogo.setVisibility(View.INVISIBLE);

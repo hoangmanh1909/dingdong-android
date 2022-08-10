@@ -76,6 +76,7 @@ import static android.Manifest.permission.CALL_PHONE;
 /**
  * The Location Fragment
  */
+
 public class LocationFragment extends ViewFragment<LocationContract.Presenter> implements LocationContract.View {
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
@@ -262,12 +263,24 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             statusInfo.setStatusTime(l.get(i).getStartTime().toString().split(" ")[1]);
             statusInfo.setLadingCode(l.get(i).getLadingCode());
             statusInfo.setActionTypeName(l.get(i).getCallTypeName());
-            statusInfo.setToNumber(l.get(i).getToNumber());
+            statusInfo.setRecordFile(l.get(i).getRecordFile());
+            statusInfo.setApplicationName(l.get(i).getApplicationName());
+            if (statusInfo.getApplicationName() == null)
+                statusInfo.setAnswerDuration(l.get(i).getAnswerDuration());
+
+            if (l.get(i).getCallTypeName().contains("đến"))
+                statusInfo.setToNumber(l.get(i).getFromNumber());
+            else
+                statusInfo.setToNumber(l.get(i).getToNumber());
+
             statusInfo.setRecordFile(l.get(i).getRecordFile());
             statusInfo.setTypeCall(1);
             statusInfo.setStatus(l.get(i).getStatus());
-            if (l.get(i).getAnswerDuration() > 0)
-                statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + "s)");
+            if (l.get(i).getStatus().contains("nhỡ")) {
+                statusInfo.setDescription("");
+            } else if (!TextUtils.isEmpty(l.get(i).getRecordFile()))
+                if (l.get(i).getAnswerDuration() > 0)
+                    statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + "s)");
             mList.add(statusInfo);
         }
 

@@ -3,11 +3,13 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.core.utils.NetworkUtils;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
@@ -285,45 +287,46 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void updateMobile(String phone, String parcelCode) {
+    public void updateMobile(String phone, String parcelCode, int type) {
         mView.showProgress();
         String tPhone = phone;
-        addCallback(mInteractor.updateMobile(parcelCode, "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                mView.showSuccessUpdateMobile(tPhone, response.body().getMessage());
-            }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        }));
+            addCallback(mInteractor.updateMobile(parcelCode, "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    super.onSuccess(call, response);
+                    mView.hideProgress();
+                    mView.showSuccessUpdateMobile(tPhone, response.body().getMessage(), type);
+                }
+
+                @Override
+                protected void onError(Call<SimpleResult> call, String message) {
+                    super.onError(call, message);
+                    mView.hideProgress();
+                    mView.showErrorToast(message);
+                }
+            }));
     }
 
     @Override
     public void updateMobileSender(String phoneSender, String parcelCode) {
         mView.showProgress();
         String tPhoneSender = phoneSender;
-        addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                mView.showSuccessUpdateMobileSender(tPhoneSender, response.body().getMessage());
-            }
+            addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+                @Override
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    super.onSuccess(call, response);
+                    mView.hideProgress();
+                    mView.showSuccessUpdateMobileSender(tPhoneSender, response.body().getMessage());
+                }
 
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        }));
+                @Override
+                protected void onError(Call<SimpleResult> call, String message) {
+                    super.onError(call, message);
+                    mView.hideProgress();
+                    mView.showErrorToast(message);
+                }
+            }));
     }
 
     @Override

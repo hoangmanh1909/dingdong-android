@@ -28,10 +28,12 @@ public class LogCallAdapter extends RecyclerView.Adapter<LogCallAdapter.HolderVi
 
     List<HistoryRespone> mList;
     Context mContext;
+    int mType;
 
-    public LogCallAdapter(Context context, List<HistoryRespone> items) {
+    public LogCallAdapter(Context context, List<HistoryRespone> items, int type) {
         mContext = context;
         mList = items;
+        mType = type;
     }
 
     @Override

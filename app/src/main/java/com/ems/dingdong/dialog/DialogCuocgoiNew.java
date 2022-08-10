@@ -80,6 +80,8 @@ public class DialogCuocgoiNew extends Dialog {
 
     }
 
+
+
     @Override
     public void show() {
         super.show();

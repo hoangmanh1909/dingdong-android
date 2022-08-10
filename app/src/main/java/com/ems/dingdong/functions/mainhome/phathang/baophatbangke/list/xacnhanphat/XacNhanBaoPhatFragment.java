@@ -2339,7 +2339,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return BitmapUtils.processingBitmap(uri, getViewContext());
         }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 80))
+                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 60))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 isSavedImage -> {
                     if (isSavedImage) {
