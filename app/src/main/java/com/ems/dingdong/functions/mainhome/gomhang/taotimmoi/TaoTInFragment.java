@@ -119,7 +119,6 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
 
     int idTinh = 0;
     int idQuuanhuyen = 0;
-    int idXaphuong = 0;
     private Calendar calendar;
     int mHour = 0;
     int mMinute = 0;
@@ -129,6 +128,8 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     List<ProvinceModels> mListTinhThanhPho = new ArrayList<>();
     List<DistrictModels> mListQuanHuyen = new ArrayList<>();
     List<WardModels> mListXaPhuong = new ArrayList<>();
+    int idXaphuong = 0;
+
     String postmanCode;
     String poCode;
     String routeCode;

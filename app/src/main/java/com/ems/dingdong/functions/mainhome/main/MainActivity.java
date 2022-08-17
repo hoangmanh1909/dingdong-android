@@ -22,6 +22,7 @@ public class MainActivity extends DingDongActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+
     }
 
 }

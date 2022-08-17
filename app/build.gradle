@@ -28,7 +28,7 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 51
+        versionCode 52
         //1.3.6
         versionName "1.3.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -110,6 +110,10 @@ android {
             def DOMAIN_CTEL = '"https://dev.api-connect.io"'
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
             def URL_IMAGE = '"http://172.16.132.102:1233/Assets/Images/"'
+            def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
+            def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
+            buildConfigField("String", "APP_KEY", APP_KEY)
+            buildConfigField("String", "ACCESS_KEY", ACCESS_KEY)
             buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
             buildConfigField("String", "AUTH_CTEL", AUTH_CTEL)
@@ -128,6 +132,10 @@ android {
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
             def URL_IMAGE = '"http://14.232.208.220:1233/Assets/Images/"'
             def API_DINGDONG_GATEWAY = '"http://14.232.208.220:5000/"'
+            def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
+            def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
+            buildConfigField("String", "APP_KEY", APP_KEY)
+            buildConfigField("String", "ACCESS_KEY", ACCESS_KEY)
             buildConfigField("String", "API_DINGDONG_GATEWAY", API_DINGDONG_GATEWAY)
 
             buildConfigField("String", "URL_IMAGE", URL_IMAGE)
@@ -206,6 +214,10 @@ android {
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
             def URL_IMAGE = '"https://pre-pns.vnpost.vn/imageapi/Assets/Images/"'
             def API_DINGDONG_GATEWAY = '"https://pre-pns.vnpost.vn/ddgateway/"'
+            def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
+            def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
+            buildConfigField("String", "APP_KEY", APP_KEY)
+            buildConfigField("String", "ACCESS_KEY", ACCESS_KEY)
             buildConfigField("String", "API_DINGDONG_GATEWAY", API_DINGDONG_GATEWAY)
             buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
@@ -235,6 +247,10 @@ android {
             def AUTH_CTEL = '"Basic NjA2NzJkMGRkNzNiNjQwMDA3ZWQ4OTQ4OmdsTFhHZlFKckoxOWZ4SVFmRlZrcGROSA=="'
             def URL_IMAGE = '"https://pns.vnpost.vn/Assets/Images/"'
             def API_DINGDONG_GATEWAY = '"https://pns.vnpost.vn/ddgateway/"'
+            def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
+            def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
+            buildConfigField("String", "APP_KEY", APP_KEY)
+            buildConfigField("String", "ACCESS_KEY", ACCESS_KEY)
             buildConfigField("String", "API_DINGDONG_GATEWAY", API_DINGDONG_GATEWAY)
             buildConfigField("String", "URL_IMAGE", URL_IMAGE)
             buildConfigField("String", "DOMAIN_CTEL", DOMAIN_CTEL)
@@ -380,6 +396,8 @@ dependencies {
 
     //Play Video
     implementation 'com.google.android.exoplayer:exoplayer:2.14.2'
+
+    implementation 'com.zoho.salesiq:mobilisten:4.2.8'
 
 }
 apply plugin: 'com.google.gms.google-services'

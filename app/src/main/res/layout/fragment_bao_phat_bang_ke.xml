@@ -77,18 +77,7 @@
 
                     <requestFocus />
                 </com.rengwuxian.materialedittext.MaterialEditText>
-                <!--            <com.ems.dingdong.views.form.FormItemEditText-->
-                <!--                android:id="@+id/edt_search"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:layout_toLeftOf="@+id/img_capture"-->
-                <!--                android:layout_toRightOf="@+id/img_search"-->
-                <!--                android:inputType="textCapCharacters"-->
-                <!--                android:textAllCaps="true"-->
-                <!--                android:textColor="@color/black"-->
-                <!--                android:textSize="@dimen/text_size_14sp"-->
-                <!--                app:formHint="@string/enter_name_phone_number_address"-->
-                <!--                app:formShowUnderline="false" />-->
+
 
                 <ImageView
                     android:id="@+id/img_capture"

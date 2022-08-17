@@ -297,6 +297,39 @@ io.fabric.sdk.android.services.common.AdvertisingInfoProvider
     private static final java.lang.String ADVERTISING_INFO_PREFERENCES
     private static final java.lang.String PREFKEY_LIMIT_AD_TRACKING
     private static final java.lang.String PREFKEY_ADVERTISING_ID
+com.zoho.livechat.android.provider.ZohoLDContract$ConversationColumns
+    public static final java.lang.String PKID
+    public static final java.lang.String CHATID
+    public static final java.lang.String VISITORID
+    public static final java.lang.String ATTENDER
+    public static final java.lang.String TIME
+    public static final java.lang.String QUESTION
+    public static final java.lang.String ATTENDER_IMGKEY
+    public static final java.lang.String LASTMSG
+    public static final java.lang.String ISBOTATTENDER
+    public static final java.lang.String VISITID
+    public static final java.lang.String DEPTID
+    public static final java.lang.String STATUS
+    public static final java.lang.String LMTIME
+    public static final java.lang.String ATTENDER_ID
+    public static final java.lang.String ATTENDER_EMAIL
+    public static final java.lang.String DEPTNAME
+    public static final java.lang.String DRAFT
+    public static final java.lang.String SHOW_FEEDBACK
+    public static final java.lang.String SHOW_CONTINUE_CHAT
+    public static final java.lang.String RCHATID
+    public static final java.lang.String UNREAD_COUNT
+    public static final java.lang.String TIMER_END_TIME
+    public static final java.lang.String TIMER_START_TIME
+    public static final java.lang.String FEEDBACK
+    public static final java.lang.String RATING
+    public static final java.lang.String SHOW_QUEUE
+    public static final java.lang.String QUEUEPOSITION
+    public static final java.lang.String QUEUE_START_TIME
+    public static final java.lang.String QUEUE_END_TIME
+    public static final java.lang.String WAITING_TIMER_START_TIME
+    public static final java.lang.String CONVID
+    public static final java.lang.String CREATE_TABLE
 org.apache.poi.ss.formula.WorkbookEvaluator
     int getSheetIndexByExternIndex(int)
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Synchronized$SynchronizedMultimap
@@ -389,6 +422,12 @@ com.airbnb.lottie.model.FontCharacter
     java.lang.String getStyle()
 com.google.android.exoplayer2.MetadataRetriever$MetadataRetrieverInternal$MediaSourceHandlerCallback
     private static final int ERROR_POLL_INTERVAL_MS
+com.zoho.livechat.android.provider.ZohoLDContract$ArticleCategoryColumns
+    public static final java.lang.String PKID
+    public static final java.lang.String COUNT
+    public static final java.lang.String CATEGORY_NAME
+    public static final java.lang.String CATEGORY_ID
+    public static final java.lang.String CREATE_TABLE
 com.rey.material.app.ToolbarManager$NavigationManager$3
     public void onAnimationUpdate(androidx.core.animation.ValueAnimatorCompat)
 com.google.common.collect.ImmutableMultimap$FieldSettersHolder
@@ -527,6 +566,9 @@ com.airbnb.lottie.parser.KeyframesParser
     private void <init>()
 com.google.android.gms.internal.clearcut.zzg
     public void zza(com.google.android.gms.common.api.Status)
+androidx.lifecycle.EmptyActivityLifecycleCallbacks
+    public void onActivityCreated(android.app.Activity,android.os.Bundle)
+    public void onActivityStopped(android.app.Activity)
 com.facebook.imagepipeline.producers.NetworkFetchProducer
     static final long TIME_BETWEEN_PARTIAL_RESULTS_MS
 com.bumptech.glide.load.engine.bitmap_recycle.BaseKeyPool
@@ -563,6 +605,8 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MinMa
     static synthetic boolean access$400(com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MinMaxPriorityQueue$Heap,int)
 com.google.common.collect.CollectPreconditions
     void <init>()
+com.zoho.livechat.android.utils.FileUpload
+    private static final java.lang.String LINE_FEED
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap$WeakKeyDummyValueEntry
     void setValue(com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMaker$Dummy)
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap
@@ -614,11 +658,17 @@ io.reactivex.internal.subscriptions.FullArbiterPad2
 org.greenrobot.eventbus.util.ErrorDialogManager
     protected static final java.lang.String TAG_ERROR_DIALOG
     protected static final java.lang.String TAG_ERROR_DIALOG_MANAGER
+com.zoho.livechat.android.messaging.wms.common.pex.PEXReAuth
+    protected java.lang.String getName()
 com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailViFragment
     com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP otpDialog
     com.ems.dingdong.model.response.SmartBankLink s
 com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonAdapter$HolderView
     private void binParcelCode(java.util.List)
+com.zoho.livechat.android.provider.ZohoLDDatabase$OldTables
+    static final java.lang.String LDCHATMSG
+    static final java.lang.String LDCHATTRANS
+    static final java.lang.String LDCHATPUSH
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.auth.NTLMEngineImpl$Type1Message
     void <init>(java.lang.String,java.lang.String)
     void <init>(java.lang.String,java.lang.String,java.lang.Integer)
@@ -705,6 +755,11 @@ com.google.common.hash.Murmur3_32HashFunction
     private static final int CHUNK_SIZE
     private static final int C1
     private static final int C2
+com.zoho.livechat.android.utils.SphericalUtil
+    static final double EARTH_RADIUS
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketQueryV13$ReadFrame
+    public boolean isSingleFrame()
+    public void clear()
 org.apache.poi.poifs.filesystem.OPOIFSDocument
     void read(byte[],int)
 com.google.common.collect.MapMakerInternalMap$WeakKeyWeakValueSegment
@@ -729,6 +784,8 @@ com.google.android.exoplayer2.video.MediaCodecVideoRenderer$OnFrameRenderedListe
 com.mapbox.mapboxsdk.annotations.Annotation
     protected com.mapbox.mapboxsdk.maps.MapView getMapView()
 com.google.android.exoplayer2.source.hls.package-info
+com.mapbox.android.telemetry.SchedulerFlusherFactory
+    static final java.lang.String SCHEDULER_FLUSHER_INTENT
 io.fabric.sdk.android.services.common.AdvertisingInfoReflectionStrategy
     private static final int GOOGLE_PLAY_SERVICES_SUCCESS_CODE
     private static final java.lang.String CLASS_NAME_GOOGLE_PLAY_SERVICES_UTILS
@@ -738,14 +795,12 @@ io.fabric.sdk.android.services.common.AdvertisingInfoReflectionStrategy
     private static final java.lang.String METHOD_NAME_GET_ADVERTISING_ID_INFO
     private static final java.lang.String METHOD_NAME_GET_ID
     private static final java.lang.String METHOD_NAME_IS_LIMITED_AD_TRACKING_ENABLED
-com.mapbox.android.telemetry.SchedulerFlusherFactory
-    static final java.lang.String SCHEDULER_FLUSHER_INTENT
-com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMultiset$Builder
-    com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMultiset buildJdkBacked()
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.RegularImmutableMultiset
     static final double MAX_LOAD_FACTOR
     static final double HASH_FLOODING_FPP
     static final int MAX_HASH_BUCKET_LENGTH
+com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMultiset$Builder
+    com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMultiset buildJdkBacked()
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.io.AbstractSessionOutputBuffer
     protected void <init>(java.io.OutputStream,int,java.nio.charset.Charset,int,java.nio.charset.CodingErrorAction,java.nio.charset.CodingErrorAction)
 org.linphone.core.LinphoneFriendListImpl
@@ -865,6 +920,10 @@ com.google.android.exoplayer2.source.hls.HlsSampleStreamWrapper$EmsgUnwrappingTr
     private static final java.lang.String TAG
 com.google.android.exoplayer2.source.rtsp.RtspClient
     private static final long DEFAULT_RTSP_KEEP_ALIVE_INTERVAL_MS
+androidx.dynamicanimation.animation.FlingAnimation$DragForce
+    public float getAcceleration(float,float)
+    private static final float DEFAULT_FRICTION
+    private static final float VELOCITY_THRESHOLD_MULTIPLIER
 androidx.appcompat.app.AppCompatDelegateImpl$ConfigurationImplApi17
     private void <init>()
 com.google.common.cache.ForwardingLoadingCache$SimpleForwardingLoadingCache
@@ -1225,6 +1284,10 @@ androidx.recyclerview.widget.ViewBoundsCheck
 org.linphone.core.PresenceNoteImpl
     protected void <init>(long)
     protected void <init>(java.lang.String,java.lang.String)
+com.zoho.universalimageloader.core.ImageLoader
+    static final java.lang.String LOG_INIT_CONFIG
+    static final java.lang.String LOG_DESTROY
+    static final java.lang.String LOG_LOAD_IMAGE_FROM_MEMORY_CACHE
 io.reactivex.plugins.RxJavaPlugins
     static void unlock()
 com.dpizarro.uipicker.library.picker.PickerUI
@@ -1323,6 +1386,7 @@ com.google.common.collect.ForwardingMap
     protected int standardHashCode()
 com.google.common.collect.Synchronized$SynchronizedMultimap
     synthetic bridge java.lang.Object delegate()
+com.zoho.salesiqembed.android.tracking.UTSUtil$TrackingConsentConfig
 com.dpizarro.uipicker.library.picker.PickerUIAdapter
     private static final java.lang.String EMPTY_STRING
     private static final int ROTATION_CENTER
@@ -1410,6 +1474,8 @@ com.google.common.collect.ForwardingMultiset
     protected boolean standardEquals(java.lang.Object)
     protected int standardHashCode()
     protected java.lang.String standardToString()
+com.zoho.livechat.android.utils.FileUploader
+    void removeListener(java.lang.String)
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableBiMap$Builder
     com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableBiMap buildJdkBacked()
     synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMap buildJdkBacked()
@@ -1425,9 +1491,7 @@ com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifestParser$S
     private static final java.lang.String KEY_DURATION
     private static final java.lang.String KEY_LOOKAHEAD_COUNT
     private static final java.lang.String KEY_IS_LIVE
-androidx.lifecycle.ReportFragment
-    static androidx.lifecycle.ReportFragment get(android.app.Activity)
-    void setProcessListener(androidx.lifecycle.ReportFragment$ActivityInitializationListener)
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketQueryV13$OPCode
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.Partially$GwtIncompatible
 com.google.android.exoplayer2.source.SingleSampleMediaPeriod
     private static final java.lang.String TAG
@@ -1448,6 +1512,9 @@ com.facebook.imagepipeline.producers.JobScheduler
 org.linphone.core.LinphoneChatRoomImpl
 io.fabric.sdk.android.services.network.HttpRequest
     protected io.fabric.sdk.android.services.network.HttpRequest writePartHeader(java.lang.String,java.lang.String)
+androidx.dynamicanimation.animation.DynamicAnimation
+    abstract float getAcceleration(float,float)
+    abstract boolean isAtEquilibrium(float,float)
 com.crashlytics.android.answers.RetryManager
     private static final long NANOSECONDS_IN_MS
 kotlin.collections.ArraysUtilJVM
@@ -1462,6 +1529,8 @@ org.apache.poi.ss.util.NormalisedDecimal
     private static final long MAX_REP_WHOLE_PART
 com.google.common.escape.Platform
     private void <init>()
+androidx.lifecycle.ProcessLifecycleOwner
+    static final long TIMEOUT_MS
 org.apache.poi.ss.formula.function.FunctionMetadataRegistry
     java.util.Set getAllFunctionNames()
 com.google.android.exoplayer2.source.rtsp.RtspMessageChannel$Receiver
@@ -1676,6 +1745,8 @@ com.google.android.datatransport.runtime.backends.MetadataBackendRegistry
 com.blankj.utilcode.util.ToastUtils$IToast
     public abstract void setText(int)
     public abstract void setText(java.lang.CharSequence)
+android.support.customtabs.ICustomTabsService$Stub$Proxy
+    public java.lang.String getInterfaceDescriptor()
 com.google.android.exoplayer2.extractor.ts.H264Reader$SampleReader
     private static final int DEFAULT_BUFFER_SIZE
     private static final int NAL_UNIT_TYPE_NON_IDR
@@ -1683,6 +1754,7 @@ com.google.android.exoplayer2.extractor.ts.H264Reader$SampleReader
     private static final int NAL_UNIT_TYPE_IDR
     private static final int NAL_UNIT_TYPE_AUD
 com.google.common.collect.Count
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$12$1$1
 org.linphone.core.LinphoneCallStatsImpl
 com.mapbox.android.telemetry.LocationEvent
     java.lang.String getEvent()
@@ -1692,6 +1764,8 @@ com.mapbox.android.telemetry.LocationEvent
     java.lang.Double getAltitude()
     java.lang.String getOperatingSystem()
     java.lang.Float getAccuracy()
+com.zoho.livechat.android.messaging.wms.common.pex.PEXRequest
+    protected java.lang.String getName()
 com.google.zxing.pdf417.encoder.PDF417HighLevelEncoder
     private void <init>()
     private static final int TEXT_COMPACTION
@@ -1765,6 +1839,8 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMa
 com.google.android.exoplayer2.source.dash.offline.package-info
 com.google.android.datatransport.runtime.TransportRuntime
     static void withInstance(com.google.android.datatransport.runtime.TransportRuntimeComponent,java.util.concurrent.Callable)
+com.zoho.universalimageloader.cache.disc.impl.ext.Util
+    private void <init>()
 com.google.common.primitives.package-info
 org.apache.poi.hpsf.PropertySet
     static final int BYTE_ORDER_ASSERTION
@@ -1774,6 +1850,8 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.BaseGra
     public abstract java.util.Set incidentEdges(java.lang.Object)
 com.mapbox.mapboxsdk.location.LocationComponent
     void <init>(com.mapbox.mapboxsdk.maps.MapboxMap,com.mapbox.mapboxsdk.maps.Transform,java.util.List,com.mapbox.android.core.location.LocationEngineCallback,com.mapbox.android.core.location.LocationEngineCallback,com.mapbox.mapboxsdk.location.LocationLayerController,com.mapbox.mapboxsdk.location.LocationCameraController,com.mapbox.mapboxsdk.location.LocationAnimatorCoordinator,com.mapbox.mapboxsdk.location.StaleStateManager,com.mapbox.mapboxsdk.location.CompassEngine,com.mapbox.mapboxsdk.location.LocationComponent$InternalLocationEngineProvider)
+androidx.dynamicanimation.animation.FlingAnimation
+    float getAcceleration(float,float)
 com.google.zxing.qrcode.encoder.MaskUtil
     private void <init>()
     private static final int N1
@@ -1834,6 +1912,9 @@ com.mapbox.mapboxsdk.camera.CameraUpdateFactory$CameraBoundsUpdate
     public int[] getPadding()
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.math.DoubleMath
     static final int MAX_FACTORIAL
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketV13$CallbackEvent
+    public static final int TYPE_OPEN
+    public static final int TYPE_MESSAGE
 com.google.android.exoplayer2.audio.DecoderAudioRenderer
     protected final boolean sinkSupportsFormat(com.google.android.exoplayer2.Format)
     protected final int getSinkFormatSupport(com.google.android.exoplayer2.Format)
@@ -1961,6 +2042,24 @@ com.bumptech.glide.load.data.mediastore.ThumbFetcher$VideoThumbnailQuery
     private static final java.lang.String PATH_SELECTION
 com.google.common.collect.Synchronized
     private void <init>()
+com.zoho.livechat.android.provider.ZohoLDContract$MessageColumns
+    public static final java.lang.String PKID
+    public static final java.lang.String CHATID
+    public static final java.lang.String STIME
+    public static final java.lang.String CTIME
+    public static final java.lang.String MTYPE
+    public static final java.lang.String TEXT
+    public static final java.lang.String STATUS
+    public static final java.lang.String MSGID
+    public static final java.lang.String SENDER
+    public static final java.lang.String DNAME
+    public static final java.lang.String ATTACHMENT
+    public static final java.lang.String META
+    public static final java.lang.String IS_BOT
+    public static final java.lang.String RESPONDED_VALUE
+    public static final java.lang.String RCHATID
+    public static final java.lang.String CONVID
+    public static final java.lang.String CREATE_TABLE
 androidx.customview.widget.FocusStrategy
     private void <init>()
 com.afollestad.materialdialogs.DialogInit
@@ -2220,6 +2319,12 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Concu
     private void <init>()
 com.facebook.soloader.NativeLibrary
     protected void <init>(java.util.List)
+com.zoho.livechat.android.provider.ZohoLDContract
+    static final java.lang.String PATH_CHATCONVERSATION
+    static final java.lang.String PATH_CHATMESSAGE
+    static final java.lang.String PATH_CHATNOTIFICATION
+    static final java.lang.String PATH_ARTICLES
+    static final java.lang.String PATH_ARTICLES_CATEGORY
 com.ems.dingdong.functions.mainhome.phathang.PhatHangContract
 com.google.android.exoplayer2.WakeLockManager
     private static final java.lang.String TAG
@@ -2374,6 +2479,8 @@ com.google.android.exoplayer2.source.rtsp.RtspMessageChannel$MessageParser
 com.google.zxing.oned.rss.expanded.decoders.AI01392xDecoder
     private static final int HEADER_SIZE
     private static final int LAST_DIGIT_SIZE
+androidx.dynamicanimation.animation.SpringAnimation
+    float getAcceleration(float,float)
 com.google.common.reflect.Element
     final boolean isVolatile()
     final boolean isTransient()
@@ -2398,6 +2505,10 @@ com.mapbox.android.telemetry.MapboxTelemetry
     boolean isQueueEmpty()
 org.linphone.core.LinphoneEventImpl
     protected void <init>(long)
+com.zoho.universalimageloader.core.DisplayBitmapTask
+    private static final java.lang.String LOG_DISPLAY_IMAGE_IN_IMAGEAWARE
+    private static final java.lang.String LOG_TASK_CANCELLED_IMAGEAWARE_REUSED
+    private static final java.lang.String LOG_TASK_CANCELLED_IMAGEAWARE_COLLECTED
 com.facebook.imagepipeline.producers.LocalExifThumbnailProducer
     static final java.lang.String CREATED_THUMBNAIL
 com.google.android.exoplayer2.audio.AudioCapabilities$AudioTrackWrapperV29
@@ -2436,6 +2547,7 @@ org.apache.poi.hssf.model.LinkTable$CRNBlock
 com.google.android.exoplayer2.metadata.icy.package-info
 com.google.common.collect.SortedMultisets
     private void <init>()
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketQueryV13$Status
 com.google.common.collect.Lists$AbstractListWrapper
 org.apache.commons.lang3.CharRange
     public char getStart()
@@ -2474,6 +2586,13 @@ com.mapbox.mapboxsdk.attribution.Attribution
     static final java.lang.String TELEMETRY
     static final java.lang.String MAPBOX_URL
     static final java.lang.String TELEMETRY_URL
+com.zoho.universalimageloader.core.decode.BaseImageDecoder
+    protected static final java.lang.String LOG_SUBSAMPLE_IMAGE
+    protected static final java.lang.String LOG_SCALE_IMAGE
+    protected static final java.lang.String LOG_ROTATE_IMAGE
+    protected static final java.lang.String LOG_FLIP_IMAGE
+    protected static final java.lang.String ERROR_NO_IMAGE_STREAM
+    protected static final java.lang.String ERROR_CANT_DECODE_IMAGE
 com.google.android.exoplayer2.upstream.cache.CachedContentIndex
     public void <init>(com.google.android.exoplayer2.database.DatabaseProvider)
     static final java.lang.String FILE_NAME_ATOMIC
@@ -2685,6 +2804,7 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Forwa
 com.google.android.exoplayer2.extractor.mp4.package-info
 com.mapbox.mapboxsdk.plugins.annotation.ConvertUtils
     void <init>()
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketV13$Status
 androidx.appcompat.app.ActionBarDrawerToggleHoneycomb
     private void <init>()
     private static final java.lang.String TAG
@@ -2774,6 +2894,8 @@ com.google.android.exoplayer2.text.ttml.package-info
 com.google.common.collect.AbstractSetMultimap
     abstract java.util.Set createCollection()
     synthetic bridge java.util.Collection createCollection()
+android.support.customtabs.IPostMessageService$Stub$Proxy
+    public java.lang.String getInterfaceDescriptor()
 org.apache.commons.lang3.time.DurationFormatUtils$Token
     void <init>(java.lang.Object,int)
 org.apache.poi.ss.formula.functions.Oct2Dec
@@ -2806,6 +2928,15 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMa
     public void setWeakValueReferenceForTesting(com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap$InternalEntry,com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap$WeakValueReference)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap$InternalEntry castForTesting(com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap$InternalEntry)
 com.ems.dingdong.functions.mainhome.location.LocationContract
+android.support.customtabs.ICustomTabsService$Stub
+    static final int TRANSACTION_warmup
+    static final int TRANSACTION_newSession
+    static final int TRANSACTION_mayLaunchUrl
+    static final int TRANSACTION_extraCommand
+    static final int TRANSACTION_updateVisuals
+    static final int TRANSACTION_requestPostMessageChannel
+    static final int TRANSACTION_postMessage
+    static final int TRANSACTION_validateRelationship
 androidx.core.view.ViewPropertyAnimatorCompat
     static final int LISTENER_TAG_ID
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Synchronized$SynchronizedQueue
@@ -2881,6 +3012,13 @@ org.apache.poi.poifs.crypt.Decryptor
     protected void setIntegrityHmacKey(byte[])
     protected void setIntegrityHmacValue(byte[])
     protected int getBlockSizeInBytes()
+com.zoho.livechat.android.ui.customviews.ZoomableImageView
+    float curimgleft
+    float curimgtop
+    static final int NONE
+    static final int DRAG
+    static final int ZOOM
+    static final int CLICK
 com.google.android.exoplayer2.device.package-info
 org.apache.poi.hssf.usermodel.HSSFBorderFormatting
     protected org.apache.poi.hssf.record.cf.BorderFormatting getBorderFormattingBlock()
@@ -3015,6 +3153,8 @@ com.google.common.util.concurrent.WrappingExecutorService$1
 kotlin.native.concurrent.SharedImmutable
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Synchronized$SynchronizedMultiset
     synthetic bridge java.lang.Object delegate()
+android.support.customtabs.ICustomTabsCallback$Stub$Proxy
+    public java.lang.String getInterfaceDescriptor()
 com.mapbox.mapboxsdk.module.telemetry.OfflineDownloadEndEvent
     void <init>(com.mapbox.mapboxsdk.module.telemetry.PhoneState,java.lang.String,java.lang.Double,java.lang.Double)
     java.lang.Double getMinZoom()
@@ -3060,6 +3200,28 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.math.IntMath
     static final int FLOOR_SQRT_MAX_INT
 org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfigurationReader9
     void <init>()
+com.zoho.universalimageloader.core.LoadAndDisplayImageTask
+    private static final java.lang.String LOG_WAITING_FOR_RESUME
+    private static final java.lang.String LOG_RESUME_AFTER_PAUSE
+    private static final java.lang.String LOG_DELAY_BEFORE_LOADING
+    private static final java.lang.String LOG_START_DISPLAY_IMAGE_TASK
+    private static final java.lang.String LOG_WAITING_FOR_IMAGE_LOADED
+    private static final java.lang.String LOG_GET_IMAGE_FROM_MEMORY_CACHE_AFTER_WAITING
+    private static final java.lang.String LOG_LOAD_IMAGE_FROM_NETWORK
+    private static final java.lang.String LOG_LOAD_IMAGE_FROM_DISK_CACHE
+    private static final java.lang.String LOG_RESIZE_CACHED_IMAGE_FILE
+    private static final java.lang.String LOG_PREPROCESS_IMAGE
+    private static final java.lang.String LOG_POSTPROCESS_IMAGE
+    private static final java.lang.String LOG_CACHE_IMAGE_IN_MEMORY
+    private static final java.lang.String LOG_CACHE_IMAGE_ON_DISK
+    private static final java.lang.String LOG_PROCESS_IMAGE_BEFORE_CACHE_ON_DISK
+    private static final java.lang.String LOG_TASK_CANCELLED_IMAGEAWARE_REUSED
+    private static final java.lang.String LOG_TASK_CANCELLED_IMAGEAWARE_COLLECTED
+    private static final java.lang.String LOG_TASK_INTERRUPTED
+    private static final java.lang.String ERROR_NO_IMAGE_STREAM
+    private static final java.lang.String ERROR_PRE_PROCESSOR_NULL
+    private static final java.lang.String ERROR_POST_PROCESSOR_NULL
+    private static final java.lang.String ERROR_PROCESSOR_FOR_DISK_CACHE_NULL
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.eventbus.Dispatcher
     static com.google.firebase.crashlytics.buildtools.reloc.com.google.common.eventbus.Dispatcher immediate()
 io.reactivex.internal.operators.flowable.FlowablePublish
@@ -3301,6 +3463,9 @@ com.google.android.exoplayer2.ui.StyledPlayerControlViewLayoutManager
     private static final int UX_STATE_NONE_VISIBLE
     private static final int UX_STATE_ANIMATING_HIDE
     private static final int UX_STATE_ANIMATING_SHOW
+com.zoho.universalimageloader.cache.disc.impl.ext.StrictLineReader
+    private static final byte CR
+    private static final byte LF
 com.google.common.cache.LocalCache$Segment
     boolean containsValue(java.lang.Object)
 org.apache.poi.hssf.record.pivottable.PageItemRecord$FieldInfo
@@ -3583,6 +3748,11 @@ com.google.android.exoplayer2.MetadataRetriever$MetadataRetrieverInternal
     private static final int MESSAGE_CHECK_FOR_FAILURE
     private static final int MESSAGE_CONTINUE_LOADING
     private static final int MESSAGE_RELEASE
+com.zoho.universalimageloader.core.download.BaseImageDownloader
+    protected static final int BUFFER_SIZE
+    protected static final java.lang.String ALLOWED_URI_CHARS
+    protected static final int MAX_REDIRECT_COUNT
+    protected static final java.lang.String CONTENT_CONTACTS_URI_PREFIX
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ForwardingMultiset
     protected boolean standardContains(java.lang.Object)
     protected void standardClear()
@@ -3608,6 +3778,8 @@ com.google.common.graph.MapIteratorCache
     public final void clear()
 com.facebook.soloader.MergedSoMapping
     void <init>()
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketV13$ReadFrame
+    public boolean isSingleFrame()
 androidx.constraintlayout.solver.widgets.Optimizer
     static final int FLAG_USE_OPTIMIZE
     static final int FLAG_CHAIN_DANGLING
@@ -3758,6 +3930,22 @@ androidx.core.content.pm.ShortcutInfoCompat
 org.apache.poi.ss.format.CellFormatType$4
     org.apache.poi.ss.format.CellFormatter formatter(java.lang.String)
 com.airbnb.lottie.animation.content.package-info
+com.zoho.universalimageloader.cache.disc.impl.ext.DiskLruCache
+    public synchronized void setMaxSize(long)
+    public synchronized long size()
+    public synchronized long fileCount()
+    public synchronized boolean isClosed()
+    public synchronized void flush()
+    static final java.lang.String JOURNAL_FILE
+    static final java.lang.String JOURNAL_FILE_TEMP
+    static final java.lang.String JOURNAL_FILE_BACKUP
+    static final java.lang.String MAGIC
+    static final java.lang.String VERSION_1
+    static final long ANY_SEQUENCE_NUMBER
+    private static final java.lang.String CLEAN
+    private static final java.lang.String DIRTY
+    private static final java.lang.String REMOVE
+    private static final java.lang.String READ
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.Striped$PaddedLock
     long unused1
     long unused2
@@ -3894,6 +4082,19 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.Murmur3_
     private static final int C1
     private static final int C2
 com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTinContract
+com.zoho.livechat.android.provider.ZohoLDContract$PushNotificationColumns
+    public static final java.lang.String PKID
+    public static final java.lang.String CHATID
+    public static final java.lang.String SENDER
+    public static final java.lang.String DNAME
+    public static final java.lang.String TIMEUID
+    public static final java.lang.String GROUPID
+    public static final java.lang.String TYPE
+    public static final java.lang.String MESSAGE
+    public static final java.lang.String NAVLNK
+    public static final java.lang.String IMGURL
+    public static final java.lang.String DOM
+    public static final java.lang.String CREATE_TABLE
 com.mapbox.android.core.crashreporter.MapboxUncaughtExceptionHanlder
     boolean isEnabled()
     void setExceptionChainDepth(int)
@@ -3988,7 +4189,6 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.Striped6
     final void internalReset(long)
 org.linphone.core.video.VideoUtil
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment
-    void imageChooser()
     static final int OPEN_MEDIA_PICKER
     static final int REQUEST_IMAGE_CAPTURE
 com.google.android.exoplayer2.video.spherical.Projection
@@ -4052,11 +4252,11 @@ com.google.android.exoplayer2.source.rtsp.TransferRtpDataChannelFactory
     private static final int INTERLEAVED_CHANNELS_PER_TRACK
 com.google.android.exoplayer2.ui.SubtitleViewUtils
     private void <init>()
-com.google.android.gms.internal.measurement.zzdt
-    void <init>()
 androidx.appcompat.view.menu.MenuHelper
     public abstract void setPresenterCallback(androidx.appcompat.view.menu.MenuPresenter$Callback)
     public abstract void dismiss()
+com.google.android.gms.internal.measurement.zzdt
+    void <init>()
 com.google.android.exoplayer2.video.spherical.ProjectionDecoder
     private void <init>()
     private static final int TYPE_YTMP
@@ -4136,6 +4336,7 @@ androidx.appcompat.app.AppCompatDelegateImpl$PanelFeatureState
     boolean wasLastOpen
     android.os.Bundle frozenMenuState
 com.ems.dingdong.functions.mainhome.gomhang.GomHangContract
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketV13$OPCode
 io.fabric.sdk.android.FabricKitsFinder
     static final java.lang.String FABRIC_DIR
     private static final java.lang.String FABRIC_IDENTIFIER_KEY
@@ -4213,6 +4414,8 @@ com.google.android.exoplayer2.extractor.flv.AudioTagPayloadReader
 com.google.common.collect.UnmodifiableSortedMultiset
     public synthetic bridge java.util.SortedSet elementSet()
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhoneContract
+com.zoho.livechat.android.messaging.wms.common.pex.PEXTask
+    protected java.lang.String getName()
 com.google.common.hash.LittleEndianByteArray$UnsafeByteArray$1
     public void putLongLittleEndian(byte[],int,long)
 androidx.transition.GhostViewUtils
@@ -4505,6 +4708,7 @@ io.fabric.sdk.android.services.concurrency.internal.AbstractFuture$Sync
     static final int COMPLETED
     static final int CANCELLED
     static final int INTERRUPTED
+com.zoho.livechat.android.ui.fragments.ArticleInfoFragment$ViewTypes
 com.google.gson.internal.bind.TypeAdapters$27
     private static final java.lang.String YEAR
     private static final java.lang.String MONTH
@@ -4516,6 +4720,9 @@ com.google.android.exoplayer2.SimpleExoPlayer$FrameMetadataListener
     public static final int MSG_SET_VIDEO_FRAME_METADATA_LISTENER
     public static final int MSG_SET_CAMERA_MOTION_LISTENER
     public static final int MSG_SET_SPHERICAL_SURFACE_VIEW
+androidx.browser.browseractions.BrowserActionsFallbackMenuUi
+    void setMenuUiListener(androidx.browser.browseractions.BrowserActionsFallbackMenuUi$BrowserActionsFallMenuUiListener)
+    private static final java.lang.String TAG
 com.google.common.collect.Lists$1
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.auth.NTLMEngineImpl
     static java.lang.String getType3Message(java.lang.String,java.lang.String,java.lang.String,java.lang.String,byte[],int,java.lang.String,byte[],java.security.cert.Certificate,byte[],byte[])
@@ -5103,6 +5310,12 @@ com.google.android.exoplayer2.source.dash.DashMediaPeriod$TrackGroupInfo
     private static final int CATEGORY_PRIMARY
     private static final int CATEGORY_EMBEDDED
     private static final int CATEGORY_MANIFEST_EVENTS
+android.support.customtabs.ICustomTabsCallback$Stub
+    static final int TRANSACTION_onNavigationEvent
+    static final int TRANSACTION_extraCallback
+    static final int TRANSACTION_onMessageChannelReady
+    static final int TRANSACTION_onPostMessage
+    static final int TRANSACTION_onRelationshipValidationResult
 com.bumptech.glide.manager.DefaultConnectivityMonitor
     private static final java.lang.String TAG
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Serialization
@@ -5255,6 +5468,8 @@ com.google.android.exoplayer2.video.FixedFrameRateEstimator
     static final long MAX_MATCHING_FRAME_DIFFERENCE_NS
 com.roughike.bottombar.BadgeCircle
     void <init>()
+com.zoho.livechat.android.ui.customviews.slider.SeekBar
+    protected boolean getActivate()
 androidx.cardview.widget.RoundRectDrawableWithShadow
     private static final float SHADOW_MULTIPLIER
 com.google.common.collect.Lists
@@ -5297,6 +5512,8 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMa
 com.facebook.soloader.Elf64_Ehdr
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.conn.AbstractClientConnAdapter
     protected final void assertNotAborted()
+androidx.lifecycle.LifecycleDispatcher
+    private void <init>()
 io.reactivex.internal.operators.observable.ObservableScalarXMap$ScalarDisposable
     static final int START
     static final int FUSED
@@ -5434,6 +5651,7 @@ com.google.common.eventbus.SubscriberRegistry
     java.util.Set getSubscribersForTesting(java.lang.Class)
 org.apache.commons.compress.archivers.cpio.CpioUtil
     void <init>()
+com.zoho.livechat.android.ui.activities.SalesIQActivity$SearchStates
 androidx.transition.Styleable$ChangeBounds
 com.android.volley.VolleyLog$MarkerLog
     private static final long MIN_DURATION_FOR_LOGGING_MS
@@ -5576,6 +5794,7 @@ com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifestParser$P
 com.ems.dingdong.functions.mainhome.phathang.sign.SignDrawContract
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.pool.AbstractConnPool
     protected void enumLeased(com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.pool.PoolEntryCallback)
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$8$1$1
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.CollectPreconditions
     void <init>()
 com.google.android.exoplayer2.extractor.amr.AmrExtractor
@@ -5599,6 +5818,10 @@ com.bumptech.glide.load.resource.gif.GifDrawable
     void <init>(com.bumptech.glide.load.resource.gif.GifFrameLoader,android.graphics.Paint)
     void setIsRunning(boolean)
     boolean isRecycled()
+androidx.dynamicanimation.animation.AnimationHandler
+    public static long getFrameTime()
+    public void setProvider(androidx.dynamicanimation.animation.AnimationHandler$AnimationFrameCallbackProvider)
+    private static final long FRAME_DELAY_MS
 androidx.appcompat.widget.RtlSpacingHelper
     public static final int UNDEFINED
 org.linphone.core.PresenceServiceImpl
@@ -5699,6 +5922,8 @@ com.google.android.exoplayer2.extractor.ogg.DefaultOggSeeker
     private static final int STATE_SEEK
     private static final int STATE_SKIP
     private static final int STATE_IDLE
+androidx.browser.browseractions.BrowserActionsIntent
+    static void setDialogShownListenter(androidx.browser.browseractions.BrowserActionsIntent$BrowserActionsFallDialogListener)
 com.google.android.exoplayer2.text.ttml.TtmlSubtitle
     com.google.android.exoplayer2.text.ttml.TtmlNode getRoot()
     java.util.Map getGlobalStyles()
@@ -5875,6 +6100,10 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Compa
 com.crashlytics.android.core.WireFormat$FieldType$4
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.base.CommonMatcher
     abstract java.lang.String replaceAll(java.lang.String)
+com.zoho.livechat.android.messaging.wms.common.pex.PEXEvent
+    protected boolean isRequest()
+    protected abstract java.lang.String getName()
+    protected java.util.Hashtable getLog()
 com.google.android.material.appbar.ViewOffsetHelper
     public int getLayoutLeft()
 org.apache.poi.hssf.usermodel.HSSFDateUtil
@@ -5883,6 +6112,7 @@ com.mapbox.mapboxsdk.location.LocationComponentCompassEngine
     private static final java.lang.String TAG
     static final int SENSOR_DELAY_MICROS
     private static final float ALPHA
+com.zoho.livechat.android.ui.adapters.MessagesAdapter$ViewTypes
 org.apache.poi.poifs.crypt.cryptoapi.CryptoAPIEncryptor$1
 com.google.android.gms.internal.places.zzr
     void <init>()
@@ -6226,6 +6456,9 @@ com.ems.dingdong.views.picker.blur.Blur
     public static android.graphics.Bitmap apply(android.content.Context,android.graphics.Bitmap)
 com.crashlytics.android.core.BinaryImagesConverter
     private static final java.lang.String DATA_DIR
+androidx.dynamicanimation.animation.Force
+    public abstract float getAcceleration(float,float)
+    public abstract boolean isAtEquilibrium(float,float)
 com.bumptech.glide.load.engine.DecodeHelper
     java.lang.Class getModelClass()
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.ssl.SSLContextBuilder
@@ -6248,6 +6481,8 @@ org.apache.commons.compress.archivers.dump.Dirent
     int getType()
 com.google.android.material.bottomsheet.BottomSheetBehavior
     int getPeekHeightMin()
+com.zoho.universalimageloader.core.ProcessAndDisplayImageTask
+    private static final java.lang.String LOG_POSTPROCESS_IMAGE
 com.mapbox.api.directions.v5.AutoValue_MapboxDirections$Builder
     java.lang.Boolean usePostMethod()
     com.mapbox.api.directions.v5.WalkingOptions walkingOptions()
@@ -6393,6 +6628,24 @@ com.crashlytics.android.answers.StartCheckoutEvent
     static final java.lang.String ITEM_COUNT_ATTRIBUTE
 com.google.zxing.oned.rss.expanded.BitArrayBuilder
     private void <init>()
+com.zoho.livechat.android.provider.ZohoLDContract$ArticlesColumns
+    public static final java.lang.String PKID
+    public static final java.lang.String ARTICLE_ID
+    public static final java.lang.String CATEGORY_ID
+    public static final java.lang.String CATEGORY_NAME
+    public static final java.lang.String VISITORS_VIEWED
+    public static final java.lang.String USAGE_COUNT
+    public static final java.lang.String LIKES
+    public static final java.lang.String DISLIKES
+    public static final java.lang.String DEPT_ID
+    public static final java.lang.String CTIME
+    public static final java.lang.String MTIME
+    public static final java.lang.String ARTICLE_INFO
+    public static final java.lang.String ARTICLE_MESSAGE
+    public static final java.lang.String LAST_SEARCH_TIME
+    public static final java.lang.String LAST_VIEWED_TIME
+    public static final java.lang.String RATED_TYPE
+    public static final java.lang.String CREATE_TABLE
 com.airbnb.lottie.manager.package-info
 com.airbnb.lottie.parser.ShapeFillParser
     private void <init>()
@@ -6525,6 +6778,9 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiF
     com.mapbox.mapboxsdk.geometry.LatLng mLatLng
 com.google.android.material.floatingactionbutton.MotionStrategy
     public abstract com.google.android.material.animation.MotionSpec getCurrentMotionSpec()
+androidx.browser.browseractions.BrowserActionsFallbackMenuDialog
+    private static final long ENTER_ANIMATION_DURATION_MS
+    private static final long EXIT_ANIMATION_DURATION_MS
 androidx.fragment.app.FragmentManagerNonConfig
     boolean isRetaining(androidx.fragment.app.Fragment)
 com.facebook.drawee.controller.AbstractDraweeControllerBuilder
@@ -6537,6 +6793,8 @@ org.linphone.core.TunnelConfigImpl
     protected void <init>(long)
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
     static final int DEFAULT_SIZE
+com.zoho.livechat.android.messaging.wms.common.pex.credentials.PEXCredentials
+    protected void setInfo(java.util.Hashtable)
 com.mapbox.mapboxsdk.maps.MapChangeReceiver
     private static final java.lang.String TAG
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.Sha2Crypt
@@ -6596,6 +6854,8 @@ com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.pool.Basic
 com.google.zxing.oned.Code39Reader
     static final java.lang.String ALPHABET_STRING
     static final int ASTERISK_ENCODING
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketQueryV13$WriteFrame
+    public boolean isCloseFrame()
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.ForwardingFuture$SimpleForwardingFuture
     protected void <init>(java.util.concurrent.Future)
 com.google.android.exoplayer2.metadata.mp4.package-info
@@ -6613,6 +6873,8 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.Address
     android.location.Location final_loc
     double longitude
     double latitude
+com.zoho.livechat.android.ui.fragments.ArticleInfoFragment$MyWebClient
+    protected android.widget.FrameLayout mFullscreenContainer
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ForwardingSet
     protected boolean standardEquals(java.lang.Object)
     protected int standardHashCode()
@@ -6662,6 +6924,9 @@ com.google.common.cache.CacheBuilder
     static final int UNSET_INT
 com.google.android.exoplayer2.source.ProgressiveMediaPeriod
     private static final long DEFAULT_LAST_SAMPLE_DURATION_US
+android.support.customtabs.IPostMessageService$Stub
+    static final int TRANSACTION_onMessageChannelReady
+    static final int TRANSACTION_onPostMessage
 io.fabric.sdk.android.services.events.EnabledEventsStrategy
     protected void configureRollover(int)
     static final int UNDEFINED_ROLLOVER_INTERVAL_SECONDS
@@ -6766,6 +7031,8 @@ com.ems.dingdong.dialog.DigLogPhathoan$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.DigLogPhathoan$$ViewBinder this$0
 org.apache.poi.poifs.crypt.cryptoapi.CryptoAPIDecryptor
     static final synthetic boolean $assertionsDisabled
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$CampaignViewHolder
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.ems.dingdong.calls.diapad.DiapadFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.calls.diapad.DiapadFragment$$ViewBinder this$0
 org.apache.poi.hssf.usermodel.HSSFClientAnchor
@@ -6776,10 +7043,18 @@ com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.Recev
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonFragment$$ViewBinder this$0
 com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantReadWriteLock
     final synthetic com.google.common.util.concurrent.CycleDetectingLockFactory this$0
+com.zoho.livechat.android.models.SalesIQMessageMeta$InputValidation
+    final synthetic com.zoho.livechat.android.models.SalesIQMessageMeta this$0
+com.zoho.livechat.android.ui.RequestLogDialog$LogViewAdapter$LogViewHolder
+    final synthetic com.zoho.livechat.android.ui.RequestLogDialog$LogViewAdapter this$1
 com.ems.dingdong.callback.CommonCallback
     static void <clinit>()
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetInputPhoneViewHolder$4$2
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetInputPhoneViewHolder$4 this$1
 com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$4
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.ems.dingdong.dialog.EditDayDialog$$ViewBinder$5
     final synthetic com.ems.dingdong.dialog.EditDayDialog$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.cache.LocalCache$LocalManualCache$1
@@ -6847,8 +7122,8 @@ com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon$$ViewBinder$2
 com.ems.dingdong.dialog.RouteDialog
     boolean check
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.AbstractBaseGraph
-    public synthetic bridge java.lang.Iterable predecessors(java.lang.Object)
     public synthetic bridge java.lang.Iterable successors(java.lang.Object)
+    public synthetic bridge java.lang.Iterable predecessors(java.lang.Object)
 com.journeyapps.barcodescanner.CaptureManager
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.profile.tienluong.luongthang.MonthlySalaryFragment$2
@@ -6888,10 +7163,14 @@ com.bumptech.glide.load.model.DataUrlLoader$StreamFactory$1
     final synthetic com.bumptech.glide.load.model.DataUrlLoader$StreamFactory this$0
 com.ems.dingdong.dialog.RouteDialog$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.RouteDialog$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$2
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ForwardingNavigableSet$StandardDescendingSet
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ForwardingNavigableSet this$0
 com.ems.dingdong.dialog.DialogGG$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.DialogGG$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetArticlesViewHolder$ActionsAdapter$ActionsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetArticlesViewHolder$ActionsAdapter this$1
 com.google.android.gms.internal.vision.zzhj
     private static int zza(byte[],int,int,com.google.android.gms.internal.vision.zzjd,java.lang.Class,com.google.android.gms.internal.vision.zzei)
 com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflineFragment$$ViewBinder$3
@@ -6902,6 +7181,8 @@ kotlin.sequences.IndexingSequence$iterator$1
     final synthetic kotlin.sequences.IndexingSequence this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.Traverser$TreeTraverser$DepthFirstPostOrderIterator$NodeAndChildren
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.Traverser$TreeTraverser$DepthFirstPostOrderIterator this$1
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$MessageViewHolder
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.rey.material.app.ToolbarManager$NavigationManager$3
     final synthetic android.view.animation.Interpolator val$interpolator
     final synthetic int val$prevLeft
@@ -6965,6 +7246,8 @@ dagger.internal.SingleCheck
     static final synthetic boolean $assertionsDisabled
 com.facebook.imagepipeline.producers.DiskCacheReadProducer$2
     final synthetic com.facebook.imagepipeline.producers.DiskCacheReadProducer this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesResourceSharingViewHolder$1$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesResourceSharingViewHolder$1 this$1
 com.ems.dingdong.notification.cuocgoictel.NotiCtelFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.notification.cuocgoictel.NotiCtelFragment$$ViewBinder this$0
 com.google.common.collect.ForwardingSortedMultiset$StandardElementSet
@@ -6979,10 +7262,10 @@ org.apache.poi.hssf.record.RecordInputStream
     static final synthetic boolean $assertionsDisabled
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.DirectedGraphConnections$1$1
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.DirectedGraphConnections$1 this$1
-com.google.android.gms.internal.measurement.zzez
-    private final boolean zze
 kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsJvmKt$createCoroutineFromSuspendFunction$1
     final synthetic kotlin.coroutines.Continuation $completion
+com.google.android.gms.internal.measurement.zzez
+    private final boolean zze
 com.google.gson.internal.LinkedHashTreeMap$KeySet$1
     final synthetic com.google.gson.internal.LinkedHashTreeMap$KeySet this$1
 com.bumptech.glide.load.model.ByteArrayLoader$StreamFactory$1
@@ -7021,6 +7304,14 @@ io.reactivex.internal.operators.observable.ObservableTakeLastTimed$TakeLastTimed
     volatile boolean done
 com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatKhongThanhCongFragment$$ViewBinder$5
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatKhongThanhCongFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesTextViewHolder$4
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesTextViewHolder this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$52
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetMutipleProductViewHolder$ActionsAdapter$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetMutipleProductViewHolder$ActionsAdapter this$1
+com.zoho.livechat.android.api.GetWmsIdDetails$1
+    final synthetic com.zoho.livechat.android.api.GetWmsIdDetails this$0
 com.mapbox.mapboxsdk.maps.Transform$4
     final synthetic com.mapbox.mapboxsdk.maps.Transform this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatKhongThanhCongFragment$$ViewBinder$3
@@ -7035,6 +7326,8 @@ org.apache.commons.compress.archivers.dump.DumpArchiveInputStream
     final java.lang.String encoding
 com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailViFragment
     com.ems.dingdong.model.PostOffice postOffice
+com.zoho.livechat.android.provider.CursorUtility$1
+    final synthetic com.zoho.livechat.android.provider.CursorUtility this$0
 io.fabric.sdk.android.services.common.ExecutorUtils$1$1
     final synthetic io.fabric.sdk.android.services.common.ExecutorUtils$1 this$0
 com.rey.material.app.DatePickerDialog$DatePickerLayout$2
@@ -7058,6 +7351,8 @@ com.facebook.imagepipeline.producers.HttpUrlConnectionNetworkFetcher$2
     final synthetic com.facebook.imagepipeline.producers.HttpUrlConnectionNetworkFetcher this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi.NopPhiFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi.NopPhiFragment$$ViewBinder this$0
+com.zoho.livechat.android.utils.AudioPlayer$2$1
+    final synthetic com.zoho.livechat.android.utils.AudioPlayer$2 this$0
 com.ems.dingdong.dialog.EditDayDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.EditDayDialog$$ViewBinder this$0
 androidx.transition.FragmentTransitionSupport$4
@@ -7078,12 +7373,16 @@ com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogFra
     final synthetic com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogFragment this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiPresenter$1$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiPresenter$1 this$1
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesTextViewHolder$2
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesTextViewHolder this$0
 com.mapbox.mapboxsdk.maps.Transform$3
     final synthetic com.mapbox.mapboxsdk.maps.Transform this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AbstractService$5
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AbstractService this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.moredata.DialogVmapChuaPhanHuowng$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.moredata.DialogVmapChuaPhanHuowng$$ViewBinder this$0
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketQueryV13$ReadFrame
+    private boolean finSet
 com.afollestad.materialcamera.internal.CameraFragment$2
     final synthetic com.afollestad.materialcamera.internal.CameraFragment this$0
 com.core.Constants
@@ -7127,6 +7426,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeD
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailFragment this$0
 com.facebook.imagepipeline.cache.CountingMemoryCache$1
     final synthetic com.facebook.imagepipeline.cache.CountingMemoryCache this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesTextViewHolder$3
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesTextViewHolder this$0
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager
     protected final com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.conn.tsccm.AbstractConnPool connectionPool
 com.mapbox.android.telemetry.MapboxTelemetry$5
@@ -7200,10 +7501,12 @@ com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.Htt
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.HttpClientBuilder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter this$0
+com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter$LocationSuggestionViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.AbstractHasher
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(java.nio.ByteBuffer)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$2
@@ -7264,6 +7567,8 @@ com.bumptech.glide.load.model.ByteArrayLoader$ByteBufferFactory$1
     final synthetic com.bumptech.glide.load.model.ByteArrayLoader$ByteBufferFactory this$0
 retrofit2.CompletableFutureCallAdapterFactory$BodyCallAdapter$2
     final synthetic retrofit2.CompletableFutureCallAdapterFactory$BodyCallAdapter this$0
+com.zoho.salesiqembed.android.tracking.UTSUtil
+    static void <clinit>()
 com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankFragment$$ViewBinder this$0
 com.journeyapps.barcodescanner.camera.DisplayConfiguration
@@ -7272,10 +7577,14 @@ io.reactivex.internal.operators.flowable.FlowableSubscribeOn$SubscribeOnSubscrib
     final synthetic io.reactivex.internal.operators.flowable.FlowableSubscribeOn$SubscribeOnSubscriber this$0
 com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1
     final synthetic com.google.gson.internal.bind.ReflectiveTypeAdapterFactory this$0
+com.zoho.livechat.android.ui.fragments.WidgetLocationDialogFragment$1
+    final synthetic com.zoho.livechat.android.ui.fragments.WidgetLocationDialogFragment this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.BuuguiAdapter
     android.app.Activity activity
 com.google.android.material.datepicker.MaterialCalendarGridView$1
     final synthetic com.google.android.material.datepicker.MaterialCalendarGridView this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$LinksAdapter$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$LinksAdapter this$1
 androidx.multidex.MultiDexExtractor$1
     final synthetic androidx.multidex.MultiDexExtractor this$0
 com.ems.dingdong.functions.mainhome.gomhang.statistic.detail.ListStatisticDetailFragment$$ViewBinder$1
@@ -7337,6 +7646,10 @@ com.crashlytics.android.core.WireFormat
     static final int MESSAGE_SET_MESSAGE_TAG
 androidx.core.provider.SelfDestructiveThread$3
     final synthetic androidx.core.provider.SelfDestructiveThread this$0
+com.zoho.universalimageloader.core.ImageLoader
+    static void <clinit>()
+com.zoho.livechat.android.operation.SalesIQApplicationManager$5
+    final synthetic com.zoho.livechat.android.operation.SalesIQApplicationManager this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.moredata.AdapterVmapChuaPhanHuong
     java.util.List mList
     android.content.Context mContext
@@ -7362,6 +7675,8 @@ com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter$3$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter$3 this$1
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$20
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.ArticleInfoFragment$3
+    final synthetic com.zoho.livechat.android.ui.fragments.ArticleInfoFragment this$0
 com.ems.dingdong.dialog.DialogCuocgoiNew$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.DialogCuocgoiNew$$ViewBinder this$0
 com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder$1
@@ -7448,6 +7763,8 @@ com.ems.dingdong.calls.calling.CallingFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.calls.calling.CallingFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.customviews.ZoomableImageView$ImageListener
+    android.content.Context context
 com.ems.dingdong.functions.mainhome.setting.SettingFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.setting.SettingFragment$$ViewBinder this$0
 com.google.android.gms.internal.measurement.zzfc
@@ -7497,6 +7814,8 @@ com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiPresenter$1$1
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter$1
     static void <clinit>()
     static final synthetic boolean $assertionsDisabled
+com.zoho.livechat.android.ui.fragments.ArticleInfoFragment$6
+    final synthetic com.zoho.livechat.android.ui.fragments.ArticleInfoFragment this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.HashBiMap$Inverse$InverseKeySet$1
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.HashBiMap$Inverse$InverseKeySet this$2
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken$InterfaceSet$1
@@ -7509,6 +7828,8 @@ com.ems.dingdong.calls.calling.CallingFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.calls.calling.CallingFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$21
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesImageViewHolder$7
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesImageViewHolder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflineFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflineFragment$$ViewBinder this$0
 androidx.core.content.pm.ShortcutManagerCompat
@@ -7555,6 +7876,8 @@ com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.Def
     protected final com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.RedirectHandler redirectHandler
     protected final com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.AuthenticationHandler targetAuthHandler
     protected final com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.AuthenticationHandler proxyAuthHandler
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$ActionsAdapter$ActionsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$ActionsAdapter this$1
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment
     java.lang.String currenImaPath
     com.ems.dingdong.functions.mainhome.camera.ImagePro imagePro
@@ -7591,6 +7914,8 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.LittleEn
     static final synthetic boolean $assertionsDisabled
 androidx.lifecycle.LiveData$AlwaysActiveObserver
     final synthetic androidx.lifecycle.LiveData this$0
+com.zoho.livechat.android.operation.SalesIQApplicationManager$10
+    final synthetic com.zoho.livechat.android.operation.SalesIQApplicationManager this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.address.xacminhdiachi.map.MapFragment$$ViewBinder$2
@@ -7608,6 +7933,8 @@ com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragmen
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AdapterDialog
     android.content.Context mContext
+com.ems.dingdong.dialog.DialogNhaptienCOD$$ViewBinder$3
+    final synthetic com.ems.dingdong.dialog.DialogNhaptienCOD$$ViewBinder this$0
 org.apache.poi.hssf.dev.EFBiffViewer$1
     final synthetic org.apache.poi.hssf.dev.EFBiffViewer this$0
 com.ems.dingdong.calls.calling.CallingFragment$$ViewBinder$1
@@ -7616,6 +7943,10 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacN
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 io.fabric.sdk.android.services.common.QueueFile$1
     final synthetic io.fabric.sdk.android.services.common.QueueFile this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$DeptViewHolder
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$LinksAdapter$LinksViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$LinksAdapter this$1
 com.ems.dingdong.location.CheckLocationService$1
     final synthetic com.ems.dingdong.location.CheckLocationService this$0
 com.google.common.util.concurrent.SequentialExecutor$1
@@ -7672,6 +8003,8 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi.OtpDialog$$ViewBinde
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi.OtpDialog$$ViewBinder this$0
 com.google.android.datatransport.runtime.TransportRuntime
     static void <clinit>()
+com.zoho.livechat.android.operation.SalesIQApplicationManager
+    static void <clinit>()
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.cache.LocalCache$EntryIterator
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.cache.LocalCache this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOption$$ViewBinder$1
@@ -7719,6 +8052,8 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOptionNew$$ViewBinder
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOptionNew$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap$EntryIterator
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.MapMakerInternalMap this$0
+com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketV13$CallbackEvent
+    final synthetic com.zoho.livechat.android.messaging.wms.common.websocket.WebSocketV13 this$0
 com.afollestad.materialcamera.internal.Camera2Fragment
     static final synthetic boolean $assertionsDisabled
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$8
@@ -7733,21 +8068,32 @@ org.apache.poi.ss.format.CellDateFormatter
     static void <clinit>()
 com.google.android.gms.internal.places.zzbb
     private static final com.google.android.gms.internal.places.zzbb zzic
+com.zoho.livechat.android.ui.adapters.DepartmentAdapter$DepartmentViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.DepartmentAdapter this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi.OtpDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.nopphi.OtpDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonFragment$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.ReceverPersonFragment this$0
+com.zoho.livechat.android.ui.activities.SalesIQActivity$SearchViewHolder
+    android.widget.ImageView emptyStateIcon
+    final synthetic com.zoho.livechat.android.ui.activities.SalesIQActivity this$0
 com.ems.dingdong.functions.mainhome.location.TienCuocApdapter
     java.util.List mList
     android.content.Context mContext
+com.zoho.salesiqembed.android.tracking.BotTriggerRunnable$1
+    final synthetic com.zoho.salesiqembed.android.tracking.BotTriggerRunnable this$0
 com.mapbox.mapboxsdk.maps.AttributionDialogManager$1
     final synthetic com.mapbox.mapboxsdk.maps.AttributionDialogManager this$0
 com.ems.dingdong.functions.mainhome.notify.ListNotifyFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.notify.ListNotifyFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetInputPhoneViewHolder$CountryPhoneCodesAdapter
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetInputPhoneViewHolder this$0
 com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTInFragment$$ViewBinder$8
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTInFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$28
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
+com.zoho.livechat.android.constants.SystemUtil
+    static void <clinit>()
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$$ViewBinder this$0
 androidx.fragment.app.FragmentTransitionCompat21$2
@@ -7764,8 +8110,12 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOptionNew$$ViewBinder
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOptionNew$$ViewBinder this$0
 com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets$1
     final synthetic com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets this$1
+com.zoho.livechat.android.ui.fragments.ImageFragment
+    static void <clinit>()
 com.ems.dingdong.dialog.DialogNhapKhongThanhCong$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.DialogNhapKhongThanhCong$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetImageViewHolder$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetImageViewHolder this$0
 com.ems.dingdong.dialog.DialogEditSdt$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.DialogEditSdt$$ViewBinder this$0
 androidx.core.graphics.TypefaceCompatBaseImpl$1
@@ -7827,6 +8177,9 @@ com.ems.dingdong.dialog.ReasonDialog
     boolean check
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.MessagesAdapter
+    static void <clinit>()
+    static final synthetic boolean $assertionsDisabled
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.pool.AbstractConnPool$3
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.pool.AbstractConnPool this$0
 com.ems.dingdong.dialog.SignDialog$$ViewBinder$2
@@ -7838,6 +8191,8 @@ com.google.android.gms.internal.measurement.zzdf
     private static final java.lang.Throwable[] zza
 kotlin.properties.Delegates$observable$1
     final synthetic java.lang.Object $initialValue
+com.zoho.livechat.android.ViewBotCardImageActivity
+    static void <clinit>()
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$5
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 com.ems.dingdong.dialog.RouteManagerDialog$$ViewBinder$1
@@ -7846,6 +8201,8 @@ com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.ndk.internal.elf.ElfDataParser$1
     final synthetic com.google.firebase.crashlytics.buildtools.ndk.internal.elf.ElfDataParser this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetMutipleProductViewHolder$ActionsAdapter$ActionsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetMutipleProductViewHolder$ActionsAdapter this$1
 com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTInFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTInFragment$$ViewBinder this$0
 androidx.fragment.app.FragmentTransitionImpl$1
@@ -7862,6 +8219,8 @@ io.reactivex.internal.operators.observable.ObservableReplay$2$1
     final synthetic io.reactivex.internal.operators.observable.ObservableReplay$2 this$0
 com.google.common.collect.MapMakerInternalMap$EntryIterator
     final synthetic com.google.common.collect.MapMakerInternalMap this$0
+com.zoho.livechat.android.ui.adapters.DateTimeSlotsAdapter$TimeSlotAdapter$TimeSlotViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.DateTimeSlotsAdapter$TimeSlotAdapter this$1
 com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangeFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangeFragment$$ViewBinder this$0
 com.google.common.util.concurrent.Futures$FutureCombiner$1
@@ -7920,8 +8279,12 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentFragmen
     int mType
 com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOption$$ViewBinder$5
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOption$$ViewBinder this$0
+androidx.dynamicanimation.animation.DynamicAnimation$15
+    final synthetic androidx.dynamicanimation.animation.DynamicAnimation this$0
 com.google.common.collect.ImmutableMultiset$1
     final synthetic com.google.common.collect.ImmutableMultiset this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesBaseViewHolder$DepartmentSuggestionsAdapter$DepartmentSuggestionViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesBaseViewHolder$DepartmentSuggestionsAdapter this$1
 androidx.recyclerview.widget.ItemTouchHelper$RecoverAnimation
     final int mAnimationType
 com.google.android.gms.internal.clearcut.zzcd
@@ -7932,6 +8295,8 @@ org.apache.commons.lang3.builder.DiffBuilder$11
     final synthetic org.apache.commons.lang3.builder.DiffBuilder this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMap$1
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableMap this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesResourceSharingViewHolder$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesResourceSharingViewHolder this$0
 com.journeyapps.barcodescanner.camera.CameraThread
     static void <clinit>()
     private static final java.lang.String TAG
@@ -8017,6 +8382,8 @@ com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder$4
     final synthetic com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailFragment$$ViewBinder this$0
+com.zoho.livechat.android.ZohoLiveChat$FAQ
+    static void <clinit>()
 org.apache.poi.hssf.model.LinkTable$CRNBlock
     private final org.apache.poi.hssf.record.CRNRecord[] _crns
 com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOption$$ViewBinder$3
@@ -8029,7 +8396,11 @@ com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.Filte
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.FilteredKeySetMultimap this$0
 com.google.common.collect.LinkedListMultimap$1ValuesImpl$1
     final synthetic com.google.common.collect.LinkedListMultimap$1ValuesImpl this$1
+com.zoho.livechat.android.ui.fragments.ChatFragment$28
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 org.greenrobot.eventbus.util.ErrorDialogFragments
+    static void <clinit>()
+com.zoho.livechat.android.utils.CustomBulletSpan
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment$$ViewBinder this$0
@@ -8126,8 +8497,14 @@ com.ems.dingdong.functions.mainhome.camera.ImagePro$CropingOptionAdapter
     final synthetic com.ems.dingdong.functions.mainhome.camera.ImagePro this$0
 com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$CampaignViewHolder$1
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment val$this$0
+com.zoho.livechat.android.config.DeviceConfig
+    static void <clinit>()
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter$1$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter$1 this$1
+com.zoho.livechat.android.ui.fragments.ChatFragment$4
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.ems.dingdong.dialog.DialogXacThuc$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.DialogXacThuc$$ViewBinder this$0
 com.google.gson.internal.ConstructorConstructor$3
@@ -8138,12 +8515,16 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiA
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiAdapter this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$40
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.ems.dingdong.functions.mainhome.location.LocationFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.location.LocationFragment$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.impl.Jdk14Logger
     protected static final java.util.logging.Level dummyLevel
 com.ems.dingdong.functions.mainhome.phathang.noptien.OtpDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.OtpDialog$$ViewBinder this$0
+com.zoho.salesiqembed.android.tracking.UTSUtil$4$1
+    final synthetic com.zoho.salesiqembed.android.tracking.UTSUtil$4 this$0
 androidx.media.MediaSessionManagerImplApi28$RemoteUserInfoImplApi28
     final android.media.session.MediaSessionManager$RemoteUserInfo mObject
 com.google.common.graph.DirectedGraphConnections$3$1
@@ -8202,6 +8583,9 @@ com.ems.dingdong.dialog.TimDuongDiDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.TimDuongDiDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhoneFragment$2
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhoneFragment this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetSingleProductViewHolder$ImagesAdapter$ImagesViewHolder
+    private android.widget.ProgressBar progressBar
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetSingleProductViewHolder$ImagesAdapter this$1
 org.apache.commons.compress.archivers.zip.ZipFile$1
     final synthetic org.apache.commons.compress.archivers.zip.ZipFile this$0
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.pool.AbstractConnPool$4
@@ -8222,6 +8606,11 @@ com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.Dialog
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.DialogOTP$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.OtpDialog$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.noptien.OtpDialog$$ViewBinder this$0
+com.zoho.livechat.android.ui.customviews.ZoomableImageView
+    static void <clinit>()
+    boolean exit
+    float left
+    float top
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CuocAdapter$HolderView
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CuocAdapter this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabFragment$$ViewBinder$2
@@ -8232,6 +8621,8 @@ com.ems.dingdong.functions.mainhome.location.LocationFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.location.LocationFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogFragment$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogFragment this$0
+com.zoho.livechat.android.api.GetAndroidChannel$1
+    final synthetic com.zoho.livechat.android.api.GetAndroidChannel this$0
 org.apache.commons.lang3.builder.DiffBuilder$2
     final synthetic org.apache.commons.lang3.builder.DiffBuilder this$0
 com.google.android.exoplayer2.source.rtsp.RtspSetupResponse
@@ -8241,12 +8632,16 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.Address
     java.util.List getListSearchV1
 io.fabric.sdk.android.services.common.InstallerPackageNameProvider$1
     final synthetic io.fabric.sdk.android.services.common.InstallerPackageNameProvider this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$PhoneViewHolder
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessFragment$$ViewBinder this$0
 com.rey.material.app.SimpleDialog$InternalListView
     final synthetic com.rey.material.app.SimpleDialog this$0
 androidx.appcompat.widget.ActionBarContextView$1
     final synthetic androidx.appcompat.widget.ActionBarContextView this$0
+com.zoho.livechat.android.models.SalesIQMessageMeta$InputCard
+    final synthetic com.zoho.livechat.android.models.SalesIQMessageMeta this$0
 com.google.gson.internal.LinkedTreeMap
     static final synthetic boolean $assertionsDisabled
 com.ems.dingdong.functions.mainhome.phathang.thongke.sml.detail.SmartlockStatisticDetailAdapter
@@ -8277,6 +8672,8 @@ com.ems.dingdong.calls.PhoneStateBroadcastReceiver
     static void <clinit>()
 com.crashlytics.android.core.QueueFileLogStore$1
     final synthetic com.crashlytics.android.core.QueueFileLogStore this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$21
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment$$ViewBinder this$0
 com.google.firebase.heartbeatinfo.HeartBeatInfoStorage
@@ -8289,6 +8686,8 @@ androidx.appcompat.widget.ThemeUtils
     static final int[] ACTIVATED_STATE_SET
     static final int[] SELECTED_STATE_SET
     static final int[] NOT_PRESSED_OR_FOCUSED_STATE_SET
+com.zoho.livechat.android.ui.fragments.ChatFragment$48
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.google.common.graph.DirectedGraphConnections$4
     final synthetic com.google.common.graph.DirectedGraphConnections this$0
 com.google.gson.internal.ConstructorConstructor$10
@@ -8301,6 +8700,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.BaoPh
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatoffline.receverpersion.BaoPhatAdapter this$0
 com.crashlytics.android.core.ByteString
     public static final com.crashlytics.android.core.ByteString EMPTY
+com.zoho.livechat.android.ui.fragments.ChatFragment$8
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 bolts.Task$13
     final synthetic bolts.Task this$0
 com.ems.dingdong.dialog.DialogNhapKhongThanhCong$$ViewBinder$2
@@ -8325,6 +8726,8 @@ androidx.appcompat.app.AlertController$4
     final synthetic androidx.appcompat.app.AlertController this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeResolver$TypeTable$1
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeResolver$TypeTable this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$44
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment$$ViewBinder this$0
 com.ems.dingdong.dialog.HoanTatTinDialog$6$1
@@ -8428,6 +8831,8 @@ org.apache.poi.poifs.crypt.cryptoapi.CryptoAPIEncryptor
     static final synthetic boolean $assertionsDisabled
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailFragment$$ViewBinder this$0
+com.zoho.universalimageloader.core.LoadAndDisplayImageTask$TaskCancelledException
+    final synthetic com.zoho.universalimageloader.core.LoadAndDisplayImageTask this$0
 com.google.android.gms.internal.places.zzao
     private static final com.google.android.gms.internal.places.zzao zzex
 org.apache.commons.compress.compressors.pack200.Pack200CompressorInputStream$1
@@ -8451,6 +8856,8 @@ com.facebook.drawee.view.DraweeTransition$1
     final synthetic com.facebook.drawee.view.DraweeTransition this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailFragment$$ViewBinder$6
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$61
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.google.android.gms.internal.clearcut.zzds
     private static int zza(byte[],int,int,com.google.android.gms.internal.clearcut.zzfl,java.lang.Class,com.google.android.gms.internal.clearcut.zzay)
     private final boolean zzmp
@@ -8526,8 +8933,12 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentFragmen
 com.journeyapps.barcodescanner.ViewfinderView
     protected static final java.lang.String TAG
 com.google.android.gms.internal.clearcut.zzdt
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesAudioViewHolder$7
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesAudioViewHolder this$0
 org.apache.poi.hssf.usermodel.HSSFRichTextString
     static final synthetic boolean $assertionsDisabled
+com.zoho.livechat.android.utils.LDPEXUtil$2
+    final synthetic com.zoho.livechat.android.utils.LDPEXUtil this$0
 com.google.firebase.crashlytics.buildtools.reloc.org.checkerframework.checker.nullness.NullnessUtils
     static void <clinit>()
     static final synthetic boolean $assertionsDisabled
@@ -8625,6 +9036,10 @@ com.ems.dingdong.dialog.DigLogChiDanDuong$$ViewBinder$1
 com.google.android.gms.internal.places.zzak
     private final byte[] buffer
     private final boolean zzet
+com.zoho.livechat.android.utils.LDPEXUtil$4
+    final synthetic com.zoho.livechat.android.utils.LDPEXUtil this$0
+com.zoho.livechat.android.models.SalesIQMessageMeta$HandoffConfig
+    final synthetic com.zoho.livechat.android.models.SalesIQMessageMeta this$0
 com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiFragment$$ViewBinder this$0
 com.ems.dingdong.utiles.ViewUtils$3$2
@@ -8645,6 +9060,8 @@ com.ems.dingdong.functions.mainhome.main.MainFragment$$ViewBinder$5
     final synthetic com.ems.dingdong.functions.mainhome.main.MainFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.detail.TaoGachNoDetailFragment$$ViewBinder this$0
+com.zoho.universalimageloader.utils.L
+    static void <clinit>()
 com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter$MyItemViewHolder
     final synthetic com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter this$0
 com.mapbox.mapboxsdk.maps.Style$Builder$LayerAtWrapper
@@ -8658,6 +9075,8 @@ com.google.common.collect.FilteredKeySetMultimap$EntrySet
     final synthetic com.google.common.collect.FilteredKeySetMultimap this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetInputPhoneViewHolder$CountryPhoneCodesAdapter$CountryPhoneCodesViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetInputPhoneViewHolder$CountryPhoneCodesAdapter this$1
 com.ems.dingdong.dialog.StatictisSearchDialog$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.StatictisSearchDialog$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.ndk.internal.dwarf.DebugLineContext$2
@@ -8679,8 +9098,14 @@ com.journeyapps.barcodescanner.camera.PreviewScalingStrategy
 org.apache.poi.hssf.usermodel.HSSFChildAnchor
     static void <clinit>()
     static final synthetic boolean $assertionsDisabled
+com.zoho.livechat.android.models.SalesIQFormMessageMeta$InputCard
+    final synthetic com.zoho.livechat.android.models.SalesIQFormMessageMeta this$0
 io.reactivex.internal.operators.observable.ObservableSkipUntil$1
     final synthetic io.reactivex.internal.operators.observable.ObservableSkipUntil this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$65
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
+com.zoho.livechat.android.utils.LDPEXUtil$3
+    final synthetic com.zoho.livechat.android.utils.LDPEXUtil this$0
 com.google.android.gms.internal.clearcut.zzbq
     private static final com.google.android.gms.internal.clearcut.zzbq zzgj
 com.ems.dingdong.utiles.ViewUtils$3$3
@@ -8703,6 +9128,8 @@ com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiFragment$
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiFragment$$ViewBinder this$0
 androidx.legacy.app.FragmentCompat$FragmentCompatBaseImpl$1
     final synthetic androidx.legacy.app.FragmentCompat$FragmentCompatBaseImpl this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetDropDownViewHolder$DropDownListAdapter$DropDownViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetDropDownViewHolder$DropDownListAdapter this$1
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment
     java.lang.String currenImaPath
 com.ems.dingdong.functions.mainhome.phathang.sign.SignDrawFragment$PushDataToMpos
@@ -8717,6 +9144,10 @@ com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhC
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.list.BaoPhatThanhCongAdapter this$0
 com.ems.dingdong.dialog.HoanTatTinDialog$$ViewBinder$5
     final synthetic com.ems.dingdong.dialog.HoanTatTinDialog$$ViewBinder this$0
+com.zoho.livechat.android.models.SalesIQMessageMeta$CardData
+    final synthetic com.zoho.livechat.android.models.SalesIQMessageMeta this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$EmailViewHolder
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.ems.dingdong.functions.mainhome.main.MainFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.main.MainFragment$$ViewBinder this$0
 com.facebook.common.executors.UiThreadImmediateExecutorService
@@ -8743,6 +9174,8 @@ com.google.android.gms.internal.measurement.zzib
     private static final int zzx
 com.ems.dingdong.functions.mainhome.chihobtxh.payment.PaymentChiHoBtxhFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.chihobtxh.payment.PaymentChiHoBtxhFragment$$ViewBinder this$0
+com.zoho.livechat.android.utils.LDPEXUtil$6
+    final synthetic com.zoho.livechat.android.utils.LDPEXUtil this$0
 com.ems.dingdong.calls.call.CallFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.calls.call.CallFragment$$ViewBinder this$0
 com.facebook.cache.common.NoOpCacheErrorLogger
@@ -8790,6 +9223,8 @@ org.apache.poi.hpsf.GUID
     private long _data4
 com.google.android.gms.internal.measurement.zzen$zzb
     private final int zzc
+com.zoho.livechat.android.utils.LDPEXUtil$5
+    final synthetic com.zoho.livechat.android.utils.LDPEXUtil this$0
 com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiFragment$$ViewBinder this$0
 io.reactivex.Scheduler$1
@@ -8808,6 +9243,8 @@ com.ems.dingdong.dialog.HoanTatTinDialog$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.HoanTatTinDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailFragment$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailFragment this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetImageViewHolder$ActionsAdapter$ActionsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetImageViewHolder$ActionsAdapter this$1
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.AbstractMapBasedMultimap$2
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.AbstractMapBasedMultimap this$0
 com.ems.dingdong.functions.mainhome.phathang.routemanager.route.RoutePresenter$5
@@ -8844,6 +9281,8 @@ com.ems.dingdong.dialog.DialogCuocgoi$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.DialogCuocgoi$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$31
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 io.reactivex.internal.operators.observable.ObservableTakeUntil$1
     final synthetic io.reactivex.internal.operators.observable.ObservableTakeUntil this$0
 com.facebook.imagepipeline.producers.RemoveImageTransformMetaDataProducer$RemoveImageTransformMetaDataConsumer
@@ -8875,6 +9314,8 @@ com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallFragment$$ViewB
     final synthetic com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoAdapter$HolderView
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoAdapter this$0
+com.zoho.livechat.android.comm.ChatMessageHandler$1
+    final synthetic com.zoho.livechat.android.comm.ChatMessageHandler this$0
 com.ems.dingdong.dialog.DialogCuocgoi$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.DialogCuocgoi$$ViewBinder this$0
 com.google.android.exoplayer2.source.rtsp.RtspPlayResponse
@@ -8883,6 +9324,8 @@ com.blikoon.qrcodescanner.QrCodeActivity$WeakHandler$1
     final synthetic com.blikoon.qrcodescanner.QrCodeActivity$WeakHandler this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.cache.LocalCache$AbstractCacheSet
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.cache.LocalCache this$0
+androidx.browser.browseractions.BrowserActionsFallbackMenuUi$2
+    final synthetic androidx.browser.browseractions.BrowserActionsFallbackMenuUi this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$30
@@ -8937,6 +9380,8 @@ com.mapbox.mapboxsdk.attribution.AttributionMeasure$Chain
     final synthetic com.mapbox.mapboxsdk.attribution.AttributionMeasure this$0
 com.ems.dingdong.dialog.DialogCuocgoi$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.DialogCuocgoi$$ViewBinder this$0
+com.zoho.livechat.android.api.GetAppStatus$1
+    final synthetic com.zoho.livechat.android.api.GetAppStatus this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.TaoGachNoFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.routemanager.route.RoutePresenter$2
@@ -8976,6 +9421,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.ChuaPha
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.ChuaPhanHuongFragment$$ViewBinder this$0
 org.apache.commons.lang3.builder.DiffBuilder$16
     final synthetic org.apache.commons.lang3.builder.DiffBuilder this$0
+com.zoho.livechat.android.constants.SalesIQConstants$ConsentConfig
+    final synthetic com.zoho.livechat.android.constants.SalesIQConstants this$0
 com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanFragment$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.LinkedListMultimap$1ValuesImpl$1
@@ -9013,6 +9460,8 @@ com.ems.dingdong.dialog.DialogEditSdt
     int i
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Fragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Fragment$$ViewBinder this$0
+androidx.browser.customtabs.PostMessageService$1
+    final synthetic androidx.browser.customtabs.PostMessageService this$0
 org.apache.poi.hssf.record.CFRuleBase
     static final org.apache.poi.util.BitField alignHor
     static final org.apache.poi.util.BitField alignVer
@@ -9046,6 +9495,10 @@ org.apache.commons.lang3.builder.DiffBuilder$17
     final synthetic org.apache.commons.lang3.builder.DiffBuilder this$0
 com.ems.dingdong.functions.mainhome.profile.tienluong.luongtamtinh.ProvisionalSalaryFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.profile.tienluong.luongtamtinh.ProvisionalSalaryFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetArticlesViewHolder$ActionsAdapter$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetArticlesViewHolder$ActionsAdapter this$1
+androidx.browser.customtabs.CustomTabsClient$2
+    final synthetic androidx.browser.customtabs.CustomTabsClient this$0
 com.airbnb.lottie.model.Marker
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.seanbank.SeabankPresenter$1
@@ -9063,6 +9516,8 @@ com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.AbstractExecutionAwareRequest this$0
 androidx.transition.ChangeBounds$7
     final synthetic androidx.transition.ChangeBounds this$0
+com.zoho.livechat.android.ui.fragments.PrechatFormFragment$NameViewHolder
+    final synthetic com.zoho.livechat.android.ui.fragments.PrechatFormFragment this$0
 com.ems.dingdong.dialog.ConfirmPKTCDialog$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.ConfirmPKTCDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.notify.ListNotifyPresenter$1
@@ -9081,6 +9536,8 @@ com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPres
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter$3 this$1
 com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment$1
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.linkwallet.LinkEWalletFragment this$0
+com.zoho.livechat.android.models.SalesIQMessageMeta$DisplayCard
+    final synthetic com.zoho.livechat.android.models.SalesIQMessageMeta this$0
 com.mapbox.mapboxsdk.module.telemetry.PerformanceEvent$2
     final synthetic com.mapbox.mapboxsdk.module.telemetry.PerformanceEvent this$0
 com.ems.dingdong.dialog.CreatedBd13Dialog
@@ -9210,6 +9667,8 @@ org.linphone.core.LinphoneCoreFactory
     static void <clinit>()
 com.rey.material.widget.TabIndicatorView$ViewHolder
     final synthetic com.rey.material.widget.TabIndicatorView this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetSingleProductViewHolder$ActionsAdapter$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetSingleProductViewHolder$ActionsAdapter this$1
 com.mapbox.mapboxsdk.http.HttpLogger
     static void <clinit>()
 com.ems.dingdong.fcm.NotificationUtils
@@ -9232,18 +9691,29 @@ com.ems.dingdong.dialog.PhoneConectDialogExtend$1
     final synthetic com.ems.dingdong.dialog.PhoneConectDialogExtend this$0
 com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListFragment$$ViewBinder this$0
+com.zoho.salesiqembed.ZohoSalesIQ
+    static void <clinit>()
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesBaseViewHolder$CampaignsSuggestionsAdapter$CampaignsSuggestionsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesBaseViewHolder$CampaignsSuggestionsAdapter this$1
 com.ems.dingdong.dialog.PhoneDecisionDialog$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.PhoneDecisionDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.camera.ImagePro$ImageDetails
     final synthetic com.ems.dingdong.functions.mainhome.camera.ImagePro this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailViFragment$$ViewBinder$4
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailViFragment$$ViewBinder this$0
+androidx.browser.customtabs.CustomTabsServiceConnection$1
+    final synthetic androidx.browser.customtabs.CustomTabsServiceConnection this$0
 com.google.android.gms.measurement.internal.zzib
     private final byte[] zzb
 com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiAdapter$HolderView$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiAdapter$HolderView this$1
+com.zoho.livechat.android.ui.adapters.ChatMessagesViewBuilder
+    android.content.Context context
+com.zoho.livechat.android.ui.customviews.FlowLayout$LayoutParams
+    int horizontal
+    int vertical
 com.nineoldandroids.view.ViewPropertyAnimatorICS$1
     final synthetic com.nineoldandroids.view.ViewPropertyAnimatorICS this$0
 com.google.android.gms.internal.clearcut.zzaz
@@ -9269,6 +9739,10 @@ com.ems.dingdong.dialog.ThongbaoGoiDialog$1
     final synthetic com.ems.dingdong.dialog.ThongbaoGoiDialog this$0
 com.google.android.gms.internal.places.zzel
     public abstract void zzb(int,com.google.android.gms.internal.places.zzcb,java.util.Map)
+com.zoho.livechat.android.ui.activities.SalesIQBaseActivity$1
+    final synthetic com.zoho.livechat.android.ui.activities.SalesIQBaseActivity this$0
+androidx.dynamicanimation.animation.FloatPropertyCompat
+    final java.lang.String mPropertyName
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.AbstractMapBasedMultimap$RandomAccessWrappedList
     final synthetic com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.AbstractMapBasedMultimap this$0
 com.ems.dingdong.dialog.NotificationDialog$$ViewBinder$1
@@ -9307,6 +9781,8 @@ com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacN
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter$8 this$1
 com.ems.dingdong.dialog.CreatedBd13Dialog$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.CreatedBd13Dialog$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesAudioViewHolder$11
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesAudioViewHolder this$0
 com.ems.dingdong.dialog.PhoneConectDialog$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.PhoneConectDialog$$ViewBinder this$0
 com.ems.dingdong.dialog.BaoPhatBangKeConfirmDialog$$ViewBinder$2
@@ -9347,18 +9823,26 @@ com.google.android.exoplayer2.source.rtsp.RtspDescribeResponse
     public final int status
 com.ems.dingdong.dialog.CancelRouteDialog$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.CancelRouteDialog$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$36
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.google.android.gms.internal.vision.zzfu
     private final boolean zzwd
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmFragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment$NameComparator
     final synthetic com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankFragment this$0
+com.zoho.livechat.android.ui.adapters.AttachmentDialogAdapter$AttachmentDialogViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.AttachmentDialogAdapter this$0
 com.google.android.material.datepicker.MaterialCalendar$1
     final synthetic com.google.android.material.datepicker.MaterialCalendar this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$27$4
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment$27 this$1
 com.google.common.collect.MutableClassToInstanceMap$2$1
     final synthetic com.google.common.collect.MutableClassToInstanceMap$2 this$1
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.Striped$WeakSafeCondition
     private final com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.Striped$WeakSafeReadWriteLock strongReference
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesAudioViewHolder$10
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesAudioViewHolder this$0
 kotlin.internal.PlatformImplementations$ReflectAddSuppressedMethod
     public static final kotlin.internal.PlatformImplementations$ReflectAddSuppressedMethod INSTANCE
 com.ems.dingdong.dialog.ConfirmPhiHuyDonHangDialog$$ViewBinder$2
@@ -9388,6 +9872,8 @@ com.ems.dingdong.calls.call.CallPresenter
     java.lang.String toNumber
     java.lang.String numberCustomer
     java.lang.String xSessionIdIn
+com.zoho.livechat.android.ui.fragments.ChatFragment$37
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$14
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 com.google.android.gms.internal.vision.zzfv
@@ -9432,6 +9918,8 @@ com.journeyapps.barcodescanner.camera.FitXYStrategy
     static void <clinit>()
 com.facebook.imagepipeline.producers.SwallowResultProducer$1
     final synthetic com.facebook.imagepipeline.producers.SwallowResultProducer this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetImageViewHolder$ActionsAdapter$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetImageViewHolder$ActionsAdapter this$1
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$17
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.impl.AvalonLogger
@@ -9440,6 +9928,8 @@ com.ems.dingdong.dialog.BangKe13SearchDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.BangKe13SearchDialog$$ViewBinder this$0
 com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder$10
     final synthetic com.ems.dingdong.dialog.PhoneConectDialogExtend$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.DateTimeSlotsAdapter$DateTimeSlotViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.DateTimeSlotsAdapter this$0
 org.apache.poi.ddf.EscherDggRecord$1
     final synthetic org.apache.poi.ddf.EscherDggRecord this$0
 com.ems.dingdong.dialog.DialogCuocgoiNew$$ViewBinder$5
@@ -9474,6 +9964,8 @@ bolts.Task$3
     final synthetic bolts.Task this$0
 com.ems.dingdong.dialog.DialogSML$$ViewBinder$3
     final synthetic com.ems.dingdong.dialog.DialogSML$$ViewBinder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetMutipleProductViewHolder$MultipleProductElementsAdapter$MultipleProductElementsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetMutipleProductViewHolder$MultipleProductElementsAdapter this$1
 com.ems.dingdong.functions.mainhome.chihobtxh.history.ChiHoHistoryAdapter$HolderView
     final synthetic com.ems.dingdong.functions.mainhome.chihobtxh.history.ChiHoHistoryAdapter this$0
 com.google.android.gms.internal.places.zzu
@@ -9492,6 +9984,8 @@ org.apache.poi.ss.formula.EvaluationConditionalFormatRule$2
     final synthetic org.apache.poi.ss.formula.EvaluationConditionalFormatRule this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$7
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.profile.ProfileFragment$$ViewBinder$8
+    final synthetic com.ems.dingdong.functions.mainhome.profile.ProfileFragment$$ViewBinder this$0
 com.google.android.gms.internal.vision.zzhv
     public abstract void zza(java.util.Map,com.google.android.gms.internal.vision.zzgy,com.google.android.gms.internal.vision.zzfk)
 org.apache.poi.sl.draw.PathGradientPaint
@@ -9522,6 +10016,8 @@ java.util.stream.Stream$-DC
     public static synthetic java.util.stream.Stream$Builder builder()
     public static synthetic java.util.stream.Stream empty()
     public static synthetic java.util.stream.Stream iterate(java.lang.Object,java.util.function.UnaryOperator)
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$LinksAdapter
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$19
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 com.ems.dingdong.functions.login.validation.ValidationFragment$$ViewBinder$1
@@ -9540,6 +10036,8 @@ com.ems.dingdong.dialog.BangKe13SearchDialog$$ViewBinder$4
     final synthetic com.ems.dingdong.dialog.BangKe13SearchDialog$$ViewBinder this$0
 com.ems.dingdong.dialog.CallProviderDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.CallProviderDialog$$ViewBinder this$0
+com.zoho.salesiqembed.android.tracking.UTSMessageHandler$1
+    final synthetic com.zoho.salesiqembed.android.tracking.UTSMessageHandler this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$10
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0
 com.google.firebase.encoders.Encoder
@@ -9573,6 +10071,8 @@ io.reactivex.internal.operators.single.SingleTimeout$2
     final synthetic io.reactivex.internal.operators.single.SingleTimeout this$0
 org.apache.poi.hssf.record.EscherAggregate$3
     final synthetic org.apache.poi.hssf.record.EscherAggregate this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesAttachmentViewHolder$6
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesAttachmentViewHolder this$0
 com.ems.dingdong.dialog.CallProviderDialog$$ViewBinder$1
     final synthetic com.ems.dingdong.dialog.CallProviderDialog$$ViewBinder this$0
 com.mapbox.mapboxsdk.location.StaleStateManager
@@ -9611,12 +10111,18 @@ com.ems.dingdong.functions.mainhome.phathang.gachno.receverpersion.ReceverPerson
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.receverpersion.ReceverPersonFragment$$ViewBinder this$0
 org.apache.commons.compress.archivers.sevenz.AES256SHA256Decoder$1
     final synthetic org.apache.commons.compress.archivers.sevenz.AES256SHA256Decoder this$0
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetArticlesViewHolder$RelatedArticlesAdapter$ArticlesViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetArticlesViewHolder$RelatedArticlesAdapter this$1
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeFragment$$ViewBinder$7
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.gachno.searchlist.GachNoAdapter$HolderView
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.searchlist.GachNoAdapter this$0
 com.ems.dingdong.services.PortSipService
     java.lang.String callerNumberCustomer
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesBaseViewHolder$SuggestionsAdapter$SuggestionViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesBaseViewHolder$SuggestionsAdapter this$1
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetSingleProductViewHolder$ActionsAdapter$ActionsViewHolder
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetSingleProductViewHolder$ActionsAdapter this$1
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailFragment$$ViewBinder$8
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailFragment$$ViewBinder this$0
 com.facebook.imagepipeline.memory.NoOpPoolStatsTracker
@@ -9645,6 +10151,8 @@ com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinFragment
 com.google.android.gms.internal.measurement.zzel
     private final java.lang.Object zza(com.google.android.gms.internal.measurement.zzim,java.lang.Class,com.google.android.gms.internal.measurement.zzeq)
     public final void zza(java.util.Map,com.google.android.gms.internal.measurement.zzgf,com.google.android.gms.internal.measurement.zzeq)
+com.zoho.livechat.android.messaging.wms.common.pex.PEX$1
+    final synthetic com.zoho.livechat.android.messaging.wms.common.pex.PEX this$0
 com.google.android.gms.internal.places.zzcn
 com.facebook.imagepipeline.producers.DecodeProducer$ProgressiveDecoder$2
     final synthetic com.facebook.imagepipeline.producers.DecodeProducer val$this$0
@@ -9723,6 +10231,8 @@ io.fabric.sdk.android.services.events.EventsFilesManager$1
     final synthetic io.fabric.sdk.android.services.events.EventsFilesManager this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.DeliveryPartialAdapter
     android.app.Activity activity
+com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$ActionsAdapter$1
+    final synthetic com.zoho.livechat.android.ui.adapters.viewholder.MessagesWidgetLinksViewHolder$ActionsAdapter this$1
 com.ems.dingdong.dialog.PickerDialog$$ViewBinder$2
     final synthetic com.ems.dingdong.dialog.PickerDialog$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinFragment$$ViewBinder$3
@@ -9793,6 +10303,8 @@ com.ems.dingdong.calls.Session
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.callservice.CallServiceFragment$$ViewBinder$2
     final synthetic com.ems.dingdong.functions.mainhome.callservice.CallServiceFragment$$ViewBinder this$0
+com.zoho.livechat.android.ui.fragments.ChatFragment$33
+    final synthetic com.zoho.livechat.android.ui.fragments.ChatFragment this$0
 com.chaos.view.PinView$2
     final synthetic com.chaos.view.PinView this$0
 org.apache.commons.compress.archivers.dump.Dirent
@@ -9859,6 +10371,8 @@ com.ems.dingdong.functions.mainhome.phathang.gachno.searchlist.GachNoAdapter$Hol
     final synthetic com.ems.dingdong.functions.mainhome.phathang.gachno.searchlist.GachNoAdapter$HolderView this$1
 com.ems.dingdong.dialog.PhoneConectDialogIcon$1
     final synthetic com.ems.dingdong.dialog.PhoneConectDialogIcon this$0
+com.zoho.livechat.android.ui.fragments.ArticleInfoFragment
+    java.lang.String deptId
 com.facebook.imagepipeline.producers.PostprocessorProducer$RepeatedPostprocessorConsumer$1
     final synthetic com.facebook.imagepipeline.producers.PostprocessorProducer val$this$0
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKeFragment$$ViewBinder$4
@@ -9906,6 +10420,8 @@ com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.DialogTaoTin$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.DialogTaoTin$$ViewBinder this$0
 io.reactivex.internal.operators.completable.CompletableAmb$1
     final synthetic io.reactivex.internal.operators.completable.CompletableAmb this$0
+com.zoho.livechat.android.ui.fragments.ArticleInfoFragment$MyWebClient
+    final synthetic com.zoho.livechat.android.ui.fragments.ArticleInfoFragment this$0
 androidx.versionedparcelable.VersionedParcel$1
     final synthetic androidx.versionedparcelable.VersionedParcel this$0
 kotlin.math.Constants

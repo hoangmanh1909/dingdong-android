@@ -49,6 +49,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
+import com.core.utils.NetworkUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
@@ -73,6 +74,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanph
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.HangDoiTraAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.HangDoiTraCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.PhoneCodeEdit;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CreateDeliveryParialDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.CuocAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.DeliveryPartialAdapter;
@@ -90,6 +92,7 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.WardModels;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
@@ -135,6 +138,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
@@ -319,9 +323,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     RecyclerView recyclerUmageHangDoiTra;
     @BindView(R.id.tv_hang_doi_tra)
     TextView tvHangDoiTra;
+    @BindView(R.id.tv_xaphuong)
+    TextView tvXaphuong;
+    @BindView(R.id.tv_tinhtp)
+    TextView tvTinhtp;
+    @BindView(R.id.tv_quanhuyen)
+    TextView tvQuanhuyen;
+    @BindView(R.id.tv_xaphuong_bosung)
+    TextView tvXaphuongBosung;
     @BindView(R.id.edt_ma_buu_gui)
     EditText edtMaBuuGui;
+    @BindView(R.id.rl_xaphuong_bosung)
+    LinearLayout rlXaphuongBosung;
+    @BindView(R.id.rl_xaphuong)
+    LinearLayout rlXaphuong;
+    @BindView(R.id.rl_tinhtp)
+    LinearLayout rlTinhtp;
+    @BindView(R.id.rl_quanhuyen)
+    LinearLayout rlQuanhuyen;
 
+    List<WardModels> mListXaPhuong = new ArrayList<>();
+    int idXaphuong = 0;
 
     String toPoCode = "";
     private Calendar calDateOfBirth = Calendar.getInstance();
@@ -548,8 +570,21 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ll_partial.setVisibility(View.GONE);
         mBaoPhatBangke = mPresenter.getBaoPhatBangke();
 
-        if (mBaoPhatBangke.size() == 1) lledtcod.setVisibility(View.VISIBLE);
-        else lledtcod.setVisibility(View.GONE);
+        if (mBaoPhatBangke.size() == 1) {
+            lledtcod.setVisibility(View.VISIBLE);
+            rlXaphuongBosung.setVisibility(View.VISIBLE);
+            rlXaphuong.setVisibility(View.VISIBLE);
+            tvXaphuong.setText(mBaoPhatBangke.get(0).getDeliveryWardName());
+            tvTinhtp.setText(mBaoPhatBangke.get(0).getDeliveryProvinceName());
+            tvQuanhuyen.setText(mBaoPhatBangke.get(0).getDeliveryDistrictName());
+            mPresenter.getXaPhuong((int) mBaoPhatBangke.get(0).getDeliveryDistrictId());
+        } else {
+            rlXaphuongBosung.setVisibility(View.GONE);
+            rlXaphuong.setVisibility(View.GONE);
+            rlQuanhuyen.setVisibility(View.GONE);
+            rlTinhtp.setVisibility(View.GONE);
+            lledtcod.setVisibility(View.GONE);
+        }
         checkBoxedtCod.setOnCheckedChangeListener((v1, v2) -> {
             if (v2) {
                 llTongTienTamThu.setVisibility(View.VISIBLE);
@@ -557,7 +592,39 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
                     @Override
                     public void onResponse(String id) {
-                        if (id.equals("false")) {
+                        if (id.equals("GOI")) {
+                            mPresenter.callForwardEditCOD(mBaoPhatBangke.get(0).getSenderMobile(), mBaoPhatBangke.get(0).getMaE());
+//                        }
+//                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+////                                if (mBaoPhatBangke.get(0).getSenderBookingPhone() != null && !TextUtils.isEmpty(mBaoPhatBangke.get(0).getSenderBookingPhone())) {
+////                                    Intent intent = new Intent(Intent.ACTION_CALL);
+////                                    intent.setData(Uri.parse("tel:" + mBaoPhatBangke.get(0).getSenderBookingPhone()));
+////                                    if (ContextCompat.checkSelfPermission(getActivity(),
+////                                            Manifest.permission.CALL_PHONE)
+////                                            != PackageManager.PERMISSION_GRANTED) {
+////                                        ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+////                                    } else {
+////                                        startActivity(intent);
+////                                    }
+////                                } else
+//                                mPresenter.callForward(mBaoPhatBangke.get(0).getSenderMobile(), mBaoPhatBangke.get(0).getMaE());
+//                            } else {
+//                                Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+////                                if (mBaoPhatBangke.get(0).getSenderBookingPhone() != null && !TextUtils.isEmpty(mBaoPhatBangke.get(0).getSenderBookingPhone())) {
+////                                    Intent intent = new Intent(Intent.ACTION_CALL);
+////                                    intent.setData(Uri.parse("tel:" + mBaoPhatBangke.get(0).getSenderBookingPhone()));
+////                                    if (ContextCompat.checkSelfPermission(getActivity(),
+////                                            Manifest.permission.CALL_PHONE)
+////                                            != PackageManager.PERMISSION_GRANTED) {
+////                                        ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+////                                    } else {
+////                                        startActivity(intent);
+////                                    }
+////                                }
+//
+//                            }
+
+                        } else if (id.equals("false")) {
                             checkBoxedtCod.setChecked(false);
                             tvTongTienTamthu.setText("");
                             llTongTienTamThu.setVisibility(View.GONE);
@@ -607,6 +674,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rad_dop2.setChecked(true);
             rad_dop1.setChecked(false);
         }
+
         adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -626,8 +694,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     updateTotalPackage();
                 });
             }
-        };
-        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+        }
+
+        ;
+        RecyclerUtils.setupVerticalRecyclerView(
+
+                getViewContext(), recycler);
         recycler.setAdapter(adapter);
 
         if (getItemSelected().size() == 1 || checkSameAddress()) {
@@ -696,8 +768,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rad_partial.setVisibility(View.GONE);
         }
 
-        recycler_delivery_partial.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler_refund_partial.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler_delivery_partial.setLayoutManager(new
+
+                LinearLayoutManager(getContext()));
+        recycler_refund_partial.setLayoutManager(new
+
+                LinearLayoutManager(getContext()));
 
         if (modePartial.equals("EMPTY")) {
             deliveryPartialAdapter = new DeliveryPartialAdapter(getContext(), listProductDelivery, modePartial) {
@@ -778,111 +854,147 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         }
 
-        imageAvatarAdapter = new ImageAdapter(getViewContext(), listImagesAvatar) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
+        imageAvatarAdapter = new
 
-                holder.ivDelete.setOnClickListener(view -> {
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                        return;
-                    }
-                    lastClickTime = SystemClock.elapsedRealtime();
-                    listImagesAvatar.remove(position);
-                    imageAvatarAdapter.notifyItemRemoved(position);
-                    imageAvatarAdapter.notifyItemRangeChanged(position, listImagesAvatar.size());
-                });
-            }
-        };
-        imageAdapter = new ImageAdapter(getViewContext(), listImages) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
+                ImageAdapter(getViewContext(), listImagesAvatar) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
 
-                holder.ivDelete.setOnClickListener(view -> {
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                        return;
+                        holder.ivDelete.setOnClickListener(view -> {
+                            if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                                return;
+                            }
+                            lastClickTime = SystemClock.elapsedRealtime();
+                            listImagesAvatar.remove(position);
+                            imageAvatarAdapter.notifyItemRemoved(position);
+                            imageAvatarAdapter.notifyItemRangeChanged(position, listImagesAvatar.size());
+                        });
                     }
-                    lastClickTime = SystemClock.elapsedRealtime();
-                    listImages.remove(position);
-                    imageAdapter.notifyItemRemoved(position);
-                    imageAdapter.notifyItemRangeChanged(position, listImages.size());
-                });
-            }
-        };
-        imageVerifyAdapter = new ImageAdapter(getViewContext(), listImageVerify) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
+                }
 
-                holder.ivDelete.setOnClickListener(view -> {
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                        return;
+        ;
+        imageAdapter = new
+
+                ImageAdapter(getViewContext(), listImages) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+
+                        holder.ivDelete.setOnClickListener(view -> {
+                            if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                                return;
+                            }
+                            lastClickTime = SystemClock.elapsedRealtime();
+                            listImages.remove(position);
+                            imageAdapter.notifyItemRemoved(position);
+                            imageAdapter.notifyItemRangeChanged(position, listImages.size());
+                        });
                     }
-                    lastClickTime = SystemClock.elapsedRealtime();
-                    listImageVerify.remove(position);
-                    imageVerifyAdapter.notifyItemRemoved(position);
-                    imageVerifyAdapter.notifyItemRangeChanged(position, listImageVerify.size());
-                });
-            }
-        };
-        imageOtherAdapter = new ImageAdapter(getViewContext(), listImageOther) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
-                holder.ivDelete.setOnClickListener(view -> {
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                        return;
+                }
+
+        ;
+        imageVerifyAdapter = new
+
+                ImageAdapter(getViewContext(), listImageVerify) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+
+                        holder.ivDelete.setOnClickListener(view -> {
+                            if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                                return;
+                            }
+                            lastClickTime = SystemClock.elapsedRealtime();
+                            listImageVerify.remove(position);
+                            imageVerifyAdapter.notifyItemRemoved(position);
+                            imageVerifyAdapter.notifyItemRangeChanged(position, listImageVerify.size());
+                        });
                     }
-                    lastClickTime = SystemClock.elapsedRealtime();
-                    listImageOther.remove(position);
-                    imageOtherAdapter.notifyItemRemoved(position);
-                    imageOtherAdapter.notifyItemRangeChanged(position, listImageOther.size());
-                });
-            }
-        };
+                }
+
+        ;
+        imageOtherAdapter = new
+
+                ImageAdapter(getViewContext(), listImageOther) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+                        holder.ivDelete.setOnClickListener(view -> {
+                            if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                                return;
+                            }
+                            lastClickTime = SystemClock.elapsedRealtime();
+                            listImageOther.remove(position);
+                            imageOtherAdapter.notifyItemRemoved(position);
+                            imageOtherAdapter.notifyItemRangeChanged(position, listImageOther.size());
+                        });
+                    }
+                }
+
+        ;
         listImageDelivery = new ArrayList<>();
-        imageDeliveryAdapter = new ImageAdapter(getViewContext(), listImageDelivery) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
+        imageDeliveryAdapter = new
 
-                holder.ivDelete.setOnClickListener(view -> {
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                        return;
+                ImageAdapter(getViewContext(), listImageDelivery) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+
+                        holder.ivDelete.setOnClickListener(view -> {
+                            if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                                return;
+                            }
+                            lastClickTime = SystemClock.elapsedRealtime();
+                            listImageDelivery.remove(position);
+                            imageDeliveryAdapter.notifyItemRemoved(position);
+                            imageDeliveryAdapter.notifyItemRangeChanged(position, listImageDelivery.size());
+                        });
                     }
-                    lastClickTime = SystemClock.elapsedRealtime();
-                    listImageDelivery.remove(position);
-                    imageDeliveryAdapter.notifyItemRemoved(position);
-                    imageDeliveryAdapter.notifyItemRangeChanged(position, listImageDelivery.size());
-                });
-            }
-        };
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recycler_image_partial_d);
+                }
+
+        ;
+        RecyclerUtils.setupHorizontalRecyclerView(
+
+                getViewContext(), recycler_image_partial_d);
         recycler_image_partial_d.setAdapter(imageDeliveryAdapter);
-        imageRefundAdapter = new ImageAdapter(getViewContext(), listImageRefund) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
+        imageRefundAdapter = new
 
-                holder.ivDelete.setOnClickListener(view -> {
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                        return;
+                ImageAdapter(getViewContext(), listImageRefund) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+
+                        holder.ivDelete.setOnClickListener(view -> {
+                            if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+                                return;
+                            }
+                            lastClickTime = SystemClock.elapsedRealtime();
+                            listImageRefund.remove(position);
+                            imageRefundAdapter.notifyItemRemoved(position);
+                            imageRefundAdapter.notifyItemRangeChanged(position, listImageRefund.size());
+                        });
                     }
-                    lastClickTime = SystemClock.elapsedRealtime();
-                    listImageRefund.remove(position);
-                    imageRefundAdapter.notifyItemRemoved(position);
-                    imageRefundAdapter.notifyItemRangeChanged(position, listImageRefund.size());
-                });
-            }
-        };
+                }
+
+        ;
 
 
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageVerifyAvatar);
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImage);
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerViewImageVerify);
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerImageOther);
-        RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recycler_image_partial_r);
+        RecyclerUtils.setupHorizontalRecyclerView(
+
+                getViewContext(), recyclerImageVerifyAvatar);
+        RecyclerUtils.setupHorizontalRecyclerView(
+
+                getViewContext(), recyclerViewImage);
+        RecyclerUtils.setupHorizontalRecyclerView(
+
+                getViewContext(), recyclerViewImageVerify);
+        RecyclerUtils.setupHorizontalRecyclerView(
+
+                getViewContext(), recyclerImageOther);
+        RecyclerUtils.setupHorizontalRecyclerView(
+
+                getViewContext(), recycler_image_partial_r);
 
         recyclerImageVerifyAvatar.setAdapter(imageAvatarAdapter);//
         recyclerViewImage.setAdapter(imageAdapter);
@@ -891,6 +1003,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         recycler_image_partial_r.setAdapter(imageRefundAdapter);
 
         verifyInfo();
+
         verifyImage();
 
         edtDateOfBirth.setText(DateTimeUtils
@@ -899,11 +1012,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         edtGTTTDateAccepted.setText(DateTimeUtils
                 .convertDateToString(calDateOfBirth.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT));
+
         checkVerify();
 
         EditTextUtils.editTextListener(et_pt_amount);
         recyclerds.setVisibility(View.GONE);
-        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+        for (
+                int i = 0; i < mBaoPhatBangke.size(); i++) {
             if (mBaoPhatBangke.get(i).getFeeCancelOrder() == 0) {
                 mBaoPhatBangke.get(i).setCheck(false);
                 mBaoPhatBangke.get(i).setAnItem(false);
@@ -918,7 +1033,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
         }
-        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+        for (
+                int i = 0; i < mBaoPhatBangke.size(); i++) {
             if (mBaoPhatBangke.get(i).getFeeCancelOrder() == 0) {
                 mBaoPhatBangke.get(i).setAnItem(false);
             } else {
@@ -927,46 +1043,58 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
         if (mBaoPhatBangke.size() > 1)
-            for (int i = 0; i < mBaoPhatBangke.size(); i++)
-                if (mBaoPhatBangke.get(i).getFeeCancelOrder() > 0)
-                    mBaoPhatBangke.get(i).setCheckFeeCancelOrder(true);
+            for (
+                    int i = 0; i < mBaoPhatBangke.size(); i++)
+                if (mBaoPhatBangke.get(i).
+
+                        getFeeCancelOrder() > 0)
+                    mBaoPhatBangke.get(i).
+
+                            setCheckFeeCancelOrder(true);
                 else {
                     mDemTrangThai++;
                     mBaoPhatBangke.get(i).setCheckFeeCancelOrder(false);
                 }
-        phiThuHoAdapter = new PhiThuHoAdapter(getViewContext(), mBaoPhatBangke) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
-                if (cbSelected.isChecked()) {
-                    holder.tv_monney.setEnabled(true);
-                } else holder.tv_monney.setEnabled(false);
-                holder.tv_monney.addTextChangedListener(new TextWatcher() {
+
+        phiThuHoAdapter = new
+
+                PhiThuHoAdapter(getViewContext(), mBaoPhatBangke) {
                     @Override
-                    public void onTextChanged(CharSequence s, int start,
-                                              int before, int count) {
-                        //setting data to array, when changed
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+                        if (cbSelected.isChecked()) {
+                            holder.tv_monney.setEnabled(true);
+                        } else holder.tv_monney.setEnabled(false);
+                        holder.tv_monney.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void onTextChanged(CharSequence s, int start,
+                                                      int before, int count) {
+                                //setting data to array, when changed
 
-                        if (!TextUtils.isEmpty(s.toString())) {
-                            mBaoPhatBangke.get(position).setFeeCancelOrder(Long.parseLong(s.toString().replaceAll("\\.", "")));
-                        } else mBaoPhatBangke.get(position).setFeeCancelOrder(0);
+                                if (!TextUtils.isEmpty(s.toString())) {
+                                    mBaoPhatBangke.get(position).setFeeCancelOrder(Long.parseLong(s.toString().replaceAll("\\.", "")));
+                                } else mBaoPhatBangke.get(position).setFeeCancelOrder(0);
 
+                            }
+
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start,
+                                                          int count, int after) {
+                                //blank
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                //blank
+                            }
+                        });
                     }
+                }
 
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start,
-                                                  int count, int after) {
-                        //blank
-                    }
+        ;
+        RecyclerUtils.setupVerticalRecyclerView(
 
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        //blank
-                    }
-                });
-            }
-        };
-        RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerds);
+                getViewContext(), recyclerds);
         recyclerds.setAdapter(phiThuHoAdapter);
         if (mBaoPhatBangke.size() == 1) {
             String gtgt[] = mBaoPhatBangke.get(0).getVatCode().split(",");
@@ -1049,6 +1177,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             IsExchange = false;
             llDoitra.setVisibility(View.GONE);
         }
+
     }
 
     private void showBuuCucden() {
@@ -1077,10 +1206,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund,
             R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc,
             R.id.rl_e_wallet, R.id.tv_time, R.id.iv_add_hang_doi_tra, R.id.tv_date_hoantra
-            , R.id.tv_tiem_hoantra, R.id.rl_image_hang_doi_tra})
+            , R.id.tv_tiem_hoantra, R.id.rl_image_hang_doi_tra, R.id.tv_xaphuong_bosung})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
+            case R.id.tv_xaphuong_bosung:
+                showXaPhuong();
+                break;
             case R.id.rl_e_wallet:
                 new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
                     @Override
@@ -1542,12 +1673,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
-    void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
-
-    }
 
     @SuppressLint("IntentReset")
     private void chooseFromGallery() {
@@ -1826,22 +1951,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             } else tiem_tam = 0;
 
             if (IsExchange) {
-//                if (TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim())) {
-//                    Toast.showToast(getViewContext(), "Vui lòng nhập mã bưu gửi hàng thu hồi");
-//                    return;
-//                }
                 if (!TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim()) && !edtMaBuuGui.getText().toString().trim().matches("[\\w-]+")) {
                     Toast.showToast(getContext(), "Vui lòng kiểm tra mã bưu gửi");
                     return;
                 }
-//                if (TextUtils.isEmpty(tvDateHoantra.getText().toString().trim())) {
-//                    Toast.showToast(getViewContext(), "Vui lòng nhập ngày phát thực tế hàng thu hồi");
-//                    return;
-//                }
-//                if (TextUtils.isEmpty(tvTiemHoantra.getText().toString().trim())) {
-//                    Toast.showToast(getViewContext(), "Vui lòng giờ phát thực tế hàng thu hồi");
-//                    return;
-//                }
+
                 mExchangeLadingCode = edtMaBuuGui.getText().toString().trim();
                 mExchangeDeliveryDate = Long.parseLong(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(),
                         DateTimeUtils.SIMPLE_DATE_FORMAT5));
@@ -1877,6 +1991,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
             long final_amountShow = _amountShow;
 
+
+//            if (mBaoPhatBangke.size() == 1) {
+//                if (idXaphuong == 0) {
+//                    Toast.showToast(getViewContext(), "Vui lòng chọn xã/ Phường điều chỉnh/Bổ sung");
+//                    return;
+//                }
+//            }
             new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
@@ -1902,7 +2023,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                         tiem_tam, edtNote.getText().toString()
                                         , IsExchange, mBuuCuc, mTuyen,
                                         mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra);
+                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong,phoneCodeEdit.getId());
                             } else {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther
                                         , mSign, edtReceiverName.getText().toString(),
@@ -1910,7 +2031,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                         checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString()
                                         , IsExchange, mBuuCuc, mTuyen,
                                         mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra);
+                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong,phoneCodeEdit.getId());
                             }
                         } else {
                             if (totalAmount > 0) {
@@ -2170,6 +2291,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         request.setReturnProducts(listProductRefund);
         request.setDeliveryProducts(listProductDeliveryRequest);
+        request.setDeliveryWardIdAdditional(idXaphuong);
         String bankCode = new String();
 
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
@@ -2963,6 +3085,68 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         }
         return bestLocation;
+    }
+
+    @Override
+    public void showCallError(String message) {
+        Toast.showToast(getViewContext(), message);
+    }
+
+    @Override
+    public void showCallSuccess(String phone) {
+        callProvidertoCSKH(phone);
+    }
+
+    PhoneCodeEdit phoneCodeEdit = new PhoneCodeEdit();
+
+    @Override
+    public void showCallEdit(String x) {
+        PhoneCodeEdit phoneCodeEdit = NetWorkController.getGson().fromJson(x, PhoneCodeEdit.class);
+        this.phoneCodeEdit = phoneCodeEdit;
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneCodeEdit.getPhoneNumber()));
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            startActivity(intent);
+        }
+    }
+
+    private void callProvidertoCSKH(String phone) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phone));
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void showXaPhuong(List<WardModels> list) {
+        mListXaPhuong = new ArrayList<>();
+        mListXaPhuong = list;
+    }
+
+    private void showXaPhuong() {
+        ArrayList<Item> items = new ArrayList<>();
+        int i = 0;
+        for (WardModels item : mListXaPhuong) {
+            items.add(new Item(String.valueOf(item.getWardsId()), item.getWardsName()));
+            i++;
+        }
+        new DialogReason(getViewContext(), "Chọn Xã/Phường", items, new PickerCallback() {
+            @Override
+            public void onClickItem(Item item) {
+                tvXaphuongBosung.setText(item.getText());
+                idXaphuong = Integer.parseInt(item.getValue());
+            }
+        }).show();
     }
 
 }

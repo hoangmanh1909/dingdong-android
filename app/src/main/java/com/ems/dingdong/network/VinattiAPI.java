@@ -142,6 +142,19 @@ public interface VinattiAPI {
     );
 
     @FormUrlEncoded
+    @POST("api/CallCenter/CallForwardEditCOD")
+    Call<SimpleResult> CallForwardEditCOD(@Field("CallerNumber") String callerNumber,
+                                             @Field("CalleeNumber") String calleeNumber,
+                                             @Field("CallForwardType") String callForwardType,
+                                             @Field("HotlineNumber") String hotlineNumber,
+                                             @Field("LadingCode") String ladingCode,
+                                             @Field("Type") String type,
+                                             @Field("PostmanId") String PostmanId,
+                                             @Field("POcode") String POcode,
+                                             @Field("Signature") String signature
+    );
+
+    @FormUrlEncoded
     @POST("api/Collect/SearchOrderPostman")
     Call<CommonObjectListResult> searchOrderPostmanCollect(@Field("OrderPostmanID") String orderPostmanID,
                                                            @Field("OrderID") String orderID,

@@ -264,12 +264,6 @@ public class NetWorkController {
                                                            String callForwardType, String hotlineNumber,
                                                            String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
         String type = "1";
-//        Log.d("thasndahsd12123123", Constants.HEADER_NUMBER);
-//        if (Constants.HEADER_NUMBER.equals("tel:159")) {
-//            type = "1";
-//        } else {
-//            type = "2";
-//        }
 
         String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
         Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
@@ -278,17 +272,17 @@ public class NetWorkController {
         return call;
     }
 
-    //    public static Single<SimpleResult> searchOrderPostmanCollect(String orderPostmanID,
-//                                                                 String orderID,
-//                                                                 String postmanID,
-//                                                                 String status,
-//                                                                 String fromAssignDate,
-//                                                                 String toAssignDate) {
-//
-////        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
-////        call.enqueue(callback);
-//        return null;
-//    }
+    public static Call<SimpleResult> CallForwardEditCOD(String callerNumber, String calleeNumber,
+                                                        String callForwardType, String hotlineNumber,
+                                                        String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+        String type = "1";
+
+        String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
+        Call<SimpleResult> call = getAPIBuilder().CallForwardEditCOD(callerNumber, calleeNumber, callForwardType,
+                hotlineNumber, ladingCode, "2", PostmanId, POCode, signature);
+        call.enqueue(callback);
+        return call;
+    }
 
 
     public static void searchAllOrderPostmanCollect(String orderPostmanID,

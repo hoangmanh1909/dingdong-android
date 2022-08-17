@@ -1,5 +1,6 @@
 package com.ems.dingdong.app;
 
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -18,14 +19,18 @@ import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.zoho.commons.LauncherProperties;
+import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.network.UserDataManager;
+
+import java.time.ZonedDateTime;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class ApplicationController extends MultiDexApplication {
+public class ApplicationController extends Application {
     private static String TAG = "ApplicationController.class";
 
     public static final String CHANNEL_1_ID = "channel1";
@@ -69,7 +74,10 @@ public class ApplicationController extends MultiDexApplication {
         applicationController = this;
         Intent intent = new Intent(this, PortSipService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
+        ZohoSalesIQ.init(this,
+                BuildConfig.APP_KEY,
+                BuildConfig.ACCESS_KEY);
+//        ZohoSalesIQ.showLauncher(true);
         this.createNotificationChannels();
     }
 

@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.main;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -70,6 +71,8 @@ import com.ems.dingdong.views.MyViewPager;
 import com.google.android.exoplayer2.C;
 import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
+import com.zoho.livechat.android.ZohoLiveChat;
+import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.PhoneCallback;
 //import com.sip.cmc.callback.RegistrationCallback;
@@ -280,6 +283,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         }
 
         eventLoginAndCallCtel();
+
+
     }
 
 
@@ -460,6 +465,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting, R.id.fr_thongbao, R.id.sw_switch})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+
             case R.id.sw_switch:
                 getLoaderManager().restartLoader(URL_LOADER, null, this);
                 if (isCheck) {

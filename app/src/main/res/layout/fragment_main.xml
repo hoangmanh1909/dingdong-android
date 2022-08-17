@@ -36,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,6 +57,7 @@
                         android:text="Ra/Vào ca"
                         android:textColor="@color/white" />
                 </LinearLayout>
+
                 <FrameLayout
                     android:id="@+id/fr_thongbao"
                     style="?attr/actionButtonStyle"
@@ -133,6 +135,7 @@
             android:id="@+id/view_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -147,6 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    android:text="asdasd"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -163,6 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    android:text="asdasd"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -178,6 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    android:text="asdasd"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -193,6 +199,8 @@
     </LinearLayout>
     <!-- app:bb_activeTabColor="#5f3075"
      app:bb_inActiveTabColor="#666666"-->
+
+
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"

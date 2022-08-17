@@ -22,6 +22,8 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.WardModels;
+import com.ems.dingdong.model.request.BaseRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
+import retrofit2.Call;
 
 public interface XacNhanBaoPhatContract {
     interface Interactor extends IInteractor<Presenter> {
@@ -107,9 +110,21 @@ public interface XacNhanBaoPhatContract {
         void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback);
 
         Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode);
+
+        Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
+                                                 String callForwardType, String hotlineNumber,
+                                                 String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
+
+        Call<SimpleResult> CallForwardEditCOD(String callerNumber, String calleeNumber,
+                                              String callForwardType, String hotlineNumber,
+                                              String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
+
+        Single<SimpleResult> getXaPhuong(BaseRequest request);
     }
 
     interface View extends PresentView<Presenter> {
+        void showXaPhuong(List<WardModels> list);
+
         /**
          * Show list reasons.
          *
@@ -180,10 +195,22 @@ public interface XacNhanBaoPhatContract {
         void finishView();
 
         List<DeliveryPostman> getItemSelected();
+
+        void showCallError(String message);
+
+        void showCallSuccess(String phone);
+
+        void showCallEdit(String x);
+
     }
 
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void getXaPhuong(int id);
+
+        void callForward(String phone, String parcelCode);
+
+        void callForwardEditCOD(String phone, String parcelCode);
 
         void vietmapDecode(String decode, int posi);
 
@@ -227,7 +254,8 @@ public interface XacNhanBaoPhatContract {
         void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
                              String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                              boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
-                             long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails,String imgAnhHoangTra);
+                             long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails, String imgAnhHoangTra
+                , int idXaphuong, String idCOD);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);
@@ -254,6 +282,7 @@ public interface XacNhanBaoPhatContract {
          */
         void onTabRefresh(String data, int mType);
 
+        // phat 1 phan
         void deliveryPartial(DeliveryProductRequest request);
     }
 }

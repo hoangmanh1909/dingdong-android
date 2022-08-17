@@ -12,6 +12,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.request.BaseRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
@@ -25,10 +26,28 @@ import com.ems.dingdong.network.NetWorkControllerGateWay;
 import java.util.List;
 
 import io.reactivex.Single;
+import retrofit2.Call;
 
 public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.Presenter> implements XacNhanBaoPhatContract.Interactor {
     public XacNhanBaoPhatInteractor(XacNhanBaoPhatContract.Presenter presenter) {
         super(presenter);
+    }
+
+    @Override
+    public Single<SimpleResult> getXaPhuong(BaseRequest request) {
+        return NetWorkControllerGateWay.getXaPhuong(request);
+    }
+
+    @Override
+    public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                ladingCode, PostmanId, POCode, callback);
+    }
+
+    @Override
+    public Call<SimpleResult> CallForwardEditCOD(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+        return NetWorkController.CallForwardEditCOD(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+                ladingCode, PostmanId, POCode, callback);
     }
 
     @Override

@@ -169,8 +169,18 @@ public class DeliveryProductRequest {
     private String PODeliveryLon;
     @SerializedName("PaymentBankCode")
     private String PaymentBankCode;
-   @SerializedName("SourceChanel")
+    @SerializedName("SourceChanel")
     private String SourceChanel;
+    @SerializedName("DeliveryWardIdAdditional")
+    private long DeliveryWardIdAdditional;
+
+    public long getDeliveryWardIdAdditional() {
+        return DeliveryWardIdAdditional;
+    }
+
+    public void setDeliveryWardIdAdditional(long deliveryWardIdAdditional) {
+        DeliveryWardIdAdditional = deliveryWardIdAdditional;
+    }
 
     public String getSourceChanel() {
         return SourceChanel;

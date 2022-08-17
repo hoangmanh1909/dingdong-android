@@ -134,6 +134,8 @@ public class PaypostPaymentRequest {
     private boolean IsExchange;
     @SerializedName("ExchangePODeliveryCode")
     private String ExchangePODeliveryCode;
+    @SerializedName("EditCODAmountCallId")
+    private String EditCODAmountCallId;
     @SerializedName("ExchangeRouteCode")
     private String ExchangeRouteCode;
     @SerializedName("ExchangeLadingCode")
@@ -142,8 +144,26 @@ public class PaypostPaymentRequest {
     private long ExchangeDeliveryDate;
     @SerializedName("ExchangeDeliveryTime")
     private int ExchangeDeliveryTime;
+    @SerializedName("DeliveryWardIdAdditional")
+    private long DeliveryWardIdAdditional;
     @SerializedName("ExchangeDetails")
     private List<LadingProduct> ExchangeDetails;
+
+    public String getEditCODAmountCallId() {
+        return EditCODAmountCallId;
+    }
+
+    public void setEditCODAmountCallId(String editCODAmountCallId) {
+        EditCODAmountCallId = editCODAmountCallId;
+    }
+
+    public long getDeliveryWardIdAdditional() {
+        return DeliveryWardIdAdditional;
+    }
+
+    public void setDeliveryWardIdAdditional(long deliveryWardIdAdditional) {
+        DeliveryWardIdAdditional = deliveryWardIdAdditional;
+    }
 
     public String getImageExchange() {
         return ImageExchange;

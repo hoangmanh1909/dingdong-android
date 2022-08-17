@@ -22,6 +22,8 @@ import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
+import com.ems.dingdong.model.WardModels;
+import com.ems.dingdong.model.request.BaseRequest;
 import com.ems.dingdong.model.request.ChangeRouteRequest;
 import com.ems.dingdong.model.request.DeliveryPaymentV2;
 import com.ems.dingdong.model.request.DeliveryProductRequest;
@@ -41,6 +43,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -342,7 +345,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     public void paymentDelivery(String deliveryImage, String imageAuthen, String signCapture, String newReceiverName,
                                 String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                                 boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
-                                long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails, String imgAnhHoangTra) {
+                                long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails,
+                                String imgAnhHoangTra, int idXaphuong, String idCOD) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -433,6 +437,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setExchangeDeliveryTime(ExchangeDeliveryTime);
             request.setExchangeDetails(ExchangeDetails);
             request.setImageExchange(imgAnhHoangTra);
+            request.setDeliveryWardIdAdditional(idXaphuong);
+            request.setEditCODAmountCallId(idCOD);
 
             request.setSourceChanel("DD_ANDROID");
             paymentRequests.add(request);
@@ -627,5 +633,116 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public XacNhanBaoPhatContract.View onCreateView() {
         return XacNhanBaoPhatFragment.getInstance();
+    }
+
+    @Override
+    public void callForward(String phone, String parcelCode) {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String callerNumber = "";
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            callerNumber = userInfo.getMobileNumber();
+        }
+        String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        mView.showProgress();
+        mInteractor.callForwardCallCenter(callerNumber, phone, "1", hotline, parcelCode, userInfo.getiD(), poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showCallSuccess(response.body().getData());
+                    } else {
+                        mView.showCallError(response.body().getMessage());
+                    }
+                }
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showCallError(message);
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.showCallError("Lỗi kết nối đến tổng đài");
+            }
+        });
+
+    }
+
+    @Override
+    public void callForwardEditCOD(String phone, String parcelCode) {
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String callerNumber = "";
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        String poCode = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode();
+        if (!userJson.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            callerNumber = userInfo.getMobileNumber();
+        }
+        String hotline = sharedPref.getString(Constants.KEY_HOTLINE_NUMBER, "");
+        mView.showProgress();
+        mInteractor.CallForwardEditCOD(callerNumber, phone, "1", hotline, parcelCode, userInfo.getiD(), poCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                if (response.body() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showCallEdit(response.body().getData());
+                    } else {
+                        mView.showCallError(response.body().getMessage());
+                    }
+                }
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showCallError(message);
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.showCallError("Lỗi kết nối đến tổng đài");
+            }
+        });
+    }
+
+
+    @Override
+    public void getXaPhuong(int id) {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getXaPhuong(new BaseRequest(id, userInfo.getMobileNumber(), null, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        WardModels[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), WardModels[].class);
+                        List<WardModels> list1 = Arrays.asList(list);
+                        mView.showXaPhuong(list1);
+                        mView.hideProgress();
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.showErrorToast(throwable.getMessage());
+                    mView.hideProgress();
+                });
     }
 }

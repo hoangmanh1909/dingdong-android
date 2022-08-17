@@ -147,12 +147,13 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
-        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK,"");
-        if (!listBankJson.isEmpty()){
+        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK, "");
+        if (!listBankJson.isEmpty()) {
             danhSachNganHangRepsone.clear();
             try {
-                danhSachNganHangRepsone.addAll(NetWorkController.getGson().fromJson(listBankJson,new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType()));
-            }catch (Exception e){
+                danhSachNganHangRepsone.addAll(NetWorkController.getGson().fromJson(listBankJson, new TypeToken<ArrayList<DanhSachNganHangRepsone>>() {
+                }.getType()));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -217,9 +218,9 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
                 }
                 break;
             case R.id.tv_chonnagnhang:
-                if (danhSachNganHangRepsone.size()==0){
+                if (danhSachNganHangRepsone.size() == 0) {
                     mPresenter.getDanhSachNganHang();
-                }else {
+                } else {
                     pickFilter(tvChonnagnhang);
                 }
                 break;
@@ -242,10 +243,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         danhSachTaiKhoanRequest.setPIDNumber(userInfo.getPIDNumber());
         danhSachTaiKhoanRequest.setBankCode(maNganHang);
         danhSachTaiKhoanRequest.setPIDType(userInfo.getPIDType());
-//        if (edtSotaikhoan.getText().toString().trim().isEmpty()) {
-//            Toast.showToast(getViewContext(), "Vui lòng nhập số tài khoản thấu chi");
-//            return;
-//        }
+
         mPresenter.getDanhSachTaiKhoan(danhSachTaiKhoanRequest);
     }
 
@@ -275,9 +273,9 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     public void showDanhSach(ArrayList<DanhSachNganHangRepsone> list) {
         try {
             danhSachNganHangRepsone.clear();
-             if (list != null) danhSachNganHangRepsone.addAll(list);
+            if (list != null) danhSachNganHangRepsone.addAll(list);
             pickFilter(tvChonnagnhang);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -415,7 +413,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
 
     @Override
     public void showMain() {
-        EWalletData.setMeasurements(StateEWallet.NOTIFY,null);
+        EWalletData.setMeasurements(StateEWallet.NOTIFY, null);
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
                 otpDialog.dismiss();

@@ -603,7 +603,6 @@
             </androidx.cardview.widget.CardView>
 
 
-
             <View
                 style="@style/Devider"
                 android:layout_width="match_parent"

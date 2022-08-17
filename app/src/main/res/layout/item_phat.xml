@@ -67,6 +67,180 @@
 
     </LinearLayout>
 
+
+
+
+    <LinearLayout
+        android:id="@+id/rl_tinhtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:text="Tỉnh/ Thành Phố: "
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+
+        <TextView
+            android:id="@+id/tv_tinhtp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tv_relationship"
+            android:foreground="?attr/selectableItemBackground"
+            android:hint="Không có dữ liệu Tỉnh/ Thành Phố"
+            android:padding="10dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/rl_quanhuyen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:text="Quận/ Huyện: "
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+
+        <TextView
+            android:id="@+id/tv_quanhuyen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tv_relationship"
+            android:foreground="?attr/selectableItemBackground"
+            android:hint="Không có dữ liệu Quận/ Huyện"
+            android:padding="10dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/rl_xaphuong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:text="Xã/Phường: "
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+
+        <TextView
+            android:id="@+id/tv_xaphuong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tv_relationship"
+            android:foreground="?attr/selectableItemBackground"
+            android:hint="Không có dữ liệu xã/Phường"
+            android:padding="10dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/rl_xaphuong_bosung"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Xã/Phường điều chỉnh/Bổ sung "
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:text="( * )"-->
+<!--                android:textColor="@color/red_light"-->
+<!--                android:textSize="12dp" />-->
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_xaphuong_bosung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tv_relationship"
+            android:drawableRight="@drawable/ic_arrow_drop_down_v1"
+            android:foreground="?attr/selectableItemBackground"
+            android:hint="Chọn Xã/Phường điều chỉnh/Bổ sung "
+            android:padding="10dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+
     <View
         style="@style/Devider"
         android:layout_width="match_parent"
@@ -165,11 +339,11 @@
             android:textSize="14dp" />
     </LinearLayout>
 
-    <View
-        style="@style/Devider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp" />
+<!--    <View-->
+<!--        style="@style/Devider"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0.5dp"-->
+<!--        android:layout_marginTop="5dp" />-->
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -39,6 +39,9 @@ import com.ems.dingdong.utiles.StringUtils;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.zoho.livechat.android.ZohoLiveChat;
+import com.zoho.livechat.android.utils.SalesIQCache;
+import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.LogOutCallBack;
 //import com.sip.cmc.network.Account;
@@ -135,10 +138,12 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch, R.id.rl_chat})
     public void onViewClicked(View view) {
-
         switch (view.getId()) {
+            case R.id.rl_chat:
+                ZohoLiveChat.Chat.show();
+                break;
             case R.id.sw_switch:
                 new DialoggoiLai(getViewContext(), "Bạn có muốn đẩy log gọi lên hệ thống", new IdCallback() {
                     @Override

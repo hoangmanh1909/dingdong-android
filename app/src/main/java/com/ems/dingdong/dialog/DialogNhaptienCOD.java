@@ -48,13 +48,17 @@ public class DialogNhaptienCOD extends Dialog {
     }
 
 
-    @OnClick({R.id.tv_huy, R.id.tv_xac_nhan})
+    @OnClick({R.id.tv_huy, R.id.tv_xac_nhan, R.id.tv_goi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_huy:
                 if (TextUtils.isEmpty(tvTienCOD.getText().toString()))
                     idCallback.onResponse("false");
                 dismiss();
+                break;
+            case R.id.tv_goi:
+                idCallback.onResponse("GOI");
+
                 break;
             case R.id.tv_xac_nhan:
                 if (TextUtils.isEmpty(tvTienCOD.getText().toString())) {

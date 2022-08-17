@@ -416,7 +416,20 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             mPhoneEdit = phone;
 //                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             try {
-                                if (mAdapter.getListFilter().get(position).getSenderBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+                                if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+                                    if (mAdapter.getListFilter().get(position).getSenderBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+                                        Intent intent = new Intent(Intent.ACTION_CALL);
+                                        intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
+                                        if (ContextCompat.checkSelfPermission(getActivity(),
+                                                Manifest.permission.CALL_PHONE)
+                                                != PackageManager.PERMISSION_GRANTED) {
+                                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                                        } else {
+                                            startActivity(intent);
+                                        }
+                                    } else
+                                        mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                                } else {
                                     Intent intent = new Intent(Intent.ACTION_CALL);
                                     intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
                                     if (ContextCompat.checkSelfPermission(getActivity(),
@@ -426,11 +439,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     } else {
                                         startActivity(intent);
                                     }
-                                } else if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
-                                    mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
-
-                                } else
                                     Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+                                }
 
 
                             } catch (Exception e) {
@@ -504,9 +514,25 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             mPhoneEdit = phone;
 //                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             try {
-                                if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+                                // check internet
+                                if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+
+//                                    check co truognf  ReceiverBookingPhone
+                                    if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+                                        Intent intent = new Intent(Intent.ACTION_CALL);
+                                        intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
+                                        if (ContextCompat.checkSelfPermission(getActivity(),
+                                                Manifest.permission.CALL_PHONE)
+                                                != PackageManager.PERMISSION_GRANTED) {
+                                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+                                        } else {
+                                            startActivity(intent);
+                                        }
+                                    } else
+                                        mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+                                } else {
                                     Intent intent = new Intent(Intent.ACTION_CALL);
-                                    intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
+                                    intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
                                     if (ContextCompat.checkSelfPermission(getActivity(),
                                             Manifest.permission.CALL_PHONE)
                                             != PackageManager.PERMISSION_GRANTED) {
@@ -514,10 +540,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     } else {
                                         startActivity(intent);
                                     }
-                                } else if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
-                                    mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
-                                } else
                                     Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+                                }
 
 
                             } catch (Exception e) {
@@ -1266,13 +1290,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showCallError(String message) {
-
         Toast.showToast(getViewContext(), message);
     }
 
     @Override
     public void showCallSuccess(String phone) {
-
         callProvidertoCSKH(phone);
     }
 
